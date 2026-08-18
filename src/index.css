@@ -1,0 +1,197 @@
+/* ============================================================
+   GOOGLE FONTS — Cinzel (headings) + Inter (body)
+   @import rules must precede all other rules
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@import "tailwindcss";
+
+/* ============================================================
+   TAILWIND v4 DESIGN TOKENS — Monster Hunter Theme
+   ============================================================ */
+@theme {
+  /* Fonts */
+  --font-display: 'Cinzel', serif;
+  --font-sans: 'Inter', sans-serif;
+
+  /* Slate / Charcoal backgrounds */
+  --color-mh-slate-950: #020617;
+  --color-mh-slate-900: #0f172a;
+  --color-mh-slate-800: #1e293b;
+  --color-mh-slate-700: #334155;
+  --color-mh-slate-600: #475569;
+  --color-mh-slate-500: #64748b;
+  --color-mh-slate-400: #94a3b8;
+  --color-mh-slate-300: #cbd5e1;
+
+  /* Gold / Amber accents */
+  --color-mh-gold-300: #fcd34d;
+  --color-mh-gold-400: #fbbf24;
+  --color-mh-gold-500: #f59e0b;
+  --color-mh-gold-600: #d97706;
+  --color-mh-gold-700: #b45309;
+
+  /* Rarity colour tiers */
+  --color-rarity-1: #94a3b8;   /* Common      — slate  */
+  --color-rarity-2: #22c55e;   /* Uncommon    — green  */
+  --color-rarity-3: #3b82f6;   /* Rare        — blue   */
+  --color-rarity-4: #a855f7;   /* Epic        — purple */
+  --color-rarity-5: #f59e0b;   /* Legendary   — gold   */
+  --color-rarity-6: #ef4444;   /* Ancient     — red    */
+  --color-rarity-elder: #c026d3; /* Elder Dragon — fuchsia */
+
+  /* Element colours */
+  --color-el-fire: #f97316;
+  --color-el-water: #38bdf8;
+  --color-el-thunder: #facc15;
+  --color-el-ice: #a5f3fc;
+  --color-el-dragon: #a78bfa;
+  --color-el-poison: #a855f7;
+  --color-el-paralysis: #fde047;
+  --color-el-sleep: #93c5fd;
+  --color-el-blast: #fb923c;
+}
+
+/* ============================================================
+   GLOBAL BASE
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-sans);
+  background-color: var(--color-mh-slate-900);
+  color: var(--color-mh-slate-300);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   CUSTOM SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-mh-slate-800);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-mh-gold-700);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-mh-gold-500);
+}
+
+/* ============================================================
+   COMPONENT: MH Card
+   ============================================================ */
+.mh-card {
+  background: var(--color-mh-slate-800);
+  border: 1px solid var(--color-mh-slate-700);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.mh-card:hover {
+  border-color: var(--color-mh-gold-700);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-mh-gold-500) 20%, transparent),
+              0 4px 24px color-mix(in srgb, var(--color-mh-slate-950) 60%, transparent);
+}
+
+/* ============================================================
+   COMPONENT: Rarity Badges
+   ============================================================ */
+.rarity-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.rarity-1 { color: var(--color-rarity-1); border: 1px solid var(--color-rarity-1); background: color-mix(in srgb, var(--color-rarity-1) 10%, transparent); }
+.rarity-2 { color: var(--color-rarity-2); border: 1px solid var(--color-rarity-2); background: color-mix(in srgb, var(--color-rarity-2) 10%, transparent); }
+.rarity-3 { color: var(--color-rarity-3); border: 1px solid var(--color-rarity-3); background: color-mix(in srgb, var(--color-rarity-3) 10%, transparent); }
+.rarity-4 { color: var(--color-rarity-4); border: 1px solid var(--color-rarity-4); background: color-mix(in srgb, var(--color-rarity-4) 10%, transparent); }
+.rarity-5 { color: var(--color-rarity-5); border: 1px solid var(--color-rarity-5); background: color-mix(in srgb, var(--color-rarity-5) 10%, transparent); }
+.rarity-6 { color: var(--color-rarity-6); border: 1px solid var(--color-rarity-6); background: color-mix(in srgb, var(--color-rarity-6) 10%, transparent); }
+.rarity-elder { color: var(--color-rarity-elder); border: 1px solid var(--color-rarity-elder); background: color-mix(in srgb, var(--color-rarity-elder) 10%, transparent); }
+
+/* ============================================================
+   COMPONENT: Gold Button
+   ============================================================ */
+.btn-mh {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  background: linear-gradient(135deg, var(--color-mh-gold-600), var(--color-mh-gold-400));
+  color: var(--color-mh-slate-900);
+  font-weight: 700;
+  font-size: 0.875rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.025em;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--color-mh-gold-500) 40%, transparent);
+}
+.btn-mh:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--color-mh-gold-500) 50%, transparent);
+}
+.btn-mh:active {
+  transform: translateY(0);
+}
+
+/* ============================================================
+   BACKGROUND TEXTURE — subtle noise grain
+   ============================================================ */
+.bg-texture::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+/* ============================================================
+   SIDEBAR TRANSITIONS
+   ============================================================ */
+.sidebar-transition {
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================================
+   HEADING FONT UTILITY
+   ============================================================ */
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* ============================================================
+   GLOW UTILITIES
+   ============================================================ */
+.glow-gold {
+  box-shadow: 0 0 12px color-mix(in srgb, var(--color-mh-gold-500) 40%, transparent);
+}
+.text-glow-gold {
+  text-shadow: 0 0 12px color-mix(in srgb, var(--color-mh-gold-400) 70%, transparent);
+}

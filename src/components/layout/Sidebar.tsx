@@ -1,0 +1,213 @@
+import {
+  BookOpen,
+  Sword,
+  Users,
+  Settings,
+  ChevronLeft,
+  ChevronRight,
+  X,
+  Flame,
+} from 'lucide-react';
+import { useUIStore, type Page } from '../../store/uiStore';
+import { cn } from '../../lib/utils';
+
+interface NavItem {
+  id: Page;
+  label: string;
+  icon: React.ComponentType<{ className?: string; size?: number }>;
+  description: string;
+}
+
+const navItems: NavItem[] = [
+  {
+    id: 'field-guide',
+    label: 'Field Guide',
+    icon: BookOpen,
+    description: 'Quests & Todos',
+  },
+  {
+    id: 'build-planner',
+    label: 'Build Planner',
+    icon: Sword,
+    description: 'Gear & Loadouts',
+  },
+  {
+    id: 'community-hub',
+    label: 'Community Hub',
+    icon: Users,
+    description: 'Challenges & Sharing',
+  },
+  {
+    id: 'settings',
+    label: 'Settings',
+    icon: Settings,
+    description: 'Preferences',
+  },
+];
+
+export default function Sidebar() {
+  const { activePage, sidebarCollapsed, mobileMenuOpen, setActivePage, toggleSidebar, setMobileMenuOpen } =
+    useUIStore();
+
+  return (
+    <>
+      {/* Mobile overlay backdrop */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* Sidebar panel */}
+      <aside
+        className={cn(
+          'sidebar-transition fixed left-0 top-0 z-50 flex h-screen flex-col',
+          'border-r border-mh-slate-700 bg-mh-slate-950',
+          // Desktop
+          sidebarCollapsed ? 'w-[72px]' : 'w-[260px]',
+          // Mobile: slide in/out
+          'lg:translate-x-0',
+          mobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
+        )}
+        style={{ willChange: 'transform, width' }}
+      >
+        {/* ── Header / Branding ── */}
+        <div
+          className={cn(
+            'flex h-16 shrink-0 items-center border-b border-mh-slate-700 px-4',
+            sidebarCollapsed ? 'justify-center' : 'justify-between gap-3',
+          )}
+        >
+          {/* Logo mark */}
+          <div className="flex shrink-0 items-center gap-2.5">
+            <div className="relative flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-mh-gold-500 to-mh-gold-700 glow-gold">
+              <Flame size={20} className="text-mh-slate-900" />
+            </div>
+
+            {/* App name — hidden when collapsed */}
+            {!sidebarCollapsed && (
+              <div className="min-w-0">
+                <p className="font-display text-sm font-bold leading-none tracking-wide text-mh-gold-400 text-glow-gold">
+                  Field Guide
+                </p>
+                <p className="mt-0.5 text-[10px] font-medium uppercase tracking-widest text-mh-slate-500">
+                  Monster Hunter Now
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Close button — mobile only */}
+          {!sidebarCollapsed && (
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex h-7 w-7 items-center justify-center rounded-md text-mh-slate-500 transition-colors hover:bg-mh-slate-800 hover:text-mh-slate-300 lg:hidden"
+              aria-label="Close menu"
+            >
+              <X size={16} />
+            </button>
+          )}
+        </div>
+
+        {/* ── Navigation ── */}
+        <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-3" role="navigation" aria-label="Main navigation">
+          {navItems.map((item) => {
+            const isActive = activePage === item.id;
+            const Icon = item.icon;
+
+            return (
+              <button
+                key={item.id}
+                id={`nav-${item.id}`}
+                onClick={() => setActivePage(item.id)}
+                aria-current={isActive ? 'page' : undefined}
+                className={cn(
+                  'group relative flex w-full items-center gap-3 rounded-lg px-3 py-2.5',
+                  'text-left transition-all duration-200',
+                  isActive
+                    ? 'bg-mh-gold-500/10 text-mh-gold-400'
+                    : 'text-mh-slate-400 hover:bg-mh-slate-800 hover:text-mh-slate-200',
+                  sidebarCollapsed && 'justify-center px-0',
+                )}
+              >
+                {/* Active indicator bar */}
+                {isActive && (
+                  <span
+                    className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-r-full bg-mh-gold-400 glow-gold"
+                    aria-hidden="true"
+                  />
+                )}
+
+                <Icon
+                  size={20}
+                  className={cn(
+                    'shrink-0 transition-colors duration-200',
+                    isActive ? 'text-mh-gold-400' : 'text-mh-slate-500 group-hover:text-mh-slate-300',
+                  )}
+                />
+
+                {/* Labels — hidden when collapsed */}
+                {!sidebarCollapsed && (
+                  <div className="min-w-0">
+                    <p
+                      className={cn(
+                        'text-sm font-semibold leading-none',
+                        isActive ? 'text-mh-gold-300' : '',
+                      )}
+                    >
+                      {item.label}
+                    </p>
+                    <p className="mt-0.5 text-[10px] text-mh-slate-500">
+                      {item.description}
+                    </p>
+                  </div>
+                )}
+
+                {/* Tooltip when collapsed */}
+                {sidebarCollapsed && (
+                  <div
+                    className={cn(
+                      'pointer-events-none absolute left-full ml-3 whitespace-nowrap',
+                      'rounded-md bg-mh-slate-800 px-2.5 py-1.5 text-xs font-semibold text-mh-slate-200',
+                      'border border-mh-slate-700 shadow-xl',
+                      'opacity-0 transition-opacity duration-150 group-hover:opacity-100',
+                      'z-50',
+                    )}
+                    role="tooltip"
+                  >
+                    {item.label}
+                  </div>
+                )}
+              </button>
+            );
+          })}
+        </nav>
+
+        {/* ── Collapse Toggle — desktop only ── */}
+        <div className="hidden shrink-0 border-t border-mh-slate-700 p-3 lg:block">
+          <button
+            id="sidebar-collapse-btn"
+            onClick={toggleSidebar}
+            aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            className={cn(
+              'flex w-full items-center gap-2 rounded-lg px-3 py-2',
+              'text-xs font-medium text-mh-slate-500 transition-all duration-200',
+              'hover:bg-mh-slate-800 hover:text-mh-slate-300',
+              sidebarCollapsed && 'justify-center px-0',
+            )}
+          >
+            {sidebarCollapsed ? (
+              <ChevronRight size={16} />
+            ) : (
+              <>
+                <ChevronLeft size={16} />
+                <span>Collapse</span>
+              </>
+            )}
+          </button>
+        </div>
+      </aside>
+    </>
+  );
+}
