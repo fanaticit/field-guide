@@ -1,0 +1,980 @@
+{
+  "monsters": [
+    {
+      "id": "leather",
+      "name": "Leather",
+      "nameJa": "レザー",
+      "type": "small",
+      "icon": "/images/monsters/MHNow-Leather_Icon.png"
+    },
+    {
+      "id": "alloy",
+      "name": "Alloy",
+      "nameJa": "アロイ",
+      "type": "small",
+      "icon": "/images/monsters/MHNow-Alloy_Icon.png",
+      "hasWeaponStyles": true
+    },
+    {
+      "id": "bone",
+      "name": "Bone",
+      "nameJa": "骨",
+      "type": "small",
+      "icon": "/images/monsters/MHNow-Bone_Icon.png",
+      "hasWeaponStyles": true
+    },
+    {
+      "id": "lunar_new_year",
+      "name": "Lunar New Year",
+      "nameJa": "旧正月",
+      "type": "small",
+      "icon": "/images/monsters/MHNow-Lunar_New_Year_Icon.png"
+    },
+    {
+      "id": "spring_festival",
+      "name": "Spring Festival",
+      "nameJa": "スプリングフェスティバル",
+      "type": "small",
+      "icon": "/images/monsters/MHNow-Spring_Festival_Icon.png"
+    },
+    {
+      "id": "hope",
+      "name": "Hope",
+      "nameJa": "ホープ",
+      "type": "small",
+      "icon": "/images/monsters/MHNow-Hope_Icon.png"
+    },
+    {
+      "id": "great_jagras",
+      "name": "Great Jagras",
+      "nameJa": "ドスジャグラス",
+      "sortOrder": 1,
+      "tier": "low",
+      "element": "none",
+      "weaknesses": [
+        "fire",
+        "poison",
+        "paralysis",
+        "blast",
+        "sleep"
+      ],
+      "icon": "/images/monsters/MHNow-Great_Jagras_Icon.png"
+    },
+    {
+      "id": "kulu_ya_ku",
+      "name": "Kulu-Ya-Ku",
+      "nameJa": "クルルヤック",
+      "sortOrder": 2,
+      "tier": "low",
+      "element": "none",
+      "weaknesses": [
+        "water",
+        "ice"
+      ],
+      "icon": "/images/monsters/MHNow-Kulu-Ya-Ku_Icon.png"
+    },
+    {
+      "id": "pukei_pukei",
+      "name": "Pukei-Pukei",
+      "nameJa": "プケプケ",
+      "sortOrder": 3,
+      "tier": "low",
+      "element": "poison",
+      "weaknesses": [
+        "thunder",
+        "paralysis",
+        "sleep"
+      ],
+      "icon": "/images/monsters/MHNow-Pukei-Pukei_Icon.png"
+    },
+    {
+      "id": "coral_pukei_pukei",
+      "name": "Coral Pukei-Pukei",
+      "nameJa": "プケプケ亜種",
+      "sortOrder": 4,
+      "tier": "high",
+      "element": "water",
+      "weaknesses": [
+        "poison",
+        "ice"
+      ],
+      "icon": "/images/monsters/MHNow-Coral_Pukei-Pukei_Icon.png"
+    },
+    {
+      "id": "barroth",
+      "name": "Barroth",
+      "nameJa": "ボルボロス",
+      "sortOrder": 5,
+      "tier": "low",
+      "element": "water",
+      "weaknesses": [
+        "fire",
+        "poison",
+        "blast"
+      ],
+      "icon": "/images/monsters/MHNow-Barroth_Icon.png"
+    },
+    {
+      "id": "great_girros",
+      "name": "Great Girros",
+      "nameJa": "ドスギルオス",
+      "sortOrder": 6,
+      "tier": "low",
+      "element": "paralysis",
+      "weaknesses": [
+        "water",
+        "ice"
+      ],
+      "icon": "/images/monsters/MHNow-Great_Girros_Icon.png"
+    },
+    {
+      "id": "tobi_kadachi",
+      "name": "Tobi-Kadachi",
+      "nameJa": "トビカガチ",
+      "sortOrder": 7,
+      "tier": "low",
+      "element": "thunder",
+      "weaknesses": [
+        "water",
+        "ice"
+      ],
+      "icon": "/images/monsters/MHNow-Tobi-Kadachi_Icon.png"
+    },
+    {
+      "id": "viper_tobi_kadachi",
+      "name": "Viper Tobi-Kadachi",
+      "nameJa": "トビカガチ亜種",
+      "sortOrder": 8,
+      "tier": "high",
+      "element": [
+        "paralysis",
+        "poison"
+      ],
+      "weaknesses": [
+        "thunder"
+      ],
+      "icon": "/images/monsters/MHNow-Viper_Tobi-Kadachi_Icon.png"
+    },
+    {
+      "id": "paolumu",
+      "name": "Paolumu",
+      "nameJa": "パオウルムー",
+      "sortOrder": 9,
+      "tier": "high",
+      "element": "none",
+      "weaknesses": [
+        "fire",
+        "blast"
+      ],
+      "icon": "/images/monsters/MHNow-Paolumu_Icon.png"
+    },
+    {
+      "id": "nightshade_paolumu",
+      "name": "Nightshade Paolumu",
+      "nameJa": "パオウルムー亜種",
+      "sortOrder": 10,
+      "tier": "high",
+      "element": "sleep",
+      "weaknesses": [
+        "fire",
+        "thunder"
+      ],
+      "icon": "/images/monsters/MHNow-Nightshade_Paolumu_Icon.png"
+    },
+    {
+      "id": "jyuratodus",
+      "name": "Jyuratodus",
+      "nameJa": "ジュラトドス",
+      "sortOrder": 11,
+      "tier": "low",
+      "element": "water",
+      "weaknesses": [
+        "thunder"
+      ],
+      "icon": "/images/monsters/MHNow-Jyuratodus_Icon.png"
+    },
+    {
+      "id": "anjanath",
+      "name": "Anjanath",
+      "nameJa": "アンジャナフ",
+      "icon": "/images/monsters/MHNow-Anjanath_Icon.png",
+      "sortOrder": 12,
+      "tier": "low",
+      "element": "fire",
+      "weaknesses": [
+        "water",
+        "ice"
+      ]
+    },
+    {
+      "id": "fulgur_anjanath",
+      "name": "Fulgur Anjanath",
+      "nameJa": "アンジャナフ亜種",
+      "sortOrder": 13,
+      "tier": "high",
+      "element": "thunder",
+      "weaknesses": [
+        "ice",
+        "water"
+      ],
+      "icon": "/images/monsters/MHNow-Fulgar-Anjanath_Icon.png"
+    },
+    {
+      "id": "rathian",
+      "name": "Rathian",
+      "nameJa": "リオレイア",
+      "sortOrder": 14,
+      "tier": "high",
+      "element": "fire",
+      "weaknesses": [
+        "dragon",
+        "thunder"
+      ],
+      "icon": "/images/monsters/MHNow-Rathian_Icon.png"
+    },
+    {
+      "id": "pink_rathian",
+      "name": "Pink Rathian",
+      "nameJa": "リオレイア亜種",
+      "sortOrder": 15,
+      "tier": "high",
+      "element": [
+        "fire",
+        "poison"
+      ],
+      "weaknesses": [
+        "dragon",
+        "thunder"
+      ],
+      "icon": "/images/monsters/MHNow-Pink_Rathian_Icon.png"
+    },
+    {
+      "id": "gold_rathian",
+      "name": "Gold Rathian",
+      "nameJa": "リオレイア希少種",
+      "sortOrder": 16,
+      "tier": "high",
+      "element": [
+        "fire",
+        "poison"
+      ],
+      "weaknesses": [
+        "thunder"
+      ],
+      "icon": "/images/monsters/MHNow-Gold_Rathian_Icon.png"
+    },
+    {
+      "id": "legiana",
+      "name": "Legiana",
+      "nameJa": "レイギエナ",
+      "sortOrder": 17,
+      "tier": "high",
+      "element": "ice",
+      "weaknesses": [
+        "poison",
+        "fire"
+      ],
+      "icon": "/images/monsters/MHNow-Legiana_Icon.png"
+    },
+    {
+      "id": "diablos",
+      "name": "Diablos",
+      "nameJa": "ディアブロス",
+      "sortOrder": 18,
+      "tier": "high",
+      "element": "none",
+      "weaknesses": [
+        "ice",
+        "dragon",
+        "paralysis"
+      ],
+      "icon": "/images/monsters/MHNow-Diablos_Icon.png"
+    },
+    {
+      "id": "black_diablos",
+      "name": "Black Diablos",
+      "nameJa": "ディアブロス亜種",
+      "sortOrder": 19,
+      "tier": "high",
+      "element": "none",
+      "weaknesses": [
+        "ice",
+        "paralysis"
+      ],
+      "icon": "/images/monsters/MHNow-Black_Diablos_Icon.png"
+    },
+    {
+      "id": "rathalos",
+      "name": "Rathalos",
+      "nameJa": "リオレウス",
+      "sortOrder": 20,
+      "tier": "high",
+      "element": [
+        "fire",
+        "poison"
+      ],
+      "weaknesses": [
+        "dragon",
+        "thunder"
+      ],
+      "icon": "/images/monsters/MHNow-Rathalos_Icon.png"
+    },
+    {
+      "id": "azure_rathalos",
+      "name": "Azure Rathalos",
+      "nameJa": "リオレウス亜種",
+      "sortOrder": 21,
+      "tier": "high",
+      "element": [
+        "fire",
+        "poison"
+      ],
+      "weaknesses": [
+        "dragon",
+        "ice"
+      ],
+      "icon": "/images/monsters/MHNow-Azure_Rathalos_Icon.png"
+    },
+    {
+      "id": "silver_rathalos",
+      "name": "Silver Rathalos",
+      "nameJa": "リオレウス希少種",
+      "sortOrder": 22,
+      "tier": "high",
+      "element": "fire",
+      "weaknesses": [
+        "water",
+        "thunder"
+      ],
+      "icon": "/images/monsters/MHNow-Silver_Rathalos_Icon.png"
+    },
+    {
+      "id": "radobaan",
+      "name": "Radobaan",
+      "nameJa": "ラドバルキン",
+      "sortOrder": 23,
+      "tier": "high",
+      "element": "sleep",
+      "weaknesses": [
+        "dragon",
+        "ice",
+        "poison",
+        "blast"
+      ],
+      "icon": "/images/monsters/MHNow-Radobaan_Icon.png"
+    },
+    {
+      "id": "banbaro",
+      "name": "Banbaro",
+      "nameJa": "バフバロ",
+      "sortOrder": 24,
+      "tier": "high",
+      "element": "none",
+      "weaknesses": [
+        "dragon",
+        "fire",
+        "blast"
+      ],
+      "icon": "/images/monsters/MHNow-Banbaro_Icon.png"
+    },
+    {
+      "id": "barioth",
+      "name": "Barioth",
+      "nameJa": "ベリオロス",
+      "sortOrder": 25,
+      "tier": "high",
+      "element": "ice",
+      "weaknesses": [
+        "fire"
+      ],
+      "icon": "/images/monsters/MHNow-Barioth_Icon.png"
+    },
+    {
+      "id": "zinogre",
+      "name": "Zinogre",
+      "nameJa": "ジンオウガ",
+      "sortOrder": 26,
+      "tier": "high",
+      "element": "thunder",
+      "weaknesses": [
+        "ice"
+      ],
+      "icon": "/images/monsters/MHNow-Zinogre_Icon.png"
+    },
+    {
+      "id": "tzitzi_ya_ku",
+      "name": "Tzitzi-Ya-Ku",
+      "nameJa": "ツィツィヤック",
+      "sortOrder": 28,
+      "tier": "low",
+      "element": "none",
+      "weaknesses": [
+        "ice"
+      ],
+      "icon": "/images/monsters/MHNow-Tzitzi-Ya-Ku_Icon.png"
+    },
+    {
+      "id": "odogaron",
+      "name": "Odogaron",
+      "nameJa": "オドガロン",
+      "sortOrder": 29,
+      "tier": "high",
+      "element": "none",
+      "weaknesses": [
+        "ice",
+        "paralysis"
+      ],
+      "icon": "/images/monsters/MHNow-Odogaron_Icon.png"
+    },
+    {
+      "id": "ebony_odogaron",
+      "name": "Ebony Odogaron",
+      "nameJa": "オドガロン亜種",
+      "sortOrder": 30,
+      "tier": "high",
+      "element": "dragon",
+      "weaknesses": [
+        "water",
+        "poison",
+        "paralysis"
+      ],
+      "icon": "/images/monsters/MHNow-Ebony_Odogaron_Icon.png"
+    },
+    {
+      "id": "deviljho",
+      "name": "Deviljho",
+      "nameJa": "デビルジョー",
+      "sortOrder": 31,
+      "tier": "high",
+      "element": "dragon",
+      "weaknesses": [
+        "thunder",
+        "dragon",
+        "poison"
+      ],
+      "icon": "/images/monsters/MHNow-Deviljho_Icon.png"
+    },
+    {
+      "id": "basarios",
+      "name": "Basarios",
+      "nameJa": "バサリオス",
+      "sortOrder": 32,
+      "tier": "high",
+      "element": "fire",
+      "weaknesses": [
+        "water",
+        "dragon"
+      ],
+      "icon": "/images/monsters/MHNow-Basarios_Icon.png"
+    },
+    {
+      "id": "khezu",
+      "name": "Khezu",
+      "nameJa": "フルフル",
+      "sortOrder": 33,
+      "tier": "high",
+      "element": [
+        "thunder",
+        "paralysis"
+      ],
+      "weaknesses": [
+        "fire",
+        "poison"
+      ],
+      "icon": "/images/monsters/MHNow-Khezu_Icon.png"
+    },
+    {
+      "id": "mizutsune",
+      "name": "Mizutsune",
+      "nameJa": "タマミツネ",
+      "sortOrder": 34,
+      "tier": "high",
+      "element": "water",
+      "weaknesses": [
+        "thunder",
+        "dragon"
+      ],
+      "icon": "/images/monsters/MHNow-Mizutsune_Icon.png"
+    },
+    {
+      "id": "kushala_daora",
+      "name": "Kushala Daora",
+      "nameJa": "クシャルダオラ",
+      "sortOrder": 35,
+      "tier": "elder",
+      "element": "ice",
+      "weaknesses": [
+        "thunder",
+        "dragon",
+        "blast",
+        "poison"
+      ],
+      "icon": "/images/monsters/MHNow-Kushala_Daora_Icon.png"
+    },
+    {
+      "id": "teostra",
+      "name": "Teostra",
+      "nameJa": "テオ・テスカトル",
+      "sortOrder": 36,
+      "tier": "elder",
+      "element": [
+        "fire",
+        "blast"
+      ],
+      "weaknesses": [
+        "water",
+        "ice"
+      ],
+      "icon": "/images/monsters/MHNow-Teostra_Icon.png"
+    },
+    {
+      "id": "aknosom",
+      "name": "Aknosom",
+      "nameJa": "アケノシルム",
+      "icon": "/images/monsters/MHNow-Aknosom_Icon.png",
+      "sortOrder": 37,
+      "tier": "high",
+      "element": "fire",
+      "weaknesses": [
+        "water",
+        "ice"
+      ]
+    },
+    {
+      "id": "magnamalo",
+      "name": "Magnamalo",
+      "nameJa": "マガイマガド",
+      "sortOrder": 38,
+      "tier": "high",
+      "element": "blast",
+      "weaknesses": [
+        "water",
+        "dragon"
+      ],
+      "icon": "/images/monsters/MHNow-Magnamalo_Icon.png"
+    },
+    {
+      "id": "rajang",
+      "name": "Rajang",
+      "nameJa": "ラージャン",
+      "sortOrder": 39,
+      "tier": "high",
+      "element": "thunder",
+      "weaknesses": [
+        "ice"
+      ],
+      "icon": "/images/monsters/MHNow-Rajang_Icon.png"
+    },
+    {
+      "id": "nergigante",
+      "name": "Nergigante",
+      "nameJa": "ネルギガンテ",
+      "sortOrder": 40,
+      "tier": "elder",
+      "element": "none",
+      "weaknesses": [
+        "thunder",
+        "blast"
+      ],
+      "icon": "/images/monsters/MHNow-Nergigante_Icon.png"
+    },
+    {
+      "id": "lagombi",
+      "name": "Lagombi",
+      "nameJa": "ウルクスス",
+      "sortOrder": 41,
+      "tier": "low",
+      "element": "ice",
+      "weaknesses": [
+        "fire",
+        "poison",
+        "blast",
+        "paralysis"
+      ],
+      "icon": "/images/monsters/MHNow-Lagombi_Icon.png",
+      "hasWeaponStyles": true
+    },
+    {
+      "id": "volvidon",
+      "name": "Volvidon",
+      "nameJa": "ラングロトラ",
+      "sortOrder": 42,
+      "tier": "high",
+      "element": "fire",
+      "weaknesses": [
+        "water",
+        "ice"
+      ],
+      "icon": "/images/monsters/MHNow-Volvidon_Icon.png"
+    },
+    {
+      "id": "somnacanth",
+      "name": "Somnacanth",
+      "nameJa": "イソネミクニ",
+      "sortOrder": 43,
+      "tier": "high",
+      "element": "sleep",
+      "weaknesses": [
+        "thunder"
+      ],
+      "icon": "/images/monsters/MHNow-Somnacanth_Icon.png"
+    },
+    {
+      "id": "beotodus",
+      "name": "Beotodus",
+      "nameJa": "ブラントドス",
+      "sortOrder": 44,
+      "tier": "low",
+      "element": "ice",
+      "weaknesses": [
+        "fire",
+        "blast"
+      ],
+      "icon": "/images/monsters/MHNow-Beotodus_Icon.png"
+    },
+    {
+      "id": "tigrex",
+      "name": "Tigrex",
+      "nameJa": "ティガレックス",
+      "sortOrder": 45,
+      "tier": "high",
+      "element": "none",
+      "weaknesses": [
+        "thunder",
+        "dragon"
+      ],
+      "icon": "/images/monsters/MHNow-Tigrex_Icon.png"
+    },
+    {
+      "id": "brute_tigrex",
+      "name": "Brute Tigrex",
+      "nameJa": "ティガレックス亜種",
+      "sortOrder": 46,
+      "tier": "high",
+      "element": "none",
+      "weaknesses": [
+        "water",
+        "thunder"
+      ],
+      "icon": "/images/monsters/MHNow-Brute-Tigrex_Icon.jpg"
+    },
+    {
+      "id": "kirin",
+      "name": "Kirin",
+      "nameJa": "キリン",
+      "sortOrder": 47,
+      "tier": "elder",
+      "element": "thunder",
+      "weaknesses": [
+        "fire",
+        "dragon"
+      ],
+      "icon": "/images/monsters/MHNow-Kirin_Icon.png"
+    },
+    {
+      "id": "bazelgeuse",
+      "name": "Bazelgeuse",
+      "nameJa": "バゼルギウス",
+      "sortOrder": 48,
+      "tier": "high",
+      "element": "fire",
+      "weaknesses": [
+        "thunder"
+      ],
+      "icon": "/images/monsters/MHNow-Bazelgeuse_Icon.png"
+    },
+    {
+      "id": "chatacabra",
+      "name": "Chatacabra",
+      "nameJa": "チャタカブラ",
+      "sortOrder": 49,
+      "tier": "low",
+      "element": "none",
+      "weaknesses": [
+        "thunder"
+      ],
+      "icon": "/images/monsters/MHNow-Chatacabra_Icon.png"
+    },
+    {
+      "id": "arzuros",
+      "name": "Arzuros",
+      "nameJa": "アオアシラ",
+      "icon": "/images/monsters/MHNow-Arzuros_Icon.png",
+      "sortOrder": 50,
+      "tier": "low",
+      "element": "none",
+      "weaknesses": [
+        "fire",
+        "poison",
+        "blast",
+        "paralysis",
+        "sleep"
+      ]
+    },
+    {
+      "id": "glavenus",
+      "name": "Glavenus",
+      "nameJa": "ディノバルド",
+      "sortOrder": 51,
+      "tier": "high",
+      "element": "fire",
+      "weaknesses": [
+        "water",
+        "thunder"
+      ],
+      "icon": "/images/monsters/MHNow-Glavenus_Icon.png"
+    },
+    {
+      "id": "chameleos",
+      "name": "Chameleos",
+      "nameJa": "オオナズチ",
+      "sortOrder": 52,
+      "tier": "elder",
+      "element": "poison",
+      "weaknesses": [
+        "fire",
+        "dragon"
+      ],
+      "icon": "/images/monsters/MHNow-Chameleos_Icon.png"
+    },
+    {
+      "id": "wroggi",
+      "name": "Wroggi",
+      "nameJa": "ドスフロギィ",
+      "sortOrder": 53,
+      "tier": "low",
+      "element": "poison",
+      "weaknesses": [
+        "ice",
+        "paralysis",
+        "sleep"
+      ],
+      "icon": "/images/monsters/MHNow-Great_Wroggi_Icon.png"
+    },
+    {
+      "id": "bishaten",
+      "name": "Bishaten",
+      "nameJa": "ビシュテンゴ",
+      "sortOrder": 54,
+      "tier": "high",
+      "element": [
+        "paralysis",
+        "poison"
+      ],
+      "weaknesses": [
+        "ice"
+      ],
+      "icon": "/images/monsters/MHNow-Bishaten_Icon.png",
+      "hasWeaponStyles": true
+    },
+    {
+      "id": "namielle",
+      "name": "Namielle",
+      "nameJa": "ネロミェール",
+      "sortOrder": 55,
+      "tier": "elder",
+      "element": "water",
+      "weaknesses": [
+        "fire",
+        "dragon",
+        "poison",
+        "blast"
+      ],
+      "icon": "/images/monsters/MHNow-Namielle_Icon.png"
+    },
+    {
+      "id": "nargacuga",
+      "name": "Nargacuga",
+      "nameJa": "ナルガクルガ",
+      "sortOrder": 56,
+      "tier": "high",
+      "element": "none",
+      "weaknesses": [
+        "thunder"
+      ],
+      "icon": "/images/monsters/MHNow-Nargacuga_Icon.png"
+    },
+    {
+      "id": "lunagaron",
+      "name": "Lunagaron",
+      "nameJa": "ルナガロン",
+      "sortOrder": 57,
+      "tier": "high",
+      "element": "ice",
+      "weaknesses": [
+        "fire"
+      ],
+      "icon": "/images/monsters/MHNow-Lunagaron_Icon.png"
+    },
+    {
+      "id": "espinas",
+      "name": "Espinas",
+      "nameJa": "エスピナス",
+      "sortOrder": 58,
+      "tier": "high",
+      "element": [
+        "fire",
+        "poison",
+        "paralysis"
+      ],
+      "weaknesses": [
+        "ice",
+        "dragon"
+      ],
+      "icon": "/images/monsters/MHNow-Espinas_Icon.png"
+    },
+    {
+      "id": "malzeno",
+      "name": "Malzeno",
+      "nameJa": "メルゼナ",
+      "sortOrder": 59,
+      "tier": "elder",
+      "element": "none",
+      "weaknesses": [
+        "dragon"
+      ],
+      "icon": "/images/monsters/MHNow-Malzeno_Icon.png"
+    },
+    {
+      "id": "quematrice",
+      "name": "Quematrice",
+      "nameJa": "ケマトリス",
+      "sortOrder": 60,
+      "tier": "high",
+      "element": "fire",
+      "weaknesses": [
+        "water",
+        "ice"
+      ],
+      "icon": "/images/monsters/MHNow-Quematrice_Icon.png"
+    },
+    {
+      "id": "garangolm",
+      "name": "Garangolm",
+      "nameJa": "ガランゴルム",
+      "sortOrder": 61,
+      "tier": "high",
+      "element": "none",
+      "weaknesses": [
+        "thunder"
+      ],
+      "icon": "/images/monsters/MHNow-Garangolm_Icon.png"
+    },
+    {
+      "id": "goss_harag",
+      "name": "Goss Harag",
+      "nameJa": "ゴシャハギ",
+      "sortOrder": 62,
+      "tier": "high",
+      "element": "ice",
+      "weaknesses": [
+        "fire"
+      ],
+      "icon": "/images/monsters/MHNow-Goss_Harag_Icon.png"
+    },
+    {
+      "id": "astalos",
+      "name": "Astalos",
+      "nameJa": "ライゼクス",
+      "sortOrder": 63,
+      "tier": "high",
+      "element": [
+        "thunder",
+        "paralysis"
+      ],
+      "weaknesses": [
+        "ice"
+      ],
+      "icon": "/images/monsters/MHNow-Astalos_Icon.png"
+    },
+    {
+      "id": "seregios",
+      "name": "Seregios",
+      "nameJa": "千刃竜",
+      "sortOrder": 64,
+      "tier": "high",
+      "element": "none",
+      "weaknesses": [
+        "thunder"
+      ],
+      "icon": "/images/monsters/MHNow-Seregios_Icon.png"
+    },
+    {
+      "id": "almudron",
+      "name": "Almudron",
+      "nameJa": "泥翁龍",
+      "sortOrder": 65,
+      "tier": "high",
+      "element": "water",
+      "weaknesses": [
+        "fire"
+      ],
+      "icon": "/images/monsters/MHNow-Almudron_Icon.png"
+    },
+    {
+      "id": "stygian_zinogre",
+      "name": "Stygian Zinogre",
+      "nameJa": "ジンオウガ亜種",
+      "sortOrder": 27,
+      "tier": "high",
+      "element": "dragon",
+      "weaknesses": [
+        "thunder",
+        "blast"
+      ],
+      "icon": "/images/monsters/MHNow-Stygian_Zinogre_Icon.png"
+    },
+    {
+      "id": "shogun_ceanataur",
+      "name": "Shogun Ceanataur",
+      "nameJa": "ショウグンギザミ",
+      "sortOrder": 66,
+      "tier": "high",
+      "element": "water",
+      "weaknesses": [
+        "thunder"
+      ],
+      "icon": "/images/monsters/MHNow-Shogun_Ceanataur_Icon.png"
+    },
+    {
+      "id": "velkhana",
+      "name": "Velkhana",
+      "nameJa": "イヴェルカーナ",
+      "sortOrder": 67,
+      "tier": "elder",
+      "element": "ice",
+      "weaknesses": [
+        "fire",
+        "dragon",
+        "blast"
+      ],
+      "R6_Part": "Tail",
+      "icon": "/images/monsters/MHNow-Velkhana_Icon.png"
+    },
+    {
+      "id": "mrbeast",
+      "name": "MrBeast",
+      "nameJa": "MrBeast",
+      "sortOrder": 68,
+      "tier": "low",
+      "element": "none",
+      "weaknesses": [],
+      "R6_Part": "None",
+      "icon": "/images/monsters/MHNow-MrBeast_Icon.png"
+    },
+    {
+      "id": "happy_hunting_new_year",
+      "name": "Happy Hunting New Year",
+      "nameJa": "ハッピーハンティングニューイヤー",
+      "type": "small",
+      "icon": "/images/monsters/MHNow-Happy_Hunting_New_Year_Icon.png"
+    },
+    {
+      "id": "halloween",
+      "name": "Halloween",
+      "nameJa": "ハロウィン",
+      "type": "small",
+      "icon": "/images/monsters/MHNow-Halloween_Icon.png"
+    }
+  ]
+}

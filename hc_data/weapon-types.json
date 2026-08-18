@@ -1,0 +1,158 @@
+{
+    "weapons": [
+        {
+            "id": "great_sword",
+            "name": "Great Sword",
+            "aliases": [
+                "GS"
+            ],
+            "category": "melee",
+            "description": "A massive blade with devastating charge attacks",
+            "icon": "/images/weapons/great_sword.svg",
+            "styles": ["Surge Slash", "Rage Slash"]
+        },
+        {
+            "id": "long_sword",
+            "name": "Long Sword",
+            "aliases": [
+                "LS"
+            ],
+            "category": "melee",
+            "description": "A swift katana with spirit gauge mechanics",
+            "icon": "/images/weapons/long_sword.svg",
+            "styles": ["Sacred Sheath Combo", "Spirit Reckoning"]
+        },
+        {
+            "id": "sword_shield",
+            "name": "Sword & Shield",
+            "aliases": [
+                "SnS"
+            ],
+            "category": "melee",
+            "description": "Versatile weapon allowing item use while drawn",
+            "icon": "/images/weapons/sword_shield.svg",
+            "styles": ["Drill Slash", "Perfect Rush"]
+        },
+        {
+            "id": "dual_blades",
+            "name": "Dual Blades",
+            "aliases": [
+                "DB"
+            ],
+            "category": "melee",
+            "description": "Twin blades for rapid elemental attacks",
+            "icon": "/images/weapons/dual_blades.svg",
+            "styles": ["Feral Demon Mode", "Spiral Slash"]
+        },
+        {
+            "id": "hammer",
+            "name": "Hammer",
+            "aliases": [
+                "Ham",
+                "Hmr"
+            ],
+            "category": "melee",
+            "description": "Heavy impact weapon for stunning monsters",
+            "icon": "/images/weapons/hammer.svg",
+            "styles": ["Water Strike", "Impact Crater"]
+        },
+        {
+            "id": "hunting_horn",
+            "name": "Hunting Horn",
+            "aliases": [
+                "HH"
+            ],
+            "category": "melee",
+            "description": "Support weapon that buffs allies with melodies",
+            "icon": "/images/weapons/hunting_horn.svg",
+            "styles": ["Fleeting Melody", "Shockwave"]
+        },
+        {
+            "id": "lance",
+            "name": "Lance",
+            "aliases": [
+                "Lnc"
+            ],
+            "category": "melee",
+            "description": "Defensive weapon with powerful shield and thrust attacks",
+            "icon": "/images/weapons/lance.svg",
+            "styles": ["Shield Tackle", "Insta-Block"]
+        },
+        {
+            "id": "gunlance",
+            "name": "Gunlance",
+            "aliases": [
+                "GL"
+            ],
+            "category": "melee",
+            "description": "Lance with explosive shelling capabilities",
+            "icon": "/images/weapons/gunlance.svg",
+            "styles": ["Blast Dash", "Guard Reload"]
+        },
+        {
+            "id": "switch_axe",
+            "name": "Switch Axe",
+            "aliases": [
+                "SA",
+                "Swag Axe"
+            ],
+            "category": "melee",
+            "description": "Transforming weapon switching between axe and sword modes",
+            "icon": "/images/weapons/switch_axe.svg",
+            "styles": ["Elemental Burst Counter", "Soaring Wyvern Blade"]
+        },
+        {
+            "id": "charge_blade",
+            "name": "Charge Blade",
+            "aliases": [
+                "CB"
+            ],
+            "category": "melee",
+            "description": "Technical weapon storing energy for devastating attacks",
+            "icon": "/images/weapons/charge_blade.svg",
+            "styles": ["Sword Boost", "Axe Boost"]
+        },
+        {
+            "id": "insect_glaive",
+            "name": "Insect Glaive",
+            "aliases": [
+                "IG"
+            ],
+            "category": "melee",
+            "description": "Aerial weapon with kinsect companion",
+            "icon": "/images/weapons/insect_glaive.svg",
+            "styles": []
+        },
+        {
+            "id": "bow",
+            "name": "Bow",
+            "aliases": [],
+            "category": "ranged",
+            "description": "Ranged weapon with various coating types",
+            "icon": "/images/weapons/bow.svg",
+            "styles": ["Dodgebolt", "Power Volley"]
+        },
+        {
+            "id": "light_bowgun",
+            "name": "Light Bowgun",
+            "aliases": [
+                "LBG"
+            ],
+            "category": "ranged",
+            "description": "Mobile ranged weapon with rapid fire",
+            "icon": "/images/weapons/light_bowgun.svg",
+            "styles": ["Stepping Shot", "Sliding Reload"]
+        },
+        {
+            "id": "heavy_bowgun",
+            "name": "Heavy Bowgun",
+            "aliases": [
+                "HBG"
+            ],
+            "category": "ranged",
+            "description": "Powerful ranged weapon with special ammo",
+            "icon": "/images/weapons/heavy_bowgun.svg",
+            "styles": ["Guard Reload", "Crouching Shot"]
+        }
+    ]
+}

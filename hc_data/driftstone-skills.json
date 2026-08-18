@@ -1,0 +1,843 @@
+{
+    "driftstoneSkills": [
+        {
+            "id": "ailment_opportunist",
+            "name": "Ailment Opportunist",
+            "sources": [
+                "Black",
+                "Mysterious H"
+            ],
+            "icon": "/images/driftstones/MHNow-Black_Driftstone_Icon.png",
+            "nameJa": "ジャスト巧撃［状態異常］"
+        },
+        {
+            "id": "aggressive_dodger",
+            "name": "Aggressive Dodger",
+            "sources": [
+                "Azure",
+                "Mysterious A",
+                "Mysterious B"
+            ],
+            "icon": "/images/driftstones/MHNow-Azure_Driftstone_Icon.png",
+            "nameJa": "ジャスト巧撃"
+        },
+        {
+            "id": "artful_dodger",
+            "name": "Artful Dodger",
+            "sources": [
+                "Crimson",
+                "Azure",
+                "Amber",
+                "Cyan",
+                "Black",
+                "Pale"
+            ],
+            "icon": "/images/driftstones/MHNOW-mysterious-driftstone.png",
+            "nameJa": "ジャスト回避強化"
+        },
+        {
+            "id": "attack_boost",
+            "name": "Attack Boost",
+            "sources": [
+                "Crimson",
+                "Azure",
+                "Amber",
+                "Cyan",
+                "Black",
+                "Pale"
+            ],
+            "icon": "/images/driftstones/MHNOW-mysterious-driftstone.png",
+            "nameJa": "攻撃力強化"
+        },
+        {
+            "id": "blast_attack",
+            "name": "Blast Attack",
+            "sources": [
+                "Crimson",
+                "Mysterious B",
+                "Mysterious H"
+            ],
+            "icon": "/images/driftstones/MHNow-Crimson_Driftstone_Icon.png",
+            "nameJa": "爆破攻撃"
+        },
+        {
+            "id": "blast_resistance",
+            "name": "Blast Resistance",
+            "sources": [
+                "Crimson",
+                "Azure",
+                "Amber",
+                "Cyan",
+                "Black",
+                "Pale"
+            ],
+            "icon": "/images/driftstones/MHNOW-mysterious-driftstone.png",
+            "nameJa": "爆破耐性"
+        },
+        {
+            "id": "bleeding_resistance",
+            "name": "Bleeding Resistance",
+            "sources": [
+                "Crimson",
+                "Azure",
+                "Amber",
+                "Cyan",
+                "Black",
+                "Pale"
+            ],
+            "icon": "/images/driftstones/MHNOW-mysterious-driftstone.png",
+            "nameJa": "出血耐性"
+        },
+        {
+            "id": "burst",
+            "name": "Burst",
+            "sources": [
+                "Amber",
+                "Mysterious M",
+                "Mysterious O",
+                "Mysterious R"
+            ],
+            "icon": "/images/driftstones/MHNow-Amber_Driftstone_Icon.png",
+            "nameJa": "連撃"
+        },
+        {
+            "id": "charge_master",
+            "name": "Charge Master",
+            "sources": [
+                "Azure",
+                "Mysterious K"
+            ],
+            "icon": "/images/driftstones/MHNow-Azure_Driftstone_Icon.png",
+            "nameJa": "チャージマスター"
+        },
+        {
+            "id": "coalescence",
+            "name": "Coalescence",
+            "sources": [
+                "Black",
+                "Mysterious F",
+                "Mysterious L"
+            ],
+            "icon": "/images/driftstones/MHNow-Black_Driftstone_Icon.png",
+            "nameJa": "災禍転福"
+        },
+        {
+            "id": "concentration",
+            "name": "Concentration",
+            "sources": [
+                "Pale"
+            ],
+            "icon": "/images/driftstones/MHNow-Pale_Driftstone_Icon.png",
+            "nameJa": "SPゲージ加速"
+        },
+        {
+            "id": "critical_boost",
+            "name": "Critical Boost",
+            "sources": [
+                "Cyan",
+                "Mysterious A",
+                "Mysterious G",
+                "Mysterious O"
+            ],
+            "icon": "/images/driftstones/MHNow-Cyan_Driftstone_Icon.png",
+            "nameJa": "超会心"
+        },
+        {
+            "id": "critical_eye",
+            "name": "Critical Eye",
+            "sources": [
+                "Cyan",
+                "Mysterious G"
+            ],
+            "icon": "/images/driftstones/MHNow-Cyan_Driftstone_Icon.png",
+            "nameJa": "見切り"
+        },
+        {
+            "id": "dauntless",
+            "name": "Dauntless",
+            "sources": [
+                "Amber",
+                "Mysterious D",
+                "Mysterious R"
+            ],
+            "icon": "/images/driftstones/MHNow-Amber_Driftstone_Icon.png",
+            "nameJa": "邁進"
+        },
+        {
+            "id": "defense_boost",
+            "name": "Defense Boost",
+            "sources": [
+                "Crimson",
+                "Azure",
+                "Amber",
+                "Cyan",
+                "Black",
+                "Pale"
+            ],
+            "icon": "/images/driftstones/MHNOW-mysterious-driftstone.png",
+            "nameJa": "防御力UP"
+        },
+        {
+            "id": "divine_blessing",
+            "name": "Divine Blessing",
+            "sources": [
+                "Black"
+            ],
+            "icon": "/images/driftstones/MHNow-Black_Driftstone_Icon.png",
+            "nameJa": "神の加護"
+        },
+        {
+            "id": "dragon_attack",
+            "name": "Dragon Attack",
+            "sources": [
+                "Black",
+                "Mysterious A",
+                "Mysterious C"
+            ],
+            "icon": "/images/driftstones/MHNow-Black_Driftstone_Icon.png",
+            "nameJa": "龍属性攻撃強化"
+        },
+        {
+            "id": "dragon_resistance",
+            "name": "Dragon Resistance",
+            "sources": [
+                "Crimson",
+                "Azure",
+                "Amber",
+                "Cyan",
+                "Black",
+                "Pale"
+            ],
+            "icon": "/images/driftstones/MHNOW-mysterious-driftstone.png",
+            "nameJa": "龍属性耐性"
+        },
+        {
+            "id": "earplugs",
+            "name": "Earplugs",
+            "sources": [
+                "Cyan",
+                "Mysterious O"
+            ],
+            "icon": "/images/driftstones/MHNow-Cyan_Driftstone_Icon.png",
+            "nameJa": "耳栓"
+        },
+        {
+            "id": "evasive_concentration",
+            "name": "Evasive Concentration",
+            "sources": [
+                "Pale"
+            ],
+            "icon": "/images/driftstones/MHNow-Pale_Driftstone_Icon.png",
+            "nameJa": "SPゲージ加速【ジャスト回避】"
+        },
+        {
+            "id": "evade_extender",
+            "name": "Evade Extender",
+            "sources": [
+                "Amber"
+            ],
+            "icon": "/images/driftstones/MHNow-Amber_Driftstone_Icon.png",
+            "nameJa": "回避距離UP"
+        },
+        {
+            "id": "fighting_spirit",
+            "name": "Fighting Spirit",
+            "sources": [
+                "Pale",
+                "Mysterious E",
+                "Mysterious J"
+            ],
+            "icon": "/images/driftstones/MHNow-Pale_Driftstone_Icon.png",
+            "nameJa": "闘気活性"
+        },
+        {
+            "id": "fire_attack",
+            "name": "Fire Attack",
+            "sources": [
+                "Crimson",
+                "Mysterious C"
+            ],
+            "icon": "/images/driftstones/MHNow-Crimson_Driftstone_Icon.png",
+            "nameJa": "火属性攻撃強化"
+        },
+        {
+            "id": "fire_resistance",
+            "name": "Fire Resistance",
+            "sources": [
+                "Crimson",
+                "Azure",
+                "Amber",
+                "Cyan",
+                "Black",
+                "Pale"
+            ],
+            "icon": "/images/driftstones/MHNOW-mysterious-driftstone.png",
+            "nameJa": "火耐性"
+        },
+        {
+            "id": "firm_foothold",
+            "name": "Firm Foothold",
+            "sources": [
+                "Crimson",
+                "Azure",
+                "Amber",
+                "Cyan",
+                "Black",
+                "Pale"
+            ],
+            "icon": "/images/driftstones/MHNOW-mysterious-driftstone.png",
+            "nameJa": "足掛かり"
+        },
+        {
+            "id": "focus",
+            "name": "Focus",
+            "sources": [
+                "Azure",
+                "Mysterious K"
+            ],
+            "icon": "/images/driftstones/MHNow-Azure_Driftstone_Icon.png",
+            "nameJa": "集中"
+        },
+        {
+            "id": "fortify",
+            "name": "Fortify",
+            "sources": [
+                "Common"
+            ],
+            "icon": "/images/driftstones/MHNow-Common_Driftstone_Icon.png",
+            "nameJa": "固める"
+        },
+        {
+            "id": "guts",
+            "name": "Guts",
+            "sources": [
+                "Common"
+            ],
+            "icon": "/images/driftstones/MHNow-Common_Driftstone_Icon.png",
+            "nameJa": "根性"
+        },
+        {
+            "id": "guard",
+            "name": "Guard",
+            "sources": [
+                "Crimson"
+            ],
+            "icon": "/images/driftstones/MHNow-Crimson_Driftstone_Icon.png",
+            "nameJa": "防御"
+        },
+        {
+            "id": "guard_concentration",
+            "name": "Guard Concentration",
+            "sources": [
+                "Pale"
+            ],
+            "icon": "/images/driftstones/MHNow-Pale_Driftstone_Icon.png",
+            "nameJa": "SPゲージ加速【ガード】"
+        },
+        {
+            "id": "headstrong",
+            "name": "Headstrong",
+            "sources": [
+                "Crimson",
+                "Mysterious D",
+                "Mysterious I",
+                "Mysterious N",
+                "Mysterious Q"
+            ],
+            "icon": "/images/driftstones/MHNow-Crimson_Driftstone_Icon.png",
+            "nameJa": "不屈"
+        },
+        {
+            "id": "health_boost",
+            "name": "Health Boost",
+            "sources": [
+                "Common"
+            ],
+            "icon": "/images/driftstones/MHNow-Common_Driftstone_Icon.png",
+            "nameJa": "体力増強"
+        },
+        {
+            "id": "heroics",
+            "name": "Heroics",
+            "sources": [
+                "Crimson"
+            ],
+            "icon": "/images/driftstones/MHNow-Crimson_Driftstone_Icon.png",
+            "nameJa": "火事場力"
+        },
+        {
+            "id": "ice_attack",
+            "name": "Ice Attack",
+            "sources": [
+                "Cyan",
+                "Mysterious C"
+            ],
+            "icon": "/images/driftstones/MHNow-Cyan_Driftstone_Icon.png",
+            "nameJa": "氷属性攻撃強化"
+        },
+        {
+            "id": "ice_resistance",
+            "name": "Ice Resistance",
+            "sources": [
+                "Common"
+            ],
+            "icon": "/images/driftstones/MHNow-Common_Driftstone_Icon.png",
+            "nameJa": "氷耐性"
+        },
+        {
+            "id": "last_stand",
+            "name": "Last Stand",
+            "sources": [
+                "Common"
+            ],
+            "icon": "/images/driftstones/MHNow-Common_Driftstone_Icon.png",
+            "nameJa": "背水防御"
+        },
+        {
+            "id": "latent_power",
+            "name": "Latent Power",
+            "sources": [
+                "Pale",
+                "Mysterious F"
+            ],
+            "icon": "/images/driftstones/MHNow-Pale_Driftstone_Icon.png",
+            "nameJa": "力の解放"
+        },
+        {
+            "id": "offensive_dodger",
+            "name": "Offensive Dodger",
+            "sources": [
+                "Amber",
+                "Mysterious J"
+            ],
+            "icon": "/images/driftstones/MHNow-Amber_Driftstone_Icon.png",
+            "nameJa": "ジャスト攻撃【持続】"
+        },
+        {
+            "id": "offensive_guard",
+            "name": "Offensive Guard",
+            "sources": [
+                "Crimson"
+            ],
+            "icon": "/images/driftstones/MHNow-Crimson_Driftstone_Icon.png",
+            "nameJa": "攻めの守勢"
+        },
+        {
+            "id": "paralysis_attack",
+            "name": "Paralysis Attack",
+            "sources": [
+                "Amber"
+            ],
+            "icon": "/images/driftstones/MHNow-Amber_Driftstone_Icon.png",
+            "nameJa": "麻痺属性強化"
+        },
+        {
+            "id": "paralysis_resistance",
+            "name": "Paralysis Resistance",
+            "sources": [
+                "Crimson",
+                "Azure",
+                "Amber",
+                "Cyan",
+                "Black",
+                "Pale"
+            ],
+            "icon": "/images/driftstones/MHNOW-mysterious-driftstone.png",
+            "nameJa": "麻痺耐性"
+        },
+        {
+            "id": "partbreaker",
+            "name": "Partbreaker",
+            "sources": [
+                "Crimson",
+                "Mysterious B",
+                "Mysterious P"
+            ],
+            "icon": "/images/driftstones/MHNow-Crimson_Driftstone_Icon.png",
+            "nameJa": "破壊王"
+        },
+        {
+            "id": "peak_performance",
+            "name": "Peak Performance",
+            "sources": [
+                "Azure"
+            ],
+            "icon": "/images/driftstones/MHNow-Azure_Driftstone_Icon.png",
+            "nameJa": "フルチャージ"
+        },
+        {
+            "id": "poison_attack",
+            "name": "Poison Attack",
+            "sources": [
+                "Azure"
+            ],
+            "icon": "/images/driftstones/MHNow-Azure_Driftstone_Icon.png",
+            "nameJa": "毒属性強化"
+        },
+        {
+            "id": "poison_resistance",
+            "name": "Poison Resistance",
+            "sources": [
+                "Crimson",
+                "Azure",
+                "Amber",
+                "Cyan",
+                "Black",
+                "Pale"
+            ],
+            "icon": "/images/driftstones/MHNOW-mysterious-driftstone.png",
+            "nameJa": "毒耐性"
+        },
+        {
+            "id": "power_prolonger",
+            "name": "Power Prolonger",
+            "sources": [
+                "Amber",
+                "Mysterious O"
+            ],
+            "icon": "/images/driftstones/MHNow-Amber_Driftstone_Icon.png",
+            "nameJa": "強化持続"
+        },
+        {
+            "id": "raw_power",
+            "name": "Raw Power",
+            "sources": [
+                "Crimson"
+            ],
+            "icon": "/images/driftstones/MHNow-Crimson_Driftstone_Icon.png",
+            "nameJa": "力任せ"
+        },
+        {
+            "id": "resentment",
+            "name": "Resentment",
+            "sources": [
+                "Black"
+            ],
+            "icon": "/images/driftstones/MHNow-Black_Driftstone_Icon.png",
+            "nameJa": "怒り"
+        },
+        {
+            "id": "resuscitate",
+            "name": "Resuscitate",
+            "sources": [
+                "Mysterious L"
+            ],
+            "icon": "/images/driftstones/MHNOW-mysterious-driftstone.png",
+            "nameJa": "死中に活"
+        },
+        {
+            "id": "rising_tide",
+            "name": "Rising Tide",
+            "sources": [
+                "Black"
+            ],
+            "icon": "/images/driftstones/MHNow-Black_Driftstone_Icon.png",
+            "nameJa": "尻上がり"
+        },
+        {
+            "id": "shared_shield",
+            "name": "Shared Shield",
+            "sources": [
+                "Crimson",
+                "Azure",
+                "Amber",
+                "Cyan",
+                "Black",
+                "Pale"
+            ],
+            "icon": "/images/driftstones/MHNOW-mysterious-driftstone.png",
+            "nameJa": "グループハント強化【防御】"
+        },
+        {
+            "id": "shared_sword",
+            "name": "Shared Sword",
+            "sources": [
+                "Crimson",
+                "Azure",
+                "Amber",
+                "Cyan",
+                "Black",
+                "Pale"
+            ],
+            "icon": "/images/driftstones/MHNOW-mysterious-driftstone.png",
+            "nameJa": "グループハント強化【攻撃】"
+        },
+        {
+            "id": "sleep_attack",
+            "name": "Sleep Attack",
+            "sources": [
+                "Cyan"
+            ],
+            "icon": "/images/driftstones/MHNow-Cyan_Driftstone_Icon.png",
+            "nameJa": "睡眠攻撃強化"
+        },
+        {
+            "id": "sleep_resistance",
+            "name": "Sleep Resistance",
+            "sources": [
+                "Crimson",
+                "Azure",
+                "Amber",
+                "Cyan",
+                "Black",
+                "Pale"
+            ],
+            "icon": "/images/driftstones/MHNOW-mysterious-driftstone.png",
+            "nameJa": "睡眠耐性"
+        },
+        {
+            "id": "skyward_striker",
+            "name": "Skyward Striker",
+            "sources": [
+                "Amber",
+                "Mysterious O"
+            ],
+            "icon": "/images/driftstones/MHNow-Amber_Driftstone_Icon.png",
+            "nameJa": "軽巧"
+        },
+        {
+            "id": "slugger",
+            "name": "Slugger",
+            "sources": [
+                "Azure"
+            ],
+            "icon": "/images/driftstones/MHNow-Azure_Driftstone_Icon.png",
+            "nameJa": "KO術"
+        },
+        {
+            "id": "sneak_attack",
+            "name": "Sneak Attack",
+            "sources": [
+                "Black"
+            ],
+            "icon": "/images/driftstones/MHNow-Black_Driftstone_Icon.png",
+            "nameJa": "闇討ち"
+        },
+        {
+            "id": "special_boost",
+            "name": "Special Boost",
+            "sources": [
+                "Pale",
+                "Mysterious P"
+            ],
+            "icon": "/images/driftstones/MHNow-Pale_Driftstone_Icon.png",
+            "nameJa": "SPスキル威力アップ"
+        },
+        {
+            "id": "special_insurance",
+            "name": "Special Insurance",
+            "sources": [
+                "Pale"
+            ],
+            "icon": "/images/driftstones/MHNow-Pale_Driftstone_Icon.png",
+            "nameJa": "SPゲージ保険"
+        },
+        {
+            "id": "special_partbreaker",
+            "name": "Special Partbreaker",
+            "sources": [
+                "Pale",
+                "Mysterious E",
+                "Mysterious P"
+            ],
+            "icon": "/images/driftstones/MHNow-Pale_Driftstone_Icon.png",
+            "nameJa": "破壊王［SPスキル］"
+        },
+        {
+            "id": "status_sneak_attack",
+            "name": "Status Sneak Attack",
+            "sources": [
+                "Black",
+                "Mysterious H"
+            ],
+            "icon": "/images/driftstones/MHNow-Black_Driftstone_Icon.png",
+            "nameJa": "闇討ち［状態異常］"
+        },
+        {
+            "id": "thunder_attack",
+            "name": "Thunder Attack",
+            "sources": [
+                "Amber",
+                "Mysterious C"
+            ],
+            "icon": "/images/driftstones/MHNow-Amber_Driftstone_Icon.png",
+            "nameJa": "雷属性攻撃強化"
+        },
+        {
+            "id": "thunder_resistance",
+            "name": "Thunder Resistance",
+            "sources": [
+                "Crimson",
+                "Azure",
+                "Amber",
+                "Cyan",
+                "Black",
+                "Pale"
+            ],
+            "icon": "/images/driftstones/MHNOW-mysterious-driftstone.png",
+            "nameJa": "雷耐性"
+        },
+        {
+            "id": "timed_charger",
+            "name": "Timed Charger",
+            "sources": [
+                "Azure",
+                "Mysterious I"
+            ],
+            "icon": "/images/driftstones/MHNow-Azure_Driftstone_Icon.png",
+            "nameJa": "ジャスト溜め解放"
+        },
+        {
+            "id": "tremor_resistance",
+            "name": "Tremor Resistance",
+            "sources": [
+                "Cyan"
+            ],
+            "icon": "/images/driftstones/MHNow-Cyan_Driftstone_Icon.png",
+            "nameJa": "揺動耐性"
+        },
+        {
+            "id": "water_attack",
+            "name": "Water Attack",
+            "sources": [
+                "Azure",
+                "Mysterious C"
+            ],
+            "icon": "/images/driftstones/MHNow-Azure_Driftstone_Icon.png",
+            "nameJa": "水属性攻撃強化"
+        },
+        {
+            "id": "water_resistance",
+            "name": "Water Resistance",
+            "sources": [
+                "Crimson",
+                "Azure",
+                "Amber",
+                "Cyan",
+                "Black",
+                "Pale"
+            ],
+            "icon": "/images/driftstones/MHNOW-mysterious-driftstone.png",
+            "nameJa": "水耐性"
+        },
+        {
+            "id": "weakness_exploit",
+            "name": "Weakness Exploit",
+            "sources": [
+                "Cyan",
+                "Mysterious G"
+            ],
+            "icon": "/images/driftstones/MHNow-Cyan_Driftstone_Icon.png",
+            "nameJa": "弱点を活かす"
+        },
+        {
+            "id": "windproof",
+            "name": "Windproof",
+            "sources": [
+                "Cyan"
+            ],
+            "icon": "/images/driftstones/MHNow-Cyan_Driftstone_Icon.png",
+            "nameJa": "風圧耐性"
+        },
+        {
+            "id": "artillery",
+            "name": "Artillery",
+            "sources": [
+                "Common"
+            ],
+            "icon": "/images/driftstones/MHNOW-mysterious-driftstone.png",
+            "nameJa": "アーティリアリー"
+        },
+        {
+            "id": "ballistics",
+            "name": "Ballistics",
+            "sources": [
+                "Common"
+            ],
+            "icon": "/images/driftstones/MHNOW-mysterious-driftstone.png",
+            "nameJa": "弾導強化"
+        },
+        {
+            "id": "bubbly_dance",
+            "name": "Bubbly Dance",
+            "sources": [
+                "Common"
+            ],
+            "icon": "/images/driftstones/MHNOW-mysterious-driftstone.png",
+            "nameJa": "泡沫"
+        },
+        {
+            "id": "advanced_attack_boost",
+            "name": "Advanced Attack Boost",
+            "sources": [
+                "Common"
+            ],
+            "icon": "/images/driftstones/MHNOW-mysterious-driftstone.png",
+            "nameJa": "攻撃力UP【特大】"
+        },
+        {
+            "id": "advanced_ice_attack",
+            "name": "Advanced Ice Attack",
+            "sources": [
+                "Common"
+            ],
+            "icon": "/images/driftstones/MHNOW-mysterious-driftstone.png",
+            "nameJa": "氷属性攻撃強化"
+        },
+        {
+            "id": "advanced_thunder_attack",
+            "name": "Advanced Thunder Attack",
+            "sources": [
+                "Common"
+            ],
+            "icon": "/images/driftstones/MHNOW-mysterious-driftstone.png",
+            "nameJa": "雷属性攻撃強化・境地"
+        },
+        {
+            "id": "critical_range_boost",
+            "name": "Critical Range Boost",
+            "sources": [
+                "Mysterious M"
+            ],
+            "icon": "/images/driftstones/MHNOW-mysterious-driftstone.png",
+            "nameJa": "適正距離威力UP"
+        },
+        {
+            "id": "retaliation",
+            "name": "Retaliation",
+            "sources": [
+                "Mysterious Q"
+            ],
+            "icon": "/images/driftstones/MHNOW-mysterious-driftstone.png",
+            "nameJa": "Retaliation"
+        },
+        {
+            "id": "parry_concentration",
+            "name": "Parry Concentration",
+            "sources": [
+                "Mysterious Q"
+            ],
+            "icon": "/images/driftstones/MHNOW-mysterious-driftstone.png",
+            "nameJa": "Parry Concentration"
+        },
+        {
+            "id": "reflection",
+            "name": "Reflection",
+            "sources": [
+                "Mysterious N",
+                "Mysterious R"
+            ],
+            "icon": "/images/driftstones/MHNOW-mysterious-driftstone.png",
+            "nameJa": "反射"
+        },
+        {
+            "id": "morph_boost",
+            "name": "Morph Boost",
+            "sources": [
+                "Mysterious O"
+            ],
+            "icon": "/images/driftstones/MHNOW-mysterious-driftstone.png",
+            "nameJa": "チェンジブースト"
+        }
+    ]
+}

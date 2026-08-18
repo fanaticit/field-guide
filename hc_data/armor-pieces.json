@@ -1,0 +1,34 @@
+{
+    "armorPieces": [
+        {
+            "id": "helm",
+            "name": "Helm",
+            "displayName": "Helmet",
+            "icon": "/images/ui/armor/helm.svg"
+        },
+        {
+            "id": "chest",
+            "name": "Chest",
+            "displayName": "Mail",
+            "icon": "/images/ui/armor/chest.svg"
+        },
+        {
+            "id": "gloves",
+            "name": "Gloves",
+            "displayName": "Vambraces",
+            "icon": "/images/ui/armor/gloves.svg"
+        },
+        {
+            "id": "waist",
+            "name": "Waist",
+            "displayName": "Coil",
+            "icon": "/images/ui/armor/belt.svg"
+        },
+        {
+            "id": "greaves",
+            "name": "Greaves",
+            "displayName": "Greaves",
+            "icon": "/images/ui/armor/legs.svg"
+        }
+    ]
+}

@@ -1,0 +1,172 @@
+{
+    "season": 1,
+    "name": "Season 1: Wilds Awakening",
+    "description": "The first season of Monster Hunter Wilds",
+    "chapters": [
+        {
+            "number": 1,
+            "name": "First Steps",
+            "description": "Begin your journey as a hunter",
+            "bosses": [
+                {
+                    "id": "ch1_boss1",
+                    "name": "Great Jagras",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "number": 2,
+            "name": "The Ancient Forest",
+            "description": "Explore the lush Ancient Forest",
+            "bosses": [
+                {
+                    "id": "ch2_boss1",
+                    "name": "Kulu-Ya-Ku",
+                    "difficulty": "easy"
+                },
+                {
+                    "id": "ch2_boss2",
+                    "name": "Pukei-Pukei",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "number": 3,
+            "name": "Wildspire Waste",
+            "description": "Venture into the desert wastes",
+            "bosses": [
+                {
+                    "id": "ch3_boss1",
+                    "name": "Barroth",
+                    "difficulty": "medium"
+                },
+                {
+                    "id": "ch3_boss2",
+                    "name": "Jyuratodus",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "number": 4,
+            "name": "Coral Highlands",
+            "description": "Discover the beautiful Coral Highlands",
+            "bosses": [
+                {
+                    "id": "ch4_boss1",
+                    "name": "Paolumu",
+                    "difficulty": "medium"
+                },
+                {
+                    "id": "ch4_boss2",
+                    "name": "Legiana",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "number": 5,
+            "name": "Rotten Vale",
+            "description": "Descend into the Rotten Vale",
+            "bosses": [
+                {
+                    "id": "ch5_boss1",
+                    "name": "Radobaan",
+                    "difficulty": "medium"
+                },
+                {
+                    "id": "ch5_boss2",
+                    "name": "Odogaron",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "number": 6,
+            "name": "Elder's Recess",
+            "description": "Face the volcanic Elder's Recess",
+            "bosses": [
+                {
+                    "id": "ch6_boss1",
+                    "name": "Uragaan",
+                    "difficulty": "hard"
+                },
+                {
+                    "id": "ch6_boss2",
+                    "name": "Lavasioth",
+                    "difficulty": "hard"
+                },
+                {
+                    "id": "ch6_boss3",
+                    "name": "Dodogama",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "number": 7,
+            "name": "The Apex Predators",
+            "description": "Hunt the most dangerous monsters",
+            "bosses": [
+                {
+                    "id": "ch7_boss1",
+                    "name": "Rathalos",
+                    "difficulty": "hard"
+                },
+                {
+                    "id": "ch7_boss2",
+                    "name": "Diablos",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "number": 8,
+            "name": "The Eater of Elders",
+            "description": "Confront the legendary Nergigante",
+            "bosses": [
+                {
+                    "id": "ch8_boss1",
+                    "name": "Nergigante",
+                    "difficulty": "very_hard"
+                }
+            ]
+        },
+        {
+            "number": 9,
+            "name": "Elder Dragons",
+            "description": "Face the Elder Dragons",
+            "bosses": [
+                {
+                    "id": "ch9_boss1",
+                    "name": "Kushala Daora",
+                    "difficulty": "very_hard"
+                },
+                {
+                    "id": "ch9_boss2",
+                    "name": "Teostra",
+                    "difficulty": "very_hard"
+                }
+            ]
+        },
+        {
+            "number": 10,
+            "name": "The Final Stand",
+            "description": "The ultimate challenge awaits",
+            "bosses": [
+                {
+                    "id": "ch10_boss1",
+                    "name": "Velkhana",
+                    "difficulty": "very_hard"
+                },
+                {
+                    "id": "ch10_boss2",
+                    "name": "Shara Ishvalda",
+                    "difficulty": "extreme"
+                }
+            ]
+        }
+    ]
+}

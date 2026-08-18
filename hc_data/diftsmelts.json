@@ -1,0 +1,196 @@
+{
+    "diftsmelts": [
+        {
+            "id": "attack_boost",
+            "name": "Attack Boost",
+            "category": "offense",
+            "description": "Increases attack power"
+        },
+        {
+            "id": "critical_eye",
+            "name": "Critical Eye",
+            "category": "offense",
+            "description": "Increases affinity (critical hit chance)"
+        },
+        {
+            "id": "critical_boost",
+            "name": "Critical Boost",
+            "category": "offense",
+            "description": "Increases critical hit damage"
+        },
+        {
+            "id": "weakness_exploit",
+            "name": "Weakness Exploit",
+            "category": "offense",
+            "description": "Increases affinity when attacking weak spots"
+        },
+        {
+            "id": "agitator",
+            "name": "Agitator",
+            "category": "offense",
+            "description": "Increases attack and affinity when monster is enraged"
+        },
+        {
+            "id": "peak_performance",
+            "name": "Peak Performance",
+            "category": "offense",
+            "description": "Increases attack when at full health"
+        },
+        {
+            "id": "maximum_might",
+            "name": "Maximum Might",
+            "category": "offense",
+            "description": "Increases affinity when stamina is full"
+        },
+        {
+            "id": "health_boost",
+            "name": "Health Boost",
+            "category": "defense",
+            "description": "Increases maximum health"
+        },
+        {
+            "id": "divine_blessing",
+            "name": "Divine Blessing",
+            "category": "defense",
+            "description": "Chance to reduce damage taken"
+        },
+        {
+            "id": "defense_boost",
+            "name": "Defense Boost",
+            "category": "defense",
+            "description": "Increases defense"
+        },
+        {
+            "id": "stun_resistance",
+            "name": "Stun Resistance",
+            "category": "defense",
+            "description": "Reduces stun duration"
+        },
+        {
+            "id": "earplugs",
+            "name": "Earplugs",
+            "category": "defense",
+            "description": "Protects against monster roars"
+        },
+        {
+            "id": "tremor_resistance",
+            "name": "Tremor Resistance",
+            "category": "defense",
+            "description": "Protects against ground tremors"
+        },
+        {
+            "id": "wind_resistance",
+            "name": "Wind Resistance",
+            "category": "defense",
+            "description": "Protects against wind pressure"
+        },
+        {
+            "id": "evade_window",
+            "name": "Evade Window",
+            "category": "utility",
+            "description": "Extends invincibility window during dodges"
+        },
+        {
+            "id": "evade_extender",
+            "name": "Evade Extender",
+            "category": "utility",
+            "description": "Increases dodge distance"
+        },
+        {
+            "id": "quick_sheath",
+            "name": "Quick Sheath",
+            "category": "utility",
+            "description": "Increases weapon sheathing speed"
+        },
+        {
+            "id": "speed_sharpening",
+            "name": "Speed Sharpening",
+            "category": "utility",
+            "description": "Speeds up weapon sharpening"
+        },
+        {
+            "id": "free_meal",
+            "name": "Free Meal",
+            "category": "utility",
+            "description": "Chance to not consume items when used"
+        },
+        {
+            "id": "speed_eating",
+            "name": "Speed Eating",
+            "category": "utility",
+            "description": "Increases item consumption speed"
+        },
+        {
+            "id": "stamina_surge",
+            "name": "Stamina Surge",
+            "category": "utility",
+            "description": "Speeds up stamina recovery"
+        },
+        {
+            "id": "constitution",
+            "name": "Constitution",
+            "category": "utility",
+            "description": "Reduces stamina depletion"
+        },
+        {
+            "id": "focus",
+            "name": "Focus",
+            "category": "weapon_specific",
+            "description": "Speeds up charge attacks"
+        },
+        {
+            "id": "handicraft",
+            "name": "Handicraft",
+            "category": "weapon_specific",
+            "description": "Increases weapon sharpness gauge"
+        },
+        {
+            "id": "protective_polish",
+            "name": "Protective Polish",
+            "category": "weapon_specific",
+            "description": "Prevents sharpness loss for a duration"
+        },
+        {
+            "id": "artillery",
+            "name": "Artillery",
+            "category": "weapon_specific",
+            "description": "Increases explosive damage (Gunlance, Charge Blade)"
+        },
+        {
+            "id": "guard",
+            "name": "Guard",
+            "category": "weapon_specific",
+            "description": "Reduces stamina depletion and knockback when guarding"
+        },
+        {
+            "id": "guard_up",
+            "name": "Guard Up",
+            "category": "weapon_specific",
+            "description": "Allows guarding normally unblockable attacks"
+        },
+        {
+            "id": "partbreaker",
+            "name": "Partbreaker",
+            "category": "special",
+            "description": "Makes it easier to break monster parts"
+        },
+        {
+            "id": "slugger",
+            "name": "Slugger",
+            "category": "special",
+            "description": "Makes it easier to stun monsters"
+        },
+        {
+            "id": "capture_master",
+            "name": "Capture Master",
+            "category": "special",
+            "description": "Increases capture rewards"
+        },
+        {
+            "id": "carving_master",
+            "name": "Carving Master",
+            "category": "special",
+            "description": "Prevents knockback while carving"
+        }
+    ]
+}

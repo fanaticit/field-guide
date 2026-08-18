@@ -1,0 +1,6914 @@
+{
+    "armorEquipmentSkills": {
+        "great_jagras": {
+            "helm": [
+                {
+                    "id": "firm_foothold",
+                    "level": 2
+                }
+            ],
+            "chest": [
+                {
+                    "id": "rising_tide",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "firm_foothold",
+                    "level": 2
+                },
+                {
+                    "id": "water_attack",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "fortify",
+                    "level": 2
+                },
+                {
+                    "id": "rising_tide",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "water_attack",
+                    "level": 2
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "health_boost",
+                    "level": 2
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "health_boost",
+                    "level": 2
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "health_boost",
+                    "level": 2
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "health_boost",
+                    "level": 2
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "health_boost",
+                    "level": 2
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "health_boost",
+                    "level": 2
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "health_boost",
+                    "level": 2
+                }
+            ]
+        },
+        "kulu_ya_ku": {
+            "helm": [
+                {
+                    "id": "lock_on",
+                    "level": 1
+                },
+                {
+                    "id": "critical_eye",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "guts",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "last_stand",
+                    "level": 1
+                },
+                {
+                    "id": "critical_eye",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "last_stand",
+                    "level": 1
+                },
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "critical_eye",
+                    "level": 2
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "fortify",
+                    "level": 2
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "fortify",
+                    "level": 2
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "fortify",
+                    "level": 2
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "fortify",
+                    "level": 2
+                }
+            ],
+            "lance": [
+                {
+                    "id": "fortify",
+                    "level": 2
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "fortify",
+                    "level": 2
+                }
+            ],
+            "bow": [
+                {
+                    "id": "fortify",
+                    "level": 2
+                }
+            ]
+        },
+        "pukei_pukei": {
+            "helm": [
+                {
+                    "id": "focus",
+                    "level": 1
+                },
+                {
+                    "id": "health_boost",
+                    "level": 2
+                }
+            ],
+            "chest": [
+                {
+                    "id": "poison_resistance",
+                    "level": 1
+                },
+                {
+                    "id": "focus",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "poison_attack",
+                    "level": 2
+                },
+                {
+                    "id": "poison_resistance",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "poison_attack",
+                    "level": 2
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "health_boost",
+                    "level": 1
+                },
+                {
+                    "id": "poison_resistance",
+                    "level": 2
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                }
+            ],
+            "lance": [
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                }
+            ],
+            "bow": [
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                }
+            ]
+        },
+        "coral_pukei_pukei": {
+            "helm": [
+                {
+                    "id": "weakness_exploit",
+                    "level": 2
+                },
+                {
+                    "id": "lock_on",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "power_prolonger",
+                    "level": 2
+                },
+                {
+                    "id": "rising_tide",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "skyward_striker",
+                    "level": 1
+                },
+                {
+                    "id": "rising_tide",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "reload_speed",
+                    "level": 1
+                },
+                {
+                    "id": "recoil_down",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "power_prolonger",
+                    "level": 1
+                },
+                {
+                    "id": "weakness_exploit",
+                    "level": 1
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "earplugs",
+                    "level": 1
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "earplugs",
+                    "level": 1
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "earplugs",
+                    "level": 1
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "earplugs",
+                    "level": 1
+                }
+            ],
+            "lance": [
+                {
+                    "id": "earplugs",
+                    "level": 1
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "earplugs",
+                    "level": 1
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "earplugs",
+                    "level": 1
+                }
+            ],
+            "bow": [
+                {
+                    "id": "earplugs",
+                    "level": 1
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "earplugs",
+                    "level": 1
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "earplugs",
+                    "level": 1
+                }
+            ]
+        },
+        "barroth": {
+            "helm": [
+                {
+                    "id": "defense_boost",
+                    "level": 1
+                },
+                {
+                    "id": "offensive_guard",
+                    "level": 2
+                }
+            ],
+            "chest": [
+                {
+                    "id": "offensive_guard",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "guard",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "defense_boost",
+                    "level": 2
+                },
+                {
+                    "id": "guard",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "recoil_down",
+                    "level": 1
+                },
+                {
+                    "id": "defense_boost",
+                    "level": 2
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "defense_boost",
+                    "level": 2
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "defense_boost",
+                    "level": 2
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "defense_boost",
+                    "level": 2
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "defense_boost",
+                    "level": 2
+                }
+            ],
+            "lance": [
+                {
+                    "id": "defense_boost",
+                    "level": 2
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "defense_boost",
+                    "level": 2
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "defense_boost",
+                    "level": 2
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "defense_boost",
+                    "level": 2
+                }
+            ]
+        },
+        "great_girros": {
+            "helm": [
+                {
+                    "id": "paralysis_resistance",
+                    "level": 3
+                }
+            ],
+            "chest": [
+                {
+                    "id": "paralysis_resistance",
+                    "level": 1
+                },
+                {
+                    "id": "sneak_attack",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                },
+                {
+                    "id": "earplugs",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "paralysis_attack",
+                    "level": 1
+                },
+                {
+                    "id": "earplugs",
+                    "level": 2
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "paralysis_attack",
+                    "level": 2
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                }
+            ]
+        },
+        "tobi_kadachi": {
+            "helm": [
+                {
+                    "id": "reload_speed",
+                    "level": 1
+                },
+                {
+                    "id": "artful_dodger",
+                    "level": 2
+                }
+            ],
+            "chest": [
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                },
+                {
+                    "id": "thunder_attack",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "evade_extender",
+                    "level": 2
+                },
+                {
+                    "id": "artful_dodger",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "thunder_attack",
+                    "level": 2
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "artful_dodger",
+                    "level": 1
+                },
+                {
+                    "id": "thunder_resistance",
+                    "level": 3
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ],
+            "lance": [
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ],
+            "bow": [
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ]
+        },
+        "paolumu": {
+            "helm": [
+                {
+                    "id": "concentration",
+                    "level": 2
+                },
+                {
+                    "id": "windproof",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "recoil_down",
+                    "level": 2
+                },
+                {
+                    "id": "windproof",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "concentration",
+                    "level": 2
+                },
+                {
+                    "id": "divine_blessing",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "divine_blessing",
+                    "level": 2
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "windproof",
+                    "level": 3
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "divine_blessing",
+                    "level": 2
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "divine_blessing",
+                    "level": 2
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "divine_blessing",
+                    "level": 2
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "divine_blessing",
+                    "level": 2
+                }
+            ]
+        },
+        "nightshade_paolumu": {
+            "helm": [
+                {
+                    "id": "rude_awakener",
+                    "level": 2
+                }
+            ],
+            "chest": [
+                {
+                    "id": "focus",
+                    "level": 2
+                },
+                {
+                    "id": "sleep_resistance",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "sleep_attack",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "sneak_attack",
+                    "level": 2
+                },
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "rude_awakener",
+                    "level": 1
+                },
+                {
+                    "id": "status_sneak_attack",
+                    "level": 1
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                }
+            ],
+            "lance": [
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                }
+            ],
+            "bow": [
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                }
+            ]
+        },
+        "jyuratodus": {
+            "helm": [
+                {
+                    "id": "water_resistance",
+                    "level": 1
+                },
+                {
+                    "id": "last_stand",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "water_attack",
+                    "level": 1
+                },
+                {
+                    "id": "last_stand",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "water_attack",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "water_resistance",
+                    "level": 3
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "focus",
+                    "level": 2
+                },
+                {
+                    "id": "last_stand",
+                    "level": 1
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "last_stand",
+                    "level": 1
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "last_stand",
+                    "level": 1
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "last_stand",
+                    "level": 1
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "last_stand",
+                    "level": 1
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "last_stand",
+                    "level": 1
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "last_stand",
+                    "level": 1
+                }
+            ],
+            "lance": [
+                {
+                    "id": "last_stand",
+                    "level": 1
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "last_stand",
+                    "level": 1
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "last_stand",
+                    "level": 1
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "last_stand",
+                    "level": 1
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "last_stand",
+                    "level": 1
+                }
+            ],
+            "bow": [
+                {
+                    "id": "last_stand",
+                    "level": 1
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "last_stand",
+                    "level": 1
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "last_stand",
+                    "level": 1
+                }
+            ]
+        },
+        "anjanath": {
+            "helm": [
+                {
+                    "id": "fire_attack",
+                    "level": 2
+                },
+                {
+                    "id": "fire_resistance",
+                    "level": 3
+                }
+            ],
+            "chest": [
+                {
+                    "id": "special_boost",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "fire_attack",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "fire_resistance",
+                    "level": 1
+                },
+                {
+                    "id": "special_boost",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "peak_performance",
+                    "level": 2
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "rising_tide",
+                    "level": 1
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "rising_tide",
+                    "level": 1
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "rising_tide",
+                    "level": 1
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "rising_tide",
+                    "level": 1
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "rising_tide",
+                    "level": 1
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "rising_tide",
+                    "level": 1
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "rising_tide",
+                    "level": 1
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "rising_tide",
+                    "level": 1
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "rising_tide",
+                    "level": 1
+                }
+            ],
+            "bow": [
+                {
+                    "id": "rising_tide",
+                    "level": 1
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "rising_tide",
+                    "level": 1
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "rising_tide",
+                    "level": 1
+                }
+            ]
+        },
+        "fulgur_anjanath": {
+            "helm": [
+                {
+                    "id": "special_partbreaker",
+                    "level": 2
+                },
+                {
+                    "id": "special_boost",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "vital_thunder",
+                    "level": 1
+                },
+                {
+                    "id": "health_boost",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "vital_thunder",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "special_boost",
+                    "level": 2
+                },
+                {
+                    "id": "lock_on",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "concentration",
+                    "level": 2
+                },
+                {
+                    "id": "raw_power",
+                    "level": 1
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "critical_element",
+                    "level": 1
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "critical_element",
+                    "level": 1
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "critical_element",
+                    "level": 1
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "critical_element",
+                    "level": 1
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "critical_element",
+                    "level": 1
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "critical_element",
+                    "level": 1
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "critical_element",
+                    "level": 1
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "critical_element",
+                    "level": 1
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "critical_element",
+                    "level": 1
+                }
+            ],
+            "bow": [
+                {
+                    "id": "critical_element",
+                    "level": 1
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "critical_element",
+                    "level": 1
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "critical_element",
+                    "level": 1
+                }
+            ]
+        },
+        "rathian": {
+            "helm": [
+                {
+                    "id": "health_boost",
+                    "level": 2
+                },
+                {
+                    "id": "poison_attack",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "poison_attack",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "lock_on",
+                    "level": 1
+                },
+                {
+                    "id": "burst",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "poison_resistance",
+                    "level": 3
+                },
+                {
+                    "id": "burst",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "health_boost",
+                    "level": 2
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "health_boost",
+                    "level": 2
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "health_boost",
+                    "level": 2
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "health_boost",
+                    "level": 2
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "health_boost",
+                    "level": 2
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "health_boost",
+                    "level": 2
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "health_boost",
+                    "level": 2
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "health_boost",
+                    "level": 2
+                }
+            ],
+            "bow": [
+                {
+                    "id": "health_boost",
+                    "level": 2
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "health_boost",
+                    "level": 2
+                }
+            ]
+        },
+        "pink_rathian": {
+            "helm": [
+                {
+                    "id": "special_boost",
+                    "level": 1
+                },
+                {
+                    "id": "windproof",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "dragon_attack",
+                    "level": 1
+                },
+                {
+                    "id": "focus",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "windproof",
+                    "level": 2
+                },
+                {
+                    "id": "critical_eye",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "critical_eye",
+                    "level": 2
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "special_boost",
+                    "level": 2
+                },
+                {
+                    "id": "dragon_attack",
+                    "level": 1
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ],
+            "bow": [
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ]
+        },
+        "gold_rathian": {
+            "helm": [
+                {
+                    "id": "resentment",
+                    "level": 1
+                },
+                {
+                    "id": "divine_blessing",
+                    "level": 2
+                }
+            ],
+            "chest": [
+                {
+                    "id": "partbreaker",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "poison_exploit",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "lock_on",
+                    "level": 1
+                },
+                {
+                    "id": "resuscitate",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "poison_exploit",
+                    "level": 1
+                },
+                {
+                    "id": "poison_attack",
+                    "level": 1
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "poison_exploit",
+                    "level": 2
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "poison_exploit",
+                    "level": 2
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "poison_exploit",
+                    "level": 2
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "poison_exploit",
+                    "level": 2
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "poison_exploit",
+                    "level": 2
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "poison_exploit",
+                    "level": 2
+                }
+            ],
+            "bow": [
+                {
+                    "id": "poison_exploit",
+                    "level": 2
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "poison_exploit",
+                    "level": 2
+                }
+            ]
+        },
+        "legiana": {
+            "helm": [
+                {
+                    "id": "divine_blessing",
+                    "level": 2
+                },
+                {
+                    "id": "ice_attack",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "divine_blessing",
+                    "level": 2
+                },
+                {
+                    "id": "windproof",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "reload_speed",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "ice_attack",
+                    "level": 2
+                },
+                {
+                    "id": "windproof",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "reload_speed",
+                    "level": 2
+                },
+                {
+                    "id": "ice_resistance",
+                    "level": 1
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "divine_blessing",
+                    "level": 2
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "divine_blessing",
+                    "level": 2
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "divine_blessing",
+                    "level": 2
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "divine_blessing",
+                    "level": 2
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "divine_blessing",
+                    "level": 2
+                }
+            ],
+            "lance": [
+                {
+                    "id": "divine_blessing",
+                    "level": 2
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "divine_blessing",
+                    "level": 2
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "divine_blessing",
+                    "level": 2
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "divine_blessing",
+                    "level": 2
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "divine_blessing",
+                    "level": 2
+                }
+            ],
+            "bow": [
+                {
+                    "id": "divine_blessing",
+                    "level": 2
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "divine_blessing",
+                    "level": 2
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "divine_blessing",
+                    "level": 2
+                }
+            ]
+        },
+        "diablos": {
+            "helm": [
+                {
+                    "id": "heroics",
+                    "level": 2
+                }
+            ],
+            "chest": [
+                {
+                    "id": "slugger",
+                    "level": 3
+                },
+                {
+                    "id": "heroics",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "heroics",
+                    "level": 2
+                },
+                {
+                    "id": "partbreaker",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "partbreaker",
+                    "level": 1
+                },
+                {
+                    "id": "offensive_guard",
+                    "level": 2
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "slugger",
+                    "level": 2
+                },
+                {
+                    "id": "partbreaker",
+                    "level": 1
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "heroics",
+                    "level": 1
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "heroics",
+                    "level": 1
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "heroics",
+                    "level": 1
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "heroics",
+                    "level": 1
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "heroics",
+                    "level": 1
+                }
+            ],
+            "lance": [
+                {
+                    "id": "heroics",
+                    "level": 1
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "heroics",
+                    "level": 1
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "heroics",
+                    "level": 1
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "heroics",
+                    "level": 1
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "heroics",
+                    "level": 1
+                }
+            ],
+            "bow": [
+                {
+                    "id": "heroics",
+                    "level": 1
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "heroics",
+                    "level": 1
+                }
+            ]
+        },
+        "black_diablos": {
+            "helm": [
+                {
+                    "id": "partbreaker",
+                    "level": 2
+                },
+                {
+                    "id": "resentment",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "resentment",
+                    "level": 2
+                },
+                {
+                    "id": "firm_foothold",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "resentment",
+                    "level": 1
+                },
+                {
+                    "id": "focus",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "lock_on",
+                    "level": 1
+                },
+                {
+                    "id": "heroics",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "heroics",
+                    "level": 1
+                },
+                {
+                    "id": "offensive_guard",
+                    "level": 1
+                }
+            ]
+        },
+        "rathalos": {
+            "helm": [
+                {
+                    "id": "attack_boost",
+                    "level": 2
+                },
+                {
+                    "id": "fire_attack",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "weakness_exploit",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "fire_resistance",
+                    "level": 1
+                },
+                {
+                    "id": "attack_boost",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "focus",
+                    "level": 2
+                },
+                {
+                    "id": "fire_attack",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "fire_resistance",
+                    "level": 3
+                },
+                {
+                    "id": "weakness_exploit",
+                    "level": 1
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "earplugs",
+                    "level": 1
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "earplugs",
+                    "level": 1
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "earplugs",
+                    "level": 1
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "earplugs",
+                    "level": 1
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "earplugs",
+                    "level": 1
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "earplugs",
+                    "level": 1
+                }
+            ],
+            "lance": [
+                {
+                    "id": "earplugs",
+                    "level": 1
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "earplugs",
+                    "level": 1
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "earplugs",
+                    "level": 1
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "earplugs",
+                    "level": 1
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "earplugs",
+                    "level": 1
+                }
+            ],
+            "bow": [
+                {
+                    "id": "earplugs",
+                    "level": 1
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "earplugs",
+                    "level": 1
+                }
+            ]
+        },
+        "azure_rathalos": {
+            "helm": [
+                {
+                    "id": "focus",
+                    "level": 2
+                }
+            ],
+            "chest": [
+                {
+                    "id": "earplugs",
+                    "level": 2
+                },
+                {
+                    "id": "fire_attack",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "critical_boost",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "special_boost",
+                    "level": 1
+                },
+                {
+                    "id": "critical_boost",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "reload_speed",
+                    "level": 2
+                },
+                {
+                    "id": "fire_attack",
+                    "level": 1
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "special_boost",
+                    "level": 1
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "special_boost",
+                    "level": 1
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "special_boost",
+                    "level": 1
+                }
+            ],
+            "lance": [
+                {
+                    "id": "special_boost",
+                    "level": 1
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "special_boost",
+                    "level": 1
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "special_boost",
+                    "level": 1
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "special_boost",
+                    "level": 1
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "special_boost",
+                    "level": 1
+                }
+            ],
+            "bow": [
+                {
+                    "id": "special_boost",
+                    "level": 1
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "special_boost",
+                    "level": 1
+                }
+            ]
+        },
+        "silver_rathalos": {
+            "helm": [
+                {
+                    "id": "critical_element",
+                    "level": 2
+                }
+            ],
+            "chest": [
+                {
+                    "id": "fire_attack",
+                    "level": 1
+                },
+                {
+                    "id": "critical_boost",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "latent_power",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "windproof",
+                    "level": 2
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "critical_element",
+                    "level": 1
+                },
+                {
+                    "id": "weakness_exploit",
+                    "level": 1
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "critical_element",
+                    "level": 2
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "critical_element",
+                    "level": 2
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "critical_element",
+                    "level": 2
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "critical_element",
+                    "level": 2
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "critical_element",
+                    "level": 2
+                }
+            ],
+            "lance": [
+                {
+                    "id": "critical_element",
+                    "level": 2
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "critical_element",
+                    "level": 2
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "critical_element",
+                    "level": 2
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "critical_element",
+                    "level": 2
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "critical_element",
+                    "level": 2
+                }
+            ],
+            "bow": [
+                {
+                    "id": "critical_element",
+                    "level": 2
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "critical_element",
+                    "level": 2
+                }
+            ]
+        },
+        "radobaan": {
+            "helm": [
+                {
+                    "id": "guard",
+                    "level": 2
+                }
+            ],
+            "chest": [
+                {
+                    "id": "sleep_attack",
+                    "level": 1
+                },
+                {
+                    "id": "defense_boost",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "slugger",
+                    "level": 1
+                },
+                {
+                    "id": "sleep_resistance",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "sleep_attack",
+                    "level": 2
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "sleep_resistance",
+                    "level": 1
+                },
+                {
+                    "id": "guard",
+                    "level": 1
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "defense_boost",
+                    "level": 2
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "defense_boost",
+                    "level": 2
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "defense_boost",
+                    "level": 2
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "defense_boost",
+                    "level": 2
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "defense_boost",
+                    "level": 2
+                }
+            ]
+        },
+        "banbaro": {
+            "helm": [
+                {
+                    "id": "tremor_resistance",
+                    "level": 1
+                },
+                {
+                    "id": "recoil_down",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "concentration",
+                    "level": 1
+                },
+                {
+                    "id": "partbreaker",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "offensive_guard",
+                    "level": 2
+                },
+                {
+                    "id": "tremor_resistance",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "attack_boost",
+                    "level": 2
+                },
+                {
+                    "id": "firm_foothold",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "divine_blessing",
+                    "level": 1
+                },
+                {
+                    "id": "concentration",
+                    "level": 1
+                }
+            ]
+        },
+        "barioth": {
+            "helm": [
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                },
+                {
+                    "id": "skyward_striker",
+                    "level": 2
+                }
+            ],
+            "chest": [
+                {
+                    "id": "ice_resistance",
+                    "level": 1
+                },
+                {
+                    "id": "ice_attack",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "ice_attack",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "skyward_striker",
+                    "level": 1
+                },
+                {
+                    "id": "ice_resistance",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                },
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ]
+        },
+        "zinogre": {
+            "helm": [
+                {
+                    "id": "evasive_concentration",
+                    "level": 1
+                },
+                {
+                    "id": "burst",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "evasive_concentration",
+                    "level": 2
+                },
+                {
+                    "id": "thunder_resistance",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "thunder_attack",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "artful_dodger",
+                    "level": 1
+                },
+                {
+                    "id": "reload_speed",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "burst",
+                    "level": 1
+                },
+                {
+                    "id": "thunder_attack",
+                    "level": 1
+                }
+            ]
+        },
+        "tzitzi_ya_ku": {
+            "helm": [
+                {
+                    "id": "thunder_attack",
+                    "level": 2
+                },
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "status_sneak_attack",
+                    "level": 1
+                },
+                {
+                    "id": "artful_dodger",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "status_sneak_attack",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                },
+                {
+                    "id": "status_sneak_attack",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "fortify",
+                    "level": 2
+                }
+            ]
+        },
+        "odogaron": {
+            "helm": [
+                {
+                    "id": "quick_work",
+                    "level": 2
+                }
+            ],
+            "chest": [
+                {
+                    "id": "critical_eye",
+                    "level": 2
+                },
+                {
+                    "id": "bleeding_resistance",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "quick_work",
+                    "level": 1
+                },
+                {
+                    "id": "bleeding_resistance",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "critical_eye",
+                    "level": 1
+                },
+                {
+                    "id": "evasive_concentration",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "evasive_concentration",
+                    "level": 2
+                }
+            ]
+        },
+        "ebony_odogaron": {
+            "helm": [
+                {
+                    "id": "fortitude",
+                    "level": 1
+                },
+                {
+                    "id": "resuscitate",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "latent_power",
+                    "level": 1
+                },
+                {
+                    "id": "critical_element",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "fortitude",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "critical_boost",
+                    "level": 2
+                },
+                {
+                    "id": "evasive_concentration",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "dragon_attack",
+                    "level": 2
+                },
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ]
+        },
+        "deviljho": {
+            "helm": [
+                {
+                    "id": "slugger",
+                    "level": 2
+                },
+                {
+                    "id": "dragon_attack",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "latent_power",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "peak_performance",
+                    "level": 2
+                },
+                {
+                    "id": "dragon_attack",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "dragon_attack",
+                    "level": 2
+                },
+                {
+                    "id": "tremor_resistance",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "guts",
+                    "level": 2
+                },
+                {
+                    "id": "latent_power",
+                    "level": 1
+                }
+            ]
+        },
+        "kushala_daora": {
+            "helm": [
+                {
+                    "id": "frostwind",
+                    "level": 1
+                },
+                {
+                    "id": "reload_speed",
+                    "level": 2
+                },
+                {
+                    "id": "earplugs",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "frostwind",
+                    "level": 1
+                },
+                {
+                    "id": "partbreaker",
+                    "level": 1
+                },
+                {
+                    "id": "health_boost",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "frostwind",
+                    "level": 1
+                },
+                {
+                    "id": "focus",
+                    "level": 2
+                },
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "frostwind",
+                    "level": 1
+                },
+                {
+                    "id": "weakness_exploit",
+                    "level": 2
+                },
+                {
+                    "id": "windproof",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "frostwind",
+                    "level": 1
+                },
+                {
+                    "id": "skyward_striker",
+                    "level": 2
+                },
+                {
+                    "id": "artful_dodger",
+                    "level": 1
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "windproof",
+                    "level": 2
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "windproof",
+                    "level": 2
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "windproof",
+                    "level": 2
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "windproof",
+                    "level": 2
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "windproof",
+                    "level": 2
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "windproof",
+                    "level": 2
+                }
+            ],
+            "lance": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "windproof",
+                    "level": 2
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "windproof",
+                    "level": 2
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "windproof",
+                    "level": 2
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "windproof",
+                    "level": 2
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "windproof",
+                    "level": 2
+                }
+            ],
+            "bow": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "windproof",
+                    "level": 2
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "windproof",
+                    "level": 2
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "windproof",
+                    "level": 2
+                }
+            ]
+        },
+        "teostra": {
+            "helm": [
+                {
+                    "id": "teostra_powder",
+                    "level": 1
+                },
+                {
+                    "id": "latent_power",
+                    "level": 2
+                },
+                {
+                    "id": "guts",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "teostra_powder",
+                    "level": 1
+                },
+                {
+                    "id": "critical_eye",
+                    "level": 2
+                },
+                {
+                    "id": "artful_dodger",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "teostra_powder",
+                    "level": 1
+                },
+                {
+                    "id": "artillery",
+                    "level": 2
+                },
+                {
+                    "id": "guard",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "teostra_powder",
+                    "level": 1
+                },
+                {
+                    "id": "power_prolonger",
+                    "level": 1
+                },
+                {
+                    "id": "burst",
+                    "level": 2
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "teostra_powder",
+                    "level": 1
+                },
+                {
+                    "id": "critical_boost",
+                    "level": 2
+                },
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "heroics",
+                    "level": 2
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "heroics",
+                    "level": 2
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "heroics",
+                    "level": 2
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "heroics",
+                    "level": 2
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "heroics",
+                    "level": 2
+                }
+            ],
+            "lance": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "heroics",
+                    "level": 2
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "heroics",
+                    "level": 2
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "heroics",
+                    "level": 2
+                }
+            ],
+            "bow": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "heroics",
+                    "level": 2
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "heroics",
+                    "level": 2
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "heroics",
+                    "level": 2
+                }
+            ]
+        },
+        "basarios": {
+            "helm": [
+                {
+                    "id": "sleep_resistance",
+                    "level": 2
+                }
+            ],
+            "chest": [
+                {
+                    "id": "artillery",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "recoil_down",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "fire_attack",
+                    "level": 2
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "artillery",
+                    "level": 1
+                },
+                {
+                    "id": "guard",
+                    "level": 1
+                }
+            ]
+        },
+        "khezu": {
+            "helm": [
+                {
+                    "id": "paralysis_attack",
+                    "level": 1
+                },
+                {
+                    "id": "special_insurance",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "thunder_attack",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "special_insurance",
+                    "level": 2
+                },
+                {
+                    "id": "fortify",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "paralysis_resistance",
+                    "level": 2
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "focus",
+                    "level": 1
+                },
+                {
+                    "id": "slugger",
+                    "level": 1
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "peak_performance",
+                    "level": 1
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "peak_performance",
+                    "level": 1
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "peak_performance",
+                    "level": 1
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "peak_performance",
+                    "level": 1
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "peak_performance",
+                    "level": 1
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "peak_performance",
+                    "level": 1
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "peak_performance",
+                    "level": 1
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "peak_performance",
+                    "level": 1
+                }
+            ],
+            "bow": [
+                {
+                    "id": "peak_performance",
+                    "level": 1
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "peak_performance",
+                    "level": 1
+                }
+            ]
+        },
+        "mizutsune": {
+            "helm": [
+                {
+                    "id": "water_attack",
+                    "level": 2
+                }
+            ],
+            "chest": [
+                {
+                    "id": "bubbly_dance",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "bubbly_dance",
+                    "level": 1
+                },
+                {
+                    "id": "resuscitate",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "evasive_concentration",
+                    "level": 2
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "resuscitate",
+                    "level": 2
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "artful_dodger",
+                    "level": 1
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "artful_dodger",
+                    "level": 1
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "artful_dodger",
+                    "level": 1
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "artful_dodger",
+                    "level": 1
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "artful_dodger",
+                    "level": 1
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "artful_dodger",
+                    "level": 1
+                }
+            ],
+            "lance": [
+                {
+                    "id": "artful_dodger",
+                    "level": 1
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "artful_dodger",
+                    "level": 1
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "artful_dodger",
+                    "level": 1
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "artful_dodger",
+                    "level": 1
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "artful_dodger",
+                    "level": 1
+                }
+            ],
+            "bow": [
+                {
+                    "id": "artful_dodger",
+                    "level": 1
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "artful_dodger",
+                    "level": 1
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "artful_dodger",
+                    "level": 1
+                }
+            ]
+        },
+        "aknosom": {
+            "helm": [
+                {
+                    "id": "defensive_loading",
+                    "level": 2
+                }
+            ],
+            "chest": [
+                {
+                    "id": "defensive_loading",
+                    "level": 1
+                },
+                {
+                    "id": "guard",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "quick_work",
+                    "level": 1
+                },
+                {
+                    "id": "power_prolonger",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "critical_eye",
+                    "level": 1
+                },
+                {
+                    "id": "peak_performance",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "fire_attack",
+                    "level": 2
+                }
+            ]
+        },
+        "magnamalo": {
+            "helm": [
+                {
+                    "id": "hellfire_cloak",
+                    "level": 2
+                }
+            ],
+            "chest": [
+                {
+                    "id": "reload_speed",
+                    "level": 2
+                },
+                {
+                    "id": "blast_resistance",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "blast_attack",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "blast_resistance",
+                    "level": 1
+                },
+                {
+                    "id": "hellfire_cloak",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "blast_attack",
+                    "level": 1
+                },
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                }
+            ]
+        },
+        "rajang": {
+            "helm": [
+                {
+                    "id": "thunder_resistance",
+                    "level": 3
+                }
+            ],
+            "chest": [
+                {
+                    "id": "fighting_spirit",
+                    "level": 1
+                },
+                {
+                    "id": "concentration",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "fighting_spirit",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "focus",
+                    "level": 3
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "resentment",
+                    "level": 2
+                },
+                {
+                    "id": "tremor_resistance",
+                    "level": 1
+                }
+            ]
+        },
+        "nergigante": {
+            "helm": [
+                {
+                    "id": "nergigante_hunger",
+                    "level": 1
+                },
+                {
+                    "id": "critical_eye",
+                    "level": 2
+                },
+                {
+                    "id": "artful_dodger",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "nergigante_hunger",
+                    "level": 1
+                },
+                {
+                    "id": "sneak_attack",
+                    "level": 2
+                },
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "nergigante_hunger",
+                    "level": 1
+                },
+                {
+                    "id": "offensive_guard",
+                    "level": 1
+                },
+                {
+                    "id": "guard",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "nergigante_hunger",
+                    "level": 1
+                },
+                {
+                    "id": "attack_boost",
+                    "level": 2
+                },
+                {
+                    "id": "partbreaker",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "nergigante_hunger",
+                    "level": 1
+                },
+                {
+                    "id": "reload_speed",
+                    "level": 1
+                },
+                {
+                    "id": "recoil_down",
+                    "level": 1
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "partbreaker",
+                    "level": 2
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "partbreaker",
+                    "level": 2
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "partbreaker",
+                    "level": 2
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "partbreaker",
+                    "level": 2
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "partbreaker",
+                    "level": 2
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "partbreaker",
+                    "level": 2
+                }
+            ],
+            "lance": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "partbreaker",
+                    "level": 2
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "partbreaker",
+                    "level": 2
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "partbreaker",
+                    "level": 2
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "partbreaker",
+                    "level": 2
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "partbreaker",
+                    "level": 2
+                }
+            ],
+            "bow": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "partbreaker",
+                    "level": 2
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "partbreaker",
+                    "level": 2
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "partbreaker",
+                    "level": 2
+                }
+            ]
+        },
+        "lagombi": {
+            "helm": [
+                {
+                    "id": "special_boost",
+                    "level": 2
+                },
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "attack_boost",
+                    "level": 3
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "shared_shield",
+                    "level": 1
+                },
+                {
+                    "id": "resentment",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "shared_shield",
+                    "level": 2
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "ice_attack",
+                    "level": 2
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "lock_on",
+                    "level": 1
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "lock_on",
+                    "level": 1
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "lock_on",
+                    "level": 1
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "lock_on",
+                    "level": 1
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "lock_on",
+                    "level": 1
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "lock_on",
+                    "level": 1
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "lock_on",
+                    "level": 1
+                }
+            ]
+        },
+        "volvidon": {
+            "helm": [
+                {
+                    "id": "morph_boost",
+                    "level": 1
+                },
+                {
+                    "id": "power_prolonger",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "paralysis_attack",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "morph_boost",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "special_insurance",
+                    "level": 2
+                },
+                {
+                    "id": "fighting_spirit",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "paralysis_resistance",
+                    "level": 3
+                }
+            ]
+        },
+        "somnacanth": {
+            "helm": [
+                {
+                    "id": "evading_reload",
+                    "level": 1
+                },
+                {
+                    "id": "evade_extender",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "skyward_striker",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "evading_reload",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "sleep_attack",
+                    "level": 1
+                },
+                {
+                    "id": "rude_awakener",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "status_sneak_attack",
+                    "level": 2
+                }
+            ]
+        },
+        "tigrex": {
+            "helm": [
+                {
+                    "id": "critical_ferocity",
+                    "level": 1
+                },
+                {
+                    "id": "concentration",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "heroics",
+                    "level": 2
+                },
+                {
+                    "id": "guts",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "earplugs",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "critical_ferocity",
+                    "level": 2
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "lock_on",
+                    "level": 1
+                },
+                {
+                    "id": "partbreaker",
+                    "level": 2
+                }
+            ]
+        },
+        "brute_tigrex": {
+            "helm": [
+                {
+                    "id": "advanced_attack_boost",
+                    "level": 1
+                },
+                {
+                    "id": "reckless",
+                    "level": 2
+                }
+            ],
+            "chest": [
+                {
+                    "id": "advanced_attack_boost",
+                    "level": 1
+                },
+                {
+                    "id": "lock_on",
+                    "level": 1
+                },
+                {
+                    "id": "attack_boost",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "advanced_attack_boost",
+                    "level": 1
+                },
+                {
+                    "id": "reload_speed",
+                    "level": 1
+                },
+                {
+                    "id": "recoil_down",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "advanced_attack_boost",
+                    "level": 1
+                },
+                {
+                    "id": "attack_boost",
+                    "level": 2
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "advanced_attack_boost",
+                    "level": 1
+                },
+                {
+                    "id": "offensive_dodger",
+                    "level": 2
+                }
+            ],
+            "lance": [
+                {
+                    "id": "dauntless",
+                    "level": 5
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "power_prolonger",
+                    "level": 2
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "litheness",
+                    "level": 3
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "ballistics",
+                    "level": 1
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "aggressive_dodger",
+                    "level": 1
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "power_prolonger",
+                    "level": 1
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "litheness",
+                    "level": 1
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "power_prolonger",
+                    "level": 1
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "evading_reload",
+                    "level": 1
+                }
+            ],
+            "bow": [
+                {
+                    "id": "ballistics",
+                    "level": 1
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "quick_work",
+                    "level": 1
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "defensive_loading",
+                    "level": 2
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "aggressive_dodger",
+                    "level": 1
+                }
+            ]
+        },
+        "kirin": {
+            "helm": [
+                {
+                    "id": "kirin_flashstorm",
+                    "level": 1
+                },
+                {
+                    "id": "lock_on",
+                    "level": 1
+                },
+                {
+                    "id": "fighting_spirit",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "kirin_flashstorm",
+                    "level": 1
+                },
+                {
+                    "id": "critical_boost",
+                    "level": 1
+                },
+                {
+                    "id": "critical_eye",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "kirin_flashstorm",
+                    "level": 1
+                },
+                {
+                    "id": "critical_boost",
+                    "level": 1
+                },
+                {
+                    "id": "weakness_exploit",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "kirin_flashstorm",
+                    "level": 1
+                },
+                {
+                    "id": "critical_boost",
+                    "level": 1
+                },
+                {
+                    "id": "latent_power",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "kirin_flashstorm",
+                    "level": 1
+                },
+                {
+                    "id": "recoil_down",
+                    "level": 2
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "latent_power",
+                    "level": 1
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "latent_power",
+                    "level": 1
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "latent_power",
+                    "level": 1
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "latent_power",
+                    "level": 1
+                }
+            ],
+            "lance": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "latent_power",
+                    "level": 1
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "latent_power",
+                    "level": 1
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "latent_power",
+                    "level": 1
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "latent_power",
+                    "level": 1
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "latent_power",
+                    "level": 1
+                }
+            ]
+        },
+        "bazelgeuse": {
+            "helm": [
+                {
+                    "id": "reload_speed",
+                    "level": 2
+                },
+                {
+                    "id": "artillery",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "valor",
+                    "level": 3
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "critical_ferocity",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "artillery",
+                    "level": 2
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "valor",
+                    "level": 2
+                },
+                {
+                    "id": "blast_attack",
+                    "level": 1
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "quick_work",
+                    "level": 1
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "evading_reload",
+                    "level": 2
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "critical_ferocity",
+                    "level": 1
+                }
+            ],
+            "lance": [
+                {
+                    "id": "offensive_guard",
+                    "level": 2
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "artillery",
+                    "level": 1
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "burst",
+                    "level": 2
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "partbreaker",
+                    "level": 1
+                }
+            ]
+        },
+        "chatacabra": {
+            "helm": [
+                {
+                    "id": "litheness",
+                    "level": 1
+                },
+                {
+                    "id": "sneak_attack",
+                    "level": 2
+                }
+            ],
+            "chest": [
+                {
+                    "id": "litheness",
+                    "level": 1
+                },
+                {
+                    "id": "firm_foothold",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "litheness",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "litheness",
+                    "level": 1
+                },
+                {
+                    "id": "resentment",
+                    "level": 2
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "litheness",
+                    "level": 1
+                },
+                {
+                    "id": "evading_reload",
+                    "level": 2
+                }
+            ]
+        },
+        "arzuros": {
+            "helm": [
+                {
+                    "id": "shared_sword",
+                    "level": 1
+                },
+                {
+                    "id": "shared_shield",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "shared_sword",
+                    "level": 3
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "focus",
+                    "level": 2
+                },
+                {
+                    "id": "concentration",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "morph_boost",
+                    "level": 2
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "critical_ferocity",
+                    "level": 1
+                },
+                {
+                    "id": "special_boost",
+                    "level": 1
+                }
+            ]
+        },
+        "glavenus": {
+            "helm": [
+                {
+                    "id": "raw_power",
+                    "level": 2
+                }
+            ],
+            "chest": [
+                {
+                    "id": "lock_on",
+                    "level": 1
+                },
+                {
+                    "id": "raw_power",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "weakness_exploit",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "quick_work",
+                    "level": 2
+                },
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "burst",
+                    "level": 2
+                },
+                {
+                    "id": "artful_dodger",
+                    "level": 1
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "critical_ferocity",
+                    "level": 1
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "critical_ferocity",
+                    "level": 1
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "critical_ferocity",
+                    "level": 1
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "critical_ferocity",
+                    "level": 1
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "critical_ferocity",
+                    "level": 1
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "critical_ferocity",
+                    "level": 1
+                }
+            ],
+            "lance": [
+                {
+                    "id": "critical_ferocity",
+                    "level": 1
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "critical_ferocity",
+                    "level": 1
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "critical_ferocity",
+                    "level": 1
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "critical_ferocity",
+                    "level": 1
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "critical_ferocity",
+                    "level": 1
+                }
+            ],
+            "bow": [
+                {
+                    "id": "critical_ferocity",
+                    "level": 1
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "critical_ferocity",
+                    "level": 1
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "critical_ferocity",
+                    "level": 1
+                }
+            ]
+        },
+        "chameleos": {
+            "helm": [
+                {
+                    "id": "chameleos_venomist",
+                    "level": 1
+                },
+                {
+                    "id": "poison_exploit",
+                    "level": 1
+                },
+                {
+                    "id": "status_sneak_attack",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "chameleos_venomist",
+                    "level": 1
+                },
+                {
+                    "id": "focus",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "chameleos_venomist",
+                    "level": 1
+                },
+                {
+                    "id": "valor",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "chameleos_venomist",
+                    "level": 1
+                },
+                {
+                    "id": "poison_exploit",
+                    "level": 2
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "chameleos_venomist",
+                    "level": 1
+                },
+                {
+                    "id": "offensive_guard",
+                    "level": 1
+                },
+                {
+                    "id": "guard",
+                    "level": 1
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "status_sneak_attack",
+                    "level": 2
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "status_sneak_attack",
+                    "level": 2
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "status_sneak_attack",
+                    "level": 2
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "status_sneak_attack",
+                    "level": 2
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "status_sneak_attack",
+                    "level": 2
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "status_sneak_attack",
+                    "level": 2
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "status_sneak_attack",
+                    "level": 2
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "status_sneak_attack",
+                    "level": 2
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "status_sneak_attack",
+                    "level": 2
+                }
+            ],
+            "bow": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "status_sneak_attack",
+                    "level": 2
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "status_sneak_attack",
+                    "level": 2
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "status_sneak_attack",
+                    "level": 2
+                }
+            ]
+        },
+        "bishaten": {
+            "helm": [
+                {
+                    "id": "paralysis_exploit",
+                    "level": 2
+                }
+            ],
+            "chest": [
+                {
+                    "id": "reload_speed",
+                    "level": 1
+                },
+                {
+                    "id": "burst",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "slugger",
+                    "level": 2
+                },
+                {
+                    "id": "skyward_striker",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "paralysis_exploit",
+                    "level": 1
+                },
+                {
+                    "id": "shared_sword",
+                    "level": 2
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "quick_work",
+                    "level": 1
+                },
+                {
+                    "id": "focus",
+                    "level": 2
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "shared_sword",
+                    "level": 2
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "shared_sword",
+                    "level": 2
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "shared_sword",
+                    "level": 2
+                }
+            ],
+            "bow": [
+                {
+                    "id": "shared_sword",
+                    "level": 2
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "shared_sword",
+                    "level": 2
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "shared_sword",
+                    "level": 2
+                }
+            ]
+        },
+        "beotodus": {
+            "helm": [
+                {
+                    "id": "peak_performance",
+                    "level": 3
+                }
+            ],
+            "chest": [
+                {
+                    "id": "blunt_force",
+                    "level": 1
+                },
+                {
+                    "id": "slugger",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "lock_on",
+                    "level": 1
+                },
+                {
+                    "id": "focus",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "defensive_loading",
+                    "level": 2
+                },
+                {
+                    "id": "ice_attack",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "blunt_force",
+                    "level": 2
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "valor",
+                    "level": 1
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "valor",
+                    "level": 1
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "valor",
+                    "level": 1
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "valor",
+                    "level": 1
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "valor",
+                    "level": 1
+                }
+            ]
+        },
+        "nargacuga": {
+            "helm": [
+                {
+                    "id": "fighting_spirit",
+                    "level": 1
+                },
+                {
+                    "id": "focus",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "critical_boost",
+                    "level": 2
+                },
+                {
+                    "id": "lock_on",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "buildup_boost",
+                    "level": 3
+                }
+            ],
+            "waist": [
+                {
+                    "id": "evading_reload",
+                    "level": 2
+                },
+                {
+                    "id": "peak_performance",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "buildup_boost",
+                    "level": 2
+                },
+                {
+                    "id": "artful_dodger",
+                    "level": 1
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "resuscitate",
+                    "level": 2
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "resuscitate",
+                    "level": 2
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "resuscitate",
+                    "level": 2
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "resuscitate",
+                    "level": 2
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "resuscitate",
+                    "level": 2
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "resuscitate",
+                    "level": 2
+                }
+            ],
+            "lance": [
+                {
+                    "id": "resuscitate",
+                    "level": 2
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "resuscitate",
+                    "level": 2
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "resuscitate",
+                    "level": 2
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "resuscitate",
+                    "level": 2
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "resuscitate",
+                    "level": 2
+                }
+            ],
+            "bow": [
+                {
+                    "id": "resuscitate",
+                    "level": 2
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "resuscitate",
+                    "level": 2
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "resuscitate",
+                    "level": 2
+                }
+            ]
+        },
+        "namielle": {
+            "helm": [
+                {
+                    "id": "namielle_power",
+                    "level": 1
+                },
+                {
+                    "id": "reload_speed",
+                    "level": 1
+                },
+                {
+                    "id": "recoil_down",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "namielle_power",
+                    "level": 1
+                },
+                {
+                    "id": "latent_power",
+                    "level": 1
+                },
+                {
+                    "id": "critical_boost",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "namielle_power",
+                    "level": 1
+                },
+                {
+                    "id": "critical_eye",
+                    "level": 1
+                },
+                {
+                    "id": "weakness_exploit",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "namielle_power",
+                    "level": 1
+                },
+                {
+                    "id": "water_attack",
+                    "level": 2
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "namielle_power",
+                    "level": 1
+                },
+                {
+                    "id": "aggressive_dodger",
+                    "level": 2
+                }
+            ]
+        },
+        "lunagaron": {
+            "helm": [
+                {
+                    "id": "recoil_down",
+                    "level": 2
+                },
+                {
+                    "id": "ballistics",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "vital_ice",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "blunt_force",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "health_boost",
+                    "level": 3
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "ballistics",
+                    "level": 2
+                },
+                {
+                    "id": "burst",
+                    "level": 1
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "vital_ice",
+                    "level": 1
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "vital_ice",
+                    "level": 1
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "vital_ice",
+                    "level": 1
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "vital_ice",
+                    "level": 1
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "vital_ice",
+                    "level": 1
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "vital_ice",
+                    "level": 1
+                }
+            ],
+            "lance": [
+                {
+                    "id": "vital_ice",
+                    "level": 1
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "vital_ice",
+                    "level": 1
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "vital_ice",
+                    "level": 1
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "vital_ice",
+                    "level": 1
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "vital_ice",
+                    "level": 1
+                }
+            ],
+            "bow": [
+                {
+                    "id": "vital_ice",
+                    "level": 1
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "vital_ice",
+                    "level": 1
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "vital_ice",
+                    "level": 1
+                }
+            ]
+        },
+        "garangolm": {
+            "helm": [
+                {
+                    "id": "critical_ferocity",
+                    "level": 2
+                }
+            ],
+            "chest": [
+                {
+                    "id": "guard_up",
+                    "level": 1
+                },
+                {
+                    "id": "guard",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "reckless",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "reload_speed",
+                    "level": 2
+                },
+                {
+                    "id": "reckless",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "lock_on",
+                    "level": 1
+                },
+                {
+                    "id": "reckless",
+                    "level": 1
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "reckless",
+                    "level": 1
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "reckless",
+                    "level": 1
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "reckless",
+                    "level": 1
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "reckless",
+                    "level": 1
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "reckless",
+                    "level": 1
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "reckless",
+                    "level": 1
+                }
+            ],
+            "lance": [
+                {
+                    "id": "reckless",
+                    "level": 1
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "reckless",
+                    "level": 1
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "reckless",
+                    "level": 1
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "reckless",
+                    "level": 1
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "reckless",
+                    "level": 1
+                }
+            ],
+            "bow": [
+                {
+                    "id": "reckless",
+                    "level": 1
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "reckless",
+                    "level": 1
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "reckless",
+                    "level": 1
+                }
+            ]
+        },
+        "espinas": {
+            "helm": [
+                {
+                    "id": "vital_fire",
+                    "level": 1
+                },
+                {
+                    "id": "health_boost",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "pursuit",
+                    "level": 3
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "special_partbreaker",
+                    "level": 2
+                },
+                {
+                    "id": "lock_on",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "pursuit",
+                    "level": 2
+                },
+                {
+                    "id": "partbreaker",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "vital_fire",
+                    "level": 2
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "special_partbreaker",
+                    "level": 2
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "special_partbreaker",
+                    "level": 2
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "special_partbreaker",
+                    "level": 2
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "special_partbreaker",
+                    "level": 2
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "special_partbreaker",
+                    "level": 2
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "special_partbreaker",
+                    "level": 2
+                }
+            ],
+            "lance": [
+                {
+                    "id": "special_partbreaker",
+                    "level": 2
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "special_partbreaker",
+                    "level": 2
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "special_partbreaker",
+                    "level": 2
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "special_partbreaker",
+                    "level": 2
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "special_partbreaker",
+                    "level": 2
+                }
+            ],
+            "bow": [
+                {
+                    "id": "special_partbreaker",
+                    "level": 2
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "special_partbreaker",
+                    "level": 2
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "special_partbreaker",
+                    "level": 2
+                }
+            ]
+        },
+        "malzeno": {
+            "helm": [
+                {
+                    "id": "malzeno_crimsonblood",
+                    "level": 1
+                },
+                {
+                    "id": "dragon_boost",
+                    "level": 2
+                }
+            ],
+            "chest": [
+                {
+                    "id": "malzeno_crimsonblood",
+                    "level": 1
+                },
+                {
+                    "id": "blood_cloak",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "malzeno_crimsonblood",
+                    "level": 1
+                },
+                {
+                    "id": "blood_cloak",
+                    "level": 1
+                },
+                {
+                    "id": "resuscitate",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "malzeno_crimsonblood",
+                    "level": 1
+                },
+                {
+                    "id": "fighting_spirit",
+                    "level": 2
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "malzeno_crimsonblood",
+                    "level": 1
+                },
+                {
+                    "id": "pursuit",
+                    "level": 2
+                }
+            ]
+        },
+        "quematrice": {
+            "helm": [
+                {
+                    "id": "artillery",
+                    "level": 2
+                },
+                {
+                    "id": "lock_on",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "normal_element_ammo_boost",
+                    "level": 2
+                },
+                {
+                    "id": "spare_shot",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "spare_shot",
+                    "level": 1
+                },
+                {
+                    "id": "recoil_down",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "dauntless",
+                    "level": 2
+                },
+                {
+                    "id": "concentration",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "attack_boost",
+                    "level": 3
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "valor",
+                    "level": 1
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "valor",
+                    "level": 1
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "valor",
+                    "level": 1
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "valor",
+                    "level": 1
+                }
+            ],
+            "lance": [
+                {
+                    "id": "valor",
+                    "level": 1
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "valor",
+                    "level": 1
+                }
+            ],
+            "bow": [
+                {
+                    "id": "valor",
+                    "level": 1
+                }
+            ]
+        },
+        "goss_harag": {
+            "helm": [
+                {
+                    "id": "morph_attack_boost",
+                    "level": 1
+                },
+                {
+                    "id": "morph_boost",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "advanced_ice_attack",
+                    "level": 1
+                },
+                {
+                    "id": "ice_attack",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "advanced_ice_attack",
+                    "level": 1
+                },
+                {
+                    "id": "divine_blessing",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "advanced_ice_attack",
+                    "level": 1
+                },
+                {
+                    "id": "morph_attack_boost",
+                    "level": 2
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "morph_boost",
+                    "level": 2
+                },
+                {
+                    "id": "lock_on",
+                    "level": 1
+                }
+            ]
+        },
+        "astalos": {
+            "helm": [
+                {
+                    "id": "advanced_thunder_attack",
+                    "level": 1
+                },
+                {
+                    "id": "reload_speed",
+                    "level": 1
+                },
+                {
+                    "id": "thunder_attack",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "advanced_thunder_attack",
+                    "level": 1
+                },
+                {
+                    "id": "perfectionist",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "advanced_thunder_attack",
+                    "level": 1
+                },
+                {
+                    "id": "perfectionist",
+                    "level": 1
+                },
+                {
+                    "id": "offensive_dodger",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "advanced_thunder_attack",
+                    "level": 1
+                },
+                {
+                    "id": "critical_element",
+                    "level": 1
+                },
+                {
+                    "id": "critical_eye",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "advanced_thunder_attack",
+                    "level": 1
+                },
+                {
+                    "id": "thunder_attack",
+                    "level": 2
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "thunder_attack",
+                    "level": 1
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "thunder_attack",
+                    "level": 1
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "thunder_attack",
+                    "level": 1
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "thunder_attack",
+                    "level": 1
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "thunder_attack",
+                    "level": 1
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "thunder_attack",
+                    "level": 1
+                }
+            ],
+            "lance": [
+                {
+                    "id": "thunder_attack",
+                    "level": 1
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "thunder_attack",
+                    "level": 1
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "thunder_attack",
+                    "level": 1
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "thunder_attack",
+                    "level": 1
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "thunder_attack",
+                    "level": 1
+                }
+            ],
+            "bow": [
+                {
+                    "id": "thunder_attack",
+                    "level": 1
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "thunder_attack",
+                    "level": 1
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "thunder_attack",
+                    "level": 1
+                }
+            ]
+        },
+        "wroggi": {
+            "helm": [
+                {
+                    "id": "power_prolonger",
+                    "level": 2
+                }
+            ],
+            "chest": [
+                {
+                    "id": "final_strike",
+                    "level": 1
+                },
+                {
+                    "id": "recoil_down",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "critical_eye",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "guard",
+                    "level": 2
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "final_strike",
+                    "level": 2
+                }
+            ]
+        },
+        "stygian_zinogre": {
+            "helm": [
+                {
+                    "id": "dragon_attack",
+                    "level": 2
+                },
+                {
+                    "id": "advanced_dragon_attack",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "advanced_dragon_attack",
+                    "level": 1
+                },
+                {
+                    "id": "elemental_release",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "dragon_attack",
+                    "level": 2
+                },
+                {
+                    "id": "lock_on",
+                    "level": 1
+                },
+                {
+                    "id": "advanced_dragon_attack",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "vital_dragon",
+                    "level": 1
+                },
+                {
+                    "id": "fighting_spirit",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "elemental_release",
+                    "level": 3
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "advanced_dragon_attack",
+                    "level": 1
+                },
+                {
+                    "id": "dragon_attack",
+                    "level": 1
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "advanced_dragon_attack",
+                    "level": 1
+                },
+                {
+                    "id": "dragon_attack",
+                    "level": 1
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "advanced_dragon_attack",
+                    "level": 1
+                },
+                {
+                    "id": "dragon_attack",
+                    "level": 1
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "advanced_dragon_attack",
+                    "level": 1
+                },
+                {
+                    "id": "dragon_attack",
+                    "level": 1
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "advanced_dragon_attack",
+                    "level": 1
+                },
+                {
+                    "id": "dragon_attack",
+                    "level": 1
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "advanced_dragon_attack",
+                    "level": 1
+                },
+                {
+                    "id": "dragon_attack",
+                    "level": 1
+                }
+            ],
+            "lance": [
+                {
+                    "id": "advanced_dragon_attack",
+                    "level": 1
+                },
+                {
+                    "id": "dragon_attack",
+                    "level": 1
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "advanced_dragon_attack",
+                    "level": 1
+                },
+                {
+                    "id": "dragon_attack",
+                    "level": 1
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "advanced_dragon_attack",
+                    "level": 1
+                },
+                {
+                    "id": "dragon_attack",
+                    "level": 1
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "advanced_dragon_attack",
+                    "level": 1
+                },
+                {
+                    "id": "dragon_attack",
+                    "level": 1
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "advanced_dragon_attack",
+                    "level": 1
+                },
+                {
+                    "id": "dragon_attack",
+                    "level": 1
+                }
+            ],
+            "bow": [
+                {
+                    "id": "advanced_dragon_attack",
+                    "level": 1
+                },
+                {
+                    "id": "dragon_attack",
+                    "level": 1
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "advanced_dragon_attack",
+                    "level": 1
+                },
+                {
+                    "id": "dragon_attack",
+                    "level": 1
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "advanced_dragon_attack",
+                    "level": 1
+                },
+                {
+                    "id": "dragon_attack",
+                    "level": 1
+                }
+            ]
+        },
+        "spring_festival": {
+            "light_bowgun": [
+                {
+                    "id": "critical_ferocity",
+                    "level": 1
+                }
+            ]
+        },
+        "lunar_new_year": {
+            "light_bowgun": [
+                {
+                    "id": "slugger",
+                    "level": 2
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "divine_blessing",
+                    "level": 2
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "divine_blessing",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "dauntless",
+                    "level": 2
+                },
+                {
+                    "id": "lock_on",
+                    "level": 1
+                }
+            ]
+        },
+        "halloween": {
+            "hunting_horn": [
+                {
+                    "id": "shared_sword",
+                    "level": 3
+                }
+            ],
+            "helm": [
+                {
+                    "id": "solidarity",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "artful_dodger",
+                    "level": 2
+                }
+            ]
+        },
+        "viper_tobi_kadachi": {
+            "long_sword": [
+                {
+                    "id": "advanced_burst",
+                    "level": 1
+                },
+                {
+                    "id": "burst",
+                    "level": 1
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "advanced_burst",
+                    "level": 1
+                },
+                {
+                    "id": "burst",
+                    "level": 1
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "advanced_burst",
+                    "level": 1
+                },
+                {
+                    "id": "burst",
+                    "level": 1
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "advanced_burst",
+                    "level": 1
+                },
+                {
+                    "id": "burst",
+                    "level": 1
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "advanced_burst",
+                    "level": 1
+                },
+                {
+                    "id": "burst",
+                    "level": 1
+                }
+            ],
+            "bow": [
+                {
+                    "id": "advanced_burst",
+                    "level": 1
+                },
+                {
+                    "id": "burst",
+                    "level": 1
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "advanced_burst",
+                    "level": 1
+                },
+                {
+                    "id": "burst",
+                    "level": 1
+                }
+            ],
+            "helm": [
+                {
+                    "id": "advanced_burst",
+                    "level": 1
+                },
+                {
+                    "id": "combo_master",
+                    "level": 1
+                },
+                {
+                    "id": "artful_dodger",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "combo_master",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "advanced_burst",
+                    "level": 1
+                },
+                {
+                    "id": "paralysis_attack",
+                    "level": 1
+                },
+                {
+                    "id": "paralysis_exploit",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "advanced_burst",
+                    "level": 1
+                },
+                {
+                    "id": "burst",
+                    "level": 2
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "advanced_burst",
+                    "level": 1
+                },
+                {
+                    "id": "poison_exploit",
+                    "level": 2
+                }
+            ]
+        },
+        "shogun_ceanataur": {
+            "great_sword": [
+                {
+                    "id": "pursuit",
+                    "level": 1
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "pursuit",
+                    "level": 1
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "pursuit",
+                    "level": 1
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "pursuit",
+                    "level": 1
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "pursuit",
+                    "level": 1
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "pursuit",
+                    "level": 1
+                }
+            ],
+            "lance": [
+                {
+                    "id": "pursuit",
+                    "level": 1
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "pursuit",
+                    "level": 1
+                }
+            ],
+            "bow": [
+                {
+                    "id": "pursuit",
+                    "level": 1
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "pursuit",
+                    "level": 1
+                }
+            ],
+            "helm": [
+                {
+                    "id": "vital_water",
+                    "level": 1
+                },
+                {
+                    "id": "pursuit",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "slicing_ammo_boost",
+                    "level": 1
+                },
+                {
+                    "id": "recoil_down",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "advanced_water_attack",
+                    "level": 1
+                },
+                {
+                    "id": "water_attack",
+                    "level": 1
+                },
+                {
+                    "id": "lock_on",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "advanced_water_attack",
+                    "level": 1
+                },
+                {
+                    "id": "tail_partbreaker",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "advanced_water_attack",
+                    "level": 1
+                },
+                {
+                    "id": "slicing_ammo_boost",
+                    "level": 2
+                }
+            ]
+        },
+        "almudron": {
+            "long_sword": [
+                {
+                    "id": "water_attack",
+                    "level": 1
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "water_attack",
+                    "level": 1
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "water_attack",
+                    "level": 1
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "water_attack",
+                    "level": 1
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "water_attack",
+                    "level": 1
+                }
+            ],
+            "bow": [
+                {
+                    "id": "water_attack",
+                    "level": 1
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "water_attack",
+                    "level": 1
+                }
+            ],
+            "helm": [
+                {
+                    "id": "advanced_water_attack",
+                    "level": 1
+                },
+                {
+                    "id": "water_attack",
+                    "level": 1
+                },
+                {
+                    "id": "sneak_attack",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "advanced_water_attack",
+                    "level": 1
+                },
+                {
+                    "id": "water_attack",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "artful_dodger",
+                    "level": 1
+                },
+                {
+                    "id": "ballistics",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "spare_shot",
+                    "level": 1
+                },
+                {
+                    "id": "reload_speed",
+                    "level": 1
+                },
+                {
+                    "id": "advanced_water_attack",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "quick_work",
+                    "level": 2
+                },
+                {
+                    "id": "lock_on",
+                    "level": 1
+                }
+            ]
+        },
+        "seregios": {
+            "great_sword": [
+                {
+                    "id": "attack_efficacy",
+                    "level": 1
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "attack_efficacy",
+                    "level": 1
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "attack_efficacy",
+                    "level": 1
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "attack_efficacy",
+                    "level": 1
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "attack_efficacy",
+                    "level": 1
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "attack_efficacy",
+                    "level": 1
+                }
+            ],
+            "lance": [
+                {
+                    "id": "attack_efficacy",
+                    "level": 1
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "attack_efficacy",
+                    "level": 1
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "attack_efficacy",
+                    "level": 1
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "attack_efficacy",
+                    "level": 1
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "attack_efficacy",
+                    "level": 1
+                }
+            ],
+            "bow": [
+                {
+                    "id": "attack_efficacy",
+                    "level": 1
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "attack_efficacy",
+                    "level": 1
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "attack_efficacy",
+                    "level": 1
+                }
+            ],
+            "helm": [
+                {
+                    "id": "attack_efficacy",
+                    "level": 1
+                },
+                {
+                    "id": "critical_strength",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "attack_efficacy",
+                    "level": 1
+                },
+                {
+                    "id": "burst",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "attack_efficacy",
+                    "level": 1
+                },
+                {
+                    "id": "attack_boost",
+                    "level": 2
+                }
+            ],
+            "waist": [
+                {
+                    "id": "attack_efficacy",
+                    "level": 1
+                },
+                {
+                    "id": "ballistics",
+                    "level": 1
+                },
+                {
+                    "id": "normal_element_ammo_boost",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "attack_efficacy",
+                    "level": 1
+                },
+                {
+                    "id": "lock_on",
+                    "level": 1
+                },
+                {
+                    "id": "offensive_guard",
+                    "level": 1
+                }
+            ]
+        },
+        "velkhana": {
+            "helm": [
+                {
+                    "id": "velkhana_aegis",
+                    "level": 1
+                },
+                {
+                    "id": "ice_attack",
+                    "level": 2
+                }
+            ],
+            "great_sword": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "ice_attack",
+                    "level": 1
+                },
+                {
+                    "id": "advanced_ice_attack",
+                    "level": 1
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "ice_attack",
+                    "level": 1
+                },
+                {
+                    "id": "advanced_ice_attack",
+                    "level": 1
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "ice_attack",
+                    "level": 1
+                },
+                {
+                    "id": "advanced_ice_attack",
+                    "level": 1
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "ice_attack",
+                    "level": 1
+                },
+                {
+                    "id": "advanced_ice_attack",
+                    "level": 1
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "ice_attack",
+                    "level": 1
+                },
+                {
+                    "id": "advanced_ice_attack",
+                    "level": 1
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "ice_attack",
+                    "level": 1
+                },
+                {
+                    "id": "advanced_ice_attack",
+                    "level": 1
+                }
+            ],
+            "lance": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "ice_attack",
+                    "level": 1
+                },
+                {
+                    "id": "advanced_ice_attack",
+                    "level": 1
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "ice_attack",
+                    "level": 1
+                },
+                {
+                    "id": "advanced_ice_attack",
+                    "level": 1
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "ice_attack",
+                    "level": 1
+                },
+                {
+                    "id": "advanced_ice_attack",
+                    "level": 1
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "ice_attack",
+                    "level": 1
+                },
+                {
+                    "id": "advanced_ice_attack",
+                    "level": 1
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "ice_attack",
+                    "level": 1
+                },
+                {
+                    "id": "advanced_ice_attack",
+                    "level": 1
+                }
+            ],
+            "bow": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "ice_attack",
+                    "level": 1
+                },
+                {
+                    "id": "advanced_ice_attack",
+                    "level": 1
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "ice_attack",
+                    "level": 1
+                },
+                {
+                    "id": "advanced_ice_attack",
+                    "level": 1
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "hunter_unity",
+                    "level": 1
+                },
+                {
+                    "id": "ice_attack",
+                    "level": 1
+                },
+                {
+                    "id": "advanced_ice_attack",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "velkhana_aegis",
+                    "level": 1
+                },
+                {
+                    "id": "meditation",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "velkhana_aegis",
+                    "level": 1
+                },
+                {
+                    "id": "lock_on",
+                    "level": 1
+                },
+                {
+                    "id": "meditation",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "velkhana_aegis",
+                    "level": 1
+                },
+                {
+                    "id": "vital_ice",
+                    "level": 1
+                },
+                {
+                    "id": "meditation",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "velkhana_aegis",
+                    "level": 1
+                },
+                {
+                    "id": "reload_speed",
+                    "level": 1
+                },
+                {
+                    "id": "recoil_down",
+                    "level": 1
+                }
+            ]
+        },
+        "leather": {
+            "helm": [
+                {
+                    "id": "critical_eye",
+                    "level": 1
+                },
+                {
+                    "id": "ice_resistance",
+                    "level": 1
+                }
+            ],
+            "chest": [
+                {
+                    "id": "attack_boost",
+                    "level": 1
+                },
+                {
+                    "id": "fire_resistance",
+                    "level": 1
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "defense_boost",
+                    "level": 1
+                },
+                {
+                    "id": "thunder_resistance",
+                    "level": 1
+                }
+            ],
+            "waist": [
+                {
+                    "id": "health_boost",
+                    "level": 1
+                },
+                {
+                    "id": "water_resistance",
+                    "level": 1
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "poison_resistance",
+                    "level": 1
+                },
+                {
+                    "id": "paralysis_resistance",
+                    "level": 1
+                }
+            ]
+        },
+        "hope": {
+            "great_sword": [
+                {
+                    "id": "lock_on",
+                    "level": 1
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "lock_on",
+                    "level": 1
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "lock_on",
+                    "level": 1
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "lock_on",
+                    "level": 1
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "lock_on",
+                    "level": 1
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "lock_on",
+                    "level": 1
+                }
+            ],
+            "lance": [
+                {
+                    "id": "lock_on",
+                    "level": 1
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "lock_on",
+                    "level": 1
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "lock_on",
+                    "level": 1
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "lock_on",
+                    "level": 1
+                }
+            ],
+            "insect_glaive": [
+                {
+                    "id": "lock_on",
+                    "level": 1
+                }
+            ],
+            "bow": [
+                {
+                    "id": "earplugs",
+                    "level": 1
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "artful_dodger",
+                    "level": 1
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "guard",
+                    "level": 1
+                }
+            ]
+        },
+        "happy_hunting_new_year": {
+            "bow": [
+                {
+                    "id": "ballistics",
+                    "level": 2
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "evade_extender",
+                    "level": 3
+                },
+                {
+                    "id": "solidarity",
+                    "level": 1
+                }
+            ]
+        },
+        "bone": {
+            "great_sword": [
+                {
+                    "id": "concentration",
+                    "level": 1
+                }
+            ],
+            "long_sword": [
+                {
+                    "id": "concentration",
+                    "level": 1
+                }
+            ],
+            "sword_shield": [
+                {
+                    "id": "concentration",
+                    "level": 1
+                }
+            ],
+            "dual_blades": [
+                {
+                    "id": "concentration",
+                    "level": 1
+                }
+            ],
+            "hammer": [
+                {
+                    "id": "concentration",
+                    "level": 1
+                }
+            ],
+            "hunting_horn": [
+                {
+                    "id": "concentration",
+                    "level": 1
+                }
+            ],
+            "lance": [
+                {
+                    "id": "concentration",
+                    "level": 1
+                }
+            ],
+            "gunlance": [
+                {
+                    "id": "concentration",
+                    "level": 1
+                }
+            ],
+            "switch_axe": [
+                {
+                    "id": "concentration",
+                    "level": 1
+                }
+            ],
+            "charge_blade": [
+                {
+                    "id": "concentration",
+                    "level": 1
+                }
+            ],
+            "bow": [
+                {
+                    "id": "concentration",
+                    "level": 1
+                }
+            ],
+            "light_bowgun": [
+                {
+                    "id": "concentration",
+                    "level": 1
+                }
+            ],
+            "heavy_bowgun": [
+                {
+                    "id": "concentration",
+                    "level": 1
+                }
+            ]
+        },
+        "alloy": {
+            "great_sword": [],
+            "long_sword": [],
+            "sword_shield": [],
+            "dual_blades": [],
+            "hammer": [],
+            "hunting_horn": [],
+            "lance": [],
+            "gunlance": [],
+            "switch_axe": [],
+            "charge_blade": [],
+            "insect_glaive": [],
+            "bow": [],
+            "light_bowgun": [],
+            "heavy_bowgun": [],
+            "helm": [
+                {
+                    "id": "earplugs",
+                    "level": 3
+                }
+            ],
+            "chest": [
+                {
+                    "id": "tremor_resistance",
+                    "level": 2
+                }
+            ],
+            "gloves": [
+                {
+                    "id": "health_boost",
+                    "level": 3
+                }
+            ],
+            "waist": [
+                {
+                    "id": "defense_boost",
+                    "level": 3
+                }
+            ],
+            "greaves": [
+                {
+                    "id": "lock_on",
+                    "level": 1
+                },
+                {
+                    "id": "windproof",
+                    "level": 1
+                }
+            ]
+        }
+    }
+}

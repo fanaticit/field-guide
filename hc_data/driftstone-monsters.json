@@ -1,0 +1,101 @@
+{
+    "driftstoneDrops": [
+        {
+            "stone": "Crimson",
+            "icon": "/images/driftstones/MHNow-Crimson_Driftstone_Icon.png",
+            "monsters": [
+                "anjanath",
+                "rathalos",
+                "azure_rathalos",
+                "silver_rathalos",
+                "aknosom",
+                "magnamalo",
+                "volvidon",
+                "bazelgeuse",
+                "glavenus",
+                "espinas",
+                "quematrice"
+            ]
+        },
+        {
+            "stone": "Azure",
+            "icon": "/images/driftstones/MHNow-Azure_Driftstone_Icon.png",
+            "monsters": [
+                "great_jagras",
+                "pukei_pukei",
+                "coral_pukei_pukei",
+                "jyuratodus",
+                "rathian",
+                "pink_rathian",
+                "gold_rathian",
+                "basarios",
+                "mizutsune",
+                "wroggi",
+                "almudron",
+                "shogun_ceanataur"
+            ]
+        },
+        {
+            "stone": "Amber",
+            "icon": "/images/driftstones/MHNow-Amber_Driftstone_Icon.png",
+            "monsters": [
+                "great_girros",
+                "tobi_kadachi",
+                "fulgur_anjanath",
+                "zinogre",
+                "tzitzi_ya_ku",
+                "khezu",
+                "rajang",
+                "volvidon",
+                "bishaten",
+                "astalos",
+                "viper_tobi_kadachi"
+            ]
+        },
+        {
+            "stone": "Cyan",
+            "icon": "/images/driftstones/MHNow-Cyan_Driftstone_Icon.png",
+            "monsters": [
+                "nightshade_paolumu",
+                "legiana",
+                "radobaan",
+                "barioth",
+                "lagombi",
+                "somnacanth",
+                "beotodus",
+                "lunagaron",
+                "goss_harag",
+                "velkhana"
+            ]
+        },
+        {
+            "stone": "Black",
+            "icon": "/images/driftstones/MHNow-Black_Driftstone_Icon.png",
+            "monsters": [
+                "black_diablos",
+                "odogaron",
+                "ebony_odogaron",
+                "deviljho",
+                "brute_tigrex",
+                "nargacuga",
+                "seregios",
+                "stygian_zinogre"
+            ]
+        },
+        {
+            "stone": "Pale",
+            "icon": "/images/driftstones/MHNow-Pale_Driftstone_Icon.png",
+            "monsters": [
+                "kulu_ya_ku",
+                "barroth",
+                "paolumu",
+                "diablos",
+                "banbaro",
+                "tigrex",
+                "chatacabra",
+                "arzuros",
+                "garangolm"
+            ]
+        }
+    ]
+}

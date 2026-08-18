@@ -1,0 +1,72 @@
+{
+    "season": 9,
+    "name": "Season 9: Skybound Scalestorm",
+    "chapters": [
+        {
+            "number": 1,
+            "monsters": [
+                "almudron"
+            ]
+        },
+        {
+            "number": 2,
+            "monsters": [
+                "chatacabra",
+                "quematrice"
+            ]
+        },
+        {
+            "number": 3,
+            "monsters": [
+                "tobi_kadachi",
+                "pink_rathian"
+            ]
+        },
+        {
+            "number": 4,
+            "monsters": [
+                "magnamalo"
+            ]
+        },
+        {
+            "number": 5,
+            "monsters": [
+                "khezu",
+                "zinogre"
+            ]
+        },
+        {
+            "number": 6,
+            "monsters": [
+                "coral_pukei_pukei",
+                "viper_tobi_kadachi"
+            ]
+        },
+        {
+            "number": 7,
+            "monsters": [
+                "radobaan",
+                "diablos"
+            ]
+        },
+        {
+            "number": 8,
+            "monsters": [
+                "legiana"
+            ]
+        },
+        {
+            "number": 9,
+            "monsters": [
+                "rathalos",
+                "nargacuga"
+            ]
+        },
+        {
+            "number": 10,
+            "monsters": [
+                "seregios"
+            ]
+        }
+    ]
+}

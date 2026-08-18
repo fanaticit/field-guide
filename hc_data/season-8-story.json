@@ -1,0 +1,71 @@
+{
+    "season": 8,
+    "name": "Season 8: Interdimensional Defenders",
+    "chapters": [
+        {
+            "number": 1,
+            "monsters": [
+                "quematrice"
+            ]
+        },
+        {
+            "number": 2,
+            "monsters": [
+                "arzuros",
+                "garangolm"
+            ]
+        },
+        {
+            "number": 3,
+            "monsters": [
+                "glavenus"
+            ]
+        },
+        {
+            "number": 4,
+            "monsters": [
+                "goss_harag"
+            ]
+        },
+        {
+            "number": 5,
+            "monsters": [
+                "somnacanth",
+                "coral_pukei_pukei"
+            ]
+        },
+        {
+            "number": 6,
+            "monsters": [
+                "magnamalo",
+                "espinas"
+            ]
+        },
+        {
+            "number": 7,
+            "monsters": [
+                "volvidon",
+                "brute_tigrex"
+            ]
+        },
+        {
+            "number": 8,
+            "monsters": [
+                "deviljho"
+            ]
+        },
+        {
+            "number": 9,
+            "monsters": [
+                "lunagaron",
+                "fulgur_anjanath"
+            ]
+        },
+        {
+            "number": 10,
+            "monsters": [
+                "astalos"
+            ]
+        }
+    ]
+}
