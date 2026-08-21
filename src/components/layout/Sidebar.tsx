@@ -5,10 +5,14 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   X,
   Flame,
+  BookMarked,
+  Bug,
+  Shield,
 } from 'lucide-react';
-import { useUIStore, type Page } from '../../store/uiStore';
+import { useUIStore, type Page, type InvestigationSubPage } from '../../store/uiStore';
 import { cn } from '../../lib/utils';
 
 interface NavItem {
@@ -16,6 +20,12 @@ interface NavItem {
   label: string;
   icon: React.ComponentType<{ className?: string; size?: number }>;
   description: string;
+}
+
+interface SubNavItem {
+  id: InvestigationSubPage;
+  label: string;
+  icon: React.ComponentType<{ className?: string; size?: number }>;
 }
 
 const navItems: NavItem[] = [
@@ -38,6 +48,12 @@ const navItems: NavItem[] = [
     description: 'Challenges & Sharing',
   },
   {
+    id: 'investigation-notes',
+    label: 'Investigation Notes',
+    icon: BookMarked,
+    description: 'Monsters & Lore',
+  },
+  {
     id: 'settings',
     label: 'Settings',
     icon: Settings,
@@ -45,9 +61,25 @@ const navItems: NavItem[] = [
   },
 ];
 
+const investigationSubNav: SubNavItem[] = [
+  { id: 'monster-guide', label: 'Monster Guide', icon: Bug },
+  { id: 'weapons', label: 'Weapons', icon: Sword },
+  { id: 'armour', label: 'Armour', icon: Shield },
+];
+
 export default function Sidebar() {
-  const { activePage, sidebarCollapsed, mobileMenuOpen, setActivePage, toggleSidebar, setMobileMenuOpen } =
-    useUIStore();
+  const {
+    activePage,
+    activeSubPage,
+    sidebarCollapsed,
+    mobileMenuOpen,
+    setActivePage,
+    setActiveSubPage,
+    toggleSidebar,
+    setMobileMenuOpen,
+  } = useUIStore();
+
+  const isInvestigationActive = activePage === 'investigation-notes';
 
   return (
     <>
@@ -115,71 +147,109 @@ export default function Sidebar() {
           {navItems.map((item) => {
             const isActive = activePage === item.id;
             const Icon = item.icon;
+            const isInvestigation = item.id === 'investigation-notes';
 
             return (
-              <button
-                key={item.id}
-                id={`nav-${item.id}`}
-                onClick={() => setActivePage(item.id)}
-                aria-current={isActive ? 'page' : undefined}
-                className={cn(
-                  'group relative flex w-full items-center gap-3 rounded-lg px-3 py-2.5',
-                  'text-left transition-all duration-200',
-                  isActive
-                    ? 'bg-mh-gold-500/10 text-mh-gold-400'
-                    : 'text-mh-slate-400 hover:bg-mh-slate-800 hover:text-mh-slate-200',
-                  sidebarCollapsed && 'justify-center px-0',
-                )}
-              >
-                {/* Active indicator bar */}
-                {isActive && (
-                  <span
-                    className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-r-full bg-mh-gold-400 glow-gold"
-                    aria-hidden="true"
-                  />
-                )}
-
-                <Icon
-                  size={20}
+              <div key={item.id}>
+                <button
+                  id={`nav-${item.id}`}
+                  onClick={() => setActivePage(item.id)}
+                  aria-current={isActive ? 'page' : undefined}
                   className={cn(
-                    'shrink-0 transition-colors duration-200',
-                    isActive ? 'text-mh-gold-400' : 'text-mh-slate-500 group-hover:text-mh-slate-300',
+                    'group relative flex w-full items-center gap-3 rounded-lg px-3 py-2.5',
+                    'text-left transition-all duration-200',
+                    isActive
+                      ? 'bg-mh-gold-500/10 text-mh-gold-400'
+                      : 'text-mh-slate-400 hover:bg-mh-slate-800 hover:text-mh-slate-200',
+                    sidebarCollapsed && 'justify-center px-0',
                   )}
-                />
+                >
+                  {/* Active indicator bar */}
+                  {isActive && (
+                    <span
+                      className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-r-full bg-mh-gold-400 glow-gold"
+                      aria-hidden="true"
+                    />
+                  )}
 
-                {/* Labels — hidden when collapsed */}
-                {!sidebarCollapsed && (
-                  <div className="min-w-0">
-                    <p
+                  <Icon
+                    size={20}
+                    className={cn(
+                      'shrink-0 transition-colors duration-200',
+                      isActive ? 'text-mh-gold-400' : 'text-mh-slate-500 group-hover:text-mh-slate-300',
+                    )}
+                  />
+
+                  {/* Labels — hidden when collapsed */}
+                  {!sidebarCollapsed && (
+                    <div className="min-w-0 flex-1">
+                      <p
+                        className={cn(
+                          'text-sm font-semibold leading-none',
+                          isActive ? 'text-mh-gold-300' : '',
+                        )}
+                      >
+                        {item.label}
+                      </p>
+                      <p className="mt-0.5 text-[10px] text-mh-slate-500">
+                        {item.description}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Chevron for expandable section — Investigation Notes */}
+                  {!sidebarCollapsed && isInvestigation && (
+                    <ChevronDown
+                      size={14}
                       className={cn(
-                        'text-sm font-semibold leading-none',
-                        isActive ? 'text-mh-gold-300' : '',
+                        'shrink-0 transition-transform duration-200 text-mh-slate-500',
+                        isActive && 'rotate-180 text-mh-gold-500',
                       )}
+                    />
+                  )}
+
+                  {/* Tooltip when collapsed */}
+                  {sidebarCollapsed && (
+                    <div
+                      className={cn(
+                        'pointer-events-none absolute left-full ml-3 whitespace-nowrap',
+                        'rounded-md bg-mh-slate-800 px-2.5 py-1.5 text-xs font-semibold text-mh-slate-200',
+                        'border border-mh-slate-700 shadow-xl',
+                        'opacity-0 transition-opacity duration-150 group-hover:opacity-100',
+                        'z-50',
+                      )}
+                      role="tooltip"
                     >
                       {item.label}
-                    </p>
-                    <p className="mt-0.5 text-[10px] text-mh-slate-500">
-                      {item.description}
-                    </p>
-                  </div>
-                )}
+                    </div>
+                  )}
+                </button>
 
-                {/* Tooltip when collapsed */}
-                {sidebarCollapsed && (
-                  <div
-                    className={cn(
-                      'pointer-events-none absolute left-full ml-3 whitespace-nowrap',
-                      'rounded-md bg-mh-slate-800 px-2.5 py-1.5 text-xs font-semibold text-mh-slate-200',
-                      'border border-mh-slate-700 shadow-xl',
-                      'opacity-0 transition-opacity duration-150 group-hover:opacity-100',
-                      'z-50',
-                    )}
-                    role="tooltip"
-                  >
-                    {item.label}
+                {/* ── Investigation Notes sub-nav ── */}
+                {isInvestigation && isInvestigationActive && !sidebarCollapsed && (
+                  <div className="mt-1 ml-3 flex flex-col gap-0.5 border-l border-mh-slate-700 pl-3">
+                    {investigationSubNav.map((sub) => {
+                      const isSubActive = activeSubPage === sub.id;
+                      const SubIcon = sub.icon;
+                      return (
+                        <button
+                          key={sub.id}
+                          onClick={() => setActiveSubPage(sub.id)}
+                          className={cn(
+                            'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-xs transition-all duration-150',
+                            isSubActive
+                              ? 'bg-mh-gold-500/10 text-mh-gold-400 font-semibold'
+                              : 'text-mh-slate-500 hover:bg-mh-slate-800 hover:text-mh-slate-300',
+                          )}
+                        >
+                          <SubIcon size={13} className="shrink-0" />
+                          {sub.label}
+                        </button>
+                      );
+                    })}
                   </div>
                 )}
-              </button>
+              </div>
             );
           })}
         </nav>

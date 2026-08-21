@@ -5,6 +5,7 @@ import FieldGuide from './pages/FieldGuide';
 import BuildPlanner from './pages/BuildPlanner';
 import CommunityHub from './pages/CommunityHub';
 import SettingsPage from './pages/Settings';
+import InvestigationNotes from './pages/investigation-notes/InvestigationNotes';
 import { cn } from './lib/utils';
 
 function PageContent() {
@@ -17,6 +18,8 @@ function PageContent() {
       return <BuildPlanner />;
     case 'community-hub':
       return <CommunityHub />;
+    case 'investigation-notes':
+      return <InvestigationNotes />;
     case 'settings':
       return <SettingsPage />;
     default:

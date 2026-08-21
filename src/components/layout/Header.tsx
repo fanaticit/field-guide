@@ -5,6 +5,7 @@ const pageTitles: Record<Page, { title: string; subtitle: string }> = {
   'field-guide': { title: 'Field Guide', subtitle: 'Quests & Challenge Todos' },
   'build-planner': { title: 'Build Planner', subtitle: 'Weapons, Armour & Loadouts' },
   'community-hub': { title: 'Community Hub', subtitle: 'Browse & Share Challenges' },
+  'investigation-notes': { title: 'Investigation Notes', subtitle: 'Monsters, Weapons & Armour' },
   settings: { title: 'Settings', subtitle: 'Preferences & Account' },
 };
 
