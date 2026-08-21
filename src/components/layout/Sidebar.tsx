@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { useUIStore, type Page, type InvestigationSubPage } from '../../store/uiStore';
 import { cn } from '../../lib/utils';
+import UserMenu from '../auth/UserMenu';
 
 interface NavItem {
   id: Page;
@@ -253,6 +254,9 @@ export default function Sidebar() {
             );
           })}
         </nav>
+
+        {/* ── User Menu — sign in / profile ── */}
+        <UserMenu collapsed={sidebarCollapsed} />
 
         {/* ── Collapse Toggle — desktop only ── */}
         <div className="hidden shrink-0 border-t border-mh-slate-700 p-3 lg:block">
