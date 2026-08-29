@@ -975,6 +975,19 @@
       "nameJa": "ハロウィン",
       "type": "small",
       "icon": "/images/monsters/MHNow-Halloween_Icon.png"
+    },
+    {
+      "id": "radiant_great_girros",
+      "name": "Radiant Great Girros",
+      "nameJa": "",
+      "type": "large",
+      "tier": "low",
+      "element": [],
+      "weaknesses": [
+        "dragon",
+        "sleep"
+      ],
+      "icon": "/images/monsters/MHNow-Radiant_Great_Girros_Icon.png"
     }
   ]
 }

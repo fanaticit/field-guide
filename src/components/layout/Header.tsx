@@ -2,11 +2,13 @@ import { Menu, ChevronRight } from 'lucide-react';
 import { useUIStore, type Page } from '../../store/uiStore';
 
 const pageTitles: Record<Page, { title: string; subtitle: string }> = {
-  'field-guide': { title: 'Field Guide', subtitle: 'Quests & Challenge Todos' },
-  'build-planner': { title: 'Build Planner', subtitle: 'Weapons, Armour & Loadouts' },
-  'community-hub': { title: 'Community Hub', subtitle: 'Browse & Share Challenges' },
-  'investigation-notes': { title: 'Investigation Notes', subtitle: 'Monsters, Weapons & Armour' },
-  settings: { title: 'Settings', subtitle: 'Preferences & Account' },
+  'field-guide':        { title: 'Field Guide',         subtitle: 'Quests & Challenge Todos' },
+  'build-planner':      { title: 'Build Planner',       subtitle: 'Weapons, Armour & Loadouts' },
+  'community-hub':      { title: 'Community Hub',       subtitle: 'Browse & Share Challenges' },
+  'investigation-notes':{ title: 'Investigation Notes', subtitle: 'Monsters, Weapons & Armour' },
+  'admin':              { title: 'Admin Panel',          subtitle: 'Manage game data & community' },
+  settings:             { title: 'Settings',            subtitle: 'Preferences & Account' },
+  profile:              { title: 'Hunter Profile',      subtitle: 'Preferences & Identity' },
 };
 
 export default function Header() {

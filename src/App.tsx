@@ -6,6 +6,7 @@ import BuildPlanner from './pages/BuildPlanner';
 import CommunityHub from './pages/CommunityHub';
 import SettingsPage from './pages/Settings';
 import InvestigationNotes from './pages/investigation-notes/InvestigationNotes';
+import AdminPage from './pages/admin/AdminPage';
 import { cn } from './lib/utils';
 
 function PageContent() {
@@ -20,7 +21,10 @@ function PageContent() {
       return <CommunityHub />;
     case 'investigation-notes':
       return <InvestigationNotes />;
+    case 'admin':
+      return <AdminPage />;
     case 'settings':
+    case 'profile':
       return <SettingsPage />;
     default:
       return <FieldGuide />;

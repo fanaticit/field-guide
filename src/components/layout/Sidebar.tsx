@@ -11,8 +11,10 @@ import {
   BookMarked,
   Bug,
   Shield,
+  ShieldAlert,
 } from 'lucide-react';
 import { useUIStore, type Page, type InvestigationSubPage } from '../../store/uiStore';
+import { useAuthStore, selectIsAdmin } from '../../store/authStore';
 import { cn } from '../../lib/utils';
 import UserMenu from '../auth/UserMenu';
 
@@ -21,6 +23,7 @@ interface NavItem {
   label: string;
   icon: React.ComponentType<{ className?: string; size?: number }>;
   description: string;
+  adminOnly?: boolean;
 }
 
 interface SubNavItem {
@@ -55,10 +58,17 @@ const navItems: NavItem[] = [
     description: 'Monsters & Lore',
   },
   {
+    id: 'admin',
+    label: 'Admin Panel',
+    icon: ShieldAlert,
+    description: 'Manage game data',
+    adminOnly: true,
+  },
+  {
     id: 'settings',
-    label: 'Settings',
+    label: 'Profile & Settings',
     icon: Settings,
-    description: 'Preferences',
+    description: 'Preferences & Identity',
   },
 ];
 
@@ -80,7 +90,11 @@ export default function Sidebar() {
     setMobileMenuOpen,
   } = useUIStore();
 
+  const isAdmin = useAuthStore(selectIsAdmin);
   const isInvestigationActive = activePage === 'investigation-notes';
+
+  // Filter nav items — hide adminOnly items for non-admins
+  const visibleNavItems = navItems.filter((item) => !item.adminOnly || isAdmin);
 
   return (
     <>
@@ -97,9 +111,7 @@ export default function Sidebar() {
         className={cn(
           'sidebar-transition fixed left-0 top-0 z-50 flex h-screen flex-col',
           'border-r border-mh-slate-700 bg-mh-slate-950',
-          // Desktop
           sidebarCollapsed ? 'w-[72px]' : 'w-[260px]',
-          // Mobile: slide in/out
           'lg:translate-x-0',
           mobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
         )}
@@ -112,13 +124,11 @@ export default function Sidebar() {
             sidebarCollapsed ? 'justify-center' : 'justify-between gap-3',
           )}
         >
-          {/* Logo mark */}
           <div className="flex shrink-0 items-center gap-2.5">
             <div className="relative flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-mh-gold-500 to-mh-gold-700 glow-gold">
               <Flame size={20} className="text-mh-slate-900" />
             </div>
 
-            {/* App name — hidden when collapsed */}
             {!sidebarCollapsed && (
               <div className="min-w-0">
                 <p className="font-display text-sm font-bold leading-none tracking-wide text-mh-gold-400 text-glow-gold">
@@ -131,7 +141,6 @@ export default function Sidebar() {
             )}
           </div>
 
-          {/* Close button — mobile only */}
           {!sidebarCollapsed && (
             <button
               onClick={() => setMobileMenuOpen(false)}
@@ -145,10 +154,11 @@ export default function Sidebar() {
 
         {/* ── Navigation ── */}
         <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-3" role="navigation" aria-label="Main navigation">
-          {navItems.map((item) => {
+          {visibleNavItems.map((item) => {
             const isActive = activePage === item.id;
             const Icon = item.icon;
             const isInvestigation = item.id === 'investigation-notes';
+            const isAdminItem = item.id === 'admin';
 
             return (
               <div key={item.id}>
@@ -159,8 +169,12 @@ export default function Sidebar() {
                   className={cn(
                     'group relative flex w-full items-center gap-3 rounded-lg px-3 py-2.5',
                     'text-left transition-all duration-200',
-                    isActive
+                    isActive && !isAdminItem
                       ? 'bg-mh-gold-500/10 text-mh-gold-400'
+                      : isActive && isAdminItem
+                      ? 'bg-mh-gold-500/10 text-mh-gold-400'
+                      : isAdminItem
+                      ? 'text-mh-gold-600 hover:bg-mh-gold-500/10 hover:text-mh-gold-400'
                       : 'text-mh-slate-400 hover:bg-mh-slate-800 hover:text-mh-slate-200',
                     sidebarCollapsed && 'justify-center px-0',
                   )}
@@ -177,19 +191,20 @@ export default function Sidebar() {
                     size={20}
                     className={cn(
                       'shrink-0 transition-colors duration-200',
-                      isActive ? 'text-mh-gold-400' : 'text-mh-slate-500 group-hover:text-mh-slate-300',
+                      isActive
+                        ? 'text-mh-gold-400'
+                        : isAdminItem
+                        ? 'text-mh-gold-600 group-hover:text-mh-gold-400'
+                        : 'text-mh-slate-500 group-hover:text-mh-slate-300',
                     )}
                   />
 
-                  {/* Labels — hidden when collapsed */}
                   {!sidebarCollapsed && (
                     <div className="min-w-0 flex-1">
-                      <p
-                        className={cn(
-                          'text-sm font-semibold leading-none',
-                          isActive ? 'text-mh-gold-300' : '',
-                        )}
-                      >
+                      <p className={cn(
+                        'text-sm font-semibold leading-none',
+                        isActive ? 'text-mh-gold-300' : '',
+                      )}>
                         {item.label}
                       </p>
                       <p className="mt-0.5 text-[10px] text-mh-slate-500">
@@ -198,7 +213,7 @@ export default function Sidebar() {
                     </div>
                   )}
 
-                  {/* Chevron for expandable section — Investigation Notes */}
+                  {/* Chevron for Investigation Notes */}
                   {!sidebarCollapsed && isInvestigation && (
                     <ChevronDown
                       size={14}
@@ -226,7 +241,7 @@ export default function Sidebar() {
                   )}
                 </button>
 
-                {/* ── Investigation Notes sub-nav ── */}
+                {/* Investigation Notes sub-nav */}
                 {isInvestigation && isInvestigationActive && !sidebarCollapsed && (
                   <div className="mt-1 ml-3 flex flex-col gap-0.5 border-l border-mh-slate-700 pl-3">
                     {investigationSubNav.map((sub) => {
@@ -255,7 +270,7 @@ export default function Sidebar() {
           })}
         </nav>
 
-        {/* ── User Menu — sign in / profile ── */}
+        {/* ── User Menu ── */}
         <UserMenu collapsed={sidebarCollapsed} />
 
         {/* ── Collapse Toggle — desktop only ── */}
