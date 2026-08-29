@@ -1,9 +1,17 @@
 #!/usr/bin/env python3
 """
-Card Image Extractor & Vision Validator.
-
-Extracts the clean card/scroll image, verifies the crop using Gemini Vision,
-and automatically adjusts the bounding box if the initial cut is misaligned.
+Visage Card Automation & Supabase Ingestion Pipeline:
+1. Unified 1-Pass OCR: Reads title, core effect, potential set bonuses, and points in a single API call.
+2. Automatic 429 Retry & Rate Limiting: Gracefully handles quota limits.
+3. Supabase Lookup: Checks if the visage record and its image already exist in the database.
+4. Smart Image Skip: Skips card cropping/upload if an image already exists (override with --enable-image-update).
+5. Auto Storage Bucket Creation: Creates the public Supabase storage bucket if missing.
+6. Smart Merging & Ingestion:
+   - Updates core_effect.
+   - Merges Potential Set Effects / Ink Types (never removes existing sets).
+   - Updates Points and reports any point value changes.
+   - Supports --enable-updates to apply changes to Supabase.
+   - Supports --clear-visage to reset attributes and start fresh from monster title.
 """
 
 import os
@@ -57,6 +65,13 @@ STORAGE_BUCKET = os.getenv("SUPABASE_STORAGE_BUCKET", "card_images")
 TABLE_NAME = os.getenv("SUPABASE_TABLE_NAME", "visages")
 MODEL_NAME = os.getenv("GEMINI_MODEL", "gemini-3.6-flash")
 
+# Known Monster Hunter Outlanders Ink Types
+VALID_INK_TYPES = {
+    "thunder", "fire", "water", "ice", "dragon",
+    "poison", "paralysis", "sleep", "blast",
+    "resonance", "grace", "protection"
+}
+
 # Zoomed bounding box for the scroll icon in 2556x1179 screenshots (excluding bottom banner)
 DEFAULT_BOX = {
     "x": 998,
@@ -70,12 +85,13 @@ def init_clients(dry_run: bool = False):
     """Initializes Gemini and Supabase clients."""
     if not GEMINI_API_KEY:
         print("\n[ERROR] GEMINI_API_KEY is missing! Set it in your .env file.")
+        print("Get a free key from: https://aistudio.google.com/app/apikey (starts with AIzaSy...)")
         sys.exit(1)
 
     if GEMINI_API_KEY.startswith("AQ."):
         print("\n[WARNING] Your GEMINI_API_KEY starts with 'AQ.'.")
-        print("Google AI Studio API keys always start with 'AIzaSy...'.")
-        print("Please visit https://aistudio.google.com/app/apikey and generate a key there.\n")
+        print("This key has very low quota limits (20 requests/day).")
+        print("For 1,500 free requests/day, generate an API key at: https://aistudio.google.com/app/apikey (starts with AIzaSy...)\n")
 
     if USE_MODERN_SDK:
         ai_client = genai.Client(api_key=GEMINI_API_KEY)
@@ -84,10 +100,27 @@ def init_clients(dry_run: bool = False):
         ai_client = legacy_genai.GenerativeModel(MODEL_NAME)
 
     supabase: Client = None
-    if not dry_run and SUPABASE_URL and SUPABASE_KEY:
-        supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+    if SUPABASE_URL and SUPABASE_KEY:
+        try:
+            supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+        except Exception as e:
+            print(f"  [!] Note on Supabase client init: {e}")
 
     return ai_client, supabase
+
+
+def ensure_storage_bucket(supabase: Client):
+    """Ensures the storage bucket exists in Supabase."""
+    if not supabase:
+        return
+    try:
+        buckets = supabase.storage.list_buckets()
+        existing = [b.name for b in buckets] if buckets else []
+        if STORAGE_BUCKET not in existing:
+            supabase.storage.create_bucket(STORAGE_BUCKET, options={"public": True})
+            print(f"  [✓] Created public storage bucket '{STORAGE_BUCKET}' in Supabase.")
+    except Exception:
+        pass
 
 
 def apply_pixel_crop(img, x: int, y: int, w: int, h: int):
@@ -100,249 +133,309 @@ def apply_pixel_crop(img, x: int, y: int, w: int, h: int):
     return img[y1:y2, x1:x2]
 
 
-def apply_normalized_crop(img, box_2d: list):
-    """
-    Crops an image using normalized [ymin, xmin, ymax, xmax] coordinates (0-1000 scale).
-    """
-    h_img, w_img = img.shape[:2]
-    ymin, xmin, ymax, xmax = box_2d
-    
-    y1 = int((ymin / 1000) * h_img)
-    x1 = int((xmin / 1000) * w_img)
-    y2 = int((ymax / 1000) * h_img)
-    x2 = int((xmax / 1000) * w_img)
+# -------------------------------------------------------------
+# UNIFIED OCR PROMPT (1 API CALL FOR EVERYTHING)
+# -------------------------------------------------------------
+UNIFIED_OCR_PROMPT = """
+You are an expert game data analyzer for Monster Hunter Outlanders / Now Visage cards.
+Analyze this complete game screenshot carefully. Extract all visible text, numbers, core effects, potential set bonuses, and points.
 
-    return img[max(0, y1):min(h_img, y2), max(0, x1):min(w_img, x2)]
-
-
-CROP_VERIFICATION_PROMPT = """
-You are an expert image cropping assistant.
-Look at the full game screenshot. We want to extract ONLY the Monster Visage scroll card icon (which can be yellow, purple, or other parchment colors) featuring the monster emblem located in the upper-middle area of the screen.
-
-Initial crop coordinates provided: x={x}, y={y}, width={w}, height={h} on a {w_img}x{h_img} image.
-
-Determine if this initial cut accurately and cleanly captures the complete scroll without cutting off the corners, curled edges, or including the lower 'Core Effect' banner.
+Specifically extract:
+1. Title / Header: Look at the top center header starting with "Visage: <Monster Name>" (e.g. "Visage: Pukei-Pukei", "Visage: Great Girros", "Visage: Kulu-Ya-Ku").
+2. Monster Name: Clean display name (e.g. "Pukei-Pukei", "Great Girros").
+3. Visage ID: Normalized lowercase snake_case identifier (e.g. "pukei_pukei", "great_girros", "kulu_ya_ku").
+4. Core Effect: The primary inherent skill effect title and full description text shown under "Core Effect".
+5. Potential Set Effects / Ink Types: Look for any ink or set bonus type mentioned (e.g. "Ink of Poison", "Ink of Thunder", "Ink of Fire", "Ink of Water", "Ink of Ice", "Ink of Dragon", "Ink of Paralysis", "Ink of Sleep", "Ink of Blast", "Ink of Resonance", "Ink of Grace", "Ink of Protection").
+6. Points: The card point cost value (integer, e.g. 1, 2, 3).
+7. Monster Tier / Type: "small" or "large".
 
 Return a STRICT JSON object:
-{{
-  "is_good_crop": boolean,
-  "feedback": "Short feedback on the crop quality",
-  "box_2d": [ymin, xmin, ymax, xmax]
-}}
-
-Note: `box_2d` must be the exact normalized bounding box [ymin, xmin, ymax, xmax] on a scale of 0 to 1000 relative to the FULL screenshot.
+{
+  "title": "Full title (e.g. 'Visage: Pukei-Pukei')",
+  "monster_name": "Monster name (e.g. 'Pukei-Pukei')",
+  "visage_id": "Lowercase snake_case ID (e.g. 'pukei_pukei')",
+  "file_slug": "Filename slug (e.g. 'visage_pukei_pukei')",
+  "monster_type": "'small' or 'large'",
+  "points": integer (e.g. 1, 2),
+  "rarity": integer (1 to 10),
+  "core_effect": {
+    "name": "Effect title if shown",
+    "description": "Full description text of the core effect"
+  },
+  "potential_set_effects": [
+    {
+      "name": "e.g. 'Ink of Poison'",
+      "ink_type": "lowercase ink type (e.g. 'poison', 'thunder', 'fire', 'water', 'ice', 'dragon', 'paralysis', 'sleep', 'blast', 'resonance', 'grace', 'protection')",
+      "description": "Set effect description if shown"
+    }
+  ],
+  "ink_types": ["array of lowercase ink types found, e.g. 'poison'"],
+  "secondary_effects": []
+}
 """
 
 
-def verify_and_refine_crop(image_path: Path, ai_client) -> np.ndarray:
-    """
-    Loads full image, inspects with AI, and returns the best cropped image.
-    """
-    img = cv2.imread(str(image_path))
-    if img is None:
-        print(f"  [!] Could not read image: {image_path}")
+def extract_unified_ocr(image_path: Path, ai_client, max_retries: int = 3) -> dict:
+    """Performs unified OCR in 1 API call with automatic 429 retry backoff."""
+    print("  [*] Running Unified OCR for Title, Core Effect, Potential Sets & Points...")
+    pil_image = Image.open(image_path)
+
+    for attempt in range(1, max_retries + 1):
+        try:
+            if USE_MODERN_SDK:
+                response = ai_client.models.generate_content(
+                    model=MODEL_NAME,
+                    contents=[UNIFIED_OCR_PROMPT, pil_image],
+                    config=types.GenerateContentConfig(
+                        response_mime_type="application/json"
+                    )
+                )
+                raw_text = response.text
+            else:
+                response = ai_client.generate_content(
+                    [UNIFIED_OCR_PROMPT, pil_image],
+                    generation_config={"response_mime_type": "application/json"}
+                )
+                raw_text = response.text
+
+            return json.loads(raw_text)
+        except Exception as e:
+            err_str = str(e)
+            if "429" in err_str or "RESOURCE_EXHAUSTED" in err_str:
+                wait_time = 15 * attempt
+                print(f"  [!] Rate limit (429) hit. Waiting {wait_time}s before retry (Attempt {attempt}/{max_retries})...")
+                time.sleep(wait_time)
+            else:
+                print(f"  [!] OCR error: {e}")
+                break
+
+    return {}
+
+
+# -------------------------------------------------------------
+# SUPABASE LOOKUPS
+# -------------------------------------------------------------
+def lookup_supabase_visage(visage_id: str, monster_name: str, supabase: Client):
+    """Checks if the visage record exists in Supabase."""
+    if supabase is None:
         return None
 
-    h_img, w_img = img.shape[:2]
-
-    # Calculate default crop coordinates scaled to resolution
-    scale_x = w_img / 2556.0
-    scale_y = h_img / 1179.0
-
-    x = int(DEFAULT_BOX["x"] * scale_x)
-    y = int(DEFAULT_BOX["y"] * scale_y)
-    w = int(DEFAULT_BOX["w"] * scale_x)
-    h = int(DEFAULT_BOX["h"] * scale_y)
-
-    prompt = CROP_VERIFICATION_PROMPT.format(
-        x=x, y=y, w=w, h=h, w_img=w_img, h_img=h_img
-    )
-
-    print("  [*] Verifying crop area with Gemini...")
     try:
-        pil_image = Image.open(image_path)
-        if USE_MODERN_SDK:
-            response = ai_client.models.generate_content(
-                model=MODEL_NAME,
-                contents=[prompt, pil_image],
-                config=types.GenerateContentConfig(
-                    response_mime_type="application/json"
-                )
-            )
-            raw_text = response.text
-        else:
-            response = ai_client.generate_content(
-                [prompt, pil_image],
-                generation_config={"response_mime_type": "application/json"}
-            )
-            raw_text = response.text
-
-        result = json.loads(raw_text)
-        print(f"  [*] AI Crop Check: {result.get('feedback')}")
-
-        if result.get("is_good_crop", False):
-            print("  [✓] Initial crop validated successfully.")
-            return apply_pixel_crop(img, x, y, w, h)
-        
-        box_2d = result.get("box_2d")
-        if box_2d and len(box_2d) == 4:
-            print(f"  [✓] Applying AI-corrected bounding box: {box_2d}")
-            return apply_normalized_crop(img, box_2d)
-
+        res = (
+            supabase.table(TABLE_NAME)
+            .select("*")
+            .or_(f"id.eq.{visage_id},name.ilike.%{monster_name}%")
+            .limit(1)
+            .execute()
+        )
+        if res.data and len(res.data) > 0:
+            return res.data[0]
     except Exception as e:
-        print(f"  [!] AI validation fallback to default slice: {e}")
-
-    # Fallback to initial pixel crop if AI fails
-    return apply_pixel_crop(img, x, y, w, h)
+        print(f"  [!] Supabase lookup note: {e}")
+    return None
 
 
-CARD_EXTRACTION_PROMPT = """
-You are an expert game data analyzer for Monster Hunter.
-Look at this game screenshot.
-
-1. Locate the header text directly above the monster scroll icon in the top-center of the screen.
-   It starts with "Visage:" followed by the monster/card name (e.g. "Visage: Pukei-Pukei", "Visage: Great Girros", "Visage: Kulu-Ya-Ku", etc.).
-2. Extract the full title (e.g. "Visage: Pukei-Pukei") and the clean monster name (e.g. "Pukei-Pukei").
-3. Create a clean filename slug in lowercase snake_case (e.g. "visage_pukei_pukei").
-4. If visible on screen, extract any stats, ink types, or core effect details.
-
-Return a STRICT JSON object:
-{{
-  "title": "Full title string (e.g. 'Visage: Pukei-Pukei')",
-  "name": "Monster or card name (e.g. 'Pukei-Pukei')",
-  "id": "Clean snake_case id (e.g. 'visage_pukei_pukei' or 'pukei_pukei')",
-  "file_slug": "Clean filename slug (e.g. 'visage_pukei_pukei')",
-  "monster_type": "'small' or 'large'",
-  "points": 1,
-  "rarity": 1,
-  "ink_types": ["array of elements/ink types visible on card or null"],
-  "description": "Any visible effect or notes text"
-}}
-"""
-
-
-def extract_card_metadata(image_path: Path, ai_client) -> dict:
-    """
-    Sends the header region (containing 'Visage: ...') to Gemini to read the title text
-    and extract structured metadata without saving title images to disk.
-    """
-    print("  [*] Reading 'Visage: ...' title text with Gemini Vision...")
+def lookup_set_bonus_skill(set_name: str, supabase: Client):
+    """Finds a matching set bonus skill ID in public.skills."""
+    if supabase is None or not set_name:
+        return None
     try:
-        img = cv2.imread(str(image_path))
-        if img is None:
-            return {}
-        h_img, w_img = img.shape[:2]
-        scale_x = w_img / 2556.0
-        scale_y = h_img / 1179.0
-        
-        # Crop header area in memory for clean OCR
-        y1, y2 = int(30 * scale_y), int(160 * scale_y)
-        x1, x2 = int(700 * scale_x), int(1850 * scale_x)
-        header_crop = img[y1:y2, x1:x2]
-        header_rgb = cv2.cvtColor(header_crop, cv2.COLOR_BGR2RGB)
-        pil_header = Image.fromarray(header_rgb)
-
-        if USE_MODERN_SDK:
-            response = ai_client.models.generate_content(
-                model=MODEL_NAME,
-                contents=[CARD_EXTRACTION_PROMPT, pil_header],
-                config=types.GenerateContentConfig(
-                    response_mime_type="application/json"
-                )
-            )
-            raw_text = response.text
-        else:
-            response = ai_client.generate_content(
-                [CARD_EXTRACTION_PROMPT, pil_header],
-                generation_config={"response_mime_type": "application/json"}
-            )
-            raw_text = response.text
-
-        data = json.loads(raw_text)
-        return data
-    except Exception as e:
-        print(f"  [!] AI title extraction note: {e}")
-        return {}
+        res = (
+            supabase.table("skills")
+            .select("id, name")
+            .or_(f"name.ilike.%{set_name}%,id.ilike.%{set_name}%")
+            .limit(1)
+            .execute()
+        )
+        if res.data and len(res.data) > 0:
+            return res.data[0]["id"]
+    except Exception:
+        pass
+    return None
 
 
+# -------------------------------------------------------------
+# MAIN PROCESS FUNCTION
+# -------------------------------------------------------------
 def process_single_image(
     file_path: Path,
     ai_client,
     supabase: Client,
     output_dir: Path,
+    enable_image_update: bool = False,
+    enable_updates: bool = False,
+    clear_visage: bool = False,
     dry_run: bool = False
 ):
-    print(f"\n[+] Processing: {file_path.name}")
+    print(f"\n{'='*70}")
+    print(f"[+] Processing: {file_path.name}")
+    print(f"{'='*70}")
 
-    # 1. Extract Title / Name with AI
-    metadata = extract_card_metadata(file_path, ai_client)
-    title = metadata.get("title") or f"Visage_{file_path.stem}"
-    file_slug = metadata.get("file_slug") or metadata.get("id") or f"visage_{file_path.stem.lower()}"
-    card_name = metadata.get("name") or file_path.stem
+    # 1. Unified OCR (1 API call)
+    ocr_data = extract_unified_ocr(file_path, ai_client)
+    visage_id = ocr_data.get("visage_id") or file_path.stem.lower().replace("img_", "")
+    monster_name = ocr_data.get("monster_name") or file_path.stem
+    title = ocr_data.get("title") or f"Visage: {monster_name}"
+    file_slug = ocr_data.get("file_slug") or f"visage_{visage_id}"
 
-    print(f"  [✓] Detected Card Title: '{title}' (Name: '{card_name}')")
+    print(f"  [1] Title OCR Detected: '{title}'")
+    print(f"      -> ID: '{visage_id}' | Name: '{monster_name}' | Slug: '{file_slug}'")
 
-    # 2. Crop zoomed scroll
-    img = cv2.imread(str(file_path))
-    if img is None:
-        print(f"  [X] Failed to read image: {file_path}")
-        return False
+    # 2. Supabase DB Lookup
+    existing_record = lookup_supabase_visage(visage_id, monster_name, supabase)
+    has_existing_image = False
+    existing_img_url = None
 
-    h_img, w_img = img.shape[:2]
-    scale_x = w_img / 2556.0
-    scale_y = h_img / 1179.0
+    if existing_record:
+        existing_img_url = existing_record.get("image_small")
+        has_existing_image = bool(existing_img_url)
+        print(f"  [2] Database Record: FOUND (id='{existing_record.get('id')}', points={existing_record.get('points')}, sets={existing_record.get('ink_types')})")
+        if has_existing_image:
+            print(f"      Current Small Image: {existing_img_url}")
+    else:
+        print(f"  [2] Database Record: NOT FOUND in Supabase (will be inserted)")
 
-    x = int(DEFAULT_BOX["x"] * scale_x)
-    y = int(DEFAULT_BOX["y"] * scale_y)
-    w = int(DEFAULT_BOX["w"] * scale_x)
-    h = int(DEFAULT_BOX["h"] * scale_y)
+    # 3. Smart Image Crop & Upload Decision
+    uploaded_image_url = existing_img_url
 
-    final_crop = apply_pixel_crop(img, x, y, w, h)
+    if has_existing_image and not enable_image_update:
+        print(f"  [3] Card Small Image: SKIPPED (image_small exists in DB. Use --enable-image-update to overwrite)")
+    else:
+        action_reason = "Overwriting existing small image" if has_existing_image else "New small image needed"
+        print(f"  [3] Card Small Image: CROPPING ({action_reason})")
+
+        img = cv2.imread(str(file_path))
+        if img is not None:
+            h_img, w_img = img.shape[:2]
+            scale_x = w_img / 2556.0
+            scale_y = h_img / 1179.0
+
+            x = int(DEFAULT_BOX["x"] * scale_x)
+            y = int(DEFAULT_BOX["y"] * scale_y)
+            w = int(DEFAULT_BOX["w"] * scale_x)
+            h = int(DEFAULT_BOX["h"] * scale_y)
+
+            final_crop = apply_pixel_crop(img, x, y, w, h)
+            output_filename = f"{file_slug}.png"
+            output_path = output_dir / output_filename
+            cv2.imwrite(str(output_path), final_crop)
+            print(f"      [✓] Saved crop to: {output_path.name}")
+
+            if not dry_run and supabase and (enable_image_update or not has_existing_image):
+                try:
+                    storage_dest = f"visages/small/{output_filename}"
+                    with open(output_path, "rb") as f:
+                        supabase.storage.from_(STORAGE_BUCKET).upload(
+                            path=storage_dest,
+                            file=f,
+                            file_options={"upsert": "true"}
+                        )
+                    uploaded_image_url = supabase.storage.from_(STORAGE_BUCKET).get_public_url(storage_dest)
+                    print(f"      [✓] Uploaded small image to Storage: {uploaded_image_url}")
+                except Exception as e:
+                    print(f"      [!] Storage upload note: {e}")
+
+    # 4. Parse Extracted Values
+    extracted_points = ocr_data.get("points") or 1
+    core_effect_obj = ocr_data.get("core_effect", {})
+    extracted_core_desc = core_effect_obj.get("description") or core_effect_obj.get("name") or ""
     
-    # 3. Save cropped card with the extracted slug/name
-    output_filename = f"{file_slug}.png"
-    output_path = output_dir / output_filename
-    cv2.imwrite(str(output_path), final_crop)
-    print(f"  [✓] Saved clean crop as: {output_path.name}")
+    # Collect extracted ink types
+    new_ink_types = set()
+    for ink in ocr_data.get("ink_types", []):
+        ink_clean = ink.strip().lower().replace("ink of ", "").replace("ink_", "")
+        if ink_clean in VALID_INK_TYPES:
+            new_ink_types.add(ink_clean)
 
-    if dry_run or supabase is None:
-        return True
+    for pot in ocr_data.get("potential_set_effects", []):
+        ink_val = pot.get("ink_type") or pot.get("name", "")
+        ink_clean = ink_val.strip().lower().replace("ink of ", "").replace("ink_", "")
+        if ink_clean in VALID_INK_TYPES:
+            new_ink_types.add(ink_clean)
 
-    # 4. Upload clean crop to Supabase Storage
-    try:
-        storage_dest = f"extracted_cards/{output_filename}"
-        with open(output_path, "rb") as f:
-            supabase.storage.from_(STORAGE_BUCKET).upload(
-                path=storage_dest,
-                file=f,
-                file_options={"upsert": "true"}
-            )
-        public_url = supabase.storage.from_(STORAGE_BUCKET).get_public_url(storage_dest)
-        print(f"  [✓] Uploaded to Storage: {public_url}")
+    # 5. Build Merge / Update Payload
+    if clear_visage:
+        print(f"\n  [*] --clear-visage active: Clearing existing data and building fresh from monster title.")
+        final_ink_types = sorted(list(new_ink_types))
+        final_core_effect = extracted_core_desc
+        final_points = extracted_points
+    else:
+        existing_ink_types = set(existing_record.get("ink_types", [])) if existing_record else set()
+        merged_ink_types = existing_ink_types.union(new_ink_types)
+        final_ink_types = sorted(list(merged_ink_types))
         
-        # 5. Insert / Upsert to Database
-        db_payload = {
-            "id": metadata.get("id", file_slug),
-            "name": card_name,
-            "monster_type": metadata.get("monster_type", "large"),
-            "points": metadata.get("points", 1),
-            "image_large": public_url,
-            "description": metadata.get("description", "")
-        }
-        supabase.table(TABLE_NAME).upsert(db_payload).execute()
-        print(f"  [✓] Record upserted into Supabase table '{TABLE_NAME}'")
-    except Exception as e:
-        print(f"  [!] Storage / DB upload note: {e}")
+        final_core_effect = extracted_core_desc if extracted_core_desc else (existing_record.get("core_effect") or existing_record.get("description") or "" if existing_record else "")
+        final_points = extracted_points
+
+    # Point Change Detection & Reporting
+    current_db_points = existing_record.get("points") if existing_record else None
+    points_changed = False
+    if current_db_points is not None and current_db_points != final_points:
+        points_changed = True
+        print(f"\n  [!] POINTS CHANGED: Database had {current_db_points} pts -> OCR extracted {final_points} pts")
+    else:
+        print(f"\n  [i] Points: {final_points} pts")
+
+    # Set Bonus ID lookup
+    set_bonus_id = None
+    if final_ink_types:
+        first_ink = final_ink_types[0]
+        set_bonus_id = lookup_set_bonus_skill(f"Ink of {first_ink.capitalize()}", supabase) or f"ink_of_{first_ink}"
+
+    # Build DB Payload
+    db_payload = {
+        "id": visage_id,
+        "name": monster_name,
+        "monster_type": ocr_data.get("monster_type", (existing_record.get("monster_type") if existing_record else "large")),
+        "points": final_points,
+        "rarity": ocr_data.get("rarity", 1),
+        "ink_types": final_ink_types,
+        "core_effect": final_core_effect,
+        "notes": json.dumps(ocr_data.get("secondary_effects", [])),
+        "is_active": True
+    }
+    if set_bonus_id:
+        db_payload["set_bonus_id"] = set_bonus_id
+    if uploaded_image_url:
+        db_payload["image_small"] = uploaded_image_url
+    if existing_record and existing_record.get("image_large"):
+        db_payload["image_large"] = existing_record.get("image_large")
+
+    print(f"\n  [PROPOSED DATA SUMMARY]")
+    print(f"  - Core Effect Text : {final_core_effect or '(None)'}")
+    print(f"  - Potential Sets   : {final_ink_types} (Merged)")
+    print(f"  - Points Value     : {final_points} {'(Changed from DB!)' if points_changed else ''}")
+    print(f"  - Set Bonus Link   : {set_bonus_id or '(None)'}")
+    if uploaded_image_url:
+        print(f"  - Small Image URL  : {uploaded_image_url}")
+
+    # 6. Apply to Supabase if --enable-updates and not in --dry-run
+    if dry_run:
+        print(f"\n  [DRY-RUN] No changes written to database.")
+    elif enable_updates:
+        if supabase:
+            try:
+                supabase.table(TABLE_NAME).upsert(db_payload).execute()
+                print(f"\n  [✓] SUCCESSFULLY UPDATED '{monster_name}' in Supabase '{TABLE_NAME}' table!")
+            except Exception as e:
+                print(f"\n  [!] Supabase DB write error: {e}")
+        else:
+            print(f"\n  [!] Supabase client not connected. Check SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY.")
+    else:
+        print(f"\n  [INFO] Data update skipped. Pass --enable-updates to write these changes to Supabase.")
 
     return True
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Extract and validate clean card images from screenshots.")
-    parser.add_argument("--input", "-i", default="input_images", help="Input directory")
-    parser.add_argument("--output", "-o", default="output_images", help="Output directory")
-    parser.add_argument("--dry-run", "-d", action="store_true", help="Save locally without uploading to Supabase")
-    parser.add_argument("--delay", type=float, default=2.0, help="Delay between API requests")
+    parser = argparse.ArgumentParser(description="Automated Visage Card OCR, Supabase Lookup & Ingestion.")
+    parser.add_argument("--input", "-i", default="input_images", help="Directory of input images")
+    parser.add_argument("--output", "-o", default="output_images", help="Directory for cropped output images")
+    parser.add_argument("--dry-run", "-d", action="store_true", help="Run OCR & Supabase check without making changes")
+    parser.add_argument("--enable-updates", action="store_true", help="Allow updating the visage data in Supabase with newly found fields")
+    parser.add_argument("--enable-image-update", "-u", action="store_true", help="Force re-cutting and uploading image even if it already exists in Supabase")
+    parser.add_argument("--clear-visage", action="store_true", help="Clear existing visage data and rebuild fresh from monster title & new OCR data")
+    parser.add_argument("--delay", type=float, default=4.0, help="Delay between API calls in seconds")
 
     args = parser.parse_args()
 
@@ -353,16 +446,36 @@ def main():
     input_dir.mkdir(parents=True, exist_ok=True)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    image_files = [f for f in input_dir.iterdir() if f.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp"}]
+    image_files = sorted([f for f in input_dir.iterdir() if f.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp"}])
 
     if not image_files:
         print(f"[!] No images found in {input_dir.resolve()}")
         sys.exit(0)
 
+    print(f"\n{'='*70}")
+    print(f" Visage Card Automation Pipeline")
+    print(f" Images Found       : {len(image_files)}")
+    print(f" Mode               : {'DRY-RUN (Safe mode)' if args.dry_run else 'LIVE INGESTION'}")
+    print(f" Data Updates       : {'ENABLED (--enable-updates)' if args.enable_updates else 'DISABLED (View only)'}")
+    print(f" Image Updates      : {'ENABLED (--enable-image-update)' if args.enable_image_update else 'DISABLED (Skip if exists)'}")
+    print(f" Clear Visage Mode  : {'ACTIVE (--clear-visage)' if args.clear_visage else 'MERGE MODE (Preserve existing sets)'}")
+    print(f"{'='*70}")
+
     ai_client, supabase = init_clients(dry_run=args.dry_run)
+    if supabase and not args.dry_run:
+        ensure_storage_bucket(supabase)
 
     for idx, img_path in enumerate(image_files, start=1):
-        process_single_image(img_path, ai_client, supabase, output_dir, dry_run=args.dry_run)
+        process_single_image(
+            img_path,
+            ai_client,
+            supabase,
+            output_dir,
+            enable_image_update=args.enable_image_update,
+            enable_updates=args.enable_updates,
+            clear_visage=args.clear_visage,
+            dry_run=args.dry_run
+        )
         if idx < len(image_files):
             time.sleep(args.delay)
 

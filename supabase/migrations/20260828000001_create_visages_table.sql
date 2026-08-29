@@ -17,8 +17,8 @@ CREATE TABLE IF NOT EXISTS public.visages (
   image_small   TEXT,                    -- compact icon URL/path for collection view
   -- Linked Set Bonus from public.skills (where is_set_bonus = true)
   set_bonus_id  TEXT        REFERENCES public.skills(id) ON DELETE SET NULL,
+  core_effect   TEXT,                    -- inherent passive effect of the card
   is_active     BOOLEAN     NOT NULL DEFAULT TRUE,
-  description   TEXT,
   notes         TEXT,
   sort_order    INTEGER     NOT NULL DEFAULT 0,
   created_at    TIMESTAMPTZ NOT NULL DEFAULT now(),

@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────
 // VisageEditModal — Create or edit an MHO Visage Card
 // ─────────────────────────────────────────────────────────────
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { X, Trash2, Loader2, Sparkles, Check, AlertCircle, Upload } from 'lucide-react';
 import {
   type DBVisage,
@@ -11,7 +11,7 @@ import {
   INK_OPTIONS,
 } from '../../../data/schemas/visage';
 import { useUpsertVisage, useDeleteVisage } from '../../../hooks/useAdminVisages';
-import { useAdminSkills } from '../../../hooks/useAdminSkills';
+import { useAdminSkills, type DBSkill } from '../../../hooks/useAdminSkills';
 import { useAdminMonsters } from '../../../hooks/useAdminMonsters';
 import { supabase } from '../../../lib/supabase';
 import { cn } from '../../../lib/utils';
@@ -127,14 +127,14 @@ function ImageUploadField({
           <div className="flex w-full items-center gap-3">
             <div
               className={cn(
-                'relative shrink-0 overflow-hidden rounded-lg border border-mh-slate-700 bg-mh-slate-900 p-1 flex items-center justify-center',
+                'relative shrink-0 overflow-hidden rounded-2xl flex items-center justify-center shadow-md',
                 aspect === 'portrait' ? 'h-24 w-16' : 'h-16 w-16',
               )}
             >
               <img
                 src={value}
                 alt={label}
-                className="h-full w-full object-contain"
+                className="h-full w-full object-cover rounded-2xl"
                 onError={(e) => {
                   (e.target as HTMLElement).style.display = 'none';
                 }}
@@ -217,8 +217,8 @@ function emptyForm(): VisageUpsert {
     image_large: null,
     image_small: null,
     set_bonus_id: null,
+    core_effect: null,
     is_active: true,
-    description: null,
     notes: null,
     sort_order: 0,
   };
@@ -243,6 +243,29 @@ export default function VisageEditModal({ visage, open, onClose }: Props) {
   const upsert = useUpsertVisage();
   const remove = useDeleteVisage();
 
+  // Only show set bonuses relevant to MHO/Visages
+  const mhoSetBonuses = useMemo<DBSkill[]>(() => {
+    return setBonuses.filter(
+      (sb: DBSkill) => sb.games?.includes('mho') || sb.id.startsWith('ink_of_') || sb.name.toLowerCase().includes('ink of'),
+    );
+  }, [setBonuses]);
+
+  // Only show Inks that have a corresponding Set in the database (or are currently selected on this card)
+  const availableInks = useMemo<InkType[]>(() => {
+    const set = new Set<InkType>();
+    setBonuses.forEach((sb: DBSkill) => {
+      const slug = sb.id.replace(/^ink_of_/, '').toLowerCase();
+      if (INK_OPTIONS.includes(slug as InkType)) {
+        set.add(slug as InkType);
+      }
+    });
+    (form.ink_types || []).forEach((i) => set.add(i));
+    if (set.size === 0) return INK_OPTIONS;
+    return Array.from(set).sort((a, b) =>
+      (INK_CONFIG[a]?.name || a).localeCompare(INK_CONFIG[b]?.name || b),
+    );
+  }, [setBonuses, form.ink_types]);
+
   useEffect(() => {
     if (open) {
       if (visage) {
@@ -258,8 +281,8 @@ export default function VisageEditModal({ visage, open, onClose }: Props) {
           image_large: visage.image_large ?? null,
           image_small: visage.image_small ?? null,
           set_bonus_id: visage.set_bonus_id ?? null,
+          core_effect: visage.core_effect ?? null,
           is_active: visage.is_active,
-          description: visage.description ?? null,
           notes: visage.notes ?? null,
           sort_order: visage.sort_order ?? 0,
         });
@@ -513,7 +536,7 @@ export default function VisageEditModal({ visage, open, onClose }: Props) {
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {INK_OPTIONS.map((ink) => {
+              {availableInks.map((ink) => {
                 const cfg = INK_CONFIG[ink];
                 const isSelected = form.ink_types.includes(ink);
                 return (
@@ -524,19 +547,36 @@ export default function VisageEditModal({ visage, open, onClose }: Props) {
                     className={cn(
                       'flex items-center justify-between rounded-lg border px-3 py-2 text-xs font-semibold transition-all',
                       isSelected
-                        ? `${cfg.bg} ${cfg.text} ${cfg.border} ring-1 ring-current/40`
+                        ? `${cfg?.bg ?? 'bg-mh-gold-500/15'} ${cfg?.text ?? 'text-mh-gold-300'} ${cfg?.border ?? 'border-mh-gold-500/30'} ring-1 ring-current/40`
                         : 'border-mh-slate-750 bg-mh-slate-800/60 text-mh-slate-400 hover:bg-mh-slate-800 hover:text-white',
                     )}
                   >
                     <div className="flex items-center gap-2">
-                      <span className={cn('h-2 w-2 rounded-full', cfg.dotColor)} />
-                      <span>{cfg.name}</span>
+                      <span className={cn('h-2 w-2 rounded-full', cfg?.dotColor ?? 'bg-mh-gold-400')} />
+                      <span>{cfg?.name || ink}</span>
                     </div>
                     {isSelected && <Check size={13} className="shrink-0" />}
                   </button>
                 );
               })}
             </div>
+          </div>
+
+          {/* ── Core Effect ── */}
+          <div className="rounded-xl border border-mh-slate-750 bg-mh-slate-850 p-4 space-y-2">
+            <label className="block text-xs font-bold uppercase tracking-wider text-mh-slate-300">
+              Core Effect
+            </label>
+            <p className="text-[11px] text-mh-slate-500">
+              Inherent passive effect of this Visage card.
+            </p>
+            <textarea
+              rows={2}
+              value={form.core_effect ?? ''}
+              onChange={(e) => setForm((p) => ({ ...p, core_effect: e.target.value || null }))}
+              placeholder="e.g. When health is above 70%, increases attack by 10%"
+              className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-xs text-mh-slate-100 placeholder-mh-slate-500 outline-none focus:border-mh-gold-500/50"
+            />
           </div>
 
           {/* ── Linked Set Bonus ── */}
@@ -550,7 +590,7 @@ export default function VisageEditModal({ visage, open, onClose }: Props) {
               className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-900 px-3 py-2 text-sm text-mh-slate-100 outline-none focus:border-mh-gold-500/50"
             >
               <option value="">(None / No Set Bonus)</option>
-              {setBonuses.map((sb) => (
+              {mhoSetBonuses.map((sb) => (
                 <option key={sb.id} value={sb.id}>
                   {sb.name} — {sb.set_thresholds?.map((t) => `${t.pieces} pcs`).join(', ') || 'Set Bonus'}
                 </option>

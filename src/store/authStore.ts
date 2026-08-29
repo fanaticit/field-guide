@@ -90,7 +90,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   // ── Email + Password sign-in ────────────────────────────────
   signInWithEmail: async (email, password) => {
     set({ authLoading: true, authError: null });
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
       const msg =
         error.message.toLowerCase().includes('invalid login')
@@ -101,7 +101,14 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({ authError: msg, authLoading: false });
       return false;
     }
-    set({ authLoading: false });
+    set({ session: data.session, user: data.user, authLoading: false });
+    if (data.user) {
+      await useAuthStore.getState().fetchProfile(data.user.id);
+      const profile = useAuthStore.getState().profile;
+      if (profile?.default_page) {
+        useUIStore.getState().setActivePage(profile.default_page as Page);
+      }
+    }
     return true;
   },
 
@@ -205,8 +212,6 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 }));
 
-let isInitialized = false;
-
 /**
  * Call once at app startup (in main.tsx).
  * Loads the persisted session and subscribes to auth state changes.
@@ -216,43 +221,26 @@ export function initAuth() {
     window.location.hash.includes('access_token') ||
     window.location.search.includes('code=');
 
-  supabase.auth.getSession().then(({ data: { session } }) => {
+  supabase.auth.getSession().then(async ({ data: { session } }) => {
     const store = useAuthStore.getState();
     store.setSession(session);
     if (session?.user) {
-      store
-        .fetchProfile(session.user.id)
-        .then(() => {
-          if (isOAuthCallback) {
-            const profile = useAuthStore.getState().profile;
-            if (profile?.default_page) {
-              useUIStore.getState().setActivePage(profile.default_page as Page);
-            }
-          }
-        })
-        .finally(() => {
-          useAuthStore.setState({ loading: false });
-          isInitialized = true;
-        });
-    } else {
-      useAuthStore.setState({ loading: false });
-      isInitialized = true;
+      await store.fetchProfile(session.user.id);
+      if (isOAuthCallback) {
+        const profile = useAuthStore.getState().profile;
+        if (profile?.default_page) {
+          useUIStore.getState().setActivePage(profile.default_page as Page);
+        }
+      }
     }
+    useAuthStore.setState({ loading: false });
   });
 
-  supabase.auth.onAuthStateChange((event, session) => {
+  supabase.auth.onAuthStateChange((_event, session) => {
     const store = useAuthStore.getState();
     store.setSession(session);
     if (session?.user) {
-      store.fetchProfile(session.user.id).then(() => {
-        // Only navigate on a fresh explicit SIGNED_IN event occurring after initial load
-        if (event === 'SIGNED_IN' && isInitialized) {
-          const profile = useAuthStore.getState().profile;
-          if (profile?.default_page) {
-            useUIStore.getState().setActivePage(profile.default_page as Page);
-          }
-        }
-      });
+      store.fetchProfile(session.user.id);
     } else {
       store.setProfile(null);
     }

@@ -74,6 +74,23 @@ export default function VisageManager() {
     [setBonuses],
   );
 
+  // Only inks that exist in database sets or on loaded visage cards
+  const availableInks = useMemo(() => {
+    const set = new Set<InkType>();
+    setBonuses.forEach((sb) => {
+      const slug = sb.id.replace(/^ink_of_/, '').toLowerCase();
+      if (INK_OPTIONS.includes(slug as InkType)) {
+        set.add(slug as InkType);
+      }
+    });
+    visages.forEach((v) => {
+      (v.ink_types || []).forEach((ink) => set.add(ink));
+    });
+    return Array.from(set).sort((a, b) =>
+      (INK_CONFIG[a]?.name || a).localeCompare(INK_CONFIG[b]?.name || b),
+    );
+  }, [visages, setBonuses]);
+
   const filtered = useMemo(() => {
     let list = [...visages];
 
@@ -202,10 +219,10 @@ export default function VisageManager() {
             onChange={(e) => setFilterInk(e.target.value)}
             className="rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-300 outline-none"
           >
-            <option value="">All Inks</option>
-            {INK_OPTIONS.map((ink) => (
+            <option value="">All Inks {availableInks.length > 0 ? `(${availableInks.length})` : ''}</option>
+            {availableInks.map((ink) => (
               <option key={ink} value={ink}>
-                {INK_CONFIG[ink].name}
+                {INK_CONFIG[ink]?.name || ink}
               </option>
             ))}
           </select>
@@ -323,13 +340,13 @@ export default function VisageManager() {
                       <img
                         src={visage.image_small || visage.image_large || ''}
                         alt={visage.name}
-                        className="h-14 w-14 rounded-xl object-contain bg-mh-slate-800 p-1 border border-mh-slate-700 shadow-sm"
+                        className="h-16 w-16 rounded-2xl object-cover shadow-sm shrink-0"
                         onError={(e) => {
                           (e.target as HTMLElement).style.display = 'none';
                         }}
                       />
                     ) : (
-                      <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-mh-slate-800 border border-mh-slate-700 text-mh-gold-400 shadow-sm">
+                      <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-mh-slate-800 text-mh-gold-400 shadow-sm">
                         <Sparkles size={24} />
                       </div>
                     )}
@@ -350,6 +367,16 @@ export default function VisageManager() {
                       </p>
                     </div>
                   </div>
+
+                  {/* Core Effect */}
+                  {visage.core_effect && (
+                    <div className="mb-3 rounded-lg bg-mh-slate-900/90 p-2 border border-mh-slate-750 text-[11px] text-mh-slate-200 space-y-0.5">
+                      <span className="block text-[9px] font-bold uppercase tracking-wider text-mh-gold-400">
+                        Core Effect:
+                      </span>
+                      <p className="line-clamp-2 leading-relaxed">{visage.core_effect}</p>
+                    </div>
+                  )}
 
                   {/* Bottom: Inks & Set Bonus */}
                   <div className="pt-3 border-t border-mh-slate-750/80 space-y-2">
@@ -418,7 +445,8 @@ export default function VisageManager() {
                   <th className="px-4 py-3 w-28">Type</th>
                   <th className="px-4 py-3 w-20">Points</th>
                   <th className="px-4 py-3 min-w-[180px]">Possible Inks</th>
-                  <th className="px-4 py-3 min-w-[220px]">Linked Set Bonus</th>
+                  <th className="px-4 py-3 min-w-[200px]">Core Effect</th>
+                  <th className="px-4 py-3 min-w-[200px]">Linked Set Bonus</th>
                   <th className="px-4 py-3 w-20 text-right">Actions</th>
                 </tr>
               </thead>
@@ -443,13 +471,13 @@ export default function VisageManager() {
                             <img
                               src={visage.image_small || visage.image_large || ''}
                               alt={visage.name}
-                              className="h-8 w-8 rounded-lg object-contain bg-mh-slate-800 p-0.5 border border-mh-slate-700"
+                              className="h-10 w-10 rounded-xl object-cover shadow-sm shrink-0"
                               onError={(e) => {
                                 (e.target as HTMLElement).style.display = 'none';
                               }}
                             />
                           ) : (
-                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-mh-slate-800 text-mh-gold-400">
+                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-mh-slate-800 text-mh-gold-400">
                               <Sparkles size={14} />
                             </div>
                           )}
@@ -508,6 +536,16 @@ export default function VisageManager() {
                             );
                           })}
                         </div>
+                      </td>
+
+                      <td className="px-4 py-3">
+                        {visage.core_effect ? (
+                          <span className="text-mh-slate-200 text-[11px] line-clamp-2">
+                            {visage.core_effect}
+                          </span>
+                        ) : (
+                          <span className="text-mh-slate-600 text-xs">—</span>
+                        )}
                       </td>
 
                       <td className="px-4 py-3">

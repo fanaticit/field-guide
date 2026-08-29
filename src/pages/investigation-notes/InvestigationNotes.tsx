@@ -3,12 +3,14 @@
 // section. Renders the active sub-page from the UI store.
 // Add more sub-pages here as they are built.
 // ─────────────────────────────────────────────────────────────
-import { BookMarked, Bug, Sword, Shield } from 'lucide-react';
+import { BookMarked, Bug, Sword, Shield, Sparkles } from 'lucide-react';
 import { useUIStore, type InvestigationSubPage } from '../../store/uiStore';
 import MonsterGuide from './MonsterGuide';
+import VisageSetsGuide from './VisageSetsGuide';
 
 const tabs: Array<{ id: InvestigationSubPage; label: string; icon: React.ComponentType<{ size?: number; className?: string }> }> = [
   { id: 'monster-guide', label: 'Monster Guide', icon: Bug },
+  { id: 'visages', label: 'Visage', icon: Sparkles },
   { id: 'weapons', label: 'Weapons', icon: Sword },
   { id: 'armour', label: 'Armour', icon: Shield },
 ];
@@ -72,6 +74,7 @@ export default function InvestigationNotes() {
 
       {/* Sub-page content */}
       {activeSubPage === 'monster-guide' && <MonsterGuide />}
+      {activeSubPage === 'visages' && <VisageSetsGuide />}
       {activeSubPage === 'weapons' && (
         <div className="p-6 lg:p-8">
           <ComingSoon

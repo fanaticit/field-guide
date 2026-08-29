@@ -12,6 +12,7 @@ import {
   Bug,
   Shield,
   ShieldAlert,
+  Sparkles,
 } from 'lucide-react';
 import { useUIStore, type Page, type InvestigationSubPage } from '../../store/uiStore';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
@@ -74,6 +75,7 @@ const navItems: NavItem[] = [
 
 const investigationSubNav: SubNavItem[] = [
   { id: 'monster-guide', label: 'Monster Guide', icon: Bug },
+  { id: 'visages', label: 'Visage', icon: Sparkles },
   { id: 'weapons', label: 'Weapons', icon: Sword },
   { id: 'armour', label: 'Armour', icon: Shield },
 ];

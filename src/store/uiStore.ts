@@ -10,7 +10,7 @@ export type Page =
   | 'settings'
   | 'profile';
 
-export type InvestigationSubPage = 'monster-guide' | 'weapons' | 'armour';
+export type InvestigationSubPage = 'monster-guide' | 'visages' | 'weapons' | 'armour';
 export type AdminSubPage = 'monsters' | 'skills' | 'armour' | 'visages' | 'users' | 'content';
 
 interface UIState {
