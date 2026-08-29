@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
-Card Image Pre-processor, AI Vision Data Extractor, and Supabase Ingestion Pipeline.
+Card Image Extractor & Vision Validator.
 
-Supports both modern `google-genai` and `google-generativeai` SDKs.
+Extracts the clean card/scroll image, verifies the crop using Gemini Vision,
+and automatically adjusts the bounding box if the initial cut is misaligned.
 """
 
 import os
@@ -13,7 +14,6 @@ import argparse
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Load environment variables
 load_dotenv()
 load_dotenv(Path(__file__).parent / ".env")
 
@@ -30,7 +30,6 @@ except ImportError:
     print("Error: pillow is not installed. Run: pip install pillow")
     sys.exit(1)
 
-# Check which GenAI library is installed
 USE_MODERN_SDK = False
 try:
     from google import genai
@@ -51,20 +50,26 @@ except ImportError:
     print("Error: supabase is not installed. Run: pip install supabase")
     sys.exit(1)
 
-
-# Setup Configuration
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY") or os.getenv("SUPABASE_KEY")
 STORAGE_BUCKET = os.getenv("SUPABASE_STORAGE_BUCKET", "card_images")
 TABLE_NAME = os.getenv("SUPABASE_TABLE_NAME", "visages")
+MODEL_NAME = os.getenv("GEMINI_MODEL", "gemini-3.6-flash")
+
+# Zoomed bounding box for the scroll icon in 2556x1179 screenshots (excluding bottom banner)
+DEFAULT_BOX = {
+    "x": 998,
+    "y": 170,
+    "w": 292,
+    "h": 255
+}
 
 
 def init_clients(dry_run: bool = False):
-    """Initialize and validate API clients."""
+    """Initializes Gemini and Supabase clients."""
     if not GEMINI_API_KEY:
-        print("\n[ERROR] GEMINI_API_KEY is missing! Set it in your .env file or environment.")
-        print("Get your free key at: https://aistudio.google.com/app/apikey (starts with AIzaSy...)")
+        print("\n[ERROR] GEMINI_API_KEY is missing! Set it in your .env file.")
         sys.exit(1)
 
     if GEMINI_API_KEY.startswith("AQ."):
@@ -76,94 +81,188 @@ def init_clients(dry_run: bool = False):
         ai_client = genai.Client(api_key=GEMINI_API_KEY)
     else:
         legacy_genai.configure(api_key=GEMINI_API_KEY)
-        ai_client = legacy_genai.GenerativeModel("gemini-1.5-flash")
+        ai_client = legacy_genai.GenerativeModel(MODEL_NAME)
 
     supabase: Client = None
-    if not dry_run:
-        if not SUPABASE_URL or not SUPABASE_KEY:
-            print("\n[ERROR] SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are required when not in --dry-run mode.")
-            sys.exit(1)
+    if not dry_run and SUPABASE_URL and SUPABASE_KEY:
         supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
     return ai_client, supabase
 
 
-def crop_card(image_path: str, output_path: str, min_area_ratio: float = 0.15) -> bool:
+def apply_pixel_crop(img, x: int, y: int, w: int, h: int):
+    """Crops an image using pixel coordinates."""
+    h_img, w_img = img.shape[:2]
+    x1 = max(0, min(x, w_img - 1))
+    y1 = max(0, min(y, h_img - 1))
+    x2 = max(x1 + 10, min(x + w, w_img))
+    y2 = max(y1 + 10, min(y + h, h_img))
+    return img[y1:y2, x1:x2]
+
+
+def apply_normalized_crop(img, box_2d: list):
     """
-    Detects the main card in an image using OpenCV contours.
-    Falls back to centered region if no clear bounding contour is found.
+    Crops an image using normalized [ymin, xmin, ymax, xmax] coordinates (0-1000 scale).
     """
-    img = cv2.imread(image_path)
+    h_img, w_img = img.shape[:2]
+    ymin, xmin, ymax, xmax = box_2d
+    
+    y1 = int((ymin / 1000) * h_img)
+    x1 = int((xmin / 1000) * w_img)
+    y2 = int((ymax / 1000) * h_img)
+    x2 = int((xmax / 1000) * w_img)
+
+    return img[max(0, y1):min(h_img, y2), max(0, x1):min(w_img, x2)]
+
+
+CROP_VERIFICATION_PROMPT = """
+You are an expert image cropping assistant.
+Look at the full game screenshot. We want to extract ONLY the Monster Visage scroll card icon (which can be yellow, purple, or other parchment colors) featuring the monster emblem located in the upper-middle area of the screen.
+
+Initial crop coordinates provided: x={x}, y={y}, width={w}, height={h} on a {w_img}x{h_img} image.
+
+Determine if this initial cut accurately and cleanly captures the complete scroll without cutting off the corners, curled edges, or including the lower 'Core Effect' banner.
+
+Return a STRICT JSON object:
+{{
+  "is_good_crop": boolean,
+  "feedback": "Short feedback on the crop quality",
+  "box_2d": [ymin, xmin, ymax, xmax]
+}}
+
+Note: `box_2d` must be the exact normalized bounding box [ymin, xmin, ymax, xmax] on a scale of 0 to 1000 relative to the FULL screenshot.
+"""
+
+
+def verify_and_refine_crop(image_path: Path, ai_client) -> np.ndarray:
+    """
+    Loads full image, inspects with AI, and returns the best cropped image.
+    """
+    img = cv2.imread(str(image_path))
     if img is None:
         print(f"  [!] Could not read image: {image_path}")
-        return False
+        return None
 
     h_img, w_img = img.shape[:2]
-    total_area = h_img * w_img
 
-    # Convert to grayscale & blur
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    blurred = cv2.GaussianBlur(gray, (7, 7), 0)
+    # Calculate default crop coordinates scaled to resolution
+    scale_x = w_img / 2556.0
+    scale_y = h_img / 1179.0
 
-    # Edge detection
-    edges = cv2.Canny(blurred, 30, 120)
+    x = int(DEFAULT_BOX["x"] * scale_x)
+    y = int(DEFAULT_BOX["y"] * scale_y)
+    w = int(DEFAULT_BOX["w"] * scale_x)
+    h = int(DEFAULT_BOX["h"] * scale_y)
 
-    # Dilate edges to close small gaps
-    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
-    dilated = cv2.dilate(edges, kernel, iterations=2)
+    prompt = CROP_VERIFICATION_PROMPT.format(
+        x=x, y=y, w=w, h=h, w_img=w_img, h_img=h_img
+    )
 
-    # Find external contours
-    contours, _ = cv2.findContours(dilated, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    contours = sorted(contours, key=cv2.contourArea, reverse=True)
+    print("  [*] Verifying crop area with Gemini...")
+    try:
+        pil_image = Image.open(image_path)
+        if USE_MODERN_SDK:
+            response = ai_client.models.generate_content(
+                model=MODEL_NAME,
+                contents=[prompt, pil_image],
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json"
+                )
+            )
+            raw_text = response.text
+        else:
+            response = ai_client.generate_content(
+                [prompt, pil_image],
+                generation_config={"response_mime_type": "application/json"}
+            )
+            raw_text = response.text
 
-    cropped = None
+        result = json.loads(raw_text)
+        print(f"  [*] AI Crop Check: {result.get('feedback')}")
 
-    for cnt in contours:
-        area = cv2.contourArea(cnt)
-        if area / total_area < min_area_ratio:
-            continue
+        if result.get("is_good_crop", False):
+            print("  [✓] Initial crop validated successfully.")
+            return apply_pixel_crop(img, x, y, w, h)
+        
+        box_2d = result.get("box_2d")
+        if box_2d and len(box_2d) == 4:
+            print(f"  [✓] Applying AI-corrected bounding box: {box_2d}")
+            return apply_normalized_crop(img, box_2d)
 
-        x, y, w, h = cv2.boundingRect(cnt)
-        aspect_ratio = float(w) / h if h > 0 else 0
-        if 0.4 <= aspect_ratio <= 2.5:
-            # Add small 2% padding
-            pad_x = int(w * 0.02)
-            pad_y = int(h * 0.02)
-            x1 = max(0, x - pad_x)
-            y1 = max(0, y - pad_y)
-            x2 = min(w_img, x + w + pad_x)
-            y2 = min(h_img, y + h + pad_y)
-            cropped = img[y1:y2, x1:x2]
-            break
+    except Exception as e:
+        print(f"  [!] AI validation fallback to default slice: {e}")
 
-    # Fallback if no card contour detected: center crop 70%
-    if cropped is None:
-        print("  [*] Contour not distinct; applying centered 70% crop fallback.")
-        margin_y = int(h_img * 0.15)
-        margin_x = int(w_img * 0.15)
-        cropped = img[margin_y:h_img - margin_y, margin_x:w_img - margin_x]
-
-    cv2.imwrite(output_path, cropped)
-    return True
+    # Fallback to initial pixel crop if AI fails
+    return apply_pixel_crop(img, x, y, w, h)
 
 
-EXTRACTION_PROMPT = """
-You are an expert game data analyst for Monster Hunter.
-Inspect this cropped card/icon image and extract all relevant information.
+CARD_EXTRACTION_PROMPT = """
+You are an expert game data analyzer for Monster Hunter.
+Look at this game screenshot.
 
-Return a STRICT JSON object with these exact fields:
-{
-  "id": "slug_lowercase_with_underscores (e.g. 'rathalos', 'great_jagras', 'mernos')",
-  "name": "English display name (e.g. 'Rathalos')",
-  "name_ja": "Japanese name if visible, or null",
+1. Locate the header text directly above the monster scroll icon in the top-center of the screen.
+   It starts with "Visage:" followed by the monster/card name (e.g. "Visage: Pukei-Pukei", "Visage: Great Girros", "Visage: Kulu-Ya-Ku", etc.).
+2. Extract the full title (e.g. "Visage: Pukei-Pukei") and the clean monster name (e.g. "Pukei-Pukei").
+3. Create a clean filename slug in lowercase snake_case (e.g. "visage_pukei_pukei").
+4. If visible on screen, extract any stats, ink types, or core effect details.
+
+Return a STRICT JSON object:
+{{
+  "title": "Full title string (e.g. 'Visage: Pukei-Pukei')",
+  "name": "Monster or card name (e.g. 'Pukei-Pukei')",
+  "id": "Clean snake_case id (e.g. 'visage_pukei_pukei' or 'pukei_pukei')",
+  "file_slug": "Clean filename slug (e.g. 'visage_pukei_pukei')",
   "monster_type": "'small' or 'large'",
-  "points": integer (card points / cost, default 1 if not shown),
-  "rarity": integer (1 to 10, default 1 if not shown),
-  "ink_types": ["array of element/ink types visible, e.g. 'thunder', 'fire', 'water', 'ice', 'dragon', 'poison', 'paralysis', 'sleep', 'blast'"],
-  "description": "Short card description or lore text if present, else null",
-  "notes": "Any additional stat details or bonus information visible on the card, else null"
-}
+  "points": 1,
+  "rarity": 1,
+  "ink_types": ["array of elements/ink types visible on card or null"],
+  "description": "Any visible effect or notes text"
+}}
 """
+
+
+def extract_card_metadata(image_path: Path, ai_client) -> dict:
+    """
+    Sends the header region (containing 'Visage: ...') to Gemini to read the title text
+    and extract structured metadata without saving title images to disk.
+    """
+    print("  [*] Reading 'Visage: ...' title text with Gemini Vision...")
+    try:
+        img = cv2.imread(str(image_path))
+        if img is None:
+            return {}
+        h_img, w_img = img.shape[:2]
+        scale_x = w_img / 2556.0
+        scale_y = h_img / 1179.0
+        
+        # Crop header area in memory for clean OCR
+        y1, y2 = int(30 * scale_y), int(160 * scale_y)
+        x1, x2 = int(700 * scale_x), int(1850 * scale_x)
+        header_crop = img[y1:y2, x1:x2]
+        header_rgb = cv2.cvtColor(header_crop, cv2.COLOR_BGR2RGB)
+        pil_header = Image.fromarray(header_rgb)
+
+        if USE_MODERN_SDK:
+            response = ai_client.models.generate_content(
+                model=MODEL_NAME,
+                contents=[CARD_EXTRACTION_PROMPT, pil_header],
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json"
+                )
+            )
+            raw_text = response.text
+        else:
+            response = ai_client.generate_content(
+                [CARD_EXTRACTION_PROMPT, pil_header],
+                generation_config={"response_mime_type": "application/json"}
+            )
+            raw_text = response.text
+
+        data = json.loads(raw_text)
+        return data
+    except Exception as e:
+        print(f"  [!] AI title extraction note: {e}")
+        return {}
 
 
 def process_single_image(
@@ -174,118 +273,98 @@ def process_single_image(
     dry_run: bool = False
 ):
     print(f"\n[+] Processing: {file_path.name}")
-    cropped_filename = f"cropped_{file_path.name}"
-    cropped_path = output_dir / cropped_filename
 
-    # 1. Crop image
-    success = crop_card(str(file_path), str(cropped_path))
-    if not success:
-        print(f"  [X] Failed to crop {file_path.name}")
+    # 1. Extract Title / Name with AI
+    metadata = extract_card_metadata(file_path, ai_client)
+    title = metadata.get("title") or f"Visage_{file_path.stem}"
+    file_slug = metadata.get("file_slug") or metadata.get("id") or f"visage_{file_path.stem.lower()}"
+    card_name = metadata.get("name") or file_path.stem
+
+    print(f"  [✓] Detected Card Title: '{title}' (Name: '{card_name}')")
+
+    # 2. Crop zoomed scroll
+    img = cv2.imread(str(file_path))
+    if img is None:
+        print(f"  [X] Failed to read image: {file_path}")
         return False
 
-    print(f"  [✓] Cropped card saved to: {cropped_path}")
+    h_img, w_img = img.shape[:2]
+    scale_x = w_img / 2556.0
+    scale_y = h_img / 1179.0
 
-    # 2. Extract structured data with Gemini
-    print("  [*] Calling Gemini Vision API...")
-    try:
-        pil_image = Image.open(cropped_path)
-        if USE_MODERN_SDK:
-            response = ai_client.models.generate_content(
-                model="gemini-2.5-flash",
-                contents=[EXTRACTION_PROMPT, pil_image],
-                config=types.GenerateContentConfig(
-                    response_mime_type="application/json"
-                )
-            )
-            raw_text = response.text
-        else:
-            response = ai_client.generate_content(
-                [EXTRACTION_PROMPT, pil_image],
-                generation_config={"response_mime_type": "application/json"}
-            )
-            raw_text = response.text
+    x = int(DEFAULT_BOX["x"] * scale_x)
+    y = int(DEFAULT_BOX["y"] * scale_y)
+    w = int(DEFAULT_BOX["w"] * scale_x)
+    h = int(DEFAULT_BOX["h"] * scale_y)
 
-        card_data = json.loads(raw_text)
-        print(f"  [✓] Extracted Card Data:\n{json.dumps(card_data, indent=2)}")
-    except Exception as e:
-        print(f"  [X] Gemini extraction failed: {e}")
-        return False
+    final_crop = apply_pixel_crop(img, x, y, w, h)
+    
+    # 3. Save cropped card with the extracted slug/name
+    output_filename = f"{file_slug}.png"
+    output_path = output_dir / output_filename
+    cv2.imwrite(str(output_path), final_crop)
+    print(f"  [✓] Saved clean crop as: {output_path.name}")
 
-    if dry_run:
-        print("  [INFO] Dry-run mode active. Skipping Supabase Storage and DB insertion.")
+    if dry_run or supabase is None:
         return True
 
-    # 3. Upload cropped image to Supabase Storage
+    # 4. Upload clean crop to Supabase Storage
     try:
-        storage_dest = f"visages/{file_path.name}"
-        with open(cropped_path, "rb") as f:
+        storage_dest = f"extracted_cards/{output_filename}"
+        with open(output_path, "rb") as f:
             supabase.storage.from_(STORAGE_BUCKET).upload(
                 path=storage_dest,
                 file=f,
                 file_options={"upsert": "true"}
             )
-
         public_url = supabase.storage.from_(STORAGE_BUCKET).get_public_url(storage_dest)
-        card_data["image_large"] = public_url
-        print(f"  [✓] Image uploaded to Supabase Storage: {public_url}")
+        print(f"  [✓] Uploaded to Storage: {public_url}")
+        
+        # 5. Insert / Upsert to Database
+        db_payload = {
+            "id": metadata.get("id", file_slug),
+            "name": card_name,
+            "monster_type": metadata.get("monster_type", "large"),
+            "points": metadata.get("points", 1),
+            "image_large": public_url,
+            "description": metadata.get("description", "")
+        }
+        supabase.table(TABLE_NAME).upsert(db_payload).execute()
+        print(f"  [✓] Record upserted into Supabase table '{TABLE_NAME}'")
     except Exception as e:
-        print(f"  [!] Storage upload note: {e}")
-
-    # 4. Upsert to Supabase Postgres DB
-    try:
-        supabase.table(TABLE_NAME).upsert(card_data).execute()
-        print(f"  [✓] Record upserted successfully into table '{TABLE_NAME}' with ID '{card_data.get('id')}'")
-    except Exception as e:
-        print(f"  [X] Supabase DB insertion failed: {e}")
-        return False
+        print(f"  [!] Storage / DB upload note: {e}")
 
     return True
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Bulk crop, extract, and upload cards to Supabase.")
-    parser.add_argument("--input", "-i", default="input_images", help="Directory of input images")
-    parser.add_argument("--output", "-o", default="output_images", help="Directory for cropped output images")
-    parser.add_argument("--dry-run", "-d", action="store_true", help="Run local crop and Gemini extraction without pushing to Supabase")
-    parser.add_argument("--delay", type=float, default=4.0, help="Delay between API calls in seconds (to respect free tier 15 RPM)")
+    parser = argparse.ArgumentParser(description="Extract and validate clean card images from screenshots.")
+    parser.add_argument("--input", "-i", default="input_images", help="Input directory")
+    parser.add_argument("--output", "-o", default="output_images", help="Output directory")
+    parser.add_argument("--dry-run", "-d", action="store_true", help="Save locally without uploading to Supabase")
+    parser.add_argument("--delay", type=float, default=2.0, help="Delay between API requests")
 
     args = parser.parse_args()
 
     base_dir = Path(__file__).parent
-    input_dir = (base_dir / args.input) if not Path(args.input).is_absolute() else Path(args.input)
-    output_dir = (base_dir / args.output) if not Path(args.output).is_absolute() else Path(args.output)
+    input_dir = base_dir / args.input
+    output_dir = base_dir / args.output
 
     input_dir.mkdir(parents=True, exist_ok=True)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    valid_extensions = {".png", ".jpg", ".jpeg", ".webp"}
-    image_files = [f for f in input_dir.iterdir() if f.suffix.lower() in valid_extensions]
+    image_files = [f for f in input_dir.iterdir() if f.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp"}]
 
     if not image_files:
-        print(f"\n[!] No images found in: {input_dir.resolve()}")
-        print("    Drop your card images or screenshots into that folder and run this script again.")
+        print(f"[!] No images found in {input_dir.resolve()}")
         sys.exit(0)
-
-    print(f"\nFound {len(image_files)} image(s) to process in '{input_dir}'")
-    if args.dry_run:
-        print("Running in DRY-RUN mode (No changes will be made to Supabase).")
 
     ai_client, supabase = init_clients(dry_run=args.dry_run)
 
-    success_count = 0
     for idx, img_path in enumerate(image_files, start=1):
-        print(f"\n--- [{idx}/{len(image_files)}] ---")
-        if process_single_image(img_path, ai_client, supabase, output_dir, dry_run=args.dry_run):
-            success_count += 1
-
+        process_single_image(img_path, ai_client, supabase, output_dir, dry_run=args.dry_run)
         if idx < len(image_files):
-            print(f"Sleeping {args.delay}s to respect free-tier rate limits...")
             time.sleep(args.delay)
-
-    print(f"\n==========================================")
-    print(f" Finished! Successfully processed: {success_count}/{len(image_files)} cards.")
-    print(f" Cropped images saved to: {output_dir.resolve()}")
-    print(f"==========================================\n")
 
 
 if __name__ == "__main__":

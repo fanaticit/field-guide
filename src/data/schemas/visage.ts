@@ -11,7 +11,10 @@ export type InkType =
   | 'poison'
   | 'paralysis'
   | 'sleep'
-  | 'blast';
+  | 'blast'
+  | 'resonance'
+  | 'grace'
+  | 'protection';
 
 export type VisageMonsterType = 'small' | 'large';
 
@@ -107,6 +110,33 @@ export const INK_CONFIG: Record<InkType, InkConfig> = {
     border: 'border-rose-500/30',
     dotColor: 'bg-rose-400',
   },
+  resonance: {
+    id: 'resonance',
+    name: 'Ink of Resonance',
+    shortName: 'Resonance',
+    bg: 'bg-teal-500/15',
+    text: 'text-teal-400',
+    border: 'border-teal-500/30',
+    dotColor: 'bg-teal-400',
+  },
+  grace: {
+    id: 'grace',
+    name: 'Ink of Grace',
+    shortName: 'Grace',
+    bg: 'bg-emerald-500/15',
+    text: 'text-emerald-300',
+    border: 'border-emerald-500/30',
+    dotColor: 'bg-emerald-300',
+  },
+  protection: {
+    id: 'protection',
+    name: 'Ink of Protection',
+    shortName: 'Protection',
+    bg: 'bg-sky-500/15',
+    text: 'text-sky-300',
+    border: 'border-sky-500/30',
+    dotColor: 'bg-sky-300',
+  },
 };
 
 export const INK_OPTIONS: InkType[] = [
@@ -119,6 +149,9 @@ export const INK_OPTIONS: InkType[] = [
   'paralysis',
   'sleep',
   'blast',
+  'resonance',
+  'grace',
+  'protection',
 ];
 
 export interface DBVisage {

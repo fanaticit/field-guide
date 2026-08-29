@@ -205,20 +205,38 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 }));
 
+let isInitialized = false;
+
 /**
  * Call once at app startup (in main.tsx).
  * Loads the persisted session and subscribes to auth state changes.
  */
 export function initAuth() {
+  const isOAuthCallback =
+    window.location.hash.includes('access_token') ||
+    window.location.search.includes('code=');
+
   supabase.auth.getSession().then(({ data: { session } }) => {
     const store = useAuthStore.getState();
     store.setSession(session);
     if (session?.user) {
-      store.fetchProfile(session.user.id).finally(() => {
-        useAuthStore.setState({ loading: false });
-      });
+      store
+        .fetchProfile(session.user.id)
+        .then(() => {
+          if (isOAuthCallback) {
+            const profile = useAuthStore.getState().profile;
+            if (profile?.default_page) {
+              useUIStore.getState().setActivePage(profile.default_page as Page);
+            }
+          }
+        })
+        .finally(() => {
+          useAuthStore.setState({ loading: false });
+          isInitialized = true;
+        });
     } else {
       useAuthStore.setState({ loading: false });
+      isInitialized = true;
     }
   });
 
@@ -227,7 +245,8 @@ export function initAuth() {
     store.setSession(session);
     if (session?.user) {
       store.fetchProfile(session.user.id).then(() => {
-        if (event === 'SIGNED_IN') {
+        // Only navigate on a fresh explicit SIGNED_IN event occurring after initial load
+        if (event === 'SIGNED_IN' && isInitialized) {
           const profile = useAuthStore.getState().profile;
           if (profile?.default_page) {
             useUIStore.getState().setActivePage(profile.default_page as Page);

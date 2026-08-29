@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 
 .env
+
+scripts/card_importer/output_images/
