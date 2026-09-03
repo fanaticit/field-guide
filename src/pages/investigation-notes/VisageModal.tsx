@@ -1,32 +1,49 @@
 // ─────────────────────────────────────────────────────────────
 // VisageModal — Detailed card inspect view for MHO Visage Cards
 // ─────────────────────────────────────────────────────────────
-import { X, Sparkles, Star, Check, BookmarkCheck } from 'lucide-react';
-import type { DBVisage } from '../../data/schemas/visage';
-import { INK_CONFIG, getInkConfig } from '../../data/schemas/visage';
+import { X, Sparkles, Star, Trash2 } from 'lucide-react';
+import type { DBVisage, VisageRarity } from '../../data/schemas/visage';
+import {
+  INK_CONFIG,
+  getInkConfig,
+  VISAGE_RARITY_CONFIG,
+  VISAGE_RARITY_OPTIONS,
+} from '../../data/schemas/visage';
+import type { CardCollectionEntry } from '../../hooks/useVisageSets';
 import { InkIconComponent } from './VisageCard';
 import { cn } from '../../lib/utils';
 
 interface VisageModalProps {
   card: DBVisage | null;
+  currentInk?: string;
   open: boolean;
   onClose: () => void;
-  isCollected?: boolean;
-  onToggleCollected?: () => void;
+  collectionEntry?: CardCollectionEntry | null;
+  onSetRarity?: (rarity: VisageRarity, quantity?: number) => void;
+  onSetQuantity?: (quantity: number) => void;
+  onRemoveFromCollection?: () => void;
 }
 
 export default function VisageModal({
   card,
+  currentInk,
   open,
   onClose,
-  isCollected = false,
-  onToggleCollected,
+  collectionEntry,
+  onSetRarity,
+  onSetQuantity,
+  onRemoveFromCollection,
 }: VisageModalProps) {
   if (!open || !card) return null;
 
-  const primaryInk = card.ink_types[0] || 'flames';
+  const primaryInk = currentInk || card.ink_types[0] || 'flames';
   const inkCfg = getInkConfig(primaryInk);
-  const imageSrc = card.image_large || card.image_small;
+  const imageSrc = card.image_small;
+
+  const isOwned = Boolean(collectionEntry);
+  const currentRarity = collectionEntry?.rarity;
+  const currentQty = collectionEntry?.quantity ?? 1;
+  const rarityCfg = currentRarity ? VISAGE_RARITY_CONFIG[currentRarity] : null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -83,10 +100,15 @@ export default function VisageModal({
             <div
               className={cn(
                 'relative flex flex-col items-center justify-between w-32 h-44 rounded-xl p-3 border-2 shrink-0 shadow-lg',
-                card.rarity >= 5
-                  ? 'bg-gradient-to-b from-indigo-900 via-slate-800 to-indigo-950 border-indigo-400'
+                isOwned && rarityCfg
+                  ? cn(rarityCfg.bgGradient, rarityCfg.borderClass, 'text-mh-slate-900')
                   : 'bg-gradient-to-b from-[#f3e5be] via-[#e2cf9f] to-[#cfba84] border-[#8e7646]',
               )}
+              style={{
+                boxShadow: isOwned && rarityCfg
+                  ? `0 10px 25px rgba(0,0,0,0.5), 0 0 15px ${rarityCfg.glowColor}`
+                  : undefined,
+              }}
             >
               <div className="relative flex flex-1 w-full items-center justify-center">
                 {imageSrc ? (
@@ -127,7 +149,7 @@ export default function VisageModal({
 
                 <div className="rounded-lg bg-mh-slate-800/80 p-2.5 border border-mh-slate-700">
                   <span className="block text-[10px] uppercase font-bold text-mh-slate-400">
-                    Rarity
+                    Inherent Base Rarity
                   </span>
                   <div className="flex items-center gap-0.5 mt-0.5 text-mh-gold-400">
                     {Array.from({ length: Math.min(5, card.rarity || 1) }).map((_, i) => (
@@ -168,6 +190,79 @@ export default function VisageModal({
             </div>
           </div>
 
+          {/* Collection Status & Rarity Picker Box */}
+          <div className="rounded-xl bg-mh-slate-950/90 p-4 border border-mh-slate-800 space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold uppercase tracking-wider text-mh-slate-300">
+                Hunter Collection Status
+              </span>
+              {isOwned && rarityCfg && (
+                <span className={cn('rounded-md px-2 py-0.5 text-[11px] font-bold border', rarityCfg.badgeClass)}>
+                  {rarityCfg.name} ({currentQty >= 5 ? '5+' : `${currentQty}x`})
+                </span>
+              )}
+            </div>
+
+            {/* Rarity Options Button Group */}
+            <div className="grid grid-cols-4 gap-2">
+              {VISAGE_RARITY_OPTIONS.map((rarityKey) => {
+                const cfg = VISAGE_RARITY_CONFIG[rarityKey];
+                const isSelected = currentRarity === rarityKey;
+                return (
+                  <button
+                    key={rarityKey}
+                    type="button"
+                    onClick={() => onSetRarity?.(rarityKey, isSelected ? currentQty : 1)}
+                    className={cn(
+                      'flex flex-col items-center justify-center rounded-lg p-2 border transition-all text-center',
+                      isSelected
+                        ? 'bg-mh-slate-800 border-mh-gold-400 ring-1 ring-mh-gold-400'
+                        : 'bg-mh-slate-900 border-mh-slate-800 hover:border-mh-slate-600 hover:bg-mh-slate-850',
+                    )}
+                  >
+                    <span className={cn('h-3.5 w-3.5 rounded-full shadow-sm mb-1', cfg.dotClass)} />
+                    <span className="text-xs font-bold text-mh-slate-200">{cfg.name}</span>
+                    <span className="text-[10px] text-mh-slate-500">({cfg.colorName})</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Quantity Selector if Owned */}
+            {isOwned && (
+              <div className="flex items-center justify-between pt-2 border-t border-mh-slate-800/80">
+                <span className="text-xs text-mh-slate-400 font-medium">
+                  Count Owned (1 - 5+):
+                </span>
+                <div className="flex items-center gap-1.5">
+                  {[1, 2, 3, 4, 5].map((q) => (
+                    <button
+                      key={q}
+                      type="button"
+                      onClick={() => onSetQuantity?.(q)}
+                      className={cn(
+                        'h-7 w-8 rounded-md text-xs font-bold transition-colors border',
+                        currentQty === q
+                          ? 'bg-mh-gold-500 text-slate-950 border-mh-gold-400 font-extrabold'
+                          : 'bg-mh-slate-900 text-mh-slate-300 border-mh-slate-750 hover:bg-mh-slate-800',
+                      )}
+                    >
+                      {q === 5 ? '5+' : q}
+                    </button>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => onRemoveFromCollection?.()}
+                    title="Remove from collection"
+                    className="ml-2 p-1.5 rounded-md text-rose-400 hover:bg-rose-500/20 transition-colors"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
           {/* Core Inherent Effect Box */}
           <div className="rounded-xl bg-gradient-to-b from-mh-slate-950 to-mh-slate-900 p-4 border border-mh-gold-500/30 space-y-1.5">
             <div className="flex items-center gap-1.5 text-xs font-bold text-mh-gold-400">
@@ -180,33 +275,11 @@ export default function VisageModal({
           </div>
         </div>
 
-        {/* Modal Footer with Collection Toggle */}
-        <div className="flex items-center justify-between border-t border-mh-slate-750 bg-mh-slate-950/80 px-6 py-3.5">
-          <button
-            onClick={onToggleCollected}
-            className={cn(
-              'flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-bold transition-all shadow-sm',
-              isCollected
-                ? 'bg-green-500/20 text-green-400 border border-green-500/40 hover:bg-green-500/30'
-                : 'bg-mh-slate-800 text-mh-slate-300 border border-mh-slate-700 hover:bg-mh-slate-700 hover:text-white',
-            )}
-          >
-            {isCollected ? (
-              <>
-                <Check size={14} />
-                <span>Collected in Album</span>
-              </>
-            ) : (
-              <>
-                <BookmarkCheck size={14} />
-                <span>Mark as Collected</span>
-              </>
-            )}
-          </button>
-
+        {/* Modal Footer */}
+        <div className="flex items-center justify-end border-t border-mh-slate-750 bg-mh-slate-950/80 px-6 py-3.5">
           <button
             onClick={onClose}
-            className="rounded-lg bg-mh-slate-800 px-4 py-2 text-xs font-medium text-mh-slate-300 hover:bg-mh-slate-700 hover:text-white transition-colors"
+            className="rounded-lg bg-mh-slate-800 px-5 py-2 text-xs font-bold text-mh-slate-200 hover:bg-mh-slate-700 hover:text-white transition-colors"
           >
             Close
           </button>

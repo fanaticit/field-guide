@@ -3,14 +3,19 @@
 // section. Renders the active sub-page from the UI store.
 // Add more sub-pages here as they are built.
 // ─────────────────────────────────────────────────────────────
-import { BookMarked, Bug, Sword, Shield, Sparkles } from 'lucide-react';
+import { BookMarked, Bug, Sword, Shield, Sparkles, Cat, UserCheck } from 'lucide-react';
 import { useUIStore, type InvestigationSubPage } from '../../store/uiStore';
 import MonsterGuide from './MonsterGuide';
+import AdventurerGuide from './AdventurerGuide';
 import VisageSetsGuide from './VisageSetsGuide';
+import BuddyGuide from './BuddyGuide';
+import WeaponGuide from './WeaponGuide';
 
 const tabs: Array<{ id: InvestigationSubPage; label: string; icon: React.ComponentType<{ size?: number; className?: string }> }> = [
   { id: 'monster-guide', label: 'Monster Guide', icon: Bug },
+  { id: 'adventurers', label: 'Adventurers', icon: UserCheck },
   { id: 'visages', label: 'Visage', icon: Sparkles },
+  { id: 'buddies', label: 'Buddies', icon: Cat },
   { id: 'weapons', label: 'Weapons', icon: Sword },
   { id: 'armour', label: 'Armour', icon: Shield },
 ];
@@ -74,16 +79,10 @@ export default function InvestigationNotes() {
 
       {/* Sub-page content */}
       {activeSubPage === 'monster-guide' && <MonsterGuide />}
+      {activeSubPage === 'adventurers' && <AdventurerGuide />}
       {activeSubPage === 'visages' && <VisageSetsGuide />}
-      {activeSubPage === 'weapons' && (
-        <div className="p-6 lg:p-8">
-          <ComingSoon
-            title="Weapons"
-            icon={Sword}
-            description="All 14 weapon types · special skills · styles · per-monster elements"
-          />
-        </div>
-      )}
+      {activeSubPage === 'buddies' && <BuddyGuide />}
+      {activeSubPage === 'weapons' && <WeaponGuide />}
       {activeSubPage === 'armour' && (
         <div className="p-6 lg:p-8">
           <ComingSoon

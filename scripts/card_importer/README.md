@@ -1,35 +1,45 @@
-# Visage Card Automation & Supabase Ingestion Pipeline
+# Field Guide Automation Scripts
 
-### Features
-1. **Title OCR**: Reads the top title (`Visage: <Monster Name>`) to determine the card identifier.
-2. **Supabase Check**: Checks Supabase `visages` table to see if this card already exists.
-3. **Smart Image Skip**: Skips cutting/uploading the image if it is already present in Supabase (override with `--enable-image-update`).
-4. **Full Vision OCR**: Analyzes the rest of the screenshot to extract Core Effects, Potential Set Effects (Ink types), and Points.
-5. **Smart Merging**:
-   - **Core Effect**: Updates the core effect description.
-   - **Potential Set Effects**: Appends new sets/ink types to the card's existing pool without deleting previously discovered sets.
-   - **Points Tracking**: Detects point values and explicitly reports whenever the database value is changed.
+### 1. Armour & Skills Importer (`process_armour.py`)
+- **OCR Focus**: Only scans right panel (`x >= 1800`), ignoring all other text.
+- **Dynamic Icon Cropping**: Automatically selects the 140x140 icon location based on the detected slot:
+  - **Head (Helm)**: `(385, 215)`
+  - **Mail (Chest)**: `(540, 215)`
+  - **Vambraces (Arms)**: `(222, 380)`
+  - **Coil (Waist)**: `(385, 380)`
+  - **Greaves (Legs)**: `(540, 380)`
+- **Input Folder**: `input_armour/`
+- **Output Folder**: `output_armour/`
+- **Supabase Table**: `armour_pieces`
+
+```bash
+# Dry-run test (Inspect cropped icon & view right-panel OCR lines)
+python3 process_armour.py
+
+# Live Ingestion
+python3 process_armour.py --enable-updates
+```
 
 ---
 
-## CLI Options & Usage Examples
+### 2. Visage Importer (`process_visage.py`)
+- **Input Folder**: `input_images/`
+- **Output Folder**: `output_images/`
+- **Supabase Table**: `visages`
 
-### 1. Safe Dry-Run (Inspect extracted text, sets, and points)
 ```bash
-python3 process_cards.py --dry-run
+python3 process_visage.py --dry-run
+python3 process_visage.py --enable-updates --enable-image-update
 ```
 
-### 2. Live Update to Supabase (Merge new sets & update core effects/points)
-```bash
-python3 process_cards.py --enable-updates
-```
+---
 
-### 3. Re-cut and upload images while updating data
-```bash
-python3 process_cards.py --enable-updates --enable-image-update
-```
+### 3. Buddy Importer (`process_buddies.py`)
+- **Input Folder**: `input_buddies/`
+- **Output Folder**: `output_buddies/`
+- **Supabase Table**: `buddies`
 
-### 4. Clear and Rebuild Fresh (Reset card fields from scratch)
 ```bash
-python3 process_cards.py --enable-updates --clear-visage
+python3 process_buddies.py --dry-run
+python3 process_buddies.py --enable-updates --enable-image-update
 ```

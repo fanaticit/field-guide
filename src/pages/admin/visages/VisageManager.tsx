@@ -69,11 +69,6 @@ export default function VisageManager() {
   const { data: setBonuses = [] } = useAdminSkills({ isSetBonus: true });
   const remove = useDeleteVisage();
 
-  const setBonusMap = useMemo(
-    () => new Map(setBonuses.map((s) => [s.id, s])),
-    [setBonuses],
-  );
-
   // Only inks that exist in database sets or on loaded visage cards
   const availableInks = useMemo(() => {
     const set = new Set<InkType>();
@@ -291,13 +286,10 @@ export default function VisageManager() {
         ) : viewMode === 'grid' ? (
           /* ── Card Grid View ── */
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {filtered.map((visage) => {
-              const setBonus = visage.set_bonus_id ? setBonusMap.get(visage.set_bonus_id) : null;
-
-              return (
-                <div
-                  key={visage.id}
-                  className={cn(
+            {filtered.map((visage) => (
+              <div
+                key={visage.id}
+                className={cn(
                     'group relative flex flex-col justify-between rounded-xl border border-mh-slate-750 bg-mh-slate-850 p-4 shadow-sm transition-all hover:border-mh-gold-500/40 hover:shadow-lg',
                     !visage.is_active && 'opacity-60 bg-mh-slate-900/40',
                   )}
@@ -336,9 +328,9 @@ export default function VisageManager() {
 
                   {/* Body: Card Art & Name */}
                   <div className="py-4 flex items-center gap-3.5">
-                    {visage.image_small || visage.image_large ? (
+                    {visage.image_small ? (
                       <img
-                        src={visage.image_small || visage.image_large || ''}
+                        src={visage.image_small}
                         alt={visage.name}
                         className="h-16 w-16 rounded-2xl object-cover shadow-sm shrink-0"
                         onError={(e) => {
@@ -378,9 +370,8 @@ export default function VisageManager() {
                     </div>
                   )}
 
-                  {/* Bottom: Inks & Set Bonus */}
+                  {/* Bottom: Possible Inks */}
                   <div className="pt-3 border-t border-mh-slate-750/80 space-y-2">
-                    {/* Ink pool */}
                     <div>
                       <span className="block text-[10px] uppercase font-bold tracking-wider text-mh-slate-500 mb-1">
                         Possible Inks:
@@ -406,33 +397,9 @@ export default function VisageManager() {
                         })}
                       </div>
                     </div>
-
-                    {/* Set bonus milestones */}
-                    {setBonus ? (
-                      <div className="rounded-lg bg-mh-slate-900/80 p-2 border border-mh-slate-750 space-y-1">
-                        <div className="flex items-center justify-between text-[10px]">
-                          <span className="font-bold text-mh-gold-400">Set: {setBonus.name}</span>
-                        </div>
-                        <div className="space-y-0.5">
-                          {(setBonus.set_thresholds || []).map((t, idx) => (
-                            <div key={idx} className="flex items-center gap-1.5 text-[10px]">
-                              <span className="font-bold text-mh-slate-400 shrink-0">{t.pieces} pcs:</span>
-                              <span className="text-mh-slate-300 truncate">
-                                {t.description || (t.granted_skill_id ? `+${t.granted_skill_level || 1} ${t.granted_skill_id}` : `Tier ${idx + 1}`)}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="rounded bg-mh-slate-900/40 p-1.5 text-center text-[10px] text-mh-slate-600">
-                        No linked set bonus
-                      </div>
-                    )}
                   </div>
                 </div>
-              );
-            })}
+              ))}
           </div>
         ) : (
           /* ── Table View ── */
@@ -446,131 +413,106 @@ export default function VisageManager() {
                   <th className="px-4 py-3 w-20">Points</th>
                   <th className="px-4 py-3 min-w-[180px]">Possible Inks</th>
                   <th className="px-4 py-3 min-w-[200px]">Core Effect</th>
-                  <th className="px-4 py-3 min-w-[200px]">Linked Set Bonus</th>
                   <th className="px-4 py-3 w-20 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-mh-slate-800 text-xs">
-                {filtered.map((visage) => {
-                  const setBonus = visage.set_bonus_id ? setBonusMap.get(visage.set_bonus_id) : null;
-                  return (
-                    <tr
-                      key={visage.id}
-                      className={cn(
-                        'hover:bg-mh-slate-800/40 transition-colors',
-                        !visage.is_active && 'opacity-60 bg-mh-slate-900/20',
-                      )}
-                    >
-                      <td className="px-4 py-3">
-                        <ActiveToggle visage={visage} />
-                      </td>
+                {filtered.map((visage) => (
+                  <tr
+                    key={visage.id}
+                    className={cn(
+                      'hover:bg-mh-slate-800/40 transition-colors',
+                      !visage.is_active && 'opacity-60 bg-mh-slate-900/20',
+                    )}
+                  >
+                    <td className="px-4 py-3">
+                      <ActiveToggle visage={visage} />
+                    </td>
 
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-3">
-                          {visage.image_small || visage.image_large ? (
-                            <img
-                              src={visage.image_small || visage.image_large || ''}
-                              alt={visage.name}
-                              className="h-10 w-10 rounded-xl object-cover shadow-sm shrink-0"
-                              onError={(e) => {
-                                (e.target as HTMLElement).style.display = 'none';
-                              }}
-                            />
-                          ) : (
-                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-mh-slate-800 text-mh-gold-400">
-                              <Sparkles size={14} />
-                            </div>
-                          )}
-                          <div>
-                            <span className="font-semibold text-mh-slate-100">
-                              {visage.name}
-                            </span>
-                            {visage.name_ja && (
-                              <span className="ml-1 text-[11px] text-mh-slate-500">
-                                ({visage.name_ja})
-                              </span>
-                            )}
-                            <p className="font-mono text-[10px] text-mh-slate-500">
-                              {visage.id}
-                            </p>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        {visage.image_small ? (
+                          <img
+                            src={visage.image_small}
+                            alt={visage.name}
+                            className="h-10 w-10 rounded-xl object-cover shadow-sm shrink-0"
+                            onError={(e) => {
+                              (e.target as HTMLElement).style.display = 'none';
+                            }}
+                          />
+                        ) : (
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-mh-slate-800 text-mh-gold-400">
+                            <Sparkles size={14} />
                           </div>
-                        </div>
-                      </td>
-
-                      <td className="px-4 py-3">
-                        <span
-                          className={cn(
-                            'rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider',
-                            visage.monster_type === 'large'
-                              ? 'bg-red-500/15 text-red-400 border border-red-500/30'
-                              : 'bg-mh-slate-800 text-mh-slate-400 border border-mh-slate-700',
-                          )}
-                        >
-                          {visage.monster_type}
-                        </span>
-                      </td>
-
-                      <td className="px-4 py-3">
-                        <span className="rounded bg-mh-gold-500/20 border border-mh-gold-500/30 px-2 py-0.5 text-xs font-bold text-mh-gold-400">
-                          {visage.points}
-                        </span>
-                      </td>
-
-                      <td className="px-4 py-3">
-                        <div className="flex flex-wrap gap-1">
-                          {visage.ink_types.map((ink) => {
-                            const cfg = INK_CONFIG[ink];
-                            if (!cfg) return null;
-                            return (
-                              <span
-                                key={ink}
-                                className={cn(
-                                  'inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] font-semibold border',
-                                  cfg.bg,
-                                  cfg.text,
-                                  cfg.border,
-                                )}
-                              >
-                                {cfg.name}
-                              </span>
-                            );
-                          })}
-                        </div>
-                      </td>
-
-                      <td className="px-4 py-3">
-                        {visage.core_effect ? (
-                          <span className="text-mh-slate-200 text-[11px] line-clamp-2">
-                            {visage.core_effect}
+                        )}
+                        <div>
+                          <span className="font-semibold text-mh-slate-100">
+                            {visage.name}
                           </span>
-                        ) : (
-                          <span className="text-mh-slate-600 text-xs">—</span>
-                        )}
-                      </td>
-
-                      <td className="px-4 py-3">
-                        {setBonus ? (
-                          <div className="space-y-0.5">
-                            <span className="font-bold text-mh-gold-300 text-[11px]">
-                              {setBonus.name}
+                          {visage.name_ja && (
+                            <span className="ml-1 text-[11px] text-mh-slate-500">
+                              ({visage.name_ja})
                             </span>
-                            <div className="flex flex-wrap gap-1">
-                              {(setBonus.set_thresholds || []).map((t, idx) => (
-                                <span
-                                  key={idx}
-                                  className="rounded bg-mh-slate-800 px-1.5 py-0.5 text-[10px] text-mh-slate-300 border border-mh-slate-700"
-                                >
-                                  {t.pieces} pcs
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        ) : (
-                          <span className="text-mh-slate-600 text-xs">—</span>
-                        )}
-                      </td>
+                          )}
+                          <p className="font-mono text-[10px] text-mh-slate-500">
+                            {visage.id}
+                          </p>
+                        </div>
+                      </div>
+                    </td>
 
-                      <td className="px-4 py-3 text-right">
+                    <td className="px-4 py-3">
+                      <span
+                        className={cn(
+                          'rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider',
+                          visage.monster_type === 'large'
+                            ? 'bg-red-500/15 text-red-400 border border-red-500/30'
+                            : 'bg-mh-slate-800 text-mh-slate-400 border border-mh-slate-700',
+                        )}
+                      >
+                        {visage.monster_type}
+                      </span>
+                    </td>
+
+                    <td className="px-4 py-3">
+                      <span className="rounded bg-mh-gold-500/20 border border-mh-gold-500/30 px-2 py-0.5 text-xs font-bold text-mh-gold-400">
+                        {visage.points}
+                      </span>
+                    </td>
+
+                    <td className="px-4 py-3">
+                      <div className="flex flex-wrap gap-1">
+                        {visage.ink_types.map((ink) => {
+                          const cfg = INK_CONFIG[ink];
+                          if (!cfg) return null;
+                          return (
+                            <span
+                              key={ink}
+                              className={cn(
+                                'inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] font-semibold border',
+                                cfg.bg,
+                                cfg.text,
+                                cfg.border,
+                              )}
+                            >
+                              {cfg.name}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    </td>
+
+                    <td className="px-4 py-3">
+                      {visage.core_effect ? (
+                        <span className="text-mh-slate-200 text-[11px] line-clamp-2">
+                          {visage.core_effect}
+                        </span>
+                      ) : (
+                        <span className="text-mh-slate-600 text-xs">—</span>
+                      )}
+                    </td>
+
+                    <td className="px-4 py-3 text-right">
                         <div className="flex items-center justify-end gap-1">
                           <button
                             onClick={() => setEditVisage(visage)}
@@ -592,9 +534,8 @@ export default function VisageManager() {
                           </button>
                         </div>
                       </td>
-                    </tr>
-                  );
-                })}
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

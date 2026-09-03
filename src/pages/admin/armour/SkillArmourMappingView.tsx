@@ -10,7 +10,6 @@ import { useAdminMonsters, type DBMonster } from '../../../hooks/useAdminMonster
 import {
   useAdminArmourPieces,
   useAddSkillToPiece,
-  useRemoveSkillFromPiece,
   useSaveArmourPieceSkills,
   type DBArmourPiece,
 } from '../../../hooks/useAdminArmour';
@@ -44,23 +43,56 @@ function AssignToPieceModal({
   const [selectedMonsterId, setSelectedMonsterId] = useState<string>(
     monsters[0]?.id ?? '',
   );
+  const [selectedSetVariant, setSelectedSetVariant] = useState<string>('I');
   const [selectedSlot, setSelectedSlot] = useState<ArmourSlot>('helm');
   const [level, setLevel] = useState<number>(1);
+  const [unlockRarity, setUnlockRarity] = useState<number | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const addSkill = useAddSkillToPiece();
 
+  const allSources = useMemo(() => {
+    const list = monsters.map((m) => ({ id: m.id, name: m.name, isMonster: true }));
+    const monsterIdSet = new Set(monsters.map((m) => m.id));
+    const nonMonsterMap = new Map<string, string>();
+    armourPieces
+      .filter((p) => p.game === game && !monsterIdSet.has(p.monster_id))
+      .forEach((p) => {
+        if (!nonMonsterMap.has(p.monster_id)) {
+          const name = p.set_name ? p.set_name.replace(/\s+Set$/i, '') : p.monster_id.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+          nonMonsterMap.set(p.monster_id, name);
+        }
+      });
+    nonMonsterMap.forEach((name, id) => {
+      list.push({ id, name, isMonster: false });
+    });
+    return list;
+  }, [monsters, armourPieces, game]);
+
   const filteredMonsters = useMemo(() => {
-    if (!monsterSearch) return monsters;
+    if (!monsterSearch) return allSources;
     const q = monsterSearch.toLowerCase();
-    return monsters.filter((m) => m.name.toLowerCase().includes(q) || m.id.includes(q));
-  }, [monsters, monsterSearch]);
+    return allSources.filter((m) => m.name.toLowerCase().includes(q) || m.id.includes(q));
+  }, [allSources, monsterSearch]);
+
+  const availableSetsForMonster = useMemo(() => {
+    const set = new Set<string>();
+    armourPieces
+      .filter((p) => p.monster_id === selectedMonsterId && p.game === game)
+      .forEach((p) => set.add(p.set_variant || 'I'));
+    if (set.size === 0) set.add('I');
+    return Array.from(set).sort();
+  }, [armourPieces, selectedMonsterId, game]);
 
   const maxAllowedLevel = skill.max_levels[game] ?? 5;
 
   // Find existing piece
   const targetPiece = armourPieces.find(
-    (p) => p.monster_id === selectedMonsterId && p.slot === selectedSlot && p.game === game,
+    (p) =>
+      p.monster_id === selectedMonsterId &&
+      (p.set_variant || 'I') === selectedSetVariant &&
+      p.slot === selectedSlot &&
+      p.game === game,
   );
   const currentSkills = targetPiece?.skills ?? [];
 
@@ -75,10 +107,12 @@ function AssignToPieceModal({
       await addSkill.mutateAsync({
         game,
         monsterId: selectedMonsterId,
+        setVariant: selectedSetVariant,
         slot: selectedSlot,
         currentSkills,
         skillId: skill.id,
         level,
+        unlockRarity,
       });
       onClose();
     } catch (err: unknown) {
@@ -145,6 +179,26 @@ function AssignToPieceModal({
             </select>
           </div>
 
+          {/* Set Variant Picker */}
+          <div>
+            <label className="block text-xs font-semibold text-mh-slate-400 mb-1.5">
+              Armour Set Variant
+            </label>
+            <div className="flex items-center gap-2">
+              <select
+                value={selectedSetVariant}
+                onChange={(e) => setSelectedSetVariant(e.target.value)}
+                className="flex-1 rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-xs text-mh-slate-100 outline-none focus:border-mh-gold-500/50"
+              >
+                {availableSetsForMonster.map((s) => (
+                  <option key={s} value={s}>
+                    Set {s}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
           {/* Slot Picker */}
           <div>
             <label className="block text-xs font-semibold text-mh-slate-400 mb-1.5">
@@ -177,27 +231,80 @@ function AssignToPieceModal({
             </div>
           </div>
 
-          {/* Level Picker */}
+          {/* Level Picker (only for non-set-bonus skills) */}
+          {skill.is_set_bonus ? (
+            <div>
+              <label className="block text-xs font-semibold text-mh-slate-400 mb-1.5">
+                Set Effect
+              </label>
+              <div className="rounded-lg bg-mh-gold-500/15 border border-mh-gold-500/30 px-3 py-2 text-xs font-bold text-mh-gold-300">
+                Inherent Set Effect (Adds 1 piece contribution towards set bonus)
+              </div>
+            </div>
+          ) : (
+            <div>
+              <label className="block text-xs font-semibold text-mh-slate-400 mb-1.5">
+                Skill Level on Piece
+              </label>
+              <div className="flex items-center gap-1.5">
+                {Array.from({ length: maxAllowedLevel }, (_, i) => i + 1).map((lvl) => (
+                  <button
+                    key={lvl}
+                    type="button"
+                    onClick={() => setLevel(lvl)}
+                    className={cn(
+                      'h-8 flex-1 rounded text-xs font-bold transition-all',
+                      level === lvl
+                        ? 'bg-mh-gold-500 text-mh-slate-950 shadow-sm'
+                        : 'border border-mh-slate-700 bg-mh-slate-800 text-mh-slate-300 hover:bg-mh-slate-700',
+                    )}
+                  >
+                    Lv {lvl}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Unlock Rarity Selector */}
           <div>
             <label className="block text-xs font-semibold text-mh-slate-400 mb-1.5">
-              Skill Level on Piece
+              Unlock at Rarity Level
             </label>
-            <div className="flex items-center gap-1.5">
-              {Array.from({ length: maxAllowedLevel }, (_, i) => i + 1).map((lvl) => (
+            <div className="flex items-center gap-1.5 flex-wrap">
+              {[
+                { label: 'Base (None)', val: null },
+                { label: 'R6', val: 6 },
+                { label: 'R8', val: 8 },
+                { label: 'R9', val: 9 },
+                { label: 'R12', val: 12 },
+              ].map((r) => (
                 <button
-                  key={lvl}
+                  key={r.label}
                   type="button"
-                  onClick={() => setLevel(lvl)}
+                  onClick={() => setUnlockRarity(r.val)}
                   className={cn(
-                    'h-8 flex-1 rounded text-xs font-bold transition-all',
-                    level === lvl
-                      ? 'bg-mh-gold-500 text-mh-slate-950 shadow-sm'
+                    'rounded-lg px-2.5 py-1 text-xs font-bold transition-colors',
+                    unlockRarity === r.val
+                      ? 'bg-amber-500 text-slate-950 shadow'
                       : 'border border-mh-slate-700 bg-mh-slate-800 text-mh-slate-300 hover:bg-mh-slate-700',
                   )}
                 >
-                  Lv {lvl}
+                  {r.label}
                 </button>
               ))}
+              <input
+                type="number"
+                min={1}
+                max={20}
+                value={unlockRarity ?? ''}
+                onChange={(e) => {
+                  const v = parseInt(e.target.value, 10);
+                  setUnlockRarity(isNaN(v) || v <= 1 ? null : v);
+                }}
+                placeholder="Custom"
+                className="w-16 rounded-lg bg-mh-slate-800 px-2 py-1 text-xs font-mono text-mh-slate-200 border border-mh-slate-700 outline-none focus:border-amber-500/50"
+              />
             </div>
           </div>
         </div>
@@ -241,7 +348,6 @@ function SkillMappingCard({
   onAssignToPiece: () => void;
 }) {
   const [isExpanded, setIsExpanded] = useState(true);
-  const removeSkill = useRemoveSkillFromPiece();
   const saveSkills = useSaveArmourPieceSkills();
 
   const categoryCfg = CATEGORY_CONFIG[skill.category] ?? CATEGORY_CONFIG.general;
@@ -257,25 +363,59 @@ function SkillMappingCard({
     [],
   );
 
-  function handleLevelChange(piece: DBArmourPiece, newLevel: number) {
-    const updatedSkills = piece.skills.map((s) =>
-      s.id === skill.id ? { ...s, level: newLevel } : s,
-    );
+  function handleLevelChange(piece: DBArmourPiece, targetSkill: ArmourSkill, newLevel: number) {
+    const targetUR = targetSkill.unlockRarity ?? targetSkill.unlock_rarity ?? null;
+    const updatedSkills = piece.skills.map((s) => {
+      const sUR = s.unlockRarity ?? s.unlock_rarity ?? null;
+      return s.id === skill.id && sUR === targetUR ? { ...s, level: newLevel } : s;
+    });
     saveSkills.mutate({
       game,
       monsterId: piece.monster_id,
+      setVariant: piece.set_variant || 'I',
+      setName: piece.set_name,
       slot: piece.slot,
       skills: updatedSkills,
     });
   }
 
-  function handleRemove(piece: DBArmourPiece) {
-    removeSkill.mutate({
+  function handleUnlockRarityChange(piece: DBArmourPiece, targetSkill: ArmourSkill, newRarity: number | null) {
+    const cleanUR = newRarity && newRarity > 1 ? Number(newRarity) : null;
+    const targetUR = targetSkill.unlockRarity ?? targetSkill.unlock_rarity ?? null;
+    const updatedSkills = piece.skills.map((s) => {
+      const sUR = s.unlockRarity ?? s.unlock_rarity ?? null;
+      return s.id === skill.id && sUR === targetUR
+        ? { ...s, unlock_rarity: cleanUR, unlockRarity: cleanUR }
+        : s;
+    });
+    saveSkills.mutate({
       game,
       monsterId: piece.monster_id,
+      setVariant: piece.set_variant || 'I',
+      setName: piece.set_name,
       slot: piece.slot,
-      currentSkills: piece.skills,
-      skillId: skill.id,
+      skills: updatedSkills,
+    });
+  }
+
+  function handleRemove(piece: DBArmourPiece, targetSkill: ArmourSkill) {
+    const targetUR = targetSkill.unlockRarity ?? targetSkill.unlock_rarity ?? null;
+    let removed = false;
+    const updatedSkills = piece.skills.filter((s) => {
+      const sUR = s.unlockRarity ?? s.unlock_rarity ?? null;
+      if (!removed && s.id === skill.id && sUR === targetUR) {
+        removed = true;
+        return false;
+      }
+      return true;
+    });
+    saveSkills.mutate({
+      game,
+      monsterId: piece.monster_id,
+      setVariant: piece.set_variant || 'I',
+      setName: piece.set_name,
+      slot: piece.slot,
+      skills: updatedSkills,
     });
   }
 
@@ -358,10 +498,12 @@ function SkillMappingCard({
               {piecesWithSkill.map(({ piece, skill: pieceSkill }) => {
                 const monster = monstersMap.get(piece.monster_id);
                 const slotDef = slotMap.get(piece.slot);
+                const unlockR = pieceSkill.unlockRarity ?? pieceSkill.unlock_rarity ?? null;
+                const isLocked = unlockR !== null && unlockR > 1;
 
                 return (
                   <div
-                    key={`${piece.monster_id}-${piece.slot}`}
+                    key={piece.id || `${piece.monster_id}-${piece.set_variant || 'I'}-${piece.slot}`}
                     className="flex items-center justify-between rounded-lg border border-mh-slate-750 bg-mh-slate-800/90 p-2.5 transition-colors hover:border-mh-slate-650"
                   >
                     <div className="flex items-center gap-2.5 min-w-0">
@@ -373,35 +515,68 @@ function SkillMappingCard({
                         />
                       )}
                       <div className="min-w-0">
-                        <p className="truncate text-xs font-bold text-mh-slate-200">
-                          {monster?.name ?? piece.monster_id}
-                        </p>
+                        <div className="flex items-center gap-1.5 truncate">
+                          <p className="truncate text-xs font-bold text-mh-slate-200">
+                            {monster?.name ?? piece.set_name?.replace(/\s+Set$/i, '') ?? piece.monster_id.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}
+                          </p>
+                          <span className="shrink-0 rounded bg-mh-gold-500/15 px-1 py-0.2 text-[9px] font-bold text-mh-gold-300 border border-mh-gold-500/30">
+                            {piece.set_name || `Set ${piece.set_variant || 'I'}`}
+                          </span>
+                        </div>
                         <p className="text-[10px] text-mh-slate-400 font-medium">
                           {slotDef?.label ?? piece.slot}
                         </p>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                      <div className="flex items-center gap-1">
-                        <span className="text-[10px] font-bold text-mh-slate-400">Lv</span>
-                        <select
-                          value={pieceSkill.level}
-                          onChange={(e) =>
-                            handleLevelChange(piece, parseInt(e.target.value, 10))
-                          }
-                          className="rounded border border-mh-slate-700 bg-mh-slate-900 px-1.5 py-0.5 text-xs font-bold text-mh-gold-400 outline-none"
-                        >
-                          {Array.from({ length: maxLv }, (_, i) => i + 1).map((lvl) => (
-                            <option key={lvl} value={lvl}>
-                              {lvl}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      {/* Unlock Rarity Selector */}
+                      <select
+                        value={unlockR ?? ''}
+                        onChange={(e) => {
+                          const v = parseInt(e.target.value, 10);
+                          handleUnlockRarityChange(piece, pieceSkill, isNaN(v) || v <= 1 ? null : v);
+                        }}
+                        title="Required armour upgrade rarity to unlock"
+                        className={cn(
+                          'rounded border px-1.5 py-0.5 text-[10px] font-bold outline-none transition-colors',
+                          isLocked
+                            ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                            : 'bg-mh-slate-900 text-mh-slate-400 border-mh-slate-700',
+                        )}
+                      >
+                        <option value="">Base</option>
+                        <option value="6">R6</option>
+                        <option value="8">R8</option>
+                        <option value="9">R9</option>
+                        <option value="12">R12</option>
+                      </select>
+
+                      {skill.is_set_bonus ? (
+                        <span className="rounded bg-mh-gold-500/20 px-1.5 py-0.5 text-[10px] font-bold text-mh-gold-300 border border-mh-gold-500/40">
+                          Set Effect
+                        </span>
+                      ) : (
+                        <div className="flex items-center gap-1">
+                          <span className="text-[10px] font-bold text-mh-slate-400">Lv</span>
+                          <select
+                            value={pieceSkill.level}
+                            onChange={(e) =>
+                              handleLevelChange(piece, pieceSkill, parseInt(e.target.value, 10))
+                            }
+                            className="rounded border border-mh-slate-700 bg-mh-slate-900 px-1.5 py-0.5 text-xs font-bold text-mh-gold-400 outline-none"
+                          >
+                            {Array.from({ length: maxLv }, (_, i) => i + 1).map((lvl) => (
+                              <option key={lvl} value={lvl}>
+                                {lvl}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      )}
 
                       <button
-                        onClick={() => handleRemove(piece)}
+                        onClick={() => handleRemove(piece, pieceSkill)}
                         title="Remove skill from this piece"
                         className="rounded p-1 text-mh-slate-500 hover:bg-red-500/20 hover:text-red-400 transition-colors"
                       >
@@ -428,11 +603,11 @@ export default function SkillArmourMappingView({ game }: Props) {
   const [sortDir, setSortDir] = useState<SortDir>('desc');
   const [assigningSkill, setAssigningSkill] = useState<DBSkill | null>(null);
 
-  const { data: skills = [], isLoading: loadingSkills } = useAdminSkills({
-    game,
-    isActive: true,
-  });
-  const { data: monsters = [] } = useAdminMonsters({ game, isActive: true });
+  const skillFilters = useMemo(() => ({ game, isActive: true }), [game]);
+  const monsterFilters = useMemo(() => ({ game, isActive: true }), [game]);
+
+  const { data: skills = [], isLoading: loadingSkills } = useAdminSkills(skillFilters);
+  const { data: monsters = [] } = useAdminMonsters(monsterFilters);
   const { data: armourPieces = [], isLoading: loadingPieces } = useAdminArmourPieces(game);
 
   // Map of skillId -> Array of { piece, skill }

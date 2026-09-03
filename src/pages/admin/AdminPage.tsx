@@ -3,14 +3,18 @@
 // Only renders for admins. Shows a sub-navigation and the
 // active admin section.
 // ─────────────────────────────────────────────────────────────
-import { Shield, Bug, Sparkles, Layers, Users, FileText, SquareLibrary } from 'lucide-react';
+import { Shield, Bug, Sparkles, Layers, Users, FileText, SquareLibrary, Cat, UserCheck, Sword, SlidersHorizontal } from 'lucide-react';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
 import { useUIStore, type AdminSubPage } from '../../store/uiStore';
 import { cn } from '../../lib/utils';
 import MonsterManager from './monsters/MonsterManager';
 import SkillManager from './skills/SkillManager';
 import ArmourManager from './armour/ArmourManager';
+import WeaponEquipmentManager from './weapons/WeaponEquipmentManager';
+import OtherManager from './other/OtherManager';
 import VisageManager from './visages/VisageManager';
+import BuddyManager from './buddies/BuddyManager';
+import AdventurerManager from './adventurers/AdventurerManager';
 
 interface AdminTab {
   id: AdminSubPage;
@@ -22,10 +26,14 @@ interface AdminTab {
 const TABS: AdminTab[] = [
   { id: 'monsters', label: 'Monsters', icon: Bug, description: 'Manage the monster roster' },
   { id: 'skills', label: 'Skills & Sets', icon: Sparkles, description: 'Manage skills, set bonuses, and game availability' },
+  { id: 'weapons', label: 'Weapons', icon: Sword, description: 'Add & manage in-game craftable weapons' },
   { id: 'armour', label: 'Armour', icon: Layers, description: 'Manage monster armour piece skills' },
+  { id: 'adventurers', label: 'Adventurers (MHO)', icon: UserCheck, description: 'Manage Outlanders Playable Adventurers' },
   { id: 'visages', label: 'Visages (MHO)', icon: SquareLibrary, description: 'Manage Outlanders Visage cards' },
+  { id: 'buddies', label: 'Buddies (MHO)', icon: Cat, description: 'Manage Outlanders Companion Buddies' },
   { id: 'content', label: 'Content', icon: FileText, description: 'Moderate community content' },
   { id: 'users', label: 'Users', icon: Users, description: 'Manage user roles' },
+  { id: 'other', label: 'Other', icon: SlidersHorizontal, description: 'Manage weapon types game availability & settings' },
 ];
 
 export default function AdminPage() {
@@ -59,7 +67,7 @@ export default function AdminPage() {
         </div>
 
         {/* Tab bar */}
-        <div className="mt-4 flex gap-1">
+        <div className="mt-4 flex gap-1 overflow-x-auto pb-1">
           {TABS.map((tab) => {
             const Icon = tab.icon;
             const isActive = adminSubPage === tab.id;
@@ -68,7 +76,7 @@ export default function AdminPage() {
                 key={tab.id}
                 onClick={() => setAdminSubPage(tab.id)}
                 className={cn(
-                  'flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150',
+                  'flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150 whitespace-nowrap',
                   isActive
                     ? 'bg-mh-gold-500/10 text-mh-gold-400 ring-1 ring-mh-gold-500/30'
                     : 'text-mh-slate-500 hover:bg-mh-slate-800 hover:text-mh-slate-300',
@@ -86,10 +94,14 @@ export default function AdminPage() {
       <div className="min-h-0 flex-1 overflow-y-auto">
         {adminSubPage === 'monsters' && <MonsterManager />}
         {adminSubPage === 'skills' && <SkillManager />}
+        {adminSubPage === 'weapons' && <WeaponEquipmentManager />}
         {adminSubPage === 'armour' && <ArmourManager />}
+        {adminSubPage === 'adventurers' && <AdventurerManager />}
         {adminSubPage === 'visages' && <VisageManager />}
+        {adminSubPage === 'buddies' && <BuddyManager />}
         {adminSubPage === 'content' && <ComingSoon label="Content Moderation" />}
         {adminSubPage === 'users' && <ComingSoon label="User Management" />}
+        {adminSubPage === 'other' && <OtherManager />}
       </div>
     </div>
   );

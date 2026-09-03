@@ -1,16 +1,26 @@
 // ─────────────────────────────────────────────────────────────
 // useVisageSets — Pure Supabase-driven hook for MHO Visage Sets
-// Only loads and displays sets that are attached to Visage cards
+// Manages grouping by sets and user collection tracking (rarity & quantity)
 // ─────────────────────────────────────────────────────────────
 import { useState, useMemo } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { supabase } from '../lib/supabase';
+import { useAuthStore } from '../store/authStore';
 import { useAdminVisages } from './useAdminVisages';
 import { useAdminSkills, type SetBonusTier, type DBSkill } from './useAdminSkills';
 import {
   type DBVisage,
+  type VisageRarity,
   getInkConfig,
 } from '../data/schemas/visage';
 
-const STORAGE_KEY = 'mho_visage_album_collected_v1';
+const STORAGE_KEY = 'mho_visage_user_collection_v2';
+export const USER_COLLECTION_QUERY_KEY = 'user-visage-collection';
+
+export interface CardCollectionEntry {
+  rarity: VisageRarity;
+  quantity: number; // 1 to 5 (5 = 5+)
+}
 
 export interface GroupedPointsColumn {
   points: number;
@@ -32,38 +42,236 @@ export interface VisageSet {
   collectedCards: number;
 }
 
-export function useVisageCollection() {
-  const [collectedMap, setCollectedMap] = useState<Record<string, boolean>>(() => {
+export function useUserVisageCollection() {
+  const user = useAuthStore((s) => s.user);
+  const qc = useQueryClient();
+
+  // Local fallback storage for non-authenticated / offline state: key is `${visageId}:${inkType}`
+  const [localMap, setLocalMap] = useState<Record<string, CardCollectionEntry>>(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) return JSON.parse(stored);
     } catch (e) {
-      console.warn('Failed to parse visage collection from storage', e);
+      console.warn('Failed to parse local visage collection', e);
     }
     return {};
   });
 
-  const toggleCollected = (cardId: string) => {
-    setCollectedMap((prev) => {
-      const next = { ...prev, [cardId]: !prev[cardId] };
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-      } catch (e) {
-        console.warn('Failed to save visage collection', e);
-      }
-      return next;
-    });
+  // Sync to local storage
+  const saveLocal = (next: Record<string, CardCollectionEntry>) => {
+    setLocalMap(next);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+    } catch (e) {
+      console.warn('Failed to save to local storage', e);
+    }
   };
 
-  const isCollected = (cardId: string) => Boolean(collectedMap[cardId]);
+  // 1. Live Supabase Query (when signed in)
+  const { data: dbCollection = [], isLoading: isLoadingCollection } = useQuery({
+    queryKey: [USER_COLLECTION_QUERY_KEY, user?.id],
+    queryFn: async () => {
+      if (!user) return [];
+      const { data, error } = await supabase
+        .from('user_visage_collection')
+        .select('*')
+        .eq('user_id', user.id);
+      if (error) {
+        console.warn('user_visage_collection query error:', error);
+        return [];
+      }
+      return (data ?? []) as Array<{
+        visage_id: string;
+        ink_type: string;
+        rarity: VisageRarity;
+        quantity: number;
+      }>;
+    },
+    enabled: Boolean(user),
+    staleTime: 1000 * 60,
+  });
 
-  return { collectedMap, toggleCollected, isCollected };
+  // Combined collection map keyed by `${visageId}:${inkType}`
+  const collectionMap = useMemo<Record<string, CardCollectionEntry>>(() => {
+    if (user && dbCollection.length > 0) {
+      const map: Record<string, CardCollectionEntry> = {};
+      for (const item of dbCollection) {
+        const ink = item.ink_type || 'flames';
+        const key = `${item.visage_id}:${ink.toLowerCase()}`;
+        map[key] = {
+          rarity: item.rarity,
+          quantity: Math.min(5, Math.max(1, item.quantity || 1)),
+        };
+      }
+      return map;
+    }
+    return localMap;
+  }, [user, dbCollection, localMap]);
+
+  // 2. Mutations
+  const upsertMutation = useMutation({
+    mutationFn: async ({
+      visageId,
+      inkType,
+      rarity,
+      quantity,
+    }: {
+      visageId: string;
+      inkType: string;
+      rarity: VisageRarity;
+      quantity: number;
+    }) => {
+      const normInk = inkType.toLowerCase();
+      const cleanQty = Math.min(5, Math.max(1, quantity));
+      const key = `${visageId}:${normInk}`;
+
+      if (!user) {
+        saveLocal({
+          ...localMap,
+          [key]: { rarity, quantity: cleanQty },
+        });
+        return;
+      }
+
+      const { error } = await supabase.from('user_visage_collection').upsert(
+        {
+          user_id: user.id,
+          visage_id: visageId,
+          ink_type: normInk,
+          rarity,
+          quantity: cleanQty,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: 'user_id,visage_id,ink_type' },
+      );
+      if (error) throw error;
+    },
+    onMutate: async ({ visageId, inkType, rarity, quantity }) => {
+      if (!user) return;
+      await qc.cancelQueries({ queryKey: [USER_COLLECTION_QUERY_KEY, user.id] });
+      const previous = qc.getQueryData<Array<{ visage_id: string; ink_type: string; rarity: VisageRarity; quantity: number }>>([
+        USER_COLLECTION_QUERY_KEY,
+        user.id,
+      ]);
+
+      const normInk = inkType.toLowerCase();
+      const cleanQty = Math.min(5, Math.max(1, quantity));
+      qc.setQueryData(
+        [USER_COLLECTION_QUERY_KEY, user.id],
+        (old: Array<{ visage_id: string; ink_type: string; rarity: VisageRarity; quantity: number }> = []) => {
+          const idx = old.findIndex((item) => item.visage_id === visageId && (item.ink_type || '').toLowerCase() === normInk);
+          if (idx >= 0) {
+            const next = [...old];
+            next[idx] = { visage_id: visageId, ink_type: normInk, rarity, quantity: cleanQty };
+            return next;
+          }
+          return [...old, { visage_id: visageId, ink_type: normInk, rarity, quantity: cleanQty }];
+        },
+      );
+
+      return { previous };
+    },
+    onError: (_err, _vars, context) => {
+      if (user && context?.previous) {
+        qc.setQueryData([USER_COLLECTION_QUERY_KEY, user.id], context.previous);
+      }
+    },
+    onSettled: () => {
+      if (user) qc.invalidateQueries({ queryKey: [USER_COLLECTION_QUERY_KEY, user.id] });
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async ({ visageId, inkType }: { visageId: string; inkType: string }) => {
+      const normInk = inkType.toLowerCase();
+      const key = `${visageId}:${normInk}`;
+
+      if (!user) {
+        const next = { ...localMap };
+        delete next[key];
+        saveLocal(next);
+        return;
+      }
+
+      const { error } = await supabase
+        .from('user_visage_collection')
+        .delete()
+        .eq('user_id', user.id)
+        .eq('visage_id', visageId)
+        .eq('ink_type', normInk);
+      if (error) throw error;
+    },
+    onMutate: async ({ visageId, inkType }) => {
+      if (!user) return;
+      await qc.cancelQueries({ queryKey: [USER_COLLECTION_QUERY_KEY, user.id] });
+      const previous = qc.getQueryData<Array<{ visage_id: string; ink_type: string; rarity: VisageRarity; quantity: number }>>([
+        USER_COLLECTION_QUERY_KEY,
+        user.id,
+      ]);
+
+      const normInk = inkType.toLowerCase();
+      qc.setQueryData(
+        [USER_COLLECTION_QUERY_KEY, user.id],
+        (old: Array<{ visage_id: string; ink_type: string; rarity: VisageRarity; quantity: number }> = []) =>
+          old.filter((item) => !(item.visage_id === visageId && (item.ink_type || '').toLowerCase() === normInk)),
+      );
+
+      return { previous };
+    },
+    onError: (_err, _vars, context) => {
+      if (user && context?.previous) {
+        qc.setQueryData([USER_COLLECTION_QUERY_KEY, user.id], context.previous);
+      }
+    },
+    onSettled: () => {
+      if (user) qc.invalidateQueries({ queryKey: [USER_COLLECTION_QUERY_KEY, user.id] });
+    },
+  });
+
+  // Helper APIs for components
+  const getCardCollection = (cardId: string, inkType: string): CardCollectionEntry | null => {
+    const key = `${cardId}:${(inkType || 'flames').toLowerCase()}`;
+    return collectionMap[key] || null;
+  };
+
+  const isCollected = (cardId: string, inkType: string): boolean => {
+    const key = `${cardId}:${(inkType || 'flames').toLowerCase()}`;
+    return Boolean(collectionMap[key]);
+  };
+
+  const setCardRarity = (cardId: string, inkType: string, rarity: VisageRarity, defaultQuantity = 1) => {
+    const key = `${cardId}:${(inkType || 'flames').toLowerCase()}`;
+    const existing = collectionMap[key];
+    const qty = existing && existing.rarity === rarity ? existing.quantity : defaultQuantity;
+    upsertMutation.mutate({ visageId: cardId, inkType, rarity, quantity: qty });
+  };
+
+  const setCardQuantity = (cardId: string, inkType: string, quantity: number) => {
+    const key = `${cardId}:${(inkType || 'flames').toLowerCase()}`;
+    const existing = collectionMap[key];
+    const rarity: VisageRarity = existing?.rarity || 'superior';
+    upsertMutation.mutate({ visageId: cardId, inkType, rarity, quantity });
+  };
+
+  const removeCardFromCollection = (cardId: string, inkType: string) => {
+    deleteMutation.mutate({ visageId: cardId, inkType });
+  };
+
+  return {
+    collectionMap,
+    isLoadingCollection,
+    getCardCollection,
+    isCollected,
+    setCardRarity,
+    setCardQuantity,
+    removeCardFromCollection,
+  };
 }
 
 export function useVisageSetsData() {
   const { data: dbVisages = [], isLoading: isLoadingVisages, refetch: refetchVisages } = useAdminVisages({ isActive: true });
   const { data: dbSkills = [], isLoading: isLoadingSkills, refetch: refetchSkills } = useAdminSkills({ isSetBonus: true, isActive: true });
-  const { collectedMap, toggleCollected, isCollected } = useVisageCollection();
+  const collection = useUserVisageCollection();
 
   const sets: VisageSet[] = useMemo(() => {
     // 1. Build lookup map of Set Bonus Skills by id and name
@@ -74,9 +282,6 @@ export function useVisageSetsData() {
     }
 
     // 2. Group active DB Visages by their attached set(s)
-    // A card belongs to a set if:
-    //  - card.set_bonus_id matches the skill ID, OR
-    //  - card.ink_types contains an ink that matches the skill/ink set
     const setCardsMap = new Map<string, {
       setId: string;
       setName: string;
@@ -86,13 +291,11 @@ export function useVisageSetsData() {
       cardsMap: Map<string, DBVisage>;
     }>();
 
-    // Helper to register a card under a set
     function addCardToSet(setIdRaw: string, card: DBVisage) {
       const normId = setIdRaw.toLowerCase().replace(/^ink_of_/, '');
       const fullSkillId = `ink_of_${normId}`;
       const inkCfg = getInkConfig(normId);
 
-      // Find matching skill from public.skills if available
       const matchedSkill =
         skillMap.get(fullSkillId) ||
         skillMap.get(setIdRaw.toLowerCase()) ||
@@ -121,17 +324,9 @@ export function useVisageSetsData() {
       setGroup.cardsMap.set(card.id, card);
     }
 
-    // Iterate over each active visage from Supabase
     for (const visage of dbVisages) {
       let linkedAnySet = false;
 
-      // Check linked set_bonus_id from public.skills
-      if (visage.set_bonus_id) {
-        addCardToSet(visage.set_bonus_id, visage);
-        linkedAnySet = true;
-      }
-
-      // Check ink_types on the card
       if (Array.isArray(visage.ink_types) && visage.ink_types.length > 0) {
         for (const ink of visage.ink_types) {
           const normInk = ink === 'fire' ? 'flames' : ink;
@@ -140,7 +335,6 @@ export function useVisageSetsData() {
         }
       }
 
-      // If a card has no ink_types or set_bonus_id set, we can link to 'general' or skip
       if (!linkedAnySet) {
         addCardToSet('general', visage);
       }
@@ -153,7 +347,6 @@ export function useVisageSetsData() {
       const cards = Array.from(group.cardsMap.values());
       if (cards.length === 0) continue; // Only include sets with attached visages!
 
-      // Determine skill thresholds from Supabase skill or fallback
       let thresholds: SetBonusTier[] = [];
       if (group.skill && group.skill.set_thresholds && group.skill.set_thresholds.length > 0) {
         thresholds = group.skill.set_thresholds;
@@ -177,7 +370,7 @@ export function useVisageSetsData() {
 
       const groupedColumns: GroupedPointsColumn[] = sortedPoints.map((pts) => {
         const colCards = pointsMap.get(pts) || [];
-        const collectedCount = colCards.filter((c) => collectedMap[c.id]).length;
+        const collectedCount = colCards.filter((c) => collection.isCollected(c.id, setId)).length;
         return {
           points: pts,
           cards: colCards,
@@ -187,7 +380,7 @@ export function useVisageSetsData() {
       });
 
       const totalCards = cards.length;
-      const collectedCards = cards.filter((c) => collectedMap[c.id]).length;
+      const collectedCards = cards.filter((c) => collection.isCollected(c.id, setId)).length;
 
       result.push({
         id: setId,
@@ -203,22 +396,18 @@ export function useVisageSetsData() {
       });
     }
 
-    // Sort sets alphabetically by name or by card count
     result.sort((a, b) => a.name.localeCompare(b.name));
-
     return result;
-  }, [dbVisages, dbSkills, collectedMap]);
+  }, [dbVisages, dbSkills, collection]);
 
   return {
     sets,
     dbVisages,
-    isLoading: isLoadingVisages || isLoadingSkills,
+    isLoading: isLoadingVisages || isLoadingSkills || collection.isLoadingCollection,
     refetch: () => {
       refetchVisages();
       refetchSkills();
     },
-    collectedMap,
-    toggleCollected,
-    isCollected,
+    ...collection,
   };
 }

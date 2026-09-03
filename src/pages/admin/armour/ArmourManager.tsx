@@ -4,7 +4,7 @@
 //   1. "By Monster" — select a monster and configure its 5 armour pieces
 //   2. "By Skill" — search/sort by skill to see, edit, add or remove matching armour pieces
 // ─────────────────────────────────────────────────────────────
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Layers, ListFilter } from 'lucide-react';
 import MonsterArmourBuilder from './MonsterArmourBuilder';
 import SkillArmourMappingView from './SkillArmourMappingView';
@@ -24,12 +24,6 @@ export default function ArmourManager() {
   const [selectedGame, setSelectedGame] = useState<string>(defaultGame || 'mhn');
   const [selectedMonsterId, setSelectedMonsterId] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (defaultGame) {
-      setSelectedGame(defaultGame);
-    }
-  }, [defaultGame]);
-
   return (
     <div className="flex h-full flex-col overflow-hidden">
       {/* ── Sub-header toolbar ── */}
@@ -39,6 +33,7 @@ export default function ArmourManager() {
           <div className="flex items-center gap-3">
             <div className="flex rounded-lg border border-mh-slate-700 bg-mh-slate-800 p-0.5">
               <button
+                type="button"
                 onClick={() => setViewMode('monster')}
                 className={cn(
                   'flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition-all',
@@ -51,6 +46,7 @@ export default function ArmourManager() {
                 By Monster
               </button>
               <button
+                type="button"
                 onClick={() => setViewMode('skill')}
                 className={cn(
                   'flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition-all',
@@ -83,6 +79,7 @@ export default function ArmourManager() {
                 return (
                   <button
                     key={g.id}
+                    type="button"
                     onClick={() => setSelectedGame(g.id)}
                     className={cn(
                       'rounded-md px-3 py-1 text-xs font-bold transition-all',
@@ -102,7 +99,7 @@ export default function ArmourManager() {
         </div>
       </div>
 
-      {/* ── Active View Content ── */}
+      {/* ── Content View ── */}
       <div className="min-h-0 flex-1 overflow-hidden">
         {viewMode === 'monster' ? (
           <MonsterArmourBuilder

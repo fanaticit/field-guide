@@ -214,9 +214,7 @@ function emptyForm(): VisageUpsert {
     points: 1,
     rarity: 1,
     ink_types: ['thunder'],
-    image_large: null,
     image_small: null,
-    set_bonus_id: null,
     core_effect: null,
     is_active: true,
     notes: null,
@@ -242,13 +240,6 @@ export default function VisageEditModal({ visage, open, onClose }: Props) {
 
   const upsert = useUpsertVisage();
   const remove = useDeleteVisage();
-
-  // Only show set bonuses relevant to MHO/Visages
-  const mhoSetBonuses = useMemo<DBSkill[]>(() => {
-    return setBonuses.filter(
-      (sb: DBSkill) => sb.games?.includes('mho') || sb.id.startsWith('ink_of_') || sb.name.toLowerCase().includes('ink of'),
-    );
-  }, [setBonuses]);
 
   // Only show Inks that have a corresponding Set in the database (or are currently selected on this card)
   const availableInks = useMemo<InkType[]>(() => {
@@ -278,9 +269,7 @@ export default function VisageEditModal({ visage, open, onClose }: Props) {
           points: visage.points ?? 1,
           rarity: visage.rarity ?? 1,
           ink_types: visage.ink_types && visage.ink_types.length > 0 ? visage.ink_types : ['thunder'],
-          image_large: visage.image_large ?? null,
           image_small: visage.image_small ?? null,
-          set_bonus_id: visage.set_bonus_id ?? null,
           core_effect: visage.core_effect ?? null,
           is_active: visage.is_active,
           notes: visage.notes ?? null,
@@ -326,8 +315,6 @@ export default function VisageEditModal({ visage, open, onClose }: Props) {
       }
     });
   }
-
-  const selectedSet = setBonuses.find((s) => s.id === form.set_bonus_id);
 
   async function handleSave() {
     if (!form.name.trim()) {
@@ -579,64 +566,11 @@ export default function VisageEditModal({ visage, open, onClose }: Props) {
             />
           </div>
 
-          {/* ── Linked Set Bonus ── */}
-          <div className="rounded-xl border border-mh-gold-500/30 bg-mh-gold-500/5 p-4 space-y-3">
-            <label className="block text-xs font-bold uppercase tracking-wider text-mh-gold-300">
-              Linked Set Bonus (from Skills & Sets)
-            </label>
-            <select
-              value={form.set_bonus_id ?? ''}
-              onChange={(e) => setForm((p) => ({ ...p, set_bonus_id: e.target.value || null }))}
-              className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-900 px-3 py-2 text-sm text-mh-slate-100 outline-none focus:border-mh-gold-500/50"
-            >
-              <option value="">(None / No Set Bonus)</option>
-              {mhoSetBonuses.map((sb) => (
-                <option key={sb.id} value={sb.id}>
-                  {sb.name} — {sb.set_thresholds?.map((t) => `${t.pieces} pcs`).join(', ') || 'Set Bonus'}
-                </option>
-              ))}
-            </select>
-
-            {/* Set Bonus Live Preview */}
-            {selectedSet && (
-              <div className="pt-2 border-t border-mh-gold-500/20 space-y-1.5">
-                <p className="text-[11px] font-bold text-mh-slate-300 uppercase tracking-wider">
-                  Active Set Effects:
-                </p>
-                <div className="space-y-1">
-                  {(selectedSet.set_thresholds || []).map((tier, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-start gap-2 rounded bg-mh-slate-900/90 px-2.5 py-1.5 text-xs border border-mh-slate-750"
-                    >
-                      <span className="rounded bg-mh-gold-500/20 px-1.5 py-0.5 text-[10px] font-bold text-mh-gold-400 shrink-0">
-                        {tier.pieces} Pieces
-                      </span>
-                      <span className="text-mh-slate-200">
-                        {tier.description || (tier.granted_skill_id ? `Grants +${tier.granted_skill_level || 1} ${tier.granted_skill_id}` : `Tier ${idx + 1}`)}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Row 4: Image Uploaders */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          {/* Row 4: Card Image Uploader */}
+          <div>
             <ImageUploadField
-              label="Large Card Art"
-              subLabel="Detailed full card artwork"
-              value={form.image_large}
-              onChange={(url) => setForm((p) => ({ ...p, image_large: url }))}
-              aspect="portrait"
-              slug={form.id}
-              fieldKey="large"
-            />
-
-            <ImageUploadField
-              label="Small Collection Icon"
-              subLabel="Compact icon for sets/collection view"
+              label="Visage Monster Icon / Card Art"
+              subLabel="Compact square icon for cards and collection views"
               value={form.image_small}
               onChange={(url) => setForm((p) => ({ ...p, image_small: url }))}
               aspect="square"

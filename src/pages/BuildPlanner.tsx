@@ -1,64 +1,110 @@
-import { Shield, Sword, Plus, Zap } from 'lucide-react';
-
-const rarities = [
-  { label: 'R1 Common', cls: 'rarity-1' },
-  { label: 'R2 Uncommon', cls: 'rarity-2' },
-  { label: 'R3 Rare', cls: 'rarity-3' },
-  { label: 'R4 Epic', cls: 'rarity-4' },
-  { label: 'R5 Legendary', cls: 'rarity-5' },
-  { label: 'R6 Ancient', cls: 'rarity-6' },
-  { label: 'Elder Dragon', cls: 'rarity-elder' },
-];
+import { Shield, Save } from 'lucide-react';
+import { useAuthStore } from '../store/authStore';
+import { useBuildPlannerStore } from '../store/buildPlannerStore';
+import { HeroBuddySelector } from '../components/build-planner/HeroBuddySelector';
+import { EquipmentSelector } from '../components/build-planner/EquipmentSelector';
+import { VisageSelector } from '../components/build-planner/VisageSelector';
+import { SkillSummaryPanel } from '../components/build-planner/SkillSummaryPanel';
+import { supabase } from '../lib/supabase';
 
 export default function BuildPlanner() {
+  const { user } = useAuthStore();
+  const store = useBuildPlannerStore();
+
+  const handleSaveBuild = async () => {
+    if (!user) {
+      alert('Please sign in to save a build.');
+      return;
+    }
+
+    if (!store.adventurer) {
+      alert('Please select an adventurer.');
+      return;
+    }
+
+    if (store.adventurer.is_default && !store.weaponType) {
+      alert('Please select a weapon type for the default adventurer.');
+      return;
+    }
+
+    const title = prompt('Enter a title for this build:');
+    if (!title) return;
+
+    const buildData = {
+      author_id: user.id,
+      title,
+      adventurer_id: store.adventurer.id,
+      weapon_type_id: store.adventurer.is_default ? store.weaponType?.id : store.adventurer.allowed_weapon_types?.[0],
+      weapon_id: store.weapon?.id || null,
+      helm_piece_id: store.helm?.id || null,
+      chest_piece_id: store.chest?.id || null,
+      gloves_piece_id: store.gloves?.id || null,
+      waist_piece_id: store.waist?.id || null,
+      greaves_piece_id: store.greaves?.id || null,
+      buddy_id: store.buddy?.id || null,
+      core_visage_id: store.coreVisage?.id || null,
+      visage_2_id: store.visage2?.id || null,
+      visage_3_id: store.visage3?.id || null,
+      visage_4_id: store.visage4?.id || null,
+      visage_5_id: store.visage5?.id || null,
+      is_published: true, // Auto-publish for now
+    };
+
+    try {
+      if (store.buildId) {
+        const { error } = await supabase.from('mho_builds').update(buildData).eq('id', store.buildId);
+        if (error) throw error;
+        alert('Build updated successfully!');
+      } else {
+        const { data, error } = await supabase.from('mho_builds').insert(buildData).select('id').single();
+        if (error) throw error;
+        if (data) store.setBuildId(data.id);
+        alert('Build saved successfully!');
+      }
+    } catch (err: any) {
+      console.error(err);
+      alert(`Failed to save build: ${err.message}`);
+    }
+  };
+
   return (
-    <div className="flex flex-col gap-8 p-6 lg:p-8">
+    <div className="flex flex-col gap-4 p-4 lg:p-6">
       {/* Page header */}
-      <div className="flex flex-col gap-1">
-        <div className="flex items-center gap-2">
-          <Shield size={20} className="text-rarity-3" />
-          <span className="rarity-badge rarity-3">Build Planner</span>
-        </div>
-        <h1 className="font-display text-2xl font-bold text-mh-slate-100 lg:text-3xl">
-          Loadout Workshop
-        </h1>
-        <p className="text-sm text-mh-slate-500">
-          Plan your weapon and armour combinations for every hunt.
-        </p>
-      </div>
-
-      {/* Rarity tier showcase */}
-      <div className="mh-card">
-        <h2 className="mb-4 font-display text-sm font-semibold uppercase tracking-widest text-mh-slate-400">
-          Rarity Tiers
-        </h2>
-        <div className="flex flex-wrap gap-2">
-          {rarities.map((r) => (
-            <span key={r.cls} className={`rarity-badge ${r.cls}`}>
-              {r.label}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* Coming soon */}
-      <div className="mh-card flex flex-col items-center gap-4 py-16 text-center">
-        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-rarity-3/10 ring-1 ring-rarity-3/30">
-          <Sword size={28} className="text-rarity-3" />
-        </div>
-        <div>
-          <h2 className="font-display text-lg font-bold text-mh-slate-200">Build Planner Coming Soon</h2>
-          <p className="mt-1 max-w-sm text-sm text-mh-slate-500">
-            Import builds from mhn.quest, compare skills, and export shareable loadout cards.
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2 mb-1">
+            <Shield size={16} className="text-rarity-3" />
+            <span className="rarity-badge rarity-3 text-[10px] py-0.5 px-2">Build Planner</span>
+          </div>
+          <h1 className="font-display text-xl font-bold text-mh-slate-100 lg:text-2xl">
+            Loadout Workshop (MHO)
+          </h1>
+          <p className="text-xs text-mh-slate-500">
+            Plan your weapon, armour, and companion combinations.
           </p>
         </div>
-        <button className="btn-mh mt-2">
-          <Plus size={16} />
-          New Build
+        
+        <button 
+          onClick={handleSaveBuild}
+          className="btn-mh whitespace-nowrap self-start sm:self-auto text-sm py-1.5 px-4"
+        >
+          <Save size={14} />
+          Save Build
         </button>
-        <div className="flex items-center gap-2 text-xs text-mh-slate-600">
-          <Zap size={12} />
-          <span>mhn.quest import / export coming in Phase 2</span>
+      </div>
+
+      {/* Main Layout */}
+      <div className="flex flex-col lg:flex-row gap-4 items-start">
+        {/* Left Column: Selectors */}
+        <div className="flex flex-col gap-4 w-full lg:w-3/5 xl:w-2/3">
+          <HeroBuddySelector />
+          <EquipmentSelector />
+        </div>
+
+        {/* Right Column: Summary */}
+        <div className="flex flex-col gap-4 w-full lg:w-2/5 xl:w-1/3">
+          <VisageSelector />
+          <SkillSummaryPanel />
         </div>
       </div>
     </div>

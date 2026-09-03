@@ -13,6 +13,8 @@ import {
   Shield,
   ShieldAlert,
   Sparkles,
+  Cat,
+  UserCheck,
 } from 'lucide-react';
 import { useUIStore, type Page, type InvestigationSubPage } from '../../store/uiStore';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
@@ -38,13 +40,13 @@ const navItems: NavItem[] = [
     id: 'field-guide',
     label: 'Field Guide',
     icon: BookOpen,
-    description: 'Quests & Todos',
+    description: 'Monster Weaknesses & Drops',
   },
   {
     id: 'build-planner',
     label: 'Build Planner',
-    icon: Sword,
-    description: 'Gear & Loadouts',
+    icon: Flame,
+    description: 'Theorycrafting & Sets',
   },
   {
     id: 'community-hub',
@@ -75,7 +77,9 @@ const navItems: NavItem[] = [
 
 const investigationSubNav: SubNavItem[] = [
   { id: 'monster-guide', label: 'Monster Guide', icon: Bug },
+  { id: 'adventurers', label: 'Adventurers', icon: UserCheck },
   { id: 'visages', label: 'Visage', icon: Sparkles },
+  { id: 'buddies', label: 'Buddies', icon: Cat },
   { id: 'weapons', label: 'Weapons', icon: Sword },
   { id: 'armour', label: 'Armour', icon: Shield },
 ];

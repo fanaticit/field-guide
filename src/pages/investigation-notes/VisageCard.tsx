@@ -1,7 +1,8 @@
 // ─────────────────────────────────────────────────────────────
 // VisageCard — Small MHO Visage card miniature matching in-game art
+// Supports 4 rarities (Fine, Rare, Epic, Superior) and quantity (1-5+)
 // ─────────────────────────────────────────────────────────────
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
   Flame,
   Droplets,
@@ -15,17 +16,21 @@ import {
   Moon,
   Shield,
   Activity,
-  Check,
+  Plus,
+  Trash2,
 } from 'lucide-react';
-import type { DBVisage } from '../../data/schemas/visage';
-import { getInkConfig } from '../../data/schemas/visage';
+import type { DBVisage, VisageRarity } from '../../data/schemas/visage';
+import { getInkConfig, VISAGE_RARITY_CONFIG, VISAGE_RARITY_OPTIONS } from '../../data/schemas/visage';
+import type { CardCollectionEntry } from '../../hooks/useVisageSets';
 import { cn } from '../../lib/utils';
 
 interface VisageCardProps {
   card: DBVisage;
   currentInk?: string;
-  isCollected?: boolean;
-  onToggleCollected?: (e: React.MouseEvent) => void;
+  collectionEntry?: CardCollectionEntry | null;
+  onSetRarity?: (rarity: VisageRarity, quantity?: number) => void;
+  onSetQuantity?: (quantity: number) => void;
+  onRemoveFromCollection?: () => void;
   onClick?: () => void;
 }
 
@@ -63,16 +68,41 @@ export function InkIconComponent({ iconName, size = 12, className = '' }: { icon
 export default function VisageCard({
   card,
   currentInk,
-  isCollected = false,
-  onToggleCollected,
+  collectionEntry,
+  onSetRarity,
+  onSetQuantity,
+  onRemoveFromCollection,
   onClick,
 }: VisageCardProps) {
   const [imageError, setImageError] = useState(false);
-  const inkCfg = getInkConfig(currentInk);
+  const [showRarityMenu, setShowRarityMenu] = useState(false);
+  const [showQtyMenu, setShowQtyMenu] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const qtyMenuRef = useRef<HTMLDivElement>(null);
 
-  // Determine card backing tint (e.g. rare purple/blue or standard gold/parchment)
-  const isSpecialBacking = card.rarity >= 5;
-  const imageSrc = card.image_small || card.image_large;
+  const inkCfg = getInkConfig(currentInk);
+  const isOwned = Boolean(collectionEntry);
+  const currentRarity = collectionEntry?.rarity;
+  const currentQty = collectionEntry?.quantity ?? 1;
+
+  // Close menus when clicking outside
+  useEffect(() => {
+    if (!showRarityMenu && !showQtyMenu) return;
+    function handleOutside(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setShowRarityMenu(false);
+      }
+      if (qtyMenuRef.current && !qtyMenuRef.current.contains(e.target as Node)) {
+        setShowQtyMenu(false);
+      }
+    }
+    window.addEventListener('mousedown', handleOutside);
+    return () => window.removeEventListener('mousedown', handleOutside);
+  }, [showRarityMenu, showQtyMenu]);
+
+  // Rarity theme configuration
+  const rarityCfg = currentRarity ? VISAGE_RARITY_CONFIG[currentRarity] : null;
+  const imageSrc = card.image_small;
 
   return (
     <div
@@ -82,21 +112,20 @@ export default function VisageCard({
       title={`${card.name} (${card.points} Pts) - Click to inspect`}
       className={cn(
         'group relative flex flex-col items-center justify-between cursor-pointer select-none transition-all duration-200',
-        'w-[72px] sm:w-[84px] h-[96px] sm:h-[110px] rounded-lg p-1.5',
+        'w-[80px] sm:w-[92px] h-[108px] sm:h-[122px] rounded-lg p-1.5',
         'border-2 shadow-md hover:scale-105 hover:shadow-xl hover:z-20',
-        isSpecialBacking
-          ? 'bg-gradient-to-b from-indigo-900/60 via-slate-800 to-indigo-950/80 border-indigo-400/50 hover:border-indigo-300'
-          : 'bg-gradient-to-b from-[#f3e5be] via-[#e2cf9f] to-[#cfba84] border-[#8e7646] hover:border-mh-gold-400 text-mh-slate-900',
-        !isCollected && 'opacity-40 grayscale hover:grayscale-0 hover:opacity-100',
+        isOwned && rarityCfg
+          ? cn(rarityCfg.bgGradient, rarityCfg.borderClass, rarityCfg.hoverBorderClass, 'text-mh-slate-900')
+          : 'bg-[#151922]/90 border-mh-slate-800 text-mh-slate-300 opacity-40 grayscale hover:opacity-90 hover:grayscale-0 hover:border-mh-slate-600',
       )}
       style={{
-        boxShadow: isSpecialBacking
-          ? '0 4px 12px rgba(99, 102, 241, 0.25), inset 0 0 8px rgba(129, 140, 248, 0.2)'
-          : '0 4px 12px rgba(0, 0, 0, 0.4), inset 0 0 6px rgba(255, 235, 170, 0.4)',
+        boxShadow: isOwned && rarityCfg
+          ? `0 4px 14px rgba(0,0,0,0.5), 0 0 10px ${rarityCfg.glowColor}`
+          : '0 4px 10px rgba(0, 0, 0, 0.4)',
       }}
     >
       {/* Decorative Outer Corner Accents */}
-      <div className="pointer-events-none absolute inset-0.5 rounded border border-amber-900/20" />
+      <div className="pointer-events-none absolute inset-0.5 rounded border border-black/15" />
 
       {/* Center Art Area: Monster Portrait */}
       <div className="relative flex flex-1 w-full items-center justify-center overflow-hidden rounded">
@@ -105,47 +134,188 @@ export default function VisageCard({
             src={imageSrc}
             alt={card.name}
             onError={() => setImageError(true)}
-            className="h-11 w-11 sm:h-13 sm:w-13 object-contain drop-shadow-md filter transition-transform group-hover:scale-110"
+            className="h-12 w-12 sm:h-14 sm:w-14 object-contain drop-shadow-md filter transition-transform group-hover:scale-110"
           />
         ) : (
-          <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-black/20 text-amber-900 font-display font-bold text-xs">
+          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-black/20 text-amber-900 font-display font-bold text-xs">
             {card.name.slice(0, 3).toUpperCase()}
           </div>
         )}
       </div>
 
-      {/* Bottom Row / Badges */}
-      <div className="relative w-full flex items-end justify-between mt-auto">
-        {/* Bottom Left Badge: Ink Icon + Points (matching in-game screenshot badge) */}
+      {/* Bottom Row / Badges & Collection Controls */}
+      <div className="relative w-full flex items-end justify-between mt-auto gap-1">
+        {/* Bottom Left Badge: Ink Icon + Points */}
         <div
           className={cn(
             'flex flex-col items-center justify-center rounded px-1 py-0.5 shadow-sm',
-            'bg-black/75 border border-amber-500/40 text-white min-w-[20px]',
+            'bg-black/80 border border-amber-500/40 text-white min-w-[20px]',
           )}
         >
           <div className={cn('text-xs flex items-center justify-center', inkCfg.text)}>
-            <InkIconComponent iconName={inkCfg.iconName} size={11} />
+            <InkIconComponent iconName={inkCfg.iconName} size={10} />
           </div>
           <span className="font-display text-[10px] sm:text-[11px] font-bold leading-none text-amber-300">
             {card.points}
           </span>
         </div>
 
-        {/* Monster Type / Collection status dot */}
-        <div className="flex flex-col items-end gap-0.5">
-          {card.monster_type === 'small' && (
-            <span className="rounded bg-black/60 px-1 py-0.5 text-[8px] font-semibold text-amber-200/90 leading-none">
-              Sm
-            </span>
-          )}
-          {isCollected && (
-            <span
-              onClick={onToggleCollected}
-              title="Owned in collection"
-              className="h-3 w-3 rounded-full bg-green-500 text-slate-950 flex items-center justify-center shadow-sm text-[8px] font-bold hover:scale-125 transition-transform"
+        {/* Bottom Right: Rarity Ball Selector + Quantity Circle Ball */}
+        <div
+          className="relative flex items-center gap-1 z-10"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Small Rarity Ball Button */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowQtyMenu(false);
+              setShowRarityMenu((prev) => !prev);
+            }}
+            title={
+              isOwned && currentRarity
+                ? `Rarity: ${VISAGE_RARITY_CONFIG[currentRarity].name} (Click to change)`
+                : 'Click to mark as owned in collection'
+            }
+            className={cn(
+              'flex h-4 w-4 sm:h-4.5 sm:w-4.5 items-center justify-center rounded-full shadow-sm transition-transform hover:scale-125 focus:outline-none',
+              isOwned && currentRarity
+                ? cn(VISAGE_RARITY_CONFIG[currentRarity].dotClass, 'ring-1')
+                : 'border border-dashed border-mh-slate-400 bg-black/50 text-mh-slate-400 hover:border-mh-gold-400 hover:text-white',
+            )}
+          >
+            {isOwned && currentRarity ? (
+              <span className="text-[8px] font-extrabold leading-none">
+                {currentRarity[0].toUpperCase()}
+              </span>
+            ) : (
+              <Plus size={9} />
+            )}
+          </button>
+
+          {/* Small Quantity Circle Button (1 - 5+) */}
+          {isOwned && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowRarityMenu(false);
+                setShowQtyMenu((prev) => !prev);
+              }}
+              title={`Quantity owned: ${currentQty >= 5 ? '5+' : currentQty} (Click to change)`}
+              className={cn(
+                'flex h-4 w-4 sm:h-4.5 sm:w-4.5 items-center justify-center rounded-full shadow-sm transition-transform hover:scale-125 focus:outline-none',
+                'bg-black/85 border border-amber-500/40 text-amber-300 hover:border-amber-400',
+              )}
             >
-              <Check size={8} strokeWidth={3} />
-            </span>
+              <span className="text-[8px] sm:text-[9px] font-black leading-none">
+                {currentQty >= 5 ? '5+' : currentQty}
+              </span>
+            </button>
+          )}
+
+          {/* Rarity Selection Popup Menu */}
+          {showRarityMenu && (
+            <div
+              ref={menuRef}
+              className="absolute bottom-6 right-0 z-50 w-36 rounded-xl border border-mh-gold-500/40 bg-mh-slate-950 p-1.5 shadow-2xl animate-in zoom-in-95 duration-100"
+              style={{
+                boxShadow: '0 10px 25px rgba(0,0,0,0.8), 0 0 15px rgba(234,179,8,0.2)',
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-mh-slate-400 border-b border-mh-slate-800">
+                Card Rarity
+              </div>
+
+              <div className="py-1 space-y-0.5">
+                {VISAGE_RARITY_OPTIONS.map((rarityKey) => {
+                  const cfg = VISAGE_RARITY_CONFIG[rarityKey];
+                  const isSelected = currentRarity === rarityKey;
+                  return (
+                    <button
+                      key={rarityKey}
+                      type="button"
+                      onClick={() => {
+                        onSetRarity?.(rarityKey, 1);
+                        setShowRarityMenu(false);
+                      }}
+                      className={cn(
+                        'w-full flex items-center justify-between rounded-lg px-2 py-1 text-[11px] font-bold transition-all',
+                        isSelected
+                          ? 'bg-mh-slate-800 text-white ring-1 ring-mh-gold-400'
+                          : 'text-mh-slate-300 hover:bg-mh-slate-800/80 hover:text-white',
+                      )}
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <span className={cn('h-2.5 w-2.5 rounded-full shadow-sm', cfg.dotClass)} />
+                        <span>{cfg.name}</span>
+                      </div>
+                      <span className="text-[9px] text-mh-slate-500 font-normal">
+                        ({cfg.colorName})
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {isOwned && (
+                <div className="pt-1 border-t border-mh-slate-800">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onRemoveFromCollection?.();
+                      setShowRarityMenu(false);
+                    }}
+                    className="w-full flex items-center gap-1.5 rounded-lg px-2 py-1 text-[10px] font-semibold text-rose-400 hover:bg-rose-500/15 transition-colors"
+                  >
+                    <Trash2 size={11} />
+                    <span>Unown / Remove</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Quantity Selection Popup Menu (1 - 5+) */}
+          {showQtyMenu && isOwned && (
+            <div
+              ref={qtyMenuRef}
+              className="absolute bottom-6 right-0 z-50 w-32 rounded-xl border border-mh-gold-500/40 bg-mh-slate-950 p-1.5 shadow-2xl animate-in zoom-in-95 duration-100"
+              style={{
+                boxShadow: '0 10px 25px rgba(0,0,0,0.8), 0 0 15px rgba(234,179,8,0.2)',
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-mh-slate-400 border-b border-mh-slate-800">
+                Count Owned
+              </div>
+
+              <div className="grid grid-cols-5 gap-1 py-1.5 px-0.5">
+                {[1, 2, 3, 4, 5].map((q) => {
+                  const isSelected = currentQty === q;
+                  return (
+                    <button
+                      key={q}
+                      type="button"
+                      onClick={() => {
+                        onSetQuantity?.(q);
+                        setShowQtyMenu(false);
+                      }}
+                      className={cn(
+                        'flex h-7 items-center justify-center rounded-lg text-xs font-bold transition-all border',
+                        isSelected
+                          ? 'bg-mh-gold-500 text-slate-950 border-mh-gold-400 font-extrabold shadow-sm'
+                          : 'bg-mh-slate-900 text-mh-slate-300 border-mh-slate-750 hover:bg-mh-slate-800 hover:text-white',
+                      )}
+                    >
+                      {q === 5 ? '5+' : q}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           )}
         </div>
       </div>

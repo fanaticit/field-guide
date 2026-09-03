@@ -41,7 +41,7 @@ export const MONSTERS_KEY = 'admin-monsters';
 
 export function useAdminMonsters(filters: MonsterFilters = {}) {
   return useQuery({
-    queryKey: [MONSTERS_KEY, filters],
+    queryKey: [MONSTERS_KEY, filters.game, filters.tier, filters.species, filters.search, filters.isActive],
     queryFn: async () => {
       // sort_orders is JSONB — can't order by it directly via PostgREST.
       // Game-specific ordering is handled client-side in MonsterManager's useMemo.
@@ -70,7 +70,9 @@ export function useAdminMonsters(filters: MonsterFilters = {}) {
       if (error) throw error;
       return data as DBMonster[];
     },
-    staleTime: 1000 * 30,
+    staleTime: 1000 * 60 * 2,
+    refetchOnWindowFocus: false,
+    retry: 1,
   });
 }
 

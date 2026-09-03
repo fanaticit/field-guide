@@ -12,6 +12,7 @@ export type InkType =
   | 'guidance'
   | 'grace'
   | 'ice'
+  | 'frost'
   | 'dragon'
   | 'poison'
   | 'paralysis'
@@ -125,8 +126,19 @@ export const INK_CONFIG: Record<InkType, InkConfig> = {
   },
   ice: {
     id: 'ice',
-    name: 'Ink of Ice',
-    shortName: 'Ice',
+    name: 'Ink of Frost',
+    shortName: 'Frost',
+    bg: 'bg-cyan-500/15',
+    text: 'text-cyan-400',
+    border: 'border-cyan-500/30',
+    dotColor: 'bg-cyan-400',
+    glowColor: 'rgba(6, 182, 212, 0.4)',
+    iconName: 'snowflake',
+  },
+  frost: {
+    id: 'frost',
+    name: 'Ink of Frost',
+    shortName: 'Frost',
     bg: 'bg-cyan-500/15',
     text: 'text-cyan-400',
     border: 'border-cyan-500/30',
@@ -222,6 +234,7 @@ export const INK_OPTIONS: InkType[] = [
   'guidance',
   'grace',
   'ice',
+  'frost',
   'dragon',
   'poison',
   'paralysis',
@@ -248,10 +261,7 @@ export interface DBVisage {
   rarity: number;
   /** Pool of 1-3 ink types this card can randomly roll in-game */
   ink_types: InkType[];
-  image_large: string | null;
   image_small: string | null;
-  /** Linked Set Bonus ID from public.skills */
-  set_bonus_id: string | null;
   /** Inherent / Core Effect of this Visage card */
   core_effect: string | null;
   is_active: boolean;
@@ -262,3 +272,83 @@ export interface DBVisage {
 }
 
 export type VisageUpsert = Omit<DBVisage, 'created_at' | 'updated_at'>;
+
+// ── 4 Card Rarity Types (Fine, Rare, Epic, Superior) ───────────
+
+export type VisageRarity = 'fine' | 'rare' | 'epic' | 'superior';
+
+export interface VisageRarityConfig {
+  id: VisageRarity;
+  name: string;
+  colorName: string;
+  bgGradient: string;
+  borderClass: string;
+  hoverBorderClass: string;
+  glowColor: string;
+  dotClass: string;
+  textClass: string;
+  badgeClass: string;
+}
+
+export const VISAGE_RARITY_CONFIG: Record<VisageRarity, VisageRarityConfig> = {
+  fine: {
+    id: 'fine',
+    name: 'Fine',
+    colorName: 'Green',
+    bgGradient: 'bg-gradient-to-b from-[#e3f4dd] via-[#d0eac8] to-[#b8ddae]',
+    borderClass: 'border-[#508d44]',
+    hoverBorderClass: 'hover:border-emerald-400',
+    glowColor: 'rgba(34, 197, 94, 0.45)',
+    dotClass: 'bg-emerald-500 text-white ring-1 ring-emerald-400',
+    textClass: 'text-emerald-400',
+    badgeClass: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+  },
+  rare: {
+    id: 'rare',
+    name: 'Rare',
+    colorName: 'Blue',
+    bgGradient: 'bg-gradient-to-b from-[#d9ebfb] via-[#c0dcf8] to-[#a2c8ee]',
+    borderClass: 'border-[#3c74b1]',
+    hoverBorderClass: 'hover:border-sky-400',
+    glowColor: 'rgba(56, 189, 248, 0.45)',
+    dotClass: 'bg-sky-500 text-white ring-1 ring-sky-400',
+    textClass: 'text-sky-400',
+    badgeClass: 'bg-sky-500/20 text-sky-300 border-sky-500/40',
+  },
+  epic: {
+    id: 'epic',
+    name: 'Epic',
+    colorName: 'Purple',
+    bgGradient: 'bg-gradient-to-b from-[#eeddfb] via-[#dcbaf2] to-[#c598e7]',
+    borderClass: 'border-[#8244b0]',
+    hoverBorderClass: 'hover:border-purple-400',
+    glowColor: 'rgba(168, 85, 247, 0.5)',
+    dotClass: 'bg-purple-600 text-white ring-1 ring-purple-400',
+    textClass: 'text-purple-400',
+    badgeClass: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
+  },
+  superior: {
+    id: 'superior',
+    name: 'Superior',
+    colorName: 'Gold',
+    bgGradient: 'bg-gradient-to-b from-[#f3e5be] via-[#e2cf9f] to-[#cfba84]',
+    borderClass: 'border-[#8e7646]',
+    hoverBorderClass: 'hover:border-amber-400',
+    glowColor: 'rgba(234, 179, 8, 0.5)',
+    dotClass: 'bg-amber-400 text-slate-950 ring-1 ring-amber-300 font-bold',
+    textClass: 'text-amber-400',
+    badgeClass: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+  },
+};
+
+export const VISAGE_RARITY_OPTIONS: VisageRarity[] = ['fine', 'rare', 'epic', 'superior'];
+
+export interface UserVisageCollectionItem {
+  user_id: string;
+  visage_id: string;
+  ink_type: string; // The specific ink type version of this card
+  rarity: VisageRarity;
+  quantity: number; // 1 to 5 (where 5 is 5+)
+  created_at?: string;
+  updated_at?: string;
+}

@@ -283,22 +283,38 @@ export default function GameRosterView({ monsters, isLoading, onRefetch }: Props
                 >
                   {/* Monster info */}
                   <td className="px-6 py-3">
-                    <div className="flex flex-col">
-                      <span className="font-semibold text-mh-slate-200">
-                        {m.name}
-                        {m.is_variant && (
-                          <span className="ml-1.5 rounded px-1 py-px text-[9px] font-bold uppercase tracking-wider bg-mh-slate-700 text-mh-slate-500">
-                            variant
-                          </span>
-                        )}
-                      </span>
-                      <span className="text-[11px] text-mh-slate-600">
-                        {m.species ? (SPECIES_SHORT[m.species] ?? m.species) : 'Unknown species'}
-                        {' · '}
-                        <span className={TIER_COLORS[m.tier] ?? 'text-mh-slate-500'}>
-                          {m.tier.charAt(0).toUpperCase() + m.tier.slice(1)} Rank
+                    <div className="flex items-center gap-3">
+                      {m.icon ? (
+                        <img
+                          src={m.icon}
+                          alt={m.name}
+                          className="h-10 w-10 shrink-0 rounded-xl object-contain bg-mh-slate-800 p-1 border border-mh-slate-700/80 shadow-sm"
+                          onError={(e) => {
+                            (e.target as HTMLElement).style.display = 'none';
+                          }}
+                        />
+                      ) : (
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-mh-slate-800 border border-mh-slate-700/80 text-[11px] font-bold text-mh-slate-500">
+                          {m.name.slice(0, 2).toUpperCase()}
+                        </div>
+                      )}
+                      <div className="flex flex-col min-w-0">
+                        <span className="font-semibold text-mh-slate-200">
+                          {m.name}
+                          {m.is_variant && (
+                            <span className="ml-1.5 rounded px-1 py-px text-[9px] font-bold uppercase tracking-wider bg-mh-slate-700 text-mh-slate-500">
+                              variant
+                            </span>
+                          )}
                         </span>
-                      </span>
+                        <span className="text-[11px] text-mh-slate-600">
+                          {m.species ? (SPECIES_SHORT[m.species] ?? m.species) : 'Unknown species'}
+                          {' · '}
+                          <span className={TIER_COLORS[m.tier] ?? 'text-mh-slate-500'}>
+                            {m.tier.charAt(0).toUpperCase() + m.tier.slice(1)} Rank
+                          </span>
+                        </span>
+                      </div>
                     </div>
                   </td>
 

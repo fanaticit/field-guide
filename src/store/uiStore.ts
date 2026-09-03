@@ -10,8 +10,8 @@ export type Page =
   | 'settings'
   | 'profile';
 
-export type InvestigationSubPage = 'monster-guide' | 'visages' | 'weapons' | 'armour';
-export type AdminSubPage = 'monsters' | 'skills' | 'armour' | 'visages' | 'users' | 'content';
+export type InvestigationSubPage = 'monster-guide' | 'adventurers' | 'visages' | 'buddies' | 'weapons' | 'armour';
+export type AdminSubPage = 'monsters' | 'skills' | 'weapons' | 'armour' | 'adventurers' | 'visages' | 'buddies' | 'content' | 'users' | 'other';
 
 interface UIState {
   activePage: Page;

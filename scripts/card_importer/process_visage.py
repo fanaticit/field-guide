@@ -65,11 +65,12 @@ STORAGE_BUCKET = os.getenv("SUPABASE_STORAGE_BUCKET", "card_images")
 TABLE_NAME = os.getenv("SUPABASE_TABLE_NAME", "visages")
 MODEL_NAME = os.getenv("GEMINI_MODEL", "gemini-3.6-flash")
 
-# Known Monster Hunter Outlanders Ink Types
+# Known Monster Hunter Outlanders Ink Types (from INK_OPTIONS)
 VALID_INK_TYPES = {
-    "thunder", "fire", "water", "ice", "dragon",
+    "might", "flames", "fire", "water", "thunder",
+    "combat", "guidance", "grace", "ice", "dragon",
     "poison", "paralysis", "sleep", "blast",
-    "resonance", "grace", "protection"
+    "resonance", "protection"
 }
 
 # Zoomed bounding box for the scroll icon in 2556x1179 screenshots (excluding bottom banner)
@@ -81,17 +82,52 @@ DEFAULT_BOX = {
 }
 
 
+# -------------------------------------------------------------
+# ANSI TERMINAL COLOR HELPERS
+# -------------------------------------------------------------
+class TermColor:
+    RESET = "\033[0m"
+    BOLD = "\033[1m"
+    RED = "\033[91m"
+    BOLD_RED = "\033[1;91m"
+    GREEN = "\033[92m"
+    BOLD_GREEN = "\033[1;92m"
+    YELLOW = "\033[93m"
+    BOLD_YELLOW = "\033[1;93m"
+    BLUE = "\033[94m"
+    MAGENTA = "\033[95m"
+    BOLD_MAGENTA = "\033[1;95m"
+    CYAN = "\033[96m"
+    BOLD_CYAN = "\033[1;96m"
+    WHITE = "\033[97m"
+
+def c_err(msg: str) -> str:
+    return f"{TermColor.BOLD_RED}{msg}{TermColor.RESET}"
+
+def c_warn(msg: str) -> str:
+    return f"{TermColor.BOLD_YELLOW}{msg}{TermColor.RESET}"
+
+def c_success(msg: str) -> str:
+    return f"{TermColor.BOLD_GREEN}{msg}{TermColor.RESET}"
+
+def c_info(msg: str) -> str:
+    return f"{TermColor.BOLD_CYAN}{msg}{TermColor.RESET}"
+
+def c_highlight(msg: str) -> str:
+    return f"{TermColor.BOLD_MAGENTA}{msg}{TermColor.RESET}"
+
+
 def init_clients(dry_run: bool = False):
     """Initializes Gemini and Supabase clients."""
     if not GEMINI_API_KEY:
-        print("\n[ERROR] GEMINI_API_KEY is missing! Set it in your .env file.")
-        print("Get a free key from: https://aistudio.google.com/app/apikey (starts with AIzaSy...)")
+        print(c_err("\n[ERROR] GEMINI_API_KEY is missing! Set it in your .env file."))
+        print(c_warn("Get a free key from: https://aistudio.google.com/app/apikey (starts with AIzaSy...)"))
         sys.exit(1)
 
     if GEMINI_API_KEY.startswith("AQ."):
-        print("\n[WARNING] Your GEMINI_API_KEY starts with 'AQ.'.")
-        print("This key has very low quota limits (20 requests/day).")
-        print("For 1,500 free requests/day, generate an API key at: https://aistudio.google.com/app/apikey (starts with AIzaSy...)\n")
+        print(c_warn("\n[WARNING] Your GEMINI_API_KEY starts with 'AQ.'."))
+        print(c_warn("This key has very low quota limits (20 requests/day)."))
+        print(c_warn("For 1,500 free requests/day, generate an API key at: https://aistudio.google.com/app/apikey (starts with AIzaSy...)\n"))
 
     if USE_MODERN_SDK:
         ai_client = genai.Client(api_key=GEMINI_API_KEY)
@@ -104,7 +140,7 @@ def init_clients(dry_run: bool = False):
         try:
             supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
         except Exception as e:
-            print(f"  [!] Note on Supabase client init: {e}")
+            print(c_err(f"  [!] Note on Supabase client init: {e}"))
 
     return ai_client, supabase
 
@@ -118,7 +154,7 @@ def ensure_storage_bucket(supabase: Client):
         existing = [b.name for b in buckets] if buckets else []
         if STORAGE_BUCKET not in existing:
             supabase.storage.create_bucket(STORAGE_BUCKET, options={"public": True})
-            print(f"  [✓] Created public storage bucket '{STORAGE_BUCKET}' in Supabase.")
+            print(c_success(f"  [✓] Created public storage bucket '{STORAGE_BUCKET}' in Supabase."))
     except Exception:
         pass
 
@@ -177,7 +213,7 @@ Return a STRICT JSON object:
 
 def extract_unified_ocr(image_path: Path, ai_client, max_retries: int = 3) -> dict:
     """Performs unified OCR in 1 API call with automatic 429 retry backoff."""
-    print("  [*] Running Unified OCR for Title, Core Effect, Potential Sets & Points...")
+    print(c_info("  [*] Running Unified OCR for Title, Core Effect, Potential Sets & Points..."))
     pil_image = Image.open(image_path)
 
     for attempt in range(1, max_retries + 1):
@@ -203,10 +239,10 @@ def extract_unified_ocr(image_path: Path, ai_client, max_retries: int = 3) -> di
             err_str = str(e)
             if "429" in err_str or "RESOURCE_EXHAUSTED" in err_str:
                 wait_time = 15 * attempt
-                print(f"  [!] Rate limit (429) hit. Waiting {wait_time}s before retry (Attempt {attempt}/{max_retries})...")
+                print(c_warn(f"  [!] Rate limit (429) hit. Waiting {wait_time}s before retry (Attempt {attempt}/{max_retries})..."))
                 time.sleep(wait_time)
             else:
-                print(f"  [!] OCR error: {e}")
+                print(c_err(f"  [!] OCR ERROR on {image_path.name}: {e}"))
                 break
 
     return {}
@@ -231,26 +267,7 @@ def lookup_supabase_visage(visage_id: str, monster_name: str, supabase: Client):
         if res.data and len(res.data) > 0:
             return res.data[0]
     except Exception as e:
-        print(f"  [!] Supabase lookup note: {e}")
-    return None
-
-
-def lookup_set_bonus_skill(set_name: str, supabase: Client):
-    """Finds a matching set bonus skill ID in public.skills."""
-    if supabase is None or not set_name:
-        return None
-    try:
-        res = (
-            supabase.table("skills")
-            .select("id, name")
-            .or_(f"name.ilike.%{set_name}%,id.ilike.%{set_name}%")
-            .limit(1)
-            .execute()
-        )
-        if res.data and len(res.data) > 0:
-            return res.data[0]["id"]
-    except Exception:
-        pass
+        print(c_err(f"  [!] Supabase lookup error for '{monster_name}': {e}"))
     return None
 
 
@@ -266,13 +283,19 @@ def process_single_image(
     enable_updates: bool = False,
     clear_visage: bool = False,
     dry_run: bool = False
-):
+) -> tuple[bool, str]:
+    """Processes a single visage card image. Returns (success_bool, message)."""
     print(f"\n{'='*70}")
-    print(f"[+] Processing: {file_path.name}")
+    print(c_info(f"[+] Processing: {file_path.name}"))
     print(f"{'='*70}")
 
     # 1. Unified OCR (1 API call)
     ocr_data = extract_unified_ocr(file_path, ai_client)
+    if not ocr_data:
+        err_msg = f"OCR failed to extract data from '{file_path.name}'"
+        print(c_err(f"  [ERROR] {err_msg}"))
+        return False, err_msg
+
     visage_id = ocr_data.get("visage_id") or file_path.stem.lower().replace("img_", "")
     monster_name = ocr_data.get("monster_name") or file_path.stem
     title = ocr_data.get("title") or f"Visage: {monster_name}"
@@ -289,11 +312,11 @@ def process_single_image(
     if existing_record:
         existing_img_url = existing_record.get("image_small")
         has_existing_image = bool(existing_img_url)
-        print(f"  [2] Database Record: FOUND (id='{existing_record.get('id')}', points={existing_record.get('points')}, sets={existing_record.get('ink_types')})")
+        print(c_success(f"  [2] Database Record: FOUND (id='{existing_record.get('id')}', points={existing_record.get('points')}, sets={existing_record.get('ink_types')})"))
         if has_existing_image:
             print(f"      Current Small Image: {existing_img_url}")
     else:
-        print(f"  [2] Database Record: NOT FOUND in Supabase (will be inserted)")
+        print(c_warn(f"  [2] Database Record: NOT FOUND in Supabase (will be inserted as new)"))
 
     # 3. Smart Image Crop & Upload Decision
     uploaded_image_url = existing_img_url
@@ -319,7 +342,7 @@ def process_single_image(
             output_filename = f"{file_slug}.png"
             output_path = output_dir / output_filename
             cv2.imwrite(str(output_path), final_crop)
-            print(f"      [✓] Saved crop to: {output_path.name}")
+            print(c_success(f"      [✓] Saved crop to: {output_path.name}"))
 
             if not dry_run and supabase and (enable_image_update or not has_existing_image):
                 try:
@@ -331,9 +354,11 @@ def process_single_image(
                             file_options={"upsert": "true"}
                         )
                     uploaded_image_url = supabase.storage.from_(STORAGE_BUCKET).get_public_url(storage_dest)
-                    print(f"      [✓] Uploaded small image to Storage: {uploaded_image_url}")
+                    print(c_success(f"      [✓] Uploaded small image to Storage: {uploaded_image_url}"))
                 except Exception as e:
-                    print(f"      [!] Storage upload note: {e}")
+                    print(c_err(f"      [!] Storage upload error: {e}"))
+        else:
+            print(c_err(f"      [!] Failed to read image file: {file_path.name}"))
 
     # 4. Parse Extracted Values
     extracted_points = ocr_data.get("points") or 1
@@ -344,18 +369,22 @@ def process_single_image(
     new_ink_types = set()
     for ink in ocr_data.get("ink_types", []):
         ink_clean = ink.strip().lower().replace("ink of ", "").replace("ink_", "")
+        if ink_clean == "fire":
+            ink_clean = "flames"
         if ink_clean in VALID_INK_TYPES:
             new_ink_types.add(ink_clean)
 
     for pot in ocr_data.get("potential_set_effects", []):
         ink_val = pot.get("ink_type") or pot.get("name", "")
         ink_clean = ink_val.strip().lower().replace("ink of ", "").replace("ink_", "")
+        if ink_clean == "fire":
+            ink_clean = "flames"
         if ink_clean in VALID_INK_TYPES:
             new_ink_types.add(ink_clean)
 
     # 5. Build Merge / Update Payload
     if clear_visage:
-        print(f"\n  [*] --clear-visage active: Clearing existing data and building fresh from monster title.")
+        print(c_warn(f"\n  [*] --clear-visage active: Clearing existing data and building fresh from monster title."))
         final_ink_types = sorted(list(new_ink_types))
         final_core_effect = extracted_core_desc
         final_points = extracted_points
@@ -372,15 +401,9 @@ def process_single_image(
     points_changed = False
     if current_db_points is not None and current_db_points != final_points:
         points_changed = True
-        print(f"\n  [!] POINTS CHANGED: Database had {current_db_points} pts -> OCR extracted {final_points} pts")
+        print(c_highlight(f"\n  [!] POINTS CHANGED: Database had {current_db_points} pts -> OCR extracted {final_points} pts"))
     else:
         print(f"\n  [i] Points: {final_points} pts")
-
-    # Set Bonus ID lookup
-    set_bonus_id = None
-    if final_ink_types:
-        first_ink = final_ink_types[0]
-        set_bonus_id = lookup_set_bonus_skill(f"Ink of {first_ink.capitalize()}", supabase) or f"ink_of_{first_ink}"
 
     # Build DB Payload
     db_payload = {
@@ -394,37 +417,37 @@ def process_single_image(
         "notes": json.dumps(ocr_data.get("secondary_effects", [])),
         "is_active": True
     }
-    if set_bonus_id:
-        db_payload["set_bonus_id"] = set_bonus_id
     if uploaded_image_url:
         db_payload["image_small"] = uploaded_image_url
-    if existing_record and existing_record.get("image_large"):
-        db_payload["image_large"] = existing_record.get("image_large")
 
     print(f"\n  [PROPOSED DATA SUMMARY]")
     print(f"  - Core Effect Text : {final_core_effect or '(None)'}")
     print(f"  - Potential Sets   : {final_ink_types} (Merged)")
-    print(f"  - Points Value     : {final_points} {'(Changed from DB!)' if points_changed else ''}")
-    print(f"  - Set Bonus Link   : {set_bonus_id or '(None)'}")
+    print(f"  - Points Value     : {final_points} {c_highlight('(Changed from DB!)') if points_changed else ''}")
     if uploaded_image_url:
         print(f"  - Small Image URL  : {uploaded_image_url}")
 
     # 6. Apply to Supabase if --enable-updates and not in --dry-run
     if dry_run:
-        print(f"\n  [DRY-RUN] No changes written to database.")
+        print(c_info(f"\n  [DRY-RUN] No changes written to database."))
+        return True, "Dry run completed"
     elif enable_updates:
         if supabase:
             try:
                 supabase.table(TABLE_NAME).upsert(db_payload).execute()
-                print(f"\n  [✓] SUCCESSFULLY UPDATED '{monster_name}' in Supabase '{TABLE_NAME}' table!")
+                print(c_success(f"\n  [✓] SUCCESSFULLY UPDATED '{monster_name}' in Supabase '{TABLE_NAME}' table!"))
+                return True, "Successfully updated in Supabase"
             except Exception as e:
-                print(f"\n  [!] Supabase DB write error: {e}")
+                err_msg = f"Supabase DB write error on '{monster_name}': {e}"
+                print(c_err(f"\n  [!] {err_msg}"))
+                return False, err_msg
         else:
-            print(f"\n  [!] Supabase client not connected. Check SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY.")
+            err_msg = "Supabase client not connected. Check SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY."
+            print(c_err(f"\n  [!] {err_msg}"))
+            return False, err_msg
     else:
         print(f"\n  [INFO] Data update skipped. Pass --enable-updates to write these changes to Supabase.")
-
-    return True
+        return True, "View only (skipped write)"
 
 
 def main():
@@ -449,24 +472,27 @@ def main():
     image_files = sorted([f for f in input_dir.iterdir() if f.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp"}])
 
     if not image_files:
-        print(f"[!] No images found in {input_dir.resolve()}")
+        print(c_err(f"[!] No images found in {input_dir.resolve()}"))
         sys.exit(0)
 
     print(f"\n{'='*70}")
-    print(f" Visage Card Automation Pipeline")
+    print(c_info(" Visage Card Automation Pipeline"))
     print(f" Images Found       : {len(image_files)}")
-    print(f" Mode               : {'DRY-RUN (Safe mode)' if args.dry_run else 'LIVE INGESTION'}")
-    print(f" Data Updates       : {'ENABLED (--enable-updates)' if args.enable_updates else 'DISABLED (View only)'}")
-    print(f" Image Updates      : {'ENABLED (--enable-image-update)' if args.enable_image_update else 'DISABLED (Skip if exists)'}")
-    print(f" Clear Visage Mode  : {'ACTIVE (--clear-visage)' if args.clear_visage else 'MERGE MODE (Preserve existing sets)'}")
+    print(f" Mode               : {c_warn('DRY-RUN (Safe mode)') if args.dry_run else c_success('LIVE INGESTION')}")
+    print(f" Data Updates       : {c_success('ENABLED (--enable-updates)') if args.enable_updates else c_warn('DISABLED (View only)')}")
+    print(f" Image Updates      : {c_success('ENABLED (--enable-image-update)') if args.enable_image_update else 'DISABLED (Skip if exists)'}")
+    print(f" Clear Visage Mode  : {c_warn('ACTIVE (--clear-visage)') if args.clear_visage else 'MERGE MODE (Preserve existing sets)'}")
     print(f"{'='*70}")
 
     ai_client, supabase = init_clients(dry_run=args.dry_run)
     if supabase and not args.dry_run:
         ensure_storage_bucket(supabase)
 
+    errors = []
+    successes = []
+
     for idx, img_path in enumerate(image_files, start=1):
-        process_single_image(
+        ok, msg = process_single_image(
             img_path,
             ai_client,
             supabase,
@@ -476,8 +502,30 @@ def main():
             clear_visage=args.clear_visage,
             dry_run=args.dry_run
         )
+        if ok:
+            successes.append(img_path.name)
+        else:
+            errors.append((img_path.name, msg))
+
         if idx < len(image_files):
             time.sleep(args.delay)
+
+    # ── Final Execution Summary ──────────────────────────────────
+    print(f"\n{'='*70}")
+    print(c_info(" INGESTION RUN SUMMARY"))
+    print(f"{'='*70}")
+    print(f" Total Processed : {len(image_files)}")
+    print(f" Succeeded       : {c_success(str(len(successes)))}")
+    
+    if errors:
+        print(f" Errors/Failures : {c_err(str(len(errors)))}")
+        print(c_err("\n[!] The following cards encountered errors:"))
+        for name, err_detail in errors:
+            print(c_err(f"  • {name} -> {err_detail}"))
+    else:
+        print(f" Errors/Failures : {c_success('0')}")
+        print(c_success("\n[✓] All visage cards processed without errors!"))
+    print(f"{'='*70}\n")
 
 
 if __name__ == "__main__":

@@ -72,7 +72,7 @@ export const SKILLS_KEY = 'admin-skills';
 
 export function useAdminSkills(filters: SkillFilters = {}) {
   return useQuery({
-    queryKey: [SKILLS_KEY, filters],
+    queryKey: [SKILLS_KEY, filters.game, filters.category, filters.search, filters.isSetBonus, filters.isActive],
     queryFn: async () => {
       let q = supabase
         .from('skills')
@@ -106,7 +106,9 @@ export function useAdminSkills(filters: SkillFilters = {}) {
         games: (s.games as string[]) || [],
       })) as DBSkill[];
     },
-    staleTime: 1000 * 30,
+    staleTime: 1000 * 60 * 2,
+    refetchOnWindowFocus: false,
+    retry: 1,
   });
 }
 

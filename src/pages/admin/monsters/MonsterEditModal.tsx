@@ -2,9 +2,10 @@
 // Monster Edit / Create Modal
 // Full-featured form for every monster attribute.
 // ─────────────────────────────────────────────────────────────
-import { useState, useEffect } from 'react';
-import { X, Loader2, Trash2, AlertTriangle } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { X, Loader2, Trash2, AlertTriangle, Upload } from 'lucide-react';
 import { type DBMonster, type MonsterUpsert, useUpsertMonster, useDeleteMonster, useBaseMonsters } from '../../../hooks/useAdminMonsters';
+import { supabase } from '../../../lib/supabase';
 import { cn } from '../../../lib/utils';
 
 // ── Constants ────────────────────────────────────────────────
@@ -162,6 +163,181 @@ function TagToggle({ options, selected, onChange }: {
   );
 }
 
+function ImageUploadField({
+  label,
+  subLabel,
+  value,
+  onChange,
+  slug,
+}: {
+  label: string;
+  subLabel: string;
+  value: string | null;
+  onChange: (url: string | null) => void;
+  slug: string;
+}) {
+  const [uploading, setUploading] = useState(false);
+  const [showUrlInput, setShowUrlInput] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  async function handleFile(file: File) {
+    if (!file.type.startsWith('image/')) {
+      setUploadError('Please select a valid image file (PNG, JPG, WebP, etc.).');
+      return;
+    }
+    setUploadError(null);
+    setUploading(true);
+    try {
+      const fileExt = file.name.split('.').pop()?.toLowerCase() || 'png';
+      const cleanSlug = slug.trim() ? slug : 'monster';
+      const path = `MHNow-${cleanSlug}_Icon_${Date.now()}.${fileExt}`;
+
+      const { error } = await supabase.storage
+        .from('monsters')
+        .upload(path, file, {
+          cacheControl: '3600',
+          upsert: true,
+        });
+
+      if (error) throw error;
+
+      const { data } = supabase.storage.from('monsters').getPublicUrl(path);
+      onChange(data.publicUrl);
+    } catch (err: unknown) {
+      setUploadError((err as Error).message || 'Failed to upload image. You can enter the path/URL below.');
+      setShowUrlInput(true);
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  function handleDrop(e: React.DragEvent) {
+    e.preventDefault();
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleFile(e.dataTransfer.files[0]);
+    }
+  }
+
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <label className="block text-xs font-medium text-mh-slate-400">
+          {label}
+        </label>
+        <button
+          type="button"
+          onClick={() => setShowUrlInput(!showUrlInput)}
+          className="text-[11px] text-mh-gold-400 hover:text-mh-gold-300 underline"
+        >
+          {showUrlInput ? 'Hide path / URL field' : 'Enter path or URL manually'}
+        </button>
+      </div>
+      <p className="text-[11px] text-mh-slate-500">{subLabel}</p>
+
+      {uploadError && (
+        <p className="text-[11px] text-red-400 font-medium">{uploadError}</p>
+      )}
+
+      {/* Upload Dropzone / Preview Container */}
+      <div
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={handleDrop}
+        className={cn(
+          'relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed transition-all p-3',
+          value
+            ? 'border-mh-slate-700 bg-mh-slate-850'
+            : 'border-mh-slate-700 hover:border-mh-gold-500/50 bg-mh-slate-800/40 hover:bg-mh-slate-800/80',
+        )}
+      >
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={(e) => {
+            if (e.target.files && e.target.files[0]) {
+              handleFile(e.target.files[0]);
+            }
+          }}
+        />
+
+        {value ? (
+          <div className="flex w-full items-center gap-4">
+            <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl flex items-center justify-center shadow-md bg-mh-slate-900 border border-mh-slate-700 p-1">
+              <img
+                src={value}
+                alt={label}
+                className="h-full w-full object-contain"
+                onError={(e) => {
+                  (e.target as HTMLElement).style.display = 'none';
+                }}
+              />
+            </div>
+
+            <div className="min-w-0 flex-1 space-y-1">
+              <p className="text-xs font-semibold text-mh-slate-200 truncate">
+                {value.split('/').pop()}
+              </p>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  disabled={uploading}
+                  onClick={() => fileInputRef.current?.click()}
+                  className="flex items-center gap-1 rounded bg-mh-slate-700 px-2.5 py-1 text-[11px] font-semibold text-mh-slate-200 hover:bg-mh-slate-600 transition-colors"
+                >
+                  <Upload size={12} />
+                  Change Icon
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onChange(null)}
+                  className="rounded p-1 text-mh-slate-500 hover:bg-red-500/20 hover:text-red-400 transition-colors"
+                  title="Remove icon"
+                >
+                  <Trash2 size={13} />
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center text-center py-2">
+            {uploading ? (
+              <div className="flex flex-col items-center gap-2 py-2">
+                <Loader2 size={22} className="animate-spin text-mh-gold-400" />
+                <span className="text-xs font-semibold text-mh-slate-300">Uploading icon…</span>
+              </div>
+            ) : (
+              <>
+                <Upload size={20} className="text-mh-slate-500 mb-1.5" />
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="rounded-lg bg-mh-gold-500/15 border border-mh-gold-500/30 px-3 py-1 text-xs font-bold text-mh-gold-300 hover:bg-mh-gold-500/25 transition-all shadow-sm mb-1"
+                >
+                  Upload Monster Icon
+                </button>
+                <p className="text-[10px] text-mh-slate-500">or drag and drop here (PNG, JPG, WebP)</p>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Manual Path / URL Input */}
+      {showUrlInput && (
+        <input
+          type="text"
+          value={value ?? ''}
+          onChange={(e) => onChange(e.target.value || null)}
+          placeholder="/images/monsters/MHNow-..._Icon.png or https://..."
+          className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-100 placeholder-mh-slate-500 outline-none focus:border-mh-gold-500/50"
+        />
+      )}
+    </div>
+  );
+}
+
 // ── Main component ───────────────────────────────────────────
 interface Props {
   monster: DBMonster | null; // null = create mode
@@ -300,6 +476,15 @@ export default function MonsterEditModal({ monster, open, onClose }: Props) {
                 readOnly={!isCreate}
               />
             </div>
+
+            {/* Monster Icon / Portrait */}
+            <ImageUploadField
+              label="Monster Icon"
+              subLabel="Square icon displayed across Field Guide, Admin tables, and weapon/armour builders."
+              value={form.icon}
+              onChange={(url) => setForm((f) => ({ ...f, icon: url }))}
+              slug={form.id}
+            />
 
             {/* Species + Tier */}
             <div className="grid grid-cols-2 gap-4">

@@ -44,3 +44,6 @@ export type {
   GameConfig,
   Adventurer,
 } from './game.js';
+
+export * from './adventurer.js';
+

@@ -20,7 +20,16 @@ import { cn } from '../../lib/utils';
 type SortOption = 'default' | 'name' | 'progress';
 
 export default function VisageSetsGuide() {
-  const { sets, dbVisages, isLoading, refetch, isCollected, toggleCollected } = useVisageSetsData();
+  const {
+    sets,
+    dbVisages,
+    isLoading,
+    refetch,
+    getCardCollection,
+    setCardRarity,
+    setCardQuantity,
+    removeCardFromCollection,
+  } = useVisageSetsData();
   const isAdmin = useAuthStore(selectIsAdmin);
   const { setActivePage, setAdminSubPage } = useUIStore();
 
@@ -145,7 +154,7 @@ export default function VisageSetsGuide() {
                     filterMode === 'all' ? 'bg-mh-gold-500 text-slate-950 font-bold' : 'text-mh-slate-400 hover:text-white',
                   )}
                 >
-                  All
+                  All ({sets.length})
                 </button>
                 <button
                   onClick={() => setFilterMode('complete')}
@@ -154,7 +163,7 @@ export default function VisageSetsGuide() {
                     filterMode === 'complete' ? 'bg-mh-gold-500 text-slate-950 font-bold' : 'text-mh-slate-400 hover:text-white',
                   )}
                 >
-                  8/8
+                  Complete
                 </button>
                 <button
                   onClick={() => setFilterMode('incomplete')}
@@ -214,43 +223,51 @@ export default function VisageSetsGuide() {
                     key={s.id}
                     onClick={() => setSelectedSetId(s.id)}
                     className={cn(
-                      'w-full flex items-center justify-between rounded-xl px-3.5 py-2.5 text-left transition-all duration-150',
-                      'border',
+                      'w-full flex items-center justify-between rounded-xl px-3 py-2.5 transition-all text-left group border',
                       isSelected
-                        ? 'bg-gradient-to-r from-mh-slate-850 via-[#1b2230] to-mh-slate-850 border-mh-gold-400 text-white shadow-lg ring-1 ring-mh-gold-400/40'
-                        : 'bg-mh-slate-900/60 border-mh-slate-800/80 text-mh-slate-300 hover:bg-mh-slate-850/80 hover:border-mh-slate-700',
+                        ? 'bg-gradient-to-r from-mh-slate-800 to-mh-slate-850 border-mh-gold-500/50 shadow-md ring-1 ring-mh-gold-500/20'
+                        : 'bg-mh-slate-900/50 border-mh-slate-800/80 hover:bg-mh-slate-800/60 hover:border-mh-slate-700 text-mh-slate-300',
                     )}
                   >
-                    {/* Left Icon + Set Name */}
                     <div className="flex items-center gap-2.5 min-w-0">
+                      {/* Ink Icon Badge */}
                       <div
                         className={cn(
-                          'flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border shadow-sm',
+                          'flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border text-xs shadow-sm transition-transform group-hover:scale-105',
                           cfg.bg,
                           cfg.border,
                           cfg.text,
                         )}
                       >
-                        <InkIconComponent iconName={cfg.iconName} size={14} />
+                        <InkIconComponent iconName={s.iconName || cfg.iconName} size={14} />
                       </div>
-                      <span
-                        className={cn(
-                          'font-display text-sm font-semibold truncate',
-                          isSelected ? 'text-mh-gold-300 font-bold' : 'text-mh-slate-200',
-                        )}
-                      >
-                        {s.name}
-                      </span>
+
+                      {/* Set Name */}
+                      <div className="truncate">
+                        <span
+                          className={cn(
+                            'block text-xs font-bold truncate leading-tight',
+                            isSelected ? 'text-mh-gold-300' : 'text-mh-slate-200 group-hover:text-white',
+                          )}
+                        >
+                          {s.name}
+                        </span>
+                        <span className="text-[10px] text-mh-slate-500 font-mono">
+                          {s.cards.length} {s.cards.length === 1 ? 'card' : 'cards'}
+                        </span>
+                      </div>
                     </div>
 
-                    {/* Right Progress Counter (e.g. 8/8) */}
-                    <div className="flex items-center gap-1.5 shrink-0 pl-2">
+                    {/* Progress Badge */}
+                    <div className="flex items-center gap-1 shrink-0 ml-2">
                       <span
                         className={cn(
-                          'font-mono text-xs font-bold px-2 py-0.5 rounded-full border',
+                          'font-mono text-xs font-bold px-1.5 py-0.5 rounded',
                           isComplete
-                            ? 'bg-green-500/15 text-green-400 border-green-500/30'
-                            : 'bg-mh-slate-800 text-mh-slate-400 border-mh-slate-700',
+                            ? 'text-green-400 bg-green-500/15 border border-green-500/30'
+                            : s.collectedCards > 0
+                              ? 'text-amber-400 bg-amber-500/10'
+                              : 'text-mh-slate-500',
                         )}
                       >
                         {s.collectedCards}/{s.totalCards}
@@ -263,10 +280,10 @@ export default function VisageSetsGuide() {
           </div>
         </div>
 
-        {/* ── Right Content Area: Active Set View ── */}
-        <div className="flex-1 flex flex-col min-w-0 bg-[#0c0f16]/90 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+        {/* ── Right Content: Active Set View ── */}
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
           {activeSet ? (
-            <div className="max-w-6xl mx-auto w-full space-y-6">
+            <div className="max-w-6xl mx-auto space-y-6">
               {/* Set Header Bar */}
               <div className="flex flex-wrap items-center justify-between gap-3 border-b border-mh-slate-800/80 pb-4">
                 <div className="flex items-center gap-3">
@@ -278,7 +295,7 @@ export default function VisageSetsGuide() {
                       activeInkCfg.text,
                     )}
                   >
-                    <InkIconComponent iconName={activeInkCfg.iconName} size={20} />
+                    <InkIconComponent iconName={activeSet.iconName || activeInkCfg.iconName} size={20} />
                   </div>
                   <div>
                     <div className="flex items-center gap-2.5">
@@ -324,11 +341,10 @@ export default function VisageSetsGuide() {
                             key={card.id}
                             card={card}
                             currentInk={activeSet.id}
-                            isCollected={isCollected(card.id)}
-                            onToggleCollected={(e) => {
-                              e.stopPropagation();
-                              toggleCollected(card.id);
-                            }}
+                            collectionEntry={getCardCollection(card.id, activeSet.id)}
+                            onSetRarity={(rarity, qty) => setCardRarity(card.id, activeSet.id, rarity, qty)}
+                            onSetQuantity={(qty) => setCardQuantity(card.id, activeSet.id, qty)}
+                            onRemoveFromCollection={() => removeCardFromCollection(card.id, activeSet.id)}
                             onClick={() => setInspectedCard(card)}
                           />
                         ))}
@@ -339,7 +355,7 @@ export default function VisageSetsGuide() {
               ) : (
                 <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-mh-slate-800 bg-mh-slate-900/40 py-12 px-6 text-center">
                   <div className={cn('flex h-12 w-12 items-center justify-center rounded-xl border mb-3', activeInkCfg.bg, activeInkCfg.border, activeInkCfg.text)}>
-                    <InkIconComponent iconName={activeInkCfg.iconName} size={24} />
+                    <InkIconComponent iconName={activeSet.iconName || activeInkCfg.iconName} size={24} />
                   </div>
                   <h3 className="font-display text-sm font-bold text-mh-slate-300">
                     No Visage cards for {activeSet.name} in Supabase yet
@@ -367,7 +383,7 @@ export default function VisageSetsGuide() {
                 {/* Title */}
                 <div className="flex items-center gap-2 text-sm font-bold text-mh-gold-400">
                   <div className={cn('flex h-5 w-5 items-center justify-center rounded', activeInkCfg.text)}>
-                    <InkIconComponent iconName={activeInkCfg.iconName} size={15} />
+                    <InkIconComponent iconName={activeSet.iconName || activeInkCfg.iconName} size={15} />
                   </div>
                   <span>{activeSet.name}</span>
                 </div>
@@ -430,10 +446,17 @@ export default function VisageSetsGuide() {
       {/* ── Card Detail Modal ── */}
       <VisageModal
         card={inspectedCard}
+        currentInk={activeSet?.id}
         open={inspectedCard !== null}
-        isCollected={inspectedCard ? isCollected(inspectedCard.id) : false}
-        onToggleCollected={() => {
-          if (inspectedCard) toggleCollected(inspectedCard.id);
+        collectionEntry={inspectedCard && activeSet ? getCardCollection(inspectedCard.id, activeSet.id) : null}
+        onSetRarity={(rarity, qty) => {
+          if (inspectedCard && activeSet) setCardRarity(inspectedCard.id, activeSet.id, rarity, qty);
+        }}
+        onSetQuantity={(qty) => {
+          if (inspectedCard && activeSet) setCardQuantity(inspectedCard.id, activeSet.id, qty);
+        }}
+        onRemoveFromCollection={() => {
+          if (inspectedCard && activeSet) removeCardFromCollection(inspectedCard.id, activeSet.id);
         }}
         onClose={() => setInspectedCard(null)}
       />
