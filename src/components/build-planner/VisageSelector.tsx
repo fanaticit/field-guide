@@ -1,19 +1,24 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '../../lib/supabase';
+import { useAuthStore } from '../../store/authStore';
 import { useBuildPlannerStore, type Visage, type VisageSlot } from '../../store/buildPlannerStore';
 
 // Ink type → colour for the dot/badge
 const INK_COLORS: Record<string, { bg: string; text: string; ring: string }> = {
   fire:       { bg: 'bg-orange-500',   text: 'text-orange-100', ring: 'ring-orange-400'  },
+  flames:     { bg: 'bg-orange-500',   text: 'text-orange-100', ring: 'ring-orange-400'  },
   water:      { bg: 'bg-blue-500',     text: 'text-blue-100',   ring: 'ring-blue-400'    },
   thunder:    { bg: 'bg-yellow-400',   text: 'text-yellow-900', ring: 'ring-yellow-300'  },
   ice:        { bg: 'bg-cyan-400',     text: 'text-cyan-900',   ring: 'ring-cyan-300'    },
+  frost:      { bg: 'bg-cyan-400',     text: 'text-cyan-900',   ring: 'ring-cyan-300'    },
   dragon:     { bg: 'bg-purple-500',   text: 'text-purple-100', ring: 'ring-purple-400'  },
   poison:     { bg: 'bg-fuchsia-500',  text: 'text-fuchsia-100',ring: 'ring-fuchsia-400' },
   paralysis:  { bg: 'bg-lime-400',     text: 'text-lime-900',   ring: 'ring-lime-300'    },
   blast:      { bg: 'bg-rose-500',     text: 'text-rose-100',   ring: 'ring-rose-400'    },
   sleep:      { bg: 'bg-indigo-400',   text: 'text-indigo-100', ring: 'ring-indigo-300'  },
+  raw:        { bg: 'bg-mh-slate-400', text: 'text-mh-slate-900', ring: 'ring-mh-slate-300' },
+  combat:     { bg: 'bg-mh-slate-400', text: 'text-mh-slate-900', ring: 'ring-mh-slate-300' },
 };
 const defaultInkColor = { bg: 'bg-mh-slate-600', text: 'text-mh-slate-200', ring: 'ring-mh-slate-500' };
 
@@ -21,14 +26,18 @@ const defaultInkColor = { bg: 'bg-mh-slate-600', text: 'text-mh-slate-200', ring
 // Source of truth: update these once full skill data is seeded in the DB.
 const INK_SET_BONUSES: Record<string, { pieces: number; description: string }[]> = {
   fire:       [ { pieces: 2, description: 'Fire Attack +1. Attacks have a chance to apply Fireblight.' }, { pieces: 4, description: 'Fire Attack +2. Fireblight damage over time increased.' } ],
+  flames:     [ { pieces: 2, description: 'Fire Attack +1. Attacks have a chance to apply Fireblight.' }, { pieces: 4, description: 'Fire Attack +2. Fireblight damage over time increased.' } ],
   water:      [ { pieces: 2, description: 'Water Attack +1. Attacks have a chance to apply Waterblight.' }, { pieces: 4, description: 'Water Attack +2. Waterblight stamina drain increased.' } ],
   thunder:    [ { pieces: 2, description: 'Thunder Attack +1. Attacks have a chance to apply Thunderblight.' }, { pieces: 4, description: 'Thunder Attack +2. Thunderblight stun proc rate increased.' } ],
   ice:        [ { pieces: 2, description: 'Ice Attack +1. Attacks have a chance to apply Iceblight.' }, { pieces: 4, description: 'Ice Attack +2. Iceblight stamina drain increased.' } ],
+  frost:      [ { pieces: 2, description: 'Ice Attack +1. Attacks have a chance to apply Iceblight.' }, { pieces: 4, description: 'Ice Attack +2. Iceblight stamina drain increased.' } ],
   dragon:     [ { pieces: 2, description: 'Dragon Attack +1. Attacks have a chance to apply Dragonblight.' }, { pieces: 4, description: 'Dragon Attack +2. Dragonblight elemental negation increased.' } ],
   poison:     [ { pieces: 2, description: 'Poison buildup increased. Poison damage per tick +10%.' }, { pieces: 4, description: 'Poison buildup greatly increased. Poison tick rate doubled.' } ],
   paralysis:  [ { pieces: 2, description: 'Paralysis buildup increased. Paralysis duration +15%.' }, { pieces: 4, description: 'Paralysis buildup greatly increased. Paralysis window widened.' } ],
   blast:      [ { pieces: 2, description: 'Blast buildup increased. Blast explosion damage +15%.' }, { pieces: 4, description: 'Blast buildup greatly increased. Blast radius increased.' } ],
   sleep:      [ { pieces: 2, description: 'Sleep buildup increased. Sleep duration +20%.' }, { pieces: 4, description: 'Sleep buildup greatly increased. Next attack after wakeup deals 3× damage.' } ],
+  raw:        [ { pieces: 2, description: 'Physical Damage +5%.' }, { pieces: 4, description: 'Physical Damage +10%. Critical hits deal extra damage.' } ],
+  combat:     [ { pieces: 2, description: 'Physical Damage +5%.' }, { pieces: 4, description: 'Physical Damage +10%. Critical hits deal extra damage.' } ],
 };
 
 function inkLabel(ink: string) {
@@ -38,19 +47,22 @@ function inkLabel(ink: string) {
 function inkShort(ink: string) {
   // Abbreviate to 2-3 chars for the small circle
   const map: Record<string, string> = {
-    fire: 'Fi', water: 'Wa', thunder: 'Th', ice: 'Ic',
+    fire: 'Fi', flames: 'Fl', water: 'Wa', thunder: 'Th', ice: 'Ic', frost: 'Fr',
     dragon: 'Dr', poison: 'Po', paralysis: 'Pa', blast: 'Bl', sleep: 'Sl',
+    raw: 'Rw', combat: 'Co',
   };
   return map[ink] || ink.substring(0, 2).toUpperCase();
 }
 
 export function VisageSelector() {
+  const { user } = useAuthStore();
   const {
     buddy, coreVisage, visage2, visage3, visage4, visage5,
     setVisage, setSlotInkType, selectedInkTypes, getTotalVisagePoints,
   } = useBuildPlannerStore();
   const [openSlot, setOpenSlot] = useState<VisageSlot | null>(null);
   const [inkPickSlot, setInkPickSlot] = useState<VisageSlot | null>(null);
+  const [useCollectionOnly, setUseCollectionOnly] = useState(false);
 
   const { data: visages, isLoading: isVisageLoading } = useQuery({
     queryKey: ['visages'],
@@ -59,6 +71,21 @@ export function VisageSelector() {
       if (error) throw error;
       return data as Visage[];
     }
+  });
+
+  // Fetch the user's owned visage collection — each row is (visage_id, ink_type)
+  const { data: ownedCollection } = useQuery({
+    queryKey: ['user_visage_collection', user?.id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('user_visage_collection')
+        .select('visage_id, ink_type')
+        .eq('user_id', user!.id);
+      if (error) throw error;
+      // Build a Set of "visageId::inkType" strings for fast lookup
+      return new Set(data.map((r: { visage_id: string; ink_type: string }) => `${r.visage_id}::${r.ink_type}`));
+    },
+    enabled: !!user,
   });
 
   const totalPoints = getTotalVisagePoints();
@@ -191,32 +218,82 @@ export function VisageSelector() {
 
         {/* Card picker dropdown */}
         {openSlot === slot && (
-          <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-60 p-2.5 bg-mh-slate-900 border border-mh-slate-700 rounded-lg shadow-2xl z-30 max-h-56 overflow-y-auto grid grid-cols-4 gap-1.5">
+          <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 p-2.5 bg-mh-slate-900 border border-mh-slate-700 rounded-lg shadow-2xl z-30 max-h-60 overflow-y-auto">
+            {/* Clear button */}
             <button
               onClick={() => { handleVisageChange(slot, null); setOpenSlot(null); }}
-              className="w-10 h-10 flex flex-col items-center justify-center bg-mh-slate-800 text-[9px] font-bold text-mh-slate-400 border border-mh-slate-700 rounded hover:border-mh-slate-500 transition-colors"
+              className="w-full flex items-center justify-center gap-1.5 mb-2 py-1.5 bg-mh-slate-800 text-[10px] font-bold text-mh-slate-400 border border-mh-slate-700 rounded hover:border-mh-slate-500 transition-colors"
             >
-              <span className="text-sm leading-none">✕</span>
+              <span>✕</span> Remove Card
             </button>
             {isVisageLoading ? (
-              <div className="col-span-3 flex items-center justify-center text-xs text-mh-slate-500">Loading...</div>
-            ) : (
-              visages?.map(v => (
-                <button
-                  key={v.id}
-                  title={`${v.name} (${v.points} pts)`}
-                  onClick={() => { handleVisageChange(slot, v.id); setOpenSlot(null); }}
-                  className={`w-10 h-10 rounded overflow-hidden border ${selected?.id === v.id ? 'border-rarity-5 ring-2 ring-rarity-5/50' : 'border-mh-slate-700 hover:border-mh-slate-400'} flex items-center justify-center bg-mh-slate-800 relative group transition-all`}
-                >
-                  {v.image_small ? (
-                    <img src={v.image_small} alt={v.name} className="w-full h-full object-cover" />
-                  ) : (
-                    <span className="text-[9px] font-bold text-mh-slate-400">{v.name.substring(0, 3)}</span>
-                  )}
-                  <div className="absolute bottom-0 right-0 bg-black/80 px-0.5 text-[7px] font-bold text-white">{v.points}</div>
-                </button>
-              ))
-            )}
+              <div className="flex items-center justify-center text-xs text-mh-slate-500 py-4">Loading...</div>
+            ) : (() => {
+              // Build display entries: each visage × owned ink type (or all ink types if not collection mode)
+              type Entry = { visage: Visage; ink: string; owned: boolean };
+              const entries: Entry[] = [];
+              visages?.forEach(v => {
+                const inks = v.ink_types?.length ? v.ink_types : [''];
+                inks.forEach(ink => {
+                  const owned = !!ownedCollection?.has(`${v.id}::${ink}`);
+                  if (useCollectionOnly && !owned) return; // filter out unowned
+                  entries.push({ visage: v, ink, owned });
+                });
+              });
+
+              if (entries.length === 0) {
+                return (
+                  <p className="text-[11px] text-mh-slate-500 text-center py-3 italic">
+                    No cards in your collection yet.
+                  </p>
+                );
+              }
+
+              return (
+                <div className="grid grid-cols-4 gap-1.5">
+                  {entries.map(({ visage: v, ink, owned }) => {
+                    const inkC = INK_COLORS[ink] || defaultInkColor;
+                    const isSelected = selected?.id === v.id && (selectedInkTypes[String(slot)] === ink || !ink);
+                    return (
+                      <button
+                        key={`${v.id}::${ink}`}
+                        title={`${v.name}${ink ? ' · ' + inkLabel(ink) : ''} (${v.points} pts)${!owned ? ' — Not in collection' : ''}`}
+                        onClick={() => {
+                          handleVisageChange(slot, v.id);
+                          if (ink) setSlotInkType(slot, ink);
+                          setOpenSlot(null);
+                        }}
+                        className={`w-10 h-10 rounded overflow-hidden border flex items-center justify-center bg-mh-slate-800 relative group transition-all ${
+                          isSelected
+                            ? 'border-rarity-5 ring-2 ring-rarity-5/50'
+                            : owned
+                              ? 'border-mh-slate-600 hover:border-mh-slate-400'
+                              : 'border-mh-slate-800 opacity-40 hover:opacity-70 hover:border-mh-slate-700'
+                        }`}
+                      >
+                        {v.image_small ? (
+                          <img src={v.image_small} alt={v.name} className="w-full h-full object-cover" />
+                        ) : (
+                          <span className="text-[9px] font-bold text-mh-slate-400">{v.name.substring(0, 3)}</span>
+                        )}
+                        {/* Ink dot in top-left */}
+                        {ink && (
+                          <div className={`absolute top-0.5 left-0.5 w-2 h-2 rounded-full ${inkC.bg} border border-black/40`} />
+                        )}
+                        {/* Point cost in bottom-right */}
+                        <div className="absolute bottom-0 right-0 bg-black/80 px-0.5 text-[7px] font-bold text-white">{v.points}</div>
+                        {/* Not-owned lock icon */}
+                        {!owned && user && (
+                          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/60 transition-opacity">
+                            <span className="text-[10px]">🔒</span>
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              );
+            })()}
           </div>
         )}
       </div>
@@ -226,8 +303,23 @@ export function VisageSelector() {
   return (
     <div className="bg-mh-slate-800/30 border border-mh-slate-800 rounded-xl p-4 flex flex-col gap-4">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <h2 className="font-display text-base font-bold text-mh-slate-200">Visage Cards</h2>
+      <div className="flex items-center gap-2 flex-wrap">
+        <h2 className="font-display text-base font-bold text-mh-slate-200 mr-auto">Visage Cards</h2>
+        {/* Collection toggle — only shown to logged-in users */}
+        {user && (
+          <button
+            onClick={() => setUseCollectionOnly(prev => !prev)}
+            title={useCollectionOnly ? 'Showing only your collection — click to show all cards' : 'Click to filter to your collection only'}
+            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold border transition-all ${
+              useCollectionOnly
+                ? 'bg-rarity-5/20 border-rarity-5/60 text-rarity-5'
+                : 'bg-mh-slate-800 border-mh-slate-700 text-mh-slate-400 hover:text-mh-slate-300'
+            }`}
+          >
+            <span>{useCollectionOnly ? '📦' : '🌐'}</span>
+            {useCollectionOnly ? 'My Collection' : 'All Cards'}
+          </button>
+        )}
         <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${totalPoints > 12 ? 'bg-red-500/20 text-red-400' : 'bg-mh-slate-800 text-mh-slate-300'}`}>
           {totalPoints} / 12 pts
         </span>

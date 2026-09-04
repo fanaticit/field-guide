@@ -244,11 +244,33 @@ export const INK_OPTIONS: InkType[] = [
   'protection',
 ];
 
-export function getInkConfig(ink: string | null | undefined): InkConfig {
+export function getInkConfig(ink: string | null | undefined, customName?: string): InkConfig {
   if (!ink) return INK_CONFIG.flames;
   const key = ink.toLowerCase().replace(/^ink_of_/, '') as InkType;
   if (key === 'fire') return INK_CONFIG.flames;
-  return INK_CONFIG[key] ?? INK_CONFIG.flames;
+  if (INK_CONFIG[key]) return INK_CONFIG[key];
+
+  // Dynamic fallback for any custom set / ink from database
+  const formattedName = customName || key
+    .split('_')
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+
+  const displayName = formattedName.toLowerCase().startsWith('ink of ') || formattedName.toLowerCase().includes(' set') || formattedName.toLowerCase().includes(' power') || formattedName.toLowerCase().includes(' mastery')
+    ? formattedName
+    : `Ink of ${formattedName}`;
+
+  return {
+    id: key,
+    name: displayName,
+    shortName: formattedName.replace(/^Ink of /i, ''),
+    bg: 'bg-mh-gold-500/15',
+    text: 'text-mh-gold-400',
+    border: 'border-mh-gold-500/30',
+    dotColor: 'bg-mh-gold-400',
+    glowColor: 'rgba(217, 119, 6, 0.4)',
+    iconName: 'sparkles',
+  };
 }
 
 export interface DBVisage {

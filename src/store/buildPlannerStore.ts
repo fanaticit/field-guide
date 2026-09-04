@@ -29,6 +29,7 @@ export interface ArmourPiece {
   slot: 'helm' | 'chest' | 'gloves' | 'waist' | 'greaves';
   set_name?: string;
   monster_id: string;
+  monster_name?: string; // joined from monsters table
   image?: string;
   skills: { id: string; level: number }[];
 }
@@ -92,10 +93,31 @@ interface BuildPlannerState {
 function chooseBestInk(inkTypes: string[], weaponElement?: string | null): string {
   if (!inkTypes || inkTypes.length === 0) return '';
   if (inkTypes.length === 1) return inkTypes[0];
+  
+  // Map standard weapon elements to MHO specific ink types
+  const elementToInkMap: Record<string, string[]> = {
+    'fire': ['flames', 'fire'],
+    'ice': ['frost', 'ice'],
+    'raw': ['combat', 'raw'],
+    'water': ['water'],
+    'thunder': ['thunder'],
+    'dragon': ['dragon'],
+    'poison': ['poison'],
+    'paralysis': ['paralysis'],
+    'blast': ['blast'],
+    'sleep': ['sleep'],
+  };
+
   // Prefer weapon element if it exists in the card's ink types
-  if (weaponElement && weaponElement !== 'raw' && inkTypes.includes(weaponElement)) {
-    return weaponElement;
+  if (weaponElement) {
+    const possibleInks = elementToInkMap[weaponElement] || [weaponElement];
+    for (const ink of possibleInks) {
+      if (inkTypes.includes(ink)) {
+        return ink;
+      }
+    }
   }
+  
   return inkTypes[0];
 }
 

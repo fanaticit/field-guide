@@ -60,10 +60,35 @@ export function useUpsertVisage() {
   const qc = useQueryClient();
 
   return useMutation({
-    mutationFn: async (visage: VisageUpsert) => {
+    mutationFn: async (visage: VisageUpsert & { mergeInks?: boolean }) => {
+      let finalInkTypes = visage.ink_types ?? [];
+
+      if (visage.mergeInks !== false && visage.id) {
+        // Fetch existing ink_types for this card if it exists in DB to prevent removing previous Inks
+        const { data: existingRow } = await supabase
+          .from('visages')
+          .select('ink_types')
+          .eq('id', visage.id)
+          .maybeSingle();
+
+        if (existingRow && Array.isArray(existingRow.ink_types) && existingRow.ink_types.length > 0) {
+          const merged = new Set<InkType>([
+            ...(existingRow.ink_types as InkType[]),
+            ...(visage.ink_types as InkType[]),
+          ]);
+          finalInkTypes = Array.from(merged);
+        }
+      }
+
+      const payload = {
+        ...visage,
+        ink_types: finalInkTypes,
+      };
+      delete (payload as { mergeInks?: boolean }).mergeInks;
+
       const { data, error } = await supabase
         .from('visages')
-        .upsert(visage, { onConflict: 'id' })
+        .upsert(payload, { onConflict: 'id' })
         .select()
         .single();
 

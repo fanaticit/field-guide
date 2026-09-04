@@ -16,8 +16,7 @@ import {
 import {
   type DBVisage,
   type InkType,
-  INK_CONFIG,
-  INK_OPTIONS,
+  getInkConfig,
 } from '../../../data/schemas/visage';
 import {
   useAdminVisages,
@@ -66,24 +65,43 @@ export default function VisageManager() {
   const [editVisage, setEditVisage] = useState<DBVisage | null | 'new'>(null);
 
   const { data: visages = [], isLoading, refetch } = useAdminVisages();
-  const { data: setBonuses = [] } = useAdminSkills({ isSetBonus: true });
+  const { data: setBonuses = [] } = useAdminSkills({
+    isSetBonus: true,
+    search: 'Ink of',
+    isActive: true,
+  });
   const remove = useDeleteVisage();
 
-  // Only inks that exist in database sets or on loaded visage cards
+  // Only sets that start with "Ink of" (from database) + loaded visages
   const availableInks = useMemo(() => {
     const set = new Set<InkType>();
+
+    // Add only skills starting with "Ink of" from the database query
     setBonuses.forEach((sb) => {
-      const slug = sb.id.replace(/^ink_of_/, '').toLowerCase();
-      if (INK_OPTIONS.includes(slug as InkType)) {
-        set.add(slug as InkType);
+      if (
+        sb.name.toLowerCase().startsWith('ink of') ||
+        sb.id.toLowerCase().startsWith('ink_of_')
+      ) {
+        const slug = sb.id.replace(/^ink_of_/, '').toLowerCase() as InkType;
+        set.add(slug);
       }
     });
+
+    // Also include any inks from loaded visage cards
     visages.forEach((v) => {
-      (v.ink_types || []).forEach((ink) => set.add(ink));
+      (v.ink_types || []).forEach((ink) => {
+        if (typeof ink === 'string') {
+          const clean = ink.replace(/^ink_of_/, '').toLowerCase() as InkType;
+          set.add(clean);
+        }
+      });
     });
-    return Array.from(set).sort((a, b) =>
-      (INK_CONFIG[a]?.name || a).localeCompare(INK_CONFIG[b]?.name || b),
-    );
+
+    return Array.from(set).sort((a, b) => {
+      const nameA = getInkConfig(a).name;
+      const nameB = getInkConfig(b).name;
+      return nameA.localeCompare(nameB);
+    });
   }, [visages, setBonuses]);
 
   const filtered = useMemo(() => {
@@ -217,7 +235,7 @@ export default function VisageManager() {
             <option value="">All Inks {availableInks.length > 0 ? `(${availableInks.length})` : ''}</option>
             {availableInks.map((ink) => (
               <option key={ink} value={ink}>
-                {INK_CONFIG[ink]?.name || ink}
+                {getInkConfig(ink).name}
               </option>
             ))}
           </select>
@@ -378,8 +396,7 @@ export default function VisageManager() {
                       </span>
                       <div className="flex flex-wrap gap-1">
                         {visage.ink_types.map((ink) => {
-                          const cfg = INK_CONFIG[ink];
-                          if (!cfg) return null;
+                          const cfg = getInkConfig(ink);
                           return (
                             <span
                               key={ink}
@@ -483,8 +500,7 @@ export default function VisageManager() {
                     <td className="px-4 py-3">
                       <div className="flex flex-wrap gap-1">
                         {visage.ink_types.map((ink) => {
-                          const cfg = INK_CONFIG[ink];
-                          if (!cfg) return null;
+                          const cfg = getInkConfig(ink);
                           return (
                             <span
                               key={ink}

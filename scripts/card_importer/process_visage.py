@@ -252,23 +252,95 @@ def extract_unified_ocr(image_path: Path, ai_client, max_retries: int = 3) -> di
 # SUPABASE LOOKUPS
 # -------------------------------------------------------------
 def lookup_supabase_visage(visage_id: str, monster_name: str, supabase: Client):
-    """Checks if the visage record exists in Supabase."""
+    """Checks if the visage record exists in Supabase safely without PostgREST syntax issues."""
     if supabase is None:
         return None
 
     try:
-        res = (
-            supabase.table(TABLE_NAME)
-            .select("*")
-            .or_(f"id.eq.{visage_id},name.ilike.%{monster_name}%")
-            .limit(1)
-            .execute()
-        )
-        if res.data and len(res.data) > 0:
-            return res.data[0]
+        # 1. Try exact ID lookup
+        if visage_id:
+            res_id = (
+                supabase.table(TABLE_NAME)
+                .select("*")
+                .eq("id", visage_id)
+                .limit(1)
+                .execute()
+            )
+            if res_id.data and len(res_id.data) > 0:
+                return res_id.data[0]
+
+        # 2. Try clean monster name lookup
+        clean_name = monster_name.strip()
+        if clean_name:
+            res_name = (
+                supabase.table(TABLE_NAME)
+                .select("*")
+                .ilike("name", f"%{clean_name}%")
+                .limit(1)
+                .execute()
+            )
+            if res_name.data and len(res_name.data) > 0:
+                return res_name.data[0]
+
     except Exception as e:
-        print(c_err(f"  [!] Supabase lookup error for '{monster_name}': {e}"))
+        print(c_err(f"  [!] Supabase lookup note for '{monster_name}' ({visage_id}): {e}"))
     return None
+
+
+def sync_or_create_ink_set_skill(ink_name: str, description: str, supabase: Client, dry_run: bool = True, enable_updates: bool = False):
+    """
+    Checks if the Ink Set Bonus skill exists in public.skills table.
+    If missing, creates it as an MHO set bonus skill with thresholds [2, 4].
+    """
+    if not ink_name or supabase is None:
+        return
+
+    clean_ink = ink_name.strip()
+    if not clean_ink.lower().startswith("ink of"):
+        display_name = f"Ink of {clean_ink.capitalize()}"
+        slug_type = clean_ink.lower()
+    else:
+        display_name = clean_ink
+        slug_type = clean_ink.lower().replace("ink of ", "").strip()
+
+    if slug_type == "fire":
+        slug_type = "flames"
+        display_name = "Ink of Flames"
+
+    skill_id = f"ink_of_{slug_type}"
+
+    try:
+        res = supabase.table("skills").select("*").or_(f"id.eq.{skill_id},name.ilike.{display_name}").limit(1).execute()
+        if res.data and len(res.data) > 0:
+            existing = res.data[0]
+            existing_games = existing.get("games") or []
+            if "mho" not in existing_games:
+                updated_games = list(set(existing_games + ["mho"]))
+                print(c_info(f"    [⇄] Set Bonus '{existing['name']}': adding 'mho' support in 'skills' table"))
+                if enable_updates and not dry_run:
+                    supabase.table("skills").update({"games": updated_games}).eq("id", existing["id"]).execute()
+            else:
+                print(c_success(f"    [✓] Ink Set Bonus exists in DB: '{existing['name']}' (ID: '{existing['id']}')"))
+        else:
+            print(c_warn(f"    [+] NEW INK SET BONUS DETECTED: '{display_name}' (ID: '{skill_id}')"))
+            new_skill = {
+                "id": skill_id,
+                "name": display_name,
+                "category": "general",
+                "games": ["mho"],
+                "max_levels": {"mho": 4},
+                "description": description or f"Grants MHO Visage {display_name} set bonus at 2-piece and 4-piece thresholds.",
+                "is_active": True,
+                "is_set_bonus": True,
+                "set_thresholds": [2, 4]
+            }
+            if dry_run:
+                print(f"        [DRY-RUN] -> Would create new Set Bonus in 'skills' table: ID='{skill_id}', name='{display_name}'")
+            elif enable_updates:
+                supabase.table("skills").insert(new_skill).execute()
+                print(c_success(f"        [✓] Successfully created Set Bonus '{display_name}' in Supabase 'skills' table!"))
+    except Exception as e:
+        print(c_err(f"    [!] Note on ink set bonus sync '{display_name}': {e}"))
 
 
 # -------------------------------------------------------------
@@ -312,7 +384,7 @@ def process_single_image(
     if existing_record:
         existing_img_url = existing_record.get("image_small")
         has_existing_image = bool(existing_img_url)
-        print(c_success(f"  [2] Database Record: FOUND (id='{existing_record.get('id')}', points={existing_record.get('points')}, sets={existing_record.get('ink_types')})"))
+        print(c_success(f"  [2] Database Record: FOUND (id='{existing_record.get('id')}', points={existing_record.get('points')}, existing_inks={existing_record.get('ink_types')})"))
         if has_existing_image:
             print(f"      Current Small Image: {existing_img_url}")
     else:
@@ -365,7 +437,7 @@ def process_single_image(
     core_effect_obj = ocr_data.get("core_effect", {})
     extracted_core_desc = core_effect_obj.get("description") or core_effect_obj.get("name") or ""
     
-    # Collect extracted ink types
+    # Collect newly extracted ink types & sync with public.skills
     new_ink_types = set()
     for ink in ocr_data.get("ink_types", []):
         ink_clean = ink.strip().lower().replace("ink of ", "").replace("ink_", "")
@@ -373,28 +445,40 @@ def process_single_image(
             ink_clean = "flames"
         if ink_clean in VALID_INK_TYPES:
             new_ink_types.add(ink_clean)
+            sync_or_create_ink_set_skill(ink_clean, "", supabase, dry_run=dry_run, enable_updates=enable_updates)
 
     for pot in ocr_data.get("potential_set_effects", []):
         ink_val = pot.get("ink_type") or pot.get("name", "")
         ink_clean = ink_val.strip().lower().replace("ink of ", "").replace("ink_", "")
+        desc = pot.get("description", "")
         if ink_clean == "fire":
             ink_clean = "flames"
         if ink_clean in VALID_INK_TYPES:
             new_ink_types.add(ink_clean)
+            sync_or_create_ink_set_skill(ink_clean, desc, supabase, dry_run=dry_run, enable_updates=enable_updates)
 
-    # 5. Build Merge / Update Payload
+    # 5. Build Merge / Update Payload (Strictly Additive - Never remove existing Inks)
+    existing_ink_types = set()
+    if existing_record and existing_record.get("ink_types"):
+        for ink in existing_record.get("ink_types", []):
+            ink_c = ink.strip().lower().replace("ink of ", "").replace("ink_", "")
+            if ink_c == "fire":
+                ink_c = "flames"
+            if ink_c in VALID_INK_TYPES:
+                existing_ink_types.add(ink_c)
+
     if clear_visage:
         print(c_warn(f"\n  [*] --clear-visage active: Clearing existing data and building fresh from monster title."))
         final_ink_types = sorted(list(new_ink_types))
         final_core_effect = extracted_core_desc
         final_points = extracted_points
     else:
-        existing_ink_types = set(existing_record.get("ink_types", [])) if existing_record else set()
+        # Guarantee we ONLY ADD to existing Inks and NEVER remove!
         merged_ink_types = existing_ink_types.union(new_ink_types)
         final_ink_types = sorted(list(merged_ink_types))
         
         final_core_effect = extracted_core_desc if extracted_core_desc else (existing_record.get("core_effect") or existing_record.get("description") or "" if existing_record else "")
-        final_points = extracted_points
+        final_points = extracted_points if extracted_points else (existing_record.get("points") if existing_record else 1)
 
     # Point Change Detection & Reporting
     current_db_points = existing_record.get("points") if existing_record else None
@@ -422,7 +506,9 @@ def process_single_image(
 
     print(f"\n  [PROPOSED DATA SUMMARY]")
     print(f"  - Core Effect Text : {final_core_effect or '(None)'}")
-    print(f"  - Potential Sets   : {final_ink_types} (Merged)")
+    print(f"  - Existing DB Inks : {sorted(list(existing_ink_types)) or '(None)'}")
+    print(f"  - New Card Inks    : {sorted(list(new_ink_types)) or '(None)'}")
+    print(f"  - Merged Total Inks: {final_ink_types} (Additive Merge)")
     print(f"  - Points Value     : {final_points} {c_highlight('(Changed from DB!)') if points_changed else ''}")
     if uploaded_image_url:
         print(f"  - Small Image URL  : {uploaded_image_url}")
@@ -434,8 +520,33 @@ def process_single_image(
     elif enable_updates:
         if supabase:
             try:
+                # Extra live safety check: Query live row from Supabase right before upserting
+                # to guarantee any ink previously saved in the database is retained and merged!
+                if not clear_visage:
+                    try:
+                        live_check = (
+                            supabase.table(TABLE_NAME)
+                            .select("ink_types")
+                            .eq("id", db_payload["id"])
+                            .limit(1)
+                            .execute()
+                        )
+                        if live_check.data and len(live_check.data) > 0:
+                            live_inks = live_check.data[0].get("ink_types") or []
+                            live_ink_set = set(db_payload["ink_types"])
+                            for ink in live_inks:
+                                ink_c = ink.strip().lower().replace("ink of ", "").replace("ink_", "")
+                                if ink_c == "fire":
+                                    ink_c = "flames"
+                                if ink_c in VALID_INK_TYPES:
+                                    live_ink_set.add(ink_c)
+                            db_payload["ink_types"] = sorted(list(live_ink_set))
+                    except Exception as live_err:
+                        print(c_warn(f"  [!] Note on pre-save live ink check: {live_err}"))
+
                 supabase.table(TABLE_NAME).upsert(db_payload).execute()
                 print(c_success(f"\n  [✓] SUCCESSFULLY UPDATED '{monster_name}' in Supabase '{TABLE_NAME}' table!"))
+                print(c_success(f"      Final Saved Inks: {db_payload['ink_types']}"))
                 return True, "Successfully updated in Supabase"
             except Exception as e:
                 err_msg = f"Supabase DB write error on '{monster_name}': {e}"

@@ -7,10 +7,9 @@ import {
   type DBVisage,
   type VisageUpsert,
   type InkType,
-  INK_CONFIG,
-  INK_OPTIONS,
+  getInkConfig,
 } from '../../../data/schemas/visage';
-import { useUpsertVisage, useDeleteVisage } from '../../../hooks/useAdminVisages';
+import { useUpsertVisage, useDeleteVisage, useAdminVisages } from '../../../hooks/useAdminVisages';
 import { useAdminSkills, type DBSkill } from '../../../hooks/useAdminSkills';
 import { useAdminMonsters } from '../../../hooks/useAdminMonsters';
 import { supabase } from '../../../lib/supabase';
@@ -235,26 +234,52 @@ export default function VisageEditModal({ visage, open, onClose }: Props) {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const { data: setBonuses = [] } = useAdminSkills({ isSetBonus: true, isActive: true });
+  // Query strictly sets from the database that start with "Ink of"
+  const { data: setBonuses = [] } = useAdminSkills({
+    isSetBonus: true,
+    search: 'Ink of',
+    isActive: true,
+  });
   const { data: monsters = [] } = useAdminMonsters({ game: 'mho', isActive: true });
+  const { data: allVisages = [] } = useAdminVisages();
 
   const upsert = useUpsertVisage();
   const remove = useDeleteVisage();
 
-  // Only show Inks that have a corresponding Set in the database (or are currently selected on this card)
+  // Check if current ID already exists in DB when adding a new card
+  const existingCardMatch = useMemo(() => {
+    if (!isNew || !form.id) return null;
+    return allVisages.find((v: DBVisage) => v.id === form.id || v.id === toSlug(form.name));
+  }, [isNew, form.id, form.name, allVisages]);
+
+  // Only sets that start with "Ink of" (from database) + any currently selected inks
   const availableInks = useMemo<InkType[]>(() => {
     const set = new Set<InkType>();
+
+    // Add only skills starting with "Ink of" from the database query
     setBonuses.forEach((sb: DBSkill) => {
-      const slug = sb.id.replace(/^ink_of_/, '').toLowerCase();
-      if (INK_OPTIONS.includes(slug as InkType)) {
-        set.add(slug as InkType);
+      if (
+        sb.name.toLowerCase().startsWith('ink of') ||
+        sb.id.toLowerCase().startsWith('ink_of_')
+      ) {
+        const slug = sb.id.replace(/^ink_of_/, '').toLowerCase() as InkType;
+        set.add(slug);
       }
     });
-    (form.ink_types || []).forEach((i) => set.add(i));
-    if (set.size === 0) return INK_OPTIONS;
-    return Array.from(set).sort((a, b) =>
-      (INK_CONFIG[a]?.name || a).localeCompare(INK_CONFIG[b]?.name || b),
-    );
+
+    // Also preserve any existing inks currently selected on the card
+    (form.ink_types || []).forEach((i) => {
+      if (typeof i === 'string') {
+        const clean = i.replace(/^ink_of_/, '').toLowerCase() as InkType;
+        set.add(clean);
+      }
+    });
+
+    return Array.from(set).sort((a, b) => {
+      const nameA = getInkConfig(a).name;
+      const nameB = getInkConfig(b).name;
+      return nameA.localeCompare(nameB);
+    });
   }, [setBonuses, form.ink_types]);
 
   useEffect(() => {
@@ -288,10 +313,21 @@ export default function VisageEditModal({ visage, open, onClose }: Props) {
   if (!open) return null;
 
   function handleNameChange(name: string) {
+    const targetSlug = !idTouched && isNew ? toSlug(name) : form.id;
+    const match = isNew ? allVisages.find((v: DBVisage) => v.id === targetSlug) : null;
+
     setForm((prev) => ({
       ...prev,
       name,
-      id: !idTouched && isNew ? toSlug(name) : prev.id,
+      id: targetSlug,
+      monster_id: match ? (match.monster_id ?? prev.monster_id) : prev.monster_id,
+      monster_type: match ? (match.monster_type ?? prev.monster_type) : prev.monster_type,
+      points: match ? (match.points ?? prev.points) : prev.points,
+      image_small: match ? (match.image_small ?? prev.image_small) : prev.image_small,
+      core_effect: match ? (match.core_effect ?? prev.core_effect) : prev.core_effect,
+      ink_types: match && match.ink_types && match.ink_types.length > 0
+        ? Array.from(new Set([...match.ink_types, ...prev.ink_types]))
+        : prev.ink_types,
     }));
   }
 
@@ -332,7 +368,11 @@ export default function VisageEditModal({ visage, open, onClose }: Props) {
 
     try {
       setErrorMsg(null);
-      await upsert.mutateAsync(form);
+      // When adding a new card, mergeInks: true ensures any existing ink in DB is strictly retained
+      await upsert.mutateAsync({
+        ...form,
+        mergeInks: isNew,
+      });
       onClose();
     } catch (err) {
       setErrorMsg((err as Error).message || 'Failed to save Visage.');
@@ -522,9 +562,18 @@ export default function VisageEditModal({ visage, open, onClose }: Props) {
               </div>
             </div>
 
+            {existingCardMatch && existingCardMatch.ink_types.length > 0 && (
+              <div className="flex items-center gap-2 rounded-lg border border-mh-gold-500/30 bg-mh-gold-500/10 p-2 text-xs text-mh-gold-300">
+                <Sparkles size={14} className="shrink-0 text-mh-gold-400" />
+                <span>
+                  Existing card in DB found with Inks: <strong>{existingCardMatch.ink_types.map((i: InkType) => getInkConfig(i).name).join(', ')}</strong>. Any additional selected Inks will be added without removing existing ones.
+                </span>
+              </div>
+            )}
+
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {availableInks.map((ink) => {
-                const cfg = INK_CONFIG[ink];
+                const cfg = getInkConfig(ink);
                 const isSelected = form.ink_types.includes(ink);
                 return (
                   <button
