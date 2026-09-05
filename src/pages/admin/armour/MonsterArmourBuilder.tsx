@@ -23,7 +23,6 @@ import {
   Camera,
   AlertCircle,
   Hammer,
-  Copy,
 } from 'lucide-react';
 import { useAdminMonsters } from '../../../hooks/useAdminMonsters';
 import { useAdminSkills, type DBSkill } from '../../../hooks/useAdminSkills';
@@ -33,6 +32,8 @@ import {
   useRemoveSkillFromPiece,
   useSaveArmourPieceSkills,
   useUpdateArmourPieceImage,
+  useUpdateArmourSetIcon,
+  useUpdateArmourSetRarity,
   useApplySkillToPieces,
   useRenameArmourSet,
   useDeleteArmourSet,
@@ -66,7 +67,158 @@ export interface ArmourSetSource {
   name: string; // e.g. 'Rathalos' or 'High Metal'
   name_ja?: string | null;
   icon?: string | null;
+  rarity: number; // Starting equipment rarity / grade (e.g. 1 to 12)
   isMonster: boolean;
+}
+
+export function getRarityBadgeStyle(rarity: number = 1): {
+  bg: string;
+  text: string;
+  border: string;
+  label: string;
+} {
+  switch (rarity) {
+    case 1:
+      return { bg: 'bg-slate-500/15', text: 'text-slate-300', border: 'border-slate-500/30', label: 'R1' };
+    case 2:
+      return { bg: 'bg-emerald-500/15', text: 'text-emerald-300', border: 'border-emerald-500/30', label: 'R2' };
+    case 3:
+      return { bg: 'bg-blue-500/15', text: 'text-blue-300', border: 'border-blue-500/30', label: 'R3' };
+    case 4:
+      return { bg: 'bg-purple-500/15', text: 'text-purple-300', border: 'border-purple-500/30', label: 'R4' };
+    case 5:
+      return { bg: 'bg-amber-500/15', text: 'text-amber-300', border: 'border-amber-500/30', label: 'R5' };
+    case 6:
+      return { bg: 'bg-red-500/15', text: 'text-red-300', border: 'border-red-500/30', label: 'R6' };
+    case 7:
+      return { bg: 'bg-cyan-500/15', text: 'text-cyan-300', border: 'border-cyan-500/30', label: 'R7' };
+    case 8:
+      return { bg: 'bg-indigo-500/15', text: 'text-indigo-300', border: 'border-indigo-500/30', label: 'R8' };
+    case 9:
+      return { bg: 'bg-orange-500/15', text: 'text-orange-300', border: 'border-orange-500/30', label: 'R9' };
+    case 10:
+      return { bg: 'bg-rose-500/15', text: 'text-rose-300', border: 'border-rose-500/30', label: 'R10' };
+    case 11:
+      return { bg: 'bg-teal-500/15', text: 'text-teal-300', border: 'border-teal-500/30', label: 'R11' };
+    case 12:
+      return { bg: 'bg-fuchsia-500/15', text: 'text-fuchsia-300', border: 'border-fuchsia-500/30', label: 'R12' };
+    default:
+      return { bg: 'bg-mh-gold-500/15', text: 'text-mh-gold-300', border: 'border-mh-gold-500/30', label: `R${rarity}` };
+  }
+}
+
+// ── Edit Set Rarity Modal ─────────────────────────────────────
+function EditSetRarityModal({
+  game,
+  source,
+  currentRarity,
+  open,
+  onClose,
+}: {
+  game: string;
+  source: ArmourSetSource;
+  currentRarity: number;
+  open: boolean;
+  onClose: () => void;
+}) {
+  const [rarity, setRarity] = useState<number>(currentRarity || 1);
+  const updateRarityMutation = useUpdateArmourSetRarity();
+
+  useEffect(() => {
+    setRarity(currentRarity || 1);
+  }, [currentRarity]);
+
+  if (!open) return null;
+
+  async function handleSave() {
+    await updateRarityMutation.mutateAsync({
+      game,
+      monsterId: source.id,
+      rarity: Number(rarity) || 1,
+    });
+    onClose();
+  }
+
+  const rarityPresets = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="flex w-full max-w-sm flex-col rounded-2xl border border-mh-slate-700 bg-mh-slate-900 shadow-2xl overflow-hidden">
+        {/* Header */}
+        <div className="flex items-center justify-between border-b border-mh-slate-750 px-6 py-4 bg-mh-slate-850">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-mh-gold-500/15 border border-mh-gold-500/30 text-mh-gold-400">
+              <Sparkles size={18} />
+            </div>
+            <div>
+              <h2 className="font-display text-base font-bold text-mh-slate-100">
+                Starting Rarity
+              </h2>
+              <p className="text-xs text-mh-slate-400">
+                {source.name}
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-lg p-1.5 text-mh-slate-400 hover:bg-mh-slate-800 hover:text-white transition-colors"
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        <div className="p-6 space-y-4">
+          <p className="text-xs text-mh-slate-300">
+            Select the starting equipment rarity level for this armour set. This is used for sorting and progression:
+          </p>
+
+          <div className="grid grid-cols-4 gap-2">
+            {rarityPresets.map((r) => {
+              const isSelected = rarity === r;
+              const rStyle = getRarityBadgeStyle(r);
+              return (
+                <button
+                  key={r}
+                  type="button"
+                  onClick={() => setRarity(r)}
+                  className={cn(
+                    'flex flex-col items-center justify-center rounded-xl border py-2.5 px-2 transition-all',
+                    isSelected
+                      ? `${rStyle.bg} ${rStyle.text} ${rStyle.border} ring-2 ring-current/40 scale-105 shadow-md font-bold`
+                      : 'border-mh-slate-750 bg-mh-slate-800/60 text-mh-slate-400 hover:bg-mh-slate-800 hover:text-white',
+                  )}
+                >
+                  <span className="text-xs font-bold">Rarity {r}</span>
+                  <span className="text-[10px] font-mono opacity-80">{rStyle.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="flex items-center justify-between border-t border-mh-slate-750 px-6 py-4 bg-mh-slate-850">
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-lg px-4 py-2 text-xs font-semibold text-mh-slate-400 hover:bg-mh-slate-800 hover:text-white transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            disabled={updateRarityMutation.isPending}
+            onClick={handleSave}
+            className="flex items-center gap-1.5 rounded-lg bg-mh-gold-500 px-5 py-2 text-xs font-bold text-mh-slate-950 hover:bg-mh-gold-400 disabled:opacity-50 transition-all shadow-sm"
+          >
+            {updateRarityMutation.isPending ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
+            Save Rarity
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 interface Props {
@@ -313,6 +465,234 @@ function PieceImageModal({
   );
 }
 
+// ── Set Icon Upload Modal ─────────────────────────────────────
+function SetIconModal({
+  game,
+  source,
+  currentIcon,
+  onClose,
+}: {
+  game: string;
+  source: ArmourSetSource;
+  currentIcon?: string | null;
+  onClose: () => void;
+}) {
+  const [iconUrl, setIconUrl] = useState<string | null>(currentIcon ?? null);
+  const [uploading, setUploading] = useState(false);
+  const [showUrlInput, setShowUrlInput] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const updateSetIconMutation = useUpdateArmourSetIcon();
+
+  useEffect(() => {
+    setIconUrl(currentIcon ?? null);
+  }, [currentIcon]);
+
+  async function handleFile(file: File) {
+    if (!file.type.startsWith('image/')) {
+      setErrorMsg('Please select a valid image file (PNG, JPG, WebP, SVG).');
+      return;
+    }
+    setErrorMsg(null);
+    setUploading(true);
+    try {
+      const fileExt = file.name.split('.').pop()?.toLowerCase() || 'png';
+      const cleanSlug = `${source.id}_set_icon`.toLowerCase().replace(/[^a-z0-9_]/g, '_');
+      const path = `${game}/sets/${cleanSlug}_${Date.now()}.${fileExt}`;
+
+      const { error } = await supabase.storage
+        .from('armour')
+        .upload(path, file, { cacheControl: '3600', upsert: true });
+
+      if (error) throw error;
+
+      const { data } = supabase.storage.from('armour').getPublicUrl(path);
+      setIconUrl(data.publicUrl);
+    } catch (err: unknown) {
+      setErrorMsg((err as Error).message || 'Failed to upload image. You can enter the URL directly below.');
+      setShowUrlInput(true);
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  async function handleSave() {
+    await updateSetIconMutation.mutateAsync({
+      game,
+      monsterId: source.id,
+      setIcon: iconUrl,
+    });
+    onClose();
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="flex w-full max-w-md flex-col rounded-2xl border border-mh-slate-700 bg-mh-slate-900 shadow-2xl overflow-hidden">
+        {/* Header */}
+        <div className="flex items-center justify-between border-b border-mh-slate-750 px-6 py-4 bg-mh-slate-850">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-mh-gold-500/15 border border-mh-gold-500/30 text-mh-gold-400">
+              <Camera size={18} />
+            </div>
+            <div>
+              <h2 className="font-display text-base font-bold text-mh-slate-100">
+                {source.name} Icon / Image
+              </h2>
+              <p className="text-xs text-mh-slate-400">
+                {source.isMonster ? 'Monster Armour Set Icon' : 'Material Build Set Icon'}
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-lg p-1.5 text-mh-slate-400 hover:bg-mh-slate-800 hover:text-white transition-colors"
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        <div className="p-6 space-y-4">
+          {errorMsg && (
+            <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-2.5 text-xs text-red-300">
+              {errorMsg}
+            </div>
+          )}
+
+          {/* Upload Dropzone / Preview */}
+          <div
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              e.preventDefault();
+              if (e.dataTransfer.files?.[0]) handleFile(e.dataTransfer.files[0]);
+            }}
+            className={cn(
+              'relative flex flex-col items-center justify-center rounded-2xl border-2 border-dashed p-4 text-center transition-all',
+              iconUrl
+                ? 'border-mh-slate-700 bg-mh-slate-850'
+                : 'border-mh-slate-700 hover:border-mh-gold-500/50 bg-mh-slate-800/40 hover:bg-mh-slate-800/80',
+            )}
+          >
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => {
+                if (e.target.files?.[0]) handleFile(e.target.files[0]);
+              }}
+            />
+
+            {iconUrl ? (
+              <div className="flex w-full items-center gap-4">
+                <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl border border-mh-slate-700 bg-mh-slate-900 p-1 flex items-center justify-center shadow-md">
+                  <img
+                    src={iconUrl}
+                    alt={source.name}
+                    className="h-full w-full object-contain"
+                    onError={(e) => {
+                      (e.target as HTMLElement).style.display = 'none';
+                    }}
+                  />
+                </div>
+                <div className="min-w-0 flex-1 space-y-1 text-left">
+                  <p className="text-xs font-semibold text-mh-slate-200 truncate">
+                    {iconUrl.split('/').pop()}
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      disabled={uploading}
+                      onClick={() => fileInputRef.current?.click()}
+                      className="flex items-center gap-1 rounded bg-mh-slate-700 px-2.5 py-1 text-[11px] font-semibold text-mh-slate-200 hover:bg-mh-slate-600 transition-colors"
+                    >
+                      <Upload size={12} />
+                      Replace
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setIconUrl(null)}
+                      className="rounded p-1 text-mh-slate-500 hover:bg-red-500/20 hover:text-red-400 transition-colors"
+                      title="Reset to default icon"
+                    >
+                      <Trash2 size={13} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center py-3">
+                {uploading ? (
+                  <div className="flex flex-col items-center gap-2 py-2">
+                    <Loader2 size={22} className="animate-spin text-mh-gold-400" />
+                    <span className="text-xs font-semibold text-mh-slate-300">Uploading set icon…</span>
+                  </div>
+                ) : (
+                  <>
+                    <Upload size={22} className="text-mh-slate-500 mb-1.5" />
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="rounded-lg bg-mh-gold-500/15 border border-mh-gold-500/30 px-3 py-1.5 text-xs font-bold text-mh-gold-300 hover:bg-mh-gold-500/25 transition-all shadow-sm mb-1"
+                    >
+                      Upload Set Icon
+                    </button>
+                    <p className="text-[10px] text-mh-slate-500">or drag and drop PNG / JPG / SVG here</p>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Manual URL toggle */}
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-mh-slate-400 font-semibold">Image URL or Local Path</span>
+              <button
+                type="button"
+                onClick={() => setShowUrlInput(!showUrlInput)}
+                className="text-[11px] text-mh-gold-400 hover:text-mh-gold-300 underline"
+              >
+                {showUrlInput ? 'Hide' : 'Enter URL manually'}
+              </button>
+            </div>
+            {showUrlInput && (
+              <input
+                type="text"
+                value={iconUrl ?? ''}
+                onChange={(e) => setIconUrl(e.target.value || null)}
+                placeholder="/images/armor/... or https://..."
+                className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-xs text-mh-slate-100 placeholder-mh-slate-500 outline-none focus:border-mh-gold-500/50"
+              />
+            )}
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="flex items-center justify-between border-t border-mh-slate-750 px-6 py-4 bg-mh-slate-850">
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-lg px-4 py-2 text-xs font-semibold text-mh-slate-400 hover:bg-mh-slate-800 hover:text-white transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            disabled={updateSetIconMutation.isPending}
+            onClick={handleSave}
+            className="flex items-center gap-1.5 rounded-lg bg-mh-gold-500 px-5 py-2 text-xs font-bold text-mh-slate-950 hover:bg-mh-gold-400 disabled:opacity-50 transition-all shadow-sm"
+          >
+            {updateSetIconMutation.isPending ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
+            Save Set Icon
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── Create Non-Monster Set Modal ─────────────────────────────
 function CreateNonMonsterSetModal({
   game,
@@ -330,7 +710,12 @@ function CreateNonMonsterSetModal({
   const [name, setName] = useState('');
   const [customId, setCustomId] = useState('');
   const [useCustomId, setUseCustomId] = useState(false);
+  const [rarity, setRarity] = useState<number>(1);
+  const [iconUrl, setIconUrl] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [showUrlInput, setShowUrlInput] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const savePiece = useSaveArmourPieceSkills();
 
@@ -338,6 +723,34 @@ function CreateNonMonsterSetModal({
   const targetId = useCustomId ? customId.toLowerCase().trim().replace(/[^a-z0-9_]/g, '') : autoId;
 
   if (!open) return null;
+
+  async function handleFile(file: File) {
+    if (!file.type.startsWith('image/')) {
+      setErrorMsg('Please select a valid image file (PNG, JPG, WebP, SVG).');
+      return;
+    }
+    setErrorMsg(null);
+    setUploading(true);
+    try {
+      const fileExt = file.name.split('.').pop()?.toLowerCase() || 'png';
+      const cleanSlug = (targetId || 'material').toLowerCase().replace(/[^a-z0-9_]/g, '_');
+      const path = `${game}/sets/${cleanSlug}_set_icon_${Date.now()}.${fileExt}`;
+
+      const { error } = await supabase.storage
+        .from('armour')
+        .upload(path, file, { cacheControl: '3600', upsert: true });
+
+      if (error) throw error;
+
+      const { data } = supabase.storage.from('armour').getPublicUrl(path);
+      setIconUrl(data.publicUrl);
+    } catch (err: unknown) {
+      setErrorMsg((err as Error).message || 'Failed to upload image. You can enter the URL directly below.');
+      setShowUrlInput(true);
+    } finally {
+      setUploading(false);
+    }
+  }
 
   async function handleCreate() {
     if (!name.trim()) {
@@ -357,12 +770,14 @@ function CreateNonMonsterSetModal({
       setErrorMsg(null);
       const formattedSetName = name.trim().endsWith('Set') ? name.trim() : `${name.trim()} Set`;
 
-      // Create placeholder piece in helm to initialize set in database
+      // Create placeholder piece in helm to initialize set in database with set_icon & rarity
       await savePiece.mutateAsync({
         game,
         monsterId: targetId,
         setVariant: 'I',
         setName: formattedSetName,
+        setIcon: iconUrl,
+        rarity: Number(rarity) || 1,
         slot: 'helm',
         skills: [],
       });
@@ -449,6 +864,146 @@ function CreateNonMonsterSetModal({
               </div>
             )}
           </div>
+
+          {/* Starting Rarity */}
+          <div>
+            <label className="block text-xs font-bold uppercase tracking-wider text-mh-slate-300 mb-1.5">
+              Starting Rarity
+            </label>
+            <div className="grid grid-cols-6 gap-1.5">
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((r) => {
+                const isSelected = rarity === r;
+                const rStyle = getRarityBadgeStyle(r);
+                return (
+                  <button
+                    key={r}
+                    type="button"
+                    onClick={() => setRarity(r)}
+                    className={cn(
+                      'flex items-center justify-center rounded-lg border py-1.5 text-xs font-bold transition-all',
+                      isSelected
+                        ? `${rStyle.bg} ${rStyle.text} ${rStyle.border} ring-1 ring-current/40 shadow-xs`
+                        : 'border-mh-slate-750 bg-mh-slate-800/60 text-mh-slate-400 hover:bg-mh-slate-800 hover:text-white',
+                    )}
+                  >
+                    R{r}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Optional Set Icon Upload */}
+          <div className="space-y-2">
+            <label className="block text-xs font-bold uppercase tracking-wider text-mh-slate-300">
+              Set Icon / Image <span className="text-[10px] text-mh-slate-500 font-normal lowercase">(optional)</span>
+            </label>
+            <div
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={(e) => {
+                e.preventDefault();
+                if (e.dataTransfer.files?.[0]) handleFile(e.dataTransfer.files[0]);
+              }}
+              className={cn(
+                'relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-3 text-center transition-all',
+                iconUrl
+                  ? 'border-mh-slate-700 bg-mh-slate-850'
+                  : 'border-mh-slate-700 hover:border-mh-gold-500/50 bg-mh-slate-800/40 hover:bg-mh-slate-800/80',
+              )}
+            >
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  if (e.target.files?.[0]) handleFile(e.target.files[0]);
+                }}
+              />
+
+              {iconUrl ? (
+                <div className="flex w-full items-center gap-3">
+                  <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-mh-slate-700 bg-mh-slate-900 p-1 flex items-center justify-center shadow-md">
+                    <img
+                      src={iconUrl}
+                      alt="Set icon"
+                      className="h-full w-full object-contain"
+                      onError={(e) => {
+                        (e.target as HTMLElement).style.display = 'none';
+                      }}
+                    />
+                  </div>
+                  <div className="min-w-0 flex-1 space-y-1 text-left">
+                    <p className="text-xs font-semibold text-mh-slate-200 truncate">
+                      {iconUrl.split('/').pop()}
+                    </p>
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        disabled={uploading}
+                        onClick={() => fileInputRef.current?.click()}
+                        className="flex items-center gap-1 rounded bg-mh-slate-700 px-2 py-0.5 text-[11px] font-semibold text-mh-slate-200 hover:bg-mh-slate-600 transition-colors"
+                      >
+                        <Upload size={11} />
+                        Replace
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setIconUrl(null)}
+                        className="rounded p-1 text-mh-slate-500 hover:bg-red-500/20 hover:text-red-400 transition-colors"
+                        title="Remove image"
+                      >
+                        <Trash2 size={12} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-2">
+                  {uploading ? (
+                    <div className="flex flex-col items-center gap-1.5 py-1">
+                      <Loader2 size={18} className="animate-spin text-mh-gold-400" />
+                      <span className="text-xs font-semibold text-mh-slate-300">Uploading icon…</span>
+                    </div>
+                  ) : (
+                    <>
+                      <Upload size={18} className="text-mh-slate-500 mb-1" />
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="rounded-lg bg-mh-gold-500/15 border border-mh-gold-500/30 px-3 py-1 text-xs font-bold text-mh-gold-300 hover:bg-mh-gold-500/25 transition-all shadow-sm mb-1"
+                      >
+                        Upload Icon
+                      </button>
+                      <p className="text-[10px] text-mh-slate-500">or enter URL below</p>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
+
+            <div className="space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] text-mh-slate-500">Icon URL or Local Path</span>
+                <button
+                  type="button"
+                  onClick={() => setShowUrlInput(!showUrlInput)}
+                  className="text-[11px] text-mh-gold-400 hover:text-mh-gold-300 underline"
+                >
+                  {showUrlInput ? 'Hide' : 'Enter URL manually'}
+                </button>
+              </div>
+              {showUrlInput && (
+                <input
+                  type="text"
+                  value={iconUrl ?? ''}
+                  onChange={(e) => setIconUrl(e.target.value || null)}
+                  placeholder="/images/armor/... or https://..."
+                  className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-100 placeholder-mh-slate-500 outline-none focus:border-mh-gold-500/50"
+                />
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Footer */}
@@ -502,13 +1057,11 @@ function AddSkillPicker({
 
   const filteredSkills = useMemo(() => {
     const q = search.toLowerCase();
-    const assignedIds = new Set(currentSkills.map((s) => s.id));
     return availableSkills.filter(
       (s) =>
-        !assignedIds.has(s.id) &&
-        (s.name.toLowerCase().includes(q) || s.id.toLowerCase().includes(q)),
+        s.name.toLowerCase().includes(q) || s.id.toLowerCase().includes(q),
     );
-  }, [availableSkills, currentSkills, search]);
+  }, [availableSkills, search]);
 
   const selectedSkill = availableSkills.find((s) => s.id === selectedSkillId);
   const maxAllowedLevel = selectedSkill?.max_levels[game] ?? 5;
@@ -583,7 +1136,7 @@ function AddSkillPicker({
                   <span className="truncate">{s.name}</span>
                 </div>
                 <span className="text-[10px] text-mh-slate-500 font-mono shrink-0">
-                  {s.is_set_bonus ? 'Set Effect' : `Lv Max ${s.max_levels[game] ?? 5}`}
+                  {s.is_set_bonus ? '' : `Lv Max ${s.max_levels[game] ?? 5}`}
                 </span>
               </button>
             );
@@ -709,7 +1262,7 @@ function UnlockRarityPopover({
             : 'border-mh-slate-700 bg-mh-slate-900 text-mh-slate-400 hover:border-mh-slate-600 hover:text-mh-slate-200',
         )}
       >
-        <span>{isLocked ? `Rarity ${rarity}` : 'Base'}</span>
+        <span>{isLocked ? `R${rarity}` : 'Base'}</span>
       </button>
 
       {open && (
@@ -719,11 +1272,11 @@ function UnlockRarityPopover({
           </div>
           <div className="space-y-0.5">
             {[
-              { label: 'Base (None)', val: null },
-              { label: 'Rarity 6', val: 6 },
-              { label: 'Rarity 8', val: 8 },
-              { label: 'Rarity 9', val: 9 },
-              { label: 'Rarity 12', val: 12 },
+              { label: 'Base', val: null },
+              { label: 'R6', val: 6 },
+              { label: 'R8', val: 8 },
+              { label: 'R9', val: 9 },
+              { label: 'R12', val: 12 },
             ].map((opt) => (
               <button
                 key={opt.label}
@@ -760,7 +1313,6 @@ function ArmourSlotCard({
   piece,
   availableSkills,
   onOpenImageModal,
-  onApplySkillToAllPieces,
 }: {
   game: string;
   source: ArmourSetSource;
@@ -770,10 +1322,8 @@ function ArmourSlotCard({
   piece?: DBArmourPiece;
   availableSkills: DBSkill[];
   onOpenImageModal: (slotDef: typeof ARMOUR_SLOTS_DEF[number]) => void;
-  onApplySkillToAllPieces: (skillId: string, level: number, unlockRarity: number | null) => void;
 }) {
   const [showAdder, setShowAdder] = useState(false);
-  const removeSkill = useRemoveSkillFromPiece();
   const saveSkills = useSaveArmourPieceSkills();
 
   const skills = piece?.skills ?? [];
@@ -791,9 +1341,9 @@ function ArmourSlotCard({
     );
   }, [skills, skillMetaMap]);
 
-  function handleLevelChange(skillId: string, newLevel: number) {
-    const updatedSkills = skills.map((s) =>
-      s.id === skillId ? { ...s, level: newLevel } : s,
+  function handleLevelChange(index: number, newLevel: number) {
+    const updatedSkills = sortedSkills.map((s, idx) =>
+      idx === index ? { ...s, level: newLevel } : s,
     );
     saveSkills.mutate({
       game,
@@ -805,9 +1355,10 @@ function ArmourSlotCard({
     });
   }
 
-  function handleRarityChange(skillId: string, newRarity: number | null) {
-    const updatedSkills = skills.map((s) =>
-      s.id === skillId ? { ...s, unlockRarity: newRarity, unlock_rarity: newRarity } : s,
+  function handleRarityChange(index: number, newRarity: number | null) {
+    const cleanUR = newRarity && newRarity > 1 ? Number(newRarity) : null;
+    const updatedSkills = sortedSkills.map((s, idx) =>
+      idx === index ? { ...s, unlockRarity: cleanUR, unlock_rarity: cleanUR } : s,
     );
     saveSkills.mutate({
       game,
@@ -819,14 +1370,15 @@ function ArmourSlotCard({
     });
   }
 
-  function handleRemove(skillId: string) {
-    removeSkill.mutate({
+  function handleRemove(index: number) {
+    const updatedSkills = sortedSkills.filter((_, idx) => idx !== index);
+    saveSkills.mutate({
       game,
       monsterId: source.id,
       setVariant,
+      setName,
       slot: slotDef.id,
-      currentSkills: skills,
-      skillId,
+      skills: updatedSkills,
     });
   }
 
@@ -911,18 +1463,17 @@ function ArmourSlotCard({
             </button>
           </div>
         ) : (
-          sortedSkills.map((s) => {
+          sortedSkills.map((s, index) => {
             const meta = skillMetaMap.get(s.id);
             const name = meta?.name ?? s.id;
             const isSetBonus = meta?.is_set_bonus ?? false;
             const maxLvl = meta?.max_levels[game] ?? 5;
             const cat = meta?.category ?? 'general';
             const catCfg = CATEGORY_CONFIG[cat] ?? CATEGORY_CONFIG.general;
-            const rarity = s.unlockRarity ?? s.unlock_rarity ?? null;
 
             return (
               <div
-                key={s.id}
+                key={`${s.id}-${s.unlockRarity ?? s.unlock_rarity ?? 'base'}-${s.level}-${index}`}
                 className={cn(
                   'flex items-center justify-between rounded-lg border px-3 py-2 text-xs transition-colors',
                   isSetBonus
@@ -930,17 +1481,10 @@ function ArmourSlotCard({
                     : 'border-mh-slate-750 bg-mh-slate-800/80',
                 )}
               >
-                <div className="flex items-center gap-2 min-w-0">
+                <div className="flex items-center gap-2 min-w-0 flex-1 mr-2">
                   <span className={cn('h-2 w-2 rounded-full shrink-0', catCfg.text.replace('text-', 'bg-'))} />
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-1.5 truncate">
-                      <p className="font-semibold text-mh-slate-200 truncate">{name}</p>
-                      {isSetBonus && (
-                        <span className="shrink-0 rounded bg-mh-gold-500/20 px-1.5 py-0.2 text-[9px] font-bold text-mh-gold-300 border border-mh-gold-500/40">
-                          Set Effect
-                        </span>
-                      )}
-                    </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-semibold text-mh-slate-200 truncate text-xs">{name}</p>
                     <p className="text-[10px] text-mh-slate-500 font-mono truncate">{s.id}</p>
                   </div>
                 </div>
@@ -949,22 +1493,17 @@ function ArmourSlotCard({
                   {/* Unlock Rarity Selector */}
                   <UnlockRarityPopover
                     skill={s}
-                    onChange={(newRarity) => handleRarityChange(s.id, newRarity)}
+                    onChange={(newRarity) => handleRarityChange(index, newRarity)}
                   />
 
-                  {/* For Set Bonuses: No levels, just a clean badge */}
-                  {isSetBonus ? (
-                    <span className="text-[10px] font-bold text-mh-gold-400">
-                      Inherent
-                    </span>
-                  ) : (
-                    /* For Regular Skills: Level selector buttons */
+                  {/* For Regular Skills: Level selector buttons (Set bonus has no levels) */}
+                  {!isSetBonus && (
                     <div className="flex items-center gap-0.5 rounded bg-mh-slate-900 p-0.5 border border-mh-slate-700">
                       {Array.from({ length: maxLvl }, (_, i) => i + 1).map((lvl) => (
                         <button
                           key={lvl}
                           type="button"
-                          onClick={() => handleLevelChange(s.id, lvl)}
+                          onClick={() => handleLevelChange(index, lvl)}
                           className={cn(
                             'h-5 w-5 rounded text-[10px] font-bold transition-all',
                             s.level === lvl
@@ -978,19 +1517,9 @@ function ArmourSlotCard({
                     </div>
                   )}
 
-                  {/* Copy this skill / set effect to all 5 pieces button */}
                   <button
                     type="button"
-                    onClick={() => onApplySkillToAllPieces(s.id, s.level, rarity)}
-                    className="rounded p-1 text-mh-slate-400 hover:bg-mh-gold-500/20 hover:text-mh-gold-300 transition-colors"
-                    title={isSetBonus ? "Apply this Set Effect to all 5 armour pieces" : "Copy this skill to all 5 armour pieces"}
-                  >
-                    <Copy size={13} />
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleRemove(s.id)}
+                    onClick={() => handleRemove(index)}
                     className="rounded p-1 text-mh-slate-500 hover:bg-red-500/20 hover:text-red-400 transition-colors"
                     title="Remove skill"
                   >
@@ -1806,11 +2335,11 @@ function BulkApplySkillModal({
                 </div>
                 <div className="flex items-center gap-1.5">
                   {[
-                    { label: 'Base (None)', val: null },
-                    { label: 'Rarity 6', val: 6 },
-                    { label: 'Rarity 8', val: 8 },
-                    { label: 'Rarity 9', val: 9 },
-                    { label: 'Rarity 12', val: 12 },
+                    { label: 'Base', val: null },
+                    { label: 'R6', val: 6 },
+                    { label: 'R8', val: 8 },
+                    { label: 'R9', val: 9 },
+                    { label: 'R12', val: 12 },
                   ].map((r) => (
                     <button
                       key={r.label}
@@ -1959,11 +2488,14 @@ export default function MonsterArmourBuilder({
 }: Props) {
   const [searchQuery, setSearchQuery] = useState('');
   const [sourceFilter, setSourceFilter] = useState<'all' | 'monster' | 'material'>('all');
+  const [sortOrder, setSortOrder] = useState<'rarity-desc' | 'rarity-asc' | 'name-asc'>('rarity-desc');
   const [selectedSetVariant, setSelectedSetVariant] = useState<string>('I');
   const [showBulkModal, setShowBulkModal] = useState(false);
   const [showAddSetModal, setShowAddSetModal] = useState(false);
   const [showRenameModal, setShowRenameModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showSetIconModal, setShowSetIconModal] = useState(false);
+  const [showRarityModal, setShowRarityModal] = useState(false);
   const [sourceToDelete, setSourceToDelete] = useState<ArmourSetSource | null>(null);
   const [showCreateNonMonsterModal, setShowCreateNonMonsterModal] = useState(false);
   const [activeSlotForImageModal, setActiveSlotForImageModal] = useState<typeof ARMOUR_SLOTS_DEF[number] | null>(null);
@@ -1982,16 +2514,35 @@ export default function MonsterArmourBuilder({
 
   // Build unified list of all armour set sources (Monsters + Material sets)
   const allSetSources = useMemo<ArmourSetSource[]>(() => {
-    const list: ArmourSetSource[] = monsters.map((m) => ({
-      id: m.id,
-      name: m.name,
-      name_ja: m.name_ja,
-      icon: m.icon,
-      isMonster: true,
-    }));
+    // Map of set_icon and rarity from armourPieces
+    const setIconMap = new Map<string, string>();
+    const rarityMap = new Map<string, number>();
+
+    armourPieces.forEach((p) => {
+      if (p.game === game) {
+        if (p.set_icon && !setIconMap.has(p.monster_id)) {
+          setIconMap.set(p.monster_id, p.set_icon);
+        }
+        if (p.rarity && !rarityMap.has(p.monster_id)) {
+          rarityMap.set(p.monster_id, p.rarity);
+        }
+      }
+    });
+
+    const list: ArmourSetSource[] = monsters.map((m) => {
+      const monsterRarity = rarityMap.get(m.id) ?? (m.tier === 'elder' ? 6 : m.tier === 'high' ? 4 : 2);
+      return {
+        id: m.id,
+        name: m.name,
+        name_ja: m.name_ja,
+        icon: setIconMap.get(m.id) || m.icon,
+        rarity: monsterRarity,
+        isMonster: true,
+      };
+    });
 
     // Find any non-monster set IDs present in armourPieces for current game
-    const nonMonsterMap = new Map<string, string>(); // id -> display name
+    const nonMonsterMap = new Map<string, { name: string; icon: string | null; rarity: number }>(); // id -> { name, icon, rarity }
     armourPieces
       .filter((p) => p.game === game && !monsterIdSet.has(p.monster_id))
       .forEach((p) => {
@@ -1999,45 +2550,58 @@ export default function MonsterArmourBuilder({
           const formatted = p.set_name 
             ? p.set_name.replace(/\s+Set$/i, '') 
             : p.monster_id.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
-          nonMonsterMap.set(p.monster_id, formatted);
+          nonMonsterMap.set(p.monster_id, {
+            name: formatted,
+            icon: setIconMap.get(p.monster_id) || p.set_icon || null,
+            rarity: rarityMap.get(p.monster_id) || p.rarity || 1,
+          });
         }
       });
 
-    nonMonsterMap.forEach((name, id) => {
+    nonMonsterMap.forEach(({ name, icon, rarity }, id) => {
       list.push({
         id,
         name,
         name_ja: null,
-        icon: null,
+        icon,
+        rarity,
         isMonster: false,
       });
     });
 
-    return list.sort((a, b) => {
-      if (a.isMonster !== b.isMonster) {
-        return a.isMonster ? -1 : 1; // Monsters first, then material sets
-      }
-      return a.name.localeCompare(b.name);
-    });
+    return list;
   }, [monsters, armourPieces, game, monsterIdSet]);
 
   const filteredSources = useMemo(() => {
-    let list = allSetSources;
+    let list = [...allSetSources];
     if (sourceFilter === 'monster') {
       list = list.filter((s) => s.isMonster);
     } else if (sourceFilter === 'material') {
       list = list.filter((s) => !s.isMonster);
     }
 
-    if (!searchQuery) return list;
-    const q = searchQuery.toLowerCase();
-    return list.filter(
-      (m) =>
-        m.name.toLowerCase().includes(q) ||
-        m.id.toLowerCase().includes(q) ||
-        (m.name_ja ?? '').toLowerCase().includes(q),
-    );
-  }, [allSetSources, searchQuery, sourceFilter]);
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      list = list.filter(
+        (m) =>
+          m.name.toLowerCase().includes(q) ||
+          m.id.toLowerCase().includes(q) ||
+          (m.name_ja ?? '').toLowerCase().includes(q),
+      );
+    }
+
+    return list.sort((a, b) => {
+      if (sortOrder === 'rarity-desc') {
+        if (b.rarity !== a.rarity) return b.rarity - a.rarity;
+        return a.name.localeCompare(b.name);
+      }
+      if (sortOrder === 'rarity-asc') {
+        if (a.rarity !== b.rarity) return a.rarity - b.rarity;
+        return a.name.localeCompare(b.name);
+      }
+      return a.name.localeCompare(b.name);
+    });
+  }, [allSetSources, searchQuery, sourceFilter, sortOrder]);
 
   // Set default selected source if none selected
   const activeSetSource = useMemo(() => {
@@ -2245,8 +2809,54 @@ export default function MonsterArmourBuilder({
               title="Create a new material / non-monster armour set"
             >
               <Plus size={12} />
-              <span>+ Material Set</span>
+              <span>+ Set</span>
             </button>
+          </div>
+
+          {/* Sort order bar */}
+          <div className="flex items-center justify-between pt-0.5 text-[11px] text-mh-slate-400">
+            <span className="font-semibold text-mh-slate-500">Sort by:</span>
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={() => setSortOrder('rarity-desc')}
+                className={cn(
+                  'rounded px-1.5 py-0.5 text-[10px] font-bold transition-all',
+                  sortOrder === 'rarity-desc'
+                    ? 'bg-mh-slate-700 text-mh-gold-400 ring-1 ring-mh-gold-500/30'
+                    : 'hover:text-white',
+                )}
+                title="Sort by Starting Rarity (High to Low)"
+              >
+                Rarity ↓
+              </button>
+              <button
+                type="button"
+                onClick={() => setSortOrder('rarity-asc')}
+                className={cn(
+                  'rounded px-1.5 py-0.5 text-[10px] font-bold transition-all',
+                  sortOrder === 'rarity-asc'
+                    ? 'bg-mh-slate-700 text-mh-gold-400 ring-1 ring-mh-gold-500/30'
+                    : 'hover:text-white',
+                )}
+                title="Sort by Starting Rarity (Low to High)"
+              >
+                Rarity ↑
+              </button>
+              <button
+                type="button"
+                onClick={() => setSortOrder('name-asc')}
+                className={cn(
+                  'rounded px-1.5 py-0.5 text-[10px] font-bold transition-all',
+                  sortOrder === 'name-asc'
+                    ? 'bg-mh-slate-700 text-mh-gold-400 ring-1 ring-mh-gold-500/30'
+                    : 'hover:text-white',
+                )}
+                title="Sort by Name (A to Z)"
+              >
+                A-Z
+              </button>
+            </div>
           </div>
         </div>
 
@@ -2270,6 +2880,7 @@ export default function MonsterArmourBuilder({
           ) : (
             filteredSources.map((source) => {
               const isSelected = activeSetSource?.id === source.id;
+              const rStyle = getRarityBadgeStyle(source.rarity);
               return (
                 <button
                   key={source.id}
@@ -2278,7 +2889,7 @@ export default function MonsterArmourBuilder({
                     setSelectedSetVariant('I');
                   }}
                   className={cn(
-                    'group flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left transition-all',
+                    'group flex w-full items-center justify-between rounded-lg px-2.5 py-2 text-left transition-all',
                     isSelected
                       ? 'bg-mh-gold-500/10 text-mh-gold-400 ring-1 ring-mh-gold-500/30'
                       : 'text-mh-slate-300 hover:bg-mh-slate-800/60 hover:text-white',
@@ -2318,7 +2929,10 @@ export default function MonsterArmourBuilder({
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-1 shrink-0">
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <span className={cn('shrink-0 rounded px-1.5 py-0.5 text-[9px] font-bold border', rStyle.bg, rStyle.text, rStyle.border)}>
+                      {rStyle.label}
+                    </span>
                     {!source.isMonster && (
                       <span
                         onClick={(e) => {
@@ -2366,22 +2980,32 @@ export default function MonsterArmourBuilder({
             {/* Source Overview Banner */}
             <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-mh-slate-750 bg-mh-slate-900/60 p-4">
               <div className="flex items-center gap-4">
-                {activeSetSource.icon ? (
-                  <img
-                    src={activeSetSource.icon}
-                    alt={activeSetSource.name}
-                    className="h-12 w-12 rounded-lg object-contain bg-mh-slate-800 p-1 border border-mh-slate-700"
-                  />
-                ) : (
-                  <div className={cn(
-                    'flex h-12 w-12 items-center justify-center rounded-lg border shadow-sm',
-                    activeSetSource.isMonster
-                      ? 'bg-mh-slate-800 border-mh-slate-700 text-mh-gold-400'
-                      : 'bg-amber-500/15 border-amber-500/30 text-amber-300'
-                  )}>
-                    {activeSetSource.isMonster ? <Shield size={22} /> : <Hammer size={22} />}
+                <div
+                  className="relative group/avatar cursor-pointer"
+                  onClick={() => setShowSetIconModal(true)}
+                  title="Click to change or upload set icon"
+                >
+                  {activeSetSource.icon ? (
+                    <img
+                      src={activeSetSource.icon}
+                      alt={activeSetSource.name}
+                      className="h-14 w-14 rounded-xl object-contain bg-mh-slate-800 p-1 border border-mh-slate-700 shadow-md group-hover/avatar:border-mh-gold-500/60 transition-all"
+                    />
+                  ) : (
+                    <div className={cn(
+                      'flex h-14 w-14 items-center justify-center rounded-xl border shadow-md group-hover/avatar:border-mh-gold-500/60 transition-all',
+                      activeSetSource.isMonster
+                        ? 'bg-mh-slate-800 border-mh-slate-700 text-mh-gold-400'
+                        : 'bg-amber-500/15 border-amber-500/30 text-amber-300'
+                    )}>
+                      {activeSetSource.isMonster ? <Shield size={24} /> : <Hammer size={24} />}
+                    </div>
+                  )}
+                  <div className="absolute inset-0 rounded-xl bg-black/60 opacity-0 group-hover/avatar:opacity-100 transition-opacity flex flex-col items-center justify-center text-white text-[10px] font-bold gap-0.5 pointer-events-none">
+                    <Camera size={14} />
+                    <span>Change</span>
                   </div>
-                )}
+                </div>
                 <div>
                   <div className="flex items-center gap-2">
                     <h2 className="font-display text-lg font-bold text-mh-slate-100">
@@ -2395,6 +3019,21 @@ export default function MonsterArmourBuilder({
                     <span className="rounded bg-mh-slate-800 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-mh-gold-400 border border-mh-slate-700">
                       {game.toUpperCase()}
                     </span>
+                    <button
+                      type="button"
+                      onClick={() => setShowRarityModal(true)}
+                      className={cn(
+                        'group/rarity flex items-center gap-1.5 rounded px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider border hover:scale-105 transition-all shadow-xs',
+                        getRarityBadgeStyle(activeSetSource.rarity).bg,
+                        getRarityBadgeStyle(activeSetSource.rarity).text,
+                        getRarityBadgeStyle(activeSetSource.rarity).border,
+                      )}
+                      title="Click to edit starting rarity"
+                    >
+                      <Sparkles size={10} className="opacity-70 group-hover/rarity:opacity-100" />
+                      <span>Rarity {activeSetSource.rarity}</span>
+                      <Pencil size={9} className="opacity-60 group-hover/rarity:opacity-100" />
+                    </button>
                     {!activeSetSource.isMonster && (
                       <span className="rounded bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-300 border border-amber-500/30">
                         Material Set
@@ -2418,6 +3057,26 @@ export default function MonsterArmourBuilder({
 
               {/* Action Buttons */}
               <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowRarityModal(true)}
+                  className="flex items-center gap-1.5 rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-xs font-semibold text-mh-slate-300 hover:border-mh-gold-500/40 hover:text-white transition-all shadow-sm"
+                  title="Edit starting equipment rarity of this armour set"
+                >
+                  <Sparkles size={13} className="text-mh-gold-400" />
+                  <span>Rarity ({activeSetSource.rarity})...</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setShowSetIconModal(true)}
+                  className="flex items-center gap-1.5 rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-xs font-semibold text-mh-slate-300 hover:border-mh-gold-500/40 hover:text-white transition-all shadow-sm"
+                  title="Upload or change the icon for this armour set"
+                >
+                  <Camera size={13} className="text-mh-gold-400" />
+                  <span>Set Icon...</span>
+                </button>
+
                 <button
                   type="button"
                   onClick={() => setShowRenameModal(true)}
@@ -2569,11 +3228,7 @@ export default function MonsterArmourBuilder({
                             R{sk.unlockRarity}
                           </span>
                         )}
-                        {sk.isSetBonus ? (
-                          <span className="rounded bg-mh-gold-500/20 px-1 py-0.2 text-[9px] font-bold text-mh-gold-300">
-                            Set Effect
-                          </span>
-                        ) : (
+                        {!sk.isSetBonus && (
                           <span className="font-mono text-[10px] text-mh-slate-400">Lv {sk.maxLevel}</span>
                         )}
                         <span
@@ -2630,7 +3285,6 @@ export default function MonsterArmourBuilder({
                   piece={monsterPiecesMap.get(slotDef.id)}
                   availableSkills={skills}
                   onOpenImageModal={(s) => setActiveSlotForImageModal(s)}
-                  onApplySkillToAllPieces={handleApplySkillToAll}
                 />
               ))}
             </div>
@@ -2675,6 +3329,27 @@ export default function MonsterArmourBuilder({
                 onCreated={(newVariant) => {
                   setSelectedSetVariant(newVariant);
                 }}
+              />
+            )}
+
+            {/* Set Icon Modal */}
+            {showSetIconModal && (
+              <SetIconModal
+                game={game}
+                source={activeSetSource}
+                currentIcon={activeSetSource.icon}
+                onClose={() => setShowSetIconModal(false)}
+              />
+            )}
+
+            {/* Set Rarity Modal */}
+            {showRarityModal && (
+              <EditSetRarityModal
+                game={game}
+                source={activeSetSource}
+                currentRarity={activeSetSource.rarity}
+                open={showRarityModal}
+                onClose={() => setShowRarityModal(false)}
               />
             )}
 

@@ -3,7 +3,7 @@ import { supabase } from '../../lib/supabase';
 import { useBuildPlannerStore } from '../../store/buildPlannerStore';
 
 export function SkillSummaryPanel() {
-  const { getActiveSkills, buddy } = useBuildPlannerStore();
+  const { getActiveSkills } = useBuildPlannerStore();
   const activeSkills = getActiveSkills();
 
   // Fetch full skill definitions to display names and max levels
@@ -18,23 +18,9 @@ export function SkillSummaryPanel() {
 
   return (
     <div className="mh-card sticky top-6">
-      <h2 className="font-display text-lg font-bold text-mh-slate-200 mb-4">Build Summary</h2>
+      <h2 className="font-display text-lg font-bold text-mh-slate-200 mb-4">Skills</h2>
       
       <div className="flex flex-col gap-6">
-        {/* Buddy Bonus */}
-        <div className="flex flex-col gap-2">
-          <h3 className="font-display text-sm font-semibold uppercase tracking-widest text-mh-slate-400">Buddy</h3>
-          {buddy ? (
-            <div className="p-3 bg-mh-slate-800 rounded border border-mh-slate-700">
-              <div className="font-bold text-mh-slate-200">{buddy.name}</div>
-              <div className="text-sm text-mh-slate-400 mt-1">{buddy.core_passive || 'No passive effect.'}</div>
-            </div>
-          ) : (
-            <p className="text-sm text-mh-slate-500">No buddy selected.</p>
-          )}
-        </div>
-
-
         {/* Equipment Skills */}
         <div className="flex flex-col gap-2">
           <h3 className="font-display text-sm font-semibold uppercase tracking-widest text-mh-slate-400">Equipment Skills</h3>

@@ -180,22 +180,38 @@ export function EquipmentSelector() {
     enabled: !!activeWeaponTypeId
   });
 
-  // Fetch armour joined with monster names
+  // Fetch armour and monsters separately since the DB foreign key was dropped
   const { data: armours, isLoading: isArmourLoading } = useQuery({
     queryKey: ['armours_mho'],
     queryFn: async () => {
-      const { data, error } = await supabase
+      // 1. Fetch MHO armour pieces
+      const { data: armourData, error: armourError } = await supabase
         .from('armour_pieces')
-        .select(`*, monsters(name, icon)`)
+        .select('*')
         .eq('game', 'mho')
         .eq('is_active', true);
-      if (error) throw error;
-      // Flatten monster join
-      return (data as any[]).map(row => ({
-        ...row,
-        monster_name: row.monsters?.name ?? row.monster_id,
-        monster_icon: row.monsters?.icon ?? null,
-      })) as (ArmourPiece & { monster_name: string; monster_icon?: string })[];
+      if (armourError) throw armourError;
+
+      // 2. Fetch all active monsters
+      const { data: monsterData, error: monsterError } = await supabase
+        .from('monsters')
+        .select('id, name, icon')
+        .eq('is_active', true);
+      if (monsterError) throw monsterError;
+
+      // Create a lookup map for monsters
+      const monsterMap = new Map<string, { name: string; icon: string | null }>();
+      monsterData.forEach(m => monsterMap.set(m.id, m));
+
+      // 3. Client-side join
+      return (armourData as ArmourPiece[]).map(piece => {
+        const monster = monsterMap.get(piece.monster_id);
+        return {
+          ...piece,
+          monster_name: monster?.name ?? piece.monster_id, // fallback to id if not a real monster
+          monster_icon: monster?.icon ?? null,
+        };
+      }) as (ArmourPiece & { monster_name: string; monster_icon?: string })[];
     }
   });
 
@@ -229,20 +245,23 @@ export function EquipmentSelector() {
           label="Weapon"
           items={weaponItems}
           selectedId={weapon?.id}
-          selectedImage={weapon?.image}
+          selectedImage={weapon?.image} // Weapons can keep their image or icon
           isLoading={isWepLoading}
           onChange={id => setWeapon(weapons?.find(w => w.id === id) || null)}
         />
         {(['helm', 'chest', 'gloves', 'waist', 'greaves'] as const).map(slot => {
           const current = { helm, chest, gloves, waist, greaves }[slot];
           const slotLabel = slot.charAt(0).toUpperCase() + slot.slice(1);
+          // find the monster_icon for the current piece
+          const currentPieceWithMonster = (armours || []).find(a => a.id === current?.id) as (ArmourPiece & { monster_icon?: string }) | undefined;
+          
           return (
             <SearchableDropdown
               key={slot}
               label={slotLabel}
               items={armourItems(slot)}
               selectedId={current?.id}
-              selectedImage={current?.image}
+              selectedImage={currentPieceWithMonster?.monster_icon} // Use monster icon for the dropdown preview
               isLoading={isArmourLoading}
               onChange={id => {
                 const piece = armours?.find(a => a.id === id) || null;

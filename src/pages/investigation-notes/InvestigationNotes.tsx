@@ -10,6 +10,7 @@ import AdventurerGuide from './AdventurerGuide';
 import VisageSetsGuide from './VisageSetsGuide';
 import BuddyGuide from './BuddyGuide';
 import WeaponGuide from './WeaponGuide';
+import ArmourGuide from './ArmourGuide';
 
 const tabs: Array<{ id: InvestigationSubPage; label: string; icon: React.ComponentType<{ size?: number; className?: string }> }> = [
   { id: 'monster-guide', label: 'Monster Guide', icon: Bug },
@@ -19,21 +20,6 @@ const tabs: Array<{ id: InvestigationSubPage; label: string; icon: React.Compone
   { id: 'weapons', label: 'Weapons', icon: Sword },
   { id: 'armour', label: 'Armour', icon: Shield },
 ];
-
-function ComingSoon({ title, icon: Icon, description }: { title: string; icon: React.ComponentType<{ size?: number; className?: string }>; description: string }) {
-  return (
-    <div className="mh-card flex flex-col items-center justify-center gap-4 py-20 text-center">
-      <Icon size={48} className="text-mh-slate-700" />
-      <div>
-        <p className="font-display text-lg font-semibold text-mh-slate-300">{title}</p>
-        <p className="mt-1 text-sm text-mh-slate-500">{description}</p>
-        <span className="mt-3 inline-block rounded-full bg-mh-gold-500/10 px-3 py-1 text-xs font-medium text-mh-gold-400 ring-1 ring-mh-gold-500/30">
-          Coming soon
-        </span>
-      </div>
-    </div>
-  );
-}
 
 export default function InvestigationNotes() {
   const { activeSubPage, setActiveSubPage } = useUIStore();
@@ -83,15 +69,7 @@ export default function InvestigationNotes() {
       {activeSubPage === 'visages' && <VisageSetsGuide />}
       {activeSubPage === 'buddies' && <BuddyGuide />}
       {activeSubPage === 'weapons' && <WeaponGuide />}
-      {activeSubPage === 'armour' && (
-        <div className="p-6 lg:p-8">
-          <ComingSoon
-            title="Armour"
-            icon={Shield}
-            description="Per-monster armour skills across all 5 slots · driftsmelt slots"
-          />
-        </div>
-      )}
+      {activeSubPage === 'armour' && <ArmourGuide />}
     </div>
   );
 }

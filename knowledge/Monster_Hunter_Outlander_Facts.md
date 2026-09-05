@@ -345,6 +345,11 @@ erDiagram
   - Base skills (`unlock_rarity = null` or `1`) are available immediately upon forging.
   - Higher-tier skills or additional levels activate once upgraded to that required rarity level (`R6+`, `R9+`, `R12+`).
 - **UI Surfaces**:
+  - **Investigation Notes -> Armour (`ArmourGuide.tsx`)**: Public guide with game switcher (`MHO` default, `MHN`), search, and rarity filters. Features a dual-pane layout:
+    - **Left Pane (6-Block Rows)**: Shows armour sets ordered by Rarity descending and then alphabetically. Each row contains 6 blocks: Block 1 (Set / Monster Icon) and Blocks 2–6 (Helm, Chest, Arms, Coil, Greaves).
+    - **Right Pane (Simulation & Inspection)**: Includes an interactive **Upgrade Rarity Slider** (ranges from Base / 1 to Max Rarity e.g. 12, defaulting to full level 12).
+      - **Set View (Block 1)**: Simulates the entire 5-piece set equipped together. Sums all duplicate skills across pieces active at the chosen rarity slider level, displays Set Bonus activations (2-pc / 4-pc effects), and highlights locked tiers.
+      - **Piece View (Blocks 2–6)**: Inspects the individual piece, showing skills unlocked at the selected rarity and higher-tier locked skills.
   - **Admin Panel -> Armour Builder (`MonsterArmourBuilder.tsx`)**: Individual piece skill cards display interactive rarity unlock badges (`🔒 R9`, `⚡ R12`, or `Base`). Clicking the badge opens a quick popup to adjust or set the required rarity level.
   - **Add Skill & Bulk Broadcaster**: Add Skill popover and Bulk Apply modal include unlock rarity selection chips (`Base`, `R6`, `R8`, `R9`, `R12`, or custom input).
   - **Skill-to-Armour Mapping View (`SkillArmourMappingView.tsx`)**: Displays and modifies the unlock rarity for each piece granting a specific skill.

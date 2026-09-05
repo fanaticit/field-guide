@@ -160,50 +160,57 @@ ARMOUR_OCR_PROMPT = """
 You are an expert game data analyst for Monster Hunter (specifically Monster Hunter Outlanders / Now equipment screens).
 Analyze this cropped right-hand UI panel of an armour piece inspection screen.
 
-Look closely at the skills and equipment information section:
-1. Base Skills: Skills listed under "Skill Info" (or without any unlock condition). These have unlock_rarity = null.
-2. Rarity-Locked Equipment Skills: Look for sections or headers that specify unlock conditions like:
+Look closely at the UI sections from top to bottom:
+1. Piece Title: Topmost title (e.g. "Radiant Rathian Greaves I", "Legiana Helm III", "Rathalos Mail Alpha").
+2. Starting Equipment Rarity: Look directly under the piece title for "Rarity X" (e.g. "Rarity 3", "Rarity 7"). Extract X as an integer (e.g. 3, 7) into "rarity".
+3. Base Skills (under "Skill Info"): Inherent skills that have no unlock requirements. These have unlock_rarity = null.
+4. Rarity-Locked Equipment Skills: Look for headers like:
    - "Equipment Skill: Unlocks at Rarity 9" -> unlock_rarity = 9
    - "Equipment Skill: Unlocks at Rarity 12" -> unlock_rarity = 12
    - "Unlocks at Grade 8" -> unlock_rarity = 8
    - "Unlocks at Rarity X" -> unlock_rarity = X
    - "R9", "R12", etc.
-   Extract each skill name, level, and its specific unlock_rarity integer (or null if it is a base skill).
+   Extract each skill name, level, and its specific unlock_rarity integer (or null if base skill).
+5. Set Bonus / Set Effects (under "Set Effects"):
+   - Read the set bonus name (e.g. "Rathian Gleam", "Legiana Flight", "Radiant Sense 1").
+   - IMPORTANT: The numbers in parentheses at the end like "(1/2)", "(2/2)", "(3/2)", "(1/4)" ONLY indicate the current player's equipped piece count. Do NOT include "(1/2)" or piece counters in the set bonus name! Clean name only.
 
 Extract all information:
-1. Piece Title: Full name of the armour piece (e.g. "Legiana Helm", "Rathalos Mail", "Kulu Vambraces", "Pukei Coil", "Anjanath Greaves").
-2. Set Name: The armour set display title (e.g. "Legiana Set", "Rathalos Set", "Set I", "Set VII").
+1. Piece Title: Full name of the armour piece (e.g. "Radiant Rathian Greaves I").
+2. Set Name: The armour set display title (e.g. "Radiant Rathian Set", "Legiana Set").
 3. Set Variant: e.g. "I", "VII", "alpha", "beta" (defaults to "I" if not specified).
-4. Monster Name: Monster name (e.g. "Legiana", "Rathalos", "Great Jagras", "Kulu-Ya-Ku").
-5. Monster ID: Normalized lowercase snake_case monster ID (e.g. "legiana", "rathalos", "great_jagras").
+4. Monster Name: Monster name (e.g. "Radiant Rathian", "Legiana", "Rathalos").
+5. Monster ID: Normalized lowercase snake_case monster ID (e.g. "radiant_rathian", "legiana").
 6. Slot Type: Must be exactly one of:
    - "helm" (if title contains Helm, Head, Cap, Mask, Headdress, Crown, etc.)
    - "chest" (if title contains Mail, Chest, Vest, Armor, Plate, Jacket, etc.)
    - "gloves" (if title contains Vambraces, Arms, Gloves, Braces, Sleeves, etc.)
    - "waist" (if title contains Coil, Waist, Belt, Faulds, Tassets, etc.)
    - "greaves" (if title contains Greaves, Legs, Boots, Pants, Trousers, Feet, etc.)
-7. Skills: List of ALL skills attached to this piece (both base and rarity-locked):
+7. Starting Rarity: Integer rarity right below title (e.g. 3, 7).
+8. Skills: List of ALL skills attached to this piece (both base and rarity-locked):
    [
      {
        "name": "Skill Name",
        "level": integer (e.g. 1, 2),
-       "unlock_rarity": integer or null (e.g. 9 if text says "Unlocks at Rarity 9", 12 if "Unlocks at Rarity 12", or null if base/Skill Info),
+       "unlock_rarity": integer or null (e.g. 9 if "Unlocks at Rarity 9", 12 if "Unlocks at Rarity 12", or null if base/Skill Info),
        "description": "Skill description if visible",
        "category": "attack" | "critical" | "defense" | "survival" | "general" | "status" | "utility" | "health"
      }
    ]
-8. Set Bonus (if shown): Name and description of any set bonus effect.
-9. Defense & Rarity: Numeric defense value and rarity star/number if visible.
-10. All Detected Text Lines: Complete list of every single readable line of text from top to bottom.
+9. Set Bonus (if shown): Clean name and description of any set bonus effect.
+10. Defense: Numeric defense value if visible.
+11. All Detected Text Lines: Complete list of every single readable line of text from top to bottom.
 
 Return a STRICT JSON object:
 {
-  "piece_name": "Full piece name (e.g. 'Legiana Helm')",
-  "set_name": "Set name (e.g. 'Legiana Set')",
+  "piece_name": "Full piece name (e.g. 'Radiant Rathian Greaves I')",
+  "set_name": "Set name (e.g. 'Radiant Rathian Set')",
   "set_variant": "I",
-  "monster_name": "Monster name (e.g. 'Legiana')",
-  "monster_id": "Lowercase snake_case ID (e.g. 'legiana')",
+  "monster_name": "Monster name (e.g. 'Radiant Rathian')",
+  "monster_id": "Lowercase snake_case ID (e.g. 'radiant_rathian')",
   "slot": "helm" | "chest" | "gloves" | "waist" | "greaves",
+  "rarity": 3,
   "skills": [
     {
       "name": "Skill Name",
@@ -214,11 +221,10 @@ Return a STRICT JSON object:
     }
   ],
   "set_bonus": {
-    "name": "Set bonus name if visible",
-    "description": "Set bonus description"
+    "name": "Clean Set Bonus Name (e.g. 'Rathian Gleam')",
+    "description": "Set bonus description text"
   },
   "defense": integer or null,
-  "rarity": integer or null,
   "all_detected_text_lines": [
     "Line 1",
     "Line 2"
@@ -401,8 +407,12 @@ def sync_or_create_skill(skill_dict: dict, supabase: Client, dry_run: bool = Tru
     if not raw_name:
         return ""
 
-    # Clean up set bonus bracket prefixes like '[ 2-Piece Set ] Radiant Sense 1' -> 'Radiant Sense 1'
-    cleaned_name = re.sub(r"^\[\s*\d+[–\-]\w+\s*Set\s*\]\s*", "", raw_name, flags=re.IGNORECASE).strip()
+    # 1. Strip equipped piece counters like '(1/2)', '(2/2)', '(3/2)', '(0/4)', '(1/4)'
+    cleaned_name = re.sub(r"\s*[\(\[]\s*\d+\s*/\s*\d+\s*[\)\]]\s*$", "", raw_name).strip()
+    # 2. Strip bracket prefix like '[ 2-Piece Set ]', '[ 4-Piece Set ]', '[ 2–Piece Set ]'
+    cleaned_name = re.sub(r"^\[\s*\d+[–\-]\w+\s*Set\s*\]\s*", "", cleaned_name, flags=re.IGNORECASE).strip()
+    # 3. Strip trailing colons or dashes
+    cleaned_name = re.sub(r"[:\-–]+$", "", cleaned_name).strip()
     if not cleaned_name:
         cleaned_name = raw_name
 
@@ -478,6 +488,71 @@ def sync_or_create_skill(skill_dict: dict, supabase: Client, dry_run: bool = Tru
         return skill_id
 
 
+def normalize_piece_skills_delta(raw_skills, set_bonus_id=None):
+    """
+    Normalizes skill entries so that higher rarity tiers store the INCREMENTAL level added (+1)
+    rather than the cumulative total displayed in the game UI.
+    Example:
+    If Flash Draw is Lv 1 at Base and displayed as Lv 2 at R12:
+    - Base entry: { id: 'flash_draw', level: 1 }
+    - R12 entry:  { id: 'flash_draw', level: 1, unlock_rarity: 12 }
+    When summed at R12, the player gets 1 + 1 = 2 total levels.
+    """
+    def sort_key(s):
+        ur = s.get("unlock_rarity")
+        return 0 if (ur is None or ur <= 1) else int(ur)
+
+    sorted_raw = sorted(raw_skills, key=sort_key)
+    skill_cumulative = {}
+    normalized = []
+
+    for s in sorted_raw:
+        s_id = s.get("id")
+        raw_lvl = int(s.get("level", 1))
+        ur = s.get("unlock_rarity")
+        clean_ur = int(ur) if (ur is not None and int(ur) > 1) else None
+
+        # If it is a set bonus, it's always level 1
+        if set_bonus_id and s_id == set_bonus_id:
+            normalized.append({"id": s_id, "level": 1})
+            continue
+
+        prev_cum = skill_cumulative.get(s_id, 0)
+        if prev_cum > 0:
+            # Already has a lower tier on this piece
+            if raw_lvl > prev_cum:
+                incremental = raw_lvl - prev_cum
+                skill_cumulative[s_id] = raw_lvl
+            else:
+                incremental = 1
+                skill_cumulative[s_id] = prev_cum + 1
+        else:
+            incremental = raw_lvl
+            skill_cumulative[s_id] = raw_lvl
+
+        entry = {
+            "id": s_id,
+            "level": incremental,
+        }
+        if clean_ur is not None:
+            entry["unlock_rarity"] = clean_ur
+
+        normalized.append(entry)
+
+    # Sort: 1. Base skill(s) -> 2. Inherent Set Bonus -> 3. Rarity bonuses ascending (R6, R8, R9, R12)
+    def final_sort(s):
+        ur = s.get("unlock_rarity")
+        is_sb = (set_bonus_id and s.get("id") == set_bonus_id)
+        if is_sb:
+            return (1, 0, s.get("id", ""))
+        if ur is not None and int(ur) > 1:
+            return (2, int(ur), s.get("id", ""))
+        return (0, 0, s.get("id", ""))
+
+    normalized.sort(key=final_sort)
+    return normalized
+
+
 # -------------------------------------------------------------
 # MAIN PROCESS FUNCTION
 # -------------------------------------------------------------
@@ -516,7 +591,14 @@ def process_single_image(
     monster_name = parsed_monster_name
     monster_id = parsed_monster_id
     set_variant = parsed_variant if parsed_variant else (ocr_data.get("set_variant") or "I")
-    set_name = ocr_data.get("set_name") or f"{monster_name} Set"
+    
+    # Base set name strictly on the monster name so the variant Roman numeral is never duplicated
+    clean_base_monster = re.sub(r"\s+(Set\s+)?(I|II|III|IV|V|VI|VII|VIII|IX|X|\d+|Alpha|Beta|Gamma)(\+)?$", "", monster_name, flags=re.IGNORECASE).strip()
+    if not clean_base_monster.endswith("Set"):
+        set_name = f"{clean_base_monster} Set"
+    else:
+        set_name = clean_base_monster
+
     slot_info = ARMOUR_SLOT_COORDS.get(slot_key, ARMOUR_SLOT_COORDS["helm"])
 
     raw_skills = ocr_data.get("skills") or []
@@ -609,7 +691,7 @@ def process_single_image(
 
     # 7. Check & Sync Skills with Supabase
     print(f"\n  [SKILLS VERIFICATION & SYNCHRONIZATION]")
-    resolved_piece_skills = []
+    raw_piece_skills = []
     if raw_skills:
         for sk in raw_skills:
             resolved_id = sync_or_create_skill(sk, supabase, dry_run=dry_run, enable_updates=enable_updates)
@@ -631,10 +713,10 @@ def process_single_image(
             if ur_val is not None:
                 skill_entry["unlock_rarity"] = ur_val
 
-            resolved_piece_skills.append(skill_entry)
+            raw_piece_skills.append(skill_entry)
 
             ur_label = f" (Unlocks at Rarity {ur_val})" if ur_val else " (Base / Skill Info)"
-            print(f"    * Attached: {sk.get('name')} (Level {lvl}){ur_label} -> id: '{resolved_id}'")
+            print(f"    * Detected: {sk.get('name')} (Displayed Lv {lvl}){ur_label} -> id: '{resolved_id}'")
     else:
         print(f"    (No individual skills detected)")
 
@@ -647,35 +729,43 @@ def process_single_image(
             dry_run=dry_run,
             enable_updates=enable_updates
         )
-        if set_bonus_id and not any(s.get("id") == set_bonus_id for s in resolved_piece_skills):
-            resolved_piece_skills.append({"id": set_bonus_id, "level": 1})
+        if set_bonus_id and not any(s.get("id") == set_bonus_id for s in raw_piece_skills):
+            raw_piece_skills.append({"id": set_bonus_id, "level": 1})
             print(f"    * Set Bonus: {sb_name} -> id: '{set_bonus_id}' (Attached)")
         else:
             print(f"    * Set Bonus: {sb_name} -> id: '{set_bonus_id}'")
 
-    # Custom Sort: 1. Base skill(s) -> 2. Inherent Set Bonus -> 3. Rarity bonuses in ascending order (R6, R8, R9, R12)
-    def skill_sort_key(s):
+    # Normalize cumulative levels to incremental delta levels (+1 at upgrade milestones)
+    resolved_piece_skills = normalize_piece_skills_delta(raw_piece_skills, set_bonus_id=set_bonus_id)
+
+    print(f"\n  [FINAL ATTACHED SKILLS (Incremental levels per rarity milestone)]")
+    for s in resolved_piece_skills:
         ur = s.get("unlock_rarity")
-        is_sb = (s.get("id") == set_bonus_id)
-        if is_sb:
-            return (1, 0, s.get("id", ""))
-        if ur is not None and int(ur) > 1:
-            return (2, int(ur), s.get("id", ""))
-        return (0, 0, s.get("id", ""))
-
-    resolved_piece_skills.sort(key=skill_sort_key)
-
+        ur_str = f" [Unlocks at R{ur}]" if ur else " [Base]"
     print(f"\n  [ALL OCR'ED TEXT FROM RIGHT PANEL (x >= 1800)]")
     for idx, line in enumerate(detected_lines, start=1):
         print(f"    [{idx:02d}] {line}")
 
     # 8. Database Upsert Payload
+    rarity_val = 1
+    if rarity is not None:
+        try:
+            rarity_val = int(rarity)
+        except (ValueError, TypeError):
+            rarity_val = 1
+    elif existing_record and existing_record.get("rarity") is not None:
+        try:
+            rarity_val = int(existing_record.get("rarity"))
+        except (ValueError, TypeError):
+            rarity_val = 1
+
     db_payload = {
         "id": piece_id,
         "game": "mho",
         "monster_id": monster_id,
         "set_variant": set_variant,
         "set_name": set_name,
+        "rarity": rarity_val,
         "slot": slot_key,
         "skills": resolved_piece_skills,
         "notes": json.dumps({"set_bonus": set_bonus, "defense": defense, "rarity": rarity}),
@@ -686,10 +776,14 @@ def process_single_image(
     elif existing_record and existing_record.get("image"):
         db_payload["image"] = existing_record.get("image")
 
+    if existing_record and existing_record.get("set_icon"):
+        db_payload["set_icon"] = existing_record.get("set_icon")
+
     print(f"\n  [PROPOSED ARMOUR DB RECORD]")
     print(f"  - ID          : {db_payload['id']}")
     print(f"  - Set Name    : {db_payload['set_name']}")
     print(f"  - Variant     : {db_payload['set_variant']}")
+    print(f"  - Rarity      : {db_payload['rarity']}")
     print(f"  - Slot        : {db_payload['slot']}")
     print(f"  - Skills JSON : {db_payload['skills']}")
     if db_payload.get("image"):

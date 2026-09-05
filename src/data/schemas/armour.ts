@@ -109,6 +109,9 @@ export function sortArmourSkills(
 
     const nameA = getName(a.id);
     const nameB = getName(b.id);
-    return nameA.localeCompare(nameB);
+    const cmp = nameA.localeCompare(nameB);
+    if (cmp !== 0) return cmp;
+
+    return (a.level || 1) - (b.level || 1);
   });
 }

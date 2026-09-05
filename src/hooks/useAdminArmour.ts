@@ -13,6 +13,8 @@ export interface DBArmourPiece {
   monster_id: string;
   set_variant: string; // e.g. 'I', 'VII', 'alpha', 'beta'. Defaults to 'I'
   set_name: string | null; // e.g. 'Set I', 'Set VII', 'Rathalos Alpha+', 'High Rank Set'
+  set_icon?: string | null; // set/material build icon/image URL
+  rarity?: number; // Starting equipment rarity / grade of the set/piece (e.g. 1 to 12)
   slot: ArmourSlot;
   image: string | null; // piece-specific image/icon
   skills: ArmourSkill[];
@@ -42,6 +44,7 @@ export function useAdminArmourPieces(game: string = 'mhn') {
       const pieces = (data as DBArmourPiece[]) ?? [];
       return pieces.map((p) => ({
         ...p,
+        rarity: p.rarity ?? 1,
         skills: sortArmourSkills(p.skills ?? []),
       }));
     },
@@ -62,6 +65,8 @@ function patchCachedPiece(
   skills: ArmourSkill[],
   setName?: string | null,
   image?: string | null,
+  setIcon?: string | null,
+  rarity?: number,
 ) {
   const pieceId = `${game}:${monsterId}:${setVariant}:${slot}`;
   const sortedSkills = sortArmourSkills(skills);
@@ -91,6 +96,8 @@ function patchCachedPiece(
                 skills: sortedSkills,
                 set_name: setName !== undefined ? setName : p.set_name,
                 image: image !== undefined ? image : p.image,
+                set_icon: setIcon !== undefined ? setIcon : p.set_icon,
+                rarity: rarity !== undefined ? rarity : (p.rarity ?? 1),
               }
             : p,
         );
@@ -101,6 +108,8 @@ function patchCachedPiece(
           monster_id: monsterId,
           set_variant: setVariant,
           set_name: setName ?? null,
+          set_icon: setIcon ?? null,
+          rarity: rarity ?? 1,
           slot,
           image: image ?? null,
           skills: sortedSkills,
@@ -127,6 +136,8 @@ export function useSaveArmourPieceSkills() {
       monsterId,
       setVariant = 'I',
       setName,
+      setIcon,
+      rarity,
       image,
       slot,
       skills,
@@ -135,6 +146,8 @@ export function useSaveArmourPieceSkills() {
       monsterId: string;
       setVariant?: string;
       setName?: string | null;
+      setIcon?: string | null;
+      rarity?: number;
       image?: string | null;
       slot: ArmourSlot;
       skills: ArmourSkill[];
@@ -150,6 +163,8 @@ export function useSaveArmourPieceSkills() {
         skills: sortedSkills,
       };
       if (setName !== undefined) payload.set_name = setName;
+      if (setIcon !== undefined) payload.set_icon = setIcon;
+      if (rarity !== undefined) payload.rarity = rarity;
       if (image !== undefined) payload.image = image;
 
       const { data, error } = await supabase
@@ -162,14 +177,14 @@ export function useSaveArmourPieceSkills() {
       return data as DBArmourPiece;
     },
 
-    onMutate: async ({ game, monsterId, setVariant = 'I', setName, image, slot, skills }) => {
+    onMutate: async ({ game, monsterId, setVariant = 'I', setName, setIcon, rarity, image, slot, skills }) => {
       await qc.cancelQueries({ queryKey: [ARMOUR_PIECES_KEY] });
       const snapshot = qc.getQueriesData<DBArmourPiece[]>({
         queryKey: [ARMOUR_PIECES_KEY],
         exact: false,
       });
 
-      patchCachedPiece(qc, game, monsterId, setVariant, slot, skills, setName, image);
+      patchCachedPiece(qc, game, monsterId, setVariant, slot, skills, setName, image, setIcon, rarity);
       return { snapshot };
     },
 
@@ -271,7 +286,8 @@ export function useAddSkillToPiece() {
             ? Number(s.unlock_rarity)
             : s.unlockRarity !== undefined && s.unlockRarity !== null
               ? Number(s.unlockRarity)
-              : null) === cleanUR,
+              : null) === cleanUR &&
+          s.level === level,
       );
       let newSkills: ArmourSkill[];
       if (existingIdx >= 0) {
@@ -316,7 +332,8 @@ export function useAddSkillToPiece() {
             ? Number(s.unlock_rarity)
             : s.unlockRarity !== undefined && s.unlockRarity !== null
               ? Number(s.unlockRarity)
-              : null) === cleanUR,
+              : null) === cleanUR &&
+          s.level === level,
       );
       let newSkills: ArmourSkill[];
       if (existingIdx >= 0) {
@@ -648,3 +665,103 @@ export function useDeleteEntireArmourSource() {
     },
   });
 }
+
+export function useUpdateArmourSetIcon() {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      game,
+      monsterId,
+      setIcon,
+    }: {
+      game: string;
+      monsterId: string;
+      setIcon: string | null;
+    }) => {
+      const { data, error } = await supabase
+        .from('armour_pieces')
+        .update({ set_icon: setIcon, updated_at: new Date().toISOString() })
+        .eq('game', game)
+        .eq('monster_id', monsterId)
+        .select();
+
+      if (error) throw error;
+      return data;
+    },
+
+    onMutate: async ({ game, monsterId, setIcon }) => {
+      await qc.cancelQueries({ queryKey: [ARMOUR_PIECES_KEY] });
+      qc.setQueriesData(
+        { queryKey: [ARMOUR_PIECES_KEY], exact: false },
+        (old: unknown) => {
+          if (!Array.isArray(old)) return old;
+          return (old as DBArmourPiece[]).map((p) =>
+            p.game === game && p.monster_id === monsterId
+              ? { ...p, set_icon: setIcon }
+              : p,
+          );
+        },
+      );
+    },
+
+    onSettled: () => {
+      qc.invalidateQueries({ queryKey: [ARMOUR_PIECES_KEY] });
+    },
+  });
+}
+
+export function useUpdateArmourSetRarity() {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      game,
+      monsterId,
+      setVariant,
+      rarity,
+    }: {
+      game: string;
+      monsterId: string;
+      setVariant?: string;
+      rarity: number;
+    }) => {
+      let q = supabase
+        .from('armour_pieces')
+        .update({ rarity, updated_at: new Date().toISOString() })
+        .eq('game', game)
+        .eq('monster_id', monsterId);
+
+      if (setVariant) {
+        q = q.eq('set_variant', setVariant);
+      }
+
+      const { data, error } = await q.select();
+      if (error) throw error;
+      return data;
+    },
+
+    onMutate: async ({ game, monsterId, setVariant, rarity }) => {
+      await qc.cancelQueries({ queryKey: [ARMOUR_PIECES_KEY] });
+      qc.setQueriesData(
+        { queryKey: [ARMOUR_PIECES_KEY], exact: false },
+        (old: unknown) => {
+          if (!Array.isArray(old)) return old;
+          return (old as DBArmourPiece[]).map((p) =>
+            p.game === game &&
+            p.monster_id === monsterId &&
+            (!setVariant || (p.set_variant || 'I') === setVariant)
+              ? { ...p, rarity }
+              : p,
+          );
+        },
+      );
+    },
+
+    onSettled: () => {
+      qc.invalidateQueries({ queryKey: [ARMOUR_PIECES_KEY] });
+    },
+  });
+}
+
+
