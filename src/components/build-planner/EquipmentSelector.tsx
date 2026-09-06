@@ -18,13 +18,14 @@ interface SearchableDropdownProps {
   items: DropdownItem[];
   selectedId?: string;
   selectedImage?: string;
+  placeholderIcon?: string;
   placeholder?: string;
   isLoading?: boolean;
   onChange: (id: string | null) => void;
 }
 
 function SearchableDropdown({
-  label, items, selectedId, selectedImage, placeholder, isLoading, onChange,
+  label, items, selectedId, selectedImage, placeholderIcon, placeholder, isLoading, onChange,
 }: SearchableDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -33,7 +34,6 @@ function SearchableDropdown({
 
   const selected = items.find(i => i.id === selectedId);
 
-  // Close on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
@@ -45,7 +45,6 @@ function SearchableDropdown({
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  // Focus input when opening
   useEffect(() => {
     if (isOpen) inputRef.current?.focus();
   }, [isOpen]);
@@ -58,98 +57,98 @@ function SearchableDropdown({
     : items;
 
   return (
-    <div ref={containerRef} className="flex flex-col gap-1.5 bg-mh-slate-800/50 p-3 rounded-lg border border-mh-slate-800">
-      <label className="text-[10px] font-bold text-mh-slate-400 uppercase tracking-wider">{label}</label>
-
-      <div className="flex items-center gap-2">
-        {/* Selected image preview */}
-        <div className="w-10 h-10 rounded bg-mh-slate-900 border border-mh-slate-700 flex-shrink-0 flex items-center justify-center overflow-hidden">
-          {selectedImage ? (
-            <img src={selectedImage} alt={selected?.primaryLabel || label} className="w-full h-full object-contain p-1" />
-          ) : selected?.icon ? (
-            <img src={selected.icon} alt={selected.primaryLabel} className="w-6 h-6 object-contain opacity-80" />
-          ) : (
-            <div className="w-5 h-5 rounded border border-mh-slate-700 bg-mh-slate-800" />
-          )}
+    <div className="flex items-center gap-3 w-full">
+      {/* Left: Placeholder Icon */}
+      {placeholderIcon ? (
+        <div className="w-8 h-8 shrink-0 opacity-60">
+          <img src={placeholderIcon} alt={label} className="w-full h-full object-contain filter grayscale invert opacity-70 brightness-200" />
         </div>
+      ) : (
+        <div className="w-8 h-8 shrink-0" /> // spacer for weapon if it doesn't have one
+      )}
 
-        {/* Trigger button */}
-        <div className="relative flex-1">
-          <button
-            onClick={() => { setIsOpen(o => !o); setQuery(''); }}
-            className="w-full p-2 rounded bg-mh-slate-800 border border-mh-slate-700 text-left flex items-center justify-between hover:bg-mh-slate-700 transition-colors"
-          >
+      {/* Center: Dropdown Button */}
+      <div ref={containerRef} className="relative flex-1 min-w-0">
+        <button
+          onClick={() => !isLoading && setIsOpen(!isOpen)}
+          disabled={isLoading}
+          className="w-full flex items-center justify-between bg-mh-slate-800/80 hover:bg-mh-slate-700 border border-mh-slate-700 rounded-lg p-2 px-3 transition-colors text-left h-[50px]"
+        >
+          <div className="flex flex-col min-w-0">
+            <span className="text-[9px] font-bold text-rarity-3 uppercase tracking-wider mb-0.5">{label}</span>
             {isLoading ? (
-              <span className="text-xs text-mh-slate-500">Loading...</span>
+              <span className="text-xs text-mh-slate-500 animate-pulse">Loading...</span>
             ) : selected ? (
-              <div className="flex flex-col min-w-0">
-                <span className="text-xs font-bold text-mh-slate-200 truncate leading-tight">{selected.primaryLabel}</span>
+              <>
+                <span className="text-sm font-bold text-white leading-tight truncate">{selected.primaryLabel}</span>
                 {selected.secondaryLabel && (
-                  <span className="text-[10px] text-mh-slate-500 truncate leading-tight">{selected.secondaryLabel}</span>
+                  <span className="text-[10px] text-mh-slate-400 leading-tight truncate">{selected.secondaryLabel}</span>
                 )}
-              </div>
+              </>
             ) : (
-              <span className="text-xs text-mh-slate-500">{placeholder || `Select ${label}`}</span>
+              <span className="text-xs text-mh-slate-500">{placeholder || `Select...`}</span>
             )}
-            <span className="text-[10px] text-mh-slate-600 ml-2 shrink-0">▼</span>
-          </button>
+          </div>
+          <span className="text-[10px] text-mh-slate-600 shrink-0 ml-2">▼</span>
+        </button>
 
-          {/* Dropdown panel */}
-          {isOpen && (
-            <div className="absolute top-full left-0 right-0 mt-1 bg-[#1a1b2e] border border-mh-slate-700 rounded-lg shadow-2xl z-40 flex flex-col overflow-hidden" style={{ minWidth: '220px' }}>
-              {/* Search input */}
-              <div className="p-2 border-b border-mh-slate-700/60">
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={query}
-                  onChange={e => setQuery(e.target.value)}
-                  placeholder={`Search ${label.toLowerCase()}...`}
-                  className="w-full bg-mh-slate-900 border border-mh-slate-700 rounded px-2 py-1.5 text-xs text-mh-slate-200 placeholder-mh-slate-600 outline-none focus:border-mh-slate-500"
-                />
-              </div>
-
-              {/* List */}
-              <div className="max-h-52 overflow-y-auto">
-                {/* Clear option */}
-                <button
-                  onClick={() => { onChange(null); setIsOpen(false); setQuery(''); }}
-                  className="w-full px-3 py-2 text-left text-xs text-mh-slate-500 hover:bg-white/5 flex items-center gap-2 border-b border-mh-slate-800"
-                >
-                  <span className="text-mh-slate-600">✕</span> None
-                </button>
-
-                {filtered.length === 0 ? (
-                  <p className="px-3 py-3 text-xs text-mh-slate-600 italic">No results for "{query}"</p>
-                ) : (
-                  filtered.map(item => (
-                    <button
-                      key={item.id}
-                      onClick={() => { onChange(item.id); setIsOpen(false); setQuery(''); }}
-                      className={`w-full px-3 py-2 text-left flex items-center gap-3 hover:bg-white/5 transition-colors ${item.id === selectedId ? 'bg-white/10' : ''}`}
-                    >
-                      {/* Icon */}
-                      <div className="w-7 h-7 rounded bg-black/20 border border-white/5 flex items-center justify-center shrink-0">
-                        {item.icon ? (
-                          <img src={item.icon} alt={item.primaryLabel} className="w-5 h-5 object-contain opacity-80" />
-                        ) : (
-                          <div className="w-3 h-3 rounded-full bg-mh-slate-700" />
-                        )}
-                      </div>
-                      {/* Labels */}
-                      <div className="flex flex-col min-w-0">
-                        <span className="text-xs font-bold text-white leading-tight truncate">{item.primaryLabel}</span>
-                        {item.secondaryLabel && (
-                          <span className="text-[10px] text-mh-slate-400 leading-tight truncate">{item.secondaryLabel}</span>
-                        )}
-                      </div>
-                    </button>
-                  ))
-                )}
-              </div>
+        {/* Dropdown panel */}
+        {isOpen && (
+          <div className="absolute top-full left-0 right-0 mt-1 bg-[#1a1b2e] border border-mh-slate-700 rounded-lg shadow-2xl z-40 flex flex-col overflow-hidden" style={{ minWidth: '220px' }}>
+            <div className="p-2 border-b border-mh-slate-700/60">
+              <input
+                ref={inputRef}
+                type="text"
+                value={query}
+                onChange={e => setQuery(e.target.value)}
+                placeholder={`Search ${label.toLowerCase()}...`}
+                className="w-full bg-mh-slate-900 border border-mh-slate-700 rounded px-2 py-1.5 text-xs text-mh-slate-200 placeholder-mh-slate-600 outline-none focus:border-mh-slate-500"
+              />
             </div>
-          )}
-        </div>
+            <div className="max-h-52 overflow-y-auto">
+              <button
+                onClick={() => { onChange(null); setIsOpen(false); setQuery(''); }}
+                className="w-full px-3 py-2 text-left text-xs text-mh-slate-500 hover:bg-white/5 flex items-center gap-2 border-b border-mh-slate-800"
+              >
+                <span className="text-mh-slate-600">✕</span> None
+              </button>
+              {filtered.length === 0 ? (
+                <p className="px-3 py-3 text-xs text-mh-slate-600 italic">No results for "{query}"</p>
+              ) : (
+                filtered.map(item => (
+                  <button
+                    key={item.id}
+                    onClick={() => { onChange(item.id); setIsOpen(false); setQuery(''); }}
+                    className={`w-full px-3 py-2 text-left flex items-center gap-3 hover:bg-white/5 transition-colors ${item.id === selectedId ? 'bg-white/10' : ''}`}
+                  >
+                    <div className="w-8 h-8 rounded bg-black/20 border border-white/5 flex items-center justify-center shrink-0 p-0.5">
+                      {item.icon ? (
+                        <img src={item.icon} alt={item.primaryLabel} className="w-full h-full object-contain opacity-90" />
+                      ) : (
+                        <div className="w-4 h-4 rounded-full bg-mh-slate-700" />
+                      )}
+                    </div>
+                    <div className="flex flex-col min-w-0">
+                      <span className="text-xs font-bold text-white leading-tight truncate">{item.primaryLabel}</span>
+                      {item.secondaryLabel && (
+                        <span className="text-[10px] text-mh-slate-400 leading-tight truncate">{item.secondaryLabel}</span>
+                      )}
+                    </div>
+                  </button>
+                ))
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Right: Selected image preview */}
+      <div className="w-[50px] h-[50px] rounded bg-mh-slate-900 border border-mh-slate-800 flex-shrink-0 flex items-center justify-center overflow-hidden p-0">
+        {selectedImage ? (
+          <img src={selectedImage} alt={selected?.primaryLabel || 'Selected'} className="w-[46px] h-[46px] object-contain drop-shadow-md" />
+        ) : (
+          <div className="w-4 h-4 bg-mh-slate-800 rounded-full" />
+        )}
       </div>
     </div>
   );
@@ -245,9 +244,10 @@ export function EquipmentSelector() {
     <div className="bg-mh-slate-800/30 border border-mh-slate-800 rounded-xl p-4 flex flex-col gap-4">
       <h2 className="font-display text-base font-bold text-mh-slate-200">Equipment</h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="flex flex-col gap-2.5">
         <SearchableDropdown
           label="Weapon"
+          placeholderIcon="/images/weapons/great_sword.png"
           items={weaponItems}
           selectedId={weapon?.id}
           selectedImage={weapon?.image} // Weapons can keep their image or icon
@@ -260,13 +260,15 @@ export function EquipmentSelector() {
           // find the monster_icon for the current piece
           const currentPieceWithMonster = (armours || []).find(a => a.id === current?.id) as (ArmourPiece & { monster_icon?: string }) | undefined;
           
-          return (
-            <SearchableDropdown
-              key={slot}
-              label={slotLabel}
+          const slotIconPath = `/images/armor/${slot}.png`;
+            return (
+              <SearchableDropdown
+                key={slot}
+                label={slotLabel}
+                placeholderIcon={slotIconPath}
               items={armourItems(slot)}
               selectedId={current?.id}
-              selectedImage={currentPieceWithMonster?.monster_icon} // Use monster icon for the dropdown preview
+              selectedImage={current?.image || currentPieceWithMonster?.monster_icon} // Use armour image
               isLoading={isArmourLoading}
               onChange={id => {
                 const piece = armours?.find(a => a.id === id) || null;

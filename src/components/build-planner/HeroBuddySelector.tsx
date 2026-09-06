@@ -4,7 +4,7 @@ import { supabase } from '../../lib/supabase';
 import { useBuildPlannerStore, type Adventurer, type WeaponType, type Buddy } from '../../store/buildPlannerStore';
 
 export function HeroBuddySelector() {
-  const { adventurer, setAdventurer, weaponType, setWeaponType, buddy, setBuddy, helm, chest, gloves, waist, greaves } = useBuildPlannerStore();
+  const { adventurer, setAdventurer, weaponType, setWeaponType, buddy, setBuddy } = useBuildPlannerStore();
   const [showAdvList, setShowAdvList] = useState(false);
   const [showBuddyList, setShowBuddyList] = useState(false);
   const [showWtList, setShowWtList] = useState(false);
@@ -41,10 +41,10 @@ export function HeroBuddySelector() {
     : null;
 
   return (
-    <div className="flex flex-col md:flex-row gap-4 mb-2">
+    <div className="flex flex-col md:flex-row gap-8 items-start h-full">
       
       {/* Adventurer Section */}
-      <div className="flex flex-col gap-3 relative items-center md:items-start">
+      <div className="flex flex-col gap-3 relative items-center">
         <label className="text-sm font-semibold text-mh-slate-400">Adventurer</label>
         <button 
           onClick={() => { setShowAdvList(!showAdvList); setShowBuddyList(false); setShowWtList(false); }}
@@ -143,7 +143,7 @@ export function HeroBuddySelector() {
       </div>
 
       {/* Buddy Section */}
-      <div className="flex flex-col gap-3 relative items-center md:items-start">
+      <div className="flex flex-col gap-3 relative items-center">
         <label className="text-sm font-semibold text-mh-slate-400">Buddy</label>
         <button 
           onClick={() => { setShowBuddyList(!showBuddyList); setShowAdvList(false); setShowWtList(false); }}
@@ -197,62 +197,6 @@ export function HeroBuddySelector() {
         )}
       </div>
 
-      {/* Equipment Layout (Paper Doll) */}
-      <div className="flex flex-col gap-3 relative items-center md:items-start ml-0 md:ml-4 flex-1">
-        <label className="text-sm font-semibold text-mh-slate-400">Equipped Armour</label>
-        
-        <div className="bg-mh-slate-900 border border-mh-slate-800 rounded-lg p-4 w-[180px] h-[190px] flex flex-col items-center justify-center gap-2">
-          
-          {/* Top Row: Helm */}
-          <div className="flex justify-center w-full">
-            <div className="w-12 h-12 rounded bg-mh-slate-800 border border-mh-slate-700 flex items-center justify-center overflow-hidden" title={helm?.set_name || 'Helm'}>
-              {helm?.image || (helm as any)?.monster_icon ? (
-                <img src={helm?.image || (helm as any)?.monster_icon} alt="Helm" className="w-full h-full object-contain p-0.5" />
-              ) : (
-                <span className="text-[10px] text-mh-slate-600 font-bold uppercase">Head</span>
-              )}
-            </div>
           </div>
-
-          {/* Middle Row: Chest | Gloves */}
-          <div className="flex justify-between w-full px-4 gap-2">
-            <div className="w-12 h-12 rounded bg-mh-slate-800 border border-mh-slate-700 flex items-center justify-center overflow-hidden" title={chest?.set_name || 'Chest'}>
-              {chest?.image || (chest as any)?.monster_icon ? (
-                <img src={chest?.image || (chest as any)?.monster_icon} alt="Chest" className="w-full h-full object-contain p-0.5" />
-              ) : (
-                <span className="text-[10px] text-mh-slate-600 font-bold uppercase">Chest</span>
-              )}
-            </div>
-            <div className="w-12 h-12 rounded bg-mh-slate-800 border border-mh-slate-700 flex items-center justify-center overflow-hidden" title={gloves?.set_name || 'Gloves'}>
-              {gloves?.image || (gloves as any)?.monster_icon ? (
-                <img src={gloves?.image || (gloves as any)?.monster_icon} alt="Gloves" className="w-full h-full object-contain p-0.5" />
-              ) : (
-                <span className="text-[10px] text-mh-slate-600 font-bold uppercase">Arms</span>
-              )}
-            </div>
-          </div>
-
-          {/* Bottom Row: Waist | Greaves */}
-          <div className="flex justify-between w-full px-4 gap-2">
-            <div className="w-12 h-12 rounded bg-mh-slate-800 border border-mh-slate-700 flex items-center justify-center overflow-hidden" title={waist?.set_name || 'Waist'}>
-              {waist?.image || (waist as any)?.monster_icon ? (
-                <img src={waist?.image || (waist as any)?.monster_icon} alt="Waist" className="w-full h-full object-contain p-0.5" />
-              ) : (
-                <span className="text-[10px] text-mh-slate-600 font-bold uppercase">Waist</span>
-              )}
-            </div>
-            <div className="w-12 h-12 rounded bg-mh-slate-800 border border-mh-slate-700 flex items-center justify-center overflow-hidden" title={greaves?.set_name || 'Greaves'}>
-              {greaves?.image || (greaves as any)?.monster_icon ? (
-                <img src={greaves?.image || (greaves as any)?.monster_icon} alt="Greaves" className="w-full h-full object-contain p-0.5" />
-              ) : (
-                <span className="text-[10px] text-mh-slate-600 font-bold uppercase">Legs</span>
-              )}
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-    </div>
   );
 }
