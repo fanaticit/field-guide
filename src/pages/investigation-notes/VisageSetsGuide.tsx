@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { useVisageSetsData } from '../../hooks/useVisageSets';
 import { type DBVisage, getInkConfig } from '../../data/schemas/visage';
-import { useUIStore } from '../../store/uiStore';
+import { useNavigate } from 'react-router-dom';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
 import VisageCard, { InkIconComponent } from './VisageCard';
 import VisageModal from './VisageModal';
@@ -31,7 +31,7 @@ export default function VisageSetsGuide() {
     removeCardFromCollection,
   } = useVisageSetsData();
   const isAdmin = useAuthStore(selectIsAdmin);
-  const { setActivePage, setAdminSubPage } = useUIStore();
+  const navigate = useNavigate();
 
   const [selectedSetId, setSelectedSetId] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
@@ -365,10 +365,7 @@ export default function VisageSetsGuide() {
                   </p>
                   {isAdmin && (
                     <button
-                      onClick={() => {
-                        setActivePage('admin');
-                        setAdminSubPage('visages');
-                      }}
+                      onClick={() => navigate('/admin/visages')}
                       className="mt-4 flex items-center gap-1.5 rounded-lg bg-mh-gold-500/15 border border-mh-gold-500/30 px-3.5 py-1.5 text-xs font-bold text-mh-gold-300 hover:bg-mh-gold-500/25 transition-colors"
                     >
                       <Plus size={13} />
@@ -428,10 +425,7 @@ export default function VisageSetsGuide() {
               </p>
               {isAdmin && (
                 <button
-                  onClick={() => {
-                    setActivePage('admin');
-                    setAdminSubPage('visages');
-                  }}
+                  onClick={() => navigate('/admin/visages')}
                   className="mt-4 flex items-center gap-1.5 rounded-lg bg-mh-gold-500/15 border border-mh-gold-500/30 px-4 py-2 text-xs font-bold text-mh-gold-300 hover:bg-mh-gold-500/25 transition-colors shadow-sm"
                 >
                   <Plus size={14} />

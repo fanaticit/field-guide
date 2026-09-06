@@ -7,6 +7,7 @@ import type {
   DBWeapon,
   DBWeaponType,
   WeaponUpsert,
+  WeaponSkill,
   WeaponCategory,
   WeaponSourceType,
   WeaponElementType,
@@ -240,7 +241,7 @@ export function useAdminWeapons(filters: EquipmentWeaponFilters = {}) {
       }
       if (filters.search) {
         q = q.or(
-          `name.ilike.%${filters.search}%,id.ilike.%${filters.search}%,description.ilike.%${filters.search}%,notes.ilike.%${filters.search}%`,
+          `name.ilike.%${filters.search}%,upgraded_name.ilike.%${filters.search}%,id.ilike.%${filters.search}%,description.ilike.%${filters.search}%,notes.ilike.%${filters.search}%`,
         );
       }
       if (filters.isActive !== null && filters.isActive !== undefined) {
@@ -256,12 +257,22 @@ export function useAdminWeapons(filters: EquipmentWeaponFilters = {}) {
       return (data ?? []).map((row: Record<string, unknown>) => ({
         ...row,
         game: (row.game as string) || 'mho',
+        upgraded_name: (row.upgraded_name as string) || null,
+        upgraded_name_ja: (row.upgraded_name_ja as string) || null,
+        upgrade_level: row.upgrade_level !== null && row.upgrade_level !== undefined ? Number(row.upgrade_level) : null,
+        rarity: Number(row.rarity ?? row.grade ?? 1),
+        grade: Number(row.rarity ?? row.grade ?? 1),
         skills: Array.isArray(row.skills)
-          ? row.skills.map((s: Record<string, unknown>) => ({
-              ...s,
-              unlock_rarity: s.unlock_rarity !== undefined ? (s.unlock_rarity as number | null) : null,
-              unlockRarity: s.unlock_rarity !== undefined ? (s.unlock_rarity as number | null) : null,
-            }))
+          ? row.skills.map((s: Record<string, unknown>) => {
+              const ur = s.unlock_rarity !== undefined ? (s.unlock_rarity as number | null) : (s.unlock_level as number | null) ?? null;
+              return {
+                ...s,
+                unlock_rarity: ur,
+                unlockRarity: ur,
+                unlock_level: ur,
+                unlockLevel: ur,
+              };
+            })
           : [],
         is_active: Boolean(row.is_active),
         sort_order: Number(row.sort_order || 0),
@@ -276,12 +287,19 @@ export function useUpsertWeapon() {
 
   return useMutation({
     mutationFn: async (weapon: WeaponUpsert) => {
+      const weaponRarity = weapon.rarity ?? weapon.grade ?? 1;
       const payload = {
         ...weapon,
+        rarity: weaponRarity,
+        grade: weaponRarity,
+        upgraded_name: weapon.upgraded_name?.trim() || null,
+        upgraded_name_ja: weapon.upgraded_name_ja?.trim() || null,
+        upgrade_level: weapon.upgrade_level ? Number(weapon.upgrade_level) : null,
         skills: weapon.skills.map((s) => ({
           id: s.id,
           level: s.level,
-          unlock_rarity: s.unlockRarity ?? s.unlock_rarity ?? null,
+          unlock_rarity: s.unlockLevel ?? s.unlock_level ?? s.unlockRarity ?? s.unlock_rarity ?? null,
+          unlock_level: s.unlockLevel ?? s.unlock_level ?? s.unlockRarity ?? s.unlock_rarity ?? null,
         })),
         updated_at: new Date().toISOString(),
       };
@@ -299,6 +317,7 @@ export function useUpsertWeapon() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: [WEAPONS_KEY] });
       qc.invalidateQueries({ queryKey: [PUBLIC_WEAPONS_KEY] });
+      qc.invalidateQueries({ queryKey: ['weapons'] });
     },
   });
 }
@@ -360,6 +379,137 @@ export function useToggleWeaponActive() {
     onSettled: () => {
       qc.invalidateQueries({ queryKey: [WEAPONS_KEY] });
       qc.invalidateQueries({ queryKey: [PUBLIC_WEAPONS_KEY] });
+    },
+  });
+}
+
+export interface MergeWeaponsPayload {
+  baseWeaponId: string;       // Weapon to keep (younger/base)
+  upgradedWeaponId: string;   // Weapon to merge from and remove (older/upgraded)
+  upgradedName: string;       // New upgraded name to set on base weapon
+  upgradedNameJa?: string | null;
+  upgradeLevel: number | null; // Level or rarity at which it upgrades
+  mergedSkills: WeaponSkill[]; // Consolidated skills
+  keepImageFrom: 'base' | 'upgraded';
+  keepDescriptionFrom: 'base' | 'upgraded';
+}
+
+export function useMergeWeapons() {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (payload: MergeWeaponsPayload) => {
+      const {
+        baseWeaponId,
+        upgradedWeaponId,
+        upgradedName,
+        upgradedNameJa,
+        upgradeLevel,
+        mergedSkills,
+        keepImageFrom,
+        keepDescriptionFrom,
+      } = payload;
+
+      // 1. Fetch both weapons
+      const { data: weapons, error: fetchErr } = await supabase
+        .from('weapons')
+        .select('*')
+        .in('id', [baseWeaponId, upgradedWeaponId]);
+
+      if (fetchErr) throw fetchErr;
+      const baseWeapon = weapons?.find((w) => w.id === baseWeaponId);
+      const upgradedWeapon = weapons?.find((w) => w.id === upgradedWeaponId);
+
+      if (!baseWeapon || !upgradedWeapon) {
+        throw new Error('Could not find both weapons to perform merge.');
+      }
+
+      const finalImage =
+        keepImageFrom === 'upgraded'
+          ? upgradedWeapon.image || baseWeapon.image
+          : baseWeapon.image || upgradedWeapon.image;
+      const finalDesc =
+        keepDescriptionFrom === 'upgraded'
+          ? upgradedWeapon.description || baseWeapon.description
+          : baseWeapon.description || upgradedWeapon.description;
+
+      // 2. Update base weapon with upgraded name, level, merged skills, and chosen assets
+      const updatePayload = {
+        upgraded_name: upgradedName.trim() || null,
+        upgraded_name_ja: upgradedNameJa?.trim() || null,
+        upgrade_level: upgradeLevel ? Number(upgradeLevel) : null,
+        skills: mergedSkills.map((s) => ({
+          id: s.id,
+          level: s.level,
+          unlock_rarity: s.unlockLevel ?? s.unlock_level ?? s.unlockRarity ?? s.unlock_rarity ?? null,
+          unlock_level: s.unlockLevel ?? s.unlock_level ?? s.unlockRarity ?? s.unlock_rarity ?? null,
+        })),
+        image: finalImage,
+        description: finalDesc,
+        updated_at: new Date().toISOString(),
+      };
+
+      const { error: updateErr } = await supabase
+        .from('weapons')
+        .update(updatePayload)
+        .eq('id', baseWeaponId);
+
+      if (updateErr) throw updateErr;
+
+      // 3. Migrate user collection references
+      const { data: collRows } = await supabase
+        .from('user_weapon_collection')
+        .select('id, user_id')
+        .eq('weapon_id', upgradedWeaponId);
+
+      if (collRows && collRows.length > 0) {
+        for (const row of collRows) {
+          const { data: existingBase } = await supabase
+            .from('user_weapon_collection')
+            .select('id')
+            .eq('user_id', row.user_id)
+            .eq('weapon_id', baseWeaponId)
+            .maybeSingle();
+
+          if (existingBase) {
+            await supabase.from('user_weapon_collection').delete().eq('id', row.id);
+          } else {
+            await supabase
+              .from('user_weapon_collection')
+              .update({ weapon_id: baseWeaponId })
+              .eq('id', row.id);
+          }
+        }
+      }
+
+      // 4. Migrate mho_builds references
+      await supabase
+        .from('mho_builds')
+        .update({ weapon_id: baseWeaponId })
+        .eq('weapon_id', upgradedWeaponId);
+
+      // 5. Delete the upgraded weapon record
+      const { error: delErr } = await supabase
+        .from('weapons')
+        .delete()
+        .eq('id', upgradedWeaponId);
+
+      if (delErr) {
+        console.warn('Could not delete merged weapon record, deactivating instead:', delErr);
+        await supabase
+          .from('weapons')
+          .update({ is_active: false, notes: `Merged into ${baseWeaponId}` })
+          .eq('id', upgradedWeaponId);
+      }
+
+      return { baseWeaponId, upgradedWeaponId };
+    },
+
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: [WEAPONS_KEY] });
+      qc.invalidateQueries({ queryKey: [PUBLIC_WEAPONS_KEY] });
+      qc.invalidateQueries({ queryKey: ['weapons'] });
+      qc.invalidateQueries({ queryKey: ['user_weapon_collection'] });
     },
   });
 }

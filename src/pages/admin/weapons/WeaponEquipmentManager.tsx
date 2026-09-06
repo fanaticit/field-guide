@@ -20,6 +20,7 @@ import {
   Snowflake,
   Skull,
   Layers,
+  GitMerge,
 } from 'lucide-react';
 import {
   type DBWeapon,
@@ -27,6 +28,7 @@ import {
   type WeaponElementType,
   WEAPON_SOURCE_CONFIG,
   WEAPON_ELEMENT_CONFIG,
+  getRarityBadgeStyle,
 } from '../../../data/schemas/weapon';
 import { WEAPON_TYPES } from '../../../data/core/weapon-types';
 import { useAdminMonsters } from '../../../hooks/useAdminMonsters';
@@ -37,9 +39,11 @@ import {
   useDeleteWeapon,
 } from '../../../hooks/useAdminWeapons';
 import WeaponEditModal from './WeaponEditModal';
+import WeaponMergeModal from './WeaponMergeModal';
 import { cn } from '../../../lib/utils';
 
 type ViewMode = 'grid' | 'table';
+type SortOrder = 'rarity-desc' | 'rarity-asc' | 'name-asc' | 'default';
 
 const ELEMENT_ICONS: Record<WeaponElementType, React.ComponentType<{ size?: number; className?: string }>> = {
   raw: Shield,
@@ -57,6 +61,7 @@ const ELEMENT_ICONS: Record<WeaponElementType, React.ComponentType<{ size?: numb
 export default function WeaponEquipmentManager() {
   const [game, setGame] = useState<string>('mho');
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('rarity-desc');
   const [search, setSearch] = useState('');
   const [selectedWeaponType, setSelectedWeaponType] = useState<string>('all');
   const [selectedSourceType, setSelectedSourceType] = useState<WeaponSourceType | 'all'>('all');
@@ -66,6 +71,9 @@ export default function WeaponEquipmentManager() {
   // Modal State
   const [editingWeapon, setEditingWeapon] = useState<DBWeapon | null | 'new'>(null);
   const [weaponToDelete, setWeaponToDelete] = useState<DBWeapon | null>(null);
+  const [mergeModalOpen, setMergeModalOpen] = useState(false);
+  const [mergeBaseWeapon, setMergeBaseWeapon] = useState<DBWeapon | null>(null);
+  const [mergeUpgradedWeapon, setMergeUpgradedWeapon] = useState<DBWeapon | null>(null);
 
   // Queries
   const { data: weapons = [], isLoading, refetch } = useAdminWeapons({ game });
@@ -99,6 +107,7 @@ export default function WeaponEquipmentManager() {
         const monster = w.monster_id ? monstersMap.get(w.monster_id) : null;
         return (
           w.name.toLowerCase().includes(q) ||
+          (w.upgraded_name ?? '').toLowerCase().includes(q) ||
           w.id.toLowerCase().includes(q) ||
           (w.name_ja ?? '').toLowerCase().includes(q) ||
           (monster?.name ?? '').toLowerCase().includes(q) ||
@@ -129,12 +138,27 @@ export default function WeaponEquipmentManager() {
 
     // Sort order
     list.sort((a, b) => {
+      const rA = a.rarity ?? a.grade ?? 1;
+      const rB = b.rarity ?? b.grade ?? 1;
+
+      if (sortOrder === 'rarity-desc') {
+        if (rB !== rA) return rB - rA;
+        return a.name.localeCompare(b.name);
+      }
+      if (sortOrder === 'rarity-asc') {
+        if (rA !== rB) return rA - rB;
+        return a.name.localeCompare(b.name);
+      }
+      if (sortOrder === 'name-asc') {
+        return a.name.localeCompare(b.name);
+      }
+      // default: sort_order, then name
       if (a.sort_order !== b.sort_order) return a.sort_order - b.sort_order;
       return a.name.localeCompare(b.name);
     });
 
     return list;
-  }, [weapons, search, selectedWeaponType, selectedSourceType, selectedElement, selectedMonsterId, monstersMap, skillsMap]);
+  }, [weapons, search, selectedWeaponType, selectedSourceType, selectedElement, selectedMonsterId, sortOrder, monstersMap, skillsMap]);
 
   async function handleDeleteConfirm() {
     if (!weaponToDelete) return;
@@ -185,6 +209,20 @@ export default function WeaponEquipmentManager() {
             >
               <RefreshCw size={13} className={isLoading ? 'animate-spin' : ''} />
               <span>Refresh</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setMergeBaseWeapon(null);
+                setMergeUpgradedWeapon(null);
+                setMergeModalOpen(true);
+              }}
+              className="flex items-center gap-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 px-3.5 py-2 text-xs font-bold text-amber-300 transition-all shadow-sm"
+              title="Merge younger and older versions of weapons"
+            >
+              <GitMerge size={14} />
+              <span>Merge Weapons</span>
             </button>
 
             <button
@@ -336,6 +374,62 @@ export default function WeaponEquipmentManager() {
             ))}
           </select>
 
+          {/* Sort By Controls */}
+          <div className="flex items-center rounded-xl border border-mh-slate-700 bg-mh-slate-850 p-0.5 text-xs">
+            <button
+              type="button"
+              onClick={() => setSortOrder('rarity-desc')}
+              className={cn(
+                'rounded-lg px-2.5 py-1 text-xs font-bold transition-all',
+                sortOrder === 'rarity-desc'
+                  ? 'bg-mh-slate-700 text-mh-gold-400 ring-1 ring-mh-gold-500/30'
+                  : 'text-mh-slate-400 hover:text-white',
+              )}
+              title="Sort by Starting Rarity (High to Low)"
+            >
+              Rarity ↓
+            </button>
+            <button
+              type="button"
+              onClick={() => setSortOrder('rarity-asc')}
+              className={cn(
+                'rounded-lg px-2.5 py-1 text-xs font-bold transition-all',
+                sortOrder === 'rarity-asc'
+                  ? 'bg-mh-slate-700 text-mh-gold-400 ring-1 ring-mh-gold-500/30'
+                  : 'text-mh-slate-400 hover:text-white',
+              )}
+              title="Sort by Starting Rarity (Low to High)"
+            >
+              Rarity ↑
+            </button>
+            <button
+              type="button"
+              onClick={() => setSortOrder('name-asc')}
+              className={cn(
+                'rounded-lg px-2.5 py-1 text-xs font-bold transition-all',
+                sortOrder === 'name-asc'
+                  ? 'bg-mh-slate-700 text-mh-gold-400 ring-1 ring-mh-gold-500/30'
+                  : 'text-mh-slate-400 hover:text-white',
+              )}
+              title="Sort by Name (A to Z)"
+            >
+              A-Z
+            </button>
+            <button
+              type="button"
+              onClick={() => setSortOrder('default')}
+              className={cn(
+                'rounded-lg px-2.5 py-1 text-xs font-bold transition-all',
+                sortOrder === 'default'
+                  ? 'bg-mh-slate-700 text-mh-gold-400 ring-1 ring-mh-gold-500/30'
+                  : 'text-mh-slate-400 hover:text-white',
+              )}
+              title="Default Catalog Sort Order"
+            >
+              Default
+            </button>
+          </div>
+
           {/* View Mode Switcher */}
           <div className="flex items-center rounded-xl border border-mh-slate-700 bg-mh-slate-850 p-0.5">
             <button
@@ -429,18 +523,31 @@ export default function WeaponEquipmentManager() {
                       </span>
                     </div>
 
-                    {/* Element Pill */}
-                    <span
-                      className={cn(
-                        'inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-bold border',
-                        elemCfg.bg,
-                        elemCfg.text,
-                        elemCfg.border,
-                      )}
-                    >
-                      <ElIcon size={11} className={elemCfg.color} />
-                      <span>{elemCfg.label}</span>
-                    </span>
+                    {/* Rarity & Element Pill */}
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <span
+                        className={cn(
+                          'rounded px-2 py-0.5 text-[10px] font-bold border shadow-xs',
+                          getRarityBadgeStyle(weapon.rarity).bg,
+                          getRarityBadgeStyle(weapon.rarity).text,
+                          getRarityBadgeStyle(weapon.rarity).border,
+                        )}
+                        title={`Starting Equipment Rarity ${weapon.rarity}`}
+                      >
+                        {getRarityBadgeStyle(weapon.rarity).label}
+                      </span>
+                      <span
+                        className={cn(
+                          'inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-bold border',
+                          elemCfg.bg,
+                          elemCfg.text,
+                          elemCfg.border,
+                        )}
+                      >
+                        <ElIcon size={11} className={elemCfg.color} />
+                        <span>{elemCfg.label}</span>
+                      </span>
+                    </div>
                   </div>
 
                   {/* Icon & Weapon Title */}
@@ -471,6 +578,18 @@ export default function WeaponEquipmentManager() {
                           </span>
                         )}
                       </div>
+
+                      {weapon.upgraded_name && (
+                        <div className="flex items-center gap-1.5 text-xs text-amber-300 font-medium truncate mt-0.5">
+                          <span className="text-mh-slate-500 text-[10px]">▲ Upgrades:</span>
+                          <span className="font-bold text-amber-200">{weapon.upgraded_name}</span>
+                          {weapon.upgrade_level && (
+                            <span className="rounded bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[10px] px-1 py-0.2 font-mono">
+                              Lv {weapon.upgrade_level}
+                            </span>
+                          )}
+                        </div>
+                      )}
 
                       {monster ? (
                         <p className="text-xs text-orange-400 font-medium truncate mt-0.5">
@@ -563,6 +682,18 @@ export default function WeaponEquipmentManager() {
                   <div className="flex items-center gap-1">
                     <button
                       type="button"
+                      onClick={() => {
+                        setMergeBaseWeapon(weapon);
+                        setMergeUpgradedWeapon(null);
+                        setMergeModalOpen(true);
+                      }}
+                      className="rounded-lg p-1.5 text-mh-slate-400 hover:bg-amber-500/20 hover:text-amber-300 transition-colors"
+                      title="Merge with another weapon"
+                    >
+                      <GitMerge size={14} />
+                    </button>
+                    <button
+                      type="button"
                       onClick={() => setEditingWeapon(weapon)}
                       className="rounded-lg p-1.5 text-mh-slate-400 hover:bg-mh-slate-750 hover:text-white transition-colors"
                       title="Edit Weapon"
@@ -590,6 +721,7 @@ export default function WeaponEquipmentManager() {
             <thead className="border-b border-mh-slate-750 bg-mh-slate-950/80 text-[11px] font-bold uppercase tracking-wider text-mh-slate-400">
               <tr>
                 <th className="py-3.5 pl-5 pr-3">Weapon</th>
+                <th className="px-3 py-3.5">Rarity</th>
                 <th className="px-3 py-3.5">Type</th>
                 <th className="px-3 py-3.5">Origin</th>
                 <th className="px-3 py-3.5">Element / Status</th>
@@ -625,11 +757,31 @@ export default function WeaponEquipmentManager() {
                         </div>
                         <div>
                           <p className="font-bold text-mh-slate-100">{weapon.name}</p>
+                          {weapon.upgraded_name && (
+                            <p className="text-[10px] text-amber-300 font-medium">
+                              ▲ {weapon.upgraded_name} {weapon.upgrade_level ? `(Lv ${weapon.upgrade_level})` : ''}
+                            </p>
+                          )}
                           {weapon.name_ja && (
                             <p className="text-[10px] text-mh-slate-500">{weapon.name_ja}</p>
                           )}
                         </div>
                       </div>
+                    </td>
+
+                    {/* Starting Rarity */}
+                    <td className="px-3 py-3.5">
+                      <span
+                        className={cn(
+                          'inline-flex items-center rounded px-2 py-0.5 text-[10px] font-bold border shadow-xs',
+                          getRarityBadgeStyle(weapon.rarity).bg,
+                          getRarityBadgeStyle(weapon.rarity).text,
+                          getRarityBadgeStyle(weapon.rarity).border,
+                        )}
+                        title={`Starting Equipment Rarity ${weapon.rarity}`}
+                      >
+                        {getRarityBadgeStyle(weapon.rarity).label}
+                      </span>
                     </td>
 
                     {/* Weapon Type */}
@@ -721,6 +873,18 @@ export default function WeaponEquipmentManager() {
                       <div className="flex items-center justify-end gap-1">
                         <button
                           type="button"
+                          onClick={() => {
+                            setMergeBaseWeapon(weapon);
+                            setMergeUpgradedWeapon(null);
+                            setMergeModalOpen(true);
+                          }}
+                          className="rounded-lg p-1.5 text-mh-slate-400 hover:bg-amber-500/20 hover:text-amber-300 transition-colors"
+                          title="Merge with another weapon"
+                        >
+                          <GitMerge size={13} />
+                        </button>
+                        <button
+                          type="button"
                           onClick={() => setEditingWeapon(weapon)}
                           className="rounded-lg p-1.5 text-mh-slate-400 hover:bg-mh-slate-800 hover:text-white transition-colors"
                           title="Edit weapon"
@@ -754,6 +918,20 @@ export default function WeaponEquipmentManager() {
           onClose={() => setEditingWeapon(null)}
         />
       )}
+
+      {/* ── Weapon Merge Modal ── */}
+      <WeaponMergeModal
+        open={mergeModalOpen}
+        weapons={weapons}
+        initialBaseWeapon={mergeBaseWeapon}
+        initialUpgradedWeapon={mergeUpgradedWeapon}
+        onClose={() => {
+          setMergeModalOpen(false);
+          setMergeBaseWeapon(null);
+          setMergeUpgradedWeapon(null);
+        }}
+        onSuccess={() => refetch()}
+      />
 
       {/* ── Delete Confirmation Dialog ── */}
       {weaponToDelete && (

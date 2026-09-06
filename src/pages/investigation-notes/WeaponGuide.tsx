@@ -24,6 +24,7 @@ import {
   type WeaponElementType,
   WEAPON_SOURCE_CONFIG,
   WEAPON_ELEMENT_CONFIG,
+  getRarityBadgeStyle,
 } from '../../data/schemas/weapon';
 import { WEAPON_TYPES } from '../../data/core/weapon-types';
 import { useAdminWeapons } from '../../hooks/useAdminWeapons';
@@ -31,13 +32,14 @@ import { useAdminMonsters } from '../../hooks/useAdminMonsters';
 import { useAdminSkills } from '../../hooks/useAdminSkills';
 import { useUserWeaponCollection } from '../../hooks/useUserWeaponCollection';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
-import { useUIStore } from '../../store/uiStore';
+import { useNavigate } from 'react-router-dom';
 import WeaponCard from './WeaponCard';
 import WeaponModal from './WeaponModal';
 import { cn } from '../../lib/utils';
 
 type OwnershipFilter = 'all' | 'collected' | 'missing';
 type ViewMode = 'grid' | 'table';
+type SortOrder = 'rarity-desc' | 'rarity-asc' | 'name-asc' | 'default';
 
 const ELEMENT_ICONS: Record<WeaponElementType, React.ComponentType<{ size?: number; className?: string }>> = {
   raw: Shield,
@@ -53,7 +55,7 @@ const ELEMENT_ICONS: Record<WeaponElementType, React.ComponentType<{ size?: numb
 };
 
 export default function WeaponGuide() {
-  const { setActivePage, setAdminSubPage } = useUIStore();
+  const navigate = useNavigate();
   const isAdmin = useAuthStore(selectIsAdmin);
 
   const [search, setSearch] = useState('');
@@ -62,6 +64,7 @@ export default function WeaponGuide() {
   const [filterWeaponType, setFilterWeaponType] = useState<string>('all');
   const [filterElement, setFilterElement] = useState<WeaponElementType | 'all'>('all');
   const [filterSource, setFilterSource] = useState<WeaponSourceType | 'all'>('all');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('rarity-desc');
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
 
   // Selected Weapon for Inspection Modal
@@ -87,6 +90,7 @@ export default function WeaponGuide() {
         const monster = w.monster_id ? monstersMap.get(w.monster_id) : null;
         return (
           w.name.toLowerCase().includes(q) ||
+          (w.upgraded_name ?? '').toLowerCase().includes(q) ||
           w.id.toLowerCase().includes(q) ||
           (w.name_ja ?? '').toLowerCase().includes(q) ||
           (monster?.name ?? '').toLowerCase().includes(q) ||
@@ -120,12 +124,25 @@ export default function WeaponGuide() {
 
     // Sort order
     list.sort((a, b) => {
+      if (sortOrder === 'rarity-desc') {
+        const diff = (b.rarity || 1) - (a.rarity || 1);
+        if (diff !== 0) return diff;
+        return a.name.localeCompare(b.name);
+      }
+      if (sortOrder === 'rarity-asc') {
+        const diff = (a.rarity || 1) - (b.rarity || 1);
+        if (diff !== 0) return diff;
+        return a.name.localeCompare(b.name);
+      }
+      if (sortOrder === 'name-asc') {
+        return a.name.localeCompare(b.name);
+      }
       if (a.sort_order !== b.sort_order) return a.sort_order - b.sort_order;
       return a.name.localeCompare(b.name);
     });
 
     return list;
-  }, [weapons, search, filterGame, filterWeaponType, filterElement, filterSource, filterOwnership, isCollected, monstersMap, skillsMap]);
+  }, [weapons, search, filterGame, filterWeaponType, filterElement, filterSource, filterOwnership, sortOrder, isCollected, monstersMap, skillsMap]);
 
   // Metrics
   const totalCount = weapons.length;
@@ -160,10 +177,7 @@ export default function WeaponGuide() {
           {isAdmin && (
             <button
               type="button"
-              onClick={() => {
-                setActivePage('admin');
-                setAdminSubPage('weapons');
-              }}
+              onClick={() => navigate('/admin/weapons')}
               className="flex items-center gap-2 rounded-xl bg-mh-gold-500/10 hover:bg-mh-gold-500/20 border border-mh-gold-500/30 px-4 py-2.5 text-xs font-bold text-mh-gold-400 transition-all shrink-0 self-start lg:self-auto"
             >
               <Sword size={14} />
@@ -305,6 +319,33 @@ export default function WeaponGuide() {
             <option value="general">General</option>
           </select>
 
+          {/* Sort By Controls */}
+          <div className="flex items-center rounded-xl border border-mh-slate-700 bg-mh-slate-850 p-0.5 text-xs">
+            <span className="px-2 text-mh-slate-500 font-bold uppercase tracking-wider text-[10px] hidden sm:inline">Sort:</span>
+            {(
+              [
+                { id: 'rarity-desc', label: 'Rarity ↓' },
+                { id: 'rarity-asc', label: 'Rarity ↑' },
+                { id: 'name-asc', label: 'A-Z' },
+                { id: 'default', label: 'Default' },
+              ] as const
+            ).map((opt) => (
+              <button
+                key={opt.id}
+                type="button"
+                onClick={() => setSortOrder(opt.id)}
+                className={cn(
+                  'rounded-lg px-2.5 py-1 transition-colors font-medium',
+                  sortOrder === opt.id
+                    ? 'bg-mh-gold-500 text-slate-950 font-bold'
+                    : 'text-mh-slate-400 hover:text-white',
+                )}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+
           {/* View Mode Switcher */}
           <div className="flex items-center rounded-xl border border-mh-slate-700 bg-mh-slate-850 p-0.5">
             <button
@@ -370,6 +411,7 @@ export default function WeaponGuide() {
               <tr>
                 <th className="py-3.5 pl-5 pr-3">Weapon</th>
                 <th className="px-3 py-3.5">Type</th>
+                <th className="px-3 py-3.5 text-center">Rarity</th>
                 <th className="px-3 py-3.5">Origin</th>
                 <th className="px-3 py-3.5">Element / Status</th>
                 <th className="px-3 py-3.5">Special Skill</th>
@@ -386,6 +428,7 @@ export default function WeaponGuide() {
                 const elemCfg = WEAPON_ELEMENT_CONFIG[weapon.element_type] || WEAPON_ELEMENT_CONFIG.raw;
                 const ElIcon = ELEMENT_ICONS[weapon.element_type] || Shield;
                 const collected = isCollected(weapon.id);
+                const rarityCfg = getRarityBadgeStyle(weapon.rarity || 1);
 
                 return (
                   <tr
@@ -412,6 +455,11 @@ export default function WeaponGuide() {
                         </div>
                         <div>
                           <p className="font-bold text-mh-slate-100">{weapon.name}</p>
+                          {weapon.upgraded_name && (
+                            <p className="text-[10px] text-amber-300 font-medium">
+                              ▲ {weapon.upgraded_name} {weapon.upgrade_level ? `(Lv ${weapon.upgrade_level})` : ''}
+                            </p>
+                          )}
                           {weapon.name_ja && (
                             <p className="text-[10px] text-mh-slate-500">{weapon.name_ja}</p>
                           )}
@@ -422,6 +470,13 @@ export default function WeaponGuide() {
                     {/* Type */}
                     <td className="px-3 py-3.5 font-semibold text-mh-slate-300">
                       {wt?.name || weapon.weapon_type_id}
+                    </td>
+
+                    {/* Rarity */}
+                    <td className="px-3 py-3.5 text-center">
+                      <span className={cn('inline-block rounded px-2 py-0.5 text-[10px] font-bold border', rarityCfg.badge)}>
+                        {rarityCfg.label}
+                      </span>
                     </td>
 
                     {/* Origin */}

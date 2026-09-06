@@ -19,6 +19,7 @@ import {
   type WeaponElementType,
   WEAPON_SOURCE_CONFIG,
   WEAPON_ELEMENT_CONFIG,
+  getRarityBadgeStyle,
 } from '../../data/schemas/weapon';
 import { WEAPON_TYPES } from '../../data/core/weapon-types';
 import { useAdminMonsters } from '../../hooks/useAdminMonsters';
@@ -75,8 +76,18 @@ export default function WeaponCard({
         <div className="flex items-center justify-between gap-1.5 mb-3">
           <div className="flex items-center gap-1.5 flex-wrap">
             {/* Weapon Type Pill */}
-            <span className="rounded bg-mh-slate-800 border border-mh-slate-700 px-2 py-0.5 text-[10px] font-bold text-mh-slate-300">
+            <span className="rounded bg-mh-slate-800 border border-mh-slate-750 px-2 py-0.5 text-[10px] font-bold text-mh-slate-300">
               {weaponTypeObj?.name || weapon.weapon_type_id}
+            </span>
+
+            {/* Starting Rarity Badge */}
+            <span
+              className={cn(
+                'rounded px-1.5 py-0.5 text-[10px] font-bold border',
+                getRarityBadgeStyle(weapon.rarity || 1).badge,
+              )}
+            >
+              {getRarityBadgeStyle(weapon.rarity || 1).label}
             </span>
 
             {/* Source Origin */}
@@ -127,7 +138,18 @@ export default function WeaponCard({
             <h3 className="font-display text-base font-bold text-mh-slate-100 group-hover:text-mh-gold-300 transition-colors truncate">
               {weapon.name}
             </h3>
-            {weapon.name_ja && (
+            {weapon.upgraded_name && (
+              <div className="flex items-center gap-1.5 text-xs text-amber-300 font-medium truncate mt-0.5">
+                <span className="text-mh-slate-500 text-[10px]">▲ Upgrades:</span>
+                <span className="font-bold text-amber-200">{weapon.upgraded_name}</span>
+                {weapon.upgrade_level && (
+                  <span className="rounded bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[10px] px-1 py-0.2 font-mono">
+                    Lv {weapon.upgrade_level}
+                  </span>
+                )}
+              </div>
+            )}
+            {weapon.name_ja && !weapon.upgraded_name && (
               <p className="text-[11px] text-mh-slate-500 font-medium truncate">
                 {weapon.name_ja}
               </p>
@@ -149,7 +171,7 @@ export default function WeaponCard({
             <div className="flex flex-wrap gap-1">
               {weapon.skills.map((s, idx) => {
                 const meta = dbSkills.find((d) => d.id === s.id);
-                const ur = s.unlockRarity ?? s.unlock_rarity ?? null;
+                const ur = s.unlockLevel ?? s.unlock_level ?? s.unlockRarity ?? s.unlock_rarity ?? null;
                 return (
                   <span
                     key={idx}
@@ -159,7 +181,7 @@ export default function WeaponCard({
                     <span className="font-bold text-mh-gold-400 font-mono">Lv{s.level}</span>
                     {ur && ur > 1 && (
                       <span className="rounded bg-amber-500/20 text-amber-300 px-1 py-0.2 text-[9px] font-bold border border-amber-500/40">
-                        R{ur}
+                        Lv{ur}
                       </span>
                     )}
                   </span>

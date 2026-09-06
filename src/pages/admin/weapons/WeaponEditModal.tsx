@@ -26,6 +26,7 @@ import {
   type WeaponElementType,
   type WeaponSkill,
   WEAPON_ELEMENT_CONFIG,
+  getRarityBadgeStyle,
 } from '../../../data/schemas/weapon';
 import { WEAPON_TYPES } from '../../../data/core/weapon-types';
 import { useAdminMonsters } from '../../../hooks/useAdminMonsters';
@@ -68,7 +69,11 @@ export default function WeaponEditModal({
   const [game, setGame] = useState<string>(initialData?.game || defaultGame);
   const [name, setName] = useState<string>(initialData?.name || '');
   const [nameJa, setNameJa] = useState<string>(initialData?.name_ja || '');
+  const [upgradedName, setUpgradedName] = useState<string>(initialData?.upgraded_name || '');
+  const [upgradedNameJa, setUpgradedNameJa] = useState<string>(initialData?.upgraded_name_ja || '');
+  const [upgradeLevel, setUpgradeLevel] = useState<number | null>(initialData?.upgrade_level || null);
   const [customId, setCustomId] = useState<string>(initialData?.id || '');
+  const [rarity, setRarity] = useState<number>(initialData?.rarity ?? initialData?.grade ?? 1);
   const [weaponTypeId, setWeaponTypeId] = useState<string>(initialData?.weapon_type_id || 'great_sword');
   const [sourceType, setSourceType] = useState<WeaponSourceType>(initialData?.source_type || 'monster');
   const [monsterId, setMonsterId] = useState<string>(initialData?.monster_id || '');
@@ -193,6 +198,9 @@ export default function WeaponEditModal({
       game,
       name: name.trim(),
       name_ja: nameJa.trim() || null,
+      upgraded_name: upgradedName.trim() || null,
+      upgraded_name_ja: upgradedNameJa.trim() || null,
+      upgrade_level: upgradeLevel ? Number(upgradeLevel) : null,
       weapon_type_id: weaponTypeId,
       monster_id: sourceType === 'monster' && monsterId ? monsterId : null,
       source_type: sourceType,
@@ -202,6 +210,7 @@ export default function WeaponEditModal({
       image: image ? image.trim() : null,
       description: description.trim() || null,
       notes: notes.trim() || null,
+      rarity: Number(rarity) || 1,
       is_active: isActive,
       sort_order: Number(sortOrder) || 0,
     };
@@ -287,7 +296,7 @@ export default function WeaponEditModal({
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-mh-slate-400 mb-1.5">
-                Weapon Name *
+                Crafted Name *
               </label>
               <input
                 type="text"
@@ -324,6 +333,84 @@ export default function WeaponEditModal({
                 placeholder="great_sword_buster_sword"
                 className="w-full rounded-xl border border-mh-slate-750 bg-mh-slate-800 px-3 py-2 text-xs font-mono text-mh-gold-400 placeholder:text-mh-slate-500 focus:border-mh-gold-500/50 focus:outline-none"
               />
+            </div>
+          </div>
+
+          {/* Upgraded Form Progression (Optional) */}
+          <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-3.5 space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                <span className="h-2 w-2 rounded-full bg-amber-400" />
+                Upgraded Form Progression (Optional)
+              </span>
+              <span className="text-[10px] text-mh-slate-400">
+                Shown when the weapon is upgraded to a higher level
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div>
+                <label className="block text-xs font-bold text-mh-slate-300 mb-1">
+                  Upgraded Form Name
+                </label>
+                <input
+                  type="text"
+                  value={upgradedName}
+                  onChange={(e) => setUpgradedName(e.target.value)}
+                  placeholder="e.g. Buster Blade"
+                  className="w-full rounded-xl border border-mh-slate-700 bg-mh-slate-850 px-3 py-2 text-xs text-mh-slate-100 placeholder:text-mh-slate-500 focus:border-amber-400 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-mh-slate-400 mb-1">
+                  Upgraded Japanese Name
+                </label>
+                <input
+                  type="text"
+                  value={upgradedNameJa}
+                  onChange={(e) => setUpgradedNameJa(e.target.value)}
+                  placeholder="e.g. バスターブレイド"
+                  className="w-full rounded-xl border border-mh-slate-700 bg-mh-slate-850 px-3 py-2 text-xs text-mh-slate-300 placeholder:text-mh-slate-500 focus:border-amber-400 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-mh-slate-300 mb-1">
+                  Upgrade Level / Grade
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="number"
+                    min={1}
+                    max={50}
+                    value={upgradeLevel ?? ''}
+                    onChange={(e) => {
+                      const val = parseInt(e.target.value, 10);
+                      setUpgradeLevel(isNaN(val) ? null : val);
+                    }}
+                    placeholder="e.g. 5"
+                    className="w-20 rounded-xl border border-mh-slate-700 bg-mh-slate-850 px-3 py-2 text-xs font-mono font-bold text-amber-300 placeholder:text-mh-slate-500 focus:border-amber-400 focus:outline-none"
+                  />
+                  <div className="flex items-center gap-1">
+                    {[5, 6, 8, 10].map((lvl) => (
+                      <button
+                        key={lvl}
+                        type="button"
+                        onClick={() => setUpgradeLevel(lvl)}
+                        className={cn(
+                          'rounded px-2 py-1 text-[10px] font-bold transition-colors',
+                          upgradeLevel === lvl
+                            ? 'bg-amber-500 text-slate-950'
+                            : 'bg-mh-slate-800 text-mh-slate-400 hover:text-white',
+                        )}
+                      >
+                        Lv{lvl}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -539,6 +626,47 @@ export default function WeaponEditModal({
             </div>
           </div>
 
+          {/* Starting Equipment Rarity */}
+          <div className="rounded-xl border border-mh-slate-800 bg-mh-slate-950/60 p-4 space-y-2.5">
+            <div className="flex items-center justify-between">
+              <label className="block text-xs font-bold uppercase tracking-wider text-mh-slate-300">
+                Starting Equipment Rarity
+              </label>
+              <span className={cn(
+                'rounded px-2.5 py-0.5 text-xs font-bold border shadow-xs',
+                getRarityBadgeStyle(rarity).bg,
+                getRarityBadgeStyle(rarity).text,
+                getRarityBadgeStyle(rarity).border,
+              )}>
+                Rarity {rarity} ({getRarityBadgeStyle(rarity).label})
+              </span>
+            </div>
+            <p className="text-[11px] text-mh-slate-400">
+              The starting equipment grade or rarity value (used for sorting and upgrade scaling).
+            </p>
+            <div className="grid grid-cols-6 sm:grid-cols-12 gap-1.5 pt-1">
+              {Array.from({ length: 12 }, (_, i) => i + 1).map((r) => {
+                const isSelected = rarity === r;
+                const rStyle = getRarityBadgeStyle(r);
+                return (
+                  <button
+                    key={r}
+                    type="button"
+                    onClick={() => setRarity(r)}
+                    className={cn(
+                      'flex items-center justify-center rounded-lg border py-1.5 text-xs font-bold transition-all',
+                      isSelected
+                        ? `${rStyle.bg} ${rStyle.text} ${rStyle.border} ring-1 ring-current/40 shadow-xs scale-105`
+                        : 'border-mh-slate-750 bg-mh-slate-850 text-mh-slate-400 hover:border-mh-slate-600 hover:text-white',
+                    )}
+                  >
+                    R{r}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
           {/* Elemental & Special Skill */}
           <div className="rounded-xl border border-mh-slate-800 bg-mh-slate-950/60 p-4 space-y-4">
             <h4 className="text-xs font-bold uppercase tracking-wider text-mh-slate-300">
@@ -694,14 +822,15 @@ export default function WeaponEditModal({
                     </div>
 
                     <div className="flex items-center justify-between gap-2 text-xs">
-                      <span className="text-mh-slate-400">Unlock at Rarity:</span>
+                      <span className="text-mh-slate-400">Unlock Level/Rarity:</span>
                       <div className="flex items-center gap-1 flex-wrap">
                         {[
                           { label: 'Base', val: null },
-                          { label: 'R6', val: 6 },
-                          { label: 'R8', val: 8 },
-                          { label: 'R9', val: 9 },
-                          { label: 'R12', val: 12 },
+                          { label: 'Lv5', val: 5 },
+                          { label: 'Lv6', val: 6 },
+                          { label: 'Lv8', val: 8 },
+                          { label: 'Lv10', val: 10 },
+                          { label: 'Lv12', val: 12 },
                         ].map((r) => (
                           <button
                             key={r.label}
@@ -717,6 +846,18 @@ export default function WeaponEditModal({
                             {r.label}
                           </button>
                         ))}
+                        <input
+                          type="number"
+                          min={1}
+                          max={50}
+                          placeholder="Lv..."
+                          value={newSkillUnlockRarity && ![5, 6, 8, 10, 12].includes(newSkillUnlockRarity) ? newSkillUnlockRarity : ''}
+                          onChange={(e) => {
+                            const val = parseInt(e.target.value, 10);
+                            setNewSkillUnlockRarity(isNaN(val) || val <= 1 ? null : val);
+                          }}
+                          className="w-12 rounded border border-mh-slate-700 bg-mh-slate-900 px-1 py-0.5 text-[10px] text-mh-slate-200 text-center font-bold"
+                        />
                       </div>
                     </div>
 
@@ -744,7 +885,7 @@ export default function WeaponEditModal({
                 {skills.map((s, idx) => {
                   const meta = dbSkills.find((d) => d.id === s.id);
                   const skillName = meta?.name ?? s.id;
-                  const ur = s.unlockRarity ?? s.unlock_rarity ?? null;
+                  const ur = s.unlockLevel ?? s.unlock_level ?? s.unlockRarity ?? s.unlock_rarity ?? null;
                   const isLocked = Boolean(ur && ur > 1);
 
                   return (
@@ -763,7 +904,7 @@ export default function WeaponEditModal({
                       </div>
 
                       <div className="flex items-center gap-2 shrink-0">
-                        {/* Unlock Rarity Selector */}
+                        {/* Unlock Level Selector */}
                         <select
                           value={ur ?? ''}
                           onChange={(e) => {
@@ -778,10 +919,16 @@ export default function WeaponEditModal({
                           )}
                         >
                           <option value="">Base</option>
-                          <option value="6">R6</option>
-                          <option value="8">R8</option>
-                          <option value="9">R9</option>
-                          <option value="12">R12</option>
+                          <option value="5">Lv 5</option>
+                          <option value="6">Lv 6</option>
+                          <option value="8">Lv 8</option>
+                          <option value="10">Lv 10</option>
+                          <option value="12">Lv 12</option>
+                          <option value="15">Lv 15</option>
+                          <option value="20">Lv 20</option>
+                          {ur && ![5, 6, 8, 10, 12, 15, 20].includes(ur) && (
+                            <option value={ur}>Lv {ur}</option>
+                          )}
                         </select>
 
                         {/* Level selector */}

@@ -27,7 +27,7 @@ import {
 import { useAdminBuddies } from '../../hooks/useAdminBuddies';
 import { useUserBuddyCollection } from '../../hooks/useUserBuddyCollection';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
-import { useUIStore } from '../../store/uiStore';
+import { useNavigate } from 'react-router-dom';
 import BuddyCard from './BuddyCard';
 import BuddyModal from './BuddyModal';
 import { cn } from '../../lib/utils';
@@ -56,7 +56,8 @@ export default function BuddyGuide() {
   const [inspectedBuddy, setInspectedBuddy] = useState<DBBuddy | null>(null);
 
   const isAdmin = useAuthStore(selectIsAdmin);
-  const { setActivePage, setAdminSubPage } = useUIStore();
+  const navigate = useNavigate();
+
 
   const { data: buddies = [], isLoading } = useAdminBuddies({ isActive: true });
   const {
@@ -368,10 +369,7 @@ export default function BuddyGuide() {
           </p>
           {isAdmin && (
             <button
-              onClick={() => {
-                setActivePage('admin');
-                setAdminSubPage('buddies');
-              }}
+              onClick={() => navigate('/admin/buddies')}
               className="mt-4 flex items-center gap-1.5 rounded-lg bg-mh-gold-500/15 border border-mh-gold-500/30 px-4 py-2 text-xs font-bold text-mh-gold-300 hover:bg-mh-gold-500/25 transition-colors shadow-sm"
             >
               <Plus size={14} />

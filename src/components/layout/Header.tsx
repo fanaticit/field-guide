@@ -1,19 +1,23 @@
 import { Menu, ChevronRight } from 'lucide-react';
-import { useUIStore, type Page } from '../../store/uiStore';
+import { useLocation } from 'react-router-dom';
+import { useUIStore } from '../../store/uiStore';
 
-const pageTitles: Record<Page, { title: string; subtitle: string }> = {
-  'field-guide':        { title: 'Field Guide',         subtitle: 'Quests & Challenge Todos' },
-  'build-planner':      { title: 'Build Planner',       subtitle: 'Weapons, Armour & Loadouts' },
-  'community-hub':      { title: 'Community Hub',       subtitle: 'Browse & Share Challenges' },
-  'investigation-notes':{ title: 'Investigation Notes', subtitle: 'Monsters, Weapons & Armour' },
-  'admin':              { title: 'Admin Panel',          subtitle: 'Manage game data & community' },
-  settings:             { title: 'Settings',            subtitle: 'Preferences & Account' },
-  profile:              { title: 'Hunter Profile',      subtitle: 'Preferences & Identity' },
-};
+interface PageMeta { title: string; subtitle: string }
+
+function getPageMeta(pathname: string): PageMeta {
+  if (pathname === '/') return { title: 'Field Guide', subtitle: 'Quests & Challenge Todos' };
+  if (pathname.startsWith('/build-planner')) return { title: 'Build Planner', subtitle: 'Weapons, Armour & Loadouts' };
+  if (pathname.startsWith('/community-hub')) return { title: 'Community Hub', subtitle: 'Browse & Share Challenges' };
+  if (pathname.startsWith('/investigation-notes')) return { title: 'Investigation Notes', subtitle: 'Monsters, Weapons & Armour' };
+  if (pathname.startsWith('/admin')) return { title: 'Admin Panel', subtitle: 'Manage game data & community' };
+  if (pathname.startsWith('/settings')) return { title: 'Profile & Settings', subtitle: 'Preferences & Account' };
+  return { title: 'Field Guide', subtitle: 'Monster Hunter Now' };
+}
 
 export default function Header() {
-  const { activePage, setMobileMenuOpen } = useUIStore();
-  const { title, subtitle } = pageTitles[activePage];
+  const { pathname } = useLocation();
+  const { setMobileMenuOpen } = useUIStore();
+  const { title, subtitle } = getPageMeta(pathname);
 
   return (
     <header

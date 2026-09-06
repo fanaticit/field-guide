@@ -217,12 +217,17 @@ export function EquipmentSelector() {
 
   if (!isReady) return null;
 
-  // Convert weapons to dropdown items
-  const weaponItems: DropdownItem[] = (weapons || []).map(w => ({
-    id: w.id,
-    primaryLabel: w.name,
-    icon: w.image,
-  }));
+  // Convert weapons to dropdown items (sorted by rarity descending, then name)
+  const weaponItems: DropdownItem[] = [...(weapons || [])]
+    .sort((a, b) => (b.rarity ?? b.grade ?? 1) - (a.rarity ?? a.grade ?? 1) || a.name.localeCompare(b.name))
+    .map(w => ({
+      id: w.id,
+      primaryLabel: w.name,
+      secondaryLabel: w.upgraded_name
+        ? `Upgrades: ${w.upgraded_name} · Rarity ${w.rarity ?? w.grade ?? 1}`
+        : `Rarity ${w.rarity ?? w.grade ?? 1}`,
+      icon: w.image,
+    }));
 
   // Convert armour pieces to dropdown items per slot
   const armourItems = (slot: ArmourPiece['slot']): DropdownItem[] =>

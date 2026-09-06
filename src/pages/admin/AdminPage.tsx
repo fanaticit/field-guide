@@ -4,9 +4,11 @@
 // active admin section.
 // ─────────────────────────────────────────────────────────────
 import { Shield, Bug, Sparkles, Layers, Users, FileText, SquareLibrary, Cat, UserCheck, Sword, SlidersHorizontal } from 'lucide-react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
-import { useUIStore, type AdminSubPage } from '../../store/uiStore';
+import { type AdminSubPage } from '../../store/uiStore';
 import { cn } from '../../lib/utils';
+
 import MonsterManager from './monsters/MonsterManager';
 import SkillManager from './skills/SkillManager';
 import ArmourManager from './armour/ArmourManager';
@@ -38,7 +40,10 @@ const TABS: AdminTab[] = [
 
 export default function AdminPage() {
   const isAdmin = useAuthStore(selectIsAdmin);
-  const { adminSubPage, setAdminSubPage } = useUIStore();
+  const navigate = useNavigate();
+  const { subPage } = useParams<{ subPage: string }>();
+  // Fall back to 'monsters' if param is missing or invalid
+  const adminSubPage: AdminSubPage = (TABS.find(t => t.id === subPage)?.id ?? 'monsters') as AdminSubPage;
 
   if (!isAdmin) {
     return (
@@ -74,7 +79,7 @@ export default function AdminPage() {
             return (
               <button
                 key={tab.id}
-                onClick={() => setAdminSubPage(tab.id)}
+                onClick={() => navigate(`/admin/${tab.id}`)}
                 className={cn(
                   'flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150 whitespace-nowrap',
                   isActive

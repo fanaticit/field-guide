@@ -1,29 +1,14 @@
 import { useState } from 'react';
+import { Plus, Search } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '../../lib/supabase';
 import { useAuthStore } from '../../store/authStore';
-import { useBuildPlannerStore, type Visage, type VisageSlot } from '../../store/buildPlannerStore';
+import { useBuildPlannerStore } from '../../store/buildPlannerStore';
+import type { Visage, VisageSlot } from '../../store/buildPlannerStore';
+import { getInkConfig } from '../../data/schemas/visage';
+import { InkIconComponent } from '../../pages/investigation-notes/VisageCard';
 
-// Ink type → colour for the dot/badge
-const INK_COLORS: Record<string, { bg: string; text: string; ring: string }> = {
-  fire:       { bg: 'bg-orange-500',   text: 'text-orange-100', ring: 'ring-orange-400'  },
-  flames:     { bg: 'bg-orange-500',   text: 'text-orange-100', ring: 'ring-orange-400'  },
-  water:      { bg: 'bg-blue-500',     text: 'text-blue-100',   ring: 'ring-blue-400'    },
-  thunder:    { bg: 'bg-yellow-400',   text: 'text-yellow-900', ring: 'ring-yellow-300'  },
-  ice:        { bg: 'bg-cyan-400',     text: 'text-cyan-900',   ring: 'ring-cyan-300'    },
-  frost:      { bg: 'bg-cyan-400',     text: 'text-cyan-900',   ring: 'ring-cyan-300'    },
-  dragon:     { bg: 'bg-purple-500',   text: 'text-purple-100', ring: 'ring-purple-400'  },
-  poison:     { bg: 'bg-fuchsia-500',  text: 'text-fuchsia-100',ring: 'ring-fuchsia-400' },
-  paralysis:  { bg: 'bg-lime-400',     text: 'text-lime-900',   ring: 'ring-lime-300'    },
-  blast:      { bg: 'bg-rose-500',     text: 'text-rose-100',   ring: 'ring-rose-400'    },
-  sleep:      { bg: 'bg-indigo-400',   text: 'text-indigo-100', ring: 'ring-indigo-300'  },
-  raw:        { bg: 'bg-mh-slate-400', text: 'text-mh-slate-900', ring: 'ring-mh-slate-300' },
-  combat:     { bg: 'bg-mh-slate-400', text: 'text-mh-slate-900', ring: 'ring-mh-slate-300' },
-};
-const defaultInkColor = { bg: 'bg-mh-slate-600', text: 'text-mh-slate-200', ring: 'ring-mh-slate-500' };
 
-// Set bonus descriptions per ink type and piece threshold.
-// Source of truth: update these once full skill data is seeded in the DB.
 const INK_SET_BONUSES: Record<string, { pieces: number; description: string }[]> = {
   fire:       [ { pieces: 2, description: 'Fire Attack +1. Attacks have a chance to apply Fireblight.' }, { pieces: 4, description: 'Fire Attack +2. Fireblight damage over time increased.' } ],
   flames:     [ { pieces: 2, description: 'Fire Attack +1. Attacks have a chance to apply Fireblight.' }, { pieces: 4, description: 'Fire Attack +2. Fireblight damage over time increased.' } ],
@@ -35,24 +20,10 @@ const INK_SET_BONUSES: Record<string, { pieces: number; description: string }[]>
   poison:     [ { pieces: 2, description: 'Poison buildup increased. Poison damage per tick +10%.' }, { pieces: 4, description: 'Poison buildup greatly increased. Poison tick rate doubled.' } ],
   paralysis:  [ { pieces: 2, description: 'Paralysis buildup increased. Paralysis duration +15%.' }, { pieces: 4, description: 'Paralysis buildup greatly increased. Paralysis window widened.' } ],
   blast:      [ { pieces: 2, description: 'Blast buildup increased. Blast explosion damage +15%.' }, { pieces: 4, description: 'Blast buildup greatly increased. Blast radius increased.' } ],
-  sleep:      [ { pieces: 2, description: 'Sleep buildup increased. Sleep duration +20%.' }, { pieces: 4, description: 'Sleep buildup greatly increased. Next attack after wakeup deals 3× damage.' } ],
-  raw:        [ { pieces: 2, description: 'Physical Damage +5%.' }, { pieces: 4, description: 'Physical Damage +10%. Critical hits deal extra damage.' } ],
-  combat:     [ { pieces: 2, description: 'Physical Damage +5%.' }, { pieces: 4, description: 'Physical Damage +10%. Critical hits deal extra damage.' } ],
+  sleep:      [ { pieces: 2, description: 'Sleep buildup increased. Wake-up hit damage +10%.' }, { pieces: 4, description: 'Sleep buildup greatly increased. Wake-up hit damage +25%.' } ],
+  raw:        [ { pieces: 2, description: 'Raw damage +5%. Affinity +5%.' }, { pieces: 4, description: 'Raw damage +10%. Affinity +15%.' } ],
+  combat:     [ { pieces: 2, description: 'Raw damage +5%. Affinity +5%.' }, { pieces: 4, description: 'Raw damage +10%. Affinity +15%.' } ],
 };
-
-function inkLabel(ink: string) {
-  return `Ink of ${ink.charAt(0).toUpperCase() + ink.slice(1)}`;
-}
-
-function inkShort(ink: string) {
-  // Abbreviate to 2-3 chars for the small circle
-  const map: Record<string, string> = {
-    fire: 'Fi', flames: 'Fl', water: 'Wa', thunder: 'Th', ice: 'Ic', frost: 'Fr',
-    dragon: 'Dr', poison: 'Po', paralysis: 'Pa', blast: 'Bl', sleep: 'Sl',
-    raw: 'Rw', combat: 'Co',
-  };
-  return map[ink] || ink.substring(0, 2).toUpperCase();
-}
 
 export function VisageSelector() {
   const { user } = useAuthStore();
@@ -63,11 +34,13 @@ export function VisageSelector() {
   const [openSlot, setOpenSlot] = useState<VisageSlot | null>(null);
   const [inkPickSlot, setInkPickSlot] = useState<VisageSlot | null>(null);
   const [useCollectionOnly, setUseCollectionOnly] = useState(false);
+  const [filterInk, setFilterInk] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const { data: visages, isLoading: isVisageLoading } = useQuery({
     queryKey: ['visages'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('visages').select('*').eq('is_active', true);
+      const { data, error } = await supabase.from('visages').select('*').eq('is_active', true).order('sort_order', { ascending: true });
       if (error) throw error;
       return data as Visage[];
     }
@@ -137,37 +110,38 @@ export function VisageSelector() {
   const renderCard = (slot: VisageSlot, label: string, selected: Visage | null, core: boolean) => {
     const slotKey = String(slot);
     const chosenInk = selectedInkTypes[slotKey];
-    const inkColor = chosenInk ? (INK_COLORS[chosenInk] || defaultInkColor) : defaultInkColor;
+    const inkCfg = getInkConfig(chosenInk);
     const hasMultipleInks = (selected?.ink_types?.length ?? 0) > 1;
     const isInkPickOpen = inkPickSlot === slot;
 
     return (
-      <div key={slot} className="flex flex-col items-center relative">
+      <div key={slot} className="flex flex-col items-center relative w-full">
         <label className={`text-[9px] font-bold mb-1 uppercase tracking-wider ${core ? 'text-rarity-5' : 'text-mh-slate-500'}`}>
           {label}
         </label>
 
         {/* Portrait button */}
         <button
-          onClick={() => { setOpenSlot(openSlot === slot ? null : slot); setInkPickSlot(null); }}
-          className={`relative ${core ? 'w-[60px] h-[75px]' : 'w-[44px] h-[55px]'} bg-mh-slate-800 border-2 rounded-lg overflow-hidden flex items-center justify-center transition-colors group shrink-0 ${core ? 'border-rarity-5 hover:border-rarity-4 shadow-[0_0_10px_rgba(255,215,0,0.15)]' : 'border-mh-slate-700 hover:border-mh-slate-500'}`}
+          onClick={() => { setOpenSlot(openSlot === slot ? null : slot); setInkPickSlot(null);
+                          setFilterInk(null); setSearchQuery(''); }}
+          className={`relative w-full aspect-[4/5] bg-mh-slate-800 border-2 rounded-lg overflow-hidden flex items-center justify-center transition-colors group shrink-0 ${core ? 'border-rarity-5 hover:border-rarity-4 shadow-[0_0_10px_rgba(255,215,0,0.15)]' : 'border-mh-slate-700 hover:border-mh-slate-500'}`}
         >
           {selected ? (
             <>
               {selected.image_small ? (
                 <img src={selected.image_small} alt={selected.name} className="w-full h-full object-cover" />
               ) : (
-                <span className="text-[9px] font-bold text-mh-slate-300 text-center px-0.5 leading-tight">{selected.name}</span>
+                <span className="text-[10px] sm:text-xs font-bold text-mh-slate-300 text-center px-1 leading-tight">{selected.name}</span>
               )}
-              <div className="absolute top-0.5 right-0.5 bg-black/80 px-1 rounded text-[8px] font-bold text-white leading-tight">
+              <div className="absolute top-0.5 right-0.5 bg-black/80 px-1 rounded text-[10px] font-bold text-white leading-tight">
                 {selected.points}
               </div>
               <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <span className="text-white text-[9px] font-bold">✎</span>
+                <span className="text-white text-[12px] font-bold">✎</span>
               </div>
             </>
           ) : (
-            <span className="text-mh-slate-600 text-[10px]">+</span>
+            <span className="text-mh-slate-600 text-lg sm:text-xl font-light">+</span>
           )}
         </button>
 
@@ -182,26 +156,28 @@ export function VisageSelector() {
                   setOpenSlot(null);
                 }
               }}
-              title={chosenInk ? inkLabel(chosenInk) : 'No ink'}
-              className={`w-5 h-5 rounded-full flex items-center justify-center text-[8px] font-black leading-none ring-1 transition-all ${inkColor.bg} ${inkColor.text} ${inkColor.ring} ${hasMultipleInks ? 'cursor-pointer hover:scale-110 hover:ring-2' : 'cursor-default'}`}
+              title={chosenInk ? inkCfg.name : 'No ink'}
+              className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center ring-1 ring-black/40 transition-all ${chosenInk ? inkCfg.dotColor : 'bg-mh-slate-700'} text-white shadow-sm ${hasMultipleInks ? 'cursor-pointer hover:scale-110 hover:ring-2' : 'cursor-default'}`}
             >
-              {chosenInk ? inkShort(chosenInk) : '?'}
+              {chosenInk ? <InkIconComponent iconName={inkCfg.iconName} size={14} className="opacity-90 drop-shadow-md" /> : '?'}
             </button>
 
             {/* Ink picker popover */}
             {isInkPickOpen && hasMultipleInks && (
               <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 flex flex-col gap-1 p-1.5 bg-mh-slate-900 border border-mh-slate-700 rounded-lg shadow-xl z-40">
                 {selected.ink_types.map(ink => {
-                  const c = INK_COLORS[ink] || defaultInkColor;
+                  const c = getInkConfig(ink);
                   const isActive = chosenInk === ink;
                   return (
                     <button
                       key={ink}
                       onClick={(e) => { e.stopPropagation(); setSlotInkType(slot, ink); setInkPickSlot(null); }}
-                      className={`flex items-center gap-1.5 px-2 py-1 rounded text-[10px] font-bold whitespace-nowrap transition-colors ${isActive ? `${c.bg} ${c.text}` : 'text-mh-slate-300 hover:bg-mh-slate-800'}`}
+                      className={`flex items-center gap-1.5 px-2 py-1 rounded text-[10px] font-bold whitespace-nowrap transition-colors ${isActive ? c.dotColor + ' text-white' : 'hover:bg-mh-slate-800 text-mh-slate-300'}`}
                     >
-                      <div className={`w-3 h-3 rounded-full ${c.bg}`} />
-                      {inkLabel(ink)}
+                      <div className={`w-4 h-4 rounded-full flex items-center justify-center ${isActive ? 'bg-white/20' : c.dotColor} text-white shrink-0`}>
+                        <InkIconComponent iconName={c.iconName} size={10} />
+                      </div>
+                      {c.shortName}
                     </button>
                   );
                 })}
@@ -210,62 +186,73 @@ export function VisageSelector() {
           </div>
         )}
 
-        {selected && (
-          <div className={`text-center mt-0.5 ${core ? 'w-[60px]' : 'w-[44px]'}`}>
-            <span className="text-[9px] text-mh-slate-400 block truncate leading-tight" title={selected.name}>{selected.name}</span>
-          </div>
-        )}
-
-        {/* Card picker dropdown */}
+        {/* Visage Picker Popover */}
         {openSlot === slot && (
-          <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 p-2.5 bg-mh-slate-900 border border-mh-slate-700 rounded-lg shadow-2xl z-30 max-h-60 overflow-y-auto">
-            {/* Clear button */}
-            <button
-              onClick={() => { handleVisageChange(slot, null); setOpenSlot(null); }}
-              className="w-full flex items-center justify-center gap-1.5 mb-2 py-1.5 bg-mh-slate-800 text-[10px] font-bold text-mh-slate-400 border border-mh-slate-700 rounded hover:border-mh-slate-500 transition-colors"
-            >
-              <span>✕</span> Remove Card
-            </button>
-            {isVisageLoading ? (
-              <div className="flex items-center justify-center text-xs text-mh-slate-500 py-4">Loading...</div>
-            ) : (() => {
-              // Build display entries: each visage × owned ink type (or all ink types if not collection mode)
-              type Entry = { visage: Visage; ink: string; owned: boolean };
-              const entries: Entry[] = [];
-              visages?.forEach(v => {
-                const inks = v.ink_types?.length ? v.ink_types : [''];
-                inks.forEach(ink => {
-                  const owned = !!ownedCollection?.has(`${v.id}::${ink}`);
-                  if (useCollectionOnly && !owned) return; // filter out unowned
-                  entries.push({ visage: v, ink, owned });
-                });
-              });
+          <div className="absolute top-[105%] left-1/2 -translate-x-1/2 w-[300px] sm:w-[320px] max-h-[400px] overflow-hidden bg-mh-slate-900 border border-mh-slate-700 rounded-xl shadow-2xl p-2 z-50 flex flex-col gap-2">
+            <div className="flex flex-col gap-2 px-1 border-b border-mh-slate-800 pb-2 mb-1 shrink-0">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs font-bold text-mh-slate-300">Select Visage</span>
+                  {filterInk && (
+                    <div className="flex items-center gap-1 bg-mh-slate-800 px-1.5 py-0.5 rounded border border-mh-slate-700">
+                      <span className="text-[9px] font-bold text-mh-slate-400">{getInkConfig(filterInk).shortName} Only</span>
+                      <button onClick={() => setFilterInk(null)} className="ml-0.5 text-mh-slate-500 hover:text-red-400 leading-none pb-0.5">&times;</button>
+                    </div>
+                  )}
+                </div>
+                {selected && (
+                  <button
+                    onClick={() => { setVisage(slot, null); setOpenSlot(null); }}
+                    className="text-[10px] text-red-400 hover:text-red-300"
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
+              <div className="relative">
+                <Search size={12} className="absolute left-2 top-1/2 -translate-y-1/2 text-mh-slate-500" />
+                <input
+                  type="text"
+                  autoFocus
+                  placeholder="Search cards..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full bg-mh-slate-800 border border-mh-slate-700 rounded text-xs px-2 pl-6 py-1.5 text-mh-slate-200 placeholder:text-mh-slate-600 focus:outline-none focus:border-rarity-5 transition-colors"
+                />
+              </div>
+            </div>
 
-              if (entries.length === 0) {
-                return (
-                  <p className="text-[11px] text-mh-slate-500 text-center py-3 italic">
-                    No cards in your collection yet.
-                  </p>
-                );
-              }
+            {isVisageLoading ? (
+              <p className="text-center text-xs text-mh-slate-500 py-4">Loading cards...</p>
+            ) : (() => {
+              // Group and filter
+              const filtered = visages?.filter(v => {
+                if (filterInk && !v.ink_types.includes(filterInk)) return false;
+                if (searchQuery && !v.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+                if (!useCollectionOnly || !user) return true;
+                // If collection only, user must own AT LEAST ONE ink version of this card
+                return v.ink_types.some(ink => ownedCollection?.has(`${v.id}::${ink}`));
+              }) || [];
 
               return (
-                <div className="grid grid-cols-4 gap-1.5">
-                  {entries.map(({ visage: v, ink, owned }) => {
-                    const inkC = INK_COLORS[ink] || defaultInkColor;
-                    const isSelected = selected?.id === v.id && (selectedInkTypes[String(slot)] === ink || !ink);
+                <div className="grid grid-cols-4 gap-1.5 overflow-y-auto pr-1 pb-1">
+                  {filtered.map(v => {
+                    const isEquippedHere = selected?.id === v.id;
+                    // Count if owned *at all* (for any ink)
+                    const owned = user ? v.ink_types.some(ink => ownedCollection?.has(`${v.id}::${ink}`)) : true;
+                    // Just for display in the grid, grab the first ink's color
+                    const ink = v.ink_types[0];
+                    const inkC = getInkConfig(ink);
+
                     return (
                       <button
-                        key={`${v.id}::${ink}`}
-                        title={`${v.name}${ink ? ' · ' + inkLabel(ink) : ''} (${v.points} pts)${!owned ? ' — Not in collection' : ''}`}
-                        onClick={() => {
-                          handleVisageChange(slot, v.id);
-                          if (ink) setSlotInkType(slot, ink);
-                          setOpenSlot(null);
-                        }}
-                        className={`w-10 h-10 rounded overflow-hidden border flex items-center justify-center bg-mh-slate-800 relative group transition-all ${
-                          isSelected
-                            ? 'border-rarity-5 ring-2 ring-rarity-5/50'
+                        key={v.id}
+                        title={v.name}
+                        disabled={!owned}
+                        onClick={() => { handleVisageChange(slot, v.id); if (filterInk && v.ink_types.includes(filterInk)) setSlotInkType(slot, filterInk); setOpenSlot(null); setFilterInk(null); }}
+                        className={`relative aspect-[3/4] rounded bg-mh-slate-800 border overflow-hidden group transition-all ${
+                          isEquippedHere
+                            ? 'border-rarity-5 ring-1 ring-rarity-5'
                             : owned
                               ? 'border-mh-slate-600 hover:border-mh-slate-400'
                               : 'border-mh-slate-800 opacity-40 hover:opacity-70 hover:border-mh-slate-700'
@@ -274,18 +261,20 @@ export function VisageSelector() {
                         {v.image_small ? (
                           <img src={v.image_small} alt={v.name} className="w-full h-full object-cover" />
                         ) : (
-                          <span className="text-[9px] font-bold text-mh-slate-400">{v.name.substring(0, 3)}</span>
+                          <span className="text-[9px] font-bold text-mh-slate-400 text-center leading-tight block px-0.5 pt-1">{v.name}</span>
                         )}
                         {/* Ink dot in top-left */}
                         {ink && (
-                          <div className={`absolute top-0.5 left-0.5 w-2 h-2 rounded-full ${inkC.bg} border border-black/40`} />
+                          <div className={`absolute top-0.5 left-0.5 w-3 h-3 rounded-full flex items-center justify-center ${inkC.dotColor} text-white shadow-sm ring-1 ring-black/30`}>
+                            <InkIconComponent iconName={inkC.iconName} size={8} />
+                          </div>
                         )}
                         {/* Point cost in bottom-right */}
-                        <div className="absolute bottom-0 right-0 bg-black/80 px-0.5 text-[7px] font-bold text-white">{v.points}</div>
+                        <div className="absolute bottom-0 right-0 bg-black/80 px-0.5 text-[8px] font-bold text-white">{v.points}</div>
                         {/* Not-owned lock icon */}
                         {!owned && user && (
                           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/60 transition-opacity">
-                            <span className="text-[10px]">🔒</span>
+                            <span className="text-[12px]">🔒</span>
                           </div>
                         )}
                       </button>
@@ -325,11 +314,15 @@ export function VisageSelector() {
         </span>
       </div>
 
-      {/* Flat row: Core | divider | 4 slots */}
-      <div className="flex items-start gap-3">
-        {renderCard('core', 'Core', coreVisage, true)}
-        <div className="w-px self-stretch bg-mh-slate-700/50" />
-        <div className="flex items-start gap-2">
+      {/* Flexible row: Core | divider | 4 slots */}
+      <div className="flex w-full items-start gap-2 sm:gap-3">
+        <div className="w-[28%] sm:w-[22%] shrink-0">
+          {renderCard('core', 'Core', coreVisage, true)}
+        </div>
+        
+        <div className="w-px self-stretch bg-mh-slate-700/50 hidden sm:block" />
+        
+        <div className="flex-1 grid grid-cols-4 gap-1.5 sm:gap-2">
           {renderCard(2, 'Slot 2', visage2, false)}
           {renderCard(3, 'Slot 3', visage3, false)}
           {renderCard(4, 'Slot 4', visage4, false)}
@@ -360,7 +353,7 @@ export function VisageSelector() {
         <div className="flex flex-col gap-3 pt-2 border-t border-mh-slate-800">
           <span className="text-[10px] font-bold text-mh-slate-500 uppercase tracking-wider">Set Bonuses</span>
           {activeInks.map(([ink, count]) => {
-            const c = INK_COLORS[ink] || defaultInkColor;
+            const c = getInkConfig(ink);
             const bonuses = INK_SET_BONUSES[ink];
             const MAX_PIPS = 4;
 
@@ -368,8 +361,29 @@ export function VisageSelector() {
               <div key={ink} className="flex flex-col gap-2">
                 {/* Name + progress bar row */}
                 <div className="flex items-center gap-2">
-                  <div className={`w-2 h-2 rounded-full ${c.bg} shrink-0`} />
-                  <span className="text-xs font-bold text-mh-slate-300 shrink-0">{inkLabel(ink)}</span>
+                  <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${c.dotColor} text-white`}>
+                    <InkIconComponent iconName={c.iconName} size={10} />
+                  </div>
+                  <span className={`text-xs font-bold shrink-0 ${c.text}`}>{c.name}</span>
+                  {/* Plus button to add card for this ink */}
+                  {(() => {
+                    const firstEmptySlot = [2, 3, 4, 5].find(s => !slots.find(x => x.slot === s)?.card);
+                    if (!firstEmptySlot) return null;
+                    return (
+                      <button
+                        onClick={() => {
+                          setOpenSlot(firstEmptySlot as VisageSlot);
+                          setFilterInk(ink);
+                          setSearchQuery('');
+                          setInkPickSlot(null);
+                        }}
+                        title={`Add ${c.name} card`}
+                        className="w-4 h-4 flex items-center justify-center rounded-full bg-mh-slate-700/50 hover:bg-mh-slate-600 text-mh-slate-400 hover:text-white transition-colors"
+                      >
+                        <Plus size={10} strokeWidth={3} />
+                      </button>
+                    );
+                  })()}
                   {/* Pip progress bar */}
                   <div className="flex gap-1 ml-auto">
                     {Array.from({ length: MAX_PIPS }).map((_, i) => {
@@ -381,8 +395,8 @@ export function VisageSelector() {
                         <div
                           key={i}
                           className={`rounded-sm transition-all ${isMilestone ? 'w-2.5 h-4' : 'w-2 h-3'} ${
-                            filled ? c.bg : 'bg-mh-slate-700'
-                          } ${filled && isMilestone ? 'ring-1 ' + c.ring : ''}`}
+                            filled ? c.dotColor : 'bg-mh-slate-700'
+                          } ${filled && isMilestone ? 'ring-1 ring-white/30' : ''}`}
                         />
                       );
                     })}
@@ -391,17 +405,17 @@ export function VisageSelector() {
 
                 {/* Bonus thresholds */}
                 {bonuses && (
-                  <div className="flex flex-col gap-1 pl-4">
+                  <div className="flex flex-col gap-1 pl-4 border-l border-mh-slate-700/50 ml-2">
                     {bonuses.map(({ pieces, description }) => {
                       const achieved = count >= pieces;
                       return (
                         <div
                           key={pieces}
-                          className={`flex gap-2 items-start text-[11px] leading-snug transition-colors ${
+                          className={`flex gap-2 items-start text-[11px] leading-snug transition-colors pl-2 ${
                             achieved ? 'text-mh-slate-100' : 'text-mh-slate-600'
                           }`}
                         >
-                          <span className={`shrink-0 font-black text-[10px] mt-0.5 ${achieved ? c.text.replace('text-', 'text-').replace('-100', '-300').replace('-900', '-400') : 'text-mh-slate-700'} ${achieved ? c.bg.replace('bg-', 'bg-').replace('-500', '-500/20').replace('-400', '-400/20') : ''} px-1 rounded`}>
+                          <span className={`shrink-0 font-black text-[10px] mt-0.5 ${achieved ? c.text : 'text-mh-slate-700'} ${achieved ? c.bg + ' px-1 rounded' : ''}`}>
                             {pieces}pc
                           </span>
                           <span className={achieved ? 'font-semibold' : 'opacity-40'}>
@@ -415,7 +429,7 @@ export function VisageSelector() {
                     {count < MAX_PIPS && (() => {
                       const next = bonuses.find(b => b.pieces > count);
                       return next ? (
-                        <p className="text-[10px] text-mh-slate-600 italic mt-0.5">
+                        <p className="text-[10px] text-mh-slate-600 italic mt-0.5 pl-2">
                           {next.pieces - count} more card{next.pieces - count > 1 ? 's' : ''} for {next.pieces}-piece bonus
                         </p>
                       ) : null;
@@ -425,7 +439,7 @@ export function VisageSelector() {
 
                 {/* Fallback if no bonus data yet */}
                 {!bonuses && (
-                  <p className="text-[10px] text-mh-slate-600 pl-4 italic">Bonus data not yet available.</p>
+                  <p className="text-[10px] text-mh-slate-600 pl-4 italic ml-2 border-l border-mh-slate-700/50">Bonus data not yet available.</p>
                 )}
               </div>
             );

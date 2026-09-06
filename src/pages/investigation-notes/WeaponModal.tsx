@@ -20,6 +20,7 @@ import {
   type WeaponElementType,
   WEAPON_SOURCE_CONFIG,
   WEAPON_ELEMENT_CONFIG,
+  getRarityBadgeStyle,
 } from '../../data/schemas/weapon';
 import { WEAPON_TYPES } from '../../data/core/weapon-types';
 import { useAdminMonsters } from '../../hooks/useAdminMonsters';
@@ -89,6 +90,22 @@ export default function WeaponModal({
                   </span>
                 )}
               </div>
+
+              {weapon.upgraded_name && (
+                <div className="flex items-center gap-1.5 text-xs text-amber-300 font-medium mt-0.5">
+                  <span className="text-mh-slate-400 text-[11px]">Upgrades to:</span>
+                  <span className="font-bold text-amber-200">{weapon.upgraded_name}</span>
+                  {weapon.upgraded_name_ja && (
+                    <span className="text-mh-slate-500 text-[10px]">({weapon.upgraded_name_ja})</span>
+                  )}
+                  {weapon.upgrade_level && (
+                    <span className="rounded bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[10px] px-1.5 py-0.2 font-mono font-bold">
+                      Lv {weapon.upgrade_level}
+                    </span>
+                  )}
+                </div>
+              )}
+
               <div className="flex items-center gap-2 mt-0.5">
                 <span className="text-xs font-semibold text-mh-slate-400">
                   {weaponTypeObj?.name || weapon.weapon_type_id}
@@ -136,6 +153,16 @@ export default function WeaponModal({
                 {/* Weapon Type */}
                 <span className="rounded-lg bg-mh-slate-800 border border-mh-slate-750 px-2.5 py-1 text-xs font-bold text-mh-slate-300">
                   {weaponTypeObj?.name || weapon.weapon_type_id}
+                </span>
+
+                {/* Starting Rarity */}
+                <span
+                  className={cn(
+                    'rounded-lg px-2.5 py-1 text-xs font-bold border',
+                    getRarityBadgeStyle(weapon.rarity || 1).badge,
+                  )}
+                >
+                  {getRarityBadgeStyle(weapon.rarity || 1).label}
                 </span>
 
                 {/* Source Origin */}
@@ -242,7 +269,7 @@ export default function WeaponModal({
                 {weapon.skills.map((s, idx) => {
                   const meta = dbSkills.find((d) => d.id === s.id);
                   const skillName = meta?.name ?? s.id;
-                  const ur = s.unlockRarity ?? s.unlock_rarity ?? null;
+                  const ur = s.unlockLevel ?? s.unlock_level ?? s.unlockRarity ?? s.unlock_rarity ?? null;
                   const isLocked = Boolean(ur && ur > 1);
 
                   return (
@@ -260,10 +287,10 @@ export default function WeaponModal({
                           </span>
                         </div>
 
-                        {/* Unlock Rarity */}
+                        {/* Unlock Rarity / Level */}
                         {isLocked ? (
                           <span className="rounded bg-amber-500/20 text-amber-300 font-mono text-xs font-bold px-2 py-0.5 border border-amber-500/40">
-                            Unlocks at Rarity {ur}
+                            Unlocks at Lv {ur}
                           </span>
                         ) : (
                           <span className="rounded bg-emerald-500/15 text-emerald-300 font-mono text-xs font-bold px-2 py-0.5 border border-emerald-500/30">

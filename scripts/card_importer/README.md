@@ -43,3 +43,30 @@ python3 process_visage.py --enable-updates --enable-image-update
 python3 process_buddies.py --dry-run
 python3 process_buddies.py --enable-updates --enable-image-update
 ```
+
+---
+
+### 4. Weapons Importer (`process_weapons.py`)
+- **3D Model Cropping**: Automatically crops the centered high-resolution 3D weapon model from the inspection screen.
+- **OCR Focus**: Scans the right-side equipment stats panel to extract:
+  - Weapon Title & Starting Rarity (Grade)
+  - Weapon Type (Great Sword, Long Sword, etc.)
+  - Element / Damage Type (`fire`, `water`, `ice`, `thunder`, `raw`, etc.)
+  - Linked Monster (or `UNKNOWN` if not explicitly mentioned)
+  - Affinity % and Defense Bonus
+  - Attached Skills (with incremental level delta calculation)
+  - Flavour Description
+- **Missing Skills Sync**: Automatically detects and creates missing skills in the Supabase `skills` table.
+- **Summary Report**: Prints a clean table at the end highlighting all imported weapons, element types, and linked monsters (or flags `UNKNOWN` for manual admin linking).
+- **Input Folder**: `input_weapons/`
+- **Output Folder**: `output_weapons/`
+- **Supabase Table**: `weapons`
+- **Storage Bucket**: `weapons`
+
+```bash
+# Dry-run test (Crop weapon model, run OCR, print report):
+python3 process_weapons.py --dry-run
+
+# Live Ingestion (Writes to weapons table and uploads to Storage):
+python3 process_weapons.py --enable-updates --enable-image-update
+```

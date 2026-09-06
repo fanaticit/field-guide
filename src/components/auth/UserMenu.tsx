@@ -7,7 +7,7 @@
 import { useState } from 'react';
 import { LogIn, LogOut, User, ChevronUp, ShieldCheck, Settings } from 'lucide-react';
 import { useAuthStore, selectIsAdmin, selectCanModerate } from '../../store/authStore';
-import { useUIStore } from '../../store/uiStore';
+import { useNavigate } from 'react-router-dom';
 import LoginModal from './LoginModal';
 import { cn } from '../../lib/utils';
 
@@ -19,6 +19,7 @@ export default function UserMenu({ collapsed }: UserMenuProps) {
   const { user, profile, signOut } = useAuthStore();
   const isAdmin = useAuthStore(selectIsAdmin);
   const canModerate = useAuthStore(selectCanModerate);
+  const navigate = useNavigate();
   const [loginOpen, setLoginOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -160,7 +161,7 @@ export default function UserMenu({ collapsed }: UserMenuProps) {
           <button
             onClick={() => {
               setMenuOpen(false);
-              useUIStore.getState().setActivePage('settings');
+              navigate('/settings');
             }}
             className="flex w-full items-center gap-2.5 px-3 py-2.5 text-xs font-semibold text-mh-slate-300 transition-colors hover:bg-mh-slate-800 hover:text-mh-gold-400 border-b border-mh-slate-800"
           >

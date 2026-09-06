@@ -22,6 +22,10 @@ export interface Weapon {
   element_type?: string; // e.g. 'fire', 'thunder', 'water', 'raw'
   skills: { id: string; level: number }[];
   image?: string;
+  rarity?: number;
+  grade?: number;
+  upgraded_name?: string | null;
+  upgrade_level?: number | null;
 }
 
 export interface ArmourPiece {
@@ -55,6 +59,11 @@ export type VisageSlot = 'core' | 2 | 3 | 4 | 5;
 
 interface BuildPlannerState {
   buildId: string | null;
+  title: string;
+  description: string;
+  buildRole: 'main' | 'support';
+  author_id: string | null;
+  is_published: boolean;
   // Selections
   adventurer: Adventurer | null;
   weaponType: WeaponType | null;
@@ -75,6 +84,11 @@ interface BuildPlannerState {
 
   // Actions
   setBuildId: (id: string | null) => void;
+  setTitle: (title: string) => void;
+  setDescription: (desc: string) => void;
+  setBuildRole: (role: 'main' | 'support') => void;
+  setAuthorId: (id: string | null) => void;
+  setIsPublished: (pub: boolean) => void;
   setAdventurer: (adv: Adventurer | null) => void;
   setWeaponType: (type: WeaponType | null) => void;
   setWeapon: (w: Weapon | null) => void;
@@ -123,6 +137,11 @@ function chooseBestInk(inkTypes: string[], weaponElement?: string | null): strin
 
 export const useBuildPlannerStore = create<BuildPlannerState>((set, get) => ({
   buildId: null,
+  title: '',
+  description: '',
+  buildRole: 'main',
+  author_id: null,
+  is_published: false,
   adventurer: null,
   weaponType: null,
   weapon: null,
@@ -140,6 +159,11 @@ export const useBuildPlannerStore = create<BuildPlannerState>((set, get) => ({
   selectedInkTypes: {},
 
   setBuildId: (id) => set({ buildId: id }),
+  setTitle: (title) => set({ title }),
+  setDescription: (description) => set({ description }),
+  setBuildRole: (role) => set({ buildRole: role }),
+  setAuthorId: (id) => set({ author_id: id }),
+  setIsPublished: (pub) => set({ is_published: pub }),
   setAdventurer: (adv) => set((state) => {
     let newWeapon = state.weapon;
     if (adv && !adv.is_default && newWeapon) {
@@ -184,6 +208,12 @@ export const useBuildPlannerStore = create<BuildPlannerState>((set, get) => ({
     selectedInkTypes: { ...state.selectedInkTypes, [String(slot)]: ink }
   })),
   resetBuild: () => set({
+    buildId: null,
+    title: '',
+    description: '',
+    buildRole: 'main',
+    author_id: null,
+    is_published: false,
     adventurer: null,
     weaponType: null,
     weapon: null,

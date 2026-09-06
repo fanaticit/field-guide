@@ -1,10 +1,11 @@
 // ─────────────────────────────────────────────────────────────
 // InvestigationNotes — shell/layout for the Investigation Notes
-// section. Renders the active sub-page from the UI store.
+// section. The active sub-page is driven by the URL :subPage param.
 // Add more sub-pages here as they are built.
 // ─────────────────────────────────────────────────────────────
 import { BookMarked, Bug, Sword, Shield, Sparkles, Cat, UserCheck } from 'lucide-react';
-import { useUIStore, type InvestigationSubPage } from '../../store/uiStore';
+import { useParams, useNavigate } from 'react-router-dom';
+import { type InvestigationSubPage } from '../../store/uiStore';
 import MonsterGuide from './MonsterGuide';
 import AdventurerGuide from './AdventurerGuide';
 import VisageSetsGuide from './VisageSetsGuide';
@@ -22,7 +23,11 @@ const tabs: Array<{ id: InvestigationSubPage; label: string; icon: React.Compone
 ];
 
 export default function InvestigationNotes() {
-  const { activeSubPage, setActiveSubPage } = useUIStore();
+  const { subPage } = useParams<{ subPage: string }>();
+  const navigate = useNavigate();
+  // Fall back to 'monster-guide' if param is missing or unrecognised
+  const activeSubPage: InvestigationSubPage =
+    (tabs.find(t => t.id === subPage)?.id ?? 'monster-guide') as InvestigationSubPage;
 
   return (
     <div className="flex flex-col">
@@ -49,7 +54,7 @@ export default function InvestigationNotes() {
               key={id}
               role="tab"
               aria-selected={activeSubPage === id}
-              onClick={() => setActiveSubPage(id)}
+              onClick={() => navigate(`/investigation-notes/${id}`)}
               className={
                 activeSubPage === id
                   ? 'flex items-center gap-2 border-b-2 border-mh-gold-400 px-4 py-2.5 text-sm font-semibold text-mh-gold-400 transition-all'

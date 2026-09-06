@@ -26,7 +26,7 @@ import { WEAPON_TYPES } from '../../data/core/weapon-types';
 import { usePublicAdventurers, useUpdateAdventurerWeapon } from '../../hooks/useAdminAdventurers';
 import { useUserAdventurerCollection } from '../../hooks/useUserAdventurerCollection';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
-import { useUIStore } from '../../store/uiStore';
+import { useNavigate } from 'react-router-dom';
 import AdventurerCard from './AdventurerCard';
 import AdventurerModal from './AdventurerModal';
 import { cn } from '../../lib/utils';
@@ -51,7 +51,7 @@ export default function AdventurerGuide() {
   const [inspectedAdventurer, setInspectedAdventurer] = useState<DBAdventurer | null>(null);
 
   const isAdmin = useAuthStore(selectIsAdmin);
-  const { setActivePage, setAdminSubPage } = useUIStore();
+  const navigate = useNavigate();
 
   const { data: adventurers = [], isLoading } = usePublicAdventurers();
   const updateWeaponMutation = useUpdateAdventurerWeapon();
@@ -143,8 +143,7 @@ export default function AdventurerGuide() {
   }
 
   function handleNavigateToAdmin() {
-    setActivePage('admin');
-    setAdminSubPage('adventurers');
+    navigate('/admin/adventurers');
   }
 
   return (

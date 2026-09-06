@@ -16,13 +16,15 @@ import {
   Cat,
   UserCheck,
 } from 'lucide-react';
-import { useUIStore, type Page, type InvestigationSubPage } from '../../store/uiStore';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useUIStore } from '../../store/uiStore';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
 import { cn } from '../../lib/utils';
 import UserMenu from '../auth/UserMenu';
 
 interface NavItem {
-  id: Page;
+  id: string;
+  path: string;
   label: string;
   icon: React.ComponentType<{ className?: string; size?: number }>;
   description: string;
@@ -30,7 +32,8 @@ interface NavItem {
 }
 
 interface SubNavItem {
-  id: InvestigationSubPage;
+  id: string;
+  path: string;
   label: string;
   icon: React.ComponentType<{ className?: string; size?: number }>;
 }
@@ -38,30 +41,42 @@ interface SubNavItem {
 const navItems: NavItem[] = [
   {
     id: 'field-guide',
+    path: '/',
     label: 'Field Guide',
     icon: BookOpen,
     description: 'Monster Weaknesses & Drops',
   },
   {
     id: 'build-planner',
+    path: '/build-planner',
     label: 'Build Planner',
-    icon: Flame,
-    description: 'Theorycrafting & Sets',
+    icon: Sword,
+    description: 'Theorycraft your loadouts',
   },
   {
-    id: 'community-hub',
+    id: 'armory',
+    path: '/armory',
+    label: 'Hunter\'s Armory',
+    icon: Shield,
+    description: 'View community builds',
+  },
+  {
+    id: 'community',
+    path: '/community-hub',
     label: 'Community Hub',
     icon: Users,
-    description: 'Challenges & Sharing',
+    description: 'Connect with hunters',
   },
   {
     id: 'investigation-notes',
+    path: '/investigation-notes',
     label: 'Investigation Notes',
     icon: BookMarked,
     description: 'Monsters & Lore',
   },
   {
     id: 'admin',
+    path: '/admin',
     label: 'Admin Panel',
     icon: ShieldAlert,
     description: 'Manage game data',
@@ -69,6 +84,7 @@ const navItems: NavItem[] = [
   },
   {
     id: 'settings',
+    path: '/settings',
     label: 'Profile & Settings',
     icon: Settings,
     description: 'Preferences & Identity',
@@ -76,31 +92,48 @@ const navItems: NavItem[] = [
 ];
 
 const investigationSubNav: SubNavItem[] = [
-  { id: 'monster-guide', label: 'Monster Guide', icon: Bug },
-  { id: 'adventurers', label: 'Adventurers', icon: UserCheck },
-  { id: 'visages', label: 'Visage', icon: Sparkles },
-  { id: 'buddies', label: 'Buddies', icon: Cat },
-  { id: 'weapons', label: 'Weapons', icon: Sword },
-  { id: 'armour', label: 'Armour', icon: Shield },
+  { id: 'monster-guide', path: '/investigation-notes/monster-guide', label: 'Monster Guide', icon: Bug },
+  { id: 'adventurers', path: '/investigation-notes/adventurers', label: 'Adventurers', icon: UserCheck },
+  { id: 'visages', path: '/investigation-notes/visages', label: 'Visage', icon: Sparkles },
+  { id: 'buddies', path: '/investigation-notes/buddies', label: 'Buddies', icon: Cat },
+  { id: 'weapons', path: '/investigation-notes/weapons', label: 'Weapons', icon: Sword },
+  { id: 'armour', path: '/investigation-notes/armour', label: 'Armour', icon: Shield },
 ];
 
 export default function Sidebar() {
   const {
-    activePage,
-    activeSubPage,
     sidebarCollapsed,
     mobileMenuOpen,
-    setActivePage,
-    setActiveSubPage,
     toggleSidebar,
     setMobileMenuOpen,
   } = useUIStore();
 
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
   const isAdmin = useAuthStore(selectIsAdmin);
-  const isInvestigationActive = activePage === 'investigation-notes';
+
+  const isInvestigationActive = pathname.startsWith('/investigation-notes');
+
+  // Derive active top-level item from pathname
+  const getIsActive = (item: NavItem) => {
+    if (item.path === '/') return pathname === '/';
+    return pathname.startsWith(item.path);
+  };
 
   // Filter nav items — hide adminOnly items for non-admins
   const visibleNavItems = navItems.filter((item) => !item.adminOnly || isAdmin);
+
+  const handleNavClick = (item: NavItem) => {
+    setMobileMenuOpen(false);
+    // For items with sub-pages, navigate to their default sub-page directly
+    if (item.id === 'investigation-notes') {
+      navigate('/investigation-notes/monster-guide');
+    } else if (item.id === 'admin') {
+      navigate('/admin/monsters');
+    } else {
+      navigate(item.path);
+    }
+  };
 
   return (
     <>
@@ -161,7 +194,7 @@ export default function Sidebar() {
         {/* ── Navigation ── */}
         <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-3" role="navigation" aria-label="Main navigation">
           {visibleNavItems.map((item) => {
-            const isActive = activePage === item.id;
+            const isActive = getIsActive(item);
             const Icon = item.icon;
             const isInvestigation = item.id === 'investigation-notes';
             const isAdminItem = item.id === 'admin';
@@ -170,7 +203,7 @@ export default function Sidebar() {
               <div key={item.id}>
                 <button
                   id={`nav-${item.id}`}
-                  onClick={() => setActivePage(item.id)}
+                  onClick={() => handleNavClick(item)}
                   aria-current={isActive ? 'page' : undefined}
                   className={cn(
                     'group relative flex w-full items-center gap-3 rounded-lg px-3 py-2.5',
@@ -225,7 +258,7 @@ export default function Sidebar() {
                       size={14}
                       className={cn(
                         'shrink-0 transition-transform duration-200 text-mh-slate-500',
-                        isActive && 'rotate-180 text-mh-gold-500',
+                        isInvestigationActive && 'rotate-180 text-mh-gold-500',
                       )}
                     />
                   )}
@@ -251,12 +284,12 @@ export default function Sidebar() {
                 {isInvestigation && isInvestigationActive && !sidebarCollapsed && (
                   <div className="mt-1 ml-3 flex flex-col gap-0.5 border-l border-mh-slate-700 pl-3">
                     {investigationSubNav.map((sub) => {
-                      const isSubActive = activeSubPage === sub.id;
+                      const isSubActive = pathname === sub.path;
                       const SubIcon = sub.icon;
                       return (
                         <button
                           key={sub.id}
-                          onClick={() => setActiveSubPage(sub.id)}
+                          onClick={() => { navigate(sub.path); setMobileMenuOpen(false); }}
                           className={cn(
                             'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-xs transition-all duration-150',
                             isSubActive

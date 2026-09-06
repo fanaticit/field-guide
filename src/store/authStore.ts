@@ -6,7 +6,19 @@
 import { create } from 'zustand';
 import type { Session, User } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
-import { useUIStore, type Page } from './uiStore';
+import { useUIStore } from './uiStore';
+import { router } from '../router';
+
+// Map the stored Page identifier to a route path
+const pageToPath: Record<string, string> = {
+  'field-guide': '/',
+  'build-planner': '/build-planner',
+  'community-hub': '/community-hub',
+  'investigation-notes': '/investigation-notes/monster-guide',
+  'admin': '/admin/monsters',
+  'settings': '/settings',
+  'profile': '/settings',
+};
 
 export type UserRole = 'member' | 'admin' | 'moderator';
 
@@ -106,8 +118,9 @@ export const useAuthStore = create<AuthState>((set) => ({
       await useAuthStore.getState().fetchProfile(data.user.id);
       const profile = useAuthStore.getState().profile;
       if (profile?.default_page) {
-        useUIStore.getState().setActivePage(profile.default_page as Page);
+        router.navigate(pageToPath[profile.default_page] ?? '/');
       }
+
     }
     return true;
   },
@@ -229,7 +242,7 @@ export function initAuth() {
       if (isOAuthCallback) {
         const profile = useAuthStore.getState().profile;
         if (profile?.default_page) {
-          useUIStore.getState().setActivePage(profile.default_page as Page);
+          router.navigate(pageToPath[profile.default_page] ?? '/');
         }
       }
     }

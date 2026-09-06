@@ -12,6 +12,7 @@ Armour & Skills Automation & Ingestion Pipeline:
 
 import os
 import sys
+import re
 import time
 import json
 import argparse
@@ -804,7 +805,24 @@ def process_single_image(
         else:
             print(f"\n  [!] Supabase not connected.")
 
-    return True
+    skill_summary = []
+    for s in resolved_piece_skills:
+        if s.get("id") == set_bonus_id:
+            continue
+        ur = s.get("unlock_rarity")
+        ur_str = f" (R{ur})" if ur else ""
+        skill_summary.append(f"{s['id']} +{s['level']}{ur_str}")
+
+    return {
+        "piece_name": piece_name,
+        "set_name": f"{set_name} ({set_variant})",
+        "slot": slot_info["label"].split()[0],
+        "rarity": f"R{rarity_val}",
+        "skills": ", ".join(skill_summary) if skill_summary else "(None)",
+        "set_bonus": set_bonus.get("name") if (set_bonus and set_bonus.get("name")) else "None",
+        "status": "UPSERTED" if enable_updates else "DRY-RUN",
+        "is_new": existing_record is None
+    }
 
 
 def main():
@@ -847,8 +865,10 @@ def main():
     if supabase and not dry_run:
         ensure_armour_bucket(supabase)
 
+    processed_reports = []
+
     for idx, img_path in enumerate(image_files, start=1):
-        process_single_image(
+        report = process_single_image(
             img_path,
             ai_client,
             supabase,
@@ -857,8 +877,23 @@ def main():
             enable_image_update=args.enable_image_update,
             dry_run=dry_run
         )
+        if report:
+            processed_reports.append(report)
+
         if idx < len(image_files):
             time.sleep(args.delay)
+
+    # Final Summary Report
+    print("\n" + "=" * 115)
+    print("                                ARMOUR INGESTION REPORT SUMMARY")
+    print("=" * 115)
+    print(f" {'#':<3} | {'Armour Piece':<26} | {'Slot':<9} | {'Rarity':<7} | {'Set Bonus':<20} | {'Skills Attached (Delta)'}")
+    print("-" * 115)
+    for idx, r in enumerate(processed_reports, start=1):
+        sb_str = r['set_bonus']
+        sb_display = f"\033[92m{sb_str}\033[0m" if sb_str != "None" else f"\033[90m{sb_str}\033[0m"
+        print(f" {idx:02d}  | {r['piece_name']:<26} | {r['slot']:<9} | {r['rarity']:<7} | {sb_display:<29} | {r['skills']}")
+    print("=" * 115 + "\n")
 
 
 if __name__ == "__main__":
