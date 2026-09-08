@@ -589,24 +589,99 @@ def process_single_weapon(
     }
 
 
+def crop_weapon_image_only(file_path: Path, output_dir: Path) -> dict:
+    """Crops only the weapon 3D model without running OCR or contacting DB."""
+    img = cv2.imread(str(file_path))
+    if img is None:
+        print(f"  [X] Failed to load image: {file_path.name}")
+        return None
+
+    h_img, w_img = img.shape[:2]
+
+    # Crop 3D Weapon Model (Center Screen)
+    crop_x = int(round(WEAPON_CROP_BOX["x_pct"] * w_img))
+    crop_y = int(round(WEAPON_CROP_BOX["y_pct"] * h_img))
+    crop_w = int(round(WEAPON_CROP_BOX["w_pct"] * w_img))
+    crop_h = int(round(WEAPON_CROP_BOX["h_pct"] * h_img))
+
+    crop_x1 = max(0, min(crop_x, w_img - 1))
+    crop_y1 = max(0, min(crop_y, h_img - 1))
+    crop_x2 = max(crop_x1 + 10, min(crop_x + crop_w, w_img))
+    crop_y2 = max(crop_y1 + 10, min(crop_y + crop_h, h_img))
+
+    cropped_weapon = img[crop_y1:crop_y2, crop_x1:crop_x2]
+
+    clean_stem = file_path.stem.lower().replace(" ", "_")
+    output_filename = f"{clean_stem}.png"
+    output_path = output_dir / output_filename
+    cv2.imwrite(str(output_path), cropped_weapon)
+
+    print(f"  [✓] Cropped & saved: {file_path.name} -> output_weapons/{output_filename} ({cropped_weapon.shape[1]}x{cropped_weapon.shape[0]}px)")
+    return {
+        "file": file_path.name,
+        "output": output_filename,
+        "dimensions": f"{cropped_weapon.shape[1]}x{cropped_weapon.shape[0]}px"
+    }
+
+
 # -------------------------------------------------------------
 # CLI ENTRY POINT
 # -------------------------------------------------------------
 def main():
     parser = argparse.ArgumentParser(description="Monster Hunter Outlanders — Weapon OCR & Import Pipeline")
+    parser.add_argument("--crop-only", "--images-only", action="store_true", default=False, help="Extract & crop weapon images only (no OCR, no database writes)")
     parser.add_argument("--dry-run", action="store_true", default=False, help="Run OCR and cropping without writing to database")
     parser.add_argument("--enable-updates", action="store_true", default=False, help="Enable live writes to Supabase database")
     parser.add_argument("--enable-image-update", action="store_true", default=False, help="Force overwrite of weapon images in Supabase storage")
     parser.add_argument("--single", type=str, default=None, help="Process only a specific image filename in input_weapons/")
     args = parser.parse_args()
 
-    # Determine execution mode
-    dry_run = args.dry_run or (not args.enable_updates)
-
     input_dir = Path(__file__).parent / "input_weapons"
     output_dir = Path(__file__).parent / "output_weapons"
     input_dir.mkdir(parents=True, exist_ok=True)
     output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Find screenshots
+    if args.single:
+        single_path = input_dir / args.single
+        if not single_path.exists():
+            print(f"[X] Specified image not found: {single_path}")
+            return
+        image_files = [single_path]
+    else:
+        image_files = sorted(list(input_dir.glob("*.PNG")) + list(input_dir.glob("*.png")) + list(input_dir.glob("*.JPG")) + list(input_dir.glob("*.jpg")))
+
+    # 1. CROP-ONLY / IMAGES-ONLY MODE
+    if args.crop_only:
+        print("=" * 75)
+        print(" Monster Hunter Outlanders — Weapon Image Cropper (CROP-ONLY MODE)")
+        print(f" Images Found       : {len(image_files)}")
+        print(" Mode               : IMAGE CROPPING ONLY (No OCR, No DB updates)")
+        print(f" Output Directory   : {output_dir}")
+        print("=" * 75)
+
+        if not image_files:
+            print(f"\nNo weapon screenshots found in '{input_dir.name}/'.")
+            return
+
+        cropped_reports = []
+        for img_path in image_files:
+            r = crop_weapon_image_only(img_path, output_dir)
+            if r:
+                cropped_reports.append(r)
+
+        print("\n" + "=" * 75)
+        print("                           CROP EXPORT SUMMARY")
+        print("=" * 75)
+        print(f" {'#':<3} | {'Original Screenshot':<30} | {'Saved Output File':<25} | {'Dimensions'}")
+        print("-" * 75)
+        for idx, cr in enumerate(cropped_reports, start=1):
+            print(f" {idx:02d}  | {cr['file']:<30} | {cr['output']:<25} | {cr['dimensions']}")
+        print("=" * 75 + "\n")
+        return
+
+    # 2. FULL OCR & INGESTION MODE
+    dry_run = args.dry_run or (not args.enable_updates)
 
     # Initialize Gemini AI Client
     if not GEMINI_API_KEY:
@@ -628,16 +703,6 @@ def main():
             print(f"[!] Supabase connection warning: {e}")
     else:
         print("[!] Note: SUPABASE_URL / SUPABASE_KEY not found in .env.")
-
-    # Find screenshots
-    if args.single:
-        single_path = input_dir / args.single
-        if not single_path.exists():
-            print(f"[X] Specified image not found: {single_path}")
-            return
-        image_files = [single_path]
-    else:
-        image_files = sorted(list(input_dir.glob("*.PNG")) + list(input_dir.glob("*.png")) + list(input_dir.glob("*.JPG")) + list(input_dir.glob("*.jpg")))
 
     print("=" * 75)
     print(" Monster Hunter Outlanders — Weapons Automation Pipeline")

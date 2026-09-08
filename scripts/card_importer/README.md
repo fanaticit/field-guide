@@ -64,9 +64,12 @@ python3 process_buddies.py --enable-updates --enable-image-update
 - **Storage Bucket**: `weapons`
 
 ```bash
-# Dry-run test (Crop weapon model, run OCR, print report):
+# 1. Crop Images Only (No OCR, No Database/Storage writes):
+python3 process_weapons.py --crop-only
+
+# 2. Dry-run test (Crop weapon model, run OCR, print report without DB writes):
 python3 process_weapons.py --dry-run
 
-# Live Ingestion (Writes to weapons table and uploads to Storage):
+# 3. Live Ingestion (Writes to weapons table and uploads to Storage):
 python3 process_weapons.py --enable-updates --enable-image-update
 ```
