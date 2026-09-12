@@ -2,7 +2,7 @@
 // ArmourGuide — Investigation Notes Armour Explorer & Simulation
 // Left-aligned layout, combined skill levels, highlighted set effects, and clean reference format.
 // ─────────────────────────────────────────────────────────────
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import {
   Shield,
   Search,
@@ -12,6 +12,10 @@ import {
   Unlock,
   Flame,
   Swords,
+  Target,
+  CheckCircle2,
+  LogIn,
+  Plus,
 } from 'lucide-react';
 import {
   type ArmourSlot,
@@ -22,6 +26,15 @@ import { useAdminMonsters } from '../../hooks/useAdminMonsters';
 import { useAdminSkills, type DBSkill } from '../../hooks/useAdminSkills';
 import { getRarityBadgeStyle } from '../admin/armour/MonsterArmourBuilder';
 import { cn } from '../../lib/utils';
+import { useAuthStore } from '../../store/authStore';
+import {
+  useHunterChallenges,
+  useAddArmourChallenge,
+  useIncrementChallenge,
+  getArmourPieceChallenge,
+  isArmourPieceTracked,
+} from '../../hooks/useHunterChallenges';
+import LoginModal from '../../components/auth/LoginModal';
 
 // Canonical 5 Armour Slots in order
 export const SLOTS_ORDER: Array<{
@@ -65,16 +78,67 @@ export default function ArmourGuide() {
   const [selectedSetId, setSelectedSetId] = useState<string | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<ArmourSlot | null>(null);
 
-  // Interactive Rarity Level (Defaults to max upgrade level 12)
-  const [sliderRarity, setSliderRarity] = useState<number>(12);
+  // Interactive Rarity Level (Defaults to max upgrade level 16)
+  const [sliderRarity, setSliderRarity] = useState<number>(16);
 
   // Queries
   const { data: pieces = [], isLoading: isLoadingPieces } = useAdminArmourPieces(game);
   const { data: monsters = [] } = useAdminMonsters({ game, isActive: true });
   const { data: dbSkills = [] } = useAdminSkills({ game, isActive: true });
 
+  // ── Challenge tracking ────────────────────────────────────────
+  const { user } = useAuthStore();
+  const { data: challenges = [] } = useHunterChallenges(user?.id);
+  const addChallenge = useAddArmourChallenge();
+  const incrementChallenge = useIncrementChallenge();
+
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const [addedPieceId, setAddedPieceId] = useState<string | null>(null);
+  const [challengeError, setChallengeError] = useState<string | null>(null);
+
   const monstersMap = useMemo(() => new Map(monsters.map((m) => [m.id, m])), [monsters]);
   const skillsMap = useMemo(() => new Map(dbSkills.map((s) => [s.id, s])), [dbSkills]);
+
+  const handleAddChallenge = useCallback(async (piece: DBArmourPiece, set: GroupedArmourSet) => {
+    if (!user) {
+      setLoginModalOpen(true);
+      return;
+    }
+
+    setChallengeError(null);
+
+    try {
+      const monster = monstersMap.get(set.monsterId);
+      const result = await addChallenge.mutateAsync({
+        userId:        user.id,
+        game,
+        armourPieceId: piece.id,
+        monsterId:     set.monsterId,
+        armourSlot:    piece.slot,
+        setVariant:    piece.set_variant || 'I',
+        setName:       set.displayName,
+        pieceImage:    piece.image ?? null,
+        setIcon:       set.setIcon ?? null,
+        monsterName:   monster?.name ?? set.monsterName,
+        craftRarity:   set.rarity || 1,
+        maxRarity:     set.maxRarity || 16,
+      });
+
+      if (!result.wasAlreadyTracked) {
+        setAddedPieceId(piece.id);
+        setTimeout(() => setAddedPieceId(null), 2500);
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Failed to add challenge. Please try again.';
+      // Surface table-not-found clearly
+      const friendlyMsg = msg.includes('does not exist') || msg.includes('relation')
+        ? 'Database table not set up yet. Please apply the migration in the Supabase dashboard.'
+        : msg;
+      setChallengeError(friendlyMsg);
+      setTimeout(() => setChallengeError(null), 6000);
+    }
+  }, [user, game, monstersMap, addChallenge]);
+
 
   // Group pieces into complete Armour Sets
   const allSets = useMemo(() => {
@@ -146,7 +210,7 @@ export default function ArmourGuide() {
       }
 
       const distinctUnlockRarities = Array.from(raritiesSet).sort((a, b) => a - b);
-      const maxRarity = Math.max(12, ...distinctUnlockRarities);
+      const maxRarity = Math.max(16, ...distinctUnlockRarities);
 
       result.push({
         id: key,
@@ -222,11 +286,11 @@ export default function ArmourGuide() {
     if (!selectedSetId && filteredSets.length > 0) {
       setSelectedSetId(filteredSets[0].id);
       setSelectedSlot(null);
-      setSliderRarity(filteredSets[0].maxRarity || 12);
+      setSliderRarity(filteredSets[0].maxRarity || 16);
     } else if (selectedSetId && !allSets.some((s) => s.id === selectedSetId) && filteredSets.length > 0) {
       setSelectedSetId(filteredSets[0].id);
       setSelectedSlot(null);
-      setSliderRarity(filteredSets[0].maxRarity || 12);
+      setSliderRarity(filteredSets[0].maxRarity || 16);
     }
   }, [filteredSets, selectedSetId, allSets]);
 
@@ -241,7 +305,7 @@ export default function ArmourGuide() {
     setSelectedSlot(slot);
     const targetSet = allSets.find((s) => s.id === setId);
     if (targetSet) {
-      setSliderRarity(targetSet.maxRarity || 12);
+      setSliderRarity(targetSet.maxRarity || 16);
     }
   };
 
@@ -424,7 +488,7 @@ export default function ArmourGuide() {
             className="rounded-xl border border-mh-slate-750 bg-mh-slate-900 px-3 py-1.5 text-xs font-semibold text-mh-slate-300 focus:border-mh-gold-500/50 focus:outline-none"
           >
             <option value="all">All Rarities</option>
-            {[12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1].map((r) => (
+            {[16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1].map((r) => (
               <option key={r} value={r}>
                 Rarity {r} (R{r})
               </option>
@@ -573,6 +637,7 @@ export default function ArmourGuide() {
                       const isPieceActive = isSetSelected && selectedSlot === slotDef.id;
                       const hasPiece = Boolean(piece);
                       const pieceSkillsCount = piece?.skills?.length ?? 0;
+                      const isTracked = piece ? isArmourPieceTracked(challenges, piece.id) : false;
 
                       return (
                         <button
@@ -617,6 +682,13 @@ export default function ArmourGuide() {
                           {pieceSkillsCount > 0 && (
                             <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-mh-slate-800 border border-mh-slate-650 text-[8px] font-mono font-bold text-mh-gold-400">
                               {pieceSkillsCount}
+                            </span>
+                          )}
+
+                          {/* Tracking badge — shown when this piece is in hunter's challenges */}
+                          {isTracked && (
+                            <span className="absolute -bottom-1 -left-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-emerald-500 border border-emerald-400/60 shadow-sm" title="In your challenges">
+                              <Target size={7} className="text-white" />
                             </span>
                           )}
                         </button>
@@ -703,6 +775,96 @@ export default function ArmourGuide() {
                   </div>
                 </div>
 
+                {/* ── Add to My Challenges CTA (piece view only) ── */}
+                {selectedSlot !== null && currentPiece && (() => {
+                  const challenge = getArmourPieceChallenge(challenges, currentPiece.id);
+                  const justAdded = addedPieceId === currentPiece.id;
+                  const slotLabel = SLOTS_ORDER.find((s) => s.id === selectedSlot)?.label ?? selectedSlot;
+
+                  if (!user) {
+                    return (
+                      <div className="flex items-center justify-between gap-2 rounded-xl border border-mh-slate-750 bg-mh-slate-900/60 px-3 py-2.5">
+                        <span className="text-xs text-mh-slate-400">Sign in to track this piece in your challenges</span>
+                        <button
+                          type="button"
+                          onClick={() => setLoginModalOpen(true)}
+                          className="flex items-center gap-1.5 rounded-lg bg-mh-gold-500 px-3 py-1.5 text-xs font-bold text-slate-950 hover:bg-mh-gold-400 transition-colors shrink-0"
+                        >
+                          <LogIn size={13} />
+                          Sign In
+                        </button>
+                      </div>
+                    );
+                  }
+
+                  if (challenge) {
+                    if (challenge.status === 'completed') {
+                      return (
+                        <div className="flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2.5">
+                          <CheckCircle2 size={15} className="text-emerald-400 shrink-0" />
+                          <span className="text-xs font-semibold text-emerald-300">
+                            {slotLabel} crafted & upgraded to R{challenge.current_rarity} (Max)
+                          </span>
+                        </div>
+                      );
+                    }
+
+                    // Active challenge (crafting or upgrading)
+                    const isCrafted = challenge.current_rarity > 0;
+                    return (
+                      <div className="flex items-center justify-between gap-2 rounded-xl border border-blue-500/30 bg-blue-500/10 px-3 py-2">
+                        <div className="flex items-center gap-2">
+                          <Target size={15} className="text-blue-400 shrink-0" />
+                          <span className="text-xs font-semibold text-blue-300">
+                            {isCrafted ? `Tracked at R${challenge.current_rarity}` : 'Tracking craft goal'}
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => incrementChallenge.mutateAsync(challenge)}
+                          disabled={incrementChallenge.isPending}
+                          className="flex items-center gap-1.5 rounded-lg bg-blue-500 px-3 py-1.5 text-xs font-bold text-slate-950 hover:bg-blue-400 transition-colors shrink-0 disabled:opacity-50"
+                        >
+                          <Plus size={13} />
+                          {isCrafted ? `Upgrade to R${challenge.current_rarity + 1}` : 'Mark Crafted (R1)'}
+                        </button>
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <div className="space-y-2">
+                      <button
+                        type="button"
+                        onClick={() => handleAddChallenge(currentPiece, currentSet)}
+                        disabled={addChallenge.isPending}
+                        className={cn(
+                          'flex w-full items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-xs font-bold transition-all',
+                          justAdded
+                            ? 'border-emerald-500/50 bg-emerald-500/15 text-emerald-300'
+                            : 'border-mh-gold-500/40 bg-mh-gold-500/10 text-mh-gold-300 hover:bg-mh-gold-500/20 hover:text-mh-gold-200',
+                          addChallenge.isPending && 'opacity-60 cursor-wait',
+                        )}
+                      >
+                        {addChallenge.isPending ? (
+                          <><span className="h-3.5 w-3.5 animate-spin rounded-full border border-current border-t-transparent" /> Adding…</>
+                        ) : justAdded ? (
+                          <><CheckCircle2 size={14} /> Added to your challenges!</>
+                        ) : (
+                          <><Target size={14} /> Add {slotLabel} to My Challenges</>
+                        )}
+                      </button>
+
+                      {challengeError && (
+                        <div className="flex items-start gap-2 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2.5 text-xs text-red-300">
+                          <span className="shrink-0 mt-0.5">⚠</span>
+                          <span>{challengeError}</span>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
+
                 {/* ── Compact Rarity Presets Line ── */}
                 <div className="flex items-center justify-between gap-2 rounded-xl border border-mh-gold-500/25 bg-mh-gold-500/5 px-3 py-2 flex-wrap">
                   <div className="flex items-center gap-1.5 text-xs font-bold text-mh-gold-400">
@@ -714,9 +876,12 @@ export default function ArmourGuide() {
                     {[
                       { label: 'Base (R1)', val: 1 },
                       { label: 'R6', val: 6 },
-                      { label: 'R8', val: 8 },
                       { label: 'R9', val: 9 },
-                      { label: `R12 (Max)`, val: currentSet.maxRarity || 12 },
+                      { label: 'R12', val: 12 },
+                      { label: 'R13', val: 13 },
+                      { label: 'R14', val: 14 },
+                      { label: 'R15', val: 15 },
+                      { label: `R16 (Max)`, val: currentSet.maxRarity || 16 },
                     ].map((btn) => (
                       <button
                         key={btn.label}
@@ -1020,6 +1185,9 @@ export default function ArmourGuide() {
           </div>
         </div>
       )}
+
+      {/* Login Modal — triggered when guest tries to add a challenge */}
+      <LoginModal open={loginModalOpen} onClose={() => setLoginModalOpen(false)} />
     </div>
   );
 }

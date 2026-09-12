@@ -256,3 +256,59 @@ export function useDeleteMonster() {
     },
   });
 }
+
+export interface MonsterDependencyWeapon {
+  id: string;
+  name: string;
+  game: string;
+  weapon_type_id: string;
+}
+
+export interface MonsterDependencyArmourPiece {
+  id: string;
+  game: string;
+  slot: string;
+  set_name: string | null;
+  set_variant: string | null;
+}
+
+export interface MonsterDependenciesResult {
+  weapons: MonsterDependencyWeapon[];
+  armourPieces: MonsterDependencyArmourPiece[];
+  totalCount: number;
+}
+
+export function useMonsterDependencies(monsterId: string | null) {
+  return useQuery({
+    queryKey: ['monster-dependencies', monsterId],
+    queryFn: async (): Promise<MonsterDependenciesResult> => {
+      if (!monsterId) return { weapons: [], armourPieces: [], totalCount: 0 };
+
+      const [weaponsRes, armourRes] = await Promise.all([
+        supabase
+          .from('weapons')
+          .select('id, name, game, weapon_type_id')
+          .eq('monster_id', monsterId),
+        supabase
+          .from('armour_pieces')
+          .select('id, game, slot, set_name, set_variant')
+          .eq('monster_id', monsterId),
+      ]);
+
+      if (weaponsRes.error) throw weaponsRes.error;
+      if (armourRes.error) throw armourRes.error;
+
+      const weapons = (weaponsRes.data as MonsterDependencyWeapon[]) ?? [];
+      const armourPieces = (armourRes.data as MonsterDependencyArmourPiece[]) ?? [];
+
+      return {
+        weapons,
+        armourPieces,
+        totalCount: weapons.length + armourPieces.length,
+      };
+    },
+    enabled: Boolean(monsterId),
+    staleTime: 1000 * 10,
+  });
+}
+

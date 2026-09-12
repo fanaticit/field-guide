@@ -56,3 +56,12 @@ I've successfully updated the Build Planner and implemented the Hunter's Armory!
   - **Right**: Build Title and Description inputs.
 - Restored the **Monster Icon** inside the actual equipment dropdown selection lists.
 - Adjusted the right-side box of the dropdowns to display the **Armor's picture** (or fallback to the monster icon if the armor artwork is missing).
+
+## 11. Interactive Skill Tooltips and Equipment Highlighting
+- Added a hover state to the `SkillSummaryPanel` that tracks which skill the user's cursor is currently over.
+- Hovering over a skill now displays an inline tooltip showing the skill's description.
+- To make building easier, hovering over a skill will seamlessly highlight the matching armour slots in the `EquipmentSelector` panel that are contributing to that specific skill using a bright glowing border.
+
+## 12. Dynamic Color Highlights for Skill Tooltips
+- Upgraded the skill highlight mechanic to reflect the specific category of the hovered skill.
+- Hovering over a skill in the `SkillSummaryPanel` now pushes the skill's category into the state. The `EquipmentSelector` reads this category and generates a customized glowing shadow border matching the skill's category color (e.g., Red for Attack, Blue for Defense, Emerald for Status) instead of a generic golden glow.

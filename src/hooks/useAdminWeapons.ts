@@ -516,14 +516,31 @@ export function useMergeWeapons() {
 
 // ── Storage upload helper ────────────────────────────────────
 export async function uploadWeaponImage(file: File, weaponId: string): Promise<string> {
+  // 1. Ensure user has a valid, active session before attempting upload
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) {
+    const { data: refreshData, error: refreshError } = await supabase.auth.refreshSession();
+    if (refreshError || !refreshData.session) {
+      throw new Error('Your admin session has expired. Please sign in again to upload weapon artwork.');
+    }
+  }
+
   const ext = file.name.split('.').pop()?.toLowerCase() ?? 'png';
   const path = `${weaponId}-${Date.now()}.${ext}`;
 
   const { error } = await supabase.storage
     .from('weapons')
-    .upload(path, file, { upsert: true });
+    .upload(path, file, {
+      contentType: file.type || 'image/png',
+      upsert: true,
+    });
 
-  if (error) throw error;
+  if (error) {
+    if (error.message?.includes('row-level security') || (error as { statusCode?: string }).statusCode === '403') {
+      throw new Error('Upload denied: Admin session expired or unauthorized. Please re-sign in.');
+    }
+    throw error;
+  }
 
   const {
     data: { publicUrl },
@@ -531,3 +548,4 @@ export async function uploadWeaponImage(file: File, weaponId: string): Promise<s
 
   return publicUrl;
 }
+

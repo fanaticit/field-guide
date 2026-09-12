@@ -15,6 +15,7 @@ import {
   Sparkles,
   Cat,
   UserCheck,
+  Target,
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useUIStore } from '../../store/uiStore';
@@ -81,6 +82,13 @@ const navItems: NavItem[] = [
     icon: ShieldAlert,
     description: 'Manage game data',
     adminOnly: true,
+  },
+  {
+    id: 'challenges',
+    path: '/challenges',
+    label: "Hunter's Challenges",
+    icon: Target,
+    description: 'Track craft & upgrade goals',
   },
   {
     id: 'settings',

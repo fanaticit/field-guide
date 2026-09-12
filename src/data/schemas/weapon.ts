@@ -251,8 +251,22 @@ export function getRarityBadgeStyle(rarity: number = 1): {
       cfg = { bg: 'bg-teal-500/15', text: 'text-teal-300', border: 'border-teal-500/30', label: 'R11' };
       break;
     case 12:
+      cfg = { bg: 'bg-fuchsia-500/15', text: 'text-fuchsia-300', border: 'border-fuchsia-500/30', label: 'R12' };
+      break;
+    case 13:
+      cfg = { bg: 'bg-sky-500/15', text: 'text-sky-300', border: 'border-sky-500/30', label: 'R13' };
+      break;
+    case 14:
+      cfg = { bg: 'bg-lime-500/15', text: 'text-lime-300', border: 'border-lime-500/30', label: 'R14' };
+      break;
+    case 15:
+      cfg = { bg: 'bg-pink-500/15', text: 'text-pink-300', border: 'border-pink-500/30', label: 'R15' };
+      break;
+    case 16:
+      cfg = { bg: 'bg-mh-gold-500/20', text: 'text-mh-gold-300', border: 'border-mh-gold-500/50', label: 'R16' };
+      break;
     default:
-      cfg = { bg: 'bg-fuchsia-500/15', text: 'text-fuchsia-300', border: 'border-fuchsia-500/30', label: `R${rarity}` };
+      cfg = { bg: 'bg-mh-gold-500/15', text: 'text-mh-gold-300', border: 'border-mh-gold-500/30', label: `R${rarity}` };
       break;
   }
   return {

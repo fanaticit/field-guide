@@ -641,6 +641,98 @@ export function useDeleteArmourSet() {
   });
 }
 
+export function useDeleteArmourPiece() {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      id,
+      game,
+      monsterId,
+      setVariant,
+      slot,
+    }: {
+      id?: string;
+      game?: string;
+      monsterId?: string;
+      setVariant?: string;
+      slot?: ArmourSlot;
+    }) => {
+      // 1. Clear any foreign key references in mho_builds so deletion doesn't fail with FK restrict
+      if (id) {
+        await Promise.allSettled([
+          supabase.from('mho_builds').update({ helm_piece_id: null }).eq('helm_piece_id', id),
+          supabase.from('mho_builds').update({ chest_piece_id: null }).eq('chest_piece_id', id),
+          supabase.from('mho_builds').update({ gloves_piece_id: null }).eq('gloves_piece_id', id),
+          supabase.from('mho_builds').update({ waist_piece_id: null }).eq('waist_piece_id', id),
+          supabase.from('mho_builds').update({ greaves_piece_id: null }).eq('greaves_piece_id', id),
+        ]);
+      }
+
+      // 2. Perform deletion - match by ID AND by (game, monster_id, set_variant, slot)
+      let deletedCount = 0;
+      if (id) {
+        const { error, count } = await supabase
+          .from('armour_pieces')
+          .delete({ count: 'exact' })
+          .eq('id', id);
+        if (error) throw error;
+        deletedCount = count ?? 0;
+      }
+
+      if (deletedCount === 0 && game && monsterId && slot) {
+        const { error } = await supabase
+          .from('armour_pieces')
+          .delete()
+          .eq('game', game)
+          .eq('monster_id', monsterId)
+          .eq('set_variant', setVariant || 'I')
+          .eq('slot', slot);
+        if (error) throw error;
+      }
+    },
+    onMutate: async ({ id, game, monsterId, setVariant, slot }) => {
+      await qc.cancelQueries({ queryKey: [ARMOUR_PIECES_KEY] });
+      const prevData = game ? qc.getQueryData([ARMOUR_PIECES_KEY, game]) : undefined;
+
+      qc.setQueriesData(
+        { queryKey: [ARMOUR_PIECES_KEY], exact: false },
+        (old: unknown) => {
+          if (!Array.isArray(old)) return old;
+          return (old as DBArmourPiece[]).filter((p) => {
+            if (id && p.id === id) return false;
+            if (
+              game &&
+              monsterId &&
+              slot &&
+              p.game === game &&
+              p.monster_id === monsterId &&
+              (p.set_variant || 'I') === (setVariant || 'I') &&
+              p.slot === slot
+            ) {
+              return false;
+            }
+            return true;
+          });
+        },
+      );
+
+      return { prevData };
+    },
+    onError: (_err, { game }, context) => {
+      if (context?.prevData && game) {
+        qc.setQueryData([ARMOUR_PIECES_KEY, game], context.prevData);
+      }
+    },
+    onSettled: (_data, _error, variables) => {
+      if (variables?.game) {
+        qc.invalidateQueries({ queryKey: [ARMOUR_PIECES_KEY, variables.game] });
+      }
+      qc.invalidateQueries({ queryKey: [ARMOUR_PIECES_KEY] });
+    },
+  });
+}
+
 export function useDeleteEntireArmourSource() {
   const qc = useQueryClient();
 
@@ -760,6 +852,122 @@ export function useUpdateArmourSetRarity() {
 
     onSettled: () => {
       qc.invalidateQueries({ queryKey: [ARMOUR_PIECES_KEY] });
+    },
+  });
+}
+
+// ── Reassign single piece to another monster/variant ─────────
+export function useReassignArmourPiece() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({
+      game,
+      currentPiece,
+      targetMonsterId,
+      targetSetVariant,
+      targetSetName,
+    }: {
+      game: string;
+      currentPiece: DBArmourPiece;
+      targetMonsterId: string;
+      targetSetVariant: string;
+      targetSetName?: string | null;
+    }) => {
+      const newPieceId = `${game}:${targetMonsterId}:${targetSetVariant}:${currentPiece.slot}`;
+      const payload: Partial<DBArmourPiece> = {
+        id: newPieceId,
+        game,
+        monster_id: targetMonsterId,
+        set_variant: targetSetVariant,
+        set_name: targetSetName !== undefined ? targetSetName : currentPiece.set_name,
+        set_icon: currentPiece.set_icon,
+        rarity: currentPiece.rarity ?? 1,
+        slot: currentPiece.slot,
+        image: currentPiece.image,
+        skills: currentPiece.skills,
+        driftsmelt_slots: currentPiece.driftsmelt_slots,
+        is_active: currentPiece.is_active,
+        notes: currentPiece.notes,
+        updated_at: new Date().toISOString(),
+      };
+
+      const { error: upsertError } = await supabase
+        .from('armour_pieces')
+        .upsert(payload);
+
+      if (upsertError) throw upsertError;
+
+      if (currentPiece.id !== newPieceId) {
+        const { error: delError } = await supabase
+          .from('armour_pieces')
+          .delete()
+          .eq('id', currentPiece.id);
+
+        if (delError) {
+          console.warn('Failed to delete old piece record after move:', delError);
+        }
+      }
+
+      return { newPieceId, oldPieceId: currentPiece.id };
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: [ARMOUR_PIECES_KEY] });
+      qc.invalidateQueries({ queryKey: ['user_armour_pieces'] });
+    },
+  });
+}
+
+// ── Reassign entire set to another monster/variant ────────────
+export function useReassignArmourSet() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({
+      game,
+      sourceMonsterId,
+      sourceSetVariant,
+      targetMonsterId,
+      targetSetVariant,
+      targetSetName,
+    }: {
+      game: string;
+      sourceMonsterId: string;
+      sourceSetVariant: string;
+      targetMonsterId: string;
+      targetSetVariant: string;
+      targetSetName?: string | null;
+    }) => {
+      const { data: pieces, error: fetchErr } = await supabase
+        .from('armour_pieces')
+        .select('*')
+        .eq('game', game)
+        .eq('monster_id', sourceMonsterId)
+        .eq('set_variant', sourceSetVariant);
+
+      if (fetchErr) throw fetchErr;
+      if (!pieces || pieces.length === 0) return;
+
+      for (const piece of pieces) {
+        const newPieceId = `${game}:${targetMonsterId}:${targetSetVariant}:${piece.slot}`;
+        const payload = {
+          ...piece,
+          id: newPieceId,
+          monster_id: targetMonsterId,
+          set_variant: targetSetVariant,
+          set_name: targetSetName !== undefined ? targetSetName : piece.set_name,
+          updated_at: new Date().toISOString(),
+        };
+
+        const { error: upErr } = await supabase.from('armour_pieces').upsert(payload);
+        if (upErr) throw upErr;
+
+        if (piece.id !== newPieceId) {
+          await supabase.from('armour_pieces').delete().eq('id', piece.id);
+        }
+      }
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: [ARMOUR_PIECES_KEY] });
+      qc.invalidateQueries({ queryKey: ['user_armour_pieces'] });
     },
   });
 }

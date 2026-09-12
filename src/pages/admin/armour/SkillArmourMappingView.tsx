@@ -278,6 +278,10 @@ function AssignToPieceModal({
                 { label: 'R8', val: 8 },
                 { label: 'R9', val: 9 },
                 { label: 'R12', val: 12 },
+                { label: 'R13', val: 13 },
+                { label: 'R14', val: 14 },
+                { label: 'R15', val: 15 },
+                { label: 'R16', val: 16 },
               ].map((r) => (
                 <button
                   key={r.label}
@@ -550,6 +554,10 @@ function SkillMappingCard({
                         <option value="8">R8</option>
                         <option value="9">R9</option>
                         <option value="12">R12</option>
+                        <option value="13">R13</option>
+                        <option value="14">R14</option>
+                        <option value="15">R15</option>
+                        <option value="16">R16</option>
                       </select>
 
                       {skill.is_set_bonus ? (

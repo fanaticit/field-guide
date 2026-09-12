@@ -1,11 +1,10 @@
 // ─────────────────────────────────────────────────────────────
-// WeaponGuide — Investigation Notes view for Weapons & Hunter Collection Tracking
+// WeaponGuide — Investigation Notes view for Weapons & Hunter's Challenge Forge Tracking
 // ─────────────────────────────────────────────────────────────
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import {
   Sword,
   Search,
-  CheckCircle2,
   Sparkles,
   LayoutGrid,
   List,
@@ -17,6 +16,9 @@ import {
   Snowflake,
   Skull,
   Eye,
+  CheckCircle2,
+  ChevronRight,
+  LogIn,
 } from 'lucide-react';
 import {
   type DBWeapon,
@@ -30,14 +32,20 @@ import { WEAPON_TYPES } from '../../data/core/weapon-types';
 import { useAdminWeapons } from '../../hooks/useAdminWeapons';
 import { useAdminMonsters } from '../../hooks/useAdminMonsters';
 import { useAdminSkills } from '../../hooks/useAdminSkills';
-import { useUserWeaponCollection } from '../../hooks/useUserWeaponCollection';
+import {
+  useHunterChallenges,
+  useAddWeaponChallenge,
+  useIncrementChallenge,
+  getWeaponChallenge,
+} from '../../hooks/useHunterChallenges';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
 import { useNavigate } from 'react-router-dom';
 import WeaponCard from './WeaponCard';
 import WeaponModal from './WeaponModal';
+import LoginModal from '../../components/auth/LoginModal';
 import { cn } from '../../lib/utils';
 
-type OwnershipFilter = 'all' | 'collected' | 'missing';
+type ChallengeFilter = 'all' | 'tracked' | 'crafting' | 'upgrading' | 'mastered';
 type ViewMode = 'grid' | 'table';
 type SortOrder = 'rarity-desc' | 'rarity-asc' | 'name-asc' | 'default';
 
@@ -57,10 +65,11 @@ const ELEMENT_ICONS: Record<WeaponElementType, React.ComponentType<{ size?: numb
 export default function WeaponGuide() {
   const navigate = useNavigate();
   const isAdmin = useAuthStore(selectIsAdmin);
+  const { user } = useAuthStore();
 
   const [search, setSearch] = useState('');
   const [filterGame, setFilterGame] = useState<string>('all');
-  const [filterOwnership, setFilterOwnership] = useState<OwnershipFilter>('all');
+  const [filterChallenge, setFilterChallenge] = useState<ChallengeFilter>('all');
   const [filterWeaponType, setFilterWeaponType] = useState<string>('all');
   const [filterElement, setFilterElement] = useState<WeaponElementType | 'all'>('all');
   const [filterSource, setFilterSource] = useState<WeaponSourceType | 'all'>('all');
@@ -69,16 +78,48 @@ export default function WeaponGuide() {
 
   // Selected Weapon for Inspection Modal
   const [selectedWeapon, setSelectedWeapon] = useState<DBWeapon | null>(null);
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
 
   // Queries & Hooks
   const { data: weapons = [], isLoading } = useAdminWeapons({ isActive: true });
   const { data: monsters = [] } = useAdminMonsters({ isActive: true });
   const { data: skills = [] } = useAdminSkills({ isActive: true });
-  const { isCollected, toggleCollected } = useUserWeaponCollection();
+  const { data: challenges = [] } = useHunterChallenges(user?.id);
+
+  const addChallenge = useAddWeaponChallenge();
+  const incrementChallenge = useIncrementChallenge();
 
   const monstersMap = useMemo(() => new Map(monsters.map((m) => [m.id, m])), [monsters]);
   const skillsMap = useMemo(() => new Map(skills.map((s) => [s.id, s])), [skills]);
   const weaponTypesMap = useMemo(() => new Map(WEAPON_TYPES.map((w) => [w.id, w])), []);
+
+  // Quick challenge add handler
+  const handleAddChallenge = useCallback(
+    async (weapon: DBWeapon) => {
+      if (!user) {
+        setLoginModalOpen(true);
+        return;
+      }
+
+      const monster = weapon.monster_id ? monstersMap.get(weapon.monster_id) : null;
+      await addChallenge.mutateAsync({
+        userId: user.id,
+        game: weapon.game,
+        weaponId: weapon.id,
+        weaponName: weapon.name,
+        weaponTypeId: weapon.weapon_type_id,
+        monsterId: weapon.monster_id ?? null,
+        monsterName: monster?.name ?? null,
+        elementType: weapon.element_type,
+        specialSkill: weapon.special_skill ?? null,
+        pieceImage: weapon.image ?? null,
+        setIcon: weapon.image ?? null,
+        craftRarity: weapon.rarity || 1,
+        maxRarity: 16,
+      });
+    },
+    [user, monstersMap, addChallenge],
+  );
 
   // Filtered Weapons
   const filteredWeapons = useMemo(() => {
@@ -116,10 +157,16 @@ export default function WeaponGuide() {
       list = list.filter((w) => w.source_type === filterSource);
     }
 
-    if (filterOwnership === 'collected') {
-      list = list.filter((w) => isCollected(w.id));
-    } else if (filterOwnership === 'missing') {
-      list = list.filter((w) => !isCollected(w.id));
+    if (filterChallenge !== 'all') {
+      list = list.filter((w) => {
+        const c = getWeaponChallenge(challenges, w.id);
+        if (!c) return false;
+        if (filterChallenge === 'tracked') return c.status !== 'abandoned';
+        if (filterChallenge === 'crafting') return c.status === 'crafting' || c.current_rarity === 0;
+        if (filterChallenge === 'upgrading') return c.status === 'upgrading' && c.current_rarity > 0;
+        if (filterChallenge === 'mastered') return c.status === 'completed' || c.current_rarity >= (c.max_rarity || 16);
+        return true;
+      });
     }
 
     // Sort order
@@ -142,16 +189,19 @@ export default function WeaponGuide() {
     });
 
     return list;
-  }, [weapons, search, filterGame, filterWeaponType, filterElement, filterSource, filterOwnership, sortOrder, isCollected, monstersMap, skillsMap]);
+  }, [weapons, search, filterGame, filterWeaponType, filterElement, filterSource, filterChallenge, sortOrder, challenges, monstersMap, skillsMap]);
 
-  // Metrics
-  const totalCount = weapons.length;
-  const collectedCount = weapons.filter((w) => isCollected(w.id)).length;
-  const progressPercent = totalCount > 0 ? Math.round((collectedCount / totalCount) * 100) : 0;
+  // Challenge metrics
+  const activeChallenges = challenges.filter(
+    (c) => c.challenge_type === 'weapon' && (c.status === 'crafting' || c.status === 'upgrading'),
+  );
+  const completedChallenges = challenges.filter(
+    (c) => c.challenge_type === 'weapon' && c.status === 'completed',
+  );
 
   return (
     <div className="p-6 lg:p-8 space-y-6 max-w-7xl mx-auto">
-      {/* ── Collection Metrics & Hero Header ── */}
+      {/* ── Header & Personal Challenge Tracker Stats ── */}
       <div className="relative overflow-hidden rounded-3xl border border-mh-slate-700 bg-gradient-to-r from-mh-slate-900 via-mh-slate-850 to-mh-slate-900 p-6 sm:p-8 shadow-2xl">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="flex items-start gap-4">
@@ -163,12 +213,12 @@ export default function WeaponGuide() {
                 <h1 className="font-display text-2xl sm:text-3xl font-bold text-mh-slate-100">
                   Weapon Armory
                 </h1>
-                <span className="rounded-full bg-mh-gold-500/10 px-3 py-0.5 text-xs font-bold text-mh-gold-400 border border-mh-gold-500/25">
-                  Collection Tracker
+                <span className="rounded-full bg-blue-500/10 px-3 py-0.5 text-xs font-bold text-blue-400 border border-blue-500/25">
+                  Hunter's Challenge Forge
                 </span>
               </div>
               <p className="mt-1 text-xs sm:text-sm text-mh-slate-400 max-w-xl leading-relaxed">
-                Explore craftable weapons across all 14 Monster Hunter weapon types, special finisher skills, elemental affinities, and track your personal forged armory.
+                Explore weapons across all 14 Monster Hunter weapon types, special finisher skills, elemental affinities, and challenge yourself to forge and upgrade to Rarity 16.
               </p>
             </div>
           </div>
@@ -186,31 +236,37 @@ export default function WeaponGuide() {
           )}
         </div>
 
-        {/* Collection Progress & Stats Row */}
+        {/* Hunter's Challenges Summary Stats Row */}
         <div className="mt-6 pt-6 border-t border-mh-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {/* Progress Bar Card */}
-          <div className="rounded-2xl border border-mh-slate-750 bg-mh-slate-950/70 p-4 space-y-2">
+          {/* Active Goals Card */}
+          <div className="rounded-2xl border border-mh-slate-750 bg-mh-slate-950/70 p-4 space-y-1">
             <div className="flex items-center justify-between text-xs font-bold">
-              <span className="text-mh-slate-300">Armory Forged</span>
-              <span className="text-mh-gold-400 font-mono">
-                {collectedCount} / {totalCount} ({progressPercent}%)
-              </span>
+              <span className="text-mh-slate-300">Active Forge Goals</span>
+              <span className="text-blue-400 font-mono">{activeChallenges.length} Active</span>
             </div>
-            <div className="h-2 w-full rounded-full bg-mh-slate-800 overflow-hidden">
-              <div
-                className="h-full rounded-full bg-gradient-to-r from-mh-gold-500 to-amber-400 transition-all duration-500"
-                style={{ width: `${progressPercent}%` }}
-              />
+            <p className="text-[11px] text-mh-slate-400">
+              Weapons currently tracked for forging or upgrading to R16.
+            </p>
+          </div>
+
+          {/* Mastered R16 Card */}
+          <div className="rounded-2xl border border-mh-slate-750 bg-mh-slate-950/70 p-4 space-y-1">
+            <div className="flex items-center justify-between text-xs font-bold">
+              <span className="text-mh-slate-300">Mastered (R16)</span>
+              <span className="text-emerald-400 font-mono">{completedChallenges.length} Mastered</span>
             </div>
+            <p className="text-[11px] text-mh-slate-400">
+              Weapons fully forged and upgraded to maximum rank 16.
+            </p>
           </div>
 
           {/* Quick Tip */}
-          <div className="sm:col-span-2 rounded-2xl border border-mh-slate-750 bg-mh-slate-950/70 p-4 flex items-center gap-3">
+          <div className="rounded-2xl border border-mh-slate-750 bg-mh-slate-950/70 p-4 flex items-center gap-3">
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-mh-slate-800 text-mh-gold-400">
               <Sparkles size={18} />
             </div>
             <p className="text-xs text-mh-slate-400 leading-relaxed">
-              <strong className="text-mh-slate-200">Hunter's Field Note:</strong> Mark weapons as forged to track your collection progress. Click on any weapon card to inspect detailed skill unlocks and lore notes.
+              <strong className="text-mh-slate-200">Hunter's Field Note:</strong> Add weapons to your challenges to set starting rarities and track monster hunting targets.
             </p>
           </div>
         </div>
@@ -223,7 +279,7 @@ export default function WeaponGuide() {
           <h3 className="font-display text-sm font-bold uppercase tracking-wider text-mh-slate-200">
             Armory Catalog
           </h3>
-          <span className="rounded-full bg-mh-slate-800 border border-mh-slate-700 px-2 py-0.5 text-xs text-mh-slate-400 font-semibold">
+          <span className="rounded-full bg-mh-slate-800 border border-mh-slate-750 px-2 py-0.5 text-xs text-mh-slate-400 font-semibold">
             {filteredWeapons.length} of {weapons.length}
           </span>
         </div>
@@ -241,23 +297,25 @@ export default function WeaponGuide() {
             />
           </div>
 
-          {/* Ownership Filter */}
+          {/* Challenge Filter */}
           <div className="flex items-center rounded-xl border border-mh-slate-750 bg-mh-slate-900 p-0.5">
             {(
               [
                 { id: 'all', label: 'All' },
-                { id: 'collected', label: 'Collected' },
-                { id: 'missing', label: 'Missing' },
+                { id: 'tracked', label: 'Tracked' },
+                { id: 'crafting', label: 'Craft Goals' },
+                { id: 'upgrading', label: 'Upgrading' },
+                { id: 'mastered', label: 'Mastered' },
               ] as const
             ).map((opt) => (
               <button
                 key={opt.id}
                 type="button"
-                onClick={() => setFilterOwnership(opt.id)}
+                onClick={() => setFilterChallenge(opt.id)}
                 className={cn(
                   'rounded-lg px-2.5 py-1 text-xs font-semibold transition-all',
-                  filterOwnership === opt.id
-                    ? 'bg-mh-gold-500 text-slate-950 font-bold shadow-sm'
+                  filterChallenge === opt.id
+                    ? 'bg-blue-500 text-slate-950 font-bold shadow-sm'
                     : 'text-mh-slate-400 hover:text-white',
                 )}
               >
@@ -393,15 +451,21 @@ export default function WeaponGuide() {
       ) : viewMode === 'grid' ? (
         /* ── Grid View ── */
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredWeapons.map((weapon) => (
-            <WeaponCard
-              key={weapon.id}
-              weapon={weapon}
-              isCollected={isCollected(weapon.id)}
-              onToggleCollected={() => toggleCollected(weapon.id)}
-              onInspect={() => setSelectedWeapon(weapon)}
-            />
-          ))}
+          {filteredWeapons.map((weapon) => {
+            const challenge = getWeaponChallenge(challenges, weapon.id);
+            return (
+              <WeaponCard
+                key={weapon.id}
+                weapon={weapon}
+                challenge={challenge}
+                isLoggedIn={Boolean(user)}
+                onAddChallenge={handleAddChallenge}
+                onOpenLogin={() => setLoginModalOpen(true)}
+                onInspect={() => setSelectedWeapon(weapon)}
+                isAddingChallenge={addChallenge.isPending}
+              />
+            );
+          })}
         </div>
       ) : (
         /* ── Table View ── */
@@ -416,7 +480,7 @@ export default function WeaponGuide() {
                 <th className="px-3 py-3.5">Element / Status</th>
                 <th className="px-3 py-3.5">Special Skill</th>
                 <th className="px-3 py-3.5">Attached Skills</th>
-                <th className="px-3 py-3.5 text-center">Armory</th>
+                <th className="px-3 py-3.5 text-center">Hunter Challenge</th>
                 <th className="py-3.5 pl-3 pr-5 text-right">Action</th>
               </tr>
             </thead>
@@ -427,19 +491,19 @@ export default function WeaponGuide() {
                 const srcCfg = WEAPON_SOURCE_CONFIG[weapon.source_type] || WEAPON_SOURCE_CONFIG.general;
                 const elemCfg = WEAPON_ELEMENT_CONFIG[weapon.element_type] || WEAPON_ELEMENT_CONFIG.raw;
                 const ElIcon = ELEMENT_ICONS[weapon.element_type] || Shield;
-                const collected = isCollected(weapon.id);
+                const challenge = getWeaponChallenge(challenges, weapon.id);
+                const isTracked = Boolean(challenge && challenge.status !== 'abandoned');
+                const isCompleted = challenge?.status === 'completed';
+                const isCrafted = (challenge?.current_rarity ?? 0) > 0;
                 const rarityCfg = getRarityBadgeStyle(weapon.rarity || 1);
 
                 return (
                   <tr
                     key={weapon.id}
                     onClick={() => setSelectedWeapon(weapon)}
-                    className={cn(
-                      'hover:bg-mh-slate-800/50 transition-colors cursor-pointer',
-                      !collected && 'opacity-65',
-                    )}
+                    className="hover:bg-mh-slate-800/50 transition-colors cursor-pointer"
                   >
-                    {/* Weapon Info */}
+                    {/* Weapon Info with Wrapped Name */}
                     <td className="py-3.5 pl-5 pr-3">
                       <div className="flex items-center gap-3">
                         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-mh-slate-800 border border-mh-slate-750 p-1">
@@ -453,15 +517,15 @@ export default function WeaponGuide() {
                             <Sword size={16} className="text-mh-slate-500" />
                           )}
                         </div>
-                        <div>
-                          <p className="font-bold text-mh-slate-100">{weapon.name}</p>
+                        <div className="min-w-0 max-w-[200px]">
+                          <p className="font-bold text-mh-slate-100 break-words leading-tight">{weapon.name}</p>
                           {weapon.upgraded_name && (
-                            <p className="text-[10px] text-amber-300 font-medium">
+                            <p className="text-[10px] text-amber-300 font-medium break-words mt-0.5">
                               ▲ {weapon.upgraded_name} {weapon.upgrade_level ? `(Lv ${weapon.upgrade_level})` : ''}
                             </p>
                           )}
-                          {weapon.name_ja && (
-                            <p className="text-[10px] text-mh-slate-500">{weapon.name_ja}</p>
+                          {weapon.name_ja && !weapon.upgraded_name && (
+                            <p className="text-[10px] text-mh-slate-500 break-words">{weapon.name_ja}</p>
                           )}
                         </div>
                       </div>
@@ -474,7 +538,7 @@ export default function WeaponGuide() {
 
                     {/* Rarity */}
                     <td className="px-3 py-3.5 text-center">
-                      <span className={cn('inline-block rounded px-2 py-0.5 text-[10px] font-bold border', rarityCfg.badge)}>
+                      <span className={cn('inline-block rounded px-2 py-0.5 text-[10px] font-bold border font-mono', rarityCfg.badge)}>
                         {rarityCfg.label}
                       </span>
                     </td>
@@ -513,14 +577,14 @@ export default function WeaponGuide() {
                     </td>
 
                     {/* Special Skill */}
-                    <td className="px-3 py-3.5 font-semibold text-mh-gold-400">
+                    <td className="px-3 py-3.5 font-semibold text-mh-gold-400 max-w-[140px] break-words">
                       {weapon.special_skill || '—'}
                     </td>
 
                     {/* Skills */}
                     <td className="px-3 py-3.5">
                       {weapon.skills && weapon.skills.length > 0 ? (
-                        <div className="flex flex-wrap gap-1">
+                        <div className="flex flex-wrap gap-1 max-w-[180px]">
                           {weapon.skills.map((s, idx) => (
                             <span
                               key={idx}
@@ -535,36 +599,55 @@ export default function WeaponGuide() {
                       )}
                     </td>
 
-                    {/* Armory Status */}
+                    {/* Hunter Challenge Action / Status */}
                     <td className="px-3 py-3.5 text-center">
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleCollected(weapon.id);
-                        }}
-                        className={cn(
-                          'inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold border transition-all',
-                          collected
-                            ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-300'
-                            : 'bg-mh-slate-800 border-mh-slate-700 text-mh-slate-400 hover:text-white',
-                        )}
-                      >
-                        {collected ? (
-                          <>
+                      {!user ? (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setLoginModalOpen(true);
+                          }}
+                          className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold border bg-mh-slate-800 border-mh-slate-700 text-mh-slate-400 hover:text-white transition-all"
+                        >
+                          <LogIn size={11} />
+                          <span>Track</span>
+                        </button>
+                      ) : isTracked && challenge ? (
+                        isCompleted ? (
+                          <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold border bg-emerald-500/15 border-emerald-500/30 text-emerald-300">
                             <CheckCircle2 size={11} className="text-emerald-400" />
-                            <span>Collected</span>
-                          </>
+                            <span>Mastered</span>
+                          </span>
                         ) : (
-                          <>
-                            <Plus size={11} />
-                            <span>Collect</span>
-                          </>
-                        )}
-                      </button>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              incrementChallenge.mutateAsync(challenge);
+                            }}
+                            className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold bg-blue-500 hover:bg-blue-400 text-slate-950 transition-all shadow-sm"
+                          >
+                            <ChevronRight size={11} />
+                            <span>{isCrafted ? `R${challenge.current_rarity + 1}` : `Craft (R${challenge.craft_rarity})`}</span>
+                          </button>
+                        )
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleAddChallenge(weapon);
+                          }}
+                          className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold border bg-mh-gold-500/15 border-mh-gold-500/30 text-mh-gold-300 hover:bg-mh-gold-500/25 transition-all"
+                        >
+                          <Plus size={11} />
+                          <span>+ Challenge</span>
+                        </button>
+                      )}
                     </td>
 
-                    {/* Action */}
+                    {/* Inspect Action */}
                     <td className="py-3.5 pl-3 pr-5 text-right">
                       <button
                         type="button"
@@ -583,16 +666,22 @@ export default function WeaponGuide() {
         </div>
       )}
 
-      {/* ── Inspection Modal ── */}
+      {/* ── Inspection & Challenge Modal ── */}
       {selectedWeapon && (
         <WeaponModal
           weapon={selectedWeapon}
           open={Boolean(selectedWeapon)}
           onClose={() => setSelectedWeapon(null)}
-          isCollected={isCollected(selectedWeapon.id)}
-          onToggleCollected={() => toggleCollected(selectedWeapon.id)}
+          challenge={getWeaponChallenge(challenges, selectedWeapon.id)}
+          onOpenLogin={() => setLoginModalOpen(true)}
         />
       )}
+
+      {/* ── Login Modal ── */}
+      <LoginModal
+        open={loginModalOpen}
+        onClose={() => setLoginModalOpen(false)}
+      />
     </div>
   );
 }

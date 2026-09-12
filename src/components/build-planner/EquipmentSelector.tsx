@@ -21,11 +21,12 @@ interface SearchableDropdownProps {
   placeholderIcon?: string;
   placeholder?: string;
   isLoading?: boolean;
+  highlightClasses?: string;
   onChange: (id: string | null) => void;
 }
 
 function SearchableDropdown({
-  label, items, selectedId, selectedImage, placeholderIcon, placeholder, isLoading, onChange,
+  label, items, selectedId, selectedImage, placeholderIcon, placeholder, isLoading, highlightClasses, onChange,
 }: SearchableDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -72,7 +73,7 @@ function SearchableDropdown({
         <button
           onClick={() => !isLoading && setIsOpen(!isOpen)}
           disabled={isLoading}
-          className="w-full flex items-center justify-between bg-mh-slate-800/80 hover:bg-mh-slate-700 border border-mh-slate-700 rounded-lg p-2 px-3 transition-colors text-left h-[50px]"
+          className={`w-full flex items-center justify-between bg-mh-slate-800/80 hover:bg-mh-slate-700 border rounded-lg p-2 px-3 transition-colors text-left h-[50px] ${highlightClasses ? highlightClasses : 'border-mh-slate-700'}`}
         >
           <div className="flex flex-col min-w-0">
             <span className="text-[9px] font-bold text-rarity-3 uppercase tracking-wider mb-0.5">{label}</span>
@@ -156,8 +157,24 @@ function SearchableDropdown({
 
 // ─── Equipment Selector ───────────────────────────────────────────────────────
 
+
+const getHighlightClasses = (cat: string | null) => {
+  if (!cat) return '';
+  switch (cat) {
+    case 'attack': return 'border-red-500 ring-1 ring-red-500/50 bg-red-500/10 shadow-lg shadow-red-500/20';
+    case 'critical': return 'border-purple-500 ring-1 ring-purple-500/50 bg-purple-500/10 shadow-lg shadow-purple-500/20';
+    case 'defense': return 'border-blue-500 ring-1 ring-blue-500/50 bg-blue-500/10 shadow-lg shadow-blue-500/20';
+    case 'survival': return 'border-orange-500 ring-1 ring-orange-500/50 bg-orange-500/10 shadow-lg shadow-orange-500/20';
+    case 'status': return 'border-emerald-500 ring-1 ring-emerald-500/50 bg-emerald-500/10 shadow-lg shadow-emerald-500/20';
+    case 'utility': return 'border-yellow-500 ring-1 ring-yellow-500/50 bg-yellow-500/10 shadow-lg shadow-yellow-500/20';
+    case 'health': return 'border-green-500 ring-1 ring-green-500/50 bg-green-500/10 shadow-lg shadow-green-500/20';
+    case 'general':
+    default: return 'border-mh-slate-400 ring-1 ring-mh-slate-400/50 bg-mh-slate-400/10 shadow-lg shadow-mh-slate-400/20';
+  }
+};
+
 export function EquipmentSelector() {
-  const { adventurer, weaponType, weapon, setWeapon, helm, chest, gloves, waist, greaves, setArmour } = useBuildPlannerStore();
+  const { adventurer, weaponType, weapon, setWeapon, helm, chest, gloves, waist, greaves, setArmour, hoveredSkillId, hoveredSkillCategory } = useBuildPlannerStore();
 
   const isReady = !!adventurer;
 
@@ -248,6 +265,7 @@ export function EquipmentSelector() {
         <SearchableDropdown
           label="Weapon"
           placeholderIcon="/images/weapons/great_sword.png"
+          highlightClasses={hoveredSkillId && weapon?.skills?.some(s => s.id === hoveredSkillId) ? getHighlightClasses(hoveredSkillCategory) : undefined}
           items={weaponItems}
           selectedId={weapon?.id}
           selectedImage={weapon?.image} // Weapons can keep their image or icon
@@ -265,6 +283,7 @@ export function EquipmentSelector() {
               <SearchableDropdown
                 key={slot}
                 label={slotLabel}
+                highlightClasses={hoveredSkillId && current?.skills?.some(s => s.id === hoveredSkillId) ? getHighlightClasses(hoveredSkillCategory) : undefined}
                 placeholderIcon={slotIconPath}
               items={armourItems(slot)}
               selectedId={current?.id}

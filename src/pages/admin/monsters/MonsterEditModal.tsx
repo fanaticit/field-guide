@@ -3,8 +3,26 @@
 // Full-featured form for every monster attribute.
 // ─────────────────────────────────────────────────────────────
 import { useState, useEffect, useRef } from 'react';
-import { X, Loader2, Trash2, AlertTriangle, Upload } from 'lucide-react';
-import { type DBMonster, type MonsterUpsert, useUpsertMonster, useDeleteMonster, useBaseMonsters } from '../../../hooks/useAdminMonsters';
+import {
+  X,
+  Loader2,
+  Trash2,
+  AlertTriangle,
+  Upload,
+  ChevronDown,
+  ChevronUp,
+  Sword,
+  Layers,
+  ShieldAlert,
+} from 'lucide-react';
+import {
+  type DBMonster,
+  type MonsterUpsert,
+  useUpsertMonster,
+  useDeleteMonster,
+  useBaseMonsters,
+  useMonsterDependencies,
+} from '../../../hooks/useAdminMonsters';
 import { supabase } from '../../../lib/supabase';
 import { cn } from '../../../lib/utils';
 
@@ -353,11 +371,17 @@ export default function MonsterEditModal({ monster, open, onClose }: Props) {
 
   const [form, setForm] = useState<MonsterUpsert>(emptyForm);
   const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const [showDepsDetails, setShowDepsDetails] = useState(false);
+
+  // Check if any weapons or armour pieces link to this monster
+  const { data: deps } = useMonsterDependencies(monster?.id ?? null);
+  const hasDependencies = (deps?.totalCount ?? 0) > 0;
 
   // Sync form when monster prop changes
   useEffect(() => {
     if (open) {
       setDeleteConfirm(false);
+      setShowDepsDetails(false);
       setForm(monster ? { ...monster } : emptyForm());
     }
   }, [monster, open]);
@@ -680,31 +704,122 @@ export default function MonsterEditModal({ monster, open, onClose }: Props) {
             </div>
           </div>
 
+          {/* Linked Equipment Warning Banner */}
+          {hasDependencies && showDepsDetails && (
+            <div className="border-t border-amber-500/30 bg-amber-950/40 p-4 max-h-56 overflow-y-auto">
+              <div className="flex items-start gap-2.5">
+                <AlertTriangle size={18} className="shrink-0 text-amber-400 mt-0.5" />
+                <div className="min-w-0 flex-1">
+                  <h4 className="text-xs font-bold text-amber-300">
+                    Cannot delete &quot;{form.name || monster?.name}&quot; — Equipment is linked
+                  </h4>
+                  <p className="mt-0.5 text-[11px] text-amber-200/80">
+                    Please reassign or unset the following weapons and armour pieces to another monster before deleting this monster:
+                  </p>
+
+                  <div className="mt-2.5 space-y-2.5">
+                    {deps!.weapons.length > 0 && (
+                      <div>
+                        <div className="flex items-center gap-1.5 text-[11px] font-semibold text-amber-300 mb-1">
+                          <Sword size={12} />
+                          <span>Linked Weapons ({deps!.weapons.length})</span>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5">
+                          {deps!.weapons.map((w) => (
+                            <span
+                              key={w.id}
+                              className="inline-flex items-center gap-1.5 rounded bg-mh-slate-900/90 border border-amber-500/30 px-2 py-0.5 text-[11px] text-amber-100"
+                            >
+                              <span className="text-[9px] uppercase font-bold text-amber-400">{w.game}</span>
+                              <span>{w.name}</span>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {deps!.armourPieces.length > 0 && (
+                      <div>
+                        <div className="flex items-center gap-1.5 text-[11px] font-semibold text-amber-300 mb-1">
+                          <Layers size={12} />
+                          <span>Linked Armour Pieces ({deps!.armourPieces.length})</span>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5">
+                          {deps!.armourPieces.map((p) => (
+                            <span
+                              key={p.id}
+                              className="inline-flex items-center gap-1.5 rounded bg-mh-slate-900/90 border border-amber-500/30 px-2 py-0.5 text-[11px] text-amber-100"
+                            >
+                              <span className="text-[9px] uppercase font-bold text-amber-400">{p.game}</span>
+                              <span className="capitalize">{p.slot}</span>
+                              <span className="text-amber-300/70 font-mono text-[10px]">
+                                ({p.set_name || p.set_variant || 'Set I'})
+                              </span>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Footer */}
           <div className="flex shrink-0 items-center justify-between border-t border-mh-slate-700 px-6 py-4">
             {/* Delete (edit mode only) */}
-            {!isCreate && !deleteConfirm && (
-              <button
-                type="button"
-                onClick={() => setDeleteConfirm(true)}
-                className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm text-red-400 hover:bg-red-500/10 transition-colors"
-              >
-                <Trash2 size={14} />
-                Delete
-              </button>
-            )}
-            {deleteConfirm && (
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-red-400">Permanently delete?</span>
-                <button type="button" onClick={handleDelete} disabled={isBusy}
-                  className="rounded-lg bg-red-500/20 px-3 py-1.5 text-xs font-semibold text-red-300 hover:bg-red-500/30 disabled:opacity-50">
-                  {isBusy ? 'Deleting…' : 'Confirm'}
+            {!isCreate && (
+              hasDependencies ? (
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    disabled
+                    title="Cannot delete monster while equipment is linked"
+                    className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm text-mh-slate-500 bg-mh-slate-800/60 cursor-not-allowed border border-mh-slate-700/60 opacity-60"
+                  >
+                    <Trash2 size={14} />
+                    Delete
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowDepsDetails((v) => !v)}
+                    className="flex items-center gap-1.5 text-xs text-amber-400 hover:text-amber-300 font-medium py-1 px-2 rounded-lg bg-amber-500/10 border border-amber-500/20 transition-colors"
+                  >
+                    <ShieldAlert size={14} />
+                    <span>{deps?.totalCount} linked item{deps?.totalCount === 1 ? '' : 's'}</span>
+                    {showDepsDetails ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+                  </button>
+                </div>
+              ) : !deleteConfirm ? (
+                <button
+                  type="button"
+                  onClick={() => setDeleteConfirm(true)}
+                  className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm text-red-400 hover:bg-red-500/10 transition-colors"
+                >
+                  <Trash2 size={14} />
+                  Delete
                 </button>
-                <button type="button" onClick={() => setDeleteConfirm(false)}
-                  className="rounded-lg px-3 py-1.5 text-xs text-mh-slate-500 hover:text-mh-slate-300">
-                  Cancel
-                </button>
-              </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-red-400">Permanently delete?</span>
+                  <button
+                    type="button"
+                    onClick={handleDelete}
+                    disabled={isBusy}
+                    className="rounded-lg bg-red-500/20 px-3 py-1.5 text-xs font-semibold text-red-300 hover:bg-red-500/30 disabled:opacity-50"
+                  >
+                    {isBusy ? 'Deleting…' : 'Confirm'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setDeleteConfirm(false)}
+                    className="rounded-lg px-3 py-1.5 text-xs text-mh-slate-500 hover:text-mh-slate-300"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              )
             )}
             {isCreate && <div />}
 

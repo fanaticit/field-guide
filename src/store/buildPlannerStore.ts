@@ -64,6 +64,8 @@ interface BuildPlannerState {
   buildRole: 'main' | 'support';
   author_id: string | null;
   is_published: boolean;
+  hoveredSkillId: string | null;
+  hoveredSkillCategory: string | null;
   // Selections
   adventurer: Adventurer | null;
   weaponType: WeaponType | null;
@@ -97,6 +99,7 @@ interface BuildPlannerState {
   setVisage: (slot: VisageSlot, v: Visage | null) => void;
   setSlotInkType: (slot: VisageSlot, ink: string) => void;
   resetBuild: () => void;
+  setHoveredSkillId: (id: string | null, category?: string | null) => void;
 
   // Computed
   getTotalVisagePoints: () => number;
@@ -142,6 +145,8 @@ export const useBuildPlannerStore = create<BuildPlannerState>((set, get) => ({
   buildRole: 'main',
   author_id: null,
   is_published: false,
+  hoveredSkillId: null,
+  hoveredSkillCategory: null,
   adventurer: null,
   weaponType: null,
   weapon: null,
@@ -214,6 +219,7 @@ export const useBuildPlannerStore = create<BuildPlannerState>((set, get) => ({
     buildRole: 'main',
     author_id: null,
     is_published: false,
+  hoveredSkillId: null,
     adventurer: null,
     weaponType: null,
     weapon: null,
@@ -241,6 +247,8 @@ export const useBuildPlannerStore = create<BuildPlannerState>((set, get) => ({
     if (visage5) total += visage5.points;
     return total;
   },
+
+  setHoveredSkillId: (id, category = null) => set({ hoveredSkillId: id, hoveredSkillCategory: category }),
 
   getActiveSkills: () => {
     const { weapon, helm, chest, gloves, waist, greaves } = get();

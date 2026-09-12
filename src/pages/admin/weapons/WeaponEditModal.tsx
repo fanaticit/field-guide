@@ -831,6 +831,10 @@ export default function WeaponEditModal({
                           { label: 'Lv8', val: 8 },
                           { label: 'Lv10', val: 10 },
                           { label: 'Lv12', val: 12 },
+                          { label: 'Lv13', val: 13 },
+                          { label: 'Lv14', val: 14 },
+                          { label: 'Lv15', val: 15 },
+                          { label: 'Lv16', val: 16 },
                         ].map((r) => (
                           <button
                             key={r.label}
@@ -851,7 +855,7 @@ export default function WeaponEditModal({
                           min={1}
                           max={50}
                           placeholder="Lv..."
-                          value={newSkillUnlockRarity && ![5, 6, 8, 10, 12].includes(newSkillUnlockRarity) ? newSkillUnlockRarity : ''}
+                          value={newSkillUnlockRarity && ![5, 6, 8, 10, 12, 13, 14, 15, 16].includes(newSkillUnlockRarity) ? newSkillUnlockRarity : ''}
                           onChange={(e) => {
                             const val = parseInt(e.target.value, 10);
                             setNewSkillUnlockRarity(isNaN(val) || val <= 1 ? null : val);
@@ -924,9 +928,11 @@ export default function WeaponEditModal({
                           <option value="8">Lv 8</option>
                           <option value="10">Lv 10</option>
                           <option value="12">Lv 12</option>
+                          <option value="13">Lv 13</option>
+                          <option value="14">Lv 14</option>
                           <option value="15">Lv 15</option>
-                          <option value="20">Lv 20</option>
-                          {ur && ![5, 6, 8, 10, 12, 15, 20].includes(ur) && (
+                          <option value="16">Lv 16</option>
+                          {ur && ![5, 6, 8, 10, 12, 13, 14, 15, 16].includes(ur) && (
                             <option value={ur}>Lv {ur}</option>
                           )}
                         </select>

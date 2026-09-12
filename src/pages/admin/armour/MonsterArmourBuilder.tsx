@@ -23,6 +23,7 @@ import {
   Camera,
   AlertCircle,
   Hammer,
+  ArrowRightLeft,
 } from 'lucide-react';
 import { useAdminMonsters } from '../../../hooks/useAdminMonsters';
 import { useAdminSkills, type DBSkill } from '../../../hooks/useAdminSkills';
@@ -38,6 +39,9 @@ import {
   useRenameArmourSet,
   useDeleteArmourSet,
   useDeleteEntireArmourSource,
+  useDeleteArmourPiece,
+  useReassignArmourPiece,
+  useReassignArmourSet,
   type DBArmourPiece,
 } from '../../../hooks/useAdminArmour';
 import { supabase } from '../../../lib/supabase';
@@ -102,6 +106,14 @@ export function getRarityBadgeStyle(rarity: number = 1): {
       return { bg: 'bg-teal-500/15', text: 'text-teal-300', border: 'border-teal-500/30', label: 'R11' };
     case 12:
       return { bg: 'bg-fuchsia-500/15', text: 'text-fuchsia-300', border: 'border-fuchsia-500/30', label: 'R12' };
+    case 13:
+      return { bg: 'bg-sky-500/15', text: 'text-sky-300', border: 'border-sky-500/30', label: 'R13' };
+    case 14:
+      return { bg: 'bg-lime-500/15', text: 'text-lime-300', border: 'border-lime-500/30', label: 'R14' };
+    case 15:
+      return { bg: 'bg-pink-500/15', text: 'text-pink-300', border: 'border-pink-500/30', label: 'R15' };
+    case 16:
+      return { bg: 'bg-mh-gold-500/20', text: 'text-mh-gold-300', border: 'border-mh-gold-500/50', label: 'R16' };
     default:
       return { bg: 'bg-mh-gold-500/15', text: 'text-mh-gold-300', border: 'border-mh-gold-500/30', label: `R${rarity}` };
   }
@@ -139,7 +151,7 @@ function EditSetRarityModal({
     onClose();
   }
 
-  const rarityPresets = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  const rarityPresets = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
@@ -214,6 +226,595 @@ function EditSetRarityModal({
           >
             {updateRarityMutation.isPending ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
             Save Rarity
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Edit & Reassign Armour Piece Modal ─────────────────────────
+function EditArmourPieceModal({
+  game,
+  piece,
+  slotDef,
+  currentSource,
+  allSources,
+  allPieces,
+  open,
+  onClose,
+  onMoved,
+}: {
+  game: string;
+  piece: DBArmourPiece;
+  slotDef: typeof ARMOUR_SLOTS_DEF[number];
+  currentSource: ArmourSetSource;
+  allSources: ArmourSetSource[];
+  allPieces: DBArmourPiece[];
+  open: boolean;
+  onClose: () => void;
+  onMoved: (targetMonsterId: string, targetVariant: string) => void;
+}) {
+  const [targetMonsterId, setTargetMonsterId] = useState<string>(piece.monster_id);
+  const [targetSetVariant, setTargetSetVariant] = useState<string>(piece.set_variant || 'I');
+  const [targetSetName, setTargetSetName] = useState<string>(piece.set_name || '');
+  const [searchMonster, setSearchMonster] = useState<string>('');
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const reassignPieceMutation = useReassignArmourPiece();
+  const deletePieceMutation = useDeleteArmourPiece();
+
+  useEffect(() => {
+    if (open) {
+      setTargetMonsterId(piece.monster_id);
+      setTargetSetVariant(piece.set_variant || 'I');
+      setTargetSetName(piece.set_name || '');
+      setSearchMonster('');
+      setDeleteConfirm(false);
+    }
+  }, [open, piece]);
+
+  function handleDeletePiece() {
+    deletePieceMutation.mutate(
+      {
+        id: piece.id,
+        game: piece.game || game,
+        monsterId: piece.monster_id,
+        setVariant: piece.set_variant,
+        slot: piece.slot,
+      },
+      {
+        onSuccess: () => {
+          onClose();
+        },
+        onError: (err) => {
+          console.error('Failed to delete armour piece:', err);
+          alert(`Failed to delete piece: ${err instanceof Error ? err.message : 'Unknown error'}`);
+          setDeleteConfirm(false);
+        },
+      },
+    );
+  }
+
+  if (!open) return null;
+
+  const targetSourceObj = allSources.find((s) => s.id === targetMonsterId) || currentSource;
+
+  const filteredSources = allSources.filter((s) => {
+    if (!searchMonster.trim()) return true;
+    const term = searchMonster.toLowerCase();
+    return (
+      s.name.toLowerCase().includes(term) ||
+      s.id.toLowerCase().includes(term) ||
+      Boolean(s.name_ja && s.name_ja.toLowerCase().includes(term))
+    );
+  });
+
+  // Check if destination piece slot is already occupied by another piece with skills or image
+  const destinationOccupied =
+    targetMonsterId !== piece.monster_id || targetSetVariant !== (piece.set_variant || 'I')
+      ? allPieces.find(
+          (p) =>
+            p.game === game &&
+            p.monster_id === targetMonsterId &&
+            (p.set_variant || 'I') === targetSetVariant &&
+            p.slot === piece.slot &&
+            p.id !== piece.id &&
+            (p.skills?.length > 0 || p.image),
+        )
+      : null;
+
+  const hasChanged =
+    targetMonsterId !== piece.monster_id ||
+    targetSetVariant !== (piece.set_variant || 'I') ||
+    targetSetName !== (piece.set_name || '');
+
+  async function handleSave() {
+    if (!hasChanged) {
+      onClose();
+      return;
+    }
+
+    await reassignPieceMutation.mutateAsync({
+      game,
+      currentPiece: piece,
+      targetMonsterId,
+      targetSetVariant,
+      targetSetName: targetSetName.trim() || null,
+    });
+
+    onMoved(targetMonsterId, targetSetVariant);
+    onClose();
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="flex w-full max-w-xl flex-col rounded-2xl border border-mh-slate-700 bg-mh-slate-900 shadow-2xl overflow-hidden max-h-[90vh]">
+        {/* Header */}
+        <div className="flex items-center justify-between border-b border-mh-slate-750 px-6 py-4 bg-mh-slate-850 shrink-0">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-mh-gold-500/15 border border-mh-gold-500/30 text-mh-gold-400">
+              <ArrowRightLeft size={18} />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h2 className="font-display text-base font-bold text-white">
+                  Edit & Reassign Piece
+                </h2>
+                <span className="rounded bg-mh-slate-800 border border-mh-slate-700 px-2 py-0.5 text-[10px] font-bold uppercase text-mh-gold-300">
+                  {slotDef.label} ({slotDef.subLabel})
+                </span>
+              </div>
+              <p className="text-xs text-mh-slate-400">
+                Link this {slotDef.label} to a different monster or set variant.
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-lg p-1.5 text-mh-slate-400 hover:bg-mh-slate-800 hover:text-white transition-colors"
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        <div className="p-6 space-y-5 overflow-y-auto min-h-0 flex-1">
+          {/* Current piece info banner */}
+          <div className="flex items-center justify-between rounded-xl border border-mh-slate-750 bg-mh-slate-850/70 p-3">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 shrink-0 rounded-lg bg-mh-slate-800 border border-mh-slate-700 p-1 flex items-center justify-center overflow-hidden">
+                <img
+                  src={piece.image || slotDef.icon}
+                  alt={slotDef.label}
+                  className="h-full w-full object-contain"
+                  onError={(e) => {
+                    (e.target as HTMLElement).style.display = 'none';
+                  }}
+                />
+              </div>
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-mh-slate-500">Currently Linked To</span>
+                <p className="text-sm font-bold text-white flex items-center gap-1.5">
+                  <span>{currentSource.name}</span>
+                  <span className="text-xs font-semibold text-mh-gold-400 font-mono">
+                    (Set {piece.set_variant || 'I'})
+                  </span>
+                </p>
+              </div>
+            </div>
+            <div className="text-right">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-mh-slate-500">Skills</span>
+              <p className="text-xs font-semibold text-mh-slate-300">
+                {piece.skills?.length ?? 0} skill{(piece.skills?.length ?? 0) === 1 ? '' : 's'} attached
+              </p>
+            </div>
+          </div>
+
+          {/* Destination Monster / Source Selector */}
+          <div>
+            <label className="block text-xs font-bold text-mh-slate-200 uppercase tracking-wider mb-1.5">
+              1. Select Destination Monster / Material Set
+            </label>
+            <div className="relative mb-2">
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-mh-slate-500" />
+              <input
+                type="text"
+                placeholder="Search monsters or material sets..."
+                value={searchMonster}
+                onChange={(e) => setSearchMonster(e.target.value)}
+                className="w-full rounded-xl border border-mh-slate-750 bg-mh-slate-800/80 pl-9 pr-3 py-2 text-xs text-white placeholder-mh-slate-500 focus:border-mh-gold-500/50 focus:outline-none"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 max-h-48 overflow-y-auto rounded-xl border border-mh-slate-750 bg-mh-slate-850/50 p-2">
+              {filteredSources.map((s) => {
+                const isSelected = s.id === targetMonsterId;
+                return (
+                  <button
+                    key={s.id}
+                    type="button"
+                    onClick={() => {
+                      setTargetMonsterId(s.id);
+                      if (s.id !== currentSource.id) {
+                        setTargetSetName(`${s.name} Set`);
+                      }
+                    }}
+                    className={cn(
+                      'flex items-center gap-2.5 rounded-lg p-2 text-left transition-all',
+                      isSelected
+                        ? 'bg-mh-gold-500/20 border border-mh-gold-500/50 text-white font-bold'
+                        : 'border border-transparent hover:bg-mh-slate-800 text-mh-slate-300',
+                    )}
+                  >
+                    <div className="h-7 w-7 shrink-0 rounded-lg bg-mh-slate-800 border border-mh-slate-700/60 p-0.5 overflow-hidden flex items-center justify-center">
+                      {s.icon ? (
+                        <img src={s.icon} alt={s.name} className="h-full w-full object-contain" />
+                      ) : (
+                        <Shield size={14} className="text-mh-slate-500" />
+                      )}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs truncate">{s.name}</p>
+                      <span className="text-[9px] uppercase tracking-wider text-mh-slate-500 font-semibold">
+                        {s.isMonster ? 'Monster' : 'Material'}
+                      </span>
+                    </div>
+                    {isSelected && <Check size={14} className="shrink-0 text-mh-gold-400 font-bold" />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Destination Set Variant & Set Name */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-mh-slate-200 uppercase tracking-wider mb-1.5">
+                2. Target Set Variant
+              </label>
+              <div className="flex flex-wrap gap-1.5 mb-2">
+                {ROMAN_NUMERAL_PRESETS.slice(0, 6).map((num) => (
+                  <button
+                    key={num}
+                    type="button"
+                    onClick={() => setTargetSetVariant(num)}
+                    className={cn(
+                      'rounded-lg px-2.5 py-1 text-xs font-bold transition-all',
+                      targetSetVariant === num
+                        ? 'bg-mh-gold-500 text-mh-slate-950 font-black'
+                        : 'border border-mh-slate-750 bg-mh-slate-800 text-mh-slate-300 hover:border-mh-gold-500/30',
+                    )}
+                  >
+                    {num}
+                  </button>
+                ))}
+              </div>
+              <input
+                type="text"
+                value={targetSetVariant}
+                onChange={(e) => setTargetSetVariant(e.target.value.trim())}
+                placeholder="Variant (e.g. I, II, alpha, beta)"
+                className="w-full rounded-xl border border-mh-slate-750 bg-mh-slate-800/80 px-3 py-2 text-xs text-white placeholder-mh-slate-500 focus:border-mh-gold-500/50 focus:outline-none font-mono"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-mh-slate-200 uppercase tracking-wider mb-1.5">
+                3. Set Display Name (Optional)
+              </label>
+              <input
+                type="text"
+                value={targetSetName}
+                onChange={(e) => setTargetSetName(e.target.value)}
+                placeholder={`${targetSourceObj.name} Set`}
+                className="w-full rounded-xl border border-mh-slate-750 bg-mh-slate-800/80 px-3 py-2 text-xs text-white placeholder-mh-slate-500 focus:border-mh-gold-500/50 focus:outline-none mt-7"
+              />
+            </div>
+          </div>
+
+          {/* Overwrite warning */}
+          {destinationOccupied && (
+            <div className="flex items-start gap-2.5 rounded-xl border border-amber-500/30 bg-amber-950/30 p-3 text-xs text-amber-200">
+              <AlertCircle size={16} className="shrink-0 text-amber-400 mt-0.5" />
+              <div>
+                <p className="font-bold text-amber-300">Destination Slot Already Occupied</p>
+                <p className="mt-0.5 text-[11px] text-amber-200/80">
+                  {targetSourceObj.name} already has a {slotDef.label} configured in Set {targetSetVariant}. Moving this piece will overwrite the existing piece record and its skills.
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="flex items-center justify-between border-t border-mh-slate-750 px-6 py-4 bg-mh-slate-850 shrink-0">
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-lg px-3 py-2 text-xs font-semibold text-mh-slate-400 hover:bg-mh-slate-800 hover:text-white transition-colors"
+            >
+              Cancel
+            </button>
+            {deleteConfirm ? (
+              <div className="flex items-center gap-1.5 rounded-lg border border-red-500/40 bg-red-950/60 px-2.5 py-1.5 text-xs shadow-sm animate-in fade-in duration-150">
+                <span className="text-[11px] font-bold text-red-300">Delete piece permanently?</span>
+                <button
+                  type="button"
+                  disabled={deletePieceMutation.isPending}
+                  onClick={handleDeletePiece}
+                  className="rounded bg-red-500/30 px-2 py-1 text-[11px] font-bold text-red-200 hover:bg-red-500/50 transition-colors disabled:opacity-50"
+                >
+                  {deletePieceMutation.isPending ? 'Deleting...' : 'Confirm'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setDeleteConfirm(false)}
+                  className="rounded px-2 py-1 text-[11px] text-mh-slate-400 hover:text-white transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setDeleteConfirm(true)}
+                className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-red-400 hover:bg-red-500/10 transition-colors"
+                title="Permanently delete this armour piece"
+              >
+                <Trash2 size={13} />
+                <span>Delete Piece</span>
+              </button>
+            )}
+          </div>
+          <button
+            type="button"
+            disabled={reassignPieceMutation.isPending || !hasChanged || !targetMonsterId || !targetSetVariant}
+            onClick={handleSave}
+            className="flex items-center gap-1.5 rounded-lg bg-mh-gold-500 px-5 py-2 text-xs font-bold text-mh-slate-950 hover:bg-mh-gold-400 disabled:opacity-50 transition-all shadow-sm"
+          >
+            {reassignPieceMutation.isPending ? (
+              <Loader2 size={14} className="animate-spin" />
+            ) : (
+              <ArrowRightLeft size={14} />
+            )}
+            Move Piece to {targetSourceObj.name}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Reassign Entire Set Modal ─────────────────────────────────
+function ReassignSetModal({
+  game,
+  source,
+  currentSetVariant,
+  currentSetName,
+  allSources,
+  open,
+  onClose,
+  onMoved,
+}: {
+  game: string;
+  source: ArmourSetSource;
+  currentSetVariant: string;
+  currentSetName: string;
+  allSources: ArmourSetSource[];
+  open: boolean;
+  onClose: () => void;
+  onMoved: (targetMonsterId: string, targetVariant: string) => void;
+}) {
+  const [targetMonsterId, setTargetMonsterId] = useState<string>(source.id);
+  const [targetSetVariant, setTargetSetVariant] = useState<string>(currentSetVariant);
+  const [targetSetName, setTargetSetName] = useState<string>(currentSetName);
+  const [searchMonster, setSearchMonster] = useState<string>('');
+  const reassignSetMutation = useReassignArmourSet();
+
+  useEffect(() => {
+    if (open) {
+      setTargetMonsterId(source.id);
+      setTargetSetVariant(currentSetVariant);
+      setTargetSetName(currentSetName);
+      setSearchMonster('');
+    }
+  }, [open, source, currentSetVariant, currentSetName]);
+
+  if (!open) return null;
+
+  const targetSourceObj = allSources.find((s) => s.id === targetMonsterId) || source;
+
+  const filteredSources = allSources.filter((s) => {
+    if (!searchMonster.trim()) return true;
+    const term = searchMonster.toLowerCase();
+    return s.name.toLowerCase().includes(term) || s.id.toLowerCase().includes(term);
+  });
+
+  const hasChanged = targetMonsterId !== source.id || targetSetVariant !== currentSetVariant;
+
+  async function handleSave() {
+    if (!hasChanged) {
+      onClose();
+      return;
+    }
+
+    await reassignSetMutation.mutateAsync({
+      game,
+      sourceMonsterId: source.id,
+      sourceSetVariant: currentSetVariant,
+      targetMonsterId,
+      targetSetVariant,
+      targetSetName: targetSetName.trim() || null,
+    });
+
+    onMoved(targetMonsterId, targetSetVariant);
+    onClose();
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="flex w-full max-w-xl flex-col rounded-2xl border border-mh-slate-700 bg-mh-slate-900 shadow-2xl overflow-hidden max-h-[90vh]">
+        {/* Header */}
+        <div className="flex items-center justify-between border-b border-mh-slate-750 px-6 py-4 bg-mh-slate-850 shrink-0">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-mh-gold-500/15 border border-mh-gold-500/30 text-mh-gold-400">
+              <ArrowRightLeft size={18} />
+            </div>
+            <div>
+              <h2 className="font-display text-base font-bold text-white">
+                Reassign Entire Set
+              </h2>
+              <p className="text-xs text-mh-slate-400">
+                Move all 5 pieces of &quot;{currentSetName}&quot; to another monster or material source.
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-lg p-1.5 text-mh-slate-400 hover:bg-mh-slate-800 hover:text-white transition-colors"
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        <div className="p-6 space-y-5 overflow-y-auto min-h-0 flex-1">
+          {/* Current set info */}
+          <div className="flex items-center justify-between rounded-xl border border-mh-slate-750 bg-mh-slate-850/70 p-3">
+            <div>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-mh-slate-500">Current Source Set</span>
+              <p className="text-sm font-bold text-white">{source.name} ({currentSetName})</p>
+            </div>
+            <span className="rounded bg-mh-gold-500/10 border border-mh-gold-500/30 px-2.5 py-1 text-xs font-bold text-mh-gold-300">
+              Moves all 5 pieces
+            </span>
+          </div>
+
+          {/* Destination Monster / Source Selector */}
+          <div>
+            <label className="block text-xs font-bold text-mh-slate-200 uppercase tracking-wider mb-1.5">
+              1. Select Destination Monster / Material Set
+            </label>
+            <div className="relative mb-2">
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-mh-slate-500" />
+              <input
+                type="text"
+                placeholder="Search monsters or material sets..."
+                value={searchMonster}
+                onChange={(e) => setSearchMonster(e.target.value)}
+                className="w-full rounded-xl border border-mh-slate-750 bg-mh-slate-800/80 pl-9 pr-3 py-2 text-xs text-white placeholder-mh-slate-500 focus:border-mh-gold-500/50 focus:outline-none"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 max-h-48 overflow-y-auto rounded-xl border border-mh-slate-750 bg-mh-slate-850/50 p-2">
+              {filteredSources.map((s) => {
+                const isSelected = s.id === targetMonsterId;
+                return (
+                  <button
+                    key={s.id}
+                    type="button"
+                    onClick={() => {
+                      setTargetMonsterId(s.id);
+                      if (s.id !== source.id) {
+                        setTargetSetName(`${s.name} Set`);
+                      }
+                    }}
+                    className={cn(
+                      'flex items-center gap-2.5 rounded-lg p-2 text-left transition-all',
+                      isSelected
+                        ? 'bg-mh-gold-500/20 border border-mh-gold-500/50 text-white font-bold'
+                        : 'border border-transparent hover:bg-mh-slate-800 text-mh-slate-300',
+                    )}
+                  >
+                    <div className="h-7 w-7 shrink-0 rounded-lg bg-mh-slate-800 border border-mh-slate-700/60 p-0.5 overflow-hidden flex items-center justify-center">
+                      {s.icon ? (
+                        <img src={s.icon} alt={s.name} className="h-full w-full object-contain" />
+                      ) : (
+                        <Shield size={14} className="text-mh-slate-500" />
+                      )}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs truncate">{s.name}</p>
+                      <span className="text-[9px] uppercase tracking-wider text-mh-slate-500 font-semibold">
+                        {s.isMonster ? 'Monster' : 'Material'}
+                      </span>
+                    </div>
+                    {isSelected && <Check size={14} className="shrink-0 text-mh-gold-400 font-bold" />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Destination Set Variant & Set Name */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-mh-slate-200 uppercase tracking-wider mb-1.5">
+                2. Target Set Variant
+              </label>
+              <div className="flex flex-wrap gap-1.5 mb-2">
+                {ROMAN_NUMERAL_PRESETS.slice(0, 6).map((num) => (
+                  <button
+                    key={num}
+                    type="button"
+                    onClick={() => setTargetSetVariant(num)}
+                    className={cn(
+                      'rounded-lg px-2.5 py-1 text-xs font-bold transition-all',
+                      targetSetVariant === num
+                        ? 'bg-mh-gold-500 text-mh-slate-950 font-black'
+                        : 'border border-mh-slate-750 bg-mh-slate-800 text-mh-slate-300 hover:border-mh-gold-500/30',
+                    )}
+                  >
+                    {num}
+                  </button>
+                ))}
+              </div>
+              <input
+                type="text"
+                value={targetSetVariant}
+                onChange={(e) => setTargetSetVariant(e.target.value.trim())}
+                placeholder="Variant (e.g. I, II, alpha)"
+                className="w-full rounded-xl border border-mh-slate-750 bg-mh-slate-800/80 px-3 py-2 text-xs text-white placeholder-mh-slate-500 focus:border-mh-gold-500/50 focus:outline-none font-mono"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-mh-slate-200 uppercase tracking-wider mb-1.5">
+                3. New Set Display Name
+              </label>
+              <input
+                type="text"
+                value={targetSetName}
+                onChange={(e) => setTargetSetName(e.target.value)}
+                placeholder={`${targetSourceObj.name} Set`}
+                className="w-full rounded-xl border border-mh-slate-750 bg-mh-slate-800/80 px-3 py-2 text-xs text-white placeholder-mh-slate-500 focus:border-mh-gold-500/50 focus:outline-none mt-7"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="flex items-center justify-between border-t border-mh-slate-750 px-6 py-4 bg-mh-slate-850 shrink-0">
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-lg px-4 py-2 text-xs font-semibold text-mh-slate-400 hover:bg-mh-slate-800 hover:text-white transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            disabled={reassignSetMutation.isPending || !hasChanged || !targetMonsterId || !targetSetVariant}
+            onClick={handleSave}
+            className="flex items-center gap-1.5 rounded-lg bg-mh-gold-500 px-5 py-2 text-xs font-bold text-mh-slate-950 hover:bg-mh-gold-400 disabled:opacity-50 transition-all shadow-sm"
+          >
+            {reassignSetMutation.isPending ? (
+              <Loader2 size={14} className="animate-spin" />
+            ) : (
+              <ArrowRightLeft size={14} />
+            )}
+            Reassign All Pieces to {targetSourceObj.name}
           </button>
         </div>
       </div>
@@ -871,7 +1472,7 @@ function CreateNonMonsterSetModal({
               Starting Rarity
             </label>
             <div className="grid grid-cols-6 gap-1.5">
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((r) => {
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map((r) => {
                 const isSelected = rarity === r;
                 const rStyle = getRarityBadgeStyle(r);
                 return (
@@ -1202,6 +1803,10 @@ function AddSkillPicker({
                 { label: 'R8', val: 8 },
                 { label: 'R9', val: 9 },
                 { label: 'R12', val: 12 },
+                { label: 'R13', val: 13 },
+                { label: 'R14', val: 14 },
+                { label: 'R15', val: 15 },
+                { label: 'R16', val: 16 },
               ].map((r) => (
                 <button
                   key={r.label}
@@ -1277,6 +1882,10 @@ function UnlockRarityPopover({
               { label: 'R8', val: 8 },
               { label: 'R9', val: 9 },
               { label: 'R12', val: 12 },
+              { label: 'R13', val: 13 },
+              { label: 'R14', val: 14 },
+              { label: 'R15', val: 15 },
+              { label: 'R16', val: 16 },
             ].map((opt) => (
               <button
                 key={opt.label}
@@ -1313,6 +1922,7 @@ function ArmourSlotCard({
   piece,
   availableSkills,
   onOpenImageModal,
+  onEditPiece,
 }: {
   game: string;
   source: ArmourSetSource;
@@ -1322,9 +1932,35 @@ function ArmourSlotCard({
   piece?: DBArmourPiece;
   availableSkills: DBSkill[];
   onOpenImageModal: (slotDef: typeof ARMOUR_SLOTS_DEF[number]) => void;
+  onEditPiece?: (piece: DBArmourPiece, slotDef: typeof ARMOUR_SLOTS_DEF[number]) => void;
 }) {
   const [showAdder, setShowAdder] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const saveSkills = useSaveArmourPieceSkills();
+  const deletePieceMutation = useDeleteArmourPiece();
+
+  function handleDeletePiece() {
+    if (!piece) return;
+    deletePieceMutation.mutate(
+      {
+        id: piece.id,
+        game: piece.game || game,
+        monsterId: piece.monster_id || source.id,
+        setVariant: piece.set_variant || setVariant,
+        slot: piece.slot || slotDef.id,
+      },
+      {
+        onSuccess: () => {
+          setConfirmDelete(false);
+        },
+        onError: (err) => {
+          console.error('Failed to delete armour piece:', err);
+          alert(`Failed to delete piece: ${err instanceof Error ? err.message : 'Unknown error'}`);
+          setConfirmDelete(false);
+        },
+      },
+    );
+  }
 
   const skills = piece?.skills ?? [];
 
@@ -1422,16 +2058,66 @@ function ArmourSlotCard({
           </div>
         </div>
 
-        {!showAdder && (
-          <button
-            type="button"
-            onClick={() => setShowAdder(true)}
-            className="flex items-center gap-1 rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-2.5 py-1.5 text-xs font-semibold text-mh-slate-300 hover:border-mh-gold-500/40 hover:text-mh-gold-400 transition-all"
-          >
-            <Plus size={13} />
-            <span>Add Skill</span>
-          </button>
-        )}
+        <div className="flex items-center gap-1.5">
+          {confirmDelete ? (
+            <div className="flex items-center gap-1 rounded-lg border border-red-500/40 bg-red-950/60 px-2 py-1 text-xs shadow-sm animate-in fade-in duration-150">
+              <span className="text-[11px] font-bold text-red-300">Delete?</span>
+              <button
+                type="button"
+                disabled={deletePieceMutation.isPending}
+                onClick={handleDeletePiece}
+                className="rounded px-1.5 py-0.5 text-[10px] font-bold bg-red-500/30 text-red-200 hover:bg-red-500/50 transition-colors disabled:opacity-50"
+              >
+                {deletePieceMutation.isPending ? '...' : 'Yes'}
+              </button>
+              <button
+                type="button"
+                onClick={() => setConfirmDelete(false)}
+                className="rounded px-1.5 py-0.5 text-[10px] text-mh-slate-400 hover:text-white transition-colors"
+              >
+                No
+              </button>
+            </div>
+          ) : (
+            <>
+              {piece && onEditPiece && (
+                <button
+                  type="button"
+                  onClick={() => onEditPiece(piece, slotDef)}
+                  className="flex h-7 w-7 items-center justify-center rounded-lg border border-mh-slate-700 bg-mh-slate-800/90 text-mh-slate-300 hover:border-mh-gold-500/40 hover:text-mh-gold-300 transition-all shadow-sm"
+                  title={`Relink ${slotDef.label} to another monster`}
+                  aria-label={`Relink ${slotDef.label} to another monster`}
+                >
+                  <ArrowRightLeft size={13} className="text-mh-gold-400" />
+                </button>
+              )}
+
+              {piece && (
+                <button
+                  type="button"
+                  onClick={() => setConfirmDelete(true)}
+                  className="flex h-7 w-7 items-center justify-center rounded-lg border border-mh-slate-700 bg-mh-slate-800/90 text-mh-slate-400 hover:border-red-500/50 hover:bg-red-500/15 hover:text-red-400 transition-all shadow-sm"
+                  title={`Delete ${slotDef.label} piece`}
+                  aria-label={`Delete ${slotDef.label} piece`}
+                >
+                  <Trash2 size={13} />
+                </button>
+              )}
+
+              {!showAdder && (
+                <button
+                  type="button"
+                  onClick={() => setShowAdder(true)}
+                  className="flex h-7 w-7 items-center justify-center rounded-lg border border-mh-slate-700 bg-mh-slate-800 text-mh-slate-300 hover:border-mh-gold-500/40 hover:text-mh-gold-400 transition-all shadow-sm"
+                  title={`Add Skill to ${slotDef.label}`}
+                  aria-label={`Add Skill to ${slotDef.label}`}
+                >
+                  <Plus size={14} />
+                </button>
+              )}
+            </>
+          )}
+        </div>
       </div>
 
       {/* Inline skill adder */}
@@ -2340,6 +3026,10 @@ function BulkApplySkillModal({
                     { label: 'R8', val: 8 },
                     { label: 'R9', val: 9 },
                     { label: 'R12', val: 12 },
+                    { label: 'R13', val: 13 },
+                    { label: 'R14', val: 14 },
+                    { label: 'R15', val: 15 },
+                    { label: 'R16', val: 16 },
                   ].map((r) => (
                     <button
                       key={r.label}
@@ -2499,6 +3189,11 @@ export default function MonsterArmourBuilder({
   const [sourceToDelete, setSourceToDelete] = useState<ArmourSetSource | null>(null);
   const [showCreateNonMonsterModal, setShowCreateNonMonsterModal] = useState(false);
   const [activeSlotForImageModal, setActiveSlotForImageModal] = useState<typeof ARMOUR_SLOTS_DEF[number] | null>(null);
+  const [activePieceForEditModal, setActivePieceForEditModal] = useState<{
+    piece: DBArmourPiece;
+    slotDef: typeof ARMOUR_SLOTS_DEF[number];
+  } | null>(null);
+  const [showReassignSetModal, setShowReassignSetModal] = useState(false);
 
   const monsterFilters = useMemo(() => ({ game, isActive: true }), [game]);
   const skillFilters = useMemo(() => ({ game, isActive: true }), [game]);
@@ -3088,6 +3783,16 @@ export default function MonsterArmourBuilder({
 
                 <button
                   type="button"
+                  onClick={() => setShowReassignSetModal(true)}
+                  className="flex items-center gap-1.5 rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-xs font-semibold text-mh-slate-300 hover:border-mh-gold-500/40 hover:text-white transition-all shadow-sm"
+                  title="Reassign this entire set to another monster"
+                >
+                  <ArrowRightLeft size={13} className="text-mh-gold-400" />
+                  <span>Move Set...</span>
+                </button>
+
+                <button
+                  type="button"
                   onClick={() => setShowAddSetModal(true)}
                   className="flex items-center gap-1.5 rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-xs font-semibold text-mh-slate-300 hover:border-mh-gold-500/40 hover:text-white transition-all shadow-sm"
                 >
@@ -3285,6 +3990,7 @@ export default function MonsterArmourBuilder({
                   piece={monsterPiecesMap.get(slotDef.id)}
                   availableSkills={skills}
                   onOpenImageModal={(s) => setActiveSlotForImageModal(s)}
+                  onEditPiece={(piece, slotDef) => setActivePieceForEditModal({ piece, slotDef })}
                 />
               ))}
             </div>
@@ -3392,6 +4098,41 @@ export default function MonsterArmourBuilder({
                     );
                     setSelectedSetVariant(remainingVariants[0] || 'I');
                   }
+                }}
+              />
+            )}
+
+            {/* Edit / Relink Armour Piece Modal */}
+            {activePieceForEditModal && (
+              <EditArmourPieceModal
+                game={game}
+                piece={activePieceForEditModal.piece}
+                slotDef={activePieceForEditModal.slotDef}
+                currentSource={activeSetSource}
+                allSources={allSetSources}
+                allPieces={armourPieces}
+                open={true}
+                onClose={() => setActivePieceForEditModal(null)}
+                onMoved={(targetMonsterId, targetVariant) => {
+                  onSelectMonster(targetMonsterId);
+                  setSelectedSetVariant(targetVariant);
+                }}
+              />
+            )}
+
+            {/* Reassign / Move Entire Set Modal */}
+            {showReassignSetModal && (
+              <ReassignSetModal
+                game={game}
+                source={activeSetSource}
+                currentSetVariant={currentSetVariant}
+                currentSetName={currentSetName}
+                allSources={allSetSources}
+                open={showReassignSetModal}
+                onClose={() => setShowReassignSetModal(false)}
+                onMoved={(targetMonsterId, targetVariant) => {
+                  onSelectMonster(targetMonsterId);
+                  setSelectedSetVariant(targetVariant);
                 }}
               />
             )}
