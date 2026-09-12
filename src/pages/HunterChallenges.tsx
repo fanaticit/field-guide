@@ -17,11 +17,16 @@ import {
   Crosshair,
   AlertCircle,
   Plus,
+  Edit2,
+  Save,
+  X,
+  PackageSearch,
 } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import {
   useHunterChallenges,
   useIncrementChallenge,
+  useUpdateChallengeMaterial,
   useDeleteChallenge,
   groupChallengesByMonster,
   challengeStatusLabel,
@@ -49,6 +54,13 @@ const SLOT_ICONS: Record<string, string> = {
   greaves: '/images/armor/greaves.png',
 };
 
+// ── Helpers ───────────────────────────────────────────────────
+
+export function toRoman(num: number): string {
+  const roman = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI'];
+  return roman[num - 1] || num.toString();
+}
+
 // ── Status styling ────────────────────────────────────────────
 
 function statusStyle(status: ChallengeStatus) {
@@ -75,11 +87,21 @@ const FILTER_TABS: { id: FilterTab; label: string }[] = [
 interface ChallengeCardProps {
   challenge: HunterChallenge;
   onIncrement: (challenge: HunterChallenge) => void;
+  onUpdateMaterial: (id: string, material: string | null, activity: string | null) => void;
   onDelete: (id: string) => void;
   compact?: boolean;
 }
 
-function ChallengeCard({ challenge: c, onIncrement, onDelete, compact = false }: ChallengeCardProps) {
+function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, compact = false }: ChallengeCardProps) {
+  const [isEditingMaterial, setIsEditingMaterial] = useState(false);
+  const [editMaterial, setEditMaterial] = useState(c.missing_material ?? '');
+  const [editActivity, setEditActivity] = useState(c.missing_material_activity ?? '');
+
+  const handleSaveMaterial = () => {
+    onUpdateMaterial(c.id, editMaterial.trim() || null, editActivity.trim() || null);
+    setIsEditingMaterial(false);
+  };
+
   const style   = statusStyle(c.status);
   const label   = challengeStatusLabel(c);
   const slotLabel = SLOT_LABELS[c.armour_slot ?? ''] ?? c.armour_slot ?? '—';
@@ -113,10 +135,27 @@ function ChallengeCard({ challenge: c, onIncrement, onDelete, compact = false }:
         {/* Info */}
         <div className="flex-1 min-w-0">
           <p className="text-xs font-bold text-mh-slate-100 truncate">{c.set_name ?? 'Unknown Set'}</p>
-          <p className="text-[10px] text-mh-slate-400 truncate">{slotLabel} · {c.monster_name ?? '—'}</p>
-          <span className={cn('inline-block mt-0.5 rounded px-1.5 py-0.2 text-[10px] font-bold border', style.badge)}>
-            {label}
-          </span>
+          <div className="flex flex-col gap-0.5 mt-0.5">
+            <div className="flex items-center gap-2">
+              <p className="text-[10px] text-mh-slate-400 truncate">{slotLabel}</p>
+              <span className={cn('rounded px-1.5 py-0.2 text-[9px] font-bold border', style.badge)}>
+                {label}
+              </span>
+            </div>
+            {c.monster_name && !isDone ? (
+              <p className="text-[10px] text-mh-slate-400 truncate">
+                Hunt {c.monster_name} at Rank {toRoman((c.current_rarity || 0) + 1)}
+              </p>
+            ) : c.monster_name ? (
+              <p className="text-[10px] text-mh-slate-400 truncate">{c.monster_name}</p>
+            ) : null}
+          </div>
+          {c.missing_material && !isDone && (
+            <p className="mt-1 text-[10px] text-mh-slate-300 flex items-center gap-1">
+              <PackageSearch size={10} className="text-mh-gold-500/70 shrink-0" />
+              <span className="truncate">{c.missing_material}</span>
+            </p>
+          )}
         </div>
 
         {/* Action */}
@@ -162,7 +201,13 @@ function ChallengeCard({ challenge: c, onIncrement, onDelete, compact = false }:
               </h3>
               <p className="text-xs text-mh-slate-400 mt-0.5">
                 {slotLabel}
-                {c.monster_name ? <span className="text-mh-slate-500"> · {c.monster_name}</span> : null}
+                {c.monster_name && !isDone ? (
+                  <span className="text-mh-slate-500">
+                    {' · '}Hunt {c.monster_name} at Rank {toRoman((c.current_rarity || 0) + 1)}
+                  </span>
+                ) : c.monster_name ? (
+                  <span className="text-mh-slate-500"> · {c.monster_name}</span>
+                ) : null}
               </p>
             </div>
 
@@ -203,6 +248,88 @@ function ChallengeCard({ challenge: c, onIncrement, onDelete, compact = false }:
         </div>
       </div>
 
+      {/* Missing Materials Section */}
+      {!isDone && (
+        <div className="pt-2 border-t border-mh-slate-800/60">
+          {isEditingMaterial ? (
+            <div className="space-y-2 bg-mh-slate-900/60 p-2.5 rounded-xl border border-mh-slate-750">
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-mh-slate-400">Missing Material</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Anjanath Fang"
+                  value={editMaterial}
+                  onChange={(e) => setEditMaterial(e.target.value)}
+                  className="w-full bg-mh-slate-950 border border-mh-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-mh-slate-200 placeholder:text-mh-slate-600 focus:outline-none focus:border-mh-gold-500/50"
+                  autoFocus
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-mh-slate-400">Activity (Optional)</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Break head"
+                  value={editActivity}
+                  onChange={(e) => setEditActivity(e.target.value)}
+                  className="w-full bg-mh-slate-950 border border-mh-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-mh-slate-200 placeholder:text-mh-slate-600 focus:outline-none focus:border-mh-gold-500/50"
+                />
+              </div>
+              <div className="flex items-center justify-end gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => setIsEditingMaterial(false)}
+                  className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[10px] font-bold text-mh-slate-400 hover:bg-mh-slate-800 transition-colors"
+                >
+                  <X size={12} /> Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSaveMaterial}
+                  className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[10px] font-bold bg-mh-gold-500/20 text-mh-gold-300 hover:bg-mh-gold-500/30 border border-mh-gold-500/30 transition-colors"
+                >
+                  <Save size={12} /> Save
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-start justify-between gap-2">
+              <div className="flex-1 min-w-0">
+                {c.missing_material ? (
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-[11px] font-bold text-mh-slate-200 flex items-center gap-1.5">
+                      <PackageSearch size={12} className="text-mh-gold-500/70" />
+                      {c.missing_material}
+                    </span>
+                    {c.missing_material_activity && (
+                      <span className="text-[10px] text-mh-slate-500 pl-4.5 truncate">
+                        {c.missing_material_activity}
+                      </span>
+                    )}
+                  </div>
+                ) : (
+                  <span className="text-[11px] text-mh-slate-500 flex items-center gap-1.5">
+                    <PackageSearch size={12} className="opacity-40" />
+                    No missing materials noted
+                  </span>
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setEditMaterial(c.missing_material ?? '');
+                  setEditActivity(c.missing_material_activity ?? '');
+                  setIsEditingMaterial(true);
+                }}
+                className="shrink-0 p-1.5 rounded-lg text-mh-slate-500 hover:text-mh-gold-300 hover:bg-mh-gold-500/10 transition-colors"
+                title="Edit missing materials"
+              >
+                <Edit2 size={12} />
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Action button */}
       {isActive && (
         <button
@@ -235,6 +362,25 @@ interface HuntingTargetsPanelProps {
 function HuntingTargetsPanel({ monsterGroups }: HuntingTargetsPanelProps) {
   const [expandedMonster, setExpandedMonster] = useState<string | null>(null);
 
+  // Sort monster groups by count desc
+  const sortedMonsters = useMemo(() => {
+    return Array.from(monsterGroups.entries()).sort((a, b) => b[1].challenges.length - a[1].challenges.length);
+  }, [monsterGroups]);
+
+  // Gather and sort activities
+  const sortedActivities = useMemo(() => {
+    const activityCounts = new Map<string, number>();
+    for (const group of monsterGroups.values()) {
+      for (const c of group.challenges) {
+        const act = c.missing_material_activity?.trim();
+        if (act) {
+          activityCounts.set(act, (activityCounts.get(act) || 0) + 1);
+        }
+      }
+    }
+    return Array.from(activityCounts.entries()).sort((a, b) => b[1] - a[1]);
+  }, [monsterGroups]);
+
   if (monsterGroups.size === 0) {
     return (
       <div className="rounded-2xl border border-dashed border-mh-slate-750 bg-mh-slate-900/40 p-8 text-center">
@@ -246,88 +392,125 @@ function HuntingTargetsPanel({ monsterGroups }: HuntingTargetsPanelProps) {
   }
 
   return (
-    <div className="space-y-2">
-      {Array.from(monsterGroups.entries()).map(([monsterId, group]) => {
-        const isExpanded = expandedMonster === monsterId;
-        const challengeCount = group.challenges.length;
+    <div className="space-y-4">
+      {/* Monsters list */}
+      <div className="space-y-2">
+        {sortedMonsters.map(([monsterId, group]) => {
+          const isExpanded = expandedMonster === monsterId;
+          const challengeCount = group.challenges.length;
 
-        return (
-          <div
-            key={monsterId}
-            className="rounded-2xl border border-mh-slate-750 bg-mh-slate-900 overflow-hidden"
-          >
-            {/* Monster row */}
-            <button
-              type="button"
-              onClick={() => setExpandedMonster(isExpanded ? null : monsterId)}
-              className="w-full flex items-center gap-3 p-3 text-left hover:bg-mh-slate-850/60 transition-colors"
+          // Gather unique ranks needed for this monster
+          const ranksNeeded = Array.from(new Set(
+            group.challenges.map(c => (c.current_rarity || 0) + 1)
+          )).sort((a, b) => a - b).map(r => toRoman(r)).join(', ');
+
+          return (
+            <div
+              key={monsterId}
+              className="rounded-2xl border border-mh-slate-750 bg-mh-slate-900 overflow-hidden"
             >
-              {/* Monster icon */}
-              <div className="h-11 w-11 shrink-0 flex items-center justify-center rounded-xl bg-mh-slate-950 border border-mh-slate-800 p-1">
-                {group.setIcon ? (
-                  <img
-                    src={group.setIcon}
-                    alt={group.monsterName}
-                    className="h-full w-full object-contain"
-                    onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }}
-                  />
-                ) : (
-                  <Shield size={20} className="text-mh-slate-600" />
-                )}
-              </div>
+              {/* Monster row */}
+              <button
+                type="button"
+                onClick={() => setExpandedMonster(isExpanded ? null : monsterId)}
+                className="w-full flex items-center gap-3 p-3 text-left hover:bg-mh-slate-850/60 transition-colors"
+              >
+                {/* Monster icon */}
+                <div className="h-11 w-11 shrink-0 flex items-center justify-center rounded-xl bg-mh-slate-950 border border-mh-slate-800 p-1">
+                  {group.setIcon ? (
+                    <img
+                      src={group.setIcon}
+                      alt={group.monsterName}
+                      className="h-full w-full object-contain"
+                      onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }}
+                    />
+                  ) : (
+                    <Shield size={20} className="text-mh-slate-600" />
+                  )}
+                </div>
 
-              <div className="flex-1 min-w-0">
-                <p className="font-display text-sm font-bold text-mh-slate-100 truncate">
-                  {group.monsterName}
-                </p>
-                <p className="text-[10px] text-mh-slate-500">
-                  {challengeCount} piece{challengeCount !== 1 ? 's' : ''} to track
-                </p>
-              </div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-display text-sm font-bold text-mh-slate-100 truncate">
+                    {group.monsterName}
+                  </p>
+                  <p className="text-[10px] text-mh-slate-500">
+                    {challengeCount} piece{challengeCount !== 1 ? 's' : ''} to track
+                    {ranksNeeded && <span className="ml-1.5 text-mh-gold-500/80">· Needs Rank {ranksNeeded}</span>}
+                  </p>
+                </div>
 
-              {isExpanded
-                ? <ChevronDown size={15} className="text-mh-slate-500 shrink-0" />
-                : <ChevronRight size={15} className="text-mh-slate-500 shrink-0" />}
-            </button>
+                {isExpanded
+                  ? <ChevronDown size={15} className="text-mh-slate-500 shrink-0" />
+                  : <ChevronRight size={15} className="text-mh-slate-500 shrink-0" />}
+              </button>
 
-            {/* Expanded: list of linked piece challenges */}
-            {isExpanded && (
-              <div className="border-t border-mh-slate-800 divide-y divide-mh-slate-800/60">
-                {group.challenges.map((c) => {
-                  const style = statusStyle(c.status);
-                  const slotLabel = SLOT_LABELS[c.armour_slot ?? ''] ?? c.armour_slot ?? '—';
-                  const slotIcon = SLOT_ICONS[c.armour_slot ?? ''] ?? null;
+              {/* Expanded: list of linked piece challenges */}
+              {isExpanded && (
+                <div className="border-t border-mh-slate-800 divide-y divide-mh-slate-800/60">
+                  {group.challenges.map((c) => {
+                    const style = statusStyle(c.status);
+                    const slotLabel = SLOT_LABELS[c.armour_slot ?? ''] ?? c.armour_slot ?? '—';
+                    const slotIcon = SLOT_ICONS[c.armour_slot ?? ''] ?? null;
 
-                  return (
-                    <div key={c.id} className="flex items-center gap-2.5 px-3 py-2.5">
-                      {/* Slot icon */}
-                      <div className="h-7 w-7 shrink-0 flex items-center justify-center rounded-lg bg-mh-slate-950 border border-mh-slate-800">
-                        {(c.piece_image ?? slotIcon) && (
-                          <img
-                            src={c.piece_image ?? slotIcon!}
-                            alt={slotLabel}
-                            className="h-5 w-5 object-contain"
-                            onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }}
-                          />
+                    return (
+                      <div key={c.id} className="flex flex-col gap-1.5 px-3 py-2.5">
+                        <div className="flex items-center gap-2.5">
+                          {/* Slot icon */}
+                          <div className="h-7 w-7 shrink-0 flex items-center justify-center rounded-lg bg-mh-slate-950 border border-mh-slate-800">
+                            {(c.piece_image ?? slotIcon) && (
+                              <img
+                                src={c.piece_image ?? slotIcon!}
+                                alt={slotLabel}
+                                className="h-5 w-5 object-contain"
+                                onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }}
+                              />
+                            )}
+                          </div>
+
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs font-semibold text-mh-slate-200 truncate">{slotLabel}</p>
+                            <p className="text-[10px] text-mh-slate-500 truncate">{c.set_name ?? '—'}</p>
+                          </div>
+
+                          <span className={cn('rounded px-1.5 py-0.5 text-[9px] font-bold border shrink-0', style.badge)}>
+                            {c.status === 'crafting' ? 'Craft' : c.status === 'upgrading' ? `→R${c.max_rarity}` : 'Done'}
+                          </span>
+                        </div>
+                        {c.missing_material && (
+                          <div className="pl-9 flex items-center gap-1.5 text-[10px] text-mh-slate-400">
+                            <PackageSearch size={10} className="text-mh-gold-500/70" />
+                            <span className="truncate">{c.missing_material}</span>
+                          </div>
                         )}
                       </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
 
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs font-semibold text-mh-slate-200 truncate">{slotLabel}</p>
-                        <p className="text-[10px] text-mh-slate-500 truncate">{c.set_name ?? '—'}</p>
-                      </div>
-
-                      <span className={cn('rounded px-1.5 py-0.5 text-[9px] font-bold border shrink-0', style.badge)}>
-                        {c.status === 'crafting' ? 'Craft' : c.status === 'upgrading' ? `→R${c.max_rarity}` : 'Done'}
-                      </span>
-                    </div>
-                  );
-                })}
+      {/* Activities list */}
+      {sortedActivities.length > 0 && (
+        <div className="pt-3">
+          <h3 className="text-[10px] font-bold text-mh-slate-400 mb-2 px-1 uppercase tracking-wider flex items-center gap-1.5">
+            <Target size={12} className="text-mh-slate-500" />
+            Planned Activities
+          </h3>
+          <div className="space-y-1.5">
+            {sortedActivities.map(([activity, count]) => (
+              <div key={activity} className="flex items-center justify-between bg-mh-slate-800/40 border border-mh-slate-750/50 rounded-xl px-3 py-2">
+                <span className="text-xs font-semibold text-mh-slate-200 truncate pr-2">{activity}</span>
+                <span className="text-[10px] font-bold text-mh-slate-500 bg-mh-slate-800 px-2 py-0.5 rounded-full shrink-0">
+                  x{count}
+                </span>
               </div>
-            )}
+            ))}
           </div>
-        );
-      })}
+        </div>
+      )}
     </div>
   );
 }
@@ -339,6 +522,7 @@ export default function HunterChallenges() {
   const { user } = useAuthStore();
   const { data: challenges = [], isLoading } = useHunterChallenges(user?.id);
   const deleteChallenge = useDeleteChallenge();
+  const updateMaterial = useUpdateChallengeMaterial();
 
   const [filterTab, setFilterTab]         = useState<FilterTab>('active');
   const [loginModalOpen, setLoginModalOpen] = useState(false);
@@ -553,6 +737,7 @@ export default function HunterChallenges() {
                         key={c.id}
                         challenge={c}
                         onIncrement={(c) => incrementChallenge.mutateAsync(c)}
+                        onUpdateMaterial={(id, material, activity) => updateMaterial.mutateAsync({ id, material, activity })}
                         onDelete={handleDelete}
                       />
                     ))}
@@ -565,6 +750,7 @@ export default function HunterChallenges() {
                         key={c.id}
                         challenge={c}
                         onIncrement={(c) => incrementChallenge.mutateAsync(c)}
+                        onUpdateMaterial={(id, material, activity) => updateMaterial.mutateAsync({ id, material, activity })}
                         onDelete={handleDelete}
                         compact
                       />

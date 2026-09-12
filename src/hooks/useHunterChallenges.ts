@@ -44,6 +44,10 @@ export interface HunterChallenge {
   status:           ChallengeStatus;
   completed_at:     string | null;
 
+  // Tracking details
+  missing_material: string | null;
+  missing_material_activity: string | null;
+
   // Meta
   sort_order:       number;
   notes:            string | null;
@@ -337,6 +341,53 @@ export function useUpdateChallengeStatus() {
                   craft_rarity:   craftRarity   !== undefined ? craftRarity   : c.craft_rarity,
                   max_rarity:     maxRarity     !== undefined ? maxRarity     : c.max_rarity,
                   completed_at:   completedAt   !== undefined ? completedAt   : c.completed_at,
+                }
+              : c,
+          );
+        },
+      );
+    },
+
+    onSettled: () => {
+      qc.invalidateQueries({ queryKey: [HUNTER_CHALLENGES_KEY] });
+    },
+  });
+}
+
+// ── useUpdateChallengeMaterial ────────────────────────────────
+// Updates the missing_material and missing_material_activity fields
+
+export function useUpdateChallengeMaterial() {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (payload: { id: string; material: string | null; activity: string | null }) => {
+      const { data, error } = await supabase
+        .from('hunter_challenges')
+        .update({
+          missing_material: payload.material,
+          missing_material_activity: payload.activity,
+        })
+        .eq('id', payload.id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data as HunterChallenge;
+    },
+
+    onMutate: async (payload) => {
+      await qc.cancelQueries({ queryKey: [HUNTER_CHALLENGES_KEY] });
+      qc.setQueriesData(
+        { queryKey: [HUNTER_CHALLENGES_KEY], exact: false },
+        (old: unknown) => {
+          if (!Array.isArray(old)) return old;
+          return (old as HunterChallenge[]).map((c) =>
+            c.id === payload.id
+              ? {
+                  ...c,
+                  missing_material: payload.material,
+                  missing_material_activity: payload.activity,
                 }
               : c,
           );
