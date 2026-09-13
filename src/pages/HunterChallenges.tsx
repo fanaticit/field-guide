@@ -102,18 +102,43 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
     setIsEditingMaterial(false);
   };
 
-  const style   = statusStyle(c.status);
-  const label   = challengeStatusLabel(c);
-  const slotLabel = SLOT_LABELS[c.armour_slot ?? ''] ?? c.armour_slot ?? '—';
+  const isVisage = c.challenge_type === 'visage_set' || Boolean(c.visage_id);
+  const isWeapon = c.challenge_type === 'weapon' || Boolean(c.weapon_id);
+  const isAdventurer = c.challenge_type === 'adventurer' || Boolean(c.adventurer_id);
+  const isBuddy = c.challenge_type === 'buddy' || Boolean(c.buddy_id);
+
+  const slotLabel = isVisage
+    ? `Visage Card · ${c.ink_type ? c.ink_type.charAt(0).toUpperCase() + c.ink_type.slice(1) : 'Ink Set'}`
+    : isWeapon
+    ? `Weapon · ${c.weapon_type_id ?? 'Hunter Weapon'}`
+    : isAdventurer
+    ? 'Adventurer · Playable Hero'
+    : isBuddy
+    ? 'Companion · Buddy'
+    : SLOT_LABELS[c.armour_slot ?? ''] ?? c.armour_slot ?? '—';
   const slotIcon  = SLOT_ICONS[c.armour_slot ?? ''] ?? null;
   const pieceImg  = c.piece_image ?? slotIcon;
   const isActive  = c.status === 'crafting' || c.status === 'upgrading';
   const isDone    = c.status === 'completed' || c.status === 'abandoned';
 
   // Rarity progress
-  const progressPct = c.max_rarity > 0
-    ? Math.round((c.current_rarity / c.max_rarity) * 100)
+  const maxR = (isAdventurer || isBuddy) ? 1 : isVisage ? 4 : (c.max_rarity || 16);
+  const progressPct = maxR > 0
+    ? Math.round((c.current_rarity / maxR) * 100)
     : 0;
+
+  const currentRarityName = isVisage
+    ? c.current_rarity === 0 ? 'Unowned' : c.current_rarity === 1 ? 'Fine (Green)' : c.current_rarity === 2 ? 'Rare (Blue)' : c.current_rarity === 3 ? 'Epic (Purple)' : 'Superior (Gold)'
+    : (isAdventurer || isBuddy)
+    ? c.current_rarity === 0 ? 'Not Recruited' : 'Recruited'
+    : `R${c.current_rarity} crafted`;
+  const targetRarityName = isVisage
+    ? 'Superior (Gold)'
+    : (isAdventurer || isBuddy)
+    ? 'Recruit to Roster'
+    : `Target: R${c.max_rarity}`;
+  const style = statusStyle(c.status);
+  const label = challengeStatusLabel(c);
 
   if (compact) {
     // ── Compact mobile row ─────────────────────────────────────
@@ -142,7 +167,21 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
                 {label}
               </span>
             </div>
-            {c.monster_name && !isDone ? (
+            {isVisage ? (
+              <p className="text-[10px] text-mh-slate-400 truncate">
+                {!isDone
+                  ? `Search: Find ${c.current_rarity === 0 ? 'Fine' : c.current_rarity === 1 ? 'Rare' : c.current_rarity === 2 ? 'Epic' : 'Superior'} card`
+                  : 'Card found in collection'}
+              </p>
+            ) : isAdventurer ? (
+              <p className="text-[10px] text-mh-slate-400 truncate">
+                {!isDone ? 'Recruit in Aesoland' : 'Recruited to Roster'}
+              </p>
+            ) : isBuddy ? (
+              <p className="text-[10px] text-mh-slate-400 truncate">
+                {!isDone ? 'Recruit Companion' : 'Recruited to Collection'}
+              </p>
+            ) : c.monster_name && !isDone ? (
               <p className="text-[10px] text-mh-slate-400 truncate">
                 Hunt {c.monster_name} at Rank {toRoman((c.current_rarity || 0) + 1)}
               </p>
@@ -201,7 +240,21 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
               </h3>
               <p className="text-xs text-mh-slate-400 mt-0.5">
                 {slotLabel}
-                {c.monster_name && !isDone ? (
+                {isVisage ? (
+                  !isDone ? (
+                    <span className="text-mh-slate-500">
+                      {' · '}Search for {c.current_rarity === 0 ? 'Fine' : c.current_rarity === 1 ? 'Rare' : c.current_rarity === 2 ? 'Epic' : 'Superior'} card
+                    </span>
+                  ) : null
+                ) : isAdventurer ? (
+                  !isDone ? (
+                    <span className="text-mh-slate-500"> · Recruit in Aesoland</span>
+                  ) : null
+                ) : isBuddy ? (
+                  !isDone ? (
+                    <span className="text-mh-slate-500"> · Recruit Companion</span>
+                  ) : null
+                ) : c.monster_name && !isDone ? (
                   <span className="text-mh-slate-500">
                     {' · '}Hunt {c.monster_name} at Rank {toRoman((c.current_rarity || 0) + 1)}
                   </span>
@@ -228,9 +281,9 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
 
           {/* Rarity progress bar */}
           <div className="mt-2 space-y-1">
-            <div className="flex items-center justify-between text-[10px] text-mh-slate-500">
-              <span>R{c.current_rarity} crafted</span>
-              <span>Target: R{c.max_rarity}</span>
+            <div className="flex items-center justify-between text-[10px] text-mh-slate-500 font-medium">
+              <span>{currentRarityName}</span>
+              <span>{targetRarityName}</span>
             </div>
             <div className="h-1.5 w-full rounded-full bg-mh-slate-800 overflow-hidden">
               <div
@@ -338,7 +391,19 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
           className="w-full flex items-center justify-center gap-2 rounded-xl border border-mh-gold-500/30 bg-mh-gold-500/10 py-2 text-xs font-bold text-mh-gold-300 hover:bg-mh-gold-500/20 hover:text-mh-gold-200 transition-colors"
         >
           <Plus size={13} />
-          {c.status === 'crafting' ? 'Mark as Crafted (R1)' : `Upgrade to R${(c.current_rarity || 0) + 1}`}
+          {isVisage
+            ? c.current_rarity === 0
+              ? 'Mark Found (Fine)'
+              : c.current_rarity === 1
+              ? 'Found Rare (Blue)'
+              : c.current_rarity === 2
+              ? 'Found Epic (Purple)'
+              : 'Found Superior (Gold)'
+            : isAdventurer || isBuddy
+            ? 'Mark as Recruited'
+            : c.status === 'crafting'
+            ? 'Mark as Crafted (R1)'
+            : `Upgrade to R${(c.current_rarity || 0) + 1}`}
         </button>
       )}
 

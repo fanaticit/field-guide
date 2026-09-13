@@ -11,7 +11,7 @@ import { supabase } from '../lib/supabase';
 // ── Types ────────────────────────────────────────────────────
 
 export type ChallengeStatus = 'crafting' | 'upgrading' | 'completed' | 'abandoned';
-export type ChallengeType   = 'armour_piece' | 'weapon' | 'visage_set' | 'full_build';
+export type ChallengeType   = 'armour_piece' | 'weapon' | 'visage_set' | 'adventurer' | 'buddy' | 'full_build';
 
 export interface HunterChallenge {
   id:               string;
@@ -35,7 +35,17 @@ export interface HunterChallenge {
   element_type:     string | null;
   special_skill:    string | null;
 
-  // Rarity progression (supports up to max 16)
+  // Visage-specific
+  visage_id:        string | null;
+  ink_type:         string | null;
+
+  // Adventurer-specific
+  adventurer_id:    string | null;
+
+  // Buddy-specific
+  buddy_id:         string | null;
+
+  // Rarity progression (supports up to max 16 for gear, 4 for visages, 1 for recruits)
   craft_rarity:     number;
   current_rarity:   number;
   max_rarity:       number;
@@ -85,6 +95,57 @@ export interface AddWeaponChallengePayload {
   craftRarity?:    number;  // default 1
   maxRarity?:      number;  // default 16
 }
+
+export interface AddVisageChallengePayload {
+  userId:          string;
+  game?:           string;
+  visageId:        string;
+  visageName:      string;
+  inkType:         string;
+  monsterId?:      string | null;
+  monsterName?:    string | null;
+  pieceImage?:     string | null;
+  setIcon?:        string | null;
+  currentRarity?:  number;  // 0 = unowned, 1 = fine, 2 = rare, 3 = epic, 4 = superior
+  craftRarity?:    number;  // default 1
+  maxRarity?:      number;  // default 4
+}
+
+export interface AddAdventurerChallengePayload {
+  userId:          string;
+  game?:           string;
+  adventurerId:    string;
+  adventurerName:  string;
+  pieceImage?:     string | null;
+  role?:           string | null;
+  element?:        string | null;
+  notes?:          string | null;
+}
+
+export interface AddBuddyChallengePayload {
+  userId:          string;
+  game?:           string;
+  buddyId:         string;
+  buddyName:       string;
+  pieceImage?:     string | null;
+  tier?:           string | null;
+  role?:           string | null;
+  notes?:          string | null;
+}
+
+export const VISAGE_RARITY_INDEX: Record<string, number> = {
+  fine: 1,
+  rare: 2,
+  epic: 3,
+  superior: 4,
+};
+
+export const VISAGE_RARITIES_BY_INDEX: Record<number, string> = {
+  1: 'fine',
+  2: 'rare',
+  3: 'epic',
+  4: 'superior',
+};
 
 export interface UpdateChallengeStatusPayload {
   challengeId:    string;
@@ -230,18 +291,187 @@ export function useAddWeaponChallenge() {
   });
 }
 
+// ── useAddVisageChallenge ─────────────────────────────────────
+
+export function useAddVisageChallenge() {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (payload: AddVisageChallengePayload) => {
+      const normInk = (payload.inkType || 'flames').toLowerCase();
+      // Check if an active challenge already exists for this visage & ink
+      const { data: existing } = await supabase
+        .from('hunter_challenges')
+        .select('id, status, created_at')
+        .eq('user_id', payload.userId)
+        .eq('visage_id', payload.visageId)
+        .eq('ink_type', normInk)
+        .in('status', ['crafting', 'upgrading'])
+        .maybeSingle();
+
+      if (existing) {
+        return { challenge: existing as unknown as HunterChallenge, wasAlreadyTracked: true };
+      }
+
+      const curRarity = payload.currentRarity ?? 0;
+      const maxR = payload.maxRarity ?? 4;
+      const isComplete = curRarity >= maxR;
+      const status: ChallengeStatus = isComplete ? 'completed' : curRarity > 0 ? 'upgrading' : 'crafting';
+
+      const row = {
+        user_id:         payload.userId,
+        challenge_type:  'visage_set' as const,
+        game:            payload.game || 'mho',
+        visage_id:       payload.visageId,
+        ink_type:        normInk,
+        monster_id:      payload.monsterId || null,
+        set_name:        payload.visageName,
+        piece_image:     payload.pieceImage,
+        set_icon:        payload.setIcon || payload.pieceImage,
+        monster_name:    payload.monsterName || payload.visageName,
+        craft_rarity:    payload.craftRarity ?? 1,
+        current_rarity:  curRarity,
+        max_rarity:      maxR,
+        status,
+        completed_at:    isComplete ? new Date().toISOString() : null,
+      };
+
+      const { data, error } = await supabase
+        .from('hunter_challenges')
+        .insert(row)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return { challenge: data as HunterChallenge, wasAlreadyTracked: false };
+    },
+
+    onSuccess: (_data, variables) => {
+      qc.invalidateQueries({ queryKey: [HUNTER_CHALLENGES_KEY, variables.userId] });
+    },
+  });
+}
+
+// ── useAddAdventurerChallenge ─────────────────────────────────
+
+export function useAddAdventurerChallenge() {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (payload: AddAdventurerChallengePayload) => {
+      // Check if an active challenge already exists for this adventurer
+      const { data: existing } = await supabase
+        .from('hunter_challenges')
+        .select('id, status, created_at')
+        .eq('user_id', payload.userId)
+        .eq('adventurer_id', payload.adventurerId)
+        .in('status', ['crafting', 'upgrading'])
+        .maybeSingle();
+
+      if (existing) {
+        return { challenge: existing as unknown as HunterChallenge, wasAlreadyTracked: true };
+      }
+
+      const row = {
+        user_id:         payload.userId,
+        challenge_type:  'adventurer' as const,
+        game:            payload.game || 'mho',
+        adventurer_id:   payload.adventurerId,
+        set_name:        payload.adventurerName,
+        piece_image:     payload.pieceImage,
+        set_icon:        payload.pieceImage,
+        monster_name:    payload.adventurerName,
+        craft_rarity:    1,
+        current_rarity:  0,
+        max_rarity:      1,
+        status:          'crafting' as ChallengeStatus,
+        notes:           payload.notes || null,
+      };
+
+      const { data, error } = await supabase
+        .from('hunter_challenges')
+        .insert(row)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return { challenge: data as HunterChallenge, wasAlreadyTracked: false };
+    },
+
+    onSuccess: (_data, variables) => {
+      qc.invalidateQueries({ queryKey: [HUNTER_CHALLENGES_KEY, variables.userId] });
+    },
+  });
+}
+
+// ── useAddBuddyChallenge ──────────────────────────────────────
+
+export function useAddBuddyChallenge() {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (payload: AddBuddyChallengePayload) => {
+      // Check if an active challenge already exists for this buddy
+      const { data: existing } = await supabase
+        .from('hunter_challenges')
+        .select('id, status, created_at')
+        .eq('user_id', payload.userId)
+        .eq('buddy_id', payload.buddyId)
+        .in('status', ['crafting', 'upgrading'])
+        .maybeSingle();
+
+      if (existing) {
+        return { challenge: existing as unknown as HunterChallenge, wasAlreadyTracked: true };
+      }
+
+      const row = {
+        user_id:         payload.userId,
+        challenge_type:  'buddy' as const,
+        game:            payload.game || 'mho',
+        buddy_id:        payload.buddyId,
+        set_name:        payload.buddyName,
+        piece_image:     payload.pieceImage,
+        set_icon:        payload.pieceImage,
+        monster_name:    payload.buddyName,
+        craft_rarity:    1,
+        current_rarity:  0,
+        max_rarity:      1,
+        status:          'crafting' as ChallengeStatus,
+        notes:           payload.notes || null,
+      };
+
+      const { data, error } = await supabase
+        .from('hunter_challenges')
+        .insert(row)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return { challenge: data as HunterChallenge, wasAlreadyTracked: false };
+    },
+
+    onSuccess: (_data, variables) => {
+      qc.invalidateQueries({ queryKey: [HUNTER_CHALLENGES_KEY, variables.userId] });
+    },
+  });
+}
+
 // ── useIncrementChallenge ─────────────────────────────────────
-// Increments rarity: from 0 (crafting) -> craft_rarity (or 1), then +1 until max_rarity.
+// Increments rarity and automatically syncs collection details for Visages, Adventurers & Buddies.
 
 export function useIncrementChallenge() {
   const qc = useQueryClient();
 
   return useMutation({
     mutationFn: async (challenge: HunterChallenge) => {
+      const isVisage = challenge.challenge_type === 'visage_set' || Boolean(challenge.visage_id);
+      const isAdventurer = challenge.challenge_type === 'adventurer' || Boolean(challenge.adventurer_id);
+      const isBuddy = challenge.challenge_type === 'buddy' || Boolean(challenge.buddy_id);
+
       const cur = challenge.current_rarity ?? 0;
+      const maxR = (isAdventurer || isBuddy) ? 1 : isVisage ? 4 : (challenge.max_rarity || 16);
       const craft = challenge.craft_rarity || 1;
-      const newRarity = cur === 0 ? craft : cur + 1;
-      const maxR = challenge.max_rarity || 16;
+      const newRarity = cur === 0 ? craft : Math.min(maxR, cur + 1);
       const isComplete = newRarity >= maxR;
       const newStatus: ChallengeStatus = isComplete ? 'completed' : 'upgrading';
 
@@ -259,15 +489,63 @@ export function useIncrementChallenge() {
         .single();
 
       if (error) throw error;
+
+      // When stepping a visage challenge, automatically sync user_visage_collection
+      if (isVisage && challenge.visage_id) {
+        const rarityKey = VISAGE_RARITIES_BY_INDEX[newRarity];
+        if (rarityKey) {
+          await supabase.from('user_visage_collection').upsert(
+            {
+              user_id:    challenge.user_id,
+              visage_id:  challenge.visage_id,
+              ink_type:   (challenge.ink_type || 'flames').toLowerCase(),
+              rarity:     rarityKey,
+              quantity:   1,
+              updated_at: new Date().toISOString(),
+            },
+            { onConflict: 'user_id,visage_id,ink_type' },
+          );
+        }
+      }
+
+      // When stepping an adventurer challenge, automatically sync user_adventurer_collection
+      if (isAdventurer && challenge.adventurer_id) {
+        await supabase.from('user_adventurer_collection').upsert(
+          {
+            user_id:       challenge.user_id,
+            adventurer_id: challenge.adventurer_id,
+            updated_at:    new Date().toISOString(),
+          },
+          { onConflict: 'user_id,adventurer_id' },
+        );
+      }
+
+      // When stepping a buddy challenge, automatically sync user_buddy_collection
+      if (isBuddy && challenge.buddy_id) {
+        await supabase.from('user_buddy_collection').upsert(
+          {
+            user_id:    challenge.user_id,
+            buddy_id:   challenge.buddy_id,
+            quantity:   1,
+            updated_at: new Date().toISOString(),
+          },
+          { onConflict: 'user_id,buddy_id' },
+        );
+      }
+
       return data as HunterChallenge;
     },
 
     onMutate: async (challenge) => {
       await qc.cancelQueries({ queryKey: [HUNTER_CHALLENGES_KEY] });
+      const isVisage = challenge.challenge_type === 'visage_set' || Boolean(challenge.visage_id);
+      const isAdventurer = challenge.challenge_type === 'adventurer' || Boolean(challenge.adventurer_id);
+      const isBuddy = challenge.challenge_type === 'buddy' || Boolean(challenge.buddy_id);
+
       const cur = challenge.current_rarity ?? 0;
+      const maxR = (isAdventurer || isBuddy) ? 1 : isVisage ? 4 : (challenge.max_rarity || 16);
       const craft = challenge.craft_rarity || 1;
-      const newRarity = cur === 0 ? craft : cur + 1;
-      const maxR = challenge.max_rarity || 16;
+      const newRarity = cur === 0 ? craft : Math.min(maxR, cur + 1);
       const isComplete = newRarity >= maxR;
 
       qc.setQueriesData(
@@ -290,6 +568,9 @@ export function useIncrementChallenge() {
 
     onSettled: () => {
       qc.invalidateQueries({ queryKey: [HUNTER_CHALLENGES_KEY] });
+      qc.invalidateQueries({ queryKey: ['user-visage-collection'] });
+      qc.invalidateQueries({ queryKey: ['user-adventurer-collection'] });
+      qc.invalidateQueries({ queryKey: ['user-buddy-collection'] });
     },
   });
 }
@@ -472,7 +753,89 @@ export function getWeaponChallenge(
   challenges: HunterChallenge[],
   weaponId: string,
 ): HunterChallenge | undefined {
-  return challenges.find((c) => c.weapon_id === weaponId && c.status !== 'abandoned');
+  return challenges.find(
+    (c) =>
+      c.weapon_id === weaponId &&
+      c.status !== 'abandoned',
+  );
+}
+
+/** True if this visage card is currently active in hunter's challenges */
+export function isVisageTracked(
+  challenges: HunterChallenge[],
+  visageId: string,
+  inkType?: string,
+): boolean {
+  const normInk = (inkType || '').toLowerCase();
+  return challenges.some(
+    (c) =>
+      c.visage_id === visageId &&
+      (!normInk || (c.ink_type || '').toLowerCase() === normInk) &&
+      c.status !== 'abandoned',
+  );
+}
+
+/** Get the challenge for a visage card, if one exists */
+export function getVisageChallenge(
+  challenges: HunterChallenge[],
+  visageId: string,
+  inkType?: string,
+): HunterChallenge | undefined {
+  const normInk = (inkType || '').toLowerCase();
+  return challenges.find(
+    (c) =>
+      c.visage_id === visageId &&
+      (!normInk || (c.ink_type || '').toLowerCase() === normInk) &&
+      c.status !== 'abandoned',
+  );
+}
+
+/** True if this adventurer is currently active in hunter's challenges */
+export function isAdventurerTracked(
+  challenges: HunterChallenge[],
+  adventurerId: string,
+): boolean {
+  return challenges.some(
+    (c) =>
+      (c.adventurer_id === adventurerId || (c.challenge_type === 'adventurer' && c.set_name === adventurerId)) &&
+      c.status !== 'abandoned',
+  );
+}
+
+/** Get the challenge for an adventurer, if one exists */
+export function getAdventurerChallenge(
+  challenges: HunterChallenge[],
+  adventurerId: string,
+): HunterChallenge | undefined {
+  return challenges.find(
+    (c) =>
+      (c.adventurer_id === adventurerId || (c.challenge_type === 'adventurer' && c.set_name === adventurerId)) &&
+      c.status !== 'abandoned',
+  );
+}
+
+/** True if this buddy is currently active in hunter's challenges */
+export function isBuddyTracked(
+  challenges: HunterChallenge[],
+  buddyId: string,
+): boolean {
+  return challenges.some(
+    (c) =>
+      (c.buddy_id === buddyId || (c.challenge_type === 'buddy' && c.set_name === buddyId)) &&
+      c.status !== 'abandoned',
+  );
+}
+
+/** Get the challenge for a buddy, if one exists */
+export function getBuddyChallenge(
+  challenges: HunterChallenge[],
+  buddyId: string,
+): HunterChallenge | undefined {
+  return challenges.find(
+    (c) =>
+      (c.buddy_id === buddyId || (c.challenge_type === 'buddy' && c.set_name === buddyId)) &&
+      c.status !== 'abandoned',
+  );
 }
 
 /** Group active challenges by monster_id / monsterName for the Hunting Targets panel */
@@ -499,6 +862,29 @@ export function groupChallengesByMonster(
 
 /** Human-readable status label */
 export function challengeStatusLabel(c: HunterChallenge): string {
+  const isVisage = c.challenge_type === 'visage_set' || Boolean(c.visage_id);
+  if (isVisage) {
+    if (c.status === 'crafting') return 'Find (Fine)';
+    if (c.status === 'upgrading') {
+      const nextR = c.current_rarity === 1 ? 'Rare' : c.current_rarity === 2 ? 'Epic' : 'Superior';
+      return `Find → ${nextR}`;
+    }
+    if (c.status === 'completed') return 'Found (Superior)';
+    return 'Abandoned';
+  }
+
+  const isAdventurer = c.challenge_type === 'adventurer' || Boolean(c.adventurer_id);
+  if (isAdventurer) {
+    if (c.status === 'completed') return 'Recruited';
+    return 'Recruit';
+  }
+
+  const isBuddy = c.challenge_type === 'buddy' || Boolean(c.buddy_id);
+  if (isBuddy) {
+    if (c.status === 'completed') return 'Recruited';
+    return 'Recruit';
+  }
+
   if (c.status === 'crafting')  return 'Craft';
   if (c.status === 'upgrading') return `Upgrade R${c.current_rarity} → R${c.max_rarity}`;
   if (c.status === 'completed') return 'Completed';

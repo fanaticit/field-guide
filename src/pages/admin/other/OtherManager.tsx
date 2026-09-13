@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────
 // OtherManager — Admin "Other" Management Interface
 // Allows configuring game-wide settings and franchise weapon type availability
-// across Monster Hunter Now (MHN) and Monster Hunter Outlanders (MHO).
+// across Monster Hunter Outlanders (MHO).
 // ─────────────────────────────────────────────────────────────
 import { useState, useMemo } from 'react';
 import {
@@ -27,13 +27,6 @@ import {
 import { cn } from '../../../lib/utils';
 
 const GAMES = [
-  {
-    id: 'mhn',
-    label: 'Monster Hunter Now',
-    short: 'MHN',
-    color: 'blue',
-    desc: 'All 14 weapon types supported',
-  },
   {
     id: 'mho',
     label: 'Monster Hunter Outlanders',
@@ -128,12 +121,11 @@ export default function OtherManager() {
   // Metrics
   const metrics = useMemo(() => {
     const total = weaponTypes.length;
-    const mhnCount = weaponTypes.filter((w) => w.games.includes('mhn')).length;
     const mhoCount = weaponTypes.filter((w) => w.games.includes('mho')).length;
     const meleeCount = weaponTypes.filter((w) => w.category === 'melee').length;
     const rangedCount = weaponTypes.filter((w) => w.category === 'ranged').length;
 
-    return { total, mhnCount, mhoCount, meleeCount, rangedCount };
+    return { total, mhoCount, meleeCount, rangedCount };
   }, [weaponTypes]);
 
   // Filtered list
@@ -181,7 +173,7 @@ export default function OtherManager() {
                 </span>
               </div>
               <p className="text-xs text-mh-slate-400 mt-0.5">
-                Configure which of the 14 core Monster Hunter weapon types are available in Monster Hunter Now (MHN) and Monster Hunter Outlanders (MHO).
+                Configure which of the 14 core Monster Hunter weapon types are available in Monster Hunter Outlanders (MHO).
               </p>
             </div>
           </div>
@@ -211,23 +203,6 @@ export default function OtherManager() {
             </div>
           </div>
 
-          {/* MHN Count */}
-          <div className="rounded-xl border border-blue-500/30 bg-blue-500/5 p-3.5">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-blue-400">
-                MH Now (MHN)
-              </span>
-              <span className="rounded bg-blue-500/20 text-blue-300 text-[10px] font-bold px-1.5 py-0.2">
-                Active
-              </span>
-            </div>
-            <div className="flex items-baseline gap-2 mt-1">
-              <span className="font-display text-2xl font-bold text-blue-300">
-                {metrics.mhnCount} <span className="text-xs text-mh-slate-500 font-normal">/ {metrics.total}</span>
-              </span>
-              <span className="text-xs text-mh-slate-400 font-medium">Weapon Types</span>
-            </div>
-          </div>
 
           {/* MHO Count */}
           <div className="rounded-xl border border-orange-500/30 bg-orange-500/5 p-3.5">
@@ -302,18 +277,6 @@ export default function OtherManager() {
               )}
             >
               All Games
-            </button>
-            <button
-              type="button"
-              onClick={() => setFilterGame('mhn')}
-              className={cn(
-                'rounded-lg px-2.5 py-1 text-xs font-semibold transition-all',
-                filterGame === 'mhn'
-                  ? 'bg-blue-500 text-white font-bold shadow-sm'
-                  : 'text-mh-slate-400 hover:text-white',
-              )}
-            >
-              MHN Only
             </button>
             <button
               type="button"
@@ -407,12 +370,6 @@ export default function OtherManager() {
                 <th className="px-3 py-3.5">Special Skill &amp; Styles</th>
                 <th className="px-3 py-3.5 text-center">
                   <div className="flex flex-col items-center">
-                    <span className="text-blue-400">Monster Hunter Now</span>
-                    <span className="text-[9px] text-mh-slate-500 lowercase">mhn</span>
-                  </div>
-                </th>
-                <th className="px-3 py-3.5 text-center">
-                  <div className="flex flex-col items-center">
                     <span className="text-orange-400">MH Outlanders</span>
                     <span className="text-[9px] text-mh-slate-500 lowercase">mho</span>
                   </div>
@@ -491,14 +448,10 @@ export default function OtherManager() {
                       </div>
                     </td>
 
-                    {/* MHN Toggle */}
-                    <td className="px-3 py-3.5 text-center">
-                      <WeaponTypeGameToggle weaponType={weaponType} game={GAMES[0]} />
-                    </td>
 
                     {/* MHO Toggle */}
                     <td className="px-3 py-3.5 text-center">
-                      <WeaponTypeGameToggle weaponType={weaponType} game={GAMES[1]} />
+                      <WeaponTypeGameToggle weaponType={weaponType} game={GAMES[0]} />
                     </td>
 
                     {/* Active Status */}
@@ -617,7 +570,7 @@ export default function OtherManager() {
                     </div>
                     <div className="flex flex-col items-center">
                       <span className="text-[10px] text-orange-400 font-bold mb-1">MH Outlanders</span>
-                      <WeaponTypeGameToggle weaponType={weaponType} game={GAMES[1]} />
+                      <WeaponTypeGameToggle weaponType={weaponType} game={GAMES[0]} />
                     </div>
                   </div>
                 </div>

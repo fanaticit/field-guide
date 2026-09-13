@@ -2,7 +2,8 @@
 // BuddyModal — Inspection Dialog for Buddy details with Collection Controls
 // ─────────────────────────────────────────────────────────────
 import { useState } from 'react';
-import { X, Cat, Swords, Zap, Heart, Sparkles, Info, Check, Trash2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { X, Cat, Swords, Zap, Heart, Sparkles, Info, Check, Trash2, Target, CheckCircle2 } from 'lucide-react';
 import {
   type DBBuddy,
   type BuddyRole,
@@ -10,6 +11,7 @@ import {
   TIER_CONFIG,
   ROLE_CONFIG,
 } from '../../data/schemas/buddy';
+import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
 
 const ROLE_ICONS: Record<BuddyRole, React.ComponentType<{ size?: number; className?: string }>> = {
@@ -31,8 +33,10 @@ interface BuddyModalProps {
   open: boolean;
   onClose: () => void;
   collectionEntry?: BuddyCollectionEntry;
+  challenge?: HunterChallenge;
   onSetQuantity: (quantity: number) => void;
   onRemoveFromCollection: () => void;
+  onAddChallenge?: (buddy: DBBuddy) => void;
 }
 
 export default function BuddyModal({
@@ -40,10 +44,13 @@ export default function BuddyModal({
   open,
   onClose,
   collectionEntry,
+  challenge,
   onSetQuantity,
   onRemoveFromCollection,
+  onAddChallenge,
 }: BuddyModalProps) {
   const [imageError, setImageError] = useState(false);
+  const navigate = useNavigate();
 
   if (!open || !buddy) return null;
 
@@ -120,29 +127,18 @@ export default function BuddyModal({
 
         {/* Modal Body */}
         <div className="p-6 space-y-5 max-h-[80vh] overflow-y-auto">
-          {/* Identity & Portrait */}
+          {/* Identity & Portrait (No extra border, large & visible) */}
           <div className="flex items-center gap-5">
-            <div
-              className={cn(
-                'relative flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl border shadow-md',
-                isOwned
-                  ? isSSR
-                    ? 'border-amber-500/40 bg-black/50 ring-2 ring-amber-500/20'
-                    : isSR
-                      ? 'border-purple-500/30 bg-black/50'
-                      : 'border-blue-500/20 bg-black/40'
-                  : 'border-mh-slate-800 bg-black/30',
-              )}
-            >
+            <div className="relative flex h-28 w-28 sm:h-32 sm:w-32 shrink-0 items-center justify-center">
               {buddy.image && !imageError ? (
                 <img
                   src={buddy.image}
                   alt={buddy.name}
                   onError={() => setImageError(true)}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-contain drop-shadow-2xl"
                 />
               ) : (
-                <Cat size={40} className={isOwned ? (isSSR ? 'text-amber-400' : isSR ? 'text-purple-400' : 'text-blue-400') : 'text-mh-slate-600'} />
+                <Cat size={48} className={isOwned ? (isSSR ? 'text-amber-400' : isSR ? 'text-purple-400' : 'text-blue-400') : 'text-mh-slate-500'} />
               )}
             </div>
 
@@ -166,7 +162,7 @@ export default function BuddyModal({
             </div>
           </div>
 
-          {/* Hunter Collection Tracking Bar */}
+          {/* Hunter Collection Tracking Bar & Challenge Controls */}
           <div className="rounded-xl border border-mh-gold-500/30 bg-mh-slate-950/80 p-4 space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-mh-gold-400">
@@ -183,7 +179,7 @@ export default function BuddyModal({
               </span>
             </div>
 
-            <div className="flex items-center justify-between gap-3 pt-1 border-t border-mh-slate-800">
+            <div className="flex items-center justify-between gap-3 pt-2 border-t border-mh-slate-800 flex-wrap">
               <div className="flex items-center gap-1.5">
                 <span className="text-xs text-mh-slate-400 font-medium mr-1">Quantity:</span>
                 {QTY_OPTIONS.map((q) => {
@@ -206,16 +202,40 @@ export default function BuddyModal({
                 })}
               </div>
 
-              {isOwned && (
-                <button
-                  type="button"
-                  onClick={onRemoveFromCollection}
-                  className="flex items-center gap-1 rounded-lg bg-red-500/15 border border-red-500/30 px-2.5 py-1 text-xs font-semibold text-red-400 hover:bg-red-500/25 transition-colors"
-                >
-                  <Trash2 size={12} />
-                  <span>Remove</span>
-                </button>
-              )}
+              <div className="flex items-center gap-2">
+                {!isOwned && (
+                  challenge && challenge.status !== 'abandoned' && challenge.status !== 'completed' ? (
+                    <button
+                      type="button"
+                      onClick={() => navigate('/challenges')}
+                      className="flex items-center gap-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25 px-3 py-1.5 text-xs font-bold transition-all shadow-sm"
+                    >
+                      <CheckCircle2 size={13} className="text-emerald-400" />
+                      <span>Go to Challenge ➔</span>
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => onAddChallenge?.(buddy)}
+                      className="flex items-center gap-1.5 rounded-lg border border-mh-gold-500/40 bg-mh-gold-500/15 text-mh-gold-300 hover:bg-mh-gold-500/25 px-3 py-1.5 text-xs font-bold transition-all shadow-sm"
+                    >
+                      <Target size={13} className="text-mh-gold-400" />
+                      <span>+ Add Challenge</span>
+                    </button>
+                  )
+                )}
+
+                {isOwned && (
+                  <button
+                    type="button"
+                    onClick={onRemoveFromCollection}
+                    className="flex items-center gap-1 rounded-lg bg-red-500/15 border border-red-500/30 px-2.5 py-1.5 text-xs font-semibold text-red-400 hover:bg-red-500/25 transition-colors"
+                  >
+                    <Trash2 size={12} />
+                    <span>Remove</span>
+                  </button>
+                )}
+              </div>
             </div>
           </div>
 

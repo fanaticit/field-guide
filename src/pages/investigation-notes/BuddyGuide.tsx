@@ -26,10 +26,16 @@ import {
 } from '../../data/schemas/buddy';
 import { useAdminBuddies } from '../../hooks/useAdminBuddies';
 import { useUserBuddyCollection } from '../../hooks/useUserBuddyCollection';
+import {
+  useHunterChallenges,
+  useAddBuddyChallenge,
+  getBuddyChallenge,
+} from '../../hooks/useHunterChallenges';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
 import { useNavigate } from 'react-router-dom';
 import BuddyCard from './BuddyCard';
 import BuddyModal from './BuddyModal';
+import LoginModal from '../../components/auth/LoginModal';
 import { cn } from '../../lib/utils';
 
 type ViewMode = 'grid' | 'table';
@@ -54,10 +60,11 @@ export default function BuddyGuide() {
   const [ownershipFilter, setOwnershipFilter] = useState<OwnershipFilter>('all');
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [inspectedBuddy, setInspectedBuddy] = useState<DBBuddy | null>(null);
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
 
+  const { user } = useAuthStore();
   const isAdmin = useAuthStore(selectIsAdmin);
   const navigate = useNavigate();
-
 
   const { data: buddies = [], isLoading } = useAdminBuddies({ isActive: true });
   const {
@@ -66,6 +73,24 @@ export default function BuddyGuide() {
     removeBuddyFromCollection,
     totalCollected,
   } = useUserBuddyCollection();
+
+  const { data: challenges = [] } = useHunterChallenges(user?.id);
+  const addBuddyChallenge = useAddBuddyChallenge();
+
+  const handleAddChallenge = async (buddy: DBBuddy) => {
+    if (!user) {
+      setLoginModalOpen(true);
+      return;
+    }
+    await addBuddyChallenge.mutateAsync({
+      userId: user.id,
+      buddyId: buddy.id,
+      buddyName: buddy.name,
+      pieceImage: buddy.image,
+      tier: buddy.tier,
+      role: buddy.role,
+    });
+  };
 
   // Filter and sort buddies
   const filtered = useMemo(() => {
@@ -379,14 +404,16 @@ export default function BuddyGuide() {
         </div>
       ) : viewMode === 'grid' ? (
         /* ── Grid View ── */
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filtered.map((buddy) => (
             <BuddyCard
               key={buddy.id}
               buddy={buddy}
               collectionEntry={collectionMap[buddy.id]}
+              challenge={getBuddyChallenge(challenges, buddy.id)}
               onSetQuantity={(qty) => setBuddyQuantity(buddy.id, qty)}
               onRemoveFromCollection={() => removeBuddyFromCollection(buddy.id)}
+              onAddChallenge={handleAddChallenge}
               onClick={() => setInspectedBuddy(buddy)}
             />
           ))}
@@ -522,9 +549,17 @@ export default function BuddyGuide() {
         buddy={inspectedBuddy}
         open={inspectedBuddy !== null}
         collectionEntry={inspectedBuddy ? collectionMap[inspectedBuddy.id] : undefined}
+        challenge={inspectedBuddy ? getBuddyChallenge(challenges, inspectedBuddy.id) : undefined}
         onSetQuantity={(qty) => inspectedBuddy && setBuddyQuantity(inspectedBuddy.id, qty)}
         onRemoveFromCollection={() => inspectedBuddy && removeBuddyFromCollection(inspectedBuddy.id)}
+        onAddChallenge={handleAddChallenge}
         onClose={() => setInspectedBuddy(null)}
+      />
+
+      {/* ── Login Modal for Guest Hunters ── */}
+      <LoginModal
+        open={loginModalOpen}
+        onClose={() => setLoginModalOpen(false)}
       />
     </div>
   );

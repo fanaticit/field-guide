@@ -4,7 +4,7 @@
 import type { ArmourSlot } from './armour.js';
 import type { AnyElement } from './monster.js';
 
-export type GameId = 'mhn' | 'mho';
+export type GameId = 'mho';
 
 /**
  * A complete equipment loadout: one weapon + 5 armour pieces.
@@ -35,8 +35,6 @@ export interface Build {
 
   // ── Metadata ──────────────────────────────────────────────
   notes?: string;
-  /** mhn.quest import/export URL (MHN only) */
-  mhnQuestUrl?: string;
 }
 
 /**

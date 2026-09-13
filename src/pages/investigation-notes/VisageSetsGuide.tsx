@@ -10,11 +10,18 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import { useVisageSetsData } from '../../hooks/useVisageSets';
-import { type DBVisage, getInkConfig } from '../../data/schemas/visage';
+import { type DBVisage, type VisageRarity, getInkConfig } from '../../data/schemas/visage';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
+import {
+  useHunterChallenges,
+  useAddVisageChallenge,
+  getVisageChallenge,
+  VISAGE_RARITY_INDEX,
+} from '../../hooks/useHunterChallenges';
 import VisageCard, { InkIconComponent } from './VisageCard';
 import VisageModal from './VisageModal';
+import LoginModal from '../../components/auth/LoginModal';
 import { cn } from '../../lib/utils';
 
 type SortOption = 'default' | 'name' | 'progress';
@@ -31,6 +38,7 @@ export default function VisageSetsGuide() {
     removeCardFromCollection,
   } = useVisageSetsData();
   const isAdmin = useAuthStore(selectIsAdmin);
+  const { user } = useAuthStore();
   const navigate = useNavigate();
 
   const [selectedSetId, setSelectedSetId] = useState<string>('');
@@ -39,6 +47,38 @@ export default function VisageSetsGuide() {
   const [sortOption, setSortOption] = useState<SortOption>('default');
   const [sortAsc, setSortAsc] = useState(true);
   const [inspectedCard, setInspectedCard] = useState<DBVisage | null>(null);
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
+
+  // ── Personal Challenges ──────────────────────────────────────
+  const { data: challenges = [] } = useHunterChallenges(user?.id);
+  const addVisageChallenge = useAddVisageChallenge();
+
+  const handleAddVisageChallenge = async (
+    card: DBVisage,
+    inkType: string,
+    currentRarity?: VisageRarity | null,
+  ) => {
+    if (!user) {
+      setLoginModalOpen(true);
+      return;
+    }
+
+    const rarityIdx = currentRarity ? VISAGE_RARITY_INDEX[currentRarity] ?? 0 : 0;
+    await addVisageChallenge.mutateAsync({
+      userId: user.id,
+      game: 'mho',
+      visageId: card.id,
+      visageName: card.name,
+      inkType: (inkType || 'flames').toLowerCase(),
+      monsterId: card.monster_id ?? null,
+      monsterName: card.name,
+      pieceImage: card.image_small ?? null,
+      setIcon: card.image_small ?? null,
+      currentRarity: rarityIdx,
+      craftRarity: 1, // Fine
+      maxRarity: 4, // Superior
+    });
+  };
 
   // Filter and sort the sets list on the left
   const filteredSets = useMemo(() => {
@@ -98,9 +138,6 @@ export default function VisageSetsGuide() {
                 <h2 className="font-display text-base font-bold text-mh-slate-100">
                   Visage Sets Album
                 </h2>
-                <span className="rounded-full bg-mh-gold-500/20 px-2 py-0.5 text-[10px] font-bold text-mh-gold-300 border border-mh-gold-500/30">
-                  MHO Beta
-                </span>
               </div>
               <p className="text-xs text-mh-slate-400">
                 Collect monster visages to assemble powerful elemental and offensive ink sets
@@ -342,9 +379,11 @@ export default function VisageSetsGuide() {
                             card={card}
                             currentInk={activeSet.id}
                             collectionEntry={getCardCollection(card.id, activeSet.id)}
+                            challenge={getVisageChallenge(challenges, card.id, activeSet.id)}
                             onSetRarity={(rarity, qty) => setCardRarity(card.id, activeSet.id, rarity, qty)}
                             onSetQuantity={(qty) => setCardQuantity(card.id, activeSet.id, qty)}
                             onRemoveFromCollection={() => removeCardFromCollection(card.id, activeSet.id)}
+                            onAddChallenge={handleAddVisageChallenge}
                             onClick={() => setInspectedCard(card)}
                           />
                         ))}
@@ -443,6 +482,7 @@ export default function VisageSetsGuide() {
         currentInk={activeSet?.id}
         open={inspectedCard !== null}
         collectionEntry={inspectedCard && activeSet ? getCardCollection(inspectedCard.id, activeSet.id) : null}
+        challenge={inspectedCard && activeSet ? getVisageChallenge(challenges, inspectedCard.id, activeSet.id) : undefined}
         onSetRarity={(rarity, qty) => {
           if (inspectedCard && activeSet) setCardRarity(inspectedCard.id, activeSet.id, rarity, qty);
         }}
@@ -452,7 +492,14 @@ export default function VisageSetsGuide() {
         onRemoveFromCollection={() => {
           if (inspectedCard && activeSet) removeCardFromCollection(inspectedCard.id, activeSet.id);
         }}
+        onAddChallenge={handleAddVisageChallenge}
         onClose={() => setInspectedCard(null)}
+      />
+
+      {/* ── Auth Login Modal ── */}
+      <LoginModal
+        open={loginModalOpen}
+        onClose={() => setLoginModalOpen(false)}
       />
     </div>
   );

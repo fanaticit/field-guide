@@ -39,34 +39,6 @@ export {
   getVariants, getMonstersBySpecies, getMonstersByTier, getMonstersWeakTo,
 } from './core/monsters.js';
 
-// ── MHN ───────────────────────────────────────────────────────
-export { MHN_CONFIG } from './games/mhn/index.js';
-export {
-  MHN_MONSTER_OVERLAYS, MHN_EVENT_ENTRIES, MHN_MONSTER_OVERLAY_MAP,
-} from './games/mhn/monsters.js';
-export type { MHNMonsterOverlay, MHNEventEntry } from './games/mhn/monsters.js';
-export {
-  getMHNArmourSkills, getMHNArmourSkillMap, getMHNArmourSkillsForMonster,
-  ARMOUR_SLOT_KEYS, WEAPON_SKILL_KEYS,
-} from './games/mhn/armour.js';
-export type { MHNArmourSkillEntry } from './games/mhn/armour.js';
-export {
-  getMHNDriftsmeltConfigs, getDriftsmeltSlots,
-} from './games/mhn/armour-properties.js';
-export type { MHNDriftsmeltConfig } from './games/mhn/armour-properties.js';
-export {
-  getMHNWeaponElements, getWeaponElementsForMonster,
-  getWeaponElement, getAvailableWeaponTypes,
-} from './games/mhn/weapons.js';
-export type { MHNWeaponElement } from './games/mhn/weapons.js';
-export {
-  getMHNDriftstoneSkillPools, getMHNDriftstoneMonsterDrops,
-  getStonesDroppedBy, getMonstersDropping,
-} from './games/mhn/driftstones.js';
-export {
-  getMHNSeasons, getSeasonByNumber,
-} from './games/mhn/seasons.js';
-export type { MHNSeason, SeasonChapter, SeasonBoss } from './games/mhn/seasons.js';
 
 // ── MHO ───────────────────────────────────────────────────────
 export { MHO_CONFIG } from './games/mho/index.js';

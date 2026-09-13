@@ -14,14 +14,13 @@ import { cn } from '../../../lib/utils';
 type ViewMode = 'monster' | 'skill';
 
 const GAMES = [
-  { id: 'mhn', label: 'Monster Hunter Now',        short: 'MHN', color: 'blue'   },
   { id: 'mho', label: 'Monster Hunter Outlanders', short: 'MHO', color: 'orange' },
 ] as const;
 
 export default function ArmourManager() {
   const defaultGame = useUIStore((s) => s.defaultGame);
   const [viewMode, setViewMode] = useState<ViewMode>('monster');
-  const [selectedGame, setSelectedGame] = useState<string>(defaultGame || 'mhn');
+  const [selectedGame, setSelectedGame] = useState<string>(defaultGame || 'mho');
   const [selectedMonsterId, setSelectedMonsterId] = useState<string | null>(null);
 
   return (
@@ -84,9 +83,7 @@ export default function ArmourManager() {
                     className={cn(
                       'rounded-md px-3 py-1 text-xs font-bold transition-all',
                       isActive
-                        ? g.color === 'blue'
-                          ? 'bg-blue-500/20 text-blue-400 ring-1 ring-blue-500/40'
-                          : 'bg-orange-500/20 text-orange-400 ring-1 ring-orange-500/40'
+                        ? 'bg-orange-500/20 text-orange-400 ring-1 ring-orange-500/40'
                         : 'text-mh-slate-400 hover:text-mh-slate-200',
                     )}
                   >

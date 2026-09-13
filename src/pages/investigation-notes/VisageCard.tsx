@@ -1,8 +1,8 @@
 // ─────────────────────────────────────────────────────────────
-// VisageCard — Small MHO Visage card miniature matching in-game art
-// Supports 4 rarities (Fine, Rare, Epic, Superior) and quantity (1-5+)
+// VisageCard — MHO Visage card with full top-flush artwork and Hunter's Challenge tracking
 // ─────────────────────────────────────────────────────────────
 import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Flame,
   Droplets,
@@ -18,23 +18,40 @@ import {
   Activity,
   Plus,
   Trash2,
+  Target,
+  CheckCircle2,
 } from 'lucide-react';
 import type { DBVisage, VisageRarity } from '../../data/schemas/visage';
-import { getInkConfig, VISAGE_RARITY_CONFIG, VISAGE_RARITY_OPTIONS } from '../../data/schemas/visage';
+import {
+  getInkConfig,
+  VISAGE_RARITY_CONFIG,
+  VISAGE_RARITY_OPTIONS,
+} from '../../data/schemas/visage';
 import type { CardCollectionEntry } from '../../hooks/useVisageSets';
+import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
 
 interface VisageCardProps {
   card: DBVisage;
   currentInk?: string;
   collectionEntry?: CardCollectionEntry | null;
+  challenge?: HunterChallenge;
   onSetRarity?: (rarity: VisageRarity, quantity?: number) => void;
   onSetQuantity?: (quantity: number) => void;
   onRemoveFromCollection?: () => void;
+  onAddChallenge?: (card: DBVisage, inkType: string, currentRarity?: VisageRarity | null) => void;
   onClick?: () => void;
 }
 
-export function InkIconComponent({ iconName, size = 12, className = '' }: { iconName: string; size?: number; className?: string }) {
+export function InkIconComponent({
+  iconName,
+  size = 12,
+  className = '',
+}: {
+  iconName: string;
+  size?: number;
+  className?: string;
+}) {
   switch (iconName) {
     case 'sword':
       return <Sword size={size} className={className} />;
@@ -69,9 +86,11 @@ export default function VisageCard({
   card,
   currentInk,
   collectionEntry,
+  challenge,
   onSetRarity,
   onSetQuantity,
   onRemoveFromCollection,
+  onAddChallenge,
   onClick,
 }: VisageCardProps) {
   const [imageError, setImageError] = useState(false);
@@ -81,9 +100,24 @@ export default function VisageCard({
   const qtyMenuRef = useRef<HTMLDivElement>(null);
 
   const inkCfg = getInkConfig(currentInk);
+  const navigate = useNavigate();
+
   const isOwned = Boolean(collectionEntry);
   const currentRarity = collectionEntry?.rarity;
   const currentQty = collectionEntry?.quantity ?? 1;
+
+  const isTracked = Boolean(challenge && challenge.status !== 'abandoned');
+  const isChallengeDone = challenge?.status === 'completed';
+  const isMaxed = currentRarity === 'superior';
+
+  // Determine next target rarity name
+  const nextRarityName = !currentRarity
+    ? 'Fine (Green)'
+    : currentRarity === 'fine'
+    ? 'Rare (Blue)'
+    : currentRarity === 'rare'
+    ? 'Epic (Purple)'
+    : 'Superior (Gold)';
 
   // Close menus when clicking outside
   useEffect(() => {
@@ -111,45 +145,68 @@ export default function VisageCard({
       tabIndex={0}
       title={`${card.name} (${card.points} Pts) - Click to inspect`}
       className={cn(
-        'group relative flex flex-col items-center justify-between cursor-pointer select-none transition-all duration-200',
-        'w-[80px] sm:w-[92px] h-[108px] sm:h-[122px] rounded-lg p-1.5',
-        'border-2 shadow-md hover:scale-105 hover:shadow-xl hover:z-20',
+        'group relative flex flex-col justify-between cursor-pointer select-none transition-all duration-200',
+        'w-[84px] sm:w-[96px] rounded-xl',
+        'border-2 shadow-md hover:shadow-xl',
+        showRarityMenu || showQtyMenu ? 'z-50' : 'hover:z-20',
         isOwned && rarityCfg
-          ? cn(rarityCfg.bgGradient, rarityCfg.borderClass, rarityCfg.hoverBorderClass, 'text-mh-slate-900')
-          : 'bg-[#151922]/90 border-mh-slate-800 text-mh-slate-300 opacity-40 grayscale hover:opacity-90 hover:grayscale-0 hover:border-mh-slate-600',
+          ? cn(rarityCfg.borderClass, rarityCfg.hoverBorderClass)
+          : 'border-mh-slate-800 opacity-55 grayscale hover:opacity-95 hover:grayscale-0 hover:border-mh-slate-600',
+        isTracked && !isChallengeDone && 'ring-2 ring-blue-400/80 ring-offset-1 ring-offset-black',
       )}
       style={{
-        boxShadow: isOwned && rarityCfg
-          ? `0 4px 14px rgba(0,0,0,0.5), 0 0 10px ${rarityCfg.glowColor}`
-          : '0 4px 10px rgba(0, 0, 0, 0.4)',
+        boxShadow:
+          isOwned && rarityCfg
+            ? `0 4px 14px rgba(0,0,0,0.5), 0 0 10px ${rarityCfg.glowColor}`
+            : '0 4px 10px rgba(0, 0, 0, 0.4)',
       }}
     >
-      {/* Decorative Outer Corner Accents */}
-      <div className="pointer-events-none absolute inset-0.5 rounded border border-black/15" />
-
-      {/* Center Art Area: Monster Portrait */}
-      <div className="relative flex flex-1 w-full items-center justify-center overflow-hidden rounded">
+      {/* ═══════════════════════════════════════════════════════
+          TOP ART AREA: Image takes up the entire top of the panel
+         ═══════════════════════════════════════════════════════ */}
+      <div
+        className={cn(
+          'relative w-full rounded-t-[10px] overflow-hidden flex items-center justify-center',
+          isOwned && rarityCfg ? rarityCfg.bgGradient : 'bg-[#151922]',
+        )}
+      >
         {imageSrc && !imageError ? (
           <img
             src={imageSrc}
             alt={card.name}
             onError={() => setImageError(true)}
-            className="h-12 w-12 sm:h-14 sm:w-14 object-contain drop-shadow-md filter transition-transform group-hover:scale-110"
+            className="w-full h-auto block object-contain drop-shadow-md"
           />
         ) : (
-          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-black/20 text-amber-900 font-display font-bold text-xs">
+          <div className="flex h-16 w-full items-center justify-center bg-black/20 text-amber-900 font-display font-bold text-xs">
             {card.name.slice(0, 3).toUpperCase()}
+          </div>
+        )}
+
+        {/* Challenge Tracking Active Indicator Badge */}
+        {isTracked && (
+          <div
+            className="absolute top-1 right-1 z-10 flex h-4 w-4 items-center justify-center rounded-full bg-blue-500 text-slate-950 shadow-md ring-1 ring-white/50"
+            title={
+              isChallengeDone
+                ? 'Found Superior Card'
+                : `Active Challenge: Search for ${nextRarityName}`
+            }
+          >
+            {isChallengeDone ? <CheckCircle2 size={10} /> : <Target size={10} />}
           </div>
         )}
       </div>
 
-      {/* Bottom Row / Badges & Collection Controls */}
-      <div className="relative w-full flex items-end justify-between mt-auto gap-1">
+      {/* ═══════════════════════════════════════════════════════
+          BOTTOM ROW: Controls, Inherent Points & Rarity Selectors
+         ═══════════════════════════════════════════════════════ */}
+      <div className="relative w-full flex items-center justify-between px-1.5 py-1 bg-black/85 border-t border-black/40 backdrop-blur-xs gap-1 shrink-0 rounded-b-[10px] z-10">
         {/* Bottom Left Badge: Ink Icon + Points */}
         <div
           className={cn(
             'flex flex-col items-center justify-center rounded px-1 py-0.5 shadow-sm',
-            'bg-black/80 border border-amber-500/40 text-white min-w-[20px]',
+            'bg-black/90 border border-amber-500/40 text-white min-w-[20px]',
           )}
         >
           <div className={cn('text-xs flex items-center justify-center', inkCfg.text)}>
@@ -219,14 +276,15 @@ export default function VisageCard({
           {showRarityMenu && (
             <div
               ref={menuRef}
-              className="absolute bottom-6 right-0 z-50 w-36 rounded-xl border border-mh-gold-500/40 bg-mh-slate-950 p-1.5 shadow-2xl animate-in zoom-in-95 duration-100"
+              className="absolute bottom-full mb-1.5 right-0 z-50 w-44 rounded-xl border border-mh-gold-500/40 bg-mh-slate-950 p-1.5 shadow-2xl animate-in zoom-in-95 duration-100"
               style={{
                 boxShadow: '0 10px 25px rgba(0,0,0,0.8), 0 0 15px rgba(234,179,8,0.2)',
               }}
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-mh-slate-400 border-b border-mh-slate-800">
-                Card Rarity
+              <div className="px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-mh-slate-400 border-b border-mh-slate-800 flex items-center justify-between">
+                <span>Card Rarity</span>
+                <span className="text-[8px] text-mh-gold-400">4 Tiers</span>
               </div>
 
               <div className="py-1 space-y-0.5">
@@ -260,6 +318,43 @@ export default function VisageCard({
                 })}
               </div>
 
+              {/* ── Add / Track Challenge Button (Above Unown / Remove) ── */}
+              <div className="pt-1.5 pb-1 border-t border-mh-slate-800">
+                {isMaxed ? (
+                  <div className="flex items-center gap-1.5 px-2 py-1 text-[10px] font-bold text-emerald-400 bg-emerald-500/10 rounded-lg">
+                    <CheckCircle2 size={12} className="text-emerald-400 shrink-0" />
+                    <span className="truncate">Found (Superior)</span>
+                  </div>
+                ) : isTracked && challenge ? (
+                  <button
+                    type="button"
+                    onClick={() => navigate('/challenges')}
+                    className="w-full flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-[10px] font-bold bg-emerald-500/15 border border-emerald-500/35 text-emerald-300 hover:bg-emerald-500/25 transition-colors shadow-sm"
+                  >
+                    <CheckCircle2 size={12} className="text-emerald-400 shrink-0" />
+                    <span className="truncate">Go to Challenge ➔</span>
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onAddChallenge?.(card, currentInk || 'flames', currentRarity);
+                      setShowRarityMenu(false);
+                    }}
+                    className="w-full flex items-center justify-between rounded-lg px-2 py-1.5 text-[10px] font-bold bg-mh-gold-500/15 border border-mh-gold-500/35 text-mh-gold-300 hover:bg-mh-gold-500/25 transition-colors shadow-sm"
+                  >
+                    <div className="flex items-center gap-1.5 truncate">
+                      <Target size={12} className="text-mh-gold-400 shrink-0" />
+                      <span>+ Search Challenge</span>
+                    </div>
+                    <span className="text-[9px] text-mh-gold-400 font-mono shrink-0 ml-1">
+                      &rarr; {nextRarityName.split(' ')[0]}
+                    </span>
+                  </button>
+                )}
+              </div>
+
+              {/* Unown / Remove Button */}
               {isOwned && (
                 <div className="pt-1 border-t border-mh-slate-800">
                   <button
@@ -282,7 +377,7 @@ export default function VisageCard({
           {showQtyMenu && isOwned && (
             <div
               ref={qtyMenuRef}
-              className="absolute bottom-6 right-0 z-50 w-32 rounded-xl border border-mh-gold-500/40 bg-mh-slate-950 p-1.5 shadow-2xl animate-in zoom-in-95 duration-100"
+              className="absolute bottom-full mb-1.5 right-0 z-50 w-32 rounded-xl border border-mh-gold-500/40 bg-mh-slate-950 p-1.5 shadow-2xl animate-in zoom-in-95 duration-100"
               style={{
                 boxShadow: '0 10px 25px rgba(0,0,0,0.8), 0 0 15px rgba(234,179,8,0.2)',
               }}

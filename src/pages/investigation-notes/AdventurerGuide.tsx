@@ -25,10 +25,16 @@ import {
 import { WEAPON_TYPES } from '../../data/core/weapon-types';
 import { usePublicAdventurers, useUpdateAdventurerWeapon } from '../../hooks/useAdminAdventurers';
 import { useUserAdventurerCollection } from '../../hooks/useUserAdventurerCollection';
+import {
+  useHunterChallenges,
+  useAddAdventurerChallenge,
+  getAdventurerChallenge,
+} from '../../hooks/useHunterChallenges';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
 import { useNavigate } from 'react-router-dom';
 import AdventurerCard from './AdventurerCard';
 import AdventurerModal from './AdventurerModal';
+import LoginModal from '../../components/auth/LoginModal';
 import { cn } from '../../lib/utils';
 
 type ViewMode = 'grid' | 'table';
@@ -49,13 +55,33 @@ export default function AdventurerGuide() {
   const [ownershipFilter, setOwnershipFilter] = useState<OwnershipFilter>('all');
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [inspectedAdventurer, setInspectedAdventurer] = useState<DBAdventurer | null>(null);
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
 
+  const { user } = useAuthStore();
   const isAdmin = useAuthStore(selectIsAdmin);
   const navigate = useNavigate();
 
   const { data: adventurers = [], isLoading } = usePublicAdventurers();
   const updateWeaponMutation = useUpdateAdventurerWeapon();
   const { isRecruited, toggleRecruited } = useUserAdventurerCollection();
+
+  const { data: challenges = [] } = useHunterChallenges(user?.id);
+  const addAdventurerChallenge = useAddAdventurerChallenge();
+
+  const handleAddChallenge = async (adv: DBAdventurer) => {
+    if (!user) {
+      setLoginModalOpen(true);
+      return;
+    }
+    await addAdventurerChallenge.mutateAsync({
+      userId: user.id,
+      adventurerId: adv.id,
+      adventurerName: adv.name,
+      pieceImage: adv.image,
+      role: adv.role,
+      element: adv.element_specialization,
+    });
+  };
 
   const defaultAdventurer = useMemo(
     () => adventurers.find((a) => a.is_default),
@@ -160,9 +186,6 @@ export default function AdventurerGuide() {
                 <h1 className="font-display text-2xl font-bold text-mh-slate-100">
                   Outlanders Adventurers
                 </h1>
-                <span className="rounded-full bg-mh-gold-500/10 px-2.5 py-0.5 text-xs font-semibold text-mh-gold-400 border border-mh-gold-500/20">
-                  MHO Roster
-                </span>
               </div>
               <p className="text-xs text-mh-slate-400 mt-0.5">
                 Playable characters in Monster Hunter Outlanders. Master tactical combat roles, weapon proficiencies, and elemental synergies.
@@ -475,7 +498,9 @@ export default function AdventurerGuide() {
                 key={adv.id}
                 adventurer={adv}
                 isRecruited={isRecruited(adv)}
+                challenge={getAdventurerChallenge(challenges, adv.id)}
                 onToggleRecruit={() => toggleRecruited(adv.id)}
+                onAddChallenge={handleAddChallenge}
                 onClick={() => setInspectedAdventurer(adv)}
               />
             ))}
@@ -614,10 +639,18 @@ export default function AdventurerGuide() {
           open={Boolean(inspectedAdventurer)}
           onClose={() => setInspectedAdventurer(null)}
           isRecruited={isRecruited(inspectedAdventurer)}
+          challenge={getAdventurerChallenge(challenges, inspectedAdventurer.id)}
           onToggleRecruit={() => toggleRecruited(inspectedAdventurer.id)}
+          onAddChallenge={handleAddChallenge}
           onSelectWeapon={handleWeaponSwitch}
         />
       )}
+
+      {/* ── Login Modal for Guest Hunters ── */}
+      <LoginModal
+        open={loginModalOpen}
+        onClose={() => setLoginModalOpen(false)}
+      />
     </div>
   );
 }

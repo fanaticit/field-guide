@@ -33,31 +33,12 @@ import LoginModal from '../components/auth/LoginModal';
 import { cn } from '../lib/utils';
 
 // ── Preset Avatars ───────────────────────────────────────────
-const PRESET_AVATARS = [
-  { id: 'rathalos', label: 'Rathalos', url: '/images/monsters/MHNow-Rathalos_Icon.png' },
-  { id: 'zinogre', label: 'Zinogre', url: '/images/monsters/MHNow-Zinogre_Icon.png' },
-  { id: 'magnamalo', label: 'Magnamalo', url: '/images/monsters/MHNow-Magnamalo_Icon.png' },
-  { id: 'mizutsune', label: 'Mizutsune', url: '/images/monsters/MHNow-Mizutsune_Icon.png' },
-  { id: 'kushala', label: 'Kushala Daora', url: '/images/monsters/MHNow-Kushala_Daora_Icon.png' },
-  { id: 'deviljho', label: 'Deviljho', url: '/images/monsters/MHNow-Deviljho_Icon.png' },
-  { id: 'diablos', label: 'Diablos', url: '/images/monsters/MHNow-Diablos_Icon.png' },
-  { id: 'legiana', label: 'Legiana', url: '/images/monsters/MHNow-Legiana_Icon.png' },
-  { id: 'nargacuga', label: 'Nargacuga', url: '/images/monsters/MHNow-Nargacuga_Icon.png' },
-  { id: 'kirin', label: 'Kirin', url: '/images/monsters/MHNow-Kirin_Icon.png' },
-  { id: 'tigrex', label: 'Tigrex', url: '/images/monsters/MHNow-Tigrex_Icon.png' },
-  { id: 'anjanath', label: 'Anjanath', url: '/images/monsters/MHNow-Anjanath_Icon.png' },
+const PRESET_AVATARS: { id: string; label: string; url: string }[] = [
+  // MHO avatars will be added here
 ];
 
 // ── Supported Games ──────────────────────────────────────────
 const SUPPORTED_GAMES = [
-  {
-    id: 'mhn',
-    name: 'Monster Hunter Now',
-    short: 'MHN',
-    desc: 'Real-world GPS AR hunting action by Niantic & Capcom.',
-    color: 'blue',
-    tag: 'Live Mobile Game',
-  },
   {
     id: 'mho',
     name: 'Monster Hunter Outlanders',
@@ -124,10 +105,10 @@ export default function ProfilePage() {
   const [displayName, setDisplayName] = useState('');
   const [username, setUsername] = useState('');
   const [avatarUrl, setAvatarUrl] = useState('');
-  const [selectedDefaultGame, setSelectedDefaultGame] = useState('mhn');
+  const [selectedDefaultGame, setSelectedDefaultGame] = useState('mho');
   const [selectedDefaultPage, setSelectedDefaultPage] = useState<Page>('field-guide');
   const [locale, setLocale] = useState('en');
-  const [gameIds, setGameIds] = useState<string[]>(['mhn']);
+  const [gameIds, setGameIds] = useState<string[]>(['mho']);
   const [showAvatarPicker, setShowAvatarPicker] = useState(false);
 
   // Sync state from profile or store
@@ -136,12 +117,12 @@ export default function ProfilePage() {
       setDisplayName(profile.display_name ?? '');
       setUsername(profile.username ?? '');
       setAvatarUrl(profile.avatar_url ?? '');
-      setSelectedDefaultGame(profile.default_game || defaultGame || 'mhn');
+      setSelectedDefaultGame(profile.default_game || defaultGame || 'mho');
       setSelectedDefaultPage((profile.default_page as Page) || 'field-guide');
       setLocale(profile.locale || 'en');
-      setGameIds(profile.game_ids || ['mhn']);
+      setGameIds(profile.game_ids || ['mho']);
     } else {
-      setSelectedDefaultGame(defaultGame || 'mhn');
+      setSelectedDefaultGame(defaultGame || 'mho');
     }
   }, [profile, defaultGame]);
 
@@ -177,10 +158,10 @@ export default function ProfilePage() {
       setDisplayName(profile.display_name ?? '');
       setUsername(profile.username ?? '');
       setAvatarUrl(profile.avatar_url ?? '');
-      setSelectedDefaultGame(profile.default_game || defaultGame || 'mhn');
+      setSelectedDefaultGame(profile.default_game || defaultGame || 'mho');
       setSelectedDefaultPage((profile.default_page as Page) || 'field-guide');
       setLocale(profile.locale || 'en');
-      setGameIds(profile.game_ids || ['mhn']);
+      setGameIds(profile.game_ids || ['mho']);
     }
     clearAuthError();
     setSuccessMessage(null);

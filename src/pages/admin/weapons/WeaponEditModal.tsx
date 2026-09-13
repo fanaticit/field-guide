@@ -269,7 +269,6 @@ export default function WeaponEditModal({
                 className="w-full rounded-xl border border-mh-slate-750 bg-mh-slate-800 px-3 py-2 text-xs font-semibold text-mh-slate-200 focus:border-mh-gold-500/50 focus:outline-none"
               >
                 <option value="mho">Monster Hunter Outlanders (MHO)</option>
-                <option value="mhn">Monster Hunter Now (MHN)</option>
               </select>
             </div>
 

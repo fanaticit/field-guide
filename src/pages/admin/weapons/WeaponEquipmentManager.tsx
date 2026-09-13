@@ -198,7 +198,6 @@ export default function WeaponEquipmentManager() {
               className="rounded-xl border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-xs font-bold text-mh-gold-400 focus:outline-none"
             >
               <option value="mho">Monster Hunter Outlanders (MHO)</option>
-              <option value="mhn">Monster Hunter Now (MHN)</option>
             </select>
 
             <button

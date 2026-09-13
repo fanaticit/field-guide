@@ -1,21 +1,17 @@
 // ─────────────────────────────────────────────────────────────
-// Monster Guide — shows the live monster roster for MHN or MHO
+// Monster Guide — shows the live monster roster for MHO
 // pulled directly from Supabase, grouped by tier, sorted by the
 // per-game sort order set in the admin panel.
 // ─────────────────────────────────────────────────────────────
 import { useState, useMemo, useEffect } from 'react';
-import { Bug, Info, RefreshCw, AlertTriangle, Search, X } from 'lucide-react';
+import { Bug, RefreshCw, AlertTriangle, Search, X } from 'lucide-react';
 import { usePublicMonsters, type DBMonster } from '../../hooks/useAdminMonsters';
 import { useUIStore } from '../../store/uiStore';
 import { cn } from '../../lib/utils';
 
 // ── Game toggle ───────────────────────────────────────────────
-type GameId = 'mhn' | 'mho';
+type GameId = 'mho';
 
-const GAMES: { id: GameId; label: string; shortLabel: string }[] = [
-  { id: 'mhn', label: 'Monster Hunter Now',        shortLabel: 'MHN' },
-  { id: 'mho', label: 'Monster Hunter Outlanders', shortLabel: 'MHO' },
-];
 
 // ── Tier section config ───────────────────────────────────────
 const TIER_SECTIONS: { tier: string; label: string; badgeCls: string; desc: string }[] = [
@@ -81,7 +77,7 @@ function ElementChip({ el }: { el: string }) {
 
 function MonsterCard({ monster, game }: { monster: DBMonster; game: string }) {
   const tierCfg   = TIER_CONFIG[monster.tier] ?? { label: monster.tier, cls: 'rarity-1' };
-  const sortOrder = monster.sort_orders[game];
+  const sortOrder = monster.sort_order ?? monster.sort_orders?.[game];
 
   return (
     <div className="mh-card flex flex-col gap-3 p-3">
@@ -261,10 +257,10 @@ function GameMonsters({ game }: { game: string }) {
 // ── Page root ─────────────────────────────────────────────────
 export default function MonsterGuide() {
   const defaultGame = useUIStore((s) => s.defaultGame);
-  const [activeGame, setActiveGame] = useState<GameId>((defaultGame as GameId) || 'mhn');
+  const [activeGame, setActiveGame] = useState<GameId>((defaultGame as GameId) || 'mho');
 
   useEffect(() => {
-    if (defaultGame === 'mhn' || defaultGame === 'mho') {
+    if (defaultGame === 'mho') {
       setActiveGame(defaultGame as GameId);
     }
   }, [defaultGame]);
@@ -284,49 +280,6 @@ export default function MonsterGuide() {
           Browse the monster roster, elements, and weaknesses for each game.
         </p>
       </div>
-
-      {/* Game toggle pill */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div
-          className="flex rounded-xl border border-mh-slate-700 bg-mh-slate-900 p-1"
-          role="tablist"
-          aria-label="Select game"
-        >
-          {GAMES.map((game) => (
-            <button
-              key={game.id}
-              role="tab"
-              aria-selected={activeGame === game.id}
-              onClick={() => setActiveGame(game.id)}
-              className={cn(
-                'flex-1 rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-200',
-                activeGame === game.id
-                  ? 'bg-mh-gold-500/15 text-mh-gold-300 shadow-sm ring-1 ring-mh-gold-700/50'
-                  : 'text-mh-slate-400 hover:text-mh-slate-200',
-              )}
-            >
-              <span className="hidden sm:inline">{game.label}</span>
-              <span className="sm:hidden">{game.shortLabel}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* MHO notice */}
-      {activeGame === 'mho' && (
-        <div className="flex items-start gap-3 rounded-xl border border-mh-slate-700 bg-mh-slate-800/60 p-4">
-          <Info size={16} className="mt-0.5 shrink-0 text-el-dragon" />
-          <div className="min-w-0">
-            <p className="text-sm font-semibold text-mh-slate-200">
-              Monster Hunter Outlanders — Beta Roster
-            </p>
-            <p className="mt-1 text-xs leading-relaxed text-mh-slate-500">
-              MHO is currently in closed beta. Only monsters confirmed for Aesoland are shown here.
-              Radiant variants will be added as they are officially confirmed.
-            </p>
-          </div>
-        </div>
-      )}
 
       {/* Per-game content — remounts when game changes to fresh-fetch */}
       <GameMonsters key={activeGame} game={activeGame} />

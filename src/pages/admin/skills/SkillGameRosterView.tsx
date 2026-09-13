@@ -22,7 +22,7 @@ interface Props {
   onRefetch: () => void;
 }
 
-type SortKey = 'name' | 'category' | 'mhn_level' | 'mho_level';
+type SortKey = 'name' | 'category' | 'mho_level';
 type SortDir = 'asc' | 'desc';
 
 // ── Per-game cell component ──────────────────────────────────
@@ -68,17 +68,13 @@ function GameSkillCell({
   }
 
   const styles = {
-    blue: {
-      on: 'bg-blue-500/20 text-blue-300 ring-blue-500/40 hover:bg-blue-500/10',
-      off: 'bg-mh-slate-800 text-mh-slate-500 ring-mh-slate-700 hover:ring-blue-500/40 hover:text-blue-400',
-    },
     orange: {
       on: 'bg-orange-500/20 text-orange-300 ring-orange-500/40 hover:bg-orange-500/10',
       off: 'bg-mh-slate-800 text-mh-slate-500 ring-mh-slate-700 hover:ring-orange-500/40 hover:text-orange-400',
     },
   } as const;
 
-  const s = styles[game.color];
+  const s = styles[game.color as keyof typeof styles] || styles.orange;
   const cls = inGame ? s.on : s.off;
 
   return (
@@ -117,9 +113,7 @@ function GameSkillCell({
                 className={cn(
                   'h-5 w-5 rounded text-[11px] font-bold transition-colors',
                   maxLevel === lvl
-                    ? game.color === 'blue'
-                      ? 'bg-blue-500 text-white shadow-sm'
-                      : 'bg-orange-500 text-white shadow-sm'
+                    ? 'bg-orange-500 text-white shadow-sm'
                     : 'text-mh-slate-400 hover:bg-mh-slate-700 hover:text-mh-slate-200',
                 )}
               >
@@ -134,7 +128,7 @@ function GameSkillCell({
               }}
               className={cn(
                 'h-5 rounded border border-mh-slate-700 bg-mh-slate-900 px-1 text-[10px] font-bold outline-none',
-                maxLevel > 5 ? (game.color === 'blue' ? 'text-blue-400' : 'text-orange-400') : 'text-mh-slate-500',
+                maxLevel > 5 ? 'text-orange-400' : 'text-mh-slate-500',
               )}
             >
               <option value="" disabled>6+</option>
@@ -155,7 +149,7 @@ export default function SkillGameRosterView({ skills, isLoading, onRefetch }: Pr
   const [search, setSearch] = useState('');
   const [filterCategory, setFilterCategory] = useState('');
   const [filterType, setFilterType] = useState<'' | 'skill' | 'set'>('');
-  const [filterUnassigned, setFilterUnassigned] = useState<'' | 'not-mhn' | 'not-mho'>('');
+  const [filterUnassigned, setFilterUnassigned] = useState<'' | 'not-mho'>('');
   const [sortKey, setSortKey] = useState<SortKey>('name');
   const [sortDir, setSortDir] = useState<SortDir>('asc');
 
@@ -184,9 +178,6 @@ export default function SkillGameRosterView({ skills, isLoading, onRefetch }: Pr
     if (filterType === 'set') {
       list = list.filter((s) => s.is_set_bonus);
     }
-    if (filterUnassigned === 'not-mhn') {
-      list = list.filter((s) => !s.games.includes('mhn'));
-    }
     if (filterUnassigned === 'not-mho') {
       list = list.filter((s) => !s.games.includes('mho'));
     }
@@ -201,9 +192,6 @@ export default function SkillGameRosterView({ skills, isLoading, onRefetch }: Pr
       } else if (sortKey === 'category') {
         av = a.category;
         bv = b.category;
-      } else if (sortKey === 'mhn_level') {
-        av = a.games.includes('mhn') ? (a.max_levels.mhn ?? 0) : -1;
-        bv = b.games.includes('mhn') ? (b.max_levels.mhn ?? 0) : -1;
       } else if (sortKey === 'mho_level') {
         av = a.games.includes('mho') ? (a.max_levels.mho ?? 0) : -1;
         bv = b.games.includes('mho') ? (b.max_levels.mho ?? 0) : -1;
@@ -217,7 +205,6 @@ export default function SkillGameRosterView({ skills, isLoading, onRefetch }: Pr
     return list;
   }, [activeSkills, search, filterCategory, filterType, filterUnassigned, sortKey, sortDir]);
 
-  const mhnCount = activeSkills.filter((s) => s.games.includes('mhn')).length;
   const mhoCount = activeSkills.filter((s) => s.games.includes('mho')).length;
 
   const skillsMap = useMemo(
@@ -250,11 +237,6 @@ export default function SkillGameRosterView({ skills, isLoading, onRefetch }: Pr
         <div className="flex flex-wrap items-center justify-between gap-3">
           {/* Game summary pills */}
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 rounded-lg bg-blue-500/10 px-3 py-1.5 text-xs font-medium text-blue-400 ring-1 ring-blue-500/30">
-              <span className="h-2 w-2 rounded-full bg-blue-400" />
-              <span>MHN:</span>
-              <span className="font-bold">{mhnCount}</span> skills
-            </div>
             <div className="flex items-center gap-2 rounded-lg bg-orange-500/10 px-3 py-1.5 text-xs font-medium text-orange-400 ring-1 ring-orange-500/30">
               <span className="h-2 w-2 rounded-full bg-orange-400" />
               <span>MHO:</span>
@@ -313,11 +295,10 @@ export default function SkillGameRosterView({ skills, isLoading, onRefetch }: Pr
 
           <select
             value={filterUnassigned}
-            onChange={(e) => setFilterUnassigned(e.target.value as '' | 'not-mhn' | 'not-mho')}
+            onChange={(e) => setFilterUnassigned(e.target.value as '' | 'not-mho')}
             className="rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-2.5 py-1.5 text-xs text-mh-slate-300 outline-none"
           >
             <option value="">All Assignments</option>
-            <option value="not-mhn">Missing from MHN</option>
             <option value="not-mho">Missing from MHO</option>
           </select>
         </div>
@@ -339,13 +320,6 @@ export default function SkillGameRosterView({ skills, isLoading, onRefetch }: Pr
                 </button>
               </th>
               <th className={cn(thCls, 'text-center w-52')}>
-                <div className="flex items-center justify-center gap-1 text-blue-400">
-                  <button onClick={() => handleSort('mhn_level')} className={thBtnCls}>
-                    Monster Hunter Now (MHN) <SortIcon k="mhn_level" />
-                  </button>
-                </div>
-              </th>
-              <th className={cn(thCls, 'text-center w-52')}>
                 <div className="flex items-center justify-center gap-1 text-orange-400">
                   <button onClick={() => handleSort('mho_level')} className={thBtnCls}>
                     MH Outlanders (MHO) <SortIcon k="mho_level" />
@@ -357,7 +331,7 @@ export default function SkillGameRosterView({ skills, isLoading, onRefetch }: Pr
           <tbody className="divide-y divide-mh-slate-800">
             {filtered.length === 0 ? (
               <tr>
-                <td colSpan={4} className="py-12 text-center text-sm text-mh-slate-500">
+                <td colSpan={3} className="py-12 text-center text-sm text-mh-slate-500">
                   No skills or sets matching the filters.
                 </td>
               </tr>
@@ -437,14 +411,9 @@ export default function SkillGameRosterView({ skills, isLoading, onRefetch }: Pr
                       </span>
                     </td>
 
-                    {/* MHN Column */}
-                    <td className="px-4 py-3 text-center">
-                      <GameSkillCell skill={skill} game={GAME_OPTIONS[0]} />
-                    </td>
-
                     {/* MHO Column */}
                     <td className="px-4 py-3 text-center">
-                      <GameSkillCell skill={skill} game={GAME_OPTIONS[1]} />
+                      <GameSkillCell skill={skill} game={GAME_OPTIONS[0]} />
                     </td>
                   </tr>
                 );

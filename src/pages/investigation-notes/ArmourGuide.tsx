@@ -3,6 +3,7 @@
 // Left-aligned layout, combined skill levels, highlighted set effects, and clean reference format.
 // ─────────────────────────────────────────────────────────────
 import { useState, useMemo, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Shield,
   Search,
@@ -15,7 +16,7 @@ import {
   Target,
   CheckCircle2,
   LogIn,
-  Plus,
+  
 } from 'lucide-react';
 import {
   type ArmourSlot,
@@ -30,7 +31,7 @@ import { useAuthStore } from '../../store/authStore';
 import {
   useHunterChallenges,
   useAddArmourChallenge,
-  useIncrementChallenge,
+  
   getArmourPieceChallenge,
   isArmourPieceTracked,
 } from '../../hooks/useHunterChallenges';
@@ -68,7 +69,7 @@ export interface GroupedArmourSet {
 
 export default function ArmourGuide() {
   // Game Selector (Defaults to MHO)
-  const [game, setGame] = useState<string>('mho');
+  const [game] = useState<string>('mho');
   const [search, setSearch] = useState('');
   const [filterRarity, setFilterRarity] = useState<number | 'all'>('all');
   const [filterSkillId, setFilterSkillId] = useState<string>('all');
@@ -90,7 +91,8 @@ export default function ArmourGuide() {
   const { user } = useAuthStore();
   const { data: challenges = [] } = useHunterChallenges(user?.id);
   const addChallenge = useAddArmourChallenge();
-  const incrementChallenge = useIncrementChallenge();
+  const navigate = useNavigate();
+  
 
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [addedPieceId, setAddedPieceId] = useState<string | null>(null);
@@ -509,33 +511,6 @@ export default function ArmourGuide() {
             ))}
           </select>
 
-          {/* Mini Game Selector */}
-          <div className="flex items-center rounded-xl border border-mh-slate-750 bg-mh-slate-900 p-0.5">
-            <button
-              type="button"
-              onClick={() => setGame('mho')}
-              className={cn(
-                'rounded-lg px-2.5 py-1 text-xs font-bold transition-all',
-                game === 'mho'
-                  ? 'bg-mh-gold-500 text-slate-950 shadow-sm'
-                  : 'text-mh-slate-400 hover:text-white',
-              )}
-            >
-              MHO
-            </button>
-            <button
-              type="button"
-              onClick={() => setGame('mhn')}
-              className={cn(
-                'rounded-lg px-2.5 py-1 text-xs font-bold transition-all',
-                game === 'mhn'
-                  ? 'bg-mh-gold-500 text-slate-950 shadow-sm'
-                  : 'text-mh-slate-400 hover:text-white',
-              )}
-            >
-              MHN
-            </button>
-          </div>
 
           <span className="text-xs text-mh-slate-500 font-semibold px-1">
             {filteredSets.length} Sets
@@ -798,37 +773,15 @@ export default function ArmourGuide() {
                   }
 
                   if (challenge) {
-                    if (challenge.status === 'completed') {
-                      return (
-                        <div className="flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2.5">
-                          <CheckCircle2 size={15} className="text-emerald-400 shrink-0" />
-                          <span className="text-xs font-semibold text-emerald-300">
-                            {slotLabel} crafted & upgraded to R{challenge.current_rarity} (Max)
-                          </span>
-                        </div>
-                      );
-                    }
-
-                    // Active challenge (crafting or upgrading)
-                    const isCrafted = challenge.current_rarity > 0;
                     return (
-                      <div className="flex items-center justify-between gap-2 rounded-xl border border-blue-500/30 bg-blue-500/10 px-3 py-2">
-                        <div className="flex items-center gap-2">
-                          <Target size={15} className="text-blue-400 shrink-0" />
-                          <span className="text-xs font-semibold text-blue-300">
-                            {isCrafted ? `Tracked at R${challenge.current_rarity}` : 'Tracking craft goal'}
-                          </span>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => incrementChallenge.mutateAsync(challenge)}
-                          disabled={incrementChallenge.isPending}
-                          className="flex items-center gap-1.5 rounded-lg bg-blue-500 px-3 py-1.5 text-xs font-bold text-slate-950 hover:bg-blue-400 transition-colors shrink-0 disabled:opacity-50"
-                        >
-                          <Plus size={13} />
-                          {isCrafted ? `Upgrade to R${challenge.current_rarity + 1}` : 'Mark Crafted (R1)'}
-                        </button>
-                      </div>
+                      <button
+                        type="button"
+                        onClick={() => navigate('/challenges')}
+                        className="flex w-full items-center justify-center gap-2 rounded-xl border border-emerald-500/50 bg-emerald-500/15 px-4 py-2.5 text-xs font-bold text-emerald-300 hover:bg-emerald-500/25 transition-all"
+                      >
+                        <CheckCircle2 size={14} />
+                        Go to Challenge ➔
+                      </button>
                     );
                   }
 

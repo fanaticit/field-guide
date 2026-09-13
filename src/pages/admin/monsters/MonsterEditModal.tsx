@@ -52,11 +52,6 @@ const TIER_OPTIONS = [
 const ELEMENT_OPTIONS = ['fire', 'water', 'thunder', 'ice', 'dragon'];
 const STATUS_OPTIONS  = ['poison', 'sleep', 'paralysis', 'blast', 'stun'];
 
-const GAME_OPTIONS = [
-  { value: 'mhn', label: 'Monster Hunter Now',        color: 'blue'   },
-  { value: 'mho', label: 'Monster Hunter Outlanders', color: 'orange' },
-];
-
 const ELEMENT_COLORS: Record<string, string> = {
   fire:      'bg-orange-500/20 text-orange-300 ring-orange-500/30',
   water:     'bg-blue-500/20 text-blue-300 ring-blue-500/30',
@@ -87,10 +82,9 @@ function emptyForm(): MonsterUpsert {
     is_variant: false,
     parent_id: null,
     is_radiant: false,
-    games: ['mhn'],
     is_active: true,
     icon: null,
-    sort_orders: {},
+    sort_order: null,
     notes: null,
   };
 }
@@ -209,7 +203,7 @@ function ImageUploadField({
     try {
       const fileExt = file.name.split('.').pop()?.toLowerCase() || 'png';
       const cleanSlug = slug.trim() ? slug : 'monster';
-      const path = `MHNow-${cleanSlug}_Icon_${Date.now()}.${fileExt}`;
+      const path = `MHO-${cleanSlug}_Icon_${Date.now()}.${fileExt}`;
 
       const { error } = await supabase.storage
         .from('monsters')
@@ -348,7 +342,7 @@ function ImageUploadField({
           type="text"
           value={value ?? ''}
           onChange={(e) => onChange(e.target.value || null)}
-          placeholder="/images/monsters/MHNow-..._Icon.png or https://..."
+          placeholder="/images/monsters/MHO-..._Icon.png or https://..."
           className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-100 placeholder-mh-slate-500 outline-none focus:border-mh-gold-500/50"
         />
       )}
@@ -382,7 +376,10 @@ export default function MonsterEditModal({ monster, open, onClose }: Props) {
     if (open) {
       setDeleteConfirm(false);
       setShowDepsDetails(false);
-      setForm(monster ? { ...monster } : emptyForm());
+      setForm(monster ? {
+        ...monster,
+        sort_order: monster.sort_order ?? monster.sort_orders?.['mho'] ?? null,
+      } : emptyForm());
     }
   }, [monster, open]);
 
@@ -393,20 +390,6 @@ export default function MonsterEditModal({ monster, open, onClose }: Props) {
       name,
       ...(isCreate ? { id: toSlug(name) } : {}),
     }));
-  };
-
-  // Update per-game sort order
-  const handleSortOrderChange = (game: string, raw: string) => {
-    const num = parseInt(raw, 10);
-    setForm((f) => {
-      const next = { ...f.sort_orders };
-      if (raw === '' || isNaN(num)) {
-        delete next[game];
-      } else {
-        next[game] = num;
-      }
-      return { ...f, sort_orders: next };
-    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -550,71 +533,23 @@ export default function MonsterEditModal({ monster, open, onClose }: Props) {
               />
             </div>
 
-            {/* Games */}
+            {/* Sort Order */}
             <div>
-              <Label>Games</Label>
-              <div className="flex flex-col gap-2">
-                {GAME_OPTIONS.map((g) => (
-                  <label key={g.value} className="flex items-center gap-2.5 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={form.games.includes(g.value)}
-                      onChange={() => {
-                        const games = form.games.includes(g.value)
-                          ? form.games.filter((x) => x !== g.value)
-                          : [...form.games, g.value];
-                        setForm((f) => ({ ...f, games }));
-                      }}
-                      className="h-4 w-4 rounded border-mh-slate-600 bg-mh-slate-800 accent-amber-500"
-                    />
-                    <span className="text-sm text-mh-slate-300">{g.label}</span>
-                    <span className={cn(
-                      'ml-auto rounded px-1.5 py-px text-[10px] font-bold uppercase tracking-wider',
-                      g.value === 'mhn' ? 'bg-blue-500/20 text-blue-400' : 'bg-orange-500/20 text-orange-400',
-                    )}>
-                      {g.value.toUpperCase()}
-                    </span>
-                  </label>
-                ))}
-              </div>
+              <Label htmlFor="sort_order">Sort Order</Label>
+              <Input
+                id="sort_order"
+                type="number"
+                placeholder="e.g. 10 (lower numbers appear first)"
+                value={form.sort_order ?? ''}
+                onChange={(v) => {
+                  const num = parseInt(v, 10);
+                  setForm((f) => ({ ...f, sort_order: isNaN(num) ? null : num }));
+                }}
+              />
+              <p className="mt-1 text-[11px] text-mh-slate-500">
+                Controls display position in the monster list. Lower numbers appear first. Leave empty for default.
+              </p>
             </div>
-
-            {/* Per-game sort order — only shown for games the monster is in */}
-            {form.games.length > 0 && (
-              <div className="rounded-xl border border-mh-slate-700 bg-mh-slate-800/40 p-4">
-                <p className="mb-3 text-sm font-semibold text-mh-slate-300">Sort Order per Game</p>
-                <p className="mb-3 text-xs text-mh-slate-600">
-                  Controls display position in each game's monster list. Lower number = appears first.
-                </p>
-                <div className="grid grid-cols-2 gap-3">
-                  {GAME_OPTIONS.filter((g) => form.games.includes(g.value)).map((g) => (
-                    <div key={g.value}>
-                      <label className="mb-1.5 flex items-center gap-1.5 text-xs font-medium text-mh-slate-400">
-                        <span className={cn(
-                          'rounded px-1.5 py-px text-[9px] font-bold uppercase tracking-wider',
-                          g.value === 'mhn' ? 'bg-blue-500/20 text-blue-400' : 'bg-orange-500/20 text-orange-400',
-                        )}>
-                          {g.value.toUpperCase()}
-                        </span>
-                        {g.label}
-                      </label>
-                      <input
-                        type="number"
-                        min={1}
-                        value={form.sort_orders[g.value] ?? ''}
-                        onChange={(e) => handleSortOrderChange(g.value, e.target.value)}
-                        placeholder="e.g. 10"
-                        className={cn(
-                          'w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800/80 px-3 py-2',
-                          'text-sm text-mh-slate-200 placeholder-mh-slate-600',
-                          'outline-none transition-colors focus:border-mh-gold-500/60 focus:ring-1 focus:ring-mh-gold-500/20',
-                        )}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
 
             {/* Variant section */}
             <div className="rounded-xl border border-mh-slate-700 bg-mh-slate-800/40 p-4 space-y-3">
@@ -649,17 +584,15 @@ export default function MonsterEditModal({ monster, open, onClose }: Props) {
                     />
                   </div>
 
-                  {form.games.includes('mho') && (
-                    <label className="flex cursor-pointer items-center gap-2">
-                      <input
-                        type="checkbox"
-                        checked={form.is_radiant}
-                        onChange={(e) => setForm((f) => ({ ...f, is_radiant: e.target.checked }))}
-                        className="h-4 w-4 rounded accent-amber-500"
-                      />
-                      <span className="text-sm text-mh-slate-400">Is Radiant (MHO)</span>
-                    </label>
-                  )}
+                  <label className="flex cursor-pointer items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={form.is_radiant}
+                      onChange={(e) => setForm((f) => ({ ...f, is_radiant: e.target.checked }))}
+                      className="h-4 w-4 rounded accent-amber-500"
+                    />
+                    <span className="text-sm text-mh-slate-400">Is Radiant</span>
+                  </label>
                 </>
               )}
             </div>

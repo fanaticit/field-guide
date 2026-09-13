@@ -15,11 +15,11 @@ export interface DBMonster {
   is_variant: boolean;
   parent_id: string | null;
   is_radiant: boolean;
-  games: string[];
+  games?: string[];
   is_active: boolean;
   icon: string | null;
-  /** Per-game sort positions — e.g. { mhn: 10, mho: 3 } */
-  sort_orders: Record<string, number>;
+  sort_order: number | null;
+  sort_orders?: Record<string, number>;
   notes: string | null;
   created_at: string;
   updated_at: string;
@@ -29,10 +29,10 @@ export type MonsterUpsert = Omit<DBMonster, 'created_at' | 'updated_at'>;
 
 export interface MonsterFilters {
   search?: string;
-  game?: string;
   tier?: string;
   species?: string;
   isActive?: boolean | null;
+  game?: string;
 }
 
 export const MONSTERS_KEY = 'admin-monsters';
@@ -41,10 +41,8 @@ export const MONSTERS_KEY = 'admin-monsters';
 
 export function useAdminMonsters(filters: MonsterFilters = {}) {
   return useQuery({
-    queryKey: [MONSTERS_KEY, filters.game, filters.tier, filters.species, filters.search, filters.isActive],
+    queryKey: [MONSTERS_KEY, filters.tier, filters.species, filters.search, filters.isActive],
     queryFn: async () => {
-      // sort_orders is JSONB — can't order by it directly via PostgREST.
-      // Game-specific ordering is handled client-side in MonsterManager's useMemo.
       let q = supabase
         .from('monsters')
         .select('*')
@@ -52,9 +50,6 @@ export function useAdminMonsters(filters: MonsterFilters = {}) {
 
       if (filters.search) {
         q = q.ilike('name', `%${filters.search}%`);
-      }
-      if (filters.game) {
-        q = q.contains('games', [filters.game]);
       }
       if (filters.tier) {
         q = q.eq('tier', filters.tier);
@@ -68,7 +63,11 @@ export function useAdminMonsters(filters: MonsterFilters = {}) {
 
       const { data, error } = await q;
       if (error) throw error;
-      return data as DBMonster[];
+      const list = (data as DBMonster[]) ?? [];
+      return list.map((m) => ({
+        ...m,
+        sort_order: m.sort_order ?? m.sort_orders?.['mho'] ?? null,
+      }));
     },
     staleTime: 1000 * 60 * 2,
     refetchOnWindowFocus: false,
@@ -95,10 +94,10 @@ export function useBaseMonsters() {
 /**
  * Public-facing hook — fetches active monsters for a specific game,
  * sorted by that game's sort_orders entry (client-side), then by name.
- * Used by the Monster Guide page so both MHN and MHO reflect the admin
+ * Used by the Monster Guide page so MHO reflects the admin
  * roster and ordering set in the admin panel.
  */
-export function usePublicMonsters(game: string) {
+export function usePublicMonsters(game: string = 'mho') {
   return useQuery({
     queryKey: ['public-monsters', game],
     queryFn: async () => {
@@ -106,15 +105,18 @@ export function usePublicMonsters(game: string) {
         .from('monsters')
         .select('*')
         .eq('is_active', true)
-        .contains('games', [game])
         .order('name', { ascending: true });
       if (error) throw error;
 
-      const monsters = data as DBMonster[];
-      // Sort by this game's sort_orders entry; monsters with no entry go last
+      const monsters = ((data as DBMonster[]) ?? []).map((m) => ({
+        ...m,
+        sort_order: m.sort_order ?? m.sort_orders?.[game] ?? m.sort_orders?.['mho'] ?? null,
+      }));
+
+      // Sort by sort_order; monsters with no entry go last
       return monsters.sort(
         (a, b) =>
-          (a.sort_orders[game] ?? 9999) - (b.sort_orders[game] ?? 9999) ||
+          (a.sort_order ?? 9999) - (b.sort_order ?? 9999) ||
           a.name.localeCompare(b.name),
       );
     },
@@ -147,9 +149,26 @@ export function useUpsertMonster() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (monster: MonsterUpsert) => {
+      const payload: Record<string, unknown> = {
+        id: monster.id,
+        name: monster.name,
+        name_ja: monster.name_ja,
+        species: monster.species,
+        tier: monster.tier,
+        elements: monster.elements,
+        weaknesses: monster.weaknesses,
+        is_variant: monster.is_variant,
+        parent_id: monster.parent_id,
+        is_radiant: monster.is_radiant,
+        is_active: monster.is_active,
+        icon: monster.icon,
+        sort_order: monster.sort_order ?? (monster.sort_orders?.['mho'] ?? null),
+        notes: monster.notes,
+      };
+
       const { data, error } = await supabase
         .from('monsters')
-        .upsert(monster, { onConflict: 'id' })
+        .upsert(payload, { onConflict: 'id' })
         .select()
         .single();
       if (error) throw error;
@@ -157,6 +176,7 @@ export function useUpsertMonster() {
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: [MONSTERS_KEY] });
+      qc.invalidateQueries({ queryKey: ['public-monsters'] });
     },
   });
 }

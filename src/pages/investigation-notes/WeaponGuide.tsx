@@ -17,7 +17,7 @@ import {
   Skull,
   Eye,
   CheckCircle2,
-  ChevronRight,
+  
   LogIn,
 } from 'lucide-react';
 import {
@@ -35,7 +35,7 @@ import { useAdminSkills } from '../../hooks/useAdminSkills';
 import {
   useHunterChallenges,
   useAddWeaponChallenge,
-  useIncrementChallenge,
+  
   getWeaponChallenge,
 } from '../../hooks/useHunterChallenges';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
@@ -63,7 +63,7 @@ const ELEMENT_ICONS: Record<WeaponElementType, React.ComponentType<{ size?: numb
 };
 
 export default function WeaponGuide() {
-  const navigate = useNavigate();
+  
   const isAdmin = useAuthStore(selectIsAdmin);
   const { user } = useAuthStore();
 
@@ -87,7 +87,9 @@ export default function WeaponGuide() {
   const { data: challenges = [] } = useHunterChallenges(user?.id);
 
   const addChallenge = useAddWeaponChallenge();
-  const incrementChallenge = useIncrementChallenge();
+  const navigate = useNavigate();
+  
+  
 
   const monstersMap = useMemo(() => new Map(monsters.map((m) => [m.id, m])), [monsters]);
   const skillsMap = useMemo(() => new Map(skills.map((s) => [s.id, s])), [skills]);
@@ -332,7 +334,6 @@ export default function WeaponGuide() {
           >
             <option value="all">All Games</option>
             <option value="mho">Outlanders (MHO)</option>
-            <option value="mhn">Now (MHN)</option>
           </select>
 
           {/* Weapon Type Filter */}
@@ -493,8 +494,6 @@ export default function WeaponGuide() {
                 const ElIcon = ELEMENT_ICONS[weapon.element_type] || Shield;
                 const challenge = getWeaponChallenge(challenges, weapon.id);
                 const isTracked = Boolean(challenge && challenge.status !== 'abandoned');
-                const isCompleted = challenge?.status === 'completed';
-                const isCrafted = (challenge?.current_rarity ?? 0) > 0;
                 const rarityCfg = getRarityBadgeStyle(weapon.rarity || 1);
 
                 return (
@@ -614,24 +613,17 @@ export default function WeaponGuide() {
                           <span>Track</span>
                         </button>
                       ) : isTracked && challenge ? (
-                        isCompleted ? (
-                          <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold border bg-emerald-500/15 border-emerald-500/30 text-emerald-300">
-                            <CheckCircle2 size={11} className="text-emerald-400" />
-                            <span>Mastered</span>
-                          </span>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              incrementChallenge.mutateAsync(challenge);
-                            }}
-                            className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold bg-blue-500 hover:bg-blue-400 text-slate-950 transition-all shadow-sm"
-                          >
-                            <ChevronRight size={11} />
-                            <span>{isCrafted ? `R${challenge.current_rarity + 1}` : `Craft (R${challenge.craft_rarity})`}</span>
-                          </button>
-                        )
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate('/challenges');
+                          }}
+                          className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold border border-emerald-500/50 bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25 transition-all shadow-sm"
+                        >
+                          <CheckCircle2 size={11} />
+                          <span>Go to Challenge ➔</span>
+                        </button>
                       ) : (
                         <button
                           type="button"

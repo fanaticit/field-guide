@@ -2,11 +2,12 @@
 // WeaponCard — Interactive grid card for Weapons in Investigation Notes
 // Horizontal split design with full-height left-side weapon image showcase.
 // ─────────────────────────────────────────────────────────────
+import { useNavigate } from 'react-router-dom';
 import {
   Sword,
   Sparkles,
   CheckCircle2,
-  Plus,
+  
   Shield,
   Flame,
   Droplets,
@@ -28,7 +29,7 @@ import { useAdminMonsters } from '../../hooks/useAdminMonsters';
 import { useAdminSkills } from '../../hooks/useAdminSkills';
 import {
   type HunterChallenge,
-  useIncrementChallenge,
+  
 } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
 
@@ -75,11 +76,12 @@ export default function WeaponCard({
   onAddChallenge,
   onOpenLogin,
   onInspect,
-  isAddingChallenge,
+  isAddingChallenge = false,
 }: Props) {
+  const navigate = useNavigate();
   const { data: monsters = [] } = useAdminMonsters({ isActive: true });
   const { data: dbSkills = [] } = useAdminSkills({ isActive: true });
-  const incrementChallenge = useIncrementChallenge();
+  
 
   const weaponTypeObj = WEAPON_TYPES.find((w) => w.id === weapon.weapon_type_id);
   const monsterObj = weapon.monster_id ? monsters.find((m) => m.id === weapon.monster_id) : null;
@@ -278,25 +280,17 @@ export default function WeaponCard({
               <span>Sign In</span>
             </button>
           ) : isTracked && challenge ? (
-            isCompleted ? (
-              <span className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-1 text-xs font-bold text-emerald-300">
-                <CheckCircle2 size={13} className="text-emerald-400" />
-                <span>Mastered</span>
-              </span>
-            ) : (
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  incrementChallenge.mutateAsync(challenge);
-                }}
-                disabled={incrementChallenge.isPending}
-                className="inline-flex items-center gap-1.5 rounded-xl bg-blue-500 hover:bg-blue-400 text-slate-950 px-2.5 py-1 text-xs font-bold transition-all shadow-sm disabled:opacity-50"
-              >
-                <Plus size={13} />
-                <span>{isCrafted ? `R${challenge.current_rarity + 1}` : `Craft (R${challenge.craft_rarity})`}</span>
-              </button>
-            )
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate('/challenges');
+              }}
+              className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-500/50 bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25 px-2.5 py-1 text-xs font-bold transition-all shadow-sm"
+            >
+              <CheckCircle2 size={13} />
+              <span>Go to Challenge ➔</span>
+            </button>
           ) : (
             <button
               type="button"

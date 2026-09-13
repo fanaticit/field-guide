@@ -7,7 +7,7 @@ import {
   ChevronRight,
   ChevronDown,
   X,
-  Flame,
+  
   BookMarked,
   Bug,
   Shield,
@@ -172,10 +172,7 @@ export default function Sidebar() {
           )}
         >
           <div className="flex shrink-0 items-center gap-2.5">
-            <div className="relative flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-mh-gold-500 to-mh-gold-700 glow-gold">
-              <Flame size={20} className="text-mh-slate-900" />
-            </div>
-
+            <img src="/favicon.png" alt="Field Guide Icon" className="h-9 w-9 object-contain drop-shadow-md" />
             {!sidebarCollapsed && (
               <div className="min-w-0">
                 <p className="font-display text-sm font-bold leading-none tracking-wide text-mh-gold-400 text-glow-gold">
@@ -200,7 +197,7 @@ export default function Sidebar() {
         </div>
 
         {/* ── Navigation ── */}
-        <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-3" role="navigation" aria-label="Main navigation">
+        <nav className="flex flex-1 flex-col gap-1.5 overflow-y-auto py-4 pr-3 pl-0" role="navigation" aria-label="Main navigation">
           {visibleNavItems.map((item) => {
             const isActive = getIsActive(item);
             const Icon = item.icon;
@@ -214,20 +211,26 @@ export default function Sidebar() {
                   onClick={() => handleNavClick(item)}
                   aria-current={isActive ? 'page' : undefined}
                   className={cn(
-                    'group relative flex w-full items-center gap-3 rounded-lg px-3 py-2.5',
-                    'text-left transition-all duration-200',
+                    'group relative flex w-full items-center gap-3 rounded-r-xl rounded-l-none px-4 py-3',
+                    'border-y border-r transition-all duration-300 ease-out',
                     isActive && !isAdminItem
-                      ? 'bg-mh-gold-500/10 text-mh-gold-400'
+                      ? 'bg-mh-slate-800 border-mh-slate-700 shadow-md shadow-black/40 text-mh-gold-400 translate-x-1'
                       : isActive && isAdminItem
-                      ? 'bg-mh-gold-500/10 text-mh-gold-400'
+                      ? 'bg-mh-slate-800 border-mh-slate-700 shadow-md shadow-black/40 text-mh-gold-400 translate-x-1'
                       : isAdminItem
-                      ? 'text-mh-gold-600 hover:bg-mh-gold-500/10 hover:text-mh-gold-400'
-                      : 'text-mh-slate-400 hover:bg-mh-slate-800 hover:text-mh-slate-200',
-                    sidebarCollapsed && 'justify-center px-0',
+                      ? 'border-transparent bg-transparent text-mh-gold-600 hover:bg-mh-slate-900 hover:border-mh-slate-800 hover:translate-x-0.5 hover:text-mh-gold-400'
+                      : 'border-transparent bg-transparent text-mh-slate-400 hover:bg-mh-slate-900 hover:border-mh-slate-800 hover:translate-x-0.5 hover:text-mh-slate-200',
+                    sidebarCollapsed && 'justify-center px-0 rounded-none border-none translate-x-0',
                   )}
                 >
                   {/* Active indicator bar */}
-                  {isActive && (
+                  {isActive && !sidebarCollapsed && (
+                    <span
+                      className="absolute left-0 top-0 bottom-0 w-1 rounded-r-sm bg-mh-gold-400 shadow-[2px_0_8px_rgba(250,204,21,0.4)]"
+                      aria-hidden="true"
+                    />
+                  )}
+                  {isActive && sidebarCollapsed && (
                     <span
                       className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-r-full bg-mh-gold-400 glow-gold"
                       aria-hidden="true"
@@ -237,9 +240,9 @@ export default function Sidebar() {
                   <Icon
                     size={20}
                     className={cn(
-                      'shrink-0 transition-colors duration-200',
+                      'shrink-0 transition-colors duration-300',
                       isActive
-                        ? 'text-mh-gold-400'
+                        ? 'text-mh-gold-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.4)]'
                         : isAdminItem
                         ? 'text-mh-gold-600 group-hover:text-mh-gold-400'
                         : 'text-mh-slate-500 group-hover:text-mh-slate-300',
@@ -249,8 +252,8 @@ export default function Sidebar() {
                   {!sidebarCollapsed && (
                     <div className="min-w-0 flex-1">
                       <p className={cn(
-                        'text-sm font-semibold leading-none',
-                        isActive ? 'text-mh-gold-300' : '',
+                        'text-sm font-bold tracking-wide transition-colors',
+                        isActive ? 'text-mh-gold-300 drop-shadow-sm' : '',
                       )}>
                         {item.label}
                       </p>
@@ -290,7 +293,7 @@ export default function Sidebar() {
 
                 {/* Investigation Notes sub-nav */}
                 {isInvestigation && isInvestigationActive && !sidebarCollapsed && (
-                  <div className="mt-1 ml-3 flex flex-col gap-0.5 border-l border-mh-slate-700 pl-3">
+                  <div className="mt-1 flex flex-col gap-0.5">
                     {investigationSubNav.map((sub) => {
                       const isSubActive = pathname === sub.path;
                       const SubIcon = sub.icon;
@@ -299,14 +302,14 @@ export default function Sidebar() {
                           key={sub.id}
                           onClick={() => { navigate(sub.path); setMobileMenuOpen(false); }}
                           className={cn(
-                            'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-xs transition-all duration-150',
+                            'flex w-full items-center gap-2 rounded-r-lg rounded-l-none pl-11 pr-4 py-2 text-left text-xs transition-all duration-300 ease-out border-y border-r',
                             isSubActive
-                              ? 'bg-mh-gold-500/10 text-mh-gold-400 font-semibold'
-                              : 'text-mh-slate-500 hover:bg-mh-slate-800 hover:text-mh-slate-300',
+                              ? 'bg-mh-slate-800/80 border-mh-slate-700/80 text-mh-gold-400 font-bold translate-x-1 shadow-sm'
+                              : 'border-transparent bg-transparent text-mh-slate-500 hover:bg-mh-slate-900 hover:border-mh-slate-800 hover:text-mh-slate-300 hover:translate-x-0.5',
                           )}
                         >
-                          <SubIcon size={13} className="shrink-0" />
-                          {sub.label}
+                          <SubIcon size={14} className={cn('shrink-0 transition-colors', isSubActive ? 'text-mh-gold-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.4)]' : '')} />
+                          <span className={cn(isSubActive ? 'drop-shadow-sm' : '')}>{sub.label}</span>
                         </button>
                       );
                     })}

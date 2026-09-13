@@ -41,14 +41,14 @@ export interface DBSkill {
   name_ja: string | null;
   category: SkillCategory;
   games: string[];
-  /** Per-game max levels — e.g. { mhn: 5, mho: 3 } */
+  /** Per-game max levels — e.g. { mho: 3 } */
   max_levels: Record<string, number>;
   is_set_bonus: boolean;
   /** Activation thresholds and granted bonuses for each tier of the set bonus */
   set_thresholds: SetBonusTier[];
   is_active: boolean;
   icon: string | null;
-  /** Per-game sort positions — e.g. { mhn: 10, mho: 3 } */
+  /** Per-game sort positions — e.g. { mho: 3 } */
   sort_orders: Record<string, number>;
   description: string | null;
   notes: string | null;

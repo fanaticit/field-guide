@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────
 // VisageModal — Detailed card inspect view for MHO Visage Cards
 // ─────────────────────────────────────────────────────────────
-import { X, Sparkles, Star, Trash2 } from 'lucide-react';
+import { X, Sparkles, Star, Trash2, Target, CheckCircle2, Plus } from 'lucide-react';
 import type { DBVisage, VisageRarity } from '../../data/schemas/visage';
 import {
   INK_CONFIG,
@@ -10,6 +10,7 @@ import {
   VISAGE_RARITY_OPTIONS,
 } from '../../data/schemas/visage';
 import type { CardCollectionEntry } from '../../hooks/useVisageSets';
+import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { InkIconComponent } from './VisageCard';
 import { cn } from '../../lib/utils';
 
@@ -19,9 +20,11 @@ interface VisageModalProps {
   open: boolean;
   onClose: () => void;
   collectionEntry?: CardCollectionEntry | null;
+  challenge?: HunterChallenge;
   onSetRarity?: (rarity: VisageRarity, quantity?: number) => void;
   onSetQuantity?: (quantity: number) => void;
   onRemoveFromCollection?: () => void;
+  onAddChallenge?: (card: DBVisage, inkType: string, currentRarity?: VisageRarity | null) => void;
 }
 
 export default function VisageModal({
@@ -30,9 +33,11 @@ export default function VisageModal({
   open,
   onClose,
   collectionEntry,
+  challenge,
   onSetRarity,
   onSetQuantity,
   onRemoveFromCollection,
+  onAddChallenge,
 }: VisageModalProps) {
   if (!open || !card) return null;
 
@@ -44,6 +49,18 @@ export default function VisageModal({
   const currentRarity = collectionEntry?.rarity;
   const currentQty = collectionEntry?.quantity ?? 1;
   const rarityCfg = currentRarity ? VISAGE_RARITY_CONFIG[currentRarity] : null;
+
+  const isTracked = Boolean(challenge && challenge.status !== 'abandoned');
+  const isChallengeDone = challenge?.status === 'completed';
+  const isMaxed = currentRarity === 'superior';
+
+  const nextRarityName = !currentRarity
+    ? 'Fine (Green)'
+    : currentRarity === 'fine'
+    ? 'Rare (Blue)'
+    : currentRarity === 'rare'
+    ? 'Epic (Purple)'
+    : 'Superior (Gold)';
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -93,16 +110,16 @@ export default function VisageModal({
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 space-y-5">
+        <div className="p-6 space-y-5 max-h-[80vh] overflow-y-auto">
           {/* Card Presentation Row */}
           <div className="flex flex-col sm:flex-row items-center gap-5">
             {/* Card Graphic View */}
             <div
               className={cn(
-                'relative flex flex-col items-center justify-between w-32 h-44 rounded-xl p-3 border-2 shrink-0 shadow-lg',
+                'relative flex flex-col items-center justify-between w-32 h-44 rounded-xl p-0 border-2 shrink-0 shadow-lg overflow-hidden',
                 isOwned && rarityCfg
-                  ? cn(rarityCfg.bgGradient, rarityCfg.borderClass, 'text-mh-slate-900')
-                  : 'bg-gradient-to-b from-[#f3e5be] via-[#e2cf9f] to-[#cfba84] border-[#8e7646]',
+                  ? cn(rarityCfg.borderClass, 'text-mh-slate-900')
+                  : 'border-[#8e7646]',
               )}
               style={{
                 boxShadow: isOwned && rarityCfg
@@ -110,19 +127,26 @@ export default function VisageModal({
                   : undefined,
               }}
             >
-              <div className="relative flex flex-1 w-full items-center justify-center">
+              <div
+                className={cn(
+                  'relative flex flex-1 w-full items-center justify-center overflow-hidden',
+                  isOwned && rarityCfg
+                    ? rarityCfg.bgGradient
+                    : 'bg-gradient-to-b from-[#f3e5be] via-[#e2cf9f] to-[#cfba84]',
+                )}
+              >
                 {imageSrc ? (
                   <img
                     src={imageSrc}
                     alt={card.name}
-                    className="h-20 w-20 object-contain drop-shadow-md"
+                    className="w-full h-full object-contain p-2 drop-shadow-md"
                   />
                 ) : (
                   <Sparkles size={36} className="text-amber-800" />
                 )}
               </div>
 
-              <div className="w-full flex items-center justify-between">
+              <div className="w-full flex items-center justify-between p-2 bg-black/85 border-t border-black/30">
                 <div className="flex items-center gap-1 rounded bg-black/75 px-1.5 py-0.5 border border-amber-500/40 text-white">
                   <InkIconComponent iconName={inkCfg.iconName} size={12} className={inkCfg.text} />
                   <span className="font-display text-xs font-bold text-amber-300">
@@ -138,7 +162,7 @@ export default function VisageModal({
             {/* Quick Stats Column */}
             <div className="flex-1 space-y-3 w-full">
               <div className="grid grid-cols-2 gap-2">
-                <div className="rounded-lg bg-mh-slate-800/80 p-2.5 border border-mh-slate-700">
+                <div className="rounded-lg bg-mh-slate-800/80 p-2.5 border border-mh-slate-750">
                   <span className="block text-[10px] uppercase font-bold text-mh-slate-400">
                     Points Cost
                   </span>
@@ -147,7 +171,7 @@ export default function VisageModal({
                   </span>
                 </div>
 
-                <div className="rounded-lg bg-mh-slate-800/80 p-2.5 border border-mh-slate-700">
+                <div className="rounded-lg bg-mh-slate-800/80 p-2.5 border border-mh-slate-750">
                   <span className="block text-[10px] uppercase font-bold text-mh-slate-400">
                     Inherent Base Rarity
                   </span>
@@ -163,7 +187,7 @@ export default function VisageModal({
               </div>
 
               {/* Possible Ink Rolls Pool */}
-              <div className="rounded-lg bg-mh-slate-800/80 p-2.5 border border-mh-slate-700">
+              <div className="rounded-lg bg-mh-slate-800/80 p-2.5 border border-mh-slate-750">
                 <span className="block text-[10px] uppercase font-bold text-mh-slate-400 mb-1.5">
                   Possible Inks Pool
                 </span>
@@ -191,7 +215,7 @@ export default function VisageModal({
           </div>
 
           {/* Collection Status & Rarity Picker Box */}
-          <div className="rounded-xl bg-mh-slate-950/90 p-4 border border-mh-slate-800 space-y-3">
+          <div className="rounded-xl bg-mh-slate-950/90 p-4 border border-mh-slate-800 space-y-3.5">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-wider text-mh-slate-300">
                 Hunter Collection Status
@@ -226,6 +250,44 @@ export default function VisageModal({
                   </button>
                 );
               })}
+            </div>
+
+            {/* Challenge Tracking CTA */}
+            <div className="pt-2 border-t border-mh-slate-800/80 flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <Target size={15} className="text-mh-gold-400 shrink-0" />
+                <div>
+                  <p className="text-xs font-bold text-mh-slate-200">Personal Hunter's Challenge</p>
+                  <p className="text-[10px] text-mh-slate-400">
+                    {isMaxed
+                      ? 'Already found maximum Superior card'
+                      : isTracked
+                      ? `Currently searching: Goal ${nextRarityName}`
+                      : `Set goal to search for next card: ${nextRarityName}`}
+                  </p>
+                </div>
+              </div>
+
+              {isMaxed ? (
+                <span className="inline-flex items-center gap-1 rounded-lg bg-emerald-500/15 border border-emerald-500/30 px-3 py-1.5 text-xs font-bold text-emerald-300">
+                  <CheckCircle2 size={13} className="text-emerald-400" />
+                  <span>Found (Superior)</span>
+                </span>
+              ) : isTracked && !isChallengeDone ? (
+                <span className="inline-flex items-center gap-1 rounded-lg bg-blue-500/15 border border-blue-500/30 px-3 py-1.5 text-xs font-bold text-blue-300">
+                  <Target size={13} className="text-blue-400" />
+                  <span>Searching</span>
+                </span>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => onAddChallenge?.(card, primaryInk, currentRarity)}
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-mh-gold-500 hover:bg-mh-gold-400 text-slate-950 px-3.5 py-1.5 text-xs font-black transition-all shadow-md shrink-0"
+                >
+                  <Plus size={14} />
+                  <span>+ Search Challenge</span>
+                </button>
+              )}
             </div>
 
             {/* Quantity Selector if Owned */}

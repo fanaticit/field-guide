@@ -43,7 +43,6 @@ export const CATEGORY_OPTIONS: SkillCategory[] = [
 ];
 
 export const GAME_OPTIONS = [
-  { value: 'mhn', label: 'Monster Hunter Now',        short: 'MHN', color: 'blue'   },
   { value: 'mho', label: 'Monster Hunter Outlanders', short: 'MHO', color: 'orange' },
 ] as const;
 
@@ -456,7 +455,7 @@ export default function SkillEditModal({ skill, open, onClose }: Props) {
                 <div className="space-y-2.5">
                   {(form.set_thresholds || []).map((tier, idx) => {
                     const selectedSkillMeta = standardSkills.find((s) => s.id === tier.granted_skill_id);
-                    const selectedMaxLevel = selectedSkillMeta?.max_levels[form.games[0] || 'mhn'] ?? 5;
+                    const selectedMaxLevel = selectedSkillMeta?.max_levels[form.games[0] || 'mho'] ?? 5;
 
                     return (
                       <div
@@ -585,9 +584,7 @@ export default function SkillEditModal({ skill, open, onClose }: Props) {
                     className={cn(
                       'flex flex-col gap-2 rounded-lg border p-3 transition-all',
                       inGame
-                        ? g.color === 'blue'
-                          ? 'border-blue-500/40 bg-blue-500/10'
-                          : 'border-orange-500/40 bg-orange-500/10'
+                        ? 'border-orange-500/40 bg-orange-500/10'
                         : 'border-mh-slate-700/60 bg-mh-slate-800/50 opacity-70',
                     )}
                   >
@@ -602,7 +599,7 @@ export default function SkillEditModal({ skill, open, onClose }: Props) {
                         <span className={cn(
                           'text-xs font-bold uppercase tracking-wider',
                           inGame
-                            ? g.color === 'blue' ? 'text-blue-400' : 'text-orange-400'
+                            ? 'text-orange-400'
                             : 'text-mh-slate-400',
                         )}>
                           {g.label} ({g.short})

@@ -35,9 +35,7 @@ function GamePills({ games }: { games: string[] }) {
           key={g}
           className={cn(
             'rounded px-1.5 py-px text-[9px] font-bold uppercase tracking-wider',
-            g === 'mhn'
-              ? 'bg-blue-500/20 text-blue-400'
-              : 'bg-orange-500/20 text-orange-400',
+            'bg-orange-500/20 text-orange-400',
           )}
         >
           {g.toUpperCase()}
@@ -63,7 +61,7 @@ function MaxLevelPills({
           <span
             className={cn(
               'rounded px-1 py-px text-[8px] font-bold uppercase',
-              g.color === 'blue' ? 'text-blue-500' : 'text-orange-500',
+              'text-orange-500',
             )}
           >
             {g.short}
@@ -161,7 +159,7 @@ export default function SkillManager() {
   const [filterActive, setFilterActive] = useState<'' | 'active' | 'inactive'>('');
   const [sortKey, setSortKey] = useState<SortKey>('name');
   const [sortDir, setSortDir] = useState<SortDir>('asc');
-  const [sortGame, setSortGame] = useState<string>(defaultGame || 'mhn');
+  const [sortGame, setSortGame] = useState<string>(defaultGame || 'mho');
   const [editSkill, setEditSkill] = useState<DBSkill | null | 'new'>(null);
 
   useEffect(() => {
@@ -329,7 +327,6 @@ export default function SkillManager() {
             className="rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-300 outline-none"
           >
             <option value="">All games</option>
-            <option value="mhn">MHN</option>
             <option value="mho">MHO</option>
           </select>
 
@@ -363,7 +360,6 @@ export default function SkillManager() {
               className="rounded-lg border border-mh-gold-500/40 bg-mh-slate-800 px-3 py-2 text-sm text-mh-gold-400 outline-none"
               title="Select which game's max level to sort by"
             >
-              <option value="mhn">Sort by MHN Level</option>
               <option value="mho">Sort by MHO Level</option>
             </select>
           )}

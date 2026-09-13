@@ -2,6 +2,7 @@
 // AdventurerModal — Detailed Inspection Dialog for MHO Adventurers
 // ─────────────────────────────────────────────────────────────
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   X,
   User,
@@ -12,6 +13,7 @@ import {
   Info,
   CheckCircle2,
   Plus,
+  Target,
 } from 'lucide-react';
 import {
   type DBAdventurer,
@@ -19,6 +21,7 @@ import {
   ELEMENT_OPTIONS,
 } from '../../data/schemas/adventurer';
 import { WEAPON_TYPES } from '../../data/core/weapon-types';
+import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
 
 const ROLE_ICONS: Record<string, typeof Swords> = {
@@ -33,7 +36,9 @@ interface AdventurerModalProps {
   open: boolean;
   onClose: () => void;
   isRecruited?: boolean;
+  challenge?: HunterChallenge;
   onToggleRecruit?: () => void;
+  onAddChallenge?: (adventurer: DBAdventurer) => void;
   onSelectWeapon?: (weapon: string) => void;
 }
 
@@ -42,9 +47,12 @@ export default function AdventurerModal({
   open,
   onClose,
   isRecruited = false,
+  challenge,
   onToggleRecruit,
+  onAddChallenge,
   onSelectWeapon,
 }: AdventurerModalProps) {
+  const navigate = useNavigate();
   const [imageError, setImageError] = useState(false);
 
   if (!open || !adventurer) return null;
@@ -121,25 +129,18 @@ export default function AdventurerModal({
 
         {/* Modal Body */}
         <div className="p-6 space-y-5 max-h-[80vh] overflow-y-auto">
-          {/* Identity & Portrait */}
+          {/* Identity & Portrait (No extra border, large & visible) */}
           <div className="flex items-center gap-5">
-            <div
-              className={cn(
-                'relative flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl border shadow-md',
-                isRecruited
-                  ? 'border-mh-gold-500/40 bg-black/50 ring-2 ring-mh-gold-500/20'
-                  : 'border-mh-slate-800 bg-black/30',
-              )}
-            >
+            <div className="relative flex h-28 w-28 sm:h-32 sm:w-32 shrink-0 items-center justify-center">
               {adventurer.image && !imageError ? (
                 <img
                   src={adventurer.image}
                   alt={adventurer.name}
                   onError={() => setImageError(true)}
-                  className="h-full w-full object-contain p-1"
+                  className="h-full w-full object-contain drop-shadow-2xl"
                 />
               ) : (
-                <User size={42} className={isRecruited ? 'text-mh-gold-400' : 'text-mh-slate-600'} />
+                <User size={52} className={isRecruited ? 'text-mh-gold-400' : 'text-mh-slate-500'} />
               )}
             </div>
 
@@ -163,7 +164,7 @@ export default function AdventurerModal({
             </div>
           </div>
 
-          {/* Hunter Recruitment Status Card */}
+          {/* Hunter Recruitment Status & Challenge Card */}
           <div className="rounded-xl border border-mh-gold-500/30 bg-mh-slate-950/80 p-4 space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-mh-gold-400">
@@ -194,28 +195,52 @@ export default function AdventurerModal({
                     : 'Mark this adventurer as recruited when unlocked in Monster Hunter Outlanders.'}
                 </p>
 
-                <button
-                  type="button"
-                  onClick={onToggleRecruit}
-                  className={cn(
-                    'flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all shrink-0',
-                    isRecruited
-                      ? 'bg-red-500/15 border border-red-500/30 text-red-400 hover:bg-red-500/25'
-                      : 'bg-mh-gold-500 text-mh-slate-950 hover:bg-mh-gold-400 shadow-sm',
+                <div className="flex items-center gap-2 shrink-0">
+                  {!isRecruited && (
+                    challenge && challenge.status !== 'abandoned' && challenge.status !== 'completed' ? (
+                      <button
+                        type="button"
+                        onClick={() => navigate('/challenges')}
+                        className="flex items-center gap-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25 px-3 py-1.5 text-xs font-bold transition-all shadow-sm"
+                      >
+                        <CheckCircle2 size={13} className="text-emerald-400" />
+                        <span>Go to Challenge ➔</span>
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => onAddChallenge?.(adventurer)}
+                        className="flex items-center gap-1.5 rounded-lg border border-mh-gold-500/40 bg-mh-gold-500/15 text-mh-gold-300 hover:bg-mh-gold-500/25 px-3 py-1.5 text-xs font-bold transition-all shadow-sm"
+                      >
+                        <Target size={13} className="text-mh-gold-400" />
+                        <span>+ Challenge</span>
+                      </button>
+                    )
                   )}
-                >
-                  {isRecruited ? (
-                    <>
-                      <X size={13} />
-                      <span>Unrecruit</span>
-                    </>
-                  ) : (
-                    <>
-                      <Plus size={13} />
-                      <span>Mark Recruited</span>
-                    </>
-                  )}
-                </button>
+
+                  <button
+                    type="button"
+                    onClick={onToggleRecruit}
+                    className={cn(
+                      'flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all shrink-0',
+                      isRecruited
+                        ? 'bg-red-500/15 border border-red-500/30 text-red-400 hover:bg-red-500/25'
+                        : 'bg-mh-gold-500 text-mh-slate-950 hover:bg-mh-gold-400 shadow-sm',
+                    )}
+                  >
+                    {isRecruited ? (
+                      <>
+                        <X size={13} />
+                        <span>Unrecruit</span>
+                      </>
+                    ) : (
+                      <>
+                        <Plus size={13} />
+                        <span>Mark Recruited</span>
+                      </>
+                    )}
+                  </button>
+                </div>
               </div>
             )}
           </div>

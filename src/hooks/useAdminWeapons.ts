@@ -31,7 +31,7 @@ export const DEFAULT_DB_WEAPON_TYPES: DBWeaponType[] = WEAPON_TYPES.map((w, idx)
     special_skill: w.specialSkill,
     styles: w.styles,
     icon: `/images/weapons/${w.id}.svg`,
-    games: isMHO ? ['mhn', 'mho'] : ['mhn'],
+    games: isMHO ? ['mho'] : ['mho'],
     is_active: true,
     sort_order: idx + 1,
     created_at: new Date().toISOString(),

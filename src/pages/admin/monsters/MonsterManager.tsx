@@ -3,19 +3,17 @@
 //   "List" — detailed table with edit actions
 //   "Game Roster" — matrix for assigning monsters to games
 // ─────────────────────────────────────────────────────────────
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import {
   Search, Plus, RefreshCw, ChevronUp, ChevronDown,
   Flame, Droplets, Zap, Snowflake, Wind,
-  MoreVertical, AlertTriangle, List, Gamepad2,
+  MoreVertical, AlertTriangle,
 } from 'lucide-react';
 import {
   useAdminMonsters, useToggleMonsterActive,
   type DBMonster,
 } from '../../../hooks/useAdminMonsters';
 import MonsterEditModal from './MonsterEditModal';
-import GameRosterView from './GameRosterView';
-import { useUIStore } from '../../../store/uiStore';
 import { cn } from '../../../lib/utils';
 
 // ── Element display ──────────────────────────────────────────
@@ -66,14 +64,8 @@ const SPECIES_LABELS: Record<string, string> = {
   neopteron:      'Neopteron',
 };
 
-const GAMES = [
-  { id: 'mhn', label: 'MHN', color: 'blue'   },
-  { id: 'mho', label: 'MHO', color: 'orange' },
-] as const;
-
 type SortKey = 'name' | 'species' | 'tier' | 'sort_order';
 type SortDir = 'asc' | 'desc';
-type ViewMode = 'list' | 'roster';
 
 function ElementPills({ elements }: { elements: string[] }) {
   if (!elements.length) return <span className="text-mh-slate-600 text-xs">—</span>;
@@ -85,44 +77,6 @@ function ElementPills({ elements }: { elements: string[] }) {
             <span className={cn('h-2 w-2 rounded-full', ELEMENT_DOT_COLORS[el] ?? 'bg-mh-slate-500')} />
           )}
           {el}
-        </span>
-      ))}
-    </div>
-  );
-}
-
-function GamePills({ games }: { games: string[] }) {
-  return (
-    <div className="flex gap-1">
-      {games.map((g) => (
-        <span key={g} className={cn(
-          'rounded px-1.5 py-px text-[9px] font-bold uppercase tracking-wider',
-          g === 'mhn' ? 'bg-blue-500/20 text-blue-400' : 'bg-orange-500/20 text-orange-400',
-        )}>
-          {g.toUpperCase()}
-        </span>
-      ))}
-    </div>
-  );
-}
-
-/** Shows the order number for each game the monster is in. */
-function SortOrderPills({ sortOrders, games }: { sortOrders: Record<string, number>; games: string[] }) {
-  const entries = GAMES.filter((g) => games.includes(g.id));
-  if (!entries.length) return <span className="text-mh-slate-700 text-xs">—</span>;
-  return (
-    <div className="flex flex-col gap-0.5">
-      {entries.map((g) => (
-        <span key={g.id} className="flex items-center gap-1 text-[11px] tabular-nums">
-          <span className={cn(
-            'rounded px-1 py-px text-[8px] font-bold uppercase',
-            g.color === 'blue' ? 'text-blue-500' : 'text-orange-500',
-          )}>
-            {g.label}
-          </span>
-          <span className="text-mh-slate-400">
-            {sortOrders[g.id] ?? <span className="text-mh-slate-700 italic">—</span>}
-          </span>
         </span>
       ))}
     </div>
@@ -152,28 +106,15 @@ function ActiveToggle({ monster }: { monster: DBMonster }) {
 
 // ── Main component ───────────────────────────────────────────
 export default function MonsterManager() {
-  const defaultGame = useUIStore((s) => s.defaultGame);
-  const [viewMode, setViewMode]       = useState<ViewMode>('list');
-  const [search, setSearch]           = useState('');
-  const [filterGame, setFilterGame]   = useState(defaultGame || '');
-  const [filterTier, setFilterTier]   = useState('');
+  const [search, setSearch]             = useState('');
+  const [filterTier, setFilterTier]     = useState('');
   const [filterSpecies, setFilterSpecies] = useState('');
-  const [filterActive, setFilterActive]  = useState<'' | 'active' | 'inactive'>('');
-  const [sortKey, setSortKey]         = useState<SortKey>('sort_order');
-  const [sortDir, setSortDir]         = useState<SortDir>('asc');
-  const [sortGame, setSortGame]       = useState<string>(defaultGame || 'mhn'); // which game's order to sort by
-  const [editMonster, setEditMonster] = useState<DBMonster | null | 'new'>(null);
+  const [filterActive, setFilterActive] = useState<'' | 'active' | 'inactive'>('');
+  const [sortKey, setSortKey]           = useState<SortKey>('sort_order');
+  const [sortDir, setSortDir]           = useState<SortDir>('asc');
+  const [editMonster, setEditMonster]   = useState<DBMonster | null | 'new'>(null);
 
-  useEffect(() => {
-    if (defaultGame) {
-      setFilterGame(defaultGame);
-      setSortGame(defaultGame);
-    }
-  }, [defaultGame]);
-
-  const { data: monsters = [], isLoading, error, refetch } = useAdminMonsters(
-    filterGame ? { game: filterGame } : {}
-  );
+  const { data: monsters = [], isLoading, error } = useAdminMonsters();
 
   const filtered = useMemo(() => {
     let list = [...monsters];
@@ -194,9 +135,8 @@ export default function MonsterManager() {
     list.sort((a, b) => {
       let av: string | number = '', bv: string | number = '';
       if (sortKey === 'sort_order') {
-        // Sort by the selected game's sort order
-        av = a.sort_orders[sortGame] ?? 9999;
-        bv = b.sort_orders[sortGame] ?? 9999;
+        av = a.sort_order ?? a.sort_orders?.['mho'] ?? 9999;
+        bv = b.sort_order ?? b.sort_orders?.['mho'] ?? 9999;
       } else if (sortKey === 'name') {
         av = a.name; bv = b.name;
       } else if (sortKey === 'species') {
@@ -212,7 +152,7 @@ export default function MonsterManager() {
     });
 
     return list;
-  }, [monsters, search, filterTier, filterSpecies, filterActive, sortKey, sortDir, sortGame]);
+  }, [monsters, search, filterTier, filterSpecies, filterActive, sortKey, sortDir]);
 
   const activeCount   = monsters.filter((m) => m.is_active).length;
   const inactiveCount = monsters.length - activeCount;
@@ -230,26 +170,6 @@ export default function MonsterManager() {
   const thCls = 'px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-mh-slate-500 select-none';
   const thBtnCls = 'flex items-center gap-1 hover:text-mh-slate-300 transition-colors cursor-pointer';
 
-  // ── Game Roster view ─────────────────────────────────────────
-  if (viewMode === 'roster') {
-    return (
-      <div className="flex h-full flex-col">
-        <div className="flex shrink-0 items-center gap-2 border-b border-mh-slate-700 bg-mh-slate-900/30 px-6 py-3">
-          <ViewModeToggle current={viewMode} onChange={setViewMode} onAdd={() => setEditMonster('new')} />
-        </div>
-        <div className="min-h-0 flex-1 overflow-hidden">
-          <GameRosterView monsters={monsters} isLoading={isLoading} onRefetch={refetch} />
-        </div>
-        <MonsterEditModal
-          monster={editMonster === 'new' ? null : editMonster}
-          open={editMonster !== null}
-          onClose={() => setEditMonster(null)}
-        />
-      </div>
-    );
-  }
-
-  // ── List view ─────────────────────────────────────────────────
   return (
     <div className="flex h-full flex-col">
       {/* ── Toolbar ── */}
@@ -273,7 +193,13 @@ export default function MonsterManager() {
           </div>
 
           <div className="flex items-center gap-2">
-            <ViewModeToggle current={viewMode} onChange={setViewMode} onAdd={() => setEditMonster('new')} />
+            <button
+              onClick={() => setEditMonster('new')}
+              className="flex items-center gap-2 rounded-xl bg-mh-gold-500 px-4 py-2 text-sm font-bold text-mh-slate-900 hover:bg-mh-gold-400 transition-colors shadow-sm"
+            >
+              <Plus size={16} />
+              Add Monster
+            </button>
           </div>
         </div>
 
@@ -289,12 +215,6 @@ export default function MonsterManager() {
               className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 py-2 pl-9 pr-3 text-sm text-mh-slate-200 placeholder-mh-slate-600 outline-none focus:border-mh-gold-500/50"
             />
           </div>
-          <select value={filterGame} onChange={(e) => setFilterGame(e.target.value)}
-            className="rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-300 outline-none">
-            <option value="">All games</option>
-            <option value="mhn">MHN</option>
-            <option value="mho">MHO</option>
-          </select>
           <select value={filterTier} onChange={(e) => setFilterTier(e.target.value)}
             className="rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-300 outline-none">
             <option value="">All tiers</option>
@@ -357,23 +277,10 @@ export default function MonsterManager() {
                 </th>
                 <th className={thCls}>Elements</th>
                 <th className={thCls}>Weak to</th>
-                <th className={thCls}>Games</th>
-                {/* Order column — with inline game selector */}
                 <th className={thCls}>
-                  <div className="flex items-center gap-1.5">
-                    <button className={thBtnCls} onClick={() => handleSort('sort_order')}>
-                      Order <SortIcon k="sort_order" />
-                    </button>
-                    <select
-                      value={sortGame}
-                      onChange={(e) => { setSortGame(e.target.value); setSortKey('sort_order'); }}
-                      onClick={(e) => e.stopPropagation()}
-                      className="rounded border border-mh-slate-700 bg-mh-slate-800 px-1 py-0.5 text-[10px] text-mh-slate-400 outline-none"
-                    >
-                      <option value="mhn">MHN</option>
-                      <option value="mho">MHO</option>
-                    </select>
-                  </div>
+                  <button className={thBtnCls} onClick={() => handleSort('sort_order')}>
+                    Sort Order <SortIcon k="sort_order" />
+                  </button>
                 </th>
                 <th className={cn(thCls, 'text-center')}>Active</th>
                 <th className={cn(thCls, 'w-12')} />
@@ -383,7 +290,7 @@ export default function MonsterManager() {
             <tbody>
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={9} className="py-16 text-center text-mh-slate-600">
+                  <td colSpan={8} className="py-16 text-center text-mh-slate-600">
                     No monsters match your filters.
                   </td>
                 </tr>
@@ -441,10 +348,14 @@ export default function MonsterManager() {
                   </td>
                   <td className="px-4 py-3"><ElementPills elements={m.elements} /></td>
                   <td className="px-4 py-3"><ElementPills elements={m.weaknesses} /></td>
-                  <td className="px-4 py-3"><GamePills games={m.games} /></td>
-                  {/* Per-game order — shows a row per game the monster is in */}
-                  <td className="px-4 py-3">
-                    <SortOrderPills sortOrders={m.sort_orders} games={m.games} />
+                  <td className="px-4 py-3 font-mono text-xs tabular-nums text-mh-slate-400">
+                    {(m.sort_order ?? m.sort_orders?.['mho']) !== undefined && (m.sort_order ?? m.sort_orders?.['mho']) !== null ? (
+                      <span className="rounded bg-mh-slate-800 border border-mh-slate-700/60 px-2 py-0.5 font-bold text-mh-gold-400">
+                        #{m.sort_order ?? m.sort_orders?.['mho']}
+                      </span>
+                    ) : (
+                      <span className="text-mh-slate-700 italic">—</span>
+                    )}
                   </td>
                   <td className="px-4 py-3 text-center">
                     <ActiveToggle monster={m} />
@@ -470,58 +381,6 @@ export default function MonsterManager() {
         open={editMonster !== null}
         onClose={() => setEditMonster(null)}
       />
-    </div>
-  );
-}
-
-// ── View mode toggle bar (shared between modes) ──────────────
-function ViewModeToggle({
-  current,
-  onChange,
-  onAdd,
-}: {
-  current: ViewMode;
-  onChange: (v: ViewMode) => void;
-  onAdd: () => void;
-}) {
-  return (
-    <div className="flex w-full items-center justify-between gap-2">
-      <div className="flex items-center rounded-lg border border-mh-slate-700 bg-mh-slate-800 p-0.5">
-        <button
-          onClick={() => onChange('list')}
-          className={cn(
-            'flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition-all duration-150',
-            current === 'list'
-              ? 'bg-mh-slate-700 text-mh-slate-100 shadow-sm'
-              : 'text-mh-slate-500 hover:text-mh-slate-300',
-          )}
-        >
-          <List size={13} />
-          Monster List
-        </button>
-        <button
-          onClick={() => onChange('roster')}
-          className={cn(
-            'flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition-all duration-150',
-            current === 'roster'
-              ? 'bg-mh-slate-700 text-mh-slate-100 shadow-sm'
-              : 'text-mh-slate-500 hover:text-mh-slate-300',
-          )}
-        >
-          <Gamepad2 size={13} />
-          Game Roster
-        </button>
-      </div>
-
-      <div className="flex items-center gap-2">
-        <button
-          onClick={onAdd}
-          className="flex items-center gap-2 rounded-xl bg-mh-gold-500 px-4 py-2 text-sm font-bold text-mh-slate-900 hover:bg-mh-gold-400 transition-colors"
-        >
-          <Plus size={16} />
-          Add Monster
-        </button>
-      </div>
     </div>
   );
 }

@@ -29,7 +29,7 @@ export const ARMOUR_PIECES_KEY = 'admin-armour-pieces';
 
 // ── Query ─────────────────────────────────────────────────────
 
-export function useAdminArmourPieces(game: string = 'mhn') {
+export function useAdminArmourPieces(game: string = 'mho') {
   return useQuery({
     queryKey: [ARMOUR_PIECES_KEY, game],
     queryFn: async () => {
