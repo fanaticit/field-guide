@@ -9,7 +9,6 @@ import {
   Swords,
   Zap,
   Heart,
-  ChevronDown,
   Check,
   Plus,
   Target,
@@ -47,10 +46,8 @@ export default function AdventurerCard({
   onToggleRecruit,
   onAddChallenge,
   onClick,
-  onSelectWeapon,
 }: AdventurerCardProps) {
   const [imageError, setImageError] = useState(false);
-  const [showWeaponDropdown, setShowWeaponDropdown] = useState(false);
 
   const isPlayerCharacter = adventurer.is_default;
   const navigate = useNavigate();
@@ -236,78 +233,17 @@ export default function AdventurerCard({
         </div>
       </div>
 
-      {/* Bottom Section: Weapon Type Control */}
+      {/* Bottom Section: Weapon Discipline */}
       <div className="mt-4 pt-3 border-t border-mh-slate-800/80">
-        {isPlayerCharacter ? (
-          /* Default Character Weapon Switcher */
-          <div className="space-y-1.5" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between text-[11px]">
-              <span className="font-bold text-mh-gold-400 uppercase tracking-wider">
-                Active Weapon
-              </span>
-              <span className="text-mh-slate-500 font-semibold">Changeable (All 14)</span>
-            </div>
-
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setShowWeaponDropdown((prev) => !prev)}
-                className="flex w-full items-center justify-between rounded-xl border border-mh-gold-500/40 bg-mh-gold-500/10 px-3 py-2 text-xs font-bold text-mh-slate-100 hover:bg-mh-gold-500/20 transition-all shadow-sm"
-              >
-                <div className="flex items-center gap-2 truncate">
-                  <Swords size={14} className="text-mh-gold-400 shrink-0" />
-                  <span className="truncate">{activeWeaponObj?.name || activeWeaponId}</span>
-                </div>
-                <ChevronDown
-                  size={14}
-                  className={cn(
-                    'text-mh-gold-400 transition-transform shrink-0',
-                    showWeaponDropdown ? 'rotate-180' : '',
-                  )}
-                />
-              </button>
-
-              {showWeaponDropdown && (
-                <div className="absolute bottom-full left-0 mb-1 z-30 w-full max-h-56 overflow-y-auto rounded-xl border border-mh-slate-700 bg-mh-slate-900 p-1.5 shadow-2xl space-y-0.5">
-                  <p className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-mh-slate-400 border-b border-mh-slate-800">
-                    Switch Weapon Type
-                  </p>
-                  {WEAPON_TYPES.map((w) => {
-                    const isSelected = w.id === activeWeaponId;
-                    return (
-                      <button
-                        key={w.id}
-                        type="button"
-                        onClick={() => {
-                          onSelectWeapon?.(w.id);
-                          setShowWeaponDropdown(false);
-                        }}
-                        className={cn(
-                          'flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-xs transition-colors',
-                          isSelected
-                            ? 'bg-mh-gold-500 text-mh-slate-950 font-bold'
-                            : 'text-mh-slate-300 hover:bg-mh-slate-800 hover:text-white',
-                        )}
-                      >
-                        <span>{w.name}</span>
-                        {isSelected && <Check size={13} className="shrink-0" />}
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          </div>
-        ) : (
-          /* Fixed Weapon for Companion Adventurer */
-          <div className="flex items-center justify-between text-xs">
-            <span className="text-mh-slate-500 font-medium">Weapon Discipline:</span>
-            <span className="flex items-center gap-1.5 font-bold text-mh-slate-200">
-              <Swords size={13} className="text-mh-gold-400" />
-              <span>{activeWeaponObj?.name || activeWeaponId}</span>
-            </span>
-          </div>
-        )}
+        <div className="flex items-center justify-between text-xs">
+          <span className="text-mh-slate-500 font-medium">
+            {isPlayerCharacter ? 'Active Weapon:' : 'Weapon Discipline:'}
+          </span>
+          <span className={cn('flex items-center gap-1.5 font-bold', isPlayerCharacter ? 'text-mh-gold-300' : 'text-mh-slate-200')}>
+            <Swords size={13} className="text-mh-gold-400" />
+            <span>{activeWeaponObj?.name || activeWeaponId}</span>
+          </span>
+        </div>
       </div>
     </div>
   );

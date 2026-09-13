@@ -12,7 +12,6 @@ import {
   LayoutGrid,
   List,
   Plus,
-  Info,
   CheckCircle2,
   Eye,
 } from 'lucide-react';
@@ -88,11 +87,6 @@ export default function AdventurerGuide() {
     [adventurers],
   );
 
-  const companionAdventurers = useMemo(
-    () => adventurers.filter((a) => !a.is_default),
-    [adventurers],
-  );
-
   // Collection & Statistics Metrics
   const metrics = useMemo(() => {
     const total = adventurers.length;
@@ -108,9 +102,9 @@ export default function AdventurerGuide() {
     return { total, recruitedCount, percent, roleCounts };
   }, [adventurers, isRecruited]);
 
-  // Filtered roster of companion adventurers
-  const filteredCompanions = useMemo(() => {
-    let list = [...companionAdventurers];
+  // Filtered roster of all adventurers (including player character)
+  const filteredAdventurers = useMemo(() => {
+    let list = [...adventurers];
 
     if (search.trim()) {
       const q = search.toLowerCase();
@@ -140,6 +134,7 @@ export default function AdventurerGuide() {
     if (weaponFilter !== 'all') {
       list = list.filter(
         (a) =>
+          a.is_default ||
           a.weapon_type === weaponFilter ||
           (a.allowed_weapon_types && a.allowed_weapon_types.includes(weaponFilter)),
       );
@@ -151,14 +146,16 @@ export default function AdventurerGuide() {
       list = list.filter((a) => !isRecruited(a));
     }
 
-    // Default sorting: sort_order, then name
+    // Default sorting: player character (is_default) first, then sort_order, then name
     list.sort((a, b) => {
+      if (a.is_default && !b.is_default) return -1;
+      if (!a.is_default && b.is_default) return 1;
       if (a.sort_order !== b.sort_order) return a.sort_order - b.sort_order;
       return a.name.localeCompare(b.name);
     });
 
     return list;
-  }, [companionAdventurers, search, roleFilter, elementFilter, weaponFilter, ownershipFilter, isRecruited]);
+  }, [adventurers, search, roleFilter, elementFilter, weaponFilter, ownershipFilter, isRecruited]);
 
   async function handleWeaponSwitch(weaponType: string) {
     if (!defaultAdventurer) return;
@@ -270,73 +267,7 @@ export default function AdventurerGuide() {
         </div>
       </div>
 
-      {/* ── Featured Showcase: Your Player Character ── */}
-      {defaultAdventurer && (
-        <div className="space-y-3">
-          <div className="flex items-center gap-2">
-            <Sparkles size={16} className="text-mh-gold-400" />
-            <h3 className="font-display text-sm font-bold uppercase tracking-wider text-mh-slate-200">
-              Your Player Character
-            </h3>
-            <span className="text-xs text-mh-slate-500">
-              (Master of all weapon disciplines — switch active weapon anytime)
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <AdventurerCard
-              adventurer={defaultAdventurer}
-              isRecruited={true}
-              onClick={() => setInspectedAdventurer(defaultAdventurer)}
-              onSelectWeapon={handleWeaponSwitch}
-            />
-
-            {/* Quick Weapon Armory Selector */}
-            <div className="rounded-2xl border border-mh-slate-750 bg-mh-slate-850/80 p-5 flex flex-col justify-between space-y-3">
-              <div>
-                <div className="flex items-center justify-between border-b border-mh-slate-800 pb-2 mb-3">
-                  <span className="text-xs font-bold uppercase tracking-wider text-mh-gold-300 flex items-center gap-1.5">
-                    <Swords size={14} />
-                    <span>Quick Weapon Armory</span>
-                  </span>
-                  <span className="text-[11px] text-mh-slate-500">
-                    Click to switch active weapon
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                  {WEAPON_TYPES.map((w) => {
-                    const isSelected = defaultAdventurer.weapon_type === w.id;
-                    return (
-                      <button
-                        key={w.id}
-                        type="button"
-                        onClick={() => handleWeaponSwitch(w.id)}
-                        className={cn(
-                          'flex items-center gap-2 rounded-xl border px-3 py-2 text-xs font-semibold transition-all text-left',
-                          isSelected
-                            ? 'border-mh-gold-400 bg-mh-gold-500 text-mh-slate-950 font-bold shadow-md ring-1 ring-mh-gold-300'
-                            : 'border-mh-slate-700 bg-mh-slate-800/80 text-mh-slate-300 hover:border-mh-gold-500/40 hover:text-white',
-                        )}
-                      >
-                        <Swords size={12} className={isSelected ? 'text-mh-slate-950' : 'text-mh-gold-400'} />
-                        <span className="truncate">{w.name}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="text-[11px] text-mh-slate-500 flex items-center gap-1.5 pt-2 border-t border-mh-slate-800">
-                <Info size={13} className="shrink-0 text-mh-gold-400" />
-                <span>Your player character dynamically adapts move sets and combos based on the equipped weapon.</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ── Companion Adventurers Roster ── */}
+      {/* ── Adventurers Roster ── */}
       <div className="space-y-4">
         {/* Toolbar Header */}
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-mh-slate-800 pb-3">
@@ -346,7 +277,7 @@ export default function AdventurerGuide() {
               Adventurer Roster
             </h3>
             <span className="rounded-full bg-mh-slate-800 border border-mh-slate-700 px-2 py-0.5 text-xs text-mh-slate-400 font-semibold">
-              {filteredCompanions.length} Adventurers
+              {filteredAdventurers.length} Adventurers
             </span>
           </div>
 
@@ -485,15 +416,15 @@ export default function AdventurerGuide() {
           <div className="flex h-48 items-center justify-center">
             <span className="text-xs text-mh-gold-400">Loading adventurers...</span>
           </div>
-        ) : filteredCompanions.length === 0 ? (
+        ) : filteredAdventurers.length === 0 ? (
           <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-mh-slate-750 bg-mh-slate-900/40 p-12 text-center">
             <User size={36} className="text-mh-slate-600 mb-2" />
-            <p className="text-xs font-semibold text-mh-slate-400">No companion adventurers match your filter criteria.</p>
+            <p className="text-xs font-semibold text-mh-slate-400">No adventurers match your filter criteria.</p>
           </div>
         ) : viewMode === 'grid' ? (
           /* Grid View */
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredCompanions.map((adv) => (
+            {filteredAdventurers.map((adv) => (
               <AdventurerCard
                 key={adv.id}
                 adventurer={adv}
@@ -520,7 +451,7 @@ export default function AdventurerGuide() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-mh-slate-800">
-                {filteredCompanions.map((adv) => {
+                {filteredAdventurers.map((adv) => {
                   const roleKey = (adv.role === 'Disruptor' ? 'Disrupter' : adv.role) as 'Assault' | 'Disrupter' | 'Support';
                   const roleCfg = ADVENTURER_ROLE_CONFIG[roleKey] || ADVENTURER_ROLE_CONFIG.Assault;
                   const RoleIcon = ROLE_ICONS[roleKey] || Swords;
@@ -552,7 +483,14 @@ export default function AdventurerGuide() {
                             )}
                           </div>
                           <div>
-                            <p className="font-bold text-mh-slate-100">{adv.name}</p>
+                            <div className="flex items-center gap-1.5">
+                              <p className="font-bold text-mh-slate-100">{adv.name}</p>
+                              {adv.is_default && (
+                                <span className="rounded bg-mh-gold-500/20 border border-mh-gold-500/40 px-1.5 py-0.2 text-[9px] font-bold text-mh-gold-300 uppercase">
+                                  You
+                                </span>
+                              )}
+                            </div>
                             {adv.name_ja && (
                               <p className="text-[10px] text-mh-slate-500">{adv.name_ja}</p>
                             )}
@@ -577,35 +515,49 @@ export default function AdventurerGuide() {
 
                       {/* Weapon */}
                       <td className="px-3 py-3">
-                        <span className="font-semibold text-mh-slate-300">
-                          {weaponObj?.name || adv.weapon_type || '—'}
-                        </span>
+                        <div className="flex items-center gap-1.5">
+                          <span className={cn('font-semibold', adv.is_default ? 'text-mh-gold-300 font-bold' : 'text-mh-slate-300')}>
+                            {weaponObj?.name || adv.weapon_type || '—'}
+                          </span>
+                          {adv.is_default && (
+                            <span className="text-[10px] text-mh-slate-500 font-medium">
+                              (Active)
+                            </span>
+                          )}
+                        </div>
                       </td>
 
                       {/* Recruitment Status */}
                       <td className="px-3 py-3 text-center" onClick={(e) => e.stopPropagation()}>
-                        <button
-                          type="button"
-                          onClick={() => toggleRecruited(adv.id)}
-                          className={cn(
-                            'inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold transition-transform hover:scale-105 active:scale-95',
-                            recruited
-                              ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm'
-                              : 'bg-mh-slate-800 text-mh-slate-400 border border-mh-slate-700 hover:bg-mh-slate-700 hover:text-white',
-                          )}
-                        >
-                          {recruited ? (
-                            <>
-                              <CheckCircle2 size={11} />
-                              <span>Recruited</span>
-                            </>
-                          ) : (
-                            <>
-                              <Plus size={11} />
-                              <span>Recruit</span>
-                            </>
-                          )}
-                        </button>
+                        {adv.is_default ? (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-mh-gold-500/15 border border-mh-gold-500/35 px-2.5 py-0.5 text-[10px] font-bold text-mh-gold-300">
+                            <Sparkles size={11} />
+                            <span>Default</span>
+                          </span>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => toggleRecruited(adv.id)}
+                            className={cn(
+                              'inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold transition-transform hover:scale-105 active:scale-95',
+                              recruited
+                                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm'
+                                : 'bg-mh-slate-800 text-mh-slate-400 border border-mh-slate-700 hover:bg-mh-slate-700 hover:text-white',
+                            )}
+                          >
+                            {recruited ? (
+                              <>
+                                <CheckCircle2 size={11} />
+                                <span>Recruited</span>
+                              </>
+                            ) : (
+                              <>
+                                <Plus size={11} />
+                                <span>Recruit</span>
+                              </>
+                            )}
+                          </button>
+                        )}
                       </td>
 
                       {/* Actions */}
