@@ -98,6 +98,7 @@ interface BuildPlannerState {
   setBuddy: (b: Buddy | null) => void;
   setVisage: (slot: VisageSlot, v: Visage | null) => void;
   setSlotInkType: (slot: VisageSlot, ink: string) => void;
+  setSelectedInkTypes: (inks: Record<string, string>) => void;
   resetBuild: () => void;
   setHoveredSkillId: (id: string | null, category?: string | null) => void;
 
@@ -209,6 +210,7 @@ export const useBuildPlannerStore = create<BuildPlannerState>((set, get) => ({
     if (slot === 'core') set({ coreVisage: v, selectedInkTypes: newInkTypes });
     else set({ [`visage${slot}`]: v, selectedInkTypes: newInkTypes });
   },
+  setSelectedInkTypes: (inks) => set({ selectedInkTypes: inks }),
   setSlotInkType: (slot, ink) => set((state) => ({
     selectedInkTypes: { ...state.selectedInkTypes, [String(slot)]: ink }
   })),

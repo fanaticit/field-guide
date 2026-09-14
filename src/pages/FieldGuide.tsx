@@ -46,7 +46,7 @@ export default function FieldGuide() {
         <div>
           <h2 className="font-display text-lg font-bold text-mh-slate-200">Quest Board Coming Soon</h2>
           <p className="mt-1 max-w-sm text-sm text-mh-slate-500">
-            Create, track, and complete your personalised Monster Hunter Now challenges.
+            Create, track, and complete your personalised Monster Hunter Outlanders challenges.
             Filter by monster, weapon type, or element.
           </p>
         </div>

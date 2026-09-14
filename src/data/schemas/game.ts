@@ -9,7 +9,7 @@ import type { GameId } from './build.js';
  */
 export interface GameConfig {
   id: GameId;
-  /** Full display name, e.g. "Monster Hunter Now" */
+  /** Full display name, e.g. "Monster Hunter Outlanders" */
   name: string;
   /** Short name for UI labels, e.g. "MHN" */
   shortName: string;

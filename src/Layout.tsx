@@ -3,7 +3,7 @@
 // Renders the persistent chrome (Sidebar, Header, Footer) and
 // an <Outlet /> where the active route's page component renders.
 // ─────────────────────────────────────────────────────────────
-import { Outlet } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 import { useUIStore } from './store/uiStore';
 import Sidebar from './components/layout/Sidebar';
 import Header from './components/layout/Header';
@@ -45,10 +45,14 @@ export default function Layout() {
         </main>
 
         {/* Footer */}
-        <footer className="border-t border-mh-slate-800 px-6 py-3">
-          <p className="text-center text-xs text-mh-slate-700">
-            Field Guide &copy; {new Date().getFullYear()} &mdash; Monster Hunter Now Community Tracker
+        <footer className="border-t border-mh-slate-800 px-6 py-4 flex flex-col items-center justify-center gap-2">
+          <p className="text-center text-xs text-mh-slate-600">
+            Field Guide &copy; {new Date().getFullYear()} &mdash; Monster Hunter Outlanders Community Tracker
           </p>
+          <div className="flex gap-4 text-[11px] font-medium text-mh-slate-500">
+            <Link to="/privacy" className="hover:text-mh-slate-300 transition-colors">Privacy Policy</Link>
+            <Link to="/terms" className="hover:text-mh-slate-300 transition-colors">Terms of Service</Link>
+          </div>
         </footer>
       </div>
     </div>

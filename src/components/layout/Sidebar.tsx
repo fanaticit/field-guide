@@ -1,4 +1,5 @@
 import {
+  Home,
   BookOpen,
   Sword,
   Users,
@@ -17,10 +18,14 @@ import {
   UserCheck,
   Target,
 } from 'lucide-react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useUIStore } from '../../store/uiStore';
-import { useAuthStore, selectIsAdmin } from '../../store/authStore';
-import { cn } from '../../lib/utils';
+import {
+useNavigate, useLocation } from 'react-router-dom';
+import {
+useUIStore } from '../../store/uiStore';
+import {
+useAuthStore, selectIsAdmin } from '../../store/authStore';
+import {
+cn } from '../../lib/utils';
 import UserMenu from '../auth/UserMenu';
 
 interface NavItem {
@@ -41,9 +46,16 @@ interface SubNavItem {
 
 const navItems: NavItem[] = [
   {
-    id: 'field-guide',
+    id: 'home',
     path: '/',
-    label: 'Field Guide',
+    label: 'Home',
+    icon: Home,
+    description: 'Welcome to the Field Guide',
+  },
+  {
+    id: 'monsters',
+    path: '/monsters',
+    label: 'Monster Guide',
     icon: BookOpen,
     description: 'Monster Weaknesses & Drops',
   },
@@ -179,7 +191,7 @@ export default function Sidebar() {
                   Field Guide
                 </p>
                 <p className="mt-0.5 text-[10px] font-medium uppercase tracking-widest text-mh-slate-500">
-                  Monster Hunter Now
+                  Monster Hunter Outlanders
                 </p>
               </div>
             )}

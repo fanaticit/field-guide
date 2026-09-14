@@ -3,7 +3,7 @@
 // Three modes: sign-in, sign-up, forgot-password
 // ─────────────────────────────────────────────────────────────
 import { useState, useEffect } from 'react';
-import { X, Flame, Eye, EyeOff, Loader2, AlertCircle, CheckCircle2, ArrowLeft } from 'lucide-react';
+import { X,  Eye, EyeOff, Loader2, AlertCircle, CheckCircle2, ArrowLeft } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import { cn } from '../../lib/utils';
 
@@ -128,8 +128,8 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
           )}
 
           {/* Logo */}
-          <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-mh-gold-500 to-mh-gold-700 glow-gold">
-            <Flame size={24} className="text-mh-slate-900" />
+          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center">
+            <img src="/favicon.png" alt="Field Guide Logo" className="h-full w-full object-contain drop-shadow-lg" />
           </div>
 
           {/* Title */}

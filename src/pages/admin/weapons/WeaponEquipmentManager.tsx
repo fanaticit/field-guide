@@ -59,7 +59,7 @@ const ELEMENT_ICONS: Record<WeaponElementType, React.ComponentType<{ size?: numb
 };
 
 export default function WeaponEquipmentManager() {
-  const [game, setGame] = useState<string>('mho');
+  const game = 'mho';
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [sortOrder, setSortOrder] = useState<SortOrder>('rarity-desc');
   const [search, setSearch] = useState('');
@@ -191,15 +191,6 @@ export default function WeaponEquipmentManager() {
           </div>
 
           <div className="flex items-center gap-2 flex-wrap">
-            {/* Game Selector */}
-            <select
-              value={game}
-              onChange={(e) => setGame(e.target.value)}
-              className="rounded-xl border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-xs font-bold text-mh-gold-400 focus:outline-none"
-            >
-              <option value="mho">Monster Hunter Outlanders (MHO)</option>
-            </select>
-
             <button
               type="button"
               onClick={() => refetch()}

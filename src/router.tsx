@@ -16,6 +16,8 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import Layout from './Layout';
 import FieldGuide from './pages/FieldGuide';
+import LandingPage from './pages/LandingPage';
+
 import BuildPlanner from './pages/BuildPlanner';
 import Armory from './pages/Armory';
 import CommunityHub from './pages/CommunityHub';
@@ -23,13 +25,17 @@ import HunterChallenges from './pages/HunterChallenges';
 import InvestigationNotes from './pages/investigation-notes/InvestigationNotes';
 import AdminPage from './pages/admin/AdminPage';
 import SettingsPage from './pages/Settings';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
+
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,
     children: [
-      { index: true, element: <FieldGuide /> },
+      { index: true, element: <LandingPage /> },
+      { path: 'monsters', element: <FieldGuide /> },
       { path: 'build-planner', element: <BuildPlanner /> },
       { path: 'build-planner/:buildId', element: <BuildPlanner /> },
       { path: 'armory', element: <Armory /> },
@@ -48,6 +54,9 @@ export const router = createBrowserRouter([
       { path: 'admin/:subPage', element: <AdminPage /> },
 
       { path: 'settings', element: <SettingsPage /> },
+      { path: 'privacy', element: <PrivacyPolicy /> },
+      { path: 'terms', element: <TermsOfService /> },
+
 
       // Future: shared build link
       // { path: 'build/:buildId', element: <SharedBuildView /> },

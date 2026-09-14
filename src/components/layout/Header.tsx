@@ -11,7 +11,7 @@ function getPageMeta(pathname: string): PageMeta {
   if (pathname.startsWith('/investigation-notes')) return { title: 'Investigation Notes', subtitle: 'Monsters, Weapons & Armour' };
   if (pathname.startsWith('/admin')) return { title: 'Admin Panel', subtitle: 'Manage game data & community' };
   if (pathname.startsWith('/settings')) return { title: 'Profile & Settings', subtitle: 'Preferences & Account' };
-  return { title: 'Field Guide', subtitle: 'Monster Hunter Now' };
+  return { title: 'Field Guide', subtitle: 'Monster Hunter Outlanders' };
 }
 
 export default function Header() {

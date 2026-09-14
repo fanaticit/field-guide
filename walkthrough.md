@@ -65,3 +65,8 @@ I've successfully updated the Build Planner and implemented the Hunter's Armory!
 ## 12. Dynamic Color Highlights for Skill Tooltips
 - Upgraded the skill highlight mechanic to reflect the specific category of the hovered skill.
 - Hovering over a skill in the `SkillSummaryPanel` now pushes the skill's category into the state. The `EquipmentSelector` reads this category and generates a customized glowing shadow border matching the skill's category color (e.g., Red for Attack, Blue for Defense, Emerald for Status) instead of a generic golden glow.
+
+## 13. Visage Ink Persistence
+- Fixed a bug where custom Ink selections for multi-ink Visage Cards were not being saved to the database.
+- Since the database schema does not natively support an inks column without a disruptive migration, we employed the same clever metadata strategy used for the Main/Support role: securely serializing the `selectedInkTypes` state into a hidden metadata tag within the description block (e.g. `<!-- inks:{"core":"ink_of_flames"} -->`).
+- The `BuildPlanner` now intercepts this tag upon load, cleans the user-facing description, and forces the application state to load the precise inks chosen by the author, overriding the system's default auto-selections.

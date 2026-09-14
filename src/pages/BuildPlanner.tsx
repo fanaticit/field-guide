@@ -61,6 +61,16 @@ export default function BuildPlanner() {
             role = 'support';
             desc = desc.replace('\n\n<!-- role:support -->', '');
           }
+          let savedInks: Record<string, string> = {};
+          const inkMatch = desc.match(/\n\n<!-- inks:(.*?) -->/);
+          if (inkMatch) {
+            try {
+              savedInks = JSON.parse(inkMatch[1]);
+              desc = desc.replace(inkMatch[0], '');
+            } catch (e) {
+              console.error('Failed to parse saved inks', e);
+            }
+          }
           store.setDescription(desc);
           store.setBuildRole(role as 'main' | 'support');
           
@@ -84,6 +94,11 @@ export default function BuildPlanner() {
           if (data.visage3) store.setVisage(3, data.visage3 as any);
           if (data.visage4) store.setVisage(4, data.visage4 as any);
           if (data.visage5) store.setVisage(5, data.visage5 as any);
+          
+          if (Object.keys(savedInks).length > 0) {
+            // Because setVisage overrides the inks with auto-selection, we must apply saved inks after
+            store.setSelectedInkTypes(savedInks);
+          }
         }
       } catch (err: any) {
         console.error('Failed to load build:', err);
@@ -122,6 +137,13 @@ export default function BuildPlanner() {
     let finalDesc = store.description.trim();
     if (store.buildRole === 'support') {
       finalDesc += '\n\n<!-- role:support -->';
+    }
+    const activeInks = Object.entries(store.selectedInkTypes).reduce((acc, [k, v]) => {
+      if (v) acc[k] = v;
+      return acc;
+    }, {} as Record<string, string>);
+    if (Object.keys(activeInks).length > 0) {
+      finalDesc += `\n\n<!-- inks:${JSON.stringify(activeInks)} -->`;
     }
 
     const buildData = {

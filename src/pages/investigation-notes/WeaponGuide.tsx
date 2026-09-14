@@ -68,7 +68,6 @@ export default function WeaponGuide() {
   const { user } = useAuthStore();
 
   const [search, setSearch] = useState('');
-  const [filterGame, setFilterGame] = useState<string>('all');
   const [filterChallenge, setFilterChallenge] = useState<ChallengeFilter>('all');
   const [filterWeaponType, setFilterWeaponType] = useState<string>('all');
   const [filterElement, setFilterElement] = useState<WeaponElementType | 'all'>('all');
@@ -81,7 +80,7 @@ export default function WeaponGuide() {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
 
   // Queries & Hooks
-  const { data: weapons = [], isLoading } = useAdminWeapons({ isActive: true });
+  const { data: weapons = [], isLoading } = useAdminWeapons({ game: 'mho', isActive: true });
   const { data: monsters = [] } = useAdminMonsters({ isActive: true });
   const { data: skills = [] } = useAdminSkills({ isActive: true });
   const { data: challenges = [] } = useHunterChallenges(user?.id);
@@ -106,7 +105,7 @@ export default function WeaponGuide() {
       const monster = weapon.monster_id ? monstersMap.get(weapon.monster_id) : null;
       await addChallenge.mutateAsync({
         userId: user.id,
-        game: weapon.game,
+        game: weapon.game || 'mho',
         weaponId: weapon.id,
         weaponName: weapon.name,
         weaponTypeId: weapon.weapon_type_id,
@@ -141,10 +140,6 @@ export default function WeaponGuide() {
           w.skills.some((s) => s.id.toLowerCase().includes(q) || (skillsMap.get(s.id)?.name ?? '').toLowerCase().includes(q))
         );
       });
-    }
-
-    if (filterGame !== 'all') {
-      list = list.filter((w) => w.game === filterGame);
     }
 
     if (filterWeaponType !== 'all') {
@@ -191,7 +186,7 @@ export default function WeaponGuide() {
     });
 
     return list;
-  }, [weapons, search, filterGame, filterWeaponType, filterElement, filterSource, filterChallenge, sortOrder, challenges, monstersMap, skillsMap]);
+  }, [weapons, search, filterWeaponType, filterElement, filterSource, filterChallenge, sortOrder, challenges, monstersMap, skillsMap]);
 
   // Challenge metrics
   const activeChallenges = challenges.filter(
@@ -325,16 +320,6 @@ export default function WeaponGuide() {
               </button>
             ))}
           </div>
-
-          {/* Game Filter */}
-          <select
-            value={filterGame}
-            onChange={(e) => setFilterGame(e.target.value)}
-            className="rounded-xl border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-300 focus:border-mh-gold-500/50 focus:outline-none"
-          >
-            <option value="all">All Games</option>
-            <option value="mho">Outlanders (MHO)</option>
-          </select>
 
           {/* Weapon Type Filter */}
           <select

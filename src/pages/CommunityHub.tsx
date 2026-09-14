@@ -19,7 +19,7 @@ export default function CommunityHub() {
           Hunter's Gathering Hall
         </h1>
         <p className="text-sm text-mh-slate-500">
-          Discover, adopt, and share challenges with the Monster Hunter Now community.
+          Discover, adopt, and share challenges with the Monster Hunter Outlanders community.
         </p>
       </div>
 

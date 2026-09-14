@@ -1,13 +1,10 @@
 import { useState, useMemo } from 'react';
 import {
   Search,
-  ArrowUpDown,
-  Sparkles,
   Layers,
-  Info,
   Loader2,
   Plus,
-  RefreshCw,
+  Bookmark,
 } from 'lucide-react';
 import { useVisageSetsData } from '../../hooks/useVisageSets';
 import { type DBVisage, type VisageRarity, getInkConfig } from '../../data/schemas/visage';
@@ -24,14 +21,10 @@ import VisageModal from './VisageModal';
 import LoginModal from '../../components/auth/LoginModal';
 import { cn } from '../../lib/utils';
 
-type SortOption = 'default' | 'name' | 'progress';
-
 export default function VisageSetsGuide() {
   const {
     sets,
-    dbVisages,
     isLoading,
-    refetch,
     getCardCollection,
     setCardRarity,
     setCardQuantity,
@@ -44,8 +37,6 @@ export default function VisageSetsGuide() {
   const [selectedSetId, setSelectedSetId] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
   const [filterMode, setFilterMode] = useState<'all' | 'complete' | 'incomplete'>('all');
-  const [sortOption, setSortOption] = useState<SortOption>('default');
-  const [sortAsc, setSortAsc] = useState(true);
   const [inspectedCard, setInspectedCard] = useState<DBVisage | null>(null);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
 
@@ -80,7 +71,7 @@ export default function VisageSetsGuide() {
     });
   };
 
-  // Filter and sort the sets list on the left
+  // Filter the sets list on the left
   const filteredSets = useMemo(() => {
     let list = [...sets];
 
@@ -100,18 +91,8 @@ export default function VisageSetsGuide() {
       list = list.filter((s) => s.collectedCards < s.totalCards);
     }
 
-    if (sortOption === 'name') {
-      list.sort((a, b) => (sortAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)));
-    } else if (sortOption === 'progress') {
-      list.sort((a, b) => {
-        const ratioA = a.totalCards > 0 ? a.collectedCards / a.totalCards : 0;
-        const ratioB = b.totalCards > 0 ? b.collectedCards / b.totalCards : 0;
-        return sortAsc ? ratioA - ratioB : ratioB - ratioA;
-      });
-    }
-
     return list;
-  }, [sets, searchQuery, filterMode, sortOption, sortAsc]);
+  }, [sets, searchQuery, filterMode]);
 
   // Currently selected active set
   const activeSet = useMemo(() => {
@@ -124,52 +105,131 @@ export default function VisageSetsGuide() {
 
   const activeInkCfg = activeSet ? getInkConfig(activeSet.id) : getInkConfig('flames');
 
+  // Collection statistics across all available card slots in all sets
+  // Each (card, ink_set) pairing represents a distinct collectible slot in the album
+  const collectionStats = useMemo(() => {
+    let totalSlots = 0;
+    let ssrCount = 0; // superior (Gold / SSR)
+    let srCount = 0;  // epic (Purple / SR)
+    let rCount = 0;   // rare (Blue / R)
+    let fineCount = 0; // fine (Green)
+
+    for (const set of sets) {
+      for (const card of set.cards) {
+        totalSlots++;
+        const entry = getCardCollection(card.id, set.id);
+        if (entry) {
+          if (entry.rarity === 'superior') {
+            ssrCount++;
+          } else if (entry.rarity === 'epic') {
+            srCount++;
+          } else if (entry.rarity === 'rare') {
+            rCount++;
+          } else if (entry.rarity === 'fine') {
+            fineCount++;
+          }
+        }
+      }
+    }
+
+    const totalCollected = ssrCount + srCount + rCount + fineCount;
+    const progressPct = totalSlots > 0 ? Math.round((totalCollected / totalSlots) * 100) : 0;
+    const ssrPct = totalSlots > 0 ? Math.round((ssrCount / totalSlots) * 100) : 0;
+    const srPct = totalSlots > 0 ? Math.round((srCount / totalSlots) * 100) : 0;
+    const rPct = totalSlots > 0 ? Math.round((rCount / totalSlots) * 100) : 0;
+
+    return {
+      totalSlots,
+      totalCollected,
+      progressPct,
+      ssrCount,
+      ssrPct,
+      srCount,
+      srPct,
+      rCount,
+      rPct,
+      fineCount,
+    };
+  }, [sets, getCardCollection]);
+
   return (
-    <div className="flex flex-col min-h-[calc(100vh-140px)] bg-gradient-to-b from-[#131722] via-[#0d1017] to-[#0a0c10] text-mh-slate-100">
-      {/* ── Subheader Banner ── */}
-      <div className="border-b border-mh-slate-800/80 bg-mh-slate-950/70 px-6 py-3.5 backdrop-blur-sm">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-mh-gold-500/10 border border-mh-gold-500/30 text-mh-gold-400">
-              <Layers size={18} />
+    <div className="flex flex-col h-[calc(100vh-130px)] bg-gradient-to-b from-[#131722] via-[#0d1017] to-[#0a0c10] text-mh-slate-100 overflow-hidden">
+      {/* ── Subheader Banner & Collection Status Panel ── */}
+      <div className="shrink-0 border-b border-mh-slate-800/80 bg-gradient-to-r from-[#191e2b] via-[#141824] to-[#191e2b] px-6 py-3.5 shadow-xl z-10">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="space-y-1 max-w-xl">
+            <div className="flex items-center gap-2">
+              <span className="rounded bg-mh-gold-500/20 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-mh-gold-400">
+                Monster Hunter Outlanders
+              </span>
+              <span className="text-xs text-mh-slate-400">&bull; Visage Album</span>
+              {isLoading && (
+                <div className="flex items-center gap-1 text-mh-slate-400 ml-2 text-xs">
+                  <Loader2 size={12} className="animate-spin text-mh-gold-400" />
+                  <span>Syncing…</span>
+                </div>
+              )}
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h2 className="font-display text-base font-bold text-mh-slate-100">
-                  Visage Sets Album
-                </h2>
-              </div>
-              <p className="text-xs text-mh-slate-400">
-                Collect monster visages to assemble powerful elemental and offensive ink sets
-              </p>
-            </div>
+            <h2 className="font-display text-xl sm:text-2xl font-bold text-mh-slate-100 flex items-center gap-2.5">
+              <Layers className="text-mh-gold-400" size={24} />
+              <span>Visage Sets Album</span>
+            </h2>
+            <p className="text-xs text-mh-slate-300 leading-relaxed">
+              Collect monster visages cards to assemble powerful elemental and offensive ink sets
+            </p>
           </div>
 
-          <div className="flex items-center gap-3 text-xs">
-            {isLoading && (
-              <div className="flex items-center gap-1 text-mh-slate-400">
-                <Loader2 size={13} className="animate-spin text-mh-gold-400" />
-                <span>Syncing…</span>
+          {/* Quick Stats & Collection Counters (SSR / SR / R) */}
+          <div className="flex flex-wrap items-center gap-2 bg-black/50 rounded-xl p-2.5 border border-mh-slate-800">
+            {/* Total Collected */}
+            <div className="px-3 py-1 text-center border-r border-mh-slate-800">
+              <div className="flex items-center justify-center gap-1 text-[10px] uppercase font-bold text-mh-gold-400">
+                <Bookmark size={11} />
+                <span>Collected</span>
               </div>
-            )}
-            <div className="flex items-center gap-1.5 rounded-lg bg-mh-slate-900 px-3 py-1.5 border border-mh-slate-800">
-              <Sparkles size={13} className="text-mh-gold-400" />
-              <span className="text-mh-slate-400">Total Sets:</span>
-              <span className="font-bold text-mh-slate-200">{sets.length}</span>
-              <span className="text-mh-slate-600 mx-1">|</span>
-              <span className="text-mh-slate-400">Cards:</span>
-              <span className="font-bold text-mh-gold-400">{dbVisages.length}</span>
+              <div className="flex items-baseline justify-center gap-1 mt-0.5">
+                <span className="font-display text-lg font-black text-white">{collectionStats.totalCollected}</span>
+                <span className="text-xs text-mh-slate-500">/ {collectionStats.totalSlots}</span>
+                <span className="text-[10px] font-bold text-emerald-400 ml-0.5">({collectionStats.progressPct}%)</span>
+              </div>
+            </div>
+
+            {/* SSR (Gold / Superior) */}
+            <div className="px-2.5 py-1 text-center">
+              <span className="block text-[10px] font-bold text-amber-400">SSR (Gold)</span>
+              <div className="flex items-baseline justify-center gap-1 mt-0.5">
+                <span className="font-display text-base font-bold text-amber-300">{collectionStats.ssrCount}</span>
+                <span className="text-[10px] text-amber-400/80 font-bold">({collectionStats.ssrPct}%)</span>
+              </div>
+            </div>
+
+            {/* SR (Purple / Epic) */}
+            <div className="px-2.5 py-1 text-center">
+              <span className="block text-[10px] font-bold text-purple-400">SR (Purple)</span>
+              <div className="flex items-baseline justify-center gap-1 mt-0.5">
+                <span className="font-display text-base font-bold text-purple-300">{collectionStats.srCount}</span>
+                <span className="text-[10px] text-purple-400/80 font-bold">({collectionStats.srPct}%)</span>
+              </div>
+            </div>
+
+            {/* Rare (Blue / Rare) */}
+            <div className="px-2.5 py-1 text-center">
+              <span className="block text-[10px] font-bold text-sky-400">Rare (Blue)</span>
+              <div className="flex items-baseline justify-center gap-1 mt-0.5">
+                <span className="font-display text-base font-bold text-sky-300">{collectionStats.rCount}</span>
+                <span className="text-[10px] text-sky-400/80 font-bold">({collectionStats.rPct}%)</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* ── Main Book Container ── */}
-      <div className="flex flex-1 flex-col lg:flex-row overflow-hidden">
+      <div className="flex flex-1 min-h-0 flex-col lg:flex-row overflow-hidden">
         {/* ── Left Sidebar: Sets List ── */}
-        <div className="w-full lg:w-72 xl:w-80 shrink-0 border-b lg:border-b-0 lg:border-r border-mh-slate-800/80 bg-[#0e121a]/95 flex flex-col">
+        <div className="w-full lg:w-72 xl:w-80 shrink-0 border-b lg:border-b-0 lg:border-r border-mh-slate-800/80 bg-[#0e121a]/95 flex flex-col min-h-0">
           {/* Search & Filter Bar */}
-          <div className="p-3 border-b border-mh-slate-800/80 space-y-2">
+          <div className="p-3 border-b border-mh-slate-800/80 space-y-2 shrink-0">
             <div className="relative">
               <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-mh-slate-500" />
               <input
@@ -181,70 +241,40 @@ export default function VisageSetsGuide() {
               />
             </div>
 
-            <div className="flex items-center justify-between gap-1 text-xs">
-              {/* Filter mode */}
-              <div className="flex rounded-md border border-mh-slate-750 bg-mh-slate-900 p-0.5 text-[11px]">
-                <button
-                  onClick={() => setFilterMode('all')}
-                  className={cn(
-                    'rounded px-2 py-0.5 font-medium transition-colors',
-                    filterMode === 'all' ? 'bg-mh-gold-500 text-slate-950 font-bold' : 'text-mh-slate-400 hover:text-white',
-                  )}
-                >
-                  All ({sets.length})
-                </button>
-                <button
-                  onClick={() => setFilterMode('complete')}
-                  className={cn(
-                    'rounded px-2 py-0.5 font-medium transition-colors',
-                    filterMode === 'complete' ? 'bg-mh-gold-500 text-slate-950 font-bold' : 'text-mh-slate-400 hover:text-white',
-                  )}
-                >
-                  Complete
-                </button>
-                <button
-                  onClick={() => setFilterMode('incomplete')}
-                  className={cn(
-                    'rounded px-2 py-0.5 font-medium transition-colors',
-                    filterMode === 'incomplete' ? 'bg-mh-gold-500 text-slate-950 font-bold' : 'text-mh-slate-400 hover:text-white',
-                  )}
-                >
-                  Incomplete
-                </button>
-              </div>
-
-              {/* Sort button */}
-              <div className="flex items-center gap-1">
-                <select
-                  value={sortOption}
-                  onChange={(e) => setSortOption(e.target.value as SortOption)}
-                  className="rounded border border-mh-slate-750 bg-mh-slate-900 px-2 py-1 text-[11px] text-mh-slate-300 outline-none"
-                >
-                  <option value="default">Default</option>
-                  <option value="name">Name</option>
-                  <option value="progress">Progress</option>
-                </select>
-                <button
-                  onClick={() => setSortAsc((prev) => !prev)}
-                  title="Toggle sort direction"
-                  className="rounded border border-mh-slate-750 bg-mh-slate-900 p-1 text-mh-slate-400 hover:text-white"
-                >
-                  <ArrowUpDown size={12} />
-                </button>
-                <button
-                  onClick={() => refetch()}
-                  disabled={isLoading}
-                  title="Refresh from Supabase"
-                  className="rounded border border-mh-slate-750 bg-mh-slate-900 p-1 text-mh-slate-400 hover:text-mh-gold-400 disabled:opacity-50"
-                >
-                  <RefreshCw size={12} className={cn(isLoading && 'animate-spin')} />
-                </button>
-              </div>
+            {/* Filter mode */}
+            <div className="grid grid-cols-3 rounded-lg border border-mh-slate-750 bg-mh-slate-900 p-0.5 text-xs">
+              <button
+                onClick={() => setFilterMode('all')}
+                className={cn(
+                  'rounded-md py-1 font-medium transition-colors text-center text-[11px]',
+                  filterMode === 'all' ? 'bg-mh-gold-500 text-slate-950 font-bold' : 'text-mh-slate-400 hover:text-white',
+                )}
+              >
+                All ({sets.length})
+              </button>
+              <button
+                onClick={() => setFilterMode('complete')}
+                className={cn(
+                  'rounded-md py-1 font-medium transition-colors text-center text-[11px]',
+                  filterMode === 'complete' ? 'bg-mh-gold-500 text-slate-950 font-bold' : 'text-mh-slate-400 hover:text-white',
+                )}
+              >
+                Complete
+              </button>
+              <button
+                onClick={() => setFilterMode('incomplete')}
+                className={cn(
+                  'rounded-md py-1 font-medium transition-colors text-center text-[11px]',
+                  filterMode === 'incomplete' ? 'bg-mh-gold-500 text-slate-950 font-bold' : 'text-mh-slate-400 hover:text-white',
+                )}
+              >
+                Incomplete
+              </button>
             </div>
           </div>
 
           {/* Sets List Items */}
-          <div className="flex-1 overflow-y-auto p-3 space-y-1.5 max-h-[360px] lg:max-h-[calc(100vh-230px)]">
+          <div className="flex-1 min-h-0 overflow-y-auto p-3 space-y-1.5">
             {filteredSets.length === 0 ? (
               <div className="p-6 text-center text-xs text-mh-slate-500">
                 No ink sets match your search criteria.
@@ -318,7 +348,7 @@ export default function VisageSetsGuide() {
         </div>
 
         {/* ── Right Content: Active Set View ── */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+        <div className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-6 lg:p-8">
           {activeSet ? (
             <div className="max-w-6xl mx-auto space-y-6">
               {/* Set Header Bar */}
@@ -440,17 +470,6 @@ export default function VisageSetsGuide() {
                     </div>
                   ))}
                 </div>
-              </div>
-
-              {/* ── Footer Tip Banner ── */}
-              <div className="flex items-start gap-2.5 rounded-xl border border-mh-slate-800/80 bg-mh-slate-950/60 p-4 text-xs text-mh-slate-400">
-                <Info size={16} className="text-mh-gold-400 shrink-0 mt-0.5" />
-                <p className="leading-relaxed">
-                  <span className="font-semibold text-mh-slate-300">Tip:</span> Collect{' '}
-                  <span className="text-amber-400 font-medium">new</span> or{' '}
-                  <span className="text-amber-400 font-medium">higher-quality</span> Visages to gain experience and increase your{' '}
-                  <span className="text-mh-gold-400 font-medium">Visage Album level</span>.
-                </p>
               </div>
             </div>
           ) : (
