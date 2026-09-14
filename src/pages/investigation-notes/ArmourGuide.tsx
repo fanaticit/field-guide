@@ -16,7 +16,15 @@ import {
   Target,
   CheckCircle2,
   LogIn,
-  
+  Plus,
+  Trash2,
+  X,
+  User,
+  Crosshair,
+  HeartPulse,
+  Skull,
+  Sliders,
+  Heart,
 } from 'lucide-react';
 import {
   type ArmourSlot,
@@ -31,7 +39,6 @@ import { useAuthStore } from '../../store/authStore';
 import {
   useHunterChallenges,
   useAddArmourChallenge,
-  
   getArmourPieceChallenge,
   isArmourPieceTracked,
 } from '../../hooks/useHunterChallenges';
@@ -51,6 +58,142 @@ export const SLOTS_ORDER: Array<{
   { id: 'greaves', label: 'Greaves', subLabel: 'Legs', defaultIcon: '/images/armor/greaves.png' },
 ];
 
+// Skill Category Color Themes
+export const SKILL_CATEGORY_THEMES: Record<
+  string,
+  {
+    label: string;
+    bg: string;
+    text: string;
+    border: string;
+    ring: string;
+    badge: string;
+    hoverBg: string;
+    chipBg: string;
+    chipBorder: string;
+    chipText: string;
+    icon: React.ComponentType<{ size?: number; className?: string }>;
+  }
+> = {
+  attack: {
+    label: 'Attack',
+    bg: 'bg-red-500/20',
+    text: 'text-red-300',
+    border: 'border-red-400',
+    ring: 'ring-red-400/60',
+    badge: 'bg-red-500 text-white border-red-400',
+    hoverBg: 'hover:bg-red-500/30',
+    chipBg: 'bg-red-500/15',
+    chipBorder: 'border-red-500/40',
+    chipText: 'text-red-300',
+    icon: Swords,
+  },
+  critical: {
+    label: 'Critical',
+    bg: 'bg-pink-500/20',
+    text: 'text-pink-300',
+    border: 'border-pink-400',
+    ring: 'ring-pink-400/60',
+    badge: 'bg-pink-500 text-white border-pink-400',
+    hoverBg: 'hover:bg-pink-500/30',
+    chipBg: 'bg-pink-500/15',
+    chipBorder: 'border-pink-500/40',
+    chipText: 'text-pink-300',
+    icon: Crosshair,
+  },
+  defense: {
+    label: 'Defense',
+    bg: 'bg-blue-500/20',
+    text: 'text-blue-300',
+    border: 'border-blue-400',
+    ring: 'ring-blue-400/60',
+    badge: 'bg-blue-500 text-white border-blue-400',
+    hoverBg: 'hover:bg-blue-500/30',
+    chipBg: 'bg-blue-500/15',
+    chipBorder: 'border-blue-500/40',
+    chipText: 'text-blue-300',
+    icon: Shield,
+  },
+  survival: {
+    label: 'Survival',
+    bg: 'bg-emerald-500/20',
+    text: 'text-emerald-300',
+    border: 'border-emerald-400',
+    ring: 'ring-emerald-400/60',
+    badge: 'bg-emerald-500 text-white border-emerald-400',
+    hoverBg: 'hover:bg-emerald-500/30',
+    chipBg: 'bg-emerald-500/15',
+    chipBorder: 'border-emerald-500/40',
+    chipText: 'text-emerald-300',
+    icon: HeartPulse,
+  },
+  status: {
+    label: 'Status',
+    bg: 'bg-amber-500/20',
+    text: 'text-amber-300',
+    border: 'border-amber-400',
+    ring: 'ring-amber-400/60',
+    badge: 'bg-amber-500 text-slate-950 border-amber-400',
+    hoverBg: 'hover:bg-amber-500/30',
+    chipBg: 'bg-amber-500/15',
+    chipBorder: 'border-amber-500/40',
+    chipText: 'text-amber-300',
+    icon: Skull,
+  },
+  utility: {
+    label: 'Utility',
+    bg: 'bg-teal-500/20',
+    text: 'text-teal-300',
+    border: 'border-teal-400',
+    ring: 'ring-teal-400/60',
+    badge: 'bg-teal-500 text-slate-950 border-teal-400',
+    hoverBg: 'hover:bg-teal-500/30',
+    chipBg: 'bg-teal-500/15',
+    chipBorder: 'border-teal-400',
+    chipText: 'text-teal-300',
+    icon: Sliders,
+  },
+  health: {
+    label: 'Health',
+    bg: 'bg-lime-500/20',
+    text: 'text-lime-300',
+    border: 'border-lime-400',
+    ring: 'ring-lime-400/60',
+    badge: 'bg-lime-500 text-slate-950 border-lime-400',
+    hoverBg: 'hover:bg-lime-500/30',
+    chipBg: 'bg-lime-500/15',
+    chipBorder: 'border-lime-400',
+    chipText: 'text-lime-300',
+    icon: Heart,
+  },
+  general: {
+    label: 'General',
+    bg: 'bg-purple-500/20',
+    text: 'text-purple-300',
+    border: 'border-purple-400',
+    ring: 'ring-purple-400/60',
+    badge: 'bg-purple-500 text-white border-purple-400',
+    hoverBg: 'hover:bg-purple-500/30',
+    chipBg: 'bg-purple-500/15',
+    chipBorder: 'border-purple-500/40',
+    chipText: 'text-purple-300',
+    icon: Sparkles,
+  },
+  set_bonus: {
+    label: 'Set Bonus',
+    bg: 'bg-orange-500/20',
+    text: 'text-orange-300',
+    border: 'border-orange-400',
+    ring: 'ring-orange-400/60',
+    badge: 'bg-orange-500 text-slate-950 border-orange-400',
+    hoverBg: 'hover:bg-orange-500/30',
+    chipBg: 'bg-orange-500/15',
+    chipBorder: 'border-orange-500/40',
+    chipText: 'text-orange-300',
+    icon: Flame,
+  },
+};
+
 export interface GroupedArmourSet {
   id: string; // e.g. "rathalos:I"
   monsterId: string;
@@ -67,12 +210,26 @@ export interface GroupedArmourSet {
   maxRarity: number;
 }
 
+export interface ExampleBuildItem {
+  piece: DBArmourPiece;
+  set: GroupedArmourSet;
+}
+
+export type ExampleBuild = Partial<Record<ArmourSlot, ExampleBuildItem>>;
+
 export default function ArmourGuide() {
   // Game Selector (Defaults to MHO)
   const [game] = useState<string>('mho');
   const [search, setSearch] = useState('');
-  const [filterRarity, setFilterRarity] = useState<number | 'all'>('all');
-  const [filterSkillId, setFilterSkillId] = useState<string>('all');
+  
+  // Multi-skill filter
+  const [selectedSkillIds, setSelectedSkillIds] = useState<string[]>([]);
+  const [skillSearchQuery, setSkillSearchQuery] = useState('');
+  const [selectedSkillToAdd, setSelectedSkillToAdd] = useState<string>('');
+
+  // Example Build (5 slots)
+  const [exampleBuild, setExampleBuild] = useState<ExampleBuild>({});
+  const [buildAddedSlot, setBuildAddedSlot] = useState<ArmourSlot | null>(null);
 
   // Selected Set & Slot state
   // selectedSlot: null = Set Icon (Combined 5-piece view), 'helm' | 'chest' | 'gloves' | 'waist' | 'greaves' = piece view
@@ -87,12 +244,11 @@ export default function ArmourGuide() {
   const { data: monsters = [] } = useAdminMonsters({ game, isActive: true });
   const { data: dbSkills = [] } = useAdminSkills({ game, isActive: true });
 
-  // ── Challenge tracking ────────────────────────────────────────
-  const { user } = useAuthStore();
+  // ── Challenge tracking & Auth ─────────────────────────────────
+  const { user, profile } = useAuthStore();
   const { data: challenges = [] } = useHunterChallenges(user?.id);
   const addChallenge = useAddArmourChallenge();
   const navigate = useNavigate();
-  
 
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [addedPieceId, setAddedPieceId] = useState<string | null>(null);
@@ -132,7 +288,6 @@ export default function ArmourGuide() {
       }
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Failed to add challenge. Please try again.';
-      // Surface table-not-found clearly
       const friendlyMsg = msg.includes('does not exist') || msg.includes('relation')
         ? 'Database table not set up yet. Please apply the migration in the Supabase dashboard.'
         : msg;
@@ -242,7 +397,106 @@ export default function ArmourGuide() {
     return result;
   }, [pieces, monstersMap]);
 
-  // Filtered sets based on search, rarity, and skill
+  // Sorted unselected skills available for the skill picker
+  const sortedAvailableSkills = useMemo(() => {
+    let list = dbSkills.filter((s) => !selectedSkillIds.includes(s.id));
+    if (skillSearchQuery.trim()) {
+      const q = skillSearchQuery.toLowerCase().trim();
+      list = list.filter((s) => s.name.toLowerCase().includes(q) || s.id.toLowerCase().includes(q));
+    }
+    return list.sort((a, b) => a.name.localeCompare(b.name));
+  }, [dbSkills, selectedSkillIds, skillSearchQuery]);
+
+  // Count equipped pieces in example build
+  const equippedBuildCount = Object.values(exampleBuild).filter(Boolean).length;
+
+  // Combined Active Skills in Example Build (Only granting set bonus benefits when required pieces are met)
+  const exampleBuildSkills = useMemo(() => {
+    // Count pieces per set in the build
+    const setCountMap = new Map<string, number>();
+    for (const slotDef of SLOTS_ORDER) {
+      const item = exampleBuild[slotDef.id];
+      if (item) {
+        setCountMap.set(item.set.id, (setCountMap.get(item.set.id) || 0) + 1);
+      }
+    }
+
+    const map = new Map<
+      string,
+      {
+        id: string;
+        name: string;
+        meta: DBSkill | undefined;
+        totalLevel: number;
+        maxLevel: number;
+        isSetBonus: boolean;
+        sources: Array<{ slot: ArmourSlot; pieceName: string; level: number }>;
+      }
+    >();
+
+    for (const slotDef of SLOTS_ORDER) {
+      const item = exampleBuild[slotDef.id];
+      if (!item?.piece?.skills) continue;
+
+      for (const s of item.piece.skills) {
+        const ur = s.unlockRarity ?? s.unlock_rarity ?? 1;
+        if (ur <= sliderRarity) {
+          const meta = skillsMap.get(s.id);
+          const isSetBonus = Boolean(meta?.is_set_bonus);
+
+          // Only activate set bonus if required threshold of pieces from this set is met
+          if (isSetBonus) {
+            const piecesInSet = setCountMap.get(item.set.id) || 0;
+            const thresholds = meta?.set_thresholds ?? [];
+            const requiredPieces = thresholds[0]?.pieces ?? 2;
+            if (piecesInSet < requiredPieces) {
+              continue;
+            }
+          }
+
+          const name = meta?.name ?? s.id;
+          const maxLevel =
+            meta?.max_levels?.[game] ??
+            (meta?.max_levels ? Object.values(meta.max_levels)[0] : undefined) ??
+            (meta?.is_set_bonus ? (meta?.set_thresholds?.length || 1) : 5);
+          const current = map.get(s.id);
+          if (current) {
+            if (!isSetBonus) {
+              current.totalLevel += s.level;
+            }
+            current.sources.push({
+              slot: slotDef.id,
+              pieceName: `${item.set.monsterName} ${slotDef.label}`,
+              level: s.level,
+            });
+          } else {
+            map.set(s.id, {
+              id: s.id,
+              name,
+              meta,
+              totalLevel: s.level,
+              maxLevel,
+              isSetBonus,
+              sources: [
+                {
+                  slot: slotDef.id,
+                  pieceName: `${item.set.monsterName} ${slotDef.label}`,
+                  level: s.level,
+                },
+              ],
+            });
+          }
+        }
+      }
+    }
+
+    return Array.from(map.values()).sort((a, b) => {
+      if (a.isSetBonus !== b.isSetBonus) return a.isSetBonus ? -1 : 1;
+      return b.totalLevel - a.totalLevel || a.name.localeCompare(b.name);
+    });
+  }, [exampleBuild, sliderRarity, skillsMap, game]);
+
+  // Filtered sets based on search and multi-skill filter
   const filteredSets = useMemo(() => {
     return allSets.filter((set) => {
       // Search
@@ -268,20 +522,28 @@ export default function ArmourGuide() {
         if (!matchesName && !matchesSkill) return false;
       }
 
-      // Rarity filter
-      if (filterRarity !== 'all') {
-        if (set.rarity !== filterRarity) return false;
-      }
-
-      // Skill filter
-      if (filterSkillId !== 'all') {
-        const hasSkill = set.allSkills.some((s) => s.id === filterSkillId);
-        if (!hasSkill) return false;
+      // Multi-skill filter: set must have at least one piece with any of the selected skills
+      if (selectedSkillIds.length > 0) {
+        const hasMatchingSkill = set.allSkills.some((s) => selectedSkillIds.includes(s.id));
+        if (!hasMatchingSkill) return false;
       }
 
       return true;
     });
-  }, [allSets, search, filterRarity, filterSkillId, monstersMap, skillsMap]);
+  }, [allSets, search, selectedSkillIds, monstersMap, skillsMap]);
+
+  // Helper to find matching skill theme for a piece
+  const getPieceMatchingTheme = useCallback(
+    (piece: DBArmourPiece | undefined) => {
+      if (!piece || !piece.skills || selectedSkillIds.length === 0) return null;
+      const match = piece.skills.find((s) => selectedSkillIds.includes(s.id));
+      if (!match) return null;
+      const meta = skillsMap.get(match.id);
+      const cat = meta?.category || (meta?.is_set_bonus ? 'set_bonus' : 'general');
+      return SKILL_CATEGORY_THEMES[cat] || SKILL_CATEGORY_THEMES.general;
+    },
+    [selectedSkillIds, skillsMap],
+  );
 
   // Ensure an active set is selected
   useEffect(() => {
@@ -468,54 +730,127 @@ export default function ArmourGuide() {
   return (
     <div className="p-4 lg:p-6 space-y-4 w-full">
       {/* ── Compact Top Toolbar ── */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-mh-slate-800 pb-3">
-        {/* Far Left: Search Bar */}
-        <div className="relative min-w-[240px] flex-1 max-w-sm">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-mh-slate-500" />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search monsters, sets, skills…"
-            className="w-full rounded-xl border border-mh-slate-750 bg-mh-slate-900 py-1.5 pl-8 pr-3 text-xs text-mh-slate-200 placeholder:text-mh-slate-500 focus:border-mh-gold-500/50 focus:outline-none"
-          />
+      <div className="space-y-2 border-b border-mh-slate-800 pb-3">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          {/* Far Left: Search Bar */}
+          <div className="relative min-w-[220px] flex-1 max-w-sm">
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-mh-slate-500" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search monsters, sets, skills…"
+              className="w-full rounded-xl border border-mh-slate-750 bg-mh-slate-900 py-1.5 pl-8 pr-3 text-xs text-mh-slate-200 placeholder:text-mh-slate-500 focus:border-mh-gold-500/50 focus:outline-none"
+            />
+          </div>
+
+          {/* Right Controls: Type to filter skill, Skill Dropdown, Add Skill Button, Sets Count */}
+          <div className="flex items-center gap-2 flex-wrap">
+            {/* Quick Skill Search Input */}
+            <div className="relative min-w-[130px] max-w-[160px]">
+              <input
+                type="text"
+                value={skillSearchQuery}
+                onChange={(e) => setSkillSearchQuery(e.target.value)}
+                placeholder="Find skill..."
+                className="w-full rounded-xl border border-mh-slate-750 bg-mh-slate-900 py-1.5 px-3 text-xs text-mh-slate-200 placeholder:text-mh-slate-500 focus:border-mh-gold-500/50 focus:outline-none"
+              />
+              {skillSearchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSkillSearchQuery('')}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-mh-slate-500 hover:text-mh-slate-300"
+                >
+                  <X size={12} />
+                </button>
+              )}
+            </div>
+
+            {/* Skill Selector Dropdown */}
+            <select
+              value={selectedSkillToAdd}
+              onChange={(e) => setSelectedSkillToAdd(e.target.value)}
+              className="rounded-xl border border-mh-slate-750 bg-mh-slate-900 px-3 py-1.5 text-xs font-semibold text-mh-slate-300 focus:border-mh-gold-500/50 focus:outline-none max-w-[200px]"
+            >
+              <option value="">Select skill to add…</option>
+              {sortedAvailableSkills.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.name} {s.is_set_bonus ? '(Set Bonus)' : ''}
+                </option>
+              ))}
+            </select>
+
+            {/* Add Skill Button */}
+            <button
+              type="button"
+              disabled={!selectedSkillToAdd}
+              onClick={() => {
+                if (selectedSkillToAdd && !selectedSkillIds.includes(selectedSkillToAdd)) {
+                  setSelectedSkillIds((prev) => [...prev, selectedSkillToAdd]);
+                  setSelectedSkillToAdd('');
+                  setSkillSearchQuery('');
+                }
+              }}
+              className="flex items-center gap-1 rounded-xl bg-mh-gold-500 hover:bg-mh-gold-400 disabled:opacity-40 disabled:hover:bg-mh-gold-500 text-slate-950 font-bold px-3 py-1.5 text-xs transition-all shadow-sm shrink-0"
+            >
+              <Plus size={13} />
+              <span>Add Skill</span>
+            </button>
+
+            <span className="text-xs text-mh-slate-500 font-semibold px-1 shrink-0">
+              {filteredSets.length} Sets
+            </span>
+          </div>
         </div>
 
-        {/* Right Controls: Rarity Filter, Skills Filter, Game Selector, Set Count */}
-        <div className="flex items-center gap-2 flex-wrap">
-          {/* Rarity Filter */}
-          <select
-            value={filterRarity}
-            onChange={(e) => setFilterRarity(e.target.value === 'all' ? 'all' : Number(e.target.value))}
-            className="rounded-xl border border-mh-slate-750 bg-mh-slate-900 px-3 py-1.5 text-xs font-semibold text-mh-slate-300 focus:border-mh-gold-500/50 focus:outline-none"
-          >
-            <option value="all">All Rarities</option>
-            {[16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1].map((r) => (
-              <option key={r} value={r}>
-                Rarity {r} (R{r})
-              </option>
-            ))}
-          </select>
+        {/* Active Skill Filter Chips (Colored by skill category) */}
+        {selectedSkillIds.length > 0 && (
+          <div className="flex items-center gap-1.5 flex-wrap pt-1.5">
+            <span className="text-[11px] font-bold text-mh-slate-400 uppercase tracking-wider flex items-center gap-1 shrink-0 mr-1">
+              <Sparkles size={12} className="text-mh-gold-400" />
+              Filter Skills ({selectedSkillIds.length}):
+            </span>
+            {selectedSkillIds.map((sId) => {
+              const skillMeta = skillsMap.get(sId);
+              const cat = skillMeta?.category || (skillMeta?.is_set_bonus ? 'set_bonus' : 'general');
+              const theme = SKILL_CATEGORY_THEMES[cat] || SKILL_CATEGORY_THEMES.general;
+              const IconComp = theme.icon;
 
-          {/* Skill Filter */}
-          <select
-            value={filterSkillId}
-            onChange={(e) => setFilterSkillId(e.target.value)}
-            className="rounded-xl border border-mh-slate-750 bg-mh-slate-900 px-3 py-1.5 text-xs font-semibold text-mh-slate-300 focus:border-mh-gold-500/50 focus:outline-none max-w-[190px]"
-          >
-            <option value="all">All Skills</option>
-            {dbSkills.map((s) => (
-              <option key={s.id} value={s.id}>
-                {s.name} {s.is_set_bonus ? '(Set Bonus)' : ''}
-              </option>
-            ))}
-          </select>
-
-
-          <span className="text-xs text-mh-slate-500 font-semibold px-1">
-            {filteredSets.length} Sets
-          </span>
-        </div>
+              return (
+                <span
+                  key={sId}
+                  className={cn(
+                    'inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-0.5 text-xs font-bold shadow-sm',
+                    theme.chipBg,
+                    theme.chipBorder,
+                    theme.chipText,
+                  )}
+                >
+                  <IconComp size={12} className="opacity-80" />
+                  <span>{skillMeta?.name ?? sId}</span>
+                  {skillMeta?.is_set_bonus && (
+                    <span className="text-[9px] opacity-75 font-normal">(Set Bonus)</span>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setSelectedSkillIds((prev) => prev.filter((id) => id !== sId))}
+                    className="ml-0.5 rounded p-0.5 hover:bg-white/20 transition-colors"
+                    title={`Remove ${skillMeta?.name ?? sId}`}
+                  >
+                    <X size={12} />
+                  </button>
+                </span>
+              );
+            })}
+            <button
+              type="button"
+              onClick={() => setSelectedSkillIds([])}
+              className="text-xs text-mh-slate-500 hover:text-mh-slate-300 underline ml-1 font-semibold"
+            >
+              Clear all
+            </button>
+          </div>
+        )}
       </div>
 
       {/* ── Left-Aligned Dual-Pane Layout ── */}
@@ -532,155 +867,435 @@ export default function ArmourGuide() {
       ) : (
         <div className="flex flex-col lg:flex-row gap-5 items-start w-full">
           {/* ═════════════════════════════════════════════════════════ */}
-          {/* LEFT PANE: 6-Blocks-In-A-Row List (Fixed Width, Left Aligned) */}
+          {/* LEFT PANE: Pinned Example Build Row + Scrollable Sets List */}
           {/* ═════════════════════════════════════════════════════════ */}
-          <div className="w-full lg:w-[480px] xl:w-[520px] shrink-0 space-y-2.5 max-h-[calc(100vh-160px)] overflow-y-auto pr-1">
-            {filteredSets.map((set) => {
-              const isSetSelected = currentSet?.id === set.id;
-              const rarityStyle = getRarityBadgeStyle(set.rarity);
-              const pieceCount = Object.values(set.pieces).filter(Boolean).length;
+          <div className="w-full lg:w-[480px] xl:w-[520px] shrink-0 flex flex-col gap-3 sticky top-4">
+            {/* ── Example Build Row (Always pinned at top of left pane) ── */}
+            <div className="rounded-2xl border border-amber-500/40 bg-gradient-to-r from-mh-slate-900 via-amber-950/20 to-mh-slate-900 p-2.5 shadow-lg space-y-2 shrink-0">
+              <div className="flex items-center justify-between gap-2 px-1">
+                <div className="flex items-center gap-2">
+                  <Swords size={14} className="text-amber-400" />
+                  <h4 className="font-display text-xs font-bold uppercase tracking-wider text-amber-300">
+                    Example Build
+                  </h4>
+                  <span className="rounded bg-amber-500/20 px-2 py-0.2 text-[10px] font-bold text-amber-300 border border-amber-500/40 font-mono">
+                    {equippedBuildCount}/5 Slots
+                  </span>
+                </div>
 
-              return (
+                {equippedBuildCount > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setExampleBuild({})}
+                    className="flex items-center gap-1 text-[11px] text-mh-slate-400 hover:text-red-400 transition-colors"
+                    title="Clear all pieces from example build"
+                  >
+                    <Trash2 size={11} />
+                    <span>Clear</span>
+                  </button>
+                )}
+              </div>
+
+              {/* The 6 Blocks: Profile Avatar + 5 Armour Slots */}
+              <div className="grid grid-cols-6 gap-1.5">
+                {/* Block 1: Profile Icon (Hunter) */}
                 <div
-                  key={set.id}
-                  className={cn(
-                    'rounded-2xl border p-2.5 transition-all duration-150',
-                    isSetSelected
-                      ? 'border-mh-gold-500/60 bg-mh-slate-850 shadow-md shadow-mh-gold-500/5'
-                      : 'border-mh-slate-800 bg-mh-slate-900/70 hover:border-mh-slate-700 hover:bg-mh-slate-850/60',
-                  )}
+                  title={profile?.display_name || 'Hunter Profile'}
+                  className="group relative flex flex-col items-center justify-center rounded-xl border border-amber-500/40 bg-mh-slate-950 p-1 aspect-square shadow-inner"
                 >
-                  {/* Set Row Header: Monster Name — Set Name */}
-                  <div className="flex items-center justify-between gap-2 mb-2 px-1">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <h3 className="font-display text-xs sm:text-sm font-bold text-mh-slate-100 truncate">
-                        {set.displayName}
-                      </h3>
-                      <span
-                        className={cn(
-                          'rounded px-1.5 py-0.2 text-[10px] font-bold border font-mono shrink-0',
-                          rarityStyle.bg,
-                          rarityStyle.text,
-                          rarityStyle.border,
-                        )}
+                  <div className="relative h-10 w-10 sm:h-12 sm:w-12 flex items-center justify-center">
+                    {user && (profile?.avatar_url || (user.user_metadata as Record<string, unknown>)?.avatar_url) ? (
+                      <img
+                        src={profile?.avatar_url || ((user.user_metadata as Record<string, unknown>)?.avatar_url as string)}
+                        alt={profile?.display_name || 'Hunter'}
+                        className="h-full w-full rounded-full object-cover ring-1 ring-amber-400/60"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center rounded-full bg-amber-500/15 ring-1 ring-amber-400/40">
+                        <User size={22} className="text-amber-400" />
+                      </div>
+                    )}
+                  </div>
+                  <span className="mt-0.5 text-[9px] font-black uppercase tracking-wider text-amber-400 leading-none truncate max-w-full">
+                    {profile?.display_name ?? profile?.username ?? 'HUNTER'}
+                  </span>
+                </div>
+
+                {/* Blocks 2-6: Helm, Chest, Arms, Waist, Greaves */}
+                {SLOTS_ORDER.map((slotDef) => {
+                  const equipped = exampleBuild[slotDef.id];
+                  const hasEquipped = Boolean(equipped);
+                  const piece = equipped?.piece;
+                  const set = equipped?.set;
+                  const rarityStyle = piece ? getRarityBadgeStyle(piece.rarity ?? set?.rarity ?? 1) : null;
+
+                  return (
+                    <div
+                      key={`example-${slotDef.id}`}
+                      className={cn(
+                        'group relative flex flex-col items-center justify-center rounded-xl border p-1 aspect-square transition-all',
+                        hasEquipped
+                          ? 'border-amber-500/60 bg-mh-slate-950/90 shadow-sm'
+                          : 'border-dashed border-mh-slate-800 bg-mh-slate-950/30',
+                      )}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (set && piece) {
+                            handleSelectSet(set.id, piece.slot);
+                          }
+                        }}
+                        title={hasEquipped ? `${set?.displayName} ${slotDef.label} (Click to inspect)` : `Empty ${slotDef.label} slot`}
+                        className="h-full w-full flex flex-col items-center justify-center min-w-0"
                       >
-                        {rarityStyle.label}
+                        <div className="relative h-10 w-10 sm:h-12 sm:w-12 flex items-center justify-center">
+                          {piece?.image ? (
+                            <img
+                              src={piece.image}
+                              alt={slotDef.label}
+                              className="h-full w-full object-contain filter brightness-100"
+                            />
+                          ) : (
+                            <img
+                              src={slotDef.defaultIcon}
+                              alt={slotDef.label}
+                              className={cn(
+                                'h-full w-full object-contain',
+                                hasEquipped ? 'opacity-80' : 'opacity-25',
+                              )}
+                            />
+                          )}
+                        </div>
+
+                        <span className={cn(
+                          'mt-0.5 text-[9px] font-bold truncate max-w-full leading-none',
+                          hasEquipped ? 'text-amber-300' : 'text-mh-slate-600',
+                        )}>
+                          {hasEquipped ? (set?.monsterName || slotDef.label) : slotDef.label}
+                        </span>
+
+                        {hasEquipped && rarityStyle && (
+                          <span className={cn(
+                            'absolute -top-1 -left-1 flex h-3.5 px-1 items-center justify-center rounded text-[8px] font-mono font-bold border',
+                            rarityStyle.bg,
+                            rarityStyle.text,
+                            rarityStyle.border,
+                          )}>
+                            {rarityStyle.label}
+                          </span>
+                        )}
+                      </button>
+
+                      {/* Clear single slot button on hover */}
+                      {hasEquipped && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setExampleBuild((prev) => {
+                              const next = { ...prev };
+                              delete next[slotDef.id];
+                              return next;
+                            });
+                          }}
+                          title={`Remove ${slotDef.label} from build`}
+                          className="absolute -bottom-1 -right-1 hidden group-hover:flex h-4 w-4 items-center justify-center rounded-full bg-red-500/90 text-white hover:bg-red-600 transition-colors shadow z-10"
+                        >
+                          <X size={10} />
+                        </button>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* ── Scrollable Armour Sets List (Only this section scrolls) ── */}
+            <div className="space-y-3 max-h-[calc(100vh-270px)] overflow-y-auto pr-1">
+              {filteredSets.map((set) => {
+                const isSetSelected = currentSet?.id === set.id;
+                const rarityStyle = getRarityBadgeStyle(set.rarity);
+                const pieceCount = Object.values(set.pieces).filter(Boolean).length;
+
+                return (
+                  <div
+                    key={set.id}
+                    className={cn(
+                      'rounded-2xl border p-2.5 transition-all duration-150',
+                      isSetSelected
+                        ? 'border-mh-gold-500/60 bg-mh-slate-850 shadow-md shadow-mh-gold-500/5'
+                        : 'border-mh-slate-800 bg-mh-slate-900/70 hover:border-mh-slate-700 hover:bg-mh-slate-850/60',
+                    )}
+                  >
+                    {/* Set Row Header: Monster Name — Set Name */}
+                    <div className="flex items-center justify-between gap-2 mb-2 px-1">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <h3 className="font-display text-xs sm:text-sm font-bold text-mh-slate-100 truncate">
+                          {set.displayName}
+                        </h3>
+                        <span
+                          className={cn(
+                            'rounded px-1.5 py-0.2 text-[10px] font-bold border font-mono shrink-0',
+                            rarityStyle.bg,
+                            rarityStyle.text,
+                            rarityStyle.border,
+                          )}
+                        >
+                          {rarityStyle.label}
+                        </span>
+                      </div>
+
+                      <span className="text-[10px] text-mh-slate-500 font-semibold shrink-0">
+                        {pieceCount}/5 Pieces
                       </span>
                     </div>
 
-                    <span className="text-[10px] text-mh-slate-500 font-semibold shrink-0">
-                      {pieceCount}/5 Pieces
-                    </span>
-                  </div>
-
-                  {/* ── The 6 Blocks in a Row ── */}
-                  <div className="grid grid-cols-6 gap-1.5">
-                    {/* Block 1: Set Icon (Monster/Material) -> Triggers Full Set View */}
-                    <button
-                      type="button"
-                      onClick={() => handleSelectSet(set.id, null)}
-                      title={`${set.displayName} (Full Set)`}
-                      className={cn(
-                        'group relative flex flex-col items-center justify-center rounded-xl border p-1 aspect-square transition-all',
-                        isSetSelected && selectedSlot === null
-                          ? 'border-mh-gold-400 bg-mh-gold-500/20 ring-2 ring-mh-gold-400/50 shadow-sm'
-                          : 'border-mh-slate-750 bg-mh-slate-950/80 hover:border-mh-gold-500/40 hover:bg-mh-slate-800',
-                      )}
-                    >
-                      <div className="relative h-10 w-10 sm:h-12 sm:w-12 flex items-center justify-center">
-                        {set.setIcon ? (
-                          <img
-                            src={set.setIcon}
-                            alt="Set Icon"
-                            className="h-full w-full object-contain filter drop-shadow"
-                            onError={(e) => {
-                              (e.target as HTMLElement).style.display = 'none';
-                            }}
-                          />
-                        ) : (
-                          <Layers size={24} className="text-mh-gold-400" />
+                    {/* ── The 6 Blocks in a Row ── */}
+                    <div className="grid grid-cols-6 gap-1.5">
+                      {/* Block 1: Set Icon (Monster/Material) -> Triggers Full Set View */}
+                      <button
+                        type="button"
+                        onClick={() => handleSelectSet(set.id, null)}
+                        title={`${set.displayName} (Full Set)`}
+                        className={cn(
+                          'group relative flex flex-col items-center justify-center rounded-xl border p-1 aspect-square transition-all',
+                          isSetSelected && selectedSlot === null
+                            ? 'border-mh-gold-400 bg-mh-gold-500/20 ring-2 ring-mh-gold-400/50 shadow-sm'
+                            : 'border-mh-slate-750 bg-mh-slate-950/80 hover:border-mh-gold-500/40 hover:bg-mh-slate-800',
                         )}
-                      </div>
-                      <span className="mt-0.5 text-[9px] font-black uppercase tracking-wider text-mh-gold-400 leading-none">
-                        SET
-                      </span>
-                    </button>
-
-                    {/* Blocks 2–6: Helm, Chest, Arms, Coil, Greaves */}
-                    {SLOTS_ORDER.map((slotDef) => {
-                      const piece = set.pieces[slotDef.id];
-                      const isPieceActive = isSetSelected && selectedSlot === slotDef.id;
-                      const hasPiece = Boolean(piece);
-                      const pieceSkillsCount = piece?.skills?.length ?? 0;
-                      const isTracked = piece ? isArmourPieceTracked(challenges, piece.id) : false;
-
-                      return (
-                        <button
-                          key={slotDef.id}
-                          type="button"
-                          disabled={!hasPiece}
-                          onClick={() => handleSelectSet(set.id, slotDef.id)}
-                          title={piece ? `${set.displayName} ${slotDef.label} (${pieceSkillsCount} Skills)` : `No ${slotDef.label}`}
-                          className={cn(
-                            'group relative flex flex-col items-center justify-center rounded-xl border p-1 aspect-square transition-all',
-                            !hasPiece && 'opacity-30 border-mh-slate-800 bg-mh-slate-950/30 cursor-not-allowed',
-                            hasPiece && !isPieceActive && 'border-mh-slate-750 bg-mh-slate-950/60 hover:border-mh-slate-600 hover:bg-mh-slate-800',
-                            isPieceActive && 'border-mh-gold-400 bg-mh-gold-500/20 ring-2 ring-mh-gold-400/50 shadow-sm',
+                      >
+                        <div className="relative h-10 w-10 sm:h-12 sm:w-12 flex items-center justify-center">
+                          {set.setIcon ? (
+                            <img
+                              src={set.setIcon}
+                              alt="Set Icon"
+                              className="h-full w-full object-contain filter drop-shadow"
+                              onError={(e) => {
+                                (e.target as HTMLElement).style.display = 'none';
+                              }}
+                            />
+                          ) : (
+                            <Layers size={24} className="text-mh-gold-400" />
                           )}
-                        >
-                          <div className="relative h-10 w-10 sm:h-12 sm:w-12 flex items-center justify-center">
-                            {piece?.image ? (
-                              <img
-                                src={piece.image}
-                                alt={slotDef.label}
-                                className="h-full w-full object-contain filter brightness-95"
-                                onError={(e) => {
-                                  (e.target as HTMLElement).style.display = 'none';
+                        </div>
+                        <span className="mt-0.5 text-[9px] font-black uppercase tracking-wider text-mh-gold-400 leading-none">
+                          SET
+                        </span>
+                      </button>
+
+                      {/* Blocks 2–6: Helm, Chest, Arms, Coil, Greaves */}
+                      {SLOTS_ORDER.map((slotDef) => {
+                        const piece = set.pieces[slotDef.id];
+                        const isPieceActive = isSetSelected && selectedSlot === slotDef.id;
+                        const hasPiece = Boolean(piece);
+                        const isTracked = piece ? isArmourPieceTracked(challenges, piece.id) : false;
+                        const matchTheme = getPieceMatchingTheme(piece);
+                        const isSkillMatch = Boolean(matchTheme);
+                        const isEquippedInBuild = piece ? exampleBuild[slotDef.id]?.piece.id === piece.id : false;
+
+                        return (
+                          <div
+                            key={slotDef.id}
+                            className="relative aspect-square"
+                          >
+                            <button
+                              type="button"
+                              disabled={!hasPiece}
+                              onClick={() => handleSelectSet(set.id, slotDef.id)}
+                              title={piece ? `${set.displayName} ${slotDef.label} (Click to inspect)` : `No ${slotDef.label}`}
+                              className={cn(
+                                'group relative h-full w-full flex flex-col items-center justify-center rounded-xl border p-1 transition-all',
+                                !hasPiece && 'opacity-30 border-mh-slate-800 bg-mh-slate-950/30 cursor-not-allowed',
+                                hasPiece && !isPieceActive && !isSkillMatch && 'border-mh-slate-750 bg-mh-slate-950/60 hover:border-mh-slate-600 hover:bg-mh-slate-800',
+                                hasPiece && !isPieceActive && isSkillMatch && matchTheme && cn(
+                                  matchTheme.border,
+                                  matchTheme.bg,
+                                  'ring-1',
+                                  matchTheme.ring,
+                                  'shadow-sm',
+                                  matchTheme.hoverBg,
+                                ),
+                                isPieceActive && 'border-mh-gold-400 bg-mh-gold-500/20 ring-2 ring-mh-gold-400/50 shadow-sm',
+                              )}
+                            >
+                              <div className="relative h-10 w-10 sm:h-12 sm:w-12 flex items-center justify-center">
+                                {piece?.image ? (
+                                  <img
+                                    src={piece.image}
+                                    alt={slotDef.label}
+                                    className="h-full w-full object-contain filter brightness-95"
+                                    onError={(e) => {
+                                      (e.target as HTMLElement).style.display = 'none';
+                                    }}
+                                  />
+                                ) : (
+                                  <img
+                                    src={slotDef.defaultIcon}
+                                    alt={slotDef.label}
+                                    className="h-full w-full object-contain opacity-55 group-hover:opacity-85 transition-opacity"
+                                    onError={(e) => {
+                                      (e.target as HTMLElement).style.display = 'none';
+                                    }}
+                                  />
+                                )}
+                              </div>
+
+                              <span className={cn(
+                                'mt-0.5 text-[9px] font-bold truncate max-w-full leading-none',
+                                isSkillMatch && matchTheme ? cn(matchTheme.text, 'font-extrabold') : 'text-mh-slate-400',
+                              )}>
+                                {slotDef.label}
+                              </span>
+
+                              {/* Skill Match Sparkle */}
+                              {isSkillMatch && matchTheme && (
+                                <span
+                                  title={`Has filtered skill (${matchTheme.label})`}
+                                  className={cn('absolute -top-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full text-white shadow', matchTheme.badge)}
+                                >
+                                  <Sparkles size={8} />
+                                </span>
+                              )}
+
+                              {/* Challenge Tracker Indicator */}
+                              {isTracked && (
+                                <span
+                                  title="Tracked in Challenges"
+                                  className="absolute top-1 left-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-emerald-500 text-slate-950 font-black text-[9px] shadow"
+                                >
+                                  ✓
+                                </span>
+                              )}
+                            </button>
+
+                            {/* Quick Equip / Remove Toggle Button on Piece Block */}
+                            {hasPiece && piece && (
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setExampleBuild((prev) => {
+                                    const next = { ...prev };
+                                    if (isEquippedInBuild) {
+                                      delete next[slotDef.id];
+                                    } else {
+                                      next[slotDef.id] = { piece, set };
+                                    }
+                                    return next;
+                                  });
+                                  setBuildAddedSlot(slotDef.id);
+                                  setTimeout(() => setBuildAddedSlot(null), 1200);
                                 }}
-                              />
-                            ) : (
-                              <img
-                                src={slotDef.defaultIcon}
-                                alt={slotDef.label}
-                                className="h-full w-full object-contain opacity-55 group-hover:opacity-85 transition-opacity"
-                                onError={(e) => {
-                                  (e.target as HTMLElement).style.display = 'none';
-                                }}
-                              />
+                                title={isEquippedInBuild ? `Remove ${set.displayName} ${slotDef.label} from Example Build` : `Add ${set.displayName} ${slotDef.label} to Example Build`}
+                                className={cn(
+                                  'absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full text-[10px] font-black transition-all shadow-md z-10',
+                                  isEquippedInBuild
+                                    ? 'bg-amber-400 text-slate-950 hover:bg-red-500 hover:text-white'
+                                    : 'bg-mh-slate-800 text-amber-300 border border-amber-500/50 hover:bg-amber-500 hover:text-slate-950 opacity-80 hover:opacity-100',
+                                )}
+                              >
+                                {isEquippedInBuild ? '✓' : '+'}
+                              </button>
                             )}
                           </div>
-
-                          <span className="mt-0.5 text-[9px] font-bold text-mh-slate-400 truncate max-w-full leading-none">
-                            {slotDef.label}
-                          </span>
-
-                          {pieceSkillsCount > 0 && (
-                            <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-mh-slate-800 border border-mh-slate-650 text-[8px] font-mono font-bold text-mh-gold-400">
-                              {pieceSkillsCount}
-                            </span>
-                          )}
-
-                          {/* Tracking badge — shown when this piece is in hunter's challenges */}
-                          {isTracked && (
-                            <span className="absolute -bottom-1 -left-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-emerald-500 border border-emerald-400/60 shadow-sm" title="In your challenges">
-                              <Target size={7} className="text-white" />
-                            </span>
-                          )}
-                        </button>
-                      );
-                    })}
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
 
           {/* ═════════════════════════════════════════════════════════ */}
-          {/* RIGHT PANE: Interactive Detail Panel (Auto-Sizes to Fill) */}
+          {/* RIGHT PANE: Pinned Skills Summary + Scrollable Set Detail */}
           {/* ═════════════════════════════════════════════════════════ */}
-          <div className="flex-1 min-w-0 sticky top-4">
+          <div className="flex-1 min-w-0 flex flex-col gap-3 sticky top-4">
+            {/* ── Example Build Skills Panel (Pinned at top of right pane when pieces are equipped) ── */}
+            {equippedBuildCount > 0 && (
+              <div className="rounded-2xl border border-amber-500/40 bg-gradient-to-r from-mh-slate-900 via-amber-950/20 to-mh-slate-900 p-2.5 shadow-lg space-y-1.5 shrink-0">
+                <div className="flex items-center justify-between gap-2 px-1 border-b border-mh-slate-800/80 pb-1">
+                  <div className="flex items-center gap-2">
+                    <Swords size={13} className="text-amber-400" />
+                    <h3 className="font-display text-xs font-bold uppercase tracking-wider text-amber-300">
+                      Skills Summary
+                    </h3>
+                  </div>
+                  <span className="text-[10px] font-mono font-bold text-amber-400/80">
+                    {exampleBuildSkills.length} {exampleBuildSkills.length === 1 ? 'Skill' : 'Skills'}
+                  </span>
+                </div>
+
+                {exampleBuildSkills.length === 0 ? (
+                  <p className="text-xs text-mh-slate-500 italic py-2 text-center">
+                    No active skills from equipped pieces at rarity {sliderRarity}.
+                  </p>
+                ) : (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-1.5 max-h-[115px] overflow-y-auto pr-1">
+                    {exampleBuildSkills.map((entry) => {
+                      const isMaxed = entry.totalLevel >= entry.maxLevel;
+
+                      return (
+                        <div
+                          key={entry.id}
+                          title={entry.meta?.description || `${entry.name} Lv. ${entry.totalLevel}/${entry.maxLevel}`}
+                          className={cn(
+                            'rounded-lg border px-2 py-1 flex flex-col items-center justify-center text-center transition-all min-h-[38px]',
+                            isMaxed
+                              ? 'border-amber-500/50 bg-amber-500/10 text-amber-300 shadow-sm'
+                              : 'border-mh-slate-750 bg-mh-slate-950/80 text-mh-slate-200',
+                          )}
+                        >
+                          <span
+                            className={cn(
+                              'text-[11px] font-semibold truncate max-w-full leading-tight',
+                              isMaxed ? 'text-amber-300' : 'text-mh-slate-200',
+                            )}
+                          >
+                            {entry.name}
+                          </span>
+
+                          <div
+                            className={cn(
+                              'flex items-center gap-1.5 mt-0.5 text-[10px] font-bold font-mono leading-none',
+                              isMaxed ? 'text-amber-300' : 'text-white',
+                            )}
+                          >
+                            <span>Lv.{entry.totalLevel}</span>
+                            <div className="flex items-center gap-[2px]">
+                              {Array.from({ length: entry.maxLevel }).map((_, pipIdx) => {
+                                const isFilled = pipIdx < entry.totalLevel;
+                                return (
+                                  <span
+                                    key={pipIdx}
+                                    className={cn(
+                                      'inline-block w-1.5 h-2.5 rounded-[1px] transition-colors',
+                                      isMaxed
+                                        ? 'bg-amber-400'
+                                        : isFilled
+                                          ? 'bg-sky-400 shadow-[0_0_3px_rgba(56,189,248,0.5)]'
+                                          : 'bg-slate-700/80 border border-slate-600/60',
+                                    )}
+                                  />
+                                );
+                              })}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* ── Inspected Monster Armour Set / Piece Detail Card (Scrollable) ── */}
             {currentSet ? (
-              <div className="rounded-3xl border border-mh-slate-700 bg-mh-slate-900 shadow-2xl p-4 sm:p-5 space-y-4">
+              <div className={cn(
+                "rounded-3xl border border-mh-slate-700 bg-mh-slate-900 shadow-2xl p-4 sm:p-5 space-y-4 overflow-y-auto pr-1",
+                equippedBuildCount > 0 ? "max-h-[calc(100vh-270px)]" : "max-h-[calc(100vh-160px)]"
+              )}>
                 {/* ── Detail Header ── */}
                 <div className="flex items-start justify-between gap-3 border-b border-mh-slate-800 pb-3">
                   <div className="flex items-center gap-3 min-w-0">
@@ -750,66 +1365,97 @@ export default function ArmourGuide() {
                   </div>
                 </div>
 
-                {/* ── Add to My Challenges CTA (piece view only) ── */}
+                {/* ── Piece Action Row (Add to Challenges + Add to Example Build) ── */}
                 {selectedSlot !== null && currentPiece && (() => {
                   const challenge = getArmourPieceChallenge(challenges, currentPiece.id);
                   const justAdded = addedPieceId === currentPiece.id;
                   const slotLabel = SLOTS_ORDER.find((s) => s.id === selectedSlot)?.label ?? selectedSlot;
-
-                  if (!user) {
-                    return (
-                      <div className="flex items-center justify-between gap-2 rounded-xl border border-mh-slate-750 bg-mh-slate-900/60 px-3 py-2.5">
-                        <span className="text-xs text-mh-slate-400">Sign in to track this piece in your challenges</span>
-                        <button
-                          type="button"
-                          onClick={() => setLoginModalOpen(true)}
-                          className="flex items-center gap-1.5 rounded-lg bg-mh-gold-500 px-3 py-1.5 text-xs font-bold text-slate-950 hover:bg-mh-gold-400 transition-colors shrink-0"
-                        >
-                          <LogIn size={13} />
-                          Sign In
-                        </button>
-                      </div>
-                    );
-                  }
-
-                  if (challenge) {
-                    return (
-                      <button
-                        type="button"
-                        onClick={() => navigate('/challenges')}
-                        className="flex w-full items-center justify-center gap-2 rounded-xl border border-emerald-500/50 bg-emerald-500/15 px-4 py-2.5 text-xs font-bold text-emerald-300 hover:bg-emerald-500/25 transition-all"
-                      >
-                        <CheckCircle2 size={14} />
-                        Go to Challenge ➔
-                      </button>
-                    );
-                  }
+                  const isEquippedInBuild = exampleBuild[currentPiece.slot]?.piece.id === currentPiece.id;
+                  const isJustAddedToBuild = buildAddedSlot === currentPiece.slot;
 
                   return (
                     <div className="space-y-2">
-                      <button
-                        type="button"
-                        onClick={() => handleAddChallenge(currentPiece, currentSet)}
-                        disabled={addChallenge.isPending}
-                        className={cn(
-                          'flex w-full items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-xs font-bold transition-all',
-                          justAdded
-                            ? 'border-emerald-500/50 bg-emerald-500/15 text-emerald-300'
-                            : 'border-mh-gold-500/40 bg-mh-gold-500/10 text-mh-gold-300 hover:bg-mh-gold-500/20 hover:text-mh-gold-200',
-                          addChallenge.isPending && 'opacity-60 cursor-wait',
-                        )}
-                      >
-                        {addChallenge.isPending ? (
-                          <><span className="h-3.5 w-3.5 animate-spin rounded-full border border-current border-t-transparent" /> Adding…</>
-                        ) : justAdded ? (
-                          <><CheckCircle2 size={14} /> Added to your challenges!</>
+                      <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+                        {/* Challenge Button / Sign In Prompt */}
+                        {!user ? (
+                          <div className="flex flex-1 items-center justify-between gap-2 rounded-xl border border-mh-slate-750 bg-mh-slate-900/60 px-3 py-2">
+                            <span className="text-xs text-mh-slate-400">Sign in to track challenge</span>
+                            <button
+                              type="button"
+                              onClick={() => setLoginModalOpen(true)}
+                              className="flex items-center gap-1.5 rounded-lg bg-mh-gold-500 px-2.5 py-1 text-xs font-bold text-slate-950 hover:bg-mh-gold-400 transition-colors shrink-0"
+                            >
+                              <LogIn size={12} />
+                              Sign In
+                            </button>
+                          </div>
+                        ) : challenge ? (
+                          <button
+                            type="button"
+                            onClick={() => navigate('/challenges')}
+                            className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-emerald-500/50 bg-emerald-500/15 px-3 py-2.5 text-xs font-bold text-emerald-300 hover:bg-emerald-500/25 transition-all min-w-[170px]"
+                          >
+                            <CheckCircle2 size={14} />
+                            Go to Challenge ➔
+                          </button>
                         ) : (
-                          <><Target size={14} /> Add {slotLabel} to My Challenges</>
+                          <button
+                            type="button"
+                            onClick={() => handleAddChallenge(currentPiece, currentSet)}
+                            disabled={addChallenge.isPending}
+                            className={cn(
+                              'flex flex-1 items-center justify-center gap-2 rounded-xl border px-3 py-2.5 text-xs font-bold transition-all min-w-[170px]',
+                              justAdded
+                                ? 'border-emerald-500/50 bg-emerald-500/15 text-emerald-300'
+                                : 'border-mh-gold-500/40 bg-mh-gold-500/10 text-mh-gold-300 hover:bg-mh-gold-500/20 hover:text-mh-gold-200',
+                              addChallenge.isPending && 'opacity-60 cursor-wait',
+                            )}
+                          >
+                            {addChallenge.isPending ? (
+                              <><span className="h-3.5 w-3.5 animate-spin rounded-full border border-current border-t-transparent" /> Adding…</>
+                            ) : justAdded ? (
+                              <><CheckCircle2 size={14} /> Added to challenges!</>
+                            ) : (
+                              <><Target size={14} /> Add {slotLabel} to Challenges</>
+                            )}
+                          </button>
                         )}
-                      </button>
+
+                        {/* Add to Example Build Button */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setExampleBuild((prev) => ({
+                              ...prev,
+                              [currentPiece.slot]: { piece: currentPiece, set: currentSet },
+                            }));
+                            setBuildAddedSlot(currentPiece.slot);
+                            setTimeout(() => setBuildAddedSlot(null), 2500);
+                          }}
+                          className={cn(
+                            'flex items-center justify-center gap-1.5 rounded-xl border px-3.5 py-2.5 text-xs font-bold transition-all shrink-0',
+                            isJustAddedToBuild
+                              ? 'border-emerald-500/50 bg-emerald-500/20 text-emerald-300'
+                              : isEquippedInBuild
+                              ? 'border-amber-500/50 bg-amber-500/20 text-amber-300 hover:bg-amber-500/30'
+                              : 'border-amber-500/30 bg-amber-500/10 text-amber-300 hover:border-amber-500/50 hover:bg-amber-500/20',
+                          )}
+                          title={`Add or replace ${slotLabel} in your example build above`}
+                        >
+                          {isJustAddedToBuild ? (
+                            <><CheckCircle2 size={14} className="text-emerald-400" /> Equipped in Build!</>
+                          ) : isEquippedInBuild ? (
+                            <><Shield size={14} className="text-amber-400" /> Equipped in Build</>
+                          ) : exampleBuild[currentPiece.slot] ? (
+                            <><Plus size={14} /> Replace {slotLabel} in Build</>
+                          ) : (
+                            <><Plus size={14} /> Add {slotLabel} to Example Build</>
+                          )}
+                        </button>
+                      </div>
 
                       {challengeError && (
-                        <div className="flex items-start gap-2 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2.5 text-xs text-red-300">
+                        <div className="flex items-start gap-2 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-300">
                           <span className="shrink-0 mt-0.5">⚠</span>
                           <span>{challengeError}</span>
                         </div>
@@ -868,27 +1514,46 @@ export default function ArmourGuide() {
                         </h4>
 
                         <div className="space-y-2">
-                          {setBonusSummaries.map((sb) => (
-                            <div
-                              key={sb.skillId}
-                              className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-3 space-y-1.5"
-                            >
-                              <div className="flex items-center justify-between">
-                                <span className="font-bold text-sm text-amber-300">
-                                  {sb.skillName}
-                                </span>
-                                <span className="shrink-0 rounded bg-amber-500/20 px-2 py-0.5 text-[10px] font-bold text-amber-300 border border-amber-500/40">
-                                  Inherent Set Effect
-                                </span>
-                              </div>
+                          {setBonusSummaries.map((sb) => {
+                            const isMatch = selectedSkillIds.includes(sb.skillId);
+                            const skillMeta = skillsMap.get(sb.skillId);
+                            const cat = skillMeta?.category || 'set_bonus';
+                            const theme = SKILL_CATEGORY_THEMES[cat] || SKILL_CATEGORY_THEMES.set_bonus;
 
-                              {sb.description && (
-                                <p className="text-xs text-mh-slate-200 leading-relaxed italic">
-                                  {sb.description}
-                                </p>
-                              )}
-                            </div>
-                          ))}
+                            return (
+                              <div
+                                key={sb.skillId}
+                                className={cn(
+                                  'rounded-xl border p-3 space-y-1.5',
+                                  isMatch
+                                    ? cn(theme.border, theme.bg, 'ring-1', theme.ring)
+                                    : 'border-amber-500/30 bg-amber-500/10',
+                                )}
+                              >
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center gap-2">
+                                    <span className="font-bold text-sm text-amber-300">
+                                      {sb.skillName}
+                                    </span>
+                                    {isMatch && (
+                                      <span className={cn('rounded text-[10px] font-bold px-1.5 py-0.2', theme.badge)}>
+                                        Filter Match
+                                      </span>
+                                    )}
+                                  </div>
+                                  <span className="shrink-0 rounded bg-amber-500/20 px-2 py-0.5 text-[10px] font-bold text-amber-300 border border-amber-500/40">
+                                    Inherent Set Effect
+                                  </span>
+                                </div>
+
+                                {sb.description && (
+                                  <p className="text-xs text-mh-slate-200 leading-relaxed italic">
+                                    {sb.description}
+                                  </p>
+                                )}
+                              </div>
+                            );
+                          })}
                         </div>
                       </div>
                     )}
@@ -913,17 +1578,38 @@ export default function ArmourGuide() {
                         <div className="space-y-2 max-h-[320px] overflow-y-auto pr-1">
                           {combinedActiveSkills.map((entry) => {
                             const pct = Math.min(100, Math.round((entry.totalLevel / entry.maxLevel) * 100));
+                            const isMatch = selectedSkillIds.includes(entry.id);
+                            const cat = entry.meta?.category || (entry.meta?.is_set_bonus ? 'set_bonus' : 'general');
+                            const theme = SKILL_CATEGORY_THEMES[cat] || SKILL_CATEGORY_THEMES.general;
 
                             return (
                               <div
                                 key={entry.id}
-                                className="rounded-xl border border-mh-slate-750 bg-mh-slate-950/70 p-3 space-y-2"
+                                className={cn(
+                                  'rounded-xl border p-3 space-y-2',
+                                  isMatch
+                                    ? cn(theme.border, theme.bg, 'ring-1', theme.ring)
+                                    : 'border-mh-slate-750 bg-mh-slate-950/70',
+                                )}
                               >
                                 <div className="flex items-center justify-between">
                                   <div className="flex items-center gap-2">
                                     <span className="font-bold text-sm text-mh-slate-100">
                                       {entry.meta?.name ?? entry.id}
                                     </span>
+                                    <span className={cn(
+                                      'rounded px-1.5 py-0.2 text-[9px] font-bold border uppercase tracking-wider',
+                                      theme.chipBg,
+                                      theme.chipBorder,
+                                      theme.chipText,
+                                    )}>
+                                      {theme.label}
+                                    </span>
+                                    {isMatch && (
+                                      <span className={cn('rounded text-[10px] font-bold px-1.5 py-0.2', theme.badge)}>
+                                        Filter Match
+                                      </span>
+                                    )}
                                     {entry.meta?.is_set_bonus && (
                                       <span className="rounded bg-amber-500/20 text-amber-300 text-[10px] font-bold px-1.5 py-0.2 border border-amber-500/30">
                                         Set Bonus
@@ -1016,37 +1702,53 @@ export default function ArmourGuide() {
                   /* SINGLE PIECE VIEW: Set Effect Highlight + Piece Skills */
                   /* ═══════════════════════════════════════════════════════ */
                   <div className="space-y-3.5">
-                    {/* Orange Highlight Banner for Inherent Set Effect on this Piece */}
+                    {/* Inherent Set Effect on this Piece */}
                     {pieceSetBonuses.length > 0 && (
                       <div className="space-y-2">
-                        {pieceSetBonuses.map(({ skill, meta }, idx) => (
-                          <div
-                            key={idx}
-                            className="rounded-xl border border-amber-500/40 bg-amber-500/15 p-3 space-y-1.5 shadow-sm"
-                          >
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-2">
-                                <Flame size={15} className="text-amber-400" />
-                                <span className="font-bold text-sm text-amber-200">
-                                  Set Effect: {meta?.name ?? skill.id}
+                        {pieceSetBonuses.map(({ skill, meta }, idx) => {
+                          const isMatch = selectedSkillIds.includes(skill.id);
+                          const cat = meta?.category || 'set_bonus';
+                          const theme = SKILL_CATEGORY_THEMES[cat] || SKILL_CATEGORY_THEMES.set_bonus;
+
+                          return (
+                            <div
+                              key={idx}
+                              className={cn(
+                                'rounded-xl border p-3 space-y-1.5 shadow-sm',
+                                isMatch
+                                  ? cn(theme.border, theme.bg, 'ring-1', theme.ring)
+                                  : 'border-amber-500/40 bg-amber-500/15',
+                              )}
+                            >
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                  <Flame size={15} className="text-amber-400" />
+                                  <span className="font-bold text-sm text-amber-200">
+                                    Set Effect: {meta?.name ?? skill.id}
+                                  </span>
+                                  {isMatch && (
+                                    <span className={cn('rounded text-[10px] font-bold px-1.5 py-0.2', theme.badge)}>
+                                      Filter Match
+                                    </span>
+                                  )}
+                                </div>
+                                <span className="shrink-0 rounded bg-amber-500/25 px-2 py-0.5 text-[10px] font-bold text-amber-300 border border-amber-500/50">
+                                  Inherent Set Effect
                                 </span>
                               </div>
-                              <span className="shrink-0 rounded bg-amber-500/25 px-2 py-0.5 text-[10px] font-bold text-amber-300 border border-amber-500/50">
-                                Inherent Set Effect
-                              </span>
-                            </div>
 
-                            {meta?.description && (
-                              <p className="text-xs text-amber-100/90 leading-relaxed italic">
-                                {meta.description}
-                              </p>
-                            )}
-                          </div>
-                        ))}
+                              {meta?.description && (
+                                <p className="text-xs text-amber-100/90 leading-relaxed italic">
+                                  {meta.description}
+                                </p>
+                              )}
+                            </div>
+                          );
+                        })}
                       </div>
                     )}
 
-                    {/* Active Regular Skills on this piece (Combined duplicates) */}
+                    {/* Active Regular Skills on this piece */}
                     <div className="space-y-2">
                       <h4 className="text-xs font-bold uppercase tracking-wider text-mh-slate-300 flex items-center gap-1.5">
                         <Unlock size={14} className="text-emerald-400" />
@@ -1059,27 +1761,53 @@ export default function ArmourGuide() {
                         </p>
                       ) : (
                         <div className="space-y-2">
-                          {pieceActiveSkills.map(({ skillId, meta, totalLevel, maxLevel }, idx) => (
-                            <div
-                              key={idx}
-                              className="rounded-xl border border-mh-slate-750 bg-mh-slate-950/70 p-3 space-y-1.5"
-                            >
-                              <div className="flex items-center justify-between">
-                                <span className="font-bold text-sm text-mh-slate-100">
-                                  {meta?.name ?? skillId}
-                                </span>
-                                <span className="rounded bg-mh-gold-500/20 text-mh-gold-300 font-mono text-xs font-bold px-2 py-0.5 border border-mh-gold-500/30">
-                                  Level {totalLevel} / {maxLevel}
-                                </span>
-                              </div>
+                          {pieceActiveSkills.map(({ skillId, meta, totalLevel, maxLevel }, idx) => {
+                            const isMatch = selectedSkillIds.includes(skillId);
+                            const cat = meta?.category || 'general';
+                            const theme = SKILL_CATEGORY_THEMES[cat] || SKILL_CATEGORY_THEMES.general;
 
-                              {meta?.description && (
-                                <p className="text-xs text-mh-slate-400 leading-relaxed">
-                                  {meta.description}
-                                </p>
-                              )}
-                            </div>
-                          ))}
+                            return (
+                              <div
+                                key={idx}
+                                className={cn(
+                                  'rounded-xl border p-3 space-y-1.5',
+                                  isMatch
+                                    ? cn(theme.border, theme.bg, 'ring-1', theme.ring)
+                                    : 'border-mh-slate-750 bg-mh-slate-950/70',
+                                )}
+                              >
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center gap-2">
+                                    <span className="font-bold text-sm text-mh-slate-100">
+                                      {meta?.name ?? skillId}
+                                    </span>
+                                    <span className={cn(
+                                      'rounded px-1.5 py-0.2 text-[9px] font-bold border uppercase tracking-wider',
+                                      theme.chipBg,
+                                      theme.chipBorder,
+                                      theme.chipText,
+                                    )}>
+                                      {theme.label}
+                                    </span>
+                                    {isMatch && (
+                                      <span className={cn('rounded text-[10px] font-bold px-1.5 py-0.2', theme.badge)}>
+                                        Filter Match
+                                      </span>
+                                    )}
+                                  </div>
+                                  <span className="rounded bg-mh-gold-500/20 text-mh-gold-300 font-mono text-xs font-bold px-2 py-0.5 border border-mh-gold-500/30">
+                                    Level {totalLevel} / {maxLevel}
+                                  </span>
+                                </div>
+
+                                {meta?.description && (
+                                  <p className="text-xs text-mh-slate-400 leading-relaxed">
+                                    {meta.description}
+                                  </p>
+                                )}
+                              </div>
+                            );
+                          })}
                         </div>
                       )}
                     </div>
@@ -1116,7 +1844,7 @@ export default function ArmourGuide() {
                       </div>
                     )}
 
-                    {/* Notes & Driftsmelt */}
+                    {/* Notes */}
                     {currentPiece?.notes && (
                       <div className="rounded-xl border border-mh-slate-800 bg-mh-slate-950/40 p-3 space-y-1">
                         <span className="text-[11px] font-bold text-mh-slate-400 uppercase tracking-wider">
