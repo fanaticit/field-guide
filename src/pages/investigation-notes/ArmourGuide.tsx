@@ -731,6 +731,7 @@ export default function ArmourGuide() {
       slot: ArmourSlot;
       level: number;
       additionalLevel: number;
+      maxLevel: number;
       unlockRarity: number;
     }> = [];
 
@@ -745,6 +746,10 @@ export default function ArmourGuide() {
         const ur = skill.unlockRarity ?? skill.unlock_rarity ?? null;
         const isActiveAtSlider = ur === null || ur <= sliderRarity;
         const meta = skillsMap.get(skill.id);
+        const maxLvl =
+          meta?.max_levels?.[game] ??
+          (meta?.max_levels ? Object.values(meta.max_levels)[0] : undefined) ??
+          5;
 
         if (meta?.is_set_bonus) {
           setBonusSkillsFound.add(skill.id);
@@ -752,10 +757,6 @@ export default function ArmourGuide() {
 
         if (isActiveAtSlider) {
           if (!activeMap.has(skill.id)) {
-            const maxLvl =
-              meta?.max_levels?.[game] ??
-              (meta?.max_levels ? Object.values(meta.max_levels)[0] : undefined) ??
-              5;
             activeMap.set(skill.id, {
               id: skill.id,
               meta,
@@ -775,6 +776,7 @@ export default function ArmourGuide() {
             slot: slotDef.id,
             level: skill.level,
             additionalLevel: skill.level,
+            maxLevel: maxLvl,
             unlockRarity: ur,
           });
         }
@@ -812,12 +814,13 @@ export default function ArmourGuide() {
 
     const setBonuses: Array<{ skill: ArmourSkill; meta: DBSkill | undefined }> = [];
     const activeSkillMap = new Map<string, { skillId: string; meta: DBSkill | undefined; totalLevel: number; maxLevel: number }>();
-    const lockedSkillMap = new Map<string, { skillId: string; meta: DBSkill | undefined; additionalLevel: number; unlockRarity: number }>();
+    const lockedSkillMap = new Map<string, { skillId: string; meta: DBSkill | undefined; additionalLevel: number; maxLevel: number; unlockRarity: number }>();
 
     for (const s of currentPiece.skills) {
       const ur = s.unlockRarity ?? s.unlock_rarity ?? null;
       const meta = skillsMap.get(s.id);
       const isSetBonus = meta?.is_set_bonus ?? false;
+      const maxLvl = meta?.max_levels?.[game] ?? 5;
 
       if (isSetBonus) {
         // Set Bonus goes to separate prominent highlight
@@ -827,7 +830,6 @@ export default function ArmourGuide() {
         if (ur === null || ur <= sliderRarity) {
           // Active at slider level -> combine duplicates
           const current = activeSkillMap.get(s.id);
-          const maxLvl = meta?.max_levels?.[game] ?? 5;
           if (current) {
             current.totalLevel += s.level;
           } else {
@@ -849,6 +851,7 @@ export default function ArmourGuide() {
               skillId: s.id,
               meta,
               additionalLevel: s.level,
+              maxLevel: maxLvl,
               unlockRarity: ur,
             });
           }
@@ -1164,8 +1167,8 @@ export default function ArmourGuide() {
                             : 'border-mh-slate-750 bg-mh-slate-950/60',
                         )}
                       >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2 flex-wrap">
                             <span className="font-bold text-sm text-mh-slate-100">
                               {entry.meta?.name ?? entry.id}
                             </span>
@@ -1184,9 +1187,44 @@ export default function ArmourGuide() {
                             )}
                           </div>
 
-                          <span className="rounded bg-mh-gold-500/20 text-mh-gold-300 font-mono text-xs font-bold px-2 py-0.5 border border-mh-gold-500/30">
-                            Level {entry.totalLevel} / {entry.maxLevel}
-                          </span>
+                          {/* Right: +Lv.X with visual boxes */}
+                          {(() => {
+                            const isMaxed = entry.totalLevel >= entry.maxLevel;
+                            const fullPipClass = SKILL_CATEGORY_FULL_PIP_CLASSES[cat] || 'bg-amber-400';
+
+                            return (
+                              <div
+                                className={cn(
+                                  'flex items-center gap-1.5 rounded-lg px-2.5 py-1 font-mono text-xs font-bold border shrink-0 transition-colors shadow-sm',
+                                  isMaxed
+                                    ? cn(theme.bg, theme.border, theme.text, 'ring-1', theme.ring)
+                                    : 'bg-mh-slate-900/90 border-mh-slate-750 text-white',
+                                )}
+                              >
+                                <span className={cn(isMaxed ? theme.text : 'text-sky-300')}>
+                                  +Lv.{entry.totalLevel}
+                                </span>
+                                <div className="flex items-center gap-[2px]">
+                                  {Array.from({ length: entry.maxLevel }).map((_, pipIdx) => {
+                                    const isFilled = pipIdx < entry.totalLevel;
+                                    return (
+                                      <span
+                                        key={pipIdx}
+                                        className={cn(
+                                          'inline-block w-1.5 h-3 rounded-[1px] transition-colors',
+                                          isMaxed
+                                            ? fullPipClass
+                                            : isFilled
+                                              ? 'bg-sky-400 shadow-[0_0_3px_rgba(56,189,248,0.5)]'
+                                              : 'bg-slate-700/80 border border-slate-600/60',
+                                        )}
+                                      />
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            );
+                          })()}
                         </div>
 
                         {/* Contributing pieces breakdown */}
@@ -1231,18 +1269,39 @@ export default function ArmourGuide() {
                     return (
                       <div
                         key={idx}
-                        className="rounded-xl border border-dashed border-amber-500/30 bg-amber-500/5 p-3 flex items-center justify-between"
+                        className="rounded-xl border border-dashed border-amber-500/30 bg-amber-500/5 p-3 flex items-center justify-between gap-3"
                       >
-                        <div>
-                          <p className="font-bold text-xs text-mh-slate-200">
-                            {tier.skillName} (+{tier.additionalLevel} Level)
-                          </p>
-                          <p className="text-[11px] text-mh-slate-400 mt-0.5">
+                        <div className="space-y-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-bold text-xs text-mh-slate-200">
+                              {tier.skillName}
+                            </span>
+                            <div className="flex items-center gap-1.5 rounded-md bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 font-mono text-[11px] font-bold text-amber-300">
+                              <span>+Lv.{tier.additionalLevel}</span>
+                              <div className="flex items-center gap-[2px]">
+                                {Array.from({ length: tier.maxLevel || 5 }).map((_, pipIdx) => {
+                                  const isFilled = pipIdx < tier.additionalLevel;
+                                  return (
+                                    <span
+                                      key={pipIdx}
+                                      className={cn(
+                                        'inline-block w-1.5 h-2.5 rounded-[1px] transition-colors',
+                                        isFilled
+                                          ? 'bg-amber-400/80'
+                                          : 'bg-slate-700/70 border border-slate-600/50',
+                                      )}
+                                    />
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          </div>
+                          <p className="text-[11px] text-mh-slate-400">
                             Unlocks on {slotLabel} at Rarity {tier.unlockRarity}
                           </p>
                         </div>
 
-                        <span className="rounded bg-amber-500/20 text-amber-300 font-mono text-xs font-bold px-2 py-0.5 border border-amber-500/40">
+                        <span className="rounded bg-amber-500/20 text-amber-300 font-mono text-xs font-bold px-2 py-0.5 border border-amber-500/40 shrink-0">
                           Unlocks at R{tier.unlockRarity}
                         </span>
                       </div>
@@ -1331,8 +1390,8 @@ export default function ArmourGuide() {
                             : 'border-mh-slate-750 bg-mh-slate-950/60',
                         )}
                       >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2 flex-wrap">
                             <span className="font-bold text-sm text-mh-slate-100">
                               {meta?.name ?? skillId}
                             </span>
@@ -1351,9 +1410,44 @@ export default function ArmourGuide() {
                             )}
                           </div>
 
-                          <span className="rounded bg-mh-gold-500/20 text-mh-gold-300 font-mono text-xs font-bold px-2 py-0.5 border border-mh-gold-500/30">
-                            +{totalLevel} Level (Max Lv.{maxLevel})
-                          </span>
+                          {/* Right: +Lv.X with visual boxes */}
+                          {(() => {
+                            const isMaxed = totalLevel >= maxLevel;
+                            const fullPipClass = SKILL_CATEGORY_FULL_PIP_CLASSES[cat] || 'bg-amber-400';
+
+                            return (
+                              <div
+                                className={cn(
+                                  'flex items-center gap-1.5 rounded-lg px-2.5 py-1 font-mono text-xs font-bold border shrink-0 transition-colors shadow-sm',
+                                  isMaxed
+                                    ? cn(theme.bg, theme.border, theme.text, 'ring-1', theme.ring)
+                                    : 'bg-mh-slate-900/90 border-mh-slate-750 text-white',
+                                )}
+                              >
+                                <span className={cn(isMaxed ? theme.text : 'text-sky-300')}>
+                                  +Lv.{totalLevel}
+                                </span>
+                                <div className="flex items-center gap-[2px]">
+                                  {Array.from({ length: maxLevel }).map((_, pipIdx) => {
+                                    const isFilled = pipIdx < totalLevel;
+                                    return (
+                                      <span
+                                        key={pipIdx}
+                                        className={cn(
+                                          'inline-block w-1.5 h-3 rounded-[1px] transition-colors',
+                                          isMaxed
+                                            ? fullPipClass
+                                            : isFilled
+                                              ? 'bg-sky-400 shadow-[0_0_3px_rgba(56,189,248,0.5)]'
+                                              : 'bg-slate-700/80 border border-slate-600/60',
+                                        )}
+                                      />
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            );
+                          })()}
                         </div>
 
                         {meta?.description && (
@@ -1377,21 +1471,42 @@ export default function ArmourGuide() {
                 </h4>
 
                 <div className="space-y-2">
-                  {pieceLockedSkills.map(({ skillId, meta, additionalLevel, unlockRarity }, idx) => (
+                  {pieceLockedSkills.map(({ skillId, meta, additionalLevel, maxLevel, unlockRarity }, idx) => (
                     <div
                       key={idx}
-                      className="rounded-xl border border-dashed border-amber-500/30 bg-amber-500/5 p-3 flex items-center justify-between"
+                      className="rounded-xl border border-dashed border-amber-500/30 bg-amber-500/5 p-3 flex items-center justify-between gap-3"
                     >
-                      <div>
-                        <p className="font-bold text-xs text-mh-slate-200">
-                          {meta?.name ?? skillId} (+{additionalLevel} Level)
-                        </p>
-                        <p className="text-[11px] text-mh-slate-400 mt-0.5">
+                      <div className="space-y-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-bold text-xs text-mh-slate-200">
+                            {meta?.name ?? skillId}
+                          </span>
+                          <div className="flex items-center gap-1.5 rounded-md bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 font-mono text-[11px] font-bold text-amber-300">
+                            <span>+Lv.{additionalLevel}</span>
+                            <div className="flex items-center gap-[2px]">
+                              {Array.from({ length: maxLevel || 5 }).map((_, pipIdx) => {
+                                const isFilled = pipIdx < additionalLevel;
+                                return (
+                                  <span
+                                    key={pipIdx}
+                                    className={cn(
+                                      'inline-block w-1.5 h-2.5 rounded-[1px] transition-colors',
+                                      isFilled
+                                        ? 'bg-amber-400/80'
+                                        : 'bg-slate-700/70 border border-slate-600/50',
+                                    )}
+                                  />
+                                );
+                              })}
+                            </div>
+                          </div>
+                        </div>
+                        <p className="text-[11px] text-mh-slate-400">
                           Requires upgrading piece to Rarity {unlockRarity}
                         </p>
                       </div>
 
-                      <span className="rounded bg-amber-500/20 text-amber-300 font-mono text-xs font-bold px-2 py-0.5 border border-amber-500/40">
+                      <span className="rounded bg-amber-500/20 text-amber-300 font-mono text-xs font-bold px-2 py-0.5 border border-amber-500/40 shrink-0">
                         Unlocks at R{unlockRarity}
                       </span>
                     </div>
