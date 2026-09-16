@@ -10,7 +10,6 @@ import {
   Sparkles,
   Layers,
   Lock,
-  Unlock,
   Flame,
   Swords,
   Target,
@@ -35,7 +34,9 @@ import { useAdminMonsters } from '../../hooks/useAdminMonsters';
 import { useAdminSkills, type DBSkill } from '../../hooks/useAdminSkills';
 import { getRarityBadgeStyle } from '../admin/armour/MonsterArmourBuilder';
 import { cn } from '../../lib/utils';
+import { supabase } from '../../lib/supabase';
 import { useAuthStore } from '../../store/authStore';
+import { useBuildPlannerStore } from '../../store/buildPlannerStore';
 import {
   useHunterChallenges,
   useAddArmourChallenge,
@@ -194,6 +195,18 @@ export const SKILL_CATEGORY_THEMES: Record<
   },
 };
 
+export const SKILL_CATEGORY_FULL_PIP_CLASSES: Record<string, string> = {
+  attack: 'bg-red-400 shadow-[0_0_3px_rgba(248,113,113,0.7)]',
+  critical: 'bg-pink-400 shadow-[0_0_3px_rgba(244,114,182,0.7)]',
+  defense: 'bg-blue-400 shadow-[0_0_3px_rgba(96,165,250,0.7)]',
+  survival: 'bg-emerald-400 shadow-[0_0_3px_rgba(52,211,153,0.7)]',
+  status: 'bg-amber-400 shadow-[0_0_3px_rgba(251,191,36,0.7)]',
+  utility: 'bg-teal-400 shadow-[0_0_3px_rgba(45,212,191,0.7)]',
+  health: 'bg-lime-400 shadow-[0_0_3px_rgba(163,230,53,0.7)]',
+  general: 'bg-purple-400 shadow-[0_0_3px_rgba(192,132,252,0.7)]',
+  set_bonus: 'bg-orange-400 shadow-[0_0_3px_rgba(251,146,60,0.7)]',
+};
+
 export interface GroupedArmourSet {
   id: string; // e.g. "rathalos:I"
   monsterId: string;
@@ -238,6 +251,9 @@ export default function ArmourGuide() {
 
   // Interactive Rarity Level (Defaults to max upgrade level 16)
   const [sliderRarity, setSliderRarity] = useState<number>(16);
+
+  // Mobile detail popup modal state
+  const [isMobileDetailOpen, setIsMobileDetailOpen] = useState(false);
 
   // Queries
   const { data: pieces = [], isLoading: isLoadingPieces } = useAdminArmourPieces(game);
@@ -296,6 +312,43 @@ export default function ArmourGuide() {
     }
   }, [user, game, monstersMap, addChallenge]);
 
+  const handleSendToBuildPlanner = useCallback(async () => {
+    const store = useBuildPlannerStore.getState();
+    store.resetBuild();
+
+    // Auto-select default adventurer if none selected so equipment selector is immediately ready
+    try {
+      const { data: defaultAdv } = await supabase
+        .from('adventurers')
+        .select('*')
+        .eq('is_default', true)
+        .eq('is_active', true)
+        .maybeSingle();
+
+      if (defaultAdv) {
+        store.setAdventurer(defaultAdv as any);
+      }
+    } catch {
+      // ignore
+    }
+
+    for (const slotDef of SLOTS_ORDER) {
+      const equipped = exampleBuild[slotDef.id];
+      if (equipped?.piece) {
+        store.setArmour(slotDef.id, {
+          id: equipped.piece.id,
+          slot: slotDef.id,
+          set_name: equipped.set.displayName || equipped.set.setName,
+          monster_id: equipped.set.monsterId,
+          monster_name: equipped.set.monsterName,
+          image: equipped.piece.image ?? undefined,
+          skills: equipped.piece.skills?.map((s) => ({ id: s.id, level: s.level })) ?? [],
+        });
+      }
+    }
+
+    navigate('/build-planner');
+  }, [exampleBuild, navigate]);
 
   // Group pieces into complete Armour Sets
   const allSets = useMemo(() => {
@@ -430,39 +483,72 @@ export default function ArmourGuide() {
         totalLevel: number;
         maxLevel: number;
         isSetBonus: boolean;
-        sources: Array<{ slot: ArmourSlot; pieceName: string; level: number }>;
+        activeTiers: number;
+        requiredPieces: number;
+        piecesInSet: number;
+        sources: Array<{ slot: ArmourSlot | 'set_bonus'; pieceName: string; level: number }>;
       }
     >();
+
+    // Track active set bonuses per unique set so we only grant set bonus skills once per set
+    const processedSetBonusGrants = new Set<string>();
+    const pendingSetBonusesToGrant: Array<{
+      setName: string;
+      grantedSkillId: string;
+      grantedLevel: number;
+      tierPieces: number;
+    }> = [];
 
     for (const slotDef of SLOTS_ORDER) {
       const item = exampleBuild[slotDef.id];
       if (!item?.piece?.skills) continue;
 
+      // Check unlock threshold against piece/set max rarity or slider
+      const pieceUnlockLimit = item.set.id === selectedSetId ? sliderRarity : (item.set.maxRarity || 16);
+
       for (const s of item.piece.skills) {
         const ur = s.unlockRarity ?? s.unlock_rarity ?? 1;
-        if (ur <= sliderRarity) {
+        if (ur <= pieceUnlockLimit) {
           const meta = skillsMap.get(s.id);
           const isSetBonus = Boolean(meta?.is_set_bonus);
 
-          // Only activate set bonus if required threshold of pieces from this set is met
-          if (isSetBonus) {
-            const piecesInSet = setCountMap.get(item.set.id) || 0;
-            const thresholds = meta?.set_thresholds ?? [];
-            const requiredPieces = thresholds[0]?.pieces ?? 2;
-            if (piecesInSet < requiredPieces) {
-              continue;
+          const piecesInSet = setCountMap.get(item.set.id) || 0;
+          const rawThresholds = meta?.set_thresholds && meta.set_thresholds.length > 0
+            ? meta.set_thresholds
+            : [{ pieces: 2, granted_skill_id: null, granted_skill_level: 1 }];
+          const thresholds = [...rawThresholds].sort((a, b) => a.pieces - b.pieces);
+          const requiredPieces = thresholds[0]?.pieces ?? 2;
+          const maxPiecesRequired = thresholds[thresholds.length - 1]?.pieces ?? requiredPieces;
+          const activeTiers = thresholds.filter((t) => piecesInSet >= t.pieces).length;
+
+          // Check if active set bonus grants another skill
+          if (isSetBonus && !processedSetBonusGrants.has(`${s.id}:${item.set.id}`)) {
+            processedSetBonusGrants.add(`${s.id}:${item.set.id}`);
+            for (const tier of thresholds) {
+              if (piecesInSet >= tier.pieces && tier.granted_skill_id) {
+                pendingSetBonusesToGrant.push({
+                  setName: item.set.displayName || item.set.monsterName,
+                  grantedSkillId: tier.granted_skill_id,
+                  grantedLevel: tier.granted_skill_level || 1,
+                  tierPieces: tier.pieces,
+                });
+              }
             }
           }
 
           const name = meta?.name ?? s.id;
-          const maxLevel =
-            meta?.max_levels?.[game] ??
-            (meta?.max_levels ? Object.values(meta.max_levels)[0] : undefined) ??
-            (meta?.is_set_bonus ? (meta?.set_thresholds?.length || 1) : 5);
+          const maxLevel = isSetBonus
+            ? maxPiecesRequired
+            : (meta?.max_levels?.[game] ?? (meta?.max_levels ? Object.values(meta.max_levels)[0] : undefined) ?? 5);
+
           const current = map.get(s.id);
           if (current) {
             if (!isSetBonus) {
               current.totalLevel += s.level;
+            } else {
+              current.totalLevel = Math.max(current.totalLevel, piecesInSet);
+              current.piecesInSet = Math.max(current.piecesInSet, piecesInSet);
+              current.activeTiers = Math.max(current.activeTiers, activeTiers);
             }
             current.sources.push({
               slot: slotDef.id,
@@ -474,9 +560,12 @@ export default function ArmourGuide() {
               id: s.id,
               name,
               meta,
-              totalLevel: s.level,
+              totalLevel: isSetBonus ? piecesInSet : s.level,
               maxLevel,
               isSetBonus,
+              activeTiers,
+              requiredPieces,
+              piecesInSet,
               sources: [
                 {
                   slot: slotDef.id,
@@ -490,11 +579,48 @@ export default function ArmourGuide() {
       }
     }
 
+    // Apply granted skills from active set bonuses
+    for (const grant of pendingSetBonusesToGrant) {
+      const existing = map.get(grant.grantedSkillId);
+      if (existing) {
+        if (!existing.isSetBonus) {
+          existing.totalLevel += grant.grantedLevel;
+        }
+        existing.sources.push({
+          slot: 'set_bonus',
+          pieceName: `${grant.setName} (${grant.tierPieces}-Pc Set Bonus)`,
+          level: grant.grantedLevel,
+        });
+      } else {
+        const meta = skillsMap.get(grant.grantedSkillId);
+        const name = meta?.name ?? grant.grantedSkillId;
+        const maxLevel = meta?.max_levels?.[game] ?? (meta?.max_levels ? Object.values(meta.max_levels)[0] : undefined) ?? 5;
+        map.set(grant.grantedSkillId, {
+          id: grant.grantedSkillId,
+          name,
+          meta,
+          totalLevel: grant.grantedLevel,
+          maxLevel,
+          isSetBonus: false,
+          activeTiers: 0,
+          requiredPieces: 0,
+          piecesInSet: 0,
+          sources: [
+            {
+              slot: 'set_bonus',
+              pieceName: `${grant.setName} (${grant.tierPieces}-Pc Set Bonus)`,
+              level: grant.grantedLevel,
+            },
+          ],
+        });
+      }
+    }
+
     return Array.from(map.values()).sort((a, b) => {
       if (a.isSetBonus !== b.isSetBonus) return a.isSetBonus ? -1 : 1;
       return b.totalLevel - a.totalLevel || a.name.localeCompare(b.name);
     });
-  }, [exampleBuild, sliderRarity, skillsMap, game]);
+  }, [exampleBuild, sliderRarity, selectedSetId, skillsMap, game]);
 
   // Filtered sets based on search and multi-skill filter
   const filteredSets = useMemo(() => {
@@ -564,12 +690,15 @@ export default function ArmourGuide() {
   }, [allSets, selectedSetId]);
 
   // Reset slider when set changes
-  const handleSelectSet = (setId: string, slot: ArmourSlot | null = null) => {
+  const handleSelectSet = (setId: string, slot: ArmourSlot | null = null, openMobileModal = true) => {
     setSelectedSetId(setId);
     setSelectedSlot(slot);
     const targetSet = allSets.find((s) => s.id === setId);
     if (targetSet) {
       setSliderRarity(targetSet.maxRarity || 16);
+    }
+    if (openMobileModal) {
+      setIsMobileDetailOpen(true);
     }
   };
 
@@ -601,6 +730,7 @@ export default function ArmourGuide() {
       skillName: string;
       slot: ArmourSlot;
       level: number;
+      additionalLevel: number;
       unlockRarity: number;
     }> = [];
 
@@ -622,7 +752,10 @@ export default function ArmourGuide() {
 
         if (isActiveAtSlider) {
           if (!activeMap.has(skill.id)) {
-            const maxLvl = meta?.max_levels?.[game] ?? 5;
+            const maxLvl =
+              meta?.max_levels?.[game] ??
+              (meta?.max_levels ? Object.values(meta.max_levels)[0] : undefined) ??
+              5;
             activeMap.set(skill.id, {
               id: skill.id,
               meta,
@@ -641,6 +774,7 @@ export default function ArmourGuide() {
             skillName: meta?.name ?? skill.id,
             slot: slotDef.id,
             level: skill.level,
+            additionalLevel: skill.level,
             unlockRarity: ur,
           });
         }
@@ -662,6 +796,7 @@ export default function ArmourGuide() {
         skillId,
         skillName: meta?.name ?? skillId,
         description: meta?.description,
+        meta,
       };
     });
 
@@ -727,6 +862,575 @@ export default function ArmourGuide() {
     return { pieceSetBonuses: setBonuses, pieceActiveSkills, pieceLockedSkills };
   }, [currentPiece, sliderRarity, skillsMap, game]);
 
+  // ── Render Detail Card Content (Shared between Desktop Right Pane & Mobile Mini-Window) ──
+  const renderDetailCard = (isModal = false) => {
+    if (!currentSet) return null;
+
+    return (
+      <div className="space-y-4">
+        {/* ── Detail Header ── */}
+        <div className="flex items-start justify-between gap-3 border-b border-mh-slate-800 pb-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-mh-slate-950 border border-mh-slate-750 p-1.5 shadow-inner">
+              {selectedSlot === null ? (
+                currentSet.setIcon ? (
+                  <img
+                    src={currentSet.setIcon}
+                    alt="Set Icon"
+                    className="h-full w-full object-contain"
+                  />
+                ) : (
+                  <Layers size={24} className="text-mh-gold-400" />
+                )
+              ) : currentPiece?.image ? (
+                <img
+                  src={currentPiece.image}
+                  alt="Piece"
+                  className="h-full w-full object-contain"
+                />
+              ) : (
+                <Shield size={24} className="text-mh-gold-400" />
+              )}
+            </div>
+
+            <div className="min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h2 className="font-display text-base font-bold text-mh-slate-100 truncate">
+                  {selectedSlot === null
+                    ? currentSet.displayName
+                    : `${currentSet.displayName} — ${SLOTS_ORDER.find((s) => s.id === selectedSlot)?.label}`}
+                </h2>
+                {(() => {
+                  const rStyle = getRarityBadgeStyle(currentSet.rarity);
+                  return (
+                    <span
+                      className={cn(
+                        'rounded px-2 py-0.5 text-[11px] font-bold border font-mono',
+                        rStyle.bg,
+                        rStyle.text,
+                        rStyle.border,
+                      )}
+                    >
+                      {rStyle.label}
+                    </span>
+                  );
+                })()}
+              </div>
+
+              <p className="text-xs text-mh-gold-400 font-semibold mt-0.5">
+                {selectedSlot === null ? (
+                  <span>Full Set (5 Pieces Combined)</span>
+                ) : (
+                  <span className="flex items-center gap-1.5">
+                    <span>Slot: {SLOTS_ORDER.find((s) => s.id === selectedSlot)?.subLabel}</span>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedSlot(null)}
+                      className="text-[11px] text-mh-slate-400 hover:text-white underline ml-1"
+                    >
+                      (Switch to Full Set)
+                    </button>
+                  </span>
+                )}
+              </p>
+            </div>
+          </div>
+
+          {isModal && (
+            <button
+              type="button"
+              onClick={() => setIsMobileDetailOpen(false)}
+              className="rounded-xl p-1.5 text-mh-slate-400 hover:text-white hover:bg-mh-slate-800 transition-colors shrink-0"
+              title="Close details"
+            >
+              <X size={20} />
+            </button>
+          )}
+        </div>
+
+        {/* ── Piece Action Row (Add to Challenges + Add to Example Build) ── */}
+        {selectedSlot !== null && currentPiece && (() => {
+          const challenge = getArmourPieceChallenge(challenges, currentPiece.id);
+          const justAdded = addedPieceId === currentPiece.id;
+          const slotLabel = SLOTS_ORDER.find((s) => s.id === selectedSlot)?.label ?? selectedSlot;
+          const isEquippedInBuild = exampleBuild[currentPiece.slot]?.piece.id === currentPiece.id;
+          const isJustAddedToBuild = buildAddedSlot === currentPiece.slot;
+
+          return (
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+                {/* Challenge Button / Sign In Prompt */}
+                {!user ? (
+                  <div className="flex flex-1 items-center justify-between gap-2 rounded-xl border border-mh-slate-750 bg-mh-slate-900/60 px-3 py-2">
+                    <span className="text-xs text-mh-slate-400">Sign in to track challenge</span>
+                    <button
+                      type="button"
+                      onClick={() => setLoginModalOpen(true)}
+                      className="flex items-center gap-1.5 rounded-lg bg-mh-gold-500 px-2.5 py-1 text-xs font-bold text-slate-950 hover:bg-mh-gold-400 transition-colors shrink-0"
+                    >
+                      <LogIn size={12} />
+                      Sign In
+                    </button>
+                  </div>
+                ) : challenge ? (
+                  <button
+                    type="button"
+                    onClick={() => navigate('/challenges')}
+                    className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-emerald-500/50 bg-emerald-500/15 px-3 py-2.5 text-xs font-bold text-emerald-300 hover:bg-emerald-500/25 transition-all min-w-[170px]"
+                  >
+                    <CheckCircle2 size={14} />
+                    Go to Challenge ➔
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => handleAddChallenge(currentPiece, currentSet)}
+                    disabled={addChallenge.isPending}
+                    className={cn(
+                      'flex flex-1 items-center justify-center gap-2 rounded-xl border px-3 py-2.5 text-xs font-bold transition-all min-w-[170px]',
+                      justAdded
+                        ? 'border-emerald-500/50 bg-emerald-500/15 text-emerald-300'
+                        : 'border-mh-gold-500/40 bg-mh-gold-500/10 text-mh-gold-300 hover:bg-mh-gold-500/20 hover:text-mh-gold-200',
+                      addChallenge.isPending && 'opacity-60 cursor-wait',
+                    )}
+                  >
+                    {addChallenge.isPending ? (
+                      <><span className="h-3.5 w-3.5 animate-spin rounded-full border border-current border-t-transparent" /> Adding…</>
+                    ) : justAdded ? (
+                      <><CheckCircle2 size={14} /> Added to challenges!</>
+                    ) : (
+                      <><Target size={14} /> Add {slotLabel} to Challenges</>
+                    )}
+                  </button>
+                )}
+
+                {/* Add to Example Build Button */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setExampleBuild((prev) => ({
+                      ...prev,
+                      [currentPiece.slot]: { piece: currentPiece, set: currentSet },
+                    }));
+                    setBuildAddedSlot(currentPiece.slot);
+                    setTimeout(() => setBuildAddedSlot(null), 2500);
+                  }}
+                  className={cn(
+                    'flex items-center justify-center gap-1.5 rounded-xl border px-3.5 py-2.5 text-xs font-bold transition-all shrink-0',
+                    isJustAddedToBuild
+                      ? 'border-emerald-500/50 bg-emerald-500/20 text-emerald-300'
+                      : isEquippedInBuild
+                      ? 'border-amber-500/50 bg-amber-500/20 text-amber-300 hover:bg-amber-500/30'
+                      : 'border-amber-500/30 bg-amber-500/10 text-amber-300 hover:border-amber-500/50 hover:bg-amber-500/20',
+                  )}
+                  title={`Add or replace ${slotLabel} in your example build`}
+                >
+                  {isJustAddedToBuild ? (
+                    <><CheckCircle2 size={14} className="text-emerald-400" /> Equipped in Build!</>
+                  ) : isEquippedInBuild ? (
+                    <><Shield size={14} className="text-amber-400" /> Equipped in Build</>
+                  ) : exampleBuild[currentPiece.slot] ? (
+                    <><Plus size={14} /> Replace {slotLabel} in Build</>
+                  ) : (
+                    <><Plus size={14} /> Add {slotLabel} to Build</>
+                  )}
+                </button>
+              </div>
+
+              {challengeError && (
+                <p className="mt-2 text-[11px] font-medium text-rose-400">
+                  {challengeError}
+                </p>
+              )}
+            </div>
+          );
+        })()}
+
+        {/* ── Interactive Upgrade Level (Slider) ── */}
+        <div className="rounded-2xl border border-mh-slate-800 bg-mh-slate-950/60 p-3.5 space-y-2">
+          <div className="flex items-center justify-between text-xs font-semibold">
+            <span className="text-mh-slate-300 flex items-center gap-1.5">
+              <Sliders size={13} className="text-mh-gold-400" />
+              <span>Simulate Upgrade Rarity</span>
+            </span>
+            <span className="font-mono text-mh-gold-400 font-bold">
+              Rarity {sliderRarity} (Max: R{currentSet.maxRarity || 16})
+            </span>
+          </div>
+
+          <input
+            type="range"
+            min={1}
+            max={currentSet.maxRarity || 16}
+            value={sliderRarity}
+            onChange={(e) => setSliderRarity(Number(e.target.value))}
+            className="w-full h-1.5 bg-mh-slate-800 rounded-lg appearance-none cursor-pointer accent-mh-gold-400"
+          />
+        </div>
+
+        {/* ── FULL SET VIEW (All 5 Pieces Combined) ── */}
+        {selectedSlot === null && (
+          <div className="space-y-4">
+            {/* Set Bonuses */}
+            {setBonusSummaries.length > 0 && (
+              <div className="space-y-2">
+                <h3 className="font-display text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                  <Flame size={14} />
+                  <span>Set Bonuses ({setBonusSummaries.length})</span>
+                </h3>
+
+                <div className="space-y-2">
+                  {setBonusSummaries.map((sb) => {
+                    const isMatch = selectedSkillIds.includes(sb.skillId);
+                    const theme = SKILL_CATEGORY_THEMES.set_bonus;
+
+                    return (
+                      <div
+                        key={sb.skillId}
+                        className={cn(
+                          'rounded-2xl border p-3.5 space-y-2 transition-all',
+                          isMatch
+                            ? cn(theme.border, theme.bg, 'ring-1', theme.ring)
+                            : 'border-amber-500/30 bg-amber-500/5',
+                        )}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="font-bold text-sm text-amber-200">
+                              {sb.skillName}
+                            </span>
+                            {isMatch && (
+                              <span className={cn('rounded text-[10px] font-bold px-1.5 py-0.2', theme.badge)}>
+                                Filter Match
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        {sb.meta?.description && (
+                          <p className="text-xs text-mh-slate-300 leading-relaxed">
+                            {sb.meta.description}
+                          </p>
+                        )}
+
+                        {/* Tier requirements list */}
+                        {sb.meta?.set_thresholds && sb.meta.set_thresholds.length > 0 && (
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 pt-1">
+                            {sb.meta.set_thresholds.map((tier, tIdx) => (
+                              <div
+                                key={tIdx}
+                                className="rounded-lg border border-amber-500/20 bg-mh-slate-950/40 p-2 text-[11px]"
+                              >
+                                <span className="font-bold text-amber-400 font-mono">
+                                  {tier.pieces}-Piece Effect:
+                                </span>
+                                <p className="text-mh-slate-300 mt-0.5">{tier.description}</p>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Active Skills Combined */}
+            <div className="space-y-2">
+              <h3 className="font-display text-xs font-bold uppercase tracking-wider text-mh-gold-400 flex items-center gap-1.5">
+                <Swords size={14} />
+                <span>Combined Active Skills ({combinedActiveSkills.length})</span>
+              </h3>
+
+              {combinedActiveSkills.length === 0 ? (
+                <p className="text-xs text-mh-slate-500 italic py-2">
+                  No active skills available at Rarity {sliderRarity}. Use the slider above to increase upgrade level.
+                </p>
+              ) : (
+                <div className="space-y-2">
+                  {combinedActiveSkills.map((entry) => {
+                    const isMatch = selectedSkillIds.includes(entry.id);
+                    const cat = entry.meta?.category || 'general';
+                    const theme = SKILL_CATEGORY_THEMES[cat] || SKILL_CATEGORY_THEMES.general;
+
+                    return (
+                      <div
+                        key={entry.id}
+                        className={cn(
+                          'rounded-2xl border p-3.5 space-y-2 transition-all',
+                          isMatch
+                            ? cn(theme.border, theme.bg, 'ring-1', theme.ring)
+                            : 'border-mh-slate-750 bg-mh-slate-950/60',
+                        )}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="font-bold text-sm text-mh-slate-100">
+                              {entry.meta?.name ?? entry.id}
+                            </span>
+                            <span className={cn(
+                              'rounded px-1.5 py-0.2 text-[9px] font-bold border uppercase tracking-wider',
+                              theme.chipBg,
+                              theme.chipBorder,
+                              theme.chipText,
+                            )}>
+                              {theme.label}
+                            </span>
+                            {isMatch && (
+                              <span className={cn('rounded text-[10px] font-bold px-1.5 py-0.2', theme.badge)}>
+                                Filter Match
+                              </span>
+                            )}
+                          </div>
+
+                          <span className="rounded bg-mh-gold-500/20 text-mh-gold-300 font-mono text-xs font-bold px-2 py-0.5 border border-mh-gold-500/30">
+                            Level {entry.totalLevel} / {entry.maxLevel}
+                          </span>
+                        </div>
+
+                        {/* Contributing pieces breakdown */}
+                        <div className="flex items-center gap-1.5 flex-wrap text-[11px] text-mh-slate-400">
+                          <span className="text-mh-slate-500">From:</span>
+                          {entry.sources.map((src, sIdx) => {
+                            const slotLabel = SLOTS_ORDER.find((s) => s.id === src.slot)?.label ?? src.slot;
+                            return (
+                              <span
+                                key={sIdx}
+                                className="rounded bg-mh-slate-850 border border-mh-slate-750 px-1.5 py-0.2 text-mh-slate-300 font-semibold"
+                              >
+                                {slotLabel}: +{src.level}
+                              </span>
+                            );
+                          })}
+                        </div>
+
+                        {entry.meta?.description && (
+                          <p className="text-xs text-mh-slate-400 leading-relaxed pt-0.5">
+                            {entry.meta.description}
+                          </p>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Locked Skills (Unlockable at higher rarities) */}
+            {lockedSkillTiers.length > 0 && (
+              <div className="space-y-2 pt-2 border-t border-mh-slate-800">
+                <h3 className="font-display text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                  <Lock size={14} />
+                  <span>Locked Skills (Requires Higher Upgrade Level)</span>
+                </h3>
+
+                <div className="space-y-2">
+                  {lockedSkillTiers.map((tier, idx) => {
+                    const slotLabel = SLOTS_ORDER.find((s) => s.id === tier.slot)?.label ?? tier.slot;
+                    return (
+                      <div
+                        key={idx}
+                        className="rounded-xl border border-dashed border-amber-500/30 bg-amber-500/5 p-3 flex items-center justify-between"
+                      >
+                        <div>
+                          <p className="font-bold text-xs text-mh-slate-200">
+                            {tier.skillName} (+{tier.additionalLevel} Level)
+                          </p>
+                          <p className="text-[11px] text-mh-slate-400 mt-0.5">
+                            Unlocks on {slotLabel} at Rarity {tier.unlockRarity}
+                          </p>
+                        </div>
+
+                        <span className="rounded bg-amber-500/20 text-amber-300 font-mono text-xs font-bold px-2 py-0.5 border border-amber-500/40">
+                          Unlocks at R{tier.unlockRarity}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ── SINGLE PIECE VIEW ── */}
+        {selectedSlot !== null && currentPiece && (
+          <div className="space-y-4">
+            {/* Piece Set Bonus */}
+            {pieceSetBonuses.length > 0 && (
+              <div className="space-y-2">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                  <Flame size={13} />
+                  <span>Set Bonus ({pieceSetBonuses.length})</span>
+                </h4>
+
+                <div className="space-y-2">
+                  {pieceSetBonuses.map((sb) => {
+                    const isMatch = selectedSkillIds.includes(sb.skill.id);
+                    const theme = SKILL_CATEGORY_THEMES.set_bonus;
+
+                    return (
+                      <div
+                        key={sb.skill.id}
+                        className={cn(
+                          'rounded-2xl border p-3.5 space-y-2 transition-all',
+                          isMatch
+                            ? cn(theme.border, theme.bg, 'ring-1', theme.ring)
+                            : 'border-amber-500/30 bg-amber-500/5',
+                        )}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="font-bold text-sm text-amber-200">
+                            {sb.meta?.name ?? sb.skill.id}
+                          </span>
+                          {isMatch && (
+                            <span className={cn('rounded text-[10px] font-bold px-1.5 py-0.2', theme.badge)}>
+                              Filter Match
+                            </span>
+                          )}
+                        </div>
+
+                        {sb.meta?.description && (
+                          <p className="text-xs text-mh-slate-300 leading-relaxed">
+                            {sb.meta.description}
+                          </p>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Active Skills on this piece */}
+            <div className="space-y-2">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-mh-gold-400 flex items-center gap-1.5">
+                <Swords size={13} />
+                <span>Active Skills ({pieceActiveSkills.length})</span>
+              </h4>
+
+              {pieceActiveSkills.length === 0 ? (
+                <p className="text-xs text-mh-slate-500 italic py-2">
+                  No active skills at Rarity {sliderRarity}.
+                </p>
+              ) : (
+                <div className="space-y-2">
+                  {pieceActiveSkills.map(({ skillId, meta, totalLevel, maxLevel }) => {
+                    const isMatch = selectedSkillIds.includes(skillId);
+                    const cat = meta?.category || 'general';
+                    const theme = SKILL_CATEGORY_THEMES[cat] || SKILL_CATEGORY_THEMES.general;
+
+                    return (
+                      <div
+                        key={skillId}
+                        className={cn(
+                          'rounded-2xl border p-3.5 space-y-2 transition-all',
+                          isMatch
+                            ? cn(theme.border, theme.bg, 'ring-1', theme.ring)
+                            : 'border-mh-slate-750 bg-mh-slate-950/60',
+                        )}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="font-bold text-sm text-mh-slate-100">
+                              {meta?.name ?? skillId}
+                            </span>
+                            <span className={cn(
+                              'rounded px-1.5 py-0.2 text-[9px] font-bold border uppercase tracking-wider',
+                              theme.chipBg,
+                              theme.chipBorder,
+                              theme.chipText,
+                            )}>
+                              {theme.label}
+                            </span>
+                            {isMatch && (
+                              <span className={cn('rounded text-[10px] font-bold px-1.5 py-0.2', theme.badge)}>
+                                Filter Match
+                              </span>
+                            )}
+                          </div>
+
+                          <span className="rounded bg-mh-gold-500/20 text-mh-gold-300 font-mono text-xs font-bold px-2 py-0.5 border border-mh-gold-500/30">
+                            +{totalLevel} Level (Max Lv.{maxLevel})
+                          </span>
+                        </div>
+
+                        {meta?.description && (
+                          <p className="text-xs text-mh-slate-400 leading-relaxed">
+                            {meta.description}
+                          </p>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Locked Skills on this piece */}
+            {pieceLockedSkills.length > 0 && (
+              <div className="space-y-2 pt-2 border-t border-mh-slate-800">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                  <Lock size={13} />
+                  <span>Locked Skills ({pieceLockedSkills.length})</span>
+                </h4>
+
+                <div className="space-y-2">
+                  {pieceLockedSkills.map(({ skillId, meta, additionalLevel, unlockRarity }, idx) => (
+                    <div
+                      key={idx}
+                      className="rounded-xl border border-dashed border-amber-500/30 bg-amber-500/5 p-3 flex items-center justify-between"
+                    >
+                      <div>
+                        <p className="font-bold text-xs text-mh-slate-200">
+                          {meta?.name ?? skillId} (+{additionalLevel} Level)
+                        </p>
+                        <p className="text-[11px] text-mh-slate-400 mt-0.5">
+                          Requires upgrading piece to Rarity {unlockRarity}
+                        </p>
+                      </div>
+
+                      <span className="rounded bg-amber-500/20 text-amber-300 font-mono text-xs font-bold px-2 py-0.5 border border-amber-500/40">
+                        Unlocks at R{unlockRarity}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Notes */}
+            {currentPiece?.notes && (
+              <div className="rounded-xl border border-mh-slate-800 bg-mh-slate-950/40 p-3 space-y-1">
+                <span className="text-[11px] font-bold text-mh-slate-400 uppercase tracking-wider">
+                  Notes
+                </span>
+                <p className="text-xs text-mh-slate-300 leading-relaxed">
+                  {currentPiece.notes}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ── Modal Close Button at bottom (only in mobile modal) ── */}
+        {isModal && (
+          <div className="pt-3 border-t border-mh-slate-800">
+            <button
+              type="button"
+              onClick={() => setIsMobileDetailOpen(false)}
+              className="w-full py-2.5 rounded-xl border border-mh-slate-750 bg-mh-slate-850 hover:bg-mh-slate-800 text-xs font-bold text-mh-slate-200 transition-colors flex items-center justify-center gap-1.5"
+            >
+              <X size={14} />
+              <span>Close & Return to Armour List</span>
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="p-4 lg:p-6 space-y-4 w-full">
       {/* ── Compact Top Toolbar ── */}
@@ -770,9 +1474,9 @@ export default function ArmourGuide() {
             <select
               value={selectedSkillToAdd}
               onChange={(e) => setSelectedSkillToAdd(e.target.value)}
-              className="rounded-xl border border-mh-slate-750 bg-mh-slate-900 px-3 py-1.5 text-xs font-semibold text-mh-slate-300 focus:border-mh-gold-500/50 focus:outline-none max-w-[200px]"
+              className="rounded-xl border border-mh-slate-750 bg-mh-slate-900 py-1.5 px-2.5 text-xs text-mh-slate-200 focus:border-mh-gold-500/50 focus:outline-none max-w-[180px]"
             >
-              <option value="">Select skill to add…</option>
+              <option value="">Select skill...</option>
               {sortedAvailableSkills.map((s) => (
                 <option key={s.id} value={s.id}>
                   {s.name} {s.is_set_bonus ? '(Set Bonus)' : ''}
@@ -780,7 +1484,7 @@ export default function ArmourGuide() {
               ))}
             </select>
 
-            {/* Add Skill Button */}
+            {/* Add Skill Filter Button */}
             <button
               type="button"
               disabled={!selectedSkillToAdd}
@@ -791,42 +1495,47 @@ export default function ArmourGuide() {
                   setSkillSearchQuery('');
                 }
               }}
-              className="flex items-center gap-1 rounded-xl bg-mh-gold-500 hover:bg-mh-gold-400 disabled:opacity-40 disabled:hover:bg-mh-gold-500 text-slate-950 font-bold px-3 py-1.5 text-xs transition-all shadow-sm shrink-0"
+              className={cn(
+                'flex items-center gap-1 rounded-xl px-2.5 py-1.5 text-xs font-bold transition-colors',
+                selectedSkillToAdd
+                  ? 'bg-mh-gold-500 text-slate-950 hover:bg-mh-gold-400'
+                  : 'bg-mh-slate-800 text-mh-slate-500 cursor-not-allowed border border-mh-slate-750',
+              )}
             >
               <Plus size={13} />
-              <span>Add Skill</span>
+              <span>Add Filter</span>
             </button>
 
-            <span className="text-xs text-mh-slate-500 font-semibold px-1 shrink-0">
-              {filteredSets.length} Sets
+            {/* Armour Sets Count */}
+            <span className="text-xs text-mh-slate-400 font-mono ml-1">
+              {filteredSets.length} {filteredSets.length === 1 ? 'Set' : 'Sets'}
             </span>
           </div>
         </div>
 
-        {/* Active Skill Filter Chips (Colored by skill category) */}
+        {/* Selected Skill Filter Chips */}
         {selectedSkillIds.length > 0 && (
-          <div className="flex items-center gap-1.5 flex-wrap pt-1.5">
-            <span className="text-[11px] font-bold text-mh-slate-400 uppercase tracking-wider flex items-center gap-1 shrink-0 mr-1">
-              <Sparkles size={12} className="text-mh-gold-400" />
-              Filter Skills ({selectedSkillIds.length}):
+          <div className="flex items-center gap-1.5 flex-wrap pt-1">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-mh-gold-400 mr-1 flex items-center gap-1">
+              <Sparkles size={11} />
+              Filtering by:
             </span>
             {selectedSkillIds.map((sId) => {
               const skillMeta = skillsMap.get(sId);
               const cat = skillMeta?.category || (skillMeta?.is_set_bonus ? 'set_bonus' : 'general');
               const theme = SKILL_CATEGORY_THEMES[cat] || SKILL_CATEGORY_THEMES.general;
-              const IconComp = theme.icon;
 
               return (
                 <span
                   key={sId}
                   className={cn(
-                    'inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-0.5 text-xs font-bold shadow-sm',
+                    'inline-flex items-center gap-1.5 rounded-lg px-2 py-0.5 text-xs font-bold border transition-colors shadow-sm',
                     theme.chipBg,
                     theme.chipBorder,
                     theme.chipText,
                   )}
                 >
-                  <IconComp size={12} className="opacity-80" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-current opacity-80" />
                   <span>{skillMeta?.name ?? sId}</span>
                   {skillMeta?.is_set_bonus && (
                     <span className="text-[9px] opacity-75 font-normal">(Set Bonus)</span>
@@ -853,7 +1562,7 @@ export default function ArmourGuide() {
         )}
       </div>
 
-      {/* ── Left-Aligned Dual-Pane Layout ── */}
+      {/* ── Dual-Pane Layout (Side-by-Side on Desktop, Left Pane Only on Narrow Screens) ── */}
       {isLoadingPieces ? (
         <div className="flex h-64 items-center justify-center">
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-mh-gold-400 border-t-transparent" />
@@ -867,11 +1576,11 @@ export default function ArmourGuide() {
       ) : (
         <div className="flex flex-col lg:flex-row gap-5 items-start w-full">
           {/* ═════════════════════════════════════════════════════════ */}
-          {/* LEFT PANE: Pinned Example Build Row + Scrollable Sets List */}
+          {/* LEFT PANE: Pinned Example Build & Skills + Scrollable Sets */}
           {/* ═════════════════════════════════════════════════════════ */}
           <div className="w-full lg:w-[480px] xl:w-[520px] shrink-0 flex flex-col gap-3 sticky top-4">
-            {/* ── Example Build Row (Always pinned at top of left pane) ── */}
-            <div className="rounded-2xl border border-amber-500/40 bg-gradient-to-r from-mh-slate-900 via-amber-950/20 to-mh-slate-900 p-2.5 shadow-lg space-y-2 shrink-0">
+            {/* ── Example Build Box (Pinned at top of left pane) ── */}
+            <div className="rounded-2xl border border-amber-500/40 bg-gradient-to-r from-mh-slate-900 via-amber-950/20 to-mh-slate-900 p-2.5 shadow-lg space-y-2.5 shrink-0">
               <div className="flex items-center justify-between gap-2 px-1">
                 <div className="flex items-center gap-2">
                   <Swords size={14} className="text-amber-400" />
@@ -884,15 +1593,26 @@ export default function ArmourGuide() {
                 </div>
 
                 {equippedBuildCount > 0 && (
-                  <button
-                    type="button"
-                    onClick={() => setExampleBuild({})}
-                    className="flex items-center gap-1 text-[11px] text-mh-slate-400 hover:text-red-400 transition-colors"
-                    title="Clear all pieces from example build"
-                  >
-                    <Trash2 size={11} />
-                    <span>Clear</span>
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={handleSendToBuildPlanner}
+                      className="flex items-center gap-1.5 rounded-lg bg-amber-500/20 border border-amber-500/40 px-2 py-0.5 text-[11px] font-bold text-amber-300 hover:bg-amber-500/30 hover:border-amber-400 hover:text-amber-200 transition-all shadow-sm"
+                      title="Send this armour loadout to the Build Planner"
+                    >
+                      <Layers size={11} className="text-amber-400" />
+                      <span>Send to Planner</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setExampleBuild({})}
+                      className="flex items-center gap-1 text-[11px] text-mh-slate-400 hover:text-red-400 transition-colors py-0.5 px-1"
+                      title="Clear all pieces from example build"
+                    >
+                      <Trash2 size={11} />
+                      <span>Clear</span>
+                    </button>
+                  </div>
                 )}
               </div>
 
@@ -903,16 +1623,16 @@ export default function ArmourGuide() {
                   title={profile?.display_name || 'Hunter Profile'}
                   className="group relative flex flex-col items-center justify-center rounded-xl border border-amber-500/40 bg-mh-slate-950 p-1 aspect-square shadow-inner"
                 >
-                  <div className="relative h-10 w-10 sm:h-12 sm:w-12 flex items-center justify-center">
+                  <div className="relative w-full flex-1 min-h-0 flex items-center justify-center p-0.5">
                     {user && (profile?.avatar_url || (user.user_metadata as Record<string, unknown>)?.avatar_url) ? (
                       <img
                         src={profile?.avatar_url || ((user.user_metadata as Record<string, unknown>)?.avatar_url as string)}
                         alt={profile?.display_name || 'Hunter'}
-                        className="h-full w-full rounded-full object-cover ring-1 ring-amber-400/60"
+                        className="max-h-full max-w-full aspect-square rounded-full object-cover ring-1 ring-amber-400/60"
                       />
                     ) : (
-                      <div className="flex h-full w-full items-center justify-center rounded-full bg-amber-500/15 ring-1 ring-amber-400/40">
-                        <User size={22} className="text-amber-400" />
+                      <div className="flex h-full w-full max-h-12 max-w-12 items-center justify-center rounded-full bg-amber-500/15 ring-1 ring-amber-400/40">
+                        <User className="h-2/3 w-2/3 text-amber-400" />
                       </div>
                     )}
                   </div>
@@ -943,25 +1663,25 @@ export default function ArmourGuide() {
                         type="button"
                         onClick={() => {
                           if (set && piece) {
-                            handleSelectSet(set.id, piece.slot);
+                            handleSelectSet(set.id, piece.slot, true);
                           }
                         }}
                         title={hasEquipped ? `${set?.displayName} ${slotDef.label} (Click to inspect)` : `Empty ${slotDef.label} slot`}
                         className="h-full w-full flex flex-col items-center justify-center min-w-0"
                       >
-                        <div className="relative h-10 w-10 sm:h-12 sm:w-12 flex items-center justify-center">
+                        <div className="relative w-full flex-1 min-h-0 flex items-center justify-center p-0.5">
                           {piece?.image ? (
                             <img
                               src={piece.image}
                               alt={slotDef.label}
-                              className="h-full w-full object-contain filter brightness-100"
+                              className="max-h-full max-w-full object-contain filter brightness-100"
                             />
                           ) : (
                             <img
                               src={slotDef.defaultIcon}
                               alt={slotDef.label}
                               className={cn(
-                                'h-full w-full object-contain',
+                                'max-h-full max-w-full object-contain',
                                 hasEquipped ? 'opacity-80' : 'opacity-25',
                               )}
                             />
@@ -1009,54 +1729,168 @@ export default function ArmourGuide() {
                   );
                 })}
               </div>
+
+              {/* ── Skills Summary (Directly inside Example Build Box below the slots) ── */}
+              {equippedBuildCount > 0 && (
+                <div className="border-t border-mh-slate-800/80 pt-2 space-y-1.5">
+                  <div className="flex items-center justify-between gap-2 px-1">
+                    <span className="font-display text-[11px] font-bold uppercase tracking-wider text-amber-300">
+                      Skills Summary
+                    </span>
+                    <span className="text-[10px] font-mono font-bold text-amber-400/80">
+                      {exampleBuildSkills.length} {exampleBuildSkills.length === 1 ? 'Skill' : 'Skills'}
+                    </span>
+                  </div>
+
+                  {exampleBuildSkills.length === 0 ? (
+                    <p className="text-xs text-mh-slate-500 italic py-1 text-center">
+                      No active skills from equipped pieces at rarity {sliderRarity}.
+                    </p>
+                  ) : (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 max-h-[140px] overflow-y-auto pr-0.5">
+                      {exampleBuildSkills.map((entry) => {
+                        const isSet = Boolean(entry.isSetBonus || entry.meta?.is_set_bonus);
+                        const isSetActivated = isSet ? (entry.activeTiers ?? 0) > 0 : false;
+                        const isMaxed = isSet ? entry.totalLevel >= entry.maxLevel : entry.totalLevel >= entry.maxLevel;
+                        const cat = entry.meta?.category || (isSet ? 'set_bonus' : 'general');
+                        const theme = SKILL_CATEGORY_THEMES[cat] || SKILL_CATEGORY_THEMES.general;
+                        const fullPipClass = SKILL_CATEGORY_FULL_PIP_CLASSES[cat] || 'bg-amber-400';
+
+                        return (
+                          <div
+                            key={entry.id}
+                            title={
+                              isSet
+                                ? `${entry.name} Set Bonus (Equipped: ${entry.piecesInSet ?? entry.totalLevel}/${entry.maxLevel} pieces${
+                                    isSetActivated ? ' - Active!' : ` - Requires ${entry.requiredPieces ?? 2} pieces to activate`
+                                  })${entry.meta?.description ? `\n\n${entry.meta.description}` : ''}`
+                                : `${entry.name} Lv. ${entry.totalLevel}/${entry.maxLevel}${
+                                    entry.sources.length > 0
+                                      ? `\nSources:\n` + entry.sources.map((src) => `• ${src.pieceName}: +${src.level}`).join('\n')
+                                      : ''
+                                  }${entry.meta?.description ? `\n\n${entry.meta.description}` : ''}`
+                            }
+                            className={cn(
+                              'rounded-lg border px-2 py-1 flex flex-col items-center justify-center text-center transition-all min-h-[38px]',
+                              isSet
+                                ? isSetActivated
+                                  ? 'border-orange-500/60 bg-orange-500/15 text-orange-300 shadow-sm ring-1 ring-orange-400/30'
+                                  : 'border-orange-500/40 bg-orange-950/20 text-orange-300/90'
+                                : isMaxed
+                                  ? cn(theme.border, theme.bg, theme.text, 'ring-1', theme.ring, 'shadow-sm')
+                                  : 'border-mh-slate-750 bg-mh-slate-950/80 text-mh-slate-200',
+                            )}
+                          >
+                            <span
+                              className={cn(
+                                'text-[11px] font-semibold truncate max-w-full leading-tight',
+                                isSet
+                                  ? isSetActivated ? 'text-orange-300 font-bold' : 'text-orange-300/90'
+                                  : isMaxed ? cn(theme.text, 'font-bold') : 'text-mh-slate-200',
+                              )}
+                            >
+                              {entry.name}
+                            </span>
+
+                            <div
+                              className={cn(
+                                'flex items-center gap-1.5 mt-0.5 text-[10px] font-bold font-mono leading-none',
+                                isSet
+                                  ? isSetActivated ? 'text-orange-300' : 'text-orange-400/80'
+                                  : isMaxed ? theme.text : 'text-white',
+                              )}
+                            >
+                              <span>
+                                {isSet
+                                  ? `${entry.piecesInSet ?? entry.totalLevel}/${entry.maxLevel} Pcs`
+                                  : `Lv.${entry.totalLevel}`}
+                              </span>
+                              <div className="flex items-center gap-[2px]">
+                                {Array.from({ length: entry.maxLevel }).map((_, pipIdx) => {
+                                  const isFilled = pipIdx < entry.totalLevel;
+                                  return (
+                                    <span
+                                      key={pipIdx}
+                                      className={cn(
+                                        'inline-block w-1.5 h-2.5 rounded-[1px] transition-colors',
+                                        isSet
+                                          ? isFilled
+                                            ? isSetActivated
+                                              ? 'bg-orange-400 shadow-[0_0_3px_rgba(251,146,60,0.6)]'
+                                              : 'bg-orange-500/70'
+                                            : 'bg-orange-950/60 border border-orange-800/40'
+                                          : isMaxed
+                                            ? fullPipClass
+                                            : isFilled
+                                              ? 'bg-sky-400 shadow-[0_0_3px_rgba(56,189,248,0.5)]'
+                                              : 'bg-slate-700/80 border border-slate-600/60',
+                                      )}
+                                    />
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
-            {/* ── Scrollable Armour Sets List (Only this section scrolls) ── */}
-            <div className="space-y-3 max-h-[calc(100vh-270px)] overflow-y-auto pr-1">
+            {/* ── Scrollable Armour Sets List ── */}
+            <div className={cn(
+              "space-y-3 overflow-y-auto pr-1",
+              equippedBuildCount > 0 ? "max-h-[calc(100vh-380px)]" : "max-h-[calc(100vh-270px)]"
+            )}>
               {filteredSets.map((set) => {
                 const isSetSelected = currentSet?.id === set.id;
-                const rarityStyle = getRarityBadgeStyle(set.rarity);
-                const pieceCount = Object.values(set.pieces).filter(Boolean).length;
 
                 return (
                   <div
                     key={set.id}
                     className={cn(
-                      'rounded-2xl border p-2.5 transition-all duration-150',
+                      'rounded-2xl border p-3 transition-all',
                       isSetSelected
-                        ? 'border-mh-gold-500/60 bg-mh-slate-850 shadow-md shadow-mh-gold-500/5'
-                        : 'border-mh-slate-800 bg-mh-slate-900/70 hover:border-mh-slate-700 hover:bg-mh-slate-850/60',
+                        ? 'border-mh-gold-500/50 bg-mh-slate-900/90 ring-1 ring-mh-gold-400/40 shadow-lg'
+                        : 'border-mh-slate-800 bg-mh-slate-900/50 hover:border-mh-slate-700 hover:bg-mh-slate-900/70',
                     )}
                   >
-                    {/* Set Row Header: Monster Name — Set Name */}
-                    <div className="flex items-center justify-between gap-2 mb-2 px-1">
+                    {/* Header */}
+                    <div className="flex items-center justify-between gap-2 mb-2.5">
                       <div className="flex items-center gap-2 min-w-0">
-                        <h3 className="font-display text-xs sm:text-sm font-bold text-mh-slate-100 truncate">
+                        <span className="font-display font-bold text-sm text-mh-slate-100 truncate">
                           {set.displayName}
-                        </h3>
-                        <span
-                          className={cn(
-                            'rounded px-1.5 py-0.2 text-[10px] font-bold border font-mono shrink-0',
-                            rarityStyle.bg,
-                            rarityStyle.text,
-                            rarityStyle.border,
-                          )}
-                        >
-                          {rarityStyle.label}
                         </span>
+                        {(() => {
+                          const rStyle = getRarityBadgeStyle(set.rarity);
+                          return (
+                            <span
+                              className={cn(
+                                'rounded px-1.5 py-0.2 text-[10px] font-bold border font-mono shrink-0',
+                                rStyle.bg,
+                                rStyle.text,
+                                rStyle.border,
+                              )}
+                            >
+                              {rStyle.label}
+                            </span>
+                          );
+                        })()}
                       </div>
 
-                      <span className="text-[10px] text-mh-slate-500 font-semibold shrink-0">
-                        {pieceCount}/5 Pieces
+                      <span className="text-[11px] font-medium text-mh-slate-400 truncate">
+                        {set.monsterName}
                       </span>
                     </div>
 
-                    {/* ── The 6 Blocks in a Row ── */}
-                    <div className="grid grid-cols-6 gap-1.5">
-                      {/* Block 1: Set Icon (Monster/Material) -> Triggers Full Set View */}
+                    {/* 6 Block Grid */}
+                    <div className="grid grid-cols-6 gap-2">
+                      {/* Block 1: Set Icon */}
                       <button
                         type="button"
-                        onClick={() => handleSelectSet(set.id, null)}
+                        onClick={() => handleSelectSet(set.id, null, true)}
                         title={`${set.displayName} (Full Set)`}
                         className={cn(
                           'group relative flex flex-col items-center justify-center rounded-xl border p-1 aspect-square transition-all',
@@ -1065,18 +1899,18 @@ export default function ArmourGuide() {
                             : 'border-mh-slate-750 bg-mh-slate-950/80 hover:border-mh-gold-500/40 hover:bg-mh-slate-800',
                         )}
                       >
-                        <div className="relative h-10 w-10 sm:h-12 sm:w-12 flex items-center justify-center">
+                        <div className="relative w-full flex-1 min-h-0 flex items-center justify-center p-0.5">
                           {set.setIcon ? (
                             <img
                               src={set.setIcon}
                               alt="Set Icon"
-                              className="h-full w-full object-contain filter drop-shadow"
+                              className="max-h-full max-w-full object-contain filter drop-shadow"
                               onError={(e) => {
                                 (e.target as HTMLElement).style.display = 'none';
                               }}
                             />
                           ) : (
-                            <Layers size={24} className="text-mh-gold-400" />
+                            <Layers className="h-2/3 w-2/3 max-h-9 max-w-9 text-mh-gold-400" />
                           )}
                         </div>
                         <span className="mt-0.5 text-[9px] font-black uppercase tracking-wider text-mh-gold-400 leading-none">
@@ -1102,7 +1936,7 @@ export default function ArmourGuide() {
                             <button
                               type="button"
                               disabled={!hasPiece}
-                              onClick={() => handleSelectSet(set.id, slotDef.id)}
+                              onClick={() => handleSelectSet(set.id, slotDef.id, true)}
                               title={piece ? `${set.displayName} ${slotDef.label} (Click to inspect)` : `No ${slotDef.label}`}
                               className={cn(
                                 'group relative h-full w-full flex flex-col items-center justify-center rounded-xl border p-1 transition-all',
@@ -1119,12 +1953,12 @@ export default function ArmourGuide() {
                                 isPieceActive && 'border-mh-gold-400 bg-mh-gold-500/20 ring-2 ring-mh-gold-400/50 shadow-sm',
                               )}
                             >
-                              <div className="relative h-10 w-10 sm:h-12 sm:w-12 flex items-center justify-center">
+                              <div className="relative w-full flex-1 min-h-0 flex items-center justify-center p-0.5">
                                 {piece?.image ? (
                                   <img
                                     src={piece.image}
                                     alt={slotDef.label}
-                                    className="h-full w-full object-contain filter brightness-95"
+                                    className="max-h-full max-w-full object-contain filter brightness-95"
                                     onError={(e) => {
                                       (e.target as HTMLElement).style.display = 'none';
                                     }}
@@ -1133,7 +1967,7 @@ export default function ArmourGuide() {
                                   <img
                                     src={slotDef.defaultIcon}
                                     alt={slotDef.label}
-                                    className="h-full w-full object-contain opacity-55 group-hover:opacity-85 transition-opacity"
+                                    className="max-h-full max-w-full object-contain opacity-55 group-hover:opacity-85 transition-opacity"
                                     onError={(e) => {
                                       (e.target as HTMLElement).style.display = 'none';
                                     }}
@@ -1209,660 +2043,29 @@ export default function ArmourGuide() {
           </div>
 
           {/* ═════════════════════════════════════════════════════════ */}
-          {/* RIGHT PANE: Pinned Skills Summary + Scrollable Set Detail */}
+          {/* RIGHT PANE: Detail Card (Visible on Desktop / Wide screens) */}
           {/* ═════════════════════════════════════════════════════════ */}
-          <div className="flex-1 min-w-0 flex flex-col gap-3 sticky top-4">
-            {/* ── Example Build Skills Panel (Pinned at top of right pane when pieces are equipped) ── */}
-            {equippedBuildCount > 0 && (
-              <div className="rounded-2xl border border-amber-500/40 bg-gradient-to-r from-mh-slate-900 via-amber-950/20 to-mh-slate-900 p-2.5 shadow-lg space-y-1.5 shrink-0">
-                <div className="flex items-center justify-between gap-2 px-1 border-b border-mh-slate-800/80 pb-1">
-                  <div className="flex items-center gap-2">
-                    <Swords size={13} className="text-amber-400" />
-                    <h3 className="font-display text-xs font-bold uppercase tracking-wider text-amber-300">
-                      Skills Summary
-                    </h3>
-                  </div>
-                  <span className="text-[10px] font-mono font-bold text-amber-400/80">
-                    {exampleBuildSkills.length} {exampleBuildSkills.length === 1 ? 'Skill' : 'Skills'}
-                  </span>
-                </div>
-
-                {exampleBuildSkills.length === 0 ? (
-                  <p className="text-xs text-mh-slate-500 italic py-2 text-center">
-                    No active skills from equipped pieces at rarity {sliderRarity}.
-                  </p>
-                ) : (
-                  <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-1.5 max-h-[115px] overflow-y-auto pr-1">
-                    {exampleBuildSkills.map((entry) => {
-                      const isMaxed = entry.totalLevel >= entry.maxLevel;
-
-                      return (
-                        <div
-                          key={entry.id}
-                          title={entry.meta?.description || `${entry.name} Lv. ${entry.totalLevel}/${entry.maxLevel}`}
-                          className={cn(
-                            'rounded-lg border px-2 py-1 flex flex-col items-center justify-center text-center transition-all min-h-[38px]',
-                            isMaxed
-                              ? 'border-amber-500/50 bg-amber-500/10 text-amber-300 shadow-sm'
-                              : 'border-mh-slate-750 bg-mh-slate-950/80 text-mh-slate-200',
-                          )}
-                        >
-                          <span
-                            className={cn(
-                              'text-[11px] font-semibold truncate max-w-full leading-tight',
-                              isMaxed ? 'text-amber-300' : 'text-mh-slate-200',
-                            )}
-                          >
-                            {entry.name}
-                          </span>
-
-                          <div
-                            className={cn(
-                              'flex items-center gap-1.5 mt-0.5 text-[10px] font-bold font-mono leading-none',
-                              isMaxed ? 'text-amber-300' : 'text-white',
-                            )}
-                          >
-                            <span>Lv.{entry.totalLevel}</span>
-                            <div className="flex items-center gap-[2px]">
-                              {Array.from({ length: entry.maxLevel }).map((_, pipIdx) => {
-                                const isFilled = pipIdx < entry.totalLevel;
-                                return (
-                                  <span
-                                    key={pipIdx}
-                                    className={cn(
-                                      'inline-block w-1.5 h-2.5 rounded-[1px] transition-colors',
-                                      isMaxed
-                                        ? 'bg-amber-400'
-                                        : isFilled
-                                          ? 'bg-sky-400 shadow-[0_0_3px_rgba(56,189,248,0.5)]'
-                                          : 'bg-slate-700/80 border border-slate-600/60',
-                                    )}
-                                  />
-                                );
-                              })}
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* ── Inspected Monster Armour Set / Piece Detail Card (Scrollable) ── */}
+          <div className="hidden lg:flex flex-1 min-w-0 flex-col gap-3 sticky top-4">
             {currentSet ? (
-              <div className={cn(
-                "rounded-3xl border border-mh-slate-700 bg-mh-slate-900 shadow-2xl p-4 sm:p-5 space-y-4 overflow-y-auto pr-1",
-                equippedBuildCount > 0 ? "max-h-[calc(100vh-270px)]" : "max-h-[calc(100vh-160px)]"
-              )}>
-                {/* ── Detail Header ── */}
-                <div className="flex items-start justify-between gap-3 border-b border-mh-slate-800 pb-3">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-mh-slate-950 border border-mh-slate-750 p-1.5 shadow-inner">
-                      {selectedSlot === null ? (
-                        currentSet.setIcon ? (
-                          <img
-                            src={currentSet.setIcon}
-                            alt="Set Icon"
-                            className="h-full w-full object-contain"
-                          />
-                        ) : (
-                          <Layers size={24} className="text-mh-gold-400" />
-                        )
-                      ) : currentPiece?.image ? (
-                        <img
-                          src={currentPiece.image}
-                          alt="Piece"
-                          className="h-full w-full object-contain"
-                        />
-                      ) : (
-                        <Shield size={24} className="text-mh-gold-400" />
-                      )}
-                    </div>
-
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <h2 className="font-display text-base font-bold text-mh-slate-100 truncate">
-                          {selectedSlot === null
-                            ? currentSet.displayName
-                            : `${currentSet.displayName} — ${SLOTS_ORDER.find((s) => s.id === selectedSlot)?.label}`}
-                        </h2>
-                        {(() => {
-                          const rStyle = getRarityBadgeStyle(currentSet.rarity);
-                          return (
-                            <span
-                              className={cn(
-                                'rounded px-2 py-0.5 text-[11px] font-bold border font-mono',
-                                rStyle.bg,
-                                rStyle.text,
-                                rStyle.border,
-                              )}
-                            >
-                              {rStyle.label}
-                            </span>
-                          );
-                        })()}
-                      </div>
-
-                      <p className="text-xs text-mh-gold-400 font-semibold mt-0.5">
-                        {selectedSlot === null ? (
-                          <span>Full Set (5 Pieces Combined)</span>
-                        ) : (
-                          <span className="flex items-center gap-1.5">
-                            <span>Slot: {SLOTS_ORDER.find((s) => s.id === selectedSlot)?.subLabel}</span>
-                            <button
-                              type="button"
-                              onClick={() => setSelectedSlot(null)}
-                              className="text-[11px] text-mh-slate-400 hover:text-white underline ml-1"
-                            >
-                              (Switch to Full Set)
-                            </button>
-                          </span>
-                        )}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* ── Piece Action Row (Add to Challenges + Add to Example Build) ── */}
-                {selectedSlot !== null && currentPiece && (() => {
-                  const challenge = getArmourPieceChallenge(challenges, currentPiece.id);
-                  const justAdded = addedPieceId === currentPiece.id;
-                  const slotLabel = SLOTS_ORDER.find((s) => s.id === selectedSlot)?.label ?? selectedSlot;
-                  const isEquippedInBuild = exampleBuild[currentPiece.slot]?.piece.id === currentPiece.id;
-                  const isJustAddedToBuild = buildAddedSlot === currentPiece.slot;
-
-                  return (
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
-                        {/* Challenge Button / Sign In Prompt */}
-                        {!user ? (
-                          <div className="flex flex-1 items-center justify-between gap-2 rounded-xl border border-mh-slate-750 bg-mh-slate-900/60 px-3 py-2">
-                            <span className="text-xs text-mh-slate-400">Sign in to track challenge</span>
-                            <button
-                              type="button"
-                              onClick={() => setLoginModalOpen(true)}
-                              className="flex items-center gap-1.5 rounded-lg bg-mh-gold-500 px-2.5 py-1 text-xs font-bold text-slate-950 hover:bg-mh-gold-400 transition-colors shrink-0"
-                            >
-                              <LogIn size={12} />
-                              Sign In
-                            </button>
-                          </div>
-                        ) : challenge ? (
-                          <button
-                            type="button"
-                            onClick={() => navigate('/challenges')}
-                            className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-emerald-500/50 bg-emerald-500/15 px-3 py-2.5 text-xs font-bold text-emerald-300 hover:bg-emerald-500/25 transition-all min-w-[170px]"
-                          >
-                            <CheckCircle2 size={14} />
-                            Go to Challenge ➔
-                          </button>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={() => handleAddChallenge(currentPiece, currentSet)}
-                            disabled={addChallenge.isPending}
-                            className={cn(
-                              'flex flex-1 items-center justify-center gap-2 rounded-xl border px-3 py-2.5 text-xs font-bold transition-all min-w-[170px]',
-                              justAdded
-                                ? 'border-emerald-500/50 bg-emerald-500/15 text-emerald-300'
-                                : 'border-mh-gold-500/40 bg-mh-gold-500/10 text-mh-gold-300 hover:bg-mh-gold-500/20 hover:text-mh-gold-200',
-                              addChallenge.isPending && 'opacity-60 cursor-wait',
-                            )}
-                          >
-                            {addChallenge.isPending ? (
-                              <><span className="h-3.5 w-3.5 animate-spin rounded-full border border-current border-t-transparent" /> Adding…</>
-                            ) : justAdded ? (
-                              <><CheckCircle2 size={14} /> Added to challenges!</>
-                            ) : (
-                              <><Target size={14} /> Add {slotLabel} to Challenges</>
-                            )}
-                          </button>
-                        )}
-
-                        {/* Add to Example Build Button */}
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setExampleBuild((prev) => ({
-                              ...prev,
-                              [currentPiece.slot]: { piece: currentPiece, set: currentSet },
-                            }));
-                            setBuildAddedSlot(currentPiece.slot);
-                            setTimeout(() => setBuildAddedSlot(null), 2500);
-                          }}
-                          className={cn(
-                            'flex items-center justify-center gap-1.5 rounded-xl border px-3.5 py-2.5 text-xs font-bold transition-all shrink-0',
-                            isJustAddedToBuild
-                              ? 'border-emerald-500/50 bg-emerald-500/20 text-emerald-300'
-                              : isEquippedInBuild
-                              ? 'border-amber-500/50 bg-amber-500/20 text-amber-300 hover:bg-amber-500/30'
-                              : 'border-amber-500/30 bg-amber-500/10 text-amber-300 hover:border-amber-500/50 hover:bg-amber-500/20',
-                          )}
-                          title={`Add or replace ${slotLabel} in your example build above`}
-                        >
-                          {isJustAddedToBuild ? (
-                            <><CheckCircle2 size={14} className="text-emerald-400" /> Equipped in Build!</>
-                          ) : isEquippedInBuild ? (
-                            <><Shield size={14} className="text-amber-400" /> Equipped in Build</>
-                          ) : exampleBuild[currentPiece.slot] ? (
-                            <><Plus size={14} /> Replace {slotLabel} in Build</>
-                          ) : (
-                            <><Plus size={14} /> Add {slotLabel} to Example Build</>
-                          )}
-                        </button>
-                      </div>
-
-                      {challengeError && (
-                        <div className="flex items-start gap-2 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-300">
-                          <span className="shrink-0 mt-0.5">⚠</span>
-                          <span>{challengeError}</span>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })()}
-
-                {/* ── Compact Rarity Presets Line ── */}
-                <div className="flex items-center justify-between gap-2 rounded-xl border border-mh-gold-500/25 bg-mh-gold-500/5 px-3 py-2 flex-wrap">
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-mh-gold-400">
-                    <Sparkles size={14} />
-                    <span>Rarity Tier:</span>
-                  </div>
-
-                  <div className="flex items-center gap-1 flex-wrap">
-                    {[
-                      { label: 'Base (R1)', val: 1 },
-                      { label: 'R6', val: 6 },
-                      { label: 'R9', val: 9 },
-                      { label: 'R12', val: 12 },
-                      { label: 'R13', val: 13 },
-                      { label: 'R14', val: 14 },
-                      { label: 'R15', val: 15 },
-                      { label: `R16 (Max)`, val: currentSet.maxRarity || 16 },
-                    ].map((btn) => (
-                      <button
-                        key={btn.label}
-                        type="button"
-                        onClick={() => setSliderRarity(btn.val)}
-                        className={cn(
-                          'rounded-lg px-2.5 py-1 text-xs font-bold transition-all',
-                          sliderRarity === btn.val
-                            ? 'bg-mh-gold-500 text-slate-950 font-black shadow-sm'
-                            : 'bg-mh-slate-800 text-mh-slate-300 hover:bg-mh-slate-700 hover:text-white',
-                        )}
-                      >
-                        {btn.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* ── Content: Full Set or Individual Piece ── */}
-                {selectedSlot === null ? (
-                  /* ═══════════════════════════════════════════════════════ */
-                  /* FULL SET VIEW: Combined Skills & Set Bonuses           */
-                  /* ═══════════════════════════════════════════════════════ */
-                  <div className="space-y-3.5">
-                    {/* Inherent Set Bonuses (Clean reference format with description) */}
-                    {setBonusSummaries.length > 0 && (
-                      <div className="space-y-2">
-                        <h4 className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-                          <Flame size={14} />
-                          <span>Set Bonus Effect</span>
-                        </h4>
-
-                        <div className="space-y-2">
-                          {setBonusSummaries.map((sb) => {
-                            const isMatch = selectedSkillIds.includes(sb.skillId);
-                            const skillMeta = skillsMap.get(sb.skillId);
-                            const cat = skillMeta?.category || 'set_bonus';
-                            const theme = SKILL_CATEGORY_THEMES[cat] || SKILL_CATEGORY_THEMES.set_bonus;
-
-                            return (
-                              <div
-                                key={sb.skillId}
-                                className={cn(
-                                  'rounded-xl border p-3 space-y-1.5',
-                                  isMatch
-                                    ? cn(theme.border, theme.bg, 'ring-1', theme.ring)
-                                    : 'border-amber-500/30 bg-amber-500/10',
-                                )}
-                              >
-                                <div className="flex items-center justify-between">
-                                  <div className="flex items-center gap-2">
-                                    <span className="font-bold text-sm text-amber-300">
-                                      {sb.skillName}
-                                    </span>
-                                    {isMatch && (
-                                      <span className={cn('rounded text-[10px] font-bold px-1.5 py-0.2', theme.badge)}>
-                                        Filter Match
-                                      </span>
-                                    )}
-                                  </div>
-                                  <span className="shrink-0 rounded bg-amber-500/20 px-2 py-0.5 text-[10px] font-bold text-amber-300 border border-amber-500/40">
-                                    Inherent Set Effect
-                                  </span>
-                                </div>
-
-                                {sb.description && (
-                                  <p className="text-xs text-mh-slate-200 leading-relaxed italic">
-                                    {sb.description}
-                                  </p>
-                                )}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Active Combined Skills */}
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <h4 className="text-xs font-bold uppercase tracking-wider text-mh-slate-300 flex items-center gap-1.5">
-                          <Swords size={14} className="text-mh-gold-400" />
-                          <span>Combined Active Skills ({combinedActiveSkills.length})</span>
-                        </h4>
-                        <span className="text-[11px] text-mh-slate-500">
-                          Active at R{sliderRarity}
-                        </span>
-                      </div>
-
-                      {combinedActiveSkills.length === 0 ? (
-                        <div className="rounded-xl border border-mh-slate-800 bg-mh-slate-950/40 p-4 text-center text-xs text-mh-slate-500 italic">
-                          No active skills at rarity level {sliderRarity}. Try selecting a higher rarity preset!
-                        </div>
-                      ) : (
-                        <div className="space-y-2 max-h-[320px] overflow-y-auto pr-1">
-                          {combinedActiveSkills.map((entry) => {
-                            const pct = Math.min(100, Math.round((entry.totalLevel / entry.maxLevel) * 100));
-                            const isMatch = selectedSkillIds.includes(entry.id);
-                            const cat = entry.meta?.category || (entry.meta?.is_set_bonus ? 'set_bonus' : 'general');
-                            const theme = SKILL_CATEGORY_THEMES[cat] || SKILL_CATEGORY_THEMES.general;
-
-                            return (
-                              <div
-                                key={entry.id}
-                                className={cn(
-                                  'rounded-xl border p-3 space-y-2',
-                                  isMatch
-                                    ? cn(theme.border, theme.bg, 'ring-1', theme.ring)
-                                    : 'border-mh-slate-750 bg-mh-slate-950/70',
-                                )}
-                              >
-                                <div className="flex items-center justify-between">
-                                  <div className="flex items-center gap-2">
-                                    <span className="font-bold text-sm text-mh-slate-100">
-                                      {entry.meta?.name ?? entry.id}
-                                    </span>
-                                    <span className={cn(
-                                      'rounded px-1.5 py-0.2 text-[9px] font-bold border uppercase tracking-wider',
-                                      theme.chipBg,
-                                      theme.chipBorder,
-                                      theme.chipText,
-                                    )}>
-                                      {theme.label}
-                                    </span>
-                                    {isMatch && (
-                                      <span className={cn('rounded text-[10px] font-bold px-1.5 py-0.2', theme.badge)}>
-                                        Filter Match
-                                      </span>
-                                    )}
-                                    {entry.meta?.is_set_bonus && (
-                                      <span className="rounded bg-amber-500/20 text-amber-300 text-[10px] font-bold px-1.5 py-0.2 border border-amber-500/30">
-                                        Set Bonus
-                                      </span>
-                                    )}
-                                  </div>
-
-                                  <span className="rounded bg-mh-gold-500/20 text-mh-gold-300 font-mono text-xs font-bold px-2 py-0.5 border border-mh-gold-500/30">
-                                    Level {entry.totalLevel} / {entry.maxLevel}
-                                  </span>
-                                </div>
-
-                                {/* Progress Bar */}
-                                <div className="h-1.5 w-full rounded-full bg-mh-slate-800 overflow-hidden">
-                                  <div
-                                    className="h-full rounded-full bg-gradient-to-r from-mh-gold-500 to-amber-400"
-                                    style={{ width: `${pct}%` }}
-                                  />
-                                </div>
-
-                                {/* Piece Contributions */}
-                                <div className="flex items-center gap-1.5 flex-wrap text-[11px] text-mh-slate-400">
-                                  <span className="text-mh-slate-500">From Pieces:</span>
-                                  {entry.sources.map((src, sIdx) => {
-                                    const slotLabel = SLOTS_ORDER.find((s) => s.id === src.slot)?.label;
-                                    return (
-                                      <span
-                                        key={sIdx}
-                                        className="rounded bg-mh-slate-850 border border-mh-slate-750 px-1.5 py-0.2 text-mh-slate-300 font-semibold"
-                                      >
-                                        {slotLabel}: +{src.level}
-                                      </span>
-                                    );
-                                  })}
-                                </div>
-
-                                {entry.meta?.description && (
-                                  <p className="text-xs text-mh-slate-400 leading-relaxed pt-0.5">
-                                    {entry.meta.description}
-                                  </p>
-                                )}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Locked Upgrade Tiers */}
-                    {lockedSkillTiers.length > 0 && (
-                      <div className="space-y-2 pt-2 border-t border-mh-slate-800">
-                        <div className="flex items-center justify-between">
-                          <h4 className="text-xs font-bold uppercase tracking-wider text-mh-slate-400 flex items-center gap-1.5">
-                            <Lock size={13} className="text-amber-400" />
-                            <span>Locked Skills at Higher Rarities ({lockedSkillTiers.length})</span>
-                          </h4>
-                          <span className="text-[10px] text-mh-slate-500">
-                            Select higher preset to unlock
-                          </span>
-                        </div>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                          {lockedSkillTiers.map((locked, lIdx) => {
-                            const slotLabel = SLOTS_ORDER.find((s) => s.id === locked.slot)?.label;
-                            return (
-                              <div
-                                key={lIdx}
-                                className="rounded-xl border border-dashed border-mh-slate-750 bg-mh-slate-950/40 p-2.5 flex items-center justify-between text-xs"
-                              >
-                                <div className="min-w-0 pr-2">
-                                  <p className="font-bold text-mh-slate-300 truncate">
-                                    {locked.skillName} (+{locked.level})
-                                  </p>
-                                  <p className="text-[10px] text-mh-slate-500 truncate">
-                                    on {slotLabel}
-                                  </p>
-                                </div>
-                                <span className="rounded bg-amber-500/20 text-amber-300 font-mono text-[10px] font-bold px-2 py-0.5 border border-amber-500/40 shrink-0">
-                                  Unlocks at R{locked.unlockRarity}
-                                </span>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  /* ═══════════════════════════════════════════════════════ */
-                  /* SINGLE PIECE VIEW: Set Effect Highlight + Piece Skills */
-                  /* ═══════════════════════════════════════════════════════ */
-                  <div className="space-y-3.5">
-                    {/* Inherent Set Effect on this Piece */}
-                    {pieceSetBonuses.length > 0 && (
-                      <div className="space-y-2">
-                        {pieceSetBonuses.map(({ skill, meta }, idx) => {
-                          const isMatch = selectedSkillIds.includes(skill.id);
-                          const cat = meta?.category || 'set_bonus';
-                          const theme = SKILL_CATEGORY_THEMES[cat] || SKILL_CATEGORY_THEMES.set_bonus;
-
-                          return (
-                            <div
-                              key={idx}
-                              className={cn(
-                                'rounded-xl border p-3 space-y-1.5 shadow-sm',
-                                isMatch
-                                  ? cn(theme.border, theme.bg, 'ring-1', theme.ring)
-                                  : 'border-amber-500/40 bg-amber-500/15',
-                              )}
-                            >
-                              <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2">
-                                  <Flame size={15} className="text-amber-400" />
-                                  <span className="font-bold text-sm text-amber-200">
-                                    Set Effect: {meta?.name ?? skill.id}
-                                  </span>
-                                  {isMatch && (
-                                    <span className={cn('rounded text-[10px] font-bold px-1.5 py-0.2', theme.badge)}>
-                                      Filter Match
-                                    </span>
-                                  )}
-                                </div>
-                                <span className="shrink-0 rounded bg-amber-500/25 px-2 py-0.5 text-[10px] font-bold text-amber-300 border border-amber-500/50">
-                                  Inherent Set Effect
-                                </span>
-                              </div>
-
-                              {meta?.description && (
-                                <p className="text-xs text-amber-100/90 leading-relaxed italic">
-                                  {meta.description}
-                                </p>
-                              )}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
-
-                    {/* Active Regular Skills on this piece */}
-                    <div className="space-y-2">
-                      <h4 className="text-xs font-bold uppercase tracking-wider text-mh-slate-300 flex items-center gap-1.5">
-                        <Unlock size={14} className="text-emerald-400" />
-                        <span>Active Skills at Rarity {sliderRarity} ({pieceActiveSkills.length})</span>
-                      </h4>
-
-                      {pieceActiveSkills.length === 0 ? (
-                        <p className="text-xs text-mh-slate-500 italic py-2">
-                          No active regular skills at rarity {sliderRarity}. Select a higher rarity preset to unlock!
-                        </p>
-                      ) : (
-                        <div className="space-y-2">
-                          {pieceActiveSkills.map(({ skillId, meta, totalLevel, maxLevel }, idx) => {
-                            const isMatch = selectedSkillIds.includes(skillId);
-                            const cat = meta?.category || 'general';
-                            const theme = SKILL_CATEGORY_THEMES[cat] || SKILL_CATEGORY_THEMES.general;
-
-                            return (
-                              <div
-                                key={idx}
-                                className={cn(
-                                  'rounded-xl border p-3 space-y-1.5',
-                                  isMatch
-                                    ? cn(theme.border, theme.bg, 'ring-1', theme.ring)
-                                    : 'border-mh-slate-750 bg-mh-slate-950/70',
-                                )}
-                              >
-                                <div className="flex items-center justify-between">
-                                  <div className="flex items-center gap-2">
-                                    <span className="font-bold text-sm text-mh-slate-100">
-                                      {meta?.name ?? skillId}
-                                    </span>
-                                    <span className={cn(
-                                      'rounded px-1.5 py-0.2 text-[9px] font-bold border uppercase tracking-wider',
-                                      theme.chipBg,
-                                      theme.chipBorder,
-                                      theme.chipText,
-                                    )}>
-                                      {theme.label}
-                                    </span>
-                                    {isMatch && (
-                                      <span className={cn('rounded text-[10px] font-bold px-1.5 py-0.2', theme.badge)}>
-                                        Filter Match
-                                      </span>
-                                    )}
-                                  </div>
-                                  <span className="rounded bg-mh-gold-500/20 text-mh-gold-300 font-mono text-xs font-bold px-2 py-0.5 border border-mh-gold-500/30">
-                                    Level {totalLevel} / {maxLevel}
-                                  </span>
-                                </div>
-
-                                {meta?.description && (
-                                  <p className="text-xs text-mh-slate-400 leading-relaxed">
-                                    {meta.description}
-                                  </p>
-                                )}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Locked Skills on this piece */}
-                    {pieceLockedSkills.length > 0 && (
-                      <div className="space-y-2 pt-2 border-t border-mh-slate-800">
-                        <h4 className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-                          <Lock size={13} />
-                          <span>Locked Skills ({pieceLockedSkills.length})</span>
-                        </h4>
-
-                        <div className="space-y-2">
-                          {pieceLockedSkills.map(({ skillId, meta, additionalLevel, unlockRarity }, idx) => (
-                            <div
-                              key={idx}
-                              className="rounded-xl border border-dashed border-amber-500/30 bg-amber-500/5 p-3 flex items-center justify-between"
-                            >
-                              <div>
-                                <p className="font-bold text-xs text-mh-slate-200">
-                                  {meta?.name ?? skillId} (+{additionalLevel} Level)
-                                </p>
-                                <p className="text-[11px] text-mh-slate-400 mt-0.5">
-                                  Requires upgrading piece to Rarity {unlockRarity}
-                                </p>
-                              </div>
-
-                              <span className="rounded bg-amber-500/20 text-amber-300 font-mono text-xs font-bold px-2 py-0.5 border border-amber-500/40">
-                                Unlocks at R{unlockRarity}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Notes */}
-                    {currentPiece?.notes && (
-                      <div className="rounded-xl border border-mh-slate-800 bg-mh-slate-950/40 p-3 space-y-1">
-                        <span className="text-[11px] font-bold text-mh-slate-400 uppercase tracking-wider">
-                          Notes
-                        </span>
-                        <p className="text-xs text-mh-slate-300 leading-relaxed">
-                          {currentPiece.notes}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                )}
+              <div className="rounded-3xl border border-mh-slate-700 bg-mh-slate-900 shadow-2xl p-4 sm:p-5 space-y-4 max-h-[calc(100vh-160px)] overflow-y-auto pr-1">
+                {renderDetailCard(false)}
               </div>
             ) : (
               <div className="rounded-3xl border border-mh-slate-800 bg-mh-slate-900/40 p-12 text-center text-xs text-mh-slate-500">
                 Select an armour set or piece from the list on the left to inspect skills and simulate upgrade levels.
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* ── Mobile Mini-Window Modal (Opens when piece is clicked on narrow screens) ── */}
+      {isMobileDetailOpen && currentSet && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 lg:hidden animate-in fade-in duration-150">
+          <div className="relative w-full max-w-xl max-h-[90vh] flex flex-col rounded-3xl border border-mh-slate-700 bg-mh-slate-900 shadow-2xl overflow-hidden">
+            <div className="p-4 sm:p-5 overflow-y-auto space-y-4">
+              {renderDetailCard(true)}
+            </div>
           </div>
         </div>
       )}
