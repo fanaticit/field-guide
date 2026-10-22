@@ -341,13 +341,13 @@ export default function VisageCard({
                       onAddChallenge?.(card, currentInk || 'flames', currentRarity);
                       setShowRarityMenu(false);
                     }}
-                    className="w-full flex items-center justify-between rounded-lg px-2 py-1.5 text-[10px] font-bold bg-mh-gold-500/15 border border-mh-gold-500/35 text-mh-gold-300 hover:bg-mh-gold-500/25 transition-colors shadow-sm"
+                    className="w-full flex items-center justify-between rounded-lg px-2 py-1.5 text-[10px] font-bold border border-sky-600/50 bg-transparent text-sky-400 hover:bg-sky-900 hover:border-sky-500 hover:text-sky-200 transition-colors shadow-sm"
                   >
                     <div className="flex items-center gap-1.5 truncate">
-                      <Target size={12} className="text-mh-gold-400 shrink-0" />
+                      <Target size={12} className="shrink-0" />
                       <span>+ Search Challenge</span>
                     </div>
-                    <span className="text-[9px] text-mh-gold-400 font-mono shrink-0 ml-1">
+                    <span className="text-[9px] font-mono shrink-0 ml-1 opacity-80">
                       &rarr; {nextRarityName.split(' ')[0]}
                     </span>
                   </button>

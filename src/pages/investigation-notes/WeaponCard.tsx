@@ -299,7 +299,7 @@ export default function WeaponCard({
                 onAddChallenge(weapon);
               }}
               disabled={isAddingChallenge}
-              className="inline-flex items-center gap-1.5 rounded-xl bg-mh-gold-500/15 hover:bg-mh-gold-500/25 border border-mh-gold-500/30 text-mh-gold-300 px-2.5 py-1 text-xs font-bold transition-all"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-sky-600/50 bg-transparent text-sky-400 hover:bg-sky-900 hover:border-sky-500 hover:text-sky-200 px-2.5 py-1 text-xs font-bold transition-all shadow-sm"
             >
               <Target size={13} />
               <span>+ Challenge</span>

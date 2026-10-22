@@ -38,7 +38,7 @@ import {
   
   getWeaponChallenge,
 } from '../../hooks/useHunterChallenges';
-import { useAuthStore, selectIsAdmin } from '../../store/authStore';
+import { useAuthStore } from '../../store/authStore';
 import { useNavigate } from 'react-router-dom';
 import WeaponCard from './WeaponCard';
 import WeaponModal from './WeaponModal';
@@ -63,8 +63,6 @@ const ELEMENT_ICONS: Record<WeaponElementType, React.ComponentType<{ size?: numb
 };
 
 export default function WeaponGuide() {
-  
-  const isAdmin = useAuthStore(selectIsAdmin);
   const { user } = useAuthStore();
 
   const [search, setSearch] = useState('');
@@ -219,18 +217,6 @@ export default function WeaponGuide() {
               </p>
             </div>
           </div>
-
-          {/* Right: Admin shortcut button */}
-          {isAdmin && (
-            <button
-              type="button"
-              onClick={() => navigate('/admin/weapons')}
-              className="flex items-center gap-2 rounded-xl bg-mh-gold-500/10 hover:bg-mh-gold-500/20 border border-mh-gold-500/30 px-4 py-2.5 text-xs font-bold text-mh-gold-400 transition-all shrink-0 self-start lg:self-auto"
-            >
-              <Sword size={14} />
-              <span>+ Manage Weapons in Admin</span>
-            </button>
-          )}
         </div>
 
         {/* Hunter's Challenges Summary Stats Row */}
@@ -616,7 +602,7 @@ export default function WeaponGuide() {
                             e.stopPropagation();
                             handleAddChallenge(weapon);
                           }}
-                          className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold border bg-mh-gold-500/15 border-mh-gold-500/30 text-mh-gold-300 hover:bg-mh-gold-500/25 transition-all"
+                          className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold border border-sky-600/50 bg-transparent text-sky-400 hover:bg-sky-900 hover:border-sky-500 hover:text-sky-200 transition-all shadow-sm"
                         >
                           <Plus size={11} />
                           <span>+ Challenge</span>

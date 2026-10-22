@@ -964,12 +964,12 @@ export default function ArmourGuide() {
               <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
                 {/* Challenge Button / Sign In Prompt */}
                 {!user ? (
-                  <div className="flex flex-1 items-center justify-between gap-2 rounded-xl border border-mh-slate-750 bg-mh-slate-900/60 px-3 py-2">
-                    <span className="text-xs text-mh-slate-400">Sign in to track challenge</span>
+                  <div className="flex flex-1 items-center justify-between gap-2 rounded-xl border border-sky-700/50 bg-sky-900/40 px-3 py-2">
+                    <span className="text-xs text-sky-300">Sign in to track challenge</span>
                     <button
                       type="button"
                       onClick={() => setLoginModalOpen(true)}
-                      className="flex items-center gap-1.5 rounded-lg bg-mh-gold-500 px-2.5 py-1 text-xs font-bold text-slate-950 hover:bg-mh-gold-400 transition-colors shrink-0"
+                      className="flex items-center gap-1.5 rounded-lg bg-yellow-500 px-2.5 py-1 text-xs font-bold text-slate-950 hover:bg-yellow-400 transition-colors shrink-0"
                     >
                       <LogIn size={12} />
                       Sign In
@@ -990,10 +990,10 @@ export default function ArmourGuide() {
                     onClick={() => handleAddChallenge(currentPiece, currentSet)}
                     disabled={addChallenge.isPending}
                     className={cn(
-                      'flex flex-1 items-center justify-center gap-2 rounded-xl border px-3 py-2.5 text-xs font-bold transition-all min-w-[170px]',
+                      'flex flex-1 items-center justify-center gap-2 rounded-xl border px-3 py-2.5 text-xs font-bold transition-all min-w-[170px] shadow-sm',
                       justAdded
                         ? 'border-emerald-500/50 bg-emerald-500/15 text-emerald-300'
-                        : 'border-mh-gold-500/40 bg-mh-gold-500/10 text-mh-gold-300 hover:bg-mh-gold-500/20 hover:text-mh-gold-200',
+                        : 'border-sky-600/50 bg-transparent text-sky-400 hover:bg-sky-900 hover:border-sky-500 hover:text-sky-200',
                       addChallenge.isPending && 'opacity-60 cursor-wait',
                     )}
                   >

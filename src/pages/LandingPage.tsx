@@ -71,7 +71,7 @@ export default function LandingPage() {
         </div>
 
         <div className="rounded-2xl border border-mh-slate-800 bg-mh-slate-900/50 p-6 hover:border-mh-slate-600 transition-colors">
-          <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/20">
+          <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-yellow-500/10 text-yellow-400 ring-1 ring-yellow-500/20">
             <Target size={24} />
           </div>
           <h3 className="font-display text-lg font-bold text-white mb-2">Hunter's Challenges</h3>

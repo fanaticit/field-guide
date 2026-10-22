@@ -255,7 +255,7 @@ export default function VisageModal({
             {/* Challenge Tracking CTA */}
             <div className="pt-2 border-t border-mh-slate-800/80 flex items-center justify-between gap-2">
               <div className="flex items-center gap-2">
-                <Target size={15} className="text-mh-gold-400 shrink-0" />
+                <Target size={15} className="text-yellow-400 shrink-0" />
                 <div>
                   <p className="text-xs font-bold text-mh-slate-200">Personal Hunter's Challenge</p>
                   <p className="text-[10px] text-mh-slate-400">
@@ -282,7 +282,7 @@ export default function VisageModal({
                 <button
                   type="button"
                   onClick={() => onAddChallenge?.(card, primaryInk, currentRarity)}
-                  className="inline-flex items-center gap-1.5 rounded-lg bg-mh-gold-500 hover:bg-mh-gold-400 text-slate-950 px-3.5 py-1.5 text-xs font-black transition-all shadow-md shrink-0"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-sky-600/50 bg-transparent text-sky-400 hover:bg-sky-900 hover:border-sky-500 hover:text-sky-200 px-3.5 py-1.5 text-xs font-bold transition-all shadow-md shrink-0"
                 >
                   <Plus size={14} />
                   <span>+ Search Challenge</span>

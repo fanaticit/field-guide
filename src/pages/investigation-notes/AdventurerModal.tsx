@@ -210,9 +210,9 @@ export default function AdventurerModal({
                       <button
                         type="button"
                         onClick={() => onAddChallenge?.(adventurer)}
-                        className="flex items-center gap-1.5 rounded-lg border border-mh-gold-500/40 bg-mh-gold-500/15 text-mh-gold-300 hover:bg-mh-gold-500/25 px-3 py-1.5 text-xs font-bold transition-all shadow-sm"
+                        className="flex items-center gap-1.5 rounded-lg border border-sky-600/50 bg-transparent text-sky-400 hover:bg-sky-900 hover:border-sky-500 hover:text-sky-200 px-3 py-1.5 text-xs font-bold transition-all shadow-sm"
                       >
-                        <Target size={13} className="text-mh-gold-400" />
+                        <Target size={13} />
                         <span>+ Challenge</span>
                       </button>
                     )

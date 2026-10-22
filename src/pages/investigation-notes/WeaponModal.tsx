@@ -478,15 +478,15 @@ export default function WeaponModal({
 
                   <div className="flex items-center justify-between pt-2 border-t border-mh-slate-800">
                     <div className="text-xs text-mh-slate-400">
-                      Goal: <span className="font-bold text-mh-gold-300">R{selectedCraftRarity} &rarr; R{selectedMaxRarity}</span>
+                      Goal: <span className="font-bold text-yellow-300">R{selectedCraftRarity} &rarr; R{selectedMaxRarity}</span>
                     </div>
                     <button
                       type="button"
                       onClick={handleAddChallenge}
                       disabled={addChallenge.isPending}
-                      className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-mh-gold-500 to-amber-400 hover:from-mh-gold-400 hover:to-amber-300 text-slate-950 px-4 py-2 text-xs font-black transition-all shadow-md disabled:opacity-50"
+                      className="flex items-center gap-2 rounded-xl border border-sky-600/50 bg-transparent text-sky-400 hover:bg-sky-900 hover:border-sky-500 hover:text-sky-200 px-4 py-2 text-xs font-bold transition-all shadow-md disabled:opacity-50"
                     >
-                      <Plus size={16} />
+                      <Plus size={15} />
                       <span>+ Add to Hunter Challenges</span>
                     </button>
                   </div>

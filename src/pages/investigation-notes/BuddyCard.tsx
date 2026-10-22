@@ -175,9 +175,9 @@ export default function BuddyCard({
                     onAddChallenge?.(buddy);
                   }}
                   title="Add recruitment challenge to Hunter's Challenges"
-                  className="inline-flex h-6 items-center gap-1 rounded-full px-2 text-[10px] font-bold border border-mh-gold-500/40 bg-mh-gold-500/15 text-mh-gold-300 shadow-xs transition-all hover:scale-105 hover:bg-mh-gold-500/25 hover:border-mh-gold-400 whitespace-nowrap"
+                  className="inline-flex h-6 items-center gap-1 rounded-full px-2 text-[10px] font-bold border border-sky-600/50 bg-transparent text-sky-400 hover:bg-sky-900 hover:border-sky-500 hover:text-sky-200 shadow-xs transition-all hover:scale-105 whitespace-nowrap"
                 >
-                  <Target size={11} className="text-mh-gold-400" />
+                  <Target size={11} />
                   <span>+ Challenge</span>
                 </button>
               )
