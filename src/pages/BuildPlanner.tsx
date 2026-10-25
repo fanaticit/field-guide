@@ -1,17 +1,14 @@
-import { Shield, Save, Copy, ArrowLeft, ThumbsUp, RotateCcw, CheckCircle2, Sparkles, Layers } from 'lucide-react';
+import { Shield, Save, Copy, ArrowLeft, ThumbsUp, RotateCcw, CheckCircle2 } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '../store/authStore';
-import { useBuildPlannerStore, type WeaponType } from '../store/buildPlannerStore';
+import { useBuildPlannerStore } from '../store/buildPlannerStore';
 import { HeroBuddySelector } from '../components/build-planner/HeroBuddySelector';
 import { EquipmentSelector } from '../components/build-planner/EquipmentSelector';
 import { VisageSelector } from '../components/build-planner/VisageSelector';
 import { SkillSummaryPanel } from '../components/build-planner/SkillSummaryPanel';
 import { supabase } from '../lib/supabase';
-import { getInkConfig } from '../data/schemas/visage';
-import { InkIconComponent } from './investigation-notes/VisageCard';
-import { FALLBACK_MONSTER_ICONS } from '../types/armory';
 
 export default function BuildPlanner() {
   const { user } = useAuthStore();
@@ -39,29 +36,6 @@ export default function BuildPlanner() {
       setSelectionFeedback(null);
     }, 2200);
   };
-
-  // Queries for live preview icons
-  const { data: weaponTypes } = useQuery({
-    queryKey: ['weapon_types'],
-    queryFn: async () => {
-      const { data, error } = await supabase.from('weapon_types').select('*').eq('is_active', true);
-      if (error) throw error;
-      return data as WeaponType[];
-    }
-  });
-
-  const { data: monsters } = useQuery({
-    queryKey: ['monsters_lookup'],
-    queryFn: async () => {
-      const { data, error } = await supabase.from('monsters').select('id, name, icon');
-      if (error) throw error;
-      return data;
-    }
-  });
-
-  const activeWeaponType = store.adventurer?.is_default
-    ? store.weaponType
-    : weaponTypes?.find(wt => wt.id === store.adventurer?.allowed_weapon_types?.[0]);
 
   // Track previous selections for feedback
   const prevSelectionsRef = useRef({
@@ -376,76 +350,7 @@ export default function BuildPlanner() {
   const isAuthor = user && store.author_id === user.id;
   const isSavedBuild = !!store.buildId;
 
-  // Equipment slots configuration for live loadout overview
-  const equipmentSlots = [
-    { id: 'helm', name: 'Helm', short: 'H', piece: store.helm, icon: store.helm?.image || monsters?.find(m => m.id === store.helm?.monster_id)?.icon || FALLBACK_MONSTER_ICONS[store.helm?.monster_id || ''] },
-    { id: 'chest', name: 'Chest', short: 'C', piece: store.chest, icon: store.chest?.image || monsters?.find(m => m.id === store.chest?.monster_id)?.icon || FALLBACK_MONSTER_ICONS[store.chest?.monster_id || ''] },
-    { id: 'gloves', name: 'Gloves', short: 'G', piece: store.gloves, icon: store.gloves?.image || monsters?.find(m => m.id === store.gloves?.monster_id)?.icon || FALLBACK_MONSTER_ICONS[store.gloves?.monster_id || ''] },
-    { id: 'waist', name: 'Waist', short: 'W', piece: store.waist, icon: store.waist?.image || monsters?.find(m => m.id === store.waist?.monster_id)?.icon || FALLBACK_MONSTER_ICONS[store.waist?.monster_id || ''] },
-    { id: 'greaves', name: 'Greaves', short: 'G', piece: store.greaves, icon: store.greaves?.image || monsters?.find(m => m.id === store.greaves?.monster_id)?.icon || FALLBACK_MONSTER_ICONS[store.greaves?.monster_id || ''] },
-  ];
 
-  const equippedVisagesCount = [
-    store.coreVisage,
-    store.visage2,
-    store.visage3,
-    store.visage4,
-    store.visage5,
-  ].filter(Boolean).length;
-  const totalVisagePts = store.getTotalVisagePoints();
-
-  // Compute highest level ink (including blended tie)
-  const currentInks = Object.values(store.selectedInkTypes).filter(Boolean);
-  const inkCounts: Record<string, number> = {};
-  currentInks.forEach(ink => {
-    inkCounts[ink] = (inkCounts[ink] || 0) + 1;
-  });
-  let maxCount = 0;
-  for (const count of Object.values(inkCounts)) {
-    if (count > maxCount) maxCount = count;
-  }
-  const topInks = maxCount > 0 ? Object.keys(inkCounts).filter(k => inkCounts[k] === maxCount) : [];
-
-  let highestInkRender = null;
-  if (topInks.length === 1) {
-    const cfg = getInkConfig(topInks[0]);
-    highestInkRender = (
-      <div
-        title={`${cfg.name} (${maxCount} pieces)`}
-        className={`w-7 h-7 sm:w-8 sm:h-8 rounded-md flex items-center justify-center border relative shadow-sm ${cfg.bg} ${cfg.border}`}
-      >
-        <InkIconComponent iconName={cfg.iconName} size={13} className={cfg.text} />
-      </div>
-    );
-  } else if (topInks.length > 1) {
-    const cfgA = getInkConfig(topInks[0]);
-    const cfgB = getInkConfig(topInks[1]);
-    highestInkRender = (
-      <div
-        title={`Tied Inks: ${cfgA.name} & ${cfgB.name} (${maxCount} pieces each)`}
-        className="w-7 h-7 sm:w-8 sm:h-8 rounded-md relative overflow-hidden border border-mh-slate-700/90 shadow-sm shrink-0"
-        style={{
-          background: `linear-gradient(135deg, ${cfgA.glowColor.replace('0.4', '0.25')} 0%, ${cfgA.glowColor.replace('0.4', '0.25')} 48%, rgba(100, 116, 139, 0.5) 50%, ${cfgB.glowColor.replace('0.4', '0.25')} 52%, ${cfgB.glowColor.replace('0.4', '0.25')} 100%)`,
-        }}
-      >
-        <div className="absolute top-0.5 left-0.5">
-          <InkIconComponent iconName={cfgA.iconName} size={9} className={cfgA.text} />
-        </div>
-        <div className="absolute bottom-0.5 right-0.5">
-          <InkIconComponent iconName={cfgB.iconName} size={9} className={cfgB.text} />
-        </div>
-      </div>
-    );
-  } else {
-    highestInkRender = (
-      <div
-        title="No visages or inks active"
-        className="w-7 h-7 sm:w-8 sm:h-8 rounded-md flex items-center justify-center border border-dashed border-mh-slate-750 bg-mh-slate-850/30"
-      >
-        <Sparkles size={11} className="text-mh-slate-600" />
-      </div>
-    );
-  }
 
   if (isLoading) {
     return <div className="p-8 text-center text-mh-slate-400">Loading build...</div>;
@@ -571,30 +476,26 @@ export default function BuildPlanner() {
         </div>
       </div>
 
-      {/* 2. Second Row: Adventurer, Buddy, Title/Description & Role Toggle */}
-      <div className="flex flex-col xl:flex-row gap-6 items-stretch bg-mh-slate-800/30 border border-mh-slate-800 rounded-xl p-4">
-        {/* Left: Adventurer & Buddy (HeroBuddySelector) */}
-        <div className="shrink-0">
-          <HeroBuddySelector />
-        </div>
-
-        {/* Right: Title, Role Toggle, and Description */}
-        <div className="flex-1 flex flex-col gap-3 min-w-0">
-          <div className="flex items-center justify-between gap-3 border-b-2 border-mh-slate-700 pb-1">
+      {/* 2. Second Row: Build Meta & Tactical Loadout Dock */}
+      <div className="flex flex-col gap-3.5 bg-mh-slate-800/40 border border-mh-slate-750/70 rounded-xl p-3.5 shadow-md">
+        {/* Top: Title, Role Toggle, and Description in a tight row */}
+        <div className="flex flex-col landscape:flex-row md:flex-row gap-3 items-stretch landscape:items-center md:items-center justify-between">
+          {/* Title & Role */}
+          <div className="flex items-center gap-2.5 flex-1 min-w-0">
             <input 
               ref={titleInputRef}
               type="text" 
-              placeholder="Build Title"
-              className="w-full bg-transparent border-0 font-display text-xl sm:text-2xl font-bold text-mh-slate-100 focus:border-0 focus:ring-0 px-1 py-1 placeholder-mh-slate-600 transition-colors"
+              placeholder="Build Title (e.g. Thunder Dual Blades Burst)"
+              className="w-full bg-transparent border-b border-mh-slate-700/80 hover:border-mh-slate-600 focus:border-rarity-3 font-display text-lg sm:text-xl font-bold text-mh-slate-100 focus:ring-0 px-1 py-1 placeholder-mh-slate-500 transition-colors"
               value={store.title}
               onChange={(e) => store.setTitle(e.target.value)}
             />
             {/* Build Role Toggle */}
-            <div className="flex rounded-md bg-mh-slate-800 p-0.5 border border-mh-slate-700 shrink-0">
+            <div className="flex rounded-md bg-mh-slate-900/90 p-0.5 border border-mh-slate-750 shrink-0">
               <button
                 type="button"
                 onClick={() => { store.setBuildRole('main'); triggerFeedback('Build role set to: Main'); }}
-                className={`rounded px-2.5 py-0.5 text-[10px] font-bold uppercase transition-all ${
+                className={`rounded px-2.5 py-1 text-[10px] font-bold uppercase transition-all ${
                   store.buildRole === 'main' ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'text-mh-slate-500 hover:text-mh-slate-300 border border-transparent'
                 }`}
               >
@@ -603,7 +504,7 @@ export default function BuildPlanner() {
               <button
                 type="button"
                 onClick={() => { store.setBuildRole('support'); triggerFeedback('Build role set to: Support'); }}
-                className={`rounded px-2.5 py-0.5 text-[10px] font-bold uppercase transition-all ${
+                className={`rounded px-2.5 py-1 text-[10px] font-bold uppercase transition-all ${
                   store.buildRole === 'support' ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30' : 'text-mh-slate-500 hover:text-mh-slate-300 border border-transparent'
                 }`}
               >
@@ -612,116 +513,37 @@ export default function BuildPlanner() {
             </div>
           </div>
 
-          <textarea 
-            placeholder="Notes or description (optional)"
-            className="w-full bg-mh-slate-900 border border-mh-slate-700 rounded-lg text-sm text-mh-slate-200 focus:border-rarity-3 focus:ring-0 p-3 placeholder-mh-slate-600 resize-none h-full min-h-[90px] transition-colors"
-            value={store.description}
-            onChange={(e) => store.setDescription(e.target.value)}
-          />
-        </div>
-      </div>
-
-      {/* 2.5 Live Loadout Overview Strip: Real-time feedback on what has been selected */}
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-mh-slate-850/80 border border-mh-slate-750/70 rounded-xl px-4 py-2.5 shadow-md">
-        {/* Left: Loadout Trio (Adventurer -> Buddy -> Weapon) */}
-        <div className="flex items-center gap-3">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-mh-slate-400 flex items-center gap-1">
-            <Sparkles size={12} className="text-rarity-3" />
-            <span>Loadout:</span>
-          </span>
-
-          <div className="flex items-center gap-1.5">
-            {/* Adventurer Icon / Placeholder */}
-            <div
-              className="w-8 h-8 rounded-lg bg-mh-slate-800 border border-mh-slate-700 overflow-hidden flex items-center justify-center shrink-0"
-              title={`Hunter: ${store.adventurer?.name || 'None selected'}`}
-            >
-              {store.adventurer?.image ? (
-                <img src={store.adventurer.image} alt={store.adventurer.name} className="w-full h-full object-cover" />
-              ) : (
-                <span className="text-[9px] text-mh-slate-500 font-bold">Adv</span>
-              )}
-            </div>
-
-            {/* Buddy Icon / Placeholder */}
-            <div
-              className="w-6 h-6 rounded-md bg-mh-slate-800 border border-mh-slate-700 overflow-hidden flex items-center justify-center shrink-0"
-              title={`Buddy: ${store.buddy?.name || 'None selected'}`}
-            >
-              {store.buddy?.image ? (
-                <img src={store.buddy.image} alt={store.buddy.name} className="w-full h-full object-contain" />
-              ) : (
-                <span className="text-[8px] text-mh-slate-500">Bud</span>
-              )}
-            </div>
-
-            {/* Weapon Type & Weapon Name */}
-            <div className="flex items-center gap-1 bg-mh-slate-900/90 px-2 py-1 rounded-md border border-mh-slate-750">
-              {activeWeaponType?.icon && (
-                <img src={activeWeaponType.icon} alt={activeWeaponType.name} className="w-4 h-4 object-contain opacity-80" />
-              )}
-              <span className="text-xs font-semibold text-mh-slate-200 truncate max-w-[120px] sm:max-w-[160px]">
-                {store.weapon?.name || activeWeaponType?.name || 'No Weapon'}
-              </span>
-            </div>
+          {/* Compact Notes field */}
+          <div className="w-full landscape:w-[320px] md:w-[360px] lg:w-[380px] xl:w-[460px] shrink-0">
+            <input 
+              type="text"
+              placeholder="Notes or strategy description (optional)..."
+              className="w-full bg-mh-slate-900/90 border border-mh-slate-750 hover:border-mh-slate-650 rounded-lg text-xs text-mh-slate-200 focus:border-rarity-3 focus:ring-0 px-3 py-1.5 placeholder-mh-slate-500 transition-colors"
+              value={store.description}
+              onChange={(e) => store.setDescription(e.target.value)}
+            />
           </div>
         </div>
 
-        {/* Middle: Equipment Monster Showcase (5 Armour pieces) */}
-        <div className="flex items-center gap-1.5">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-mh-slate-500 hidden lg:inline mr-1">
-            Armour:
-          </span>
-          {equipmentSlots.map((slot) => {
-            const isEquipped = !!slot.piece;
-            return (
-              <div
-                key={slot.id}
-                title={`${slot.name}: ${slot.piece?.set_name || 'Empty'}`}
-                className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center overflow-hidden transition-all shrink-0 ${
-                  isEquipped
-                    ? 'bg-mh-slate-800 border border-rarity-3/60 shadow-sm'
-                    : 'bg-mh-slate-900/40 border border-dashed border-mh-slate-700 text-mh-slate-600'
-                }`}
-              >
-                {slot.icon ? (
-                  <img src={slot.icon} alt={slot.name} className="w-full h-full object-cover" />
-                ) : (
-                  <span className="text-[9px] font-bold uppercase">{slot.short}</span>
-                )}
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Right: Visages & Ink Showcase */}
-        <div className="flex items-center gap-2">
-          {/* Visage count & points */}
-          <div className="flex items-center gap-1 text-xs text-mh-slate-300 bg-mh-slate-900/90 px-2.5 py-1 rounded-md border border-mh-slate-750">
-            <Layers size={13} className="text-purple-400" />
-            <span className="font-bold text-white">{equippedVisagesCount}/5</span>
-            <span className="text-[10px] text-mh-slate-400">({totalVisagePts} pts)</span>
-          </div>
-
-          {/* Highest Ink Icon / Blend */}
-          {highestInkRender}
-        </div>
+        {/* Bottom: Tactical Loadout Dock (Adventurer, Weapon Type, Buddy) */}
+        <HeroBuddySelector />
       </div>
 
-      {/* 3. Main Layout (3 Columns) */}
-      <div className="flex flex-col lg:flex-row gap-4 items-start w-full">
-        {/* Left Column: Equipment */}
-        <div className="w-full lg:w-[40%]">
+
+      {/* 3. Main Layout: 1 col in portrait mobile; 2 cols in landscape/tablet with Visage underneath; 3 cols on large desktop */}
+      <div className="grid grid-cols-1 landscape:grid-cols-2 md:grid-cols-2 xl:grid-cols-12 gap-4 items-start w-full">
+        {/* Left Column: Equipment / Armour */}
+        <div className="w-full col-span-1 landscape:col-span-1 md:col-span-1 xl:col-span-5">
           <EquipmentSelector />
         </div>
 
-        {/* Middle Column: Skills */}
-        <div className="w-full lg:w-[30%]">
+        {/* Right Column in landscape/tablet (Middle on desktop): Skills */}
+        <div className="w-full col-span-1 landscape:col-span-1 md:col-span-1 xl:col-span-4">
           <SkillSummaryPanel />
         </div>
 
-        {/* Right Column: Visage */}
-        <div className="w-full lg:w-[30%]">
+        {/* Visage Cards: Underneath both columns in landscape/tablet, 3rd column on large desktop */}
+        <div className="w-full col-span-1 landscape:col-span-2 md:col-span-2 xl:col-span-3">
           <VisageSelector />
         </div>
       </div>
