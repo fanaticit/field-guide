@@ -36,9 +36,17 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <LandingPage /> },
       { path: 'monsters', element: <FieldGuide /> },
-      { path: 'build-planner', element: <BuildPlanner /> },
-      { path: 'build-planner/:buildId', element: <BuildPlanner /> },
+      // Hunter's Armory & Build Planner
       { path: 'armory', element: <Armory /> },
+      { path: 'armory/planner', element: <BuildPlanner /> },
+      { path: 'armory/planner/:buildId', element: <BuildPlanner /> },
+      { path: 'armory/build-planner', element: <Navigate to="/armory/planner" replace /> },
+      { path: 'armory/build-planner/:buildId', element: <BuildPlanner /> },
+
+      // Legacy Build Planner routes redirect to Armory subpage
+      { path: 'build-planner', element: <Navigate to="/armory/planner" replace /> },
+      { path: 'build-planner/:buildId', element: <BuildPlanner /> },
+
       { path: 'challenges', element: <HunterChallenges /> },
       { path: 'community-hub', element: <CommunityHub /> },
 

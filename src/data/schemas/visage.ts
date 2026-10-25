@@ -273,6 +273,38 @@ export function getInkConfig(ink: string | null | undefined, customName?: string
   };
 }
 
+export const ELEMENT_TO_INK_MAP: Record<string, string[]> = {
+  fire: ['flames', 'fire'],
+  ice: ['frost', 'ice'],
+  raw: ['combat', 'raw'],
+  water: ['water'],
+  thunder: ['thunder'],
+  dragon: ['dragon'],
+  poison: ['poison'],
+  paralysis: ['paralysis'],
+  blast: ['blast'],
+  sleep: ['sleep'],
+};
+
+/** Pick the best ink for a card given the current weapon element */
+export function chooseBestInk(inkTypes?: string[] | null, weaponElement?: string | null): string {
+  if (!inkTypes || inkTypes.length === 0) return '';
+  if (inkTypes.length === 1) return inkTypes[0];
+
+  if (weaponElement) {
+    const el = weaponElement.toLowerCase().trim();
+    const possibleInks = ELEMENT_TO_INK_MAP[el] || [el];
+    for (const ink of possibleInks) {
+      const match = inkTypes.find((it) => it.toLowerCase() === ink);
+      if (match) {
+        return match;
+      }
+    }
+  }
+
+  return inkTypes[0];
+}
+
 export interface DBVisage {
   id: string;
   name: string;

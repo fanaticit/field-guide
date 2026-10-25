@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { chooseBestInk } from '../data/schemas/visage';
 
 // Basic Types based on Database schema
 export interface Adventurer {
@@ -64,6 +65,7 @@ interface BuildPlannerState {
   buildRole: 'main' | 'support';
   author_id: string | null;
   is_published: boolean;
+  upvotes: number;
   hoveredSkillId: string | null;
   hoveredSkillCategory: string | null;
   // Selections
@@ -91,6 +93,7 @@ interface BuildPlannerState {
   setBuildRole: (role: 'main' | 'support') => void;
   setAuthorId: (id: string | null) => void;
   setIsPublished: (pub: boolean) => void;
+  setUpvotes: (count: number) => void;
   setAdventurer: (adv: Adventurer | null) => void;
   setWeaponType: (type: WeaponType | null) => void;
   setWeapon: (w: Weapon | null) => void;
@@ -107,38 +110,6 @@ interface BuildPlannerState {
   getActiveSkills: () => { id: string; level: number }[];
 }
 
-/** Pick the best ink for a card given the current weapon element */
-function chooseBestInk(inkTypes: string[], weaponElement?: string | null): string {
-  if (!inkTypes || inkTypes.length === 0) return '';
-  if (inkTypes.length === 1) return inkTypes[0];
-  
-  // Map standard weapon elements to MHO specific ink types
-  const elementToInkMap: Record<string, string[]> = {
-    'fire': ['flames', 'fire'],
-    'ice': ['frost', 'ice'],
-    'raw': ['combat', 'raw'],
-    'water': ['water'],
-    'thunder': ['thunder'],
-    'dragon': ['dragon'],
-    'poison': ['poison'],
-    'paralysis': ['paralysis'],
-    'blast': ['blast'],
-    'sleep': ['sleep'],
-  };
-
-  // Prefer weapon element if it exists in the card's ink types
-  if (weaponElement) {
-    const possibleInks = elementToInkMap[weaponElement] || [weaponElement];
-    for (const ink of possibleInks) {
-      if (inkTypes.includes(ink)) {
-        return ink;
-      }
-    }
-  }
-  
-  return inkTypes[0];
-}
-
 export const useBuildPlannerStore = create<BuildPlannerState>((set, get) => ({
   buildId: null,
   title: '',
@@ -146,6 +117,7 @@ export const useBuildPlannerStore = create<BuildPlannerState>((set, get) => ({
   buildRole: 'main',
   author_id: null,
   is_published: false,
+  upvotes: 0,
   hoveredSkillId: null,
   hoveredSkillCategory: null,
   adventurer: null,
@@ -170,6 +142,7 @@ export const useBuildPlannerStore = create<BuildPlannerState>((set, get) => ({
   setBuildRole: (role) => set({ buildRole: role }),
   setAuthorId: (id) => set({ author_id: id }),
   setIsPublished: (pub) => set({ is_published: pub }),
+  setUpvotes: (upvotes) => set({ upvotes }),
   setAdventurer: (adv) => set((state) => {
     let newWeapon = state.weapon;
     if (adv && !adv.is_default && newWeapon) {
@@ -221,7 +194,8 @@ export const useBuildPlannerStore = create<BuildPlannerState>((set, get) => ({
     buildRole: 'main',
     author_id: null,
     is_published: false,
-  hoveredSkillId: null,
+    upvotes: 0,
+    hoveredSkillId: null,
     adventurer: null,
     weaponType: null,
     weapon: null,

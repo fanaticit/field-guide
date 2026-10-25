@@ -347,7 +347,7 @@ export default function ArmourGuide() {
       }
     }
 
-    navigate('/build-planner');
+    navigate('/armory/planner');
   }, [exampleBuild, navigate]);
 
   // Group pieces into complete Armour Sets

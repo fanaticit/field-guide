@@ -26,9 +26,11 @@ import {
   BookMarked,
   Image as ImageIcon,
   LogIn,
+  Palette,
 } from 'lucide-react';
 import { useAuthStore, selectIsAdmin, selectCanModerate } from '../store/authStore';
 import { useUIStore, type Page } from '../store/uiStore';
+import { SITE_SECTIONS, THEME_REGISTRY, type RarityTheme } from '../config/themes';
 import LoginModal from '../components/auth/LoginModal';
 import { cn } from '../lib/utils';
 
@@ -96,7 +98,7 @@ export default function ProfilePage() {
   const { user, profile, updateProfile, authLoading, authError, clearAuthError } = useAuthStore();
   const isAdmin = useAuthStore(selectIsAdmin);
   const canModerate = useAuthStore(selectCanModerate);
-  const { defaultGame, setDefaultGame } = useUIStore();
+  const { defaultGame, setDefaultGame, sectionThemes, setSectionTheme, resetSectionThemes } = useUIStore();
 
   const [loginOpen, setLoginOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -554,6 +556,109 @@ export default function ProfilePage() {
                   </div>
                   <p className="text-mh-slate-400 leading-relaxed">{page.desc}</p>
                 </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ── Section: Section Rarity Themes ── */}
+        <div className="mh-card flex flex-col gap-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-mh-slate-700/80 pb-4">
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--bg-fine)] text-[var(--rarity-fine)] border border-[var(--rarity-fine)]/40">
+                <Palette size={18} />
+              </div>
+              <div>
+                <h2 className="text-base font-bold text-white flex items-center gap-2">
+                  <span>Section Rarity Themes</span>
+                  <span className="text-[10px] font-mono text-[var(--accent-gold)] uppercase px-2 py-0.5 rounded bg-white/5 border border-white/10">
+                    Live Switcher
+                  </span>
+                </h2>
+                <p className="text-xs text-[#A3A3A3]">
+                  Customize the color theme and rarity aura for each section of the Field Guide
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => resetSectionThemes()}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-[#A3A3A3] hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors w-fit"
+            >
+              <RotateCcw size={12} />
+              <span>Reset to Defaults</span>
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {SITE_SECTIONS.map((sec) => {
+              const currentTheme = sectionThemes[sec.path] ?? 'standard';
+              const meta = THEME_REGISTRY[currentTheme];
+
+              return (
+                <div
+                  key={sec.path}
+                  className="p-3.5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-panel-primary)] flex flex-col justify-between gap-3"
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-1">
+                      <span className="font-bold text-sm text-white">{sec.label}</span>
+                      <span
+                        className="px-2 py-0.5 rounded-full text-[10px] font-bold border"
+                        style={{
+                          borderColor: meta.colorHex,
+                          color: meta.colorHex,
+                          backgroundColor: meta.bgHex,
+                        }}
+                      >
+                        {meta.label}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-[#A3A3A3] leading-relaxed mb-1">
+                      {sec.description}
+                    </p>
+                    <span className="text-[10px] font-mono text-[#A3A3A3]/60">{sec.path}</span>
+                  </div>
+
+                  {/* Theme selector pills */}
+                  <div className="flex flex-wrap gap-1 pt-2 border-t border-white/5">
+                    {(Object.keys(THEME_REGISTRY) as RarityTheme[]).map((thKey) => {
+                      const thMeta = THEME_REGISTRY[thKey];
+                      const isSelected = currentTheme === thKey;
+
+                      return (
+                        <button
+                          key={thKey}
+                          type="button"
+                          onClick={() => setSectionTheme(sec.path, thKey)}
+                          title={`${thMeta.label} (${thMeta.colorName})`}
+                          className={cn(
+                            'flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-semibold border transition-all',
+                            isSelected
+                              ? 'ring-1 shadow-sm'
+                              : 'border-white/10 bg-white/5 text-[#A3A3A3] hover:text-white hover:bg-white/10'
+                          )}
+                          style={
+                            isSelected
+                              ? {
+                                  borderColor: thMeta.colorHex,
+                                  color: thMeta.colorHex,
+                                  backgroundColor: thMeta.bgHex,
+                                }
+                              : undefined
+                          }
+                        >
+                          <span
+                            className="w-1.5 h-1.5 rounded-full shrink-0"
+                            style={{ backgroundColor: thMeta.colorHex }}
+                          />
+                          <span>{thMeta.label.split(' ')[0]}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
               );
             })}
           </div>

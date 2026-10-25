@@ -60,18 +60,11 @@ const navItems: NavItem[] = [
     description: 'Monster Weaknesses & Drops',
   },
   {
-    id: 'build-planner',
-    path: '/build-planner',
-    label: 'Build Planner',
-    icon: Sword,
-    description: 'Theorycraft your loadouts',
-  },
-  {
     id: 'armory',
     path: '/armory',
     label: 'Hunter\'s Armory',
     icon: Shield,
-    description: 'View community builds',
+    description: 'Builds & Planner',
   },
   {
     id: 'community',
@@ -111,6 +104,11 @@ const navItems: NavItem[] = [
   },
 ];
 
+const armorySubNav: SubNavItem[] = [
+  { id: 'armory-builds', path: '/armory', label: 'Community Builds', icon: Shield },
+  { id: 'armory-planner', path: '/armory/planner', label: 'Build Planner', icon: Sword },
+];
+
 const investigationSubNav: SubNavItem[] = [
   { id: 'monster-guide', path: '/investigation-notes/monster-guide', label: 'Monster Guide', icon: Bug },
   { id: 'adventurers', path: '/investigation-notes/adventurers', label: 'Adventurers', icon: UserCheck },
@@ -133,10 +131,12 @@ export default function Sidebar() {
   const isAdmin = useAuthStore(selectIsAdmin);
 
   const isInvestigationActive = pathname.startsWith('/investigation-notes');
+  const isArmoryActive = pathname.startsWith('/armory') || pathname.startsWith('/build-planner');
 
   // Derive active top-level item from pathname
   const getIsActive = (item: NavItem) => {
     if (item.path === '/') return pathname === '/';
+    if (item.id === 'armory') return pathname.startsWith('/armory') || pathname.startsWith('/build-planner');
     return pathname.startsWith(item.path);
   };
 
@@ -169,7 +169,7 @@ export default function Sidebar() {
       <aside
         className={cn(
           'sidebar-transition fixed left-0 top-0 z-50 flex h-screen flex-col',
-          'border-r border-mh-slate-700 bg-mh-slate-950',
+          'border-r border-[var(--border-subtle)] bg-[var(--bg-panel-secondary)]/95 backdrop-blur-xl',
           sidebarCollapsed ? 'w-[72px]' : 'w-[260px]',
           'lg:translate-x-0',
           mobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
@@ -179,7 +179,7 @@ export default function Sidebar() {
         {/* ── Header / Branding ── */}
         <div
           className={cn(
-            'flex h-16 shrink-0 items-center border-b border-mh-slate-700 px-4',
+            'flex h-16 shrink-0 items-center border-b border-[var(--border-subtle)] px-4',
             sidebarCollapsed ? 'justify-center' : 'justify-between gap-3',
           )}
         >
@@ -187,10 +187,10 @@ export default function Sidebar() {
             <img src="/favicon.png" alt="Field Guide Icon" className="h-9 w-9 object-contain drop-shadow-md" />
             {!sidebarCollapsed && (
               <div className="min-w-0">
-                <p className="font-display text-sm font-bold leading-none tracking-wide text-mh-gold-400 text-glow-gold">
+                <p className="font-display text-sm font-bold leading-none tracking-wide text-[#FFD700] drop-shadow-[0_0_10px_rgba(255,215,0,0.35)]">
                   Field Guide
                 </p>
-                <p className="mt-0.5 text-[10px] font-medium uppercase tracking-widest text-mh-slate-500">
+                <p className="mt-0.5 text-[10px] font-medium uppercase tracking-widest text-[#A3A3A3]">
                   Monster Hunter Outlanders
                 </p>
               </div>
@@ -200,7 +200,7 @@ export default function Sidebar() {
           {!sidebarCollapsed && (
             <button
               onClick={() => setMobileMenuOpen(false)}
-              className="flex h-7 w-7 items-center justify-center rounded-md text-mh-slate-500 transition-colors hover:bg-mh-slate-800 hover:text-mh-slate-300 lg:hidden"
+              className="flex h-7 w-7 items-center justify-center rounded-md text-[#A3A3A3] transition-colors hover:bg-white/10 hover:text-white lg:hidden"
               aria-label="Close menu"
             >
               <X size={16} />
@@ -214,7 +214,7 @@ export default function Sidebar() {
             const isActive = getIsActive(item);
             const Icon = item.icon;
             const isInvestigation = item.id === 'investigation-notes';
-            const isAdminItem = item.id === 'admin';
+            const isArmory = item.id === 'armory';
 
             return (
               <div key={item.id}>
@@ -225,27 +225,16 @@ export default function Sidebar() {
                   className={cn(
                     'group relative flex w-full items-center gap-3 rounded-r-xl rounded-l-none px-4 py-3',
                     'border-y border-r transition-all duration-300 ease-out',
-                    isActive && !isAdminItem && item.id !== 'challenges'
-                      ? 'bg-mh-slate-800 border-mh-slate-700 shadow-md shadow-black/40 text-mh-gold-400 translate-x-1'
-                      : isActive && !isAdminItem && item.id === 'challenges'
-                      ? 'bg-sky-800 border-sky-700 shadow-md shadow-black/40 text-yellow-400 translate-x-1'
-                      : isActive && isAdminItem
-                      ? 'bg-mh-slate-800 border-mh-slate-700 shadow-md shadow-black/40 text-mh-gold-400 translate-x-1'
-                      : isAdminItem
-                      ? 'border-transparent bg-transparent text-mh-gold-600 hover:bg-mh-slate-900 hover:border-mh-slate-800 hover:translate-x-0.5 hover:text-mh-gold-400'
-                      : item.id === 'challenges'
-                      ? 'border-transparent bg-transparent text-sky-400 hover:bg-sky-900 hover:border-sky-800 hover:translate-x-0.5 hover:text-sky-200'
-                      : 'border-transparent bg-transparent text-mh-slate-400 hover:bg-mh-slate-900 hover:border-mh-slate-800 hover:translate-x-0.5 hover:text-mh-slate-200',
+                    isActive
+                      ? 'bg-[var(--bg-panel-primary)] border-[var(--border-active)] shadow-md shadow-black/50 text-[#FFD700] translate-x-1'
+                      : 'border-transparent bg-transparent text-[#A3A3A3] hover:bg-white/5 hover:text-white hover:translate-x-0.5',
                     sidebarCollapsed && 'justify-center px-0 rounded-none border-none translate-x-0',
                   )}
                 >
                   {/* Active indicator bar */}
                   {isActive && !sidebarCollapsed && (
                     <span
-                      className={cn(
-                        "absolute left-0 top-0 bottom-0 w-1 rounded-r-sm shadow-[2px_0_8px_rgba(250,204,21,0.4)]",
-                        item.id === 'challenges' ? "bg-yellow-400" : "bg-mh-gold-400"
-                      )}
+                      className="absolute left-0 top-0 bottom-0 w-1 rounded-r-sm bg-[#FFD700] shadow-[0_0_10px_rgba(255,215,0,0.5)]"
                       aria-hidden="true"
                     />
                   )}
@@ -264,12 +253,8 @@ export default function Sidebar() {
                     className={cn(
                       'shrink-0 transition-colors duration-300',
                       isActive
-                        ? (item.id === 'challenges' ? 'text-yellow-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.4)]' : 'text-mh-gold-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.4)]')
-                        : isAdminItem
-                        ? 'text-mh-gold-600 group-hover:text-mh-gold-400'
-                        : item.id === 'challenges'
-                        ? 'text-sky-500 group-hover:text-sky-300'
-                        : 'text-mh-slate-500 group-hover:text-mh-slate-300',
+                        ? 'text-[#FFD700] drop-shadow-[0_0_8px_rgba(255,215,0,0.45)]'
+                        : 'text-[#A3A3A3] group-hover:text-white',
                     )}
                   />
 
@@ -277,23 +262,32 @@ export default function Sidebar() {
                     <div className="min-w-0 flex-1">
                       <p className={cn(
                         'text-sm font-bold tracking-wide transition-colors',
-                        isActive ? (item.id === 'challenges' ? 'text-yellow-300 drop-shadow-sm' : 'text-mh-gold-300 drop-shadow-sm') : '',
+                        isActive ? 'text-[#FFD700] drop-shadow-sm' : '',
                       )}>
                         {item.label}
                       </p>
-                      <p className={cn("mt-0.5 text-[10px]", item.id === 'challenges' && !isActive ? "text-sky-500" : "text-mh-slate-500")}>
+                      <p className="mt-0.5 text-[10px] text-[#A3A3A3]">
                         {item.description}
                       </p>
                     </div>
                   )}
 
-                  {/* Chevron for Investigation Notes */}
+                  {/* Chevron for items with sub-pages */}
                   {!sidebarCollapsed && isInvestigation && (
                     <ChevronDown
                       size={14}
                       className={cn(
-                        'shrink-0 transition-transform duration-200 text-mh-slate-500',
-                        isInvestigationActive && 'rotate-180 text-mh-gold-500',
+                        'shrink-0 transition-transform duration-200 text-[#A3A3A3]',
+                        isInvestigationActive && 'rotate-180 text-[var(--rarity-fine)]',
+                      )}
+                    />
+                  )}
+                  {!sidebarCollapsed && isArmory && (
+                    <ChevronDown
+                      size={14}
+                      className={cn(
+                        'shrink-0 transition-transform duration-200 text-[#A3A3A3]',
+                        isArmoryActive && 'rotate-180 text-[#FFD700]',
                       )}
                     />
                   )}
@@ -303,8 +297,8 @@ export default function Sidebar() {
                     <div
                       className={cn(
                         'pointer-events-none absolute left-full ml-3 whitespace-nowrap',
-                        'rounded-md bg-mh-slate-800 px-2.5 py-1.5 text-xs font-semibold text-mh-slate-200',
-                        'border border-mh-slate-700 shadow-xl',
+                        'rounded-md bg-[var(--bg-panel-primary)] px-2.5 py-1.5 text-xs font-semibold text-white',
+                        'border border-[var(--border-subtle)] shadow-xl',
                         'opacity-0 transition-opacity duration-150 group-hover:opacity-100',
                         'z-50',
                       )}
@@ -315,7 +309,34 @@ export default function Sidebar() {
                   )}
                 </button>
 
-                {/* Investigation Notes sub-nav */}
+                {/* Hunter's Armory sub-nav (Gold Theme) */}
+                {isArmory && isArmoryActive && !sidebarCollapsed && (
+                  <div className="mt-1 flex flex-col gap-0.5">
+                    {armorySubNav.map((sub) => {
+                      const isSubActive = sub.path === '/armory'
+                        ? pathname === '/armory'
+                        : pathname.startsWith('/armory/planner') || pathname.startsWith('/build-planner');
+                      const SubIcon = sub.icon;
+                      return (
+                        <button
+                          key={sub.id}
+                          onClick={() => { navigate(sub.path); setMobileMenuOpen(false); }}
+                          className={cn(
+                            'flex w-full items-center gap-2 rounded-r-lg rounded-l-none pl-11 pr-4 py-2 text-left text-xs transition-all duration-300 ease-out border-y border-r',
+                            isSubActive
+                              ? 'bg-[var(--bg-panel-primary)] border-[#FFD700]/50 text-[#FFD700] font-bold translate-x-1 shadow-sm'
+                              : 'border-transparent bg-transparent text-[#A3A3A3] hover:bg-white/5 hover:text-white hover:translate-x-0.5',
+                          )}
+                        >
+                          <SubIcon size={14} className={cn('shrink-0 transition-colors', isSubActive ? 'text-[#FFD700] drop-shadow-[0_0_8px_rgba(255,215,0,0.45)]' : '')} />
+                          <span className={cn(isSubActive ? 'drop-shadow-sm' : '')}>{sub.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* Investigation Notes sub-nav (Fine Quality Theme) */}
                 {isInvestigation && isInvestigationActive && !sidebarCollapsed && (
                   <div className="mt-1 flex flex-col gap-0.5">
                     {investigationSubNav.map((sub) => {
@@ -328,11 +349,11 @@ export default function Sidebar() {
                           className={cn(
                             'flex w-full items-center gap-2 rounded-r-lg rounded-l-none pl-11 pr-4 py-2 text-left text-xs transition-all duration-300 ease-out border-y border-r',
                             isSubActive
-                              ? 'bg-mh-slate-800/80 border-mh-slate-700/80 text-mh-gold-400 font-bold translate-x-1 shadow-sm'
-                              : 'border-transparent bg-transparent text-mh-slate-500 hover:bg-mh-slate-900 hover:border-mh-slate-800 hover:text-mh-slate-300 hover:translate-x-0.5',
+                              ? 'bg-[var(--bg-fine)] border-[var(--rarity-fine)]/50 text-[var(--rarity-fine)] font-bold translate-x-1 shadow-sm'
+                              : 'border-transparent bg-transparent text-[#A3A3A3] hover:bg-white/5 hover:text-white hover:translate-x-0.5',
                           )}
                         >
-                          <SubIcon size={14} className={cn('shrink-0 transition-colors', isSubActive ? 'text-mh-gold-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.4)]' : '')} />
+                          <SubIcon size={14} className={cn('shrink-0 transition-colors', isSubActive ? 'text-[var(--rarity-fine)] drop-shadow-[0_0_8px_rgba(117,182,112,0.45)]' : '')} />
                           <span className={cn(isSubActive ? 'drop-shadow-sm' : '')}>{sub.label}</span>
                         </button>
                       );
@@ -348,15 +369,15 @@ export default function Sidebar() {
         <UserMenu collapsed={sidebarCollapsed} />
 
         {/* ── Collapse Toggle — desktop only ── */}
-        <div className="hidden shrink-0 border-t border-mh-slate-700 p-3 lg:block">
+        <div className="hidden shrink-0 border-t border-[var(--border-subtle)] p-3 lg:block">
           <button
             id="sidebar-collapse-btn"
             onClick={toggleSidebar}
             aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             className={cn(
               'flex w-full items-center gap-2 rounded-lg px-3 py-2',
-              'text-xs font-medium text-mh-slate-500 transition-all duration-200',
-              'hover:bg-mh-slate-800 hover:text-mh-slate-300',
+              'text-xs font-medium text-[#A3A3A3] transition-all duration-200',
+              'hover:bg-white/5 hover:text-white',
               sidebarCollapsed && 'justify-center px-0',
             )}
           >
