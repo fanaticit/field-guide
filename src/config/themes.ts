@@ -75,28 +75,23 @@ export interface SectionDefinition {
 }
 
 export const SITE_SECTIONS: SectionDefinition[] = [
-  { path: '/', label: 'Home Page', description: 'Landing portal and overview' },
-  { path: '/investigation-notes', label: 'Investigation Notes', description: 'Monsters, visages, adventurers, buddies, weapons & armour' },
-  { path: '/monsters', label: 'Monster Guide', description: 'Standalone monster hitzones and drop roster' },
-  { path: '/build-planner', label: 'Build Planner', description: 'Equipment forging and skill synergy planner' },
-  { path: '/armory', label: 'Hunter\'s Armory', description: 'Shared weapon & armour archives' },
-  { path: '/challenges', label: 'Hunter\'s Challenges', description: 'Goals, material crafting, and task checklist' },
-  { path: '/community-hub', label: 'Community Hub', description: 'Hunter network and build submissions' },
+  { path: '/', label: 'Home', description: 'Landing portal, overview, and quick links' },
+  { path: '/armory', label: "Hunter's Armory", description: 'Community builds, build planner, and armour archives' },
+  { path: '/gallery', label: 'Gallery', description: 'Visage sets and visage collection' },
+  { path: '/challenges', label: 'Challenges', description: 'Hunter goals, adventurers, buddies, and weapons' },
   { path: '/admin', label: 'Admin Panel', description: 'Game data curation tools' },
   { path: '/settings', label: 'Profile & Settings', description: 'Hunter identity and application preferences' },
 ];
 
-/** Default theme per section: Investigation Notes is Fine; everything else is Standard */
+/** Default theme per section */
 export const DEFAULT_SECTION_THEMES: Record<string, RarityTheme> = {
   '/': 'standard',
-  '/investigation-notes': 'fine',
-  '/monsters': 'standard',
-  '/build-planner': 'standard',
   '/armory': 'standard',
+  '/gallery': 'fine',
   '/challenges': 'standard',
-  '/community-hub': 'standard',
   '/admin': 'standard',
   '/settings': 'standard',
+  '/investigation-notes': 'fine',
 };
 
 /**

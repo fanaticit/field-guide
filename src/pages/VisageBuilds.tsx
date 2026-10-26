@@ -209,7 +209,7 @@ export default function VisageBuilds() {
             </div>
             <h1 className="font-display text-2xl font-bold text-mh-slate-100 flex items-center gap-2.5">
               <Sparkles className="text-mh-gold-400" size={24} />
-              <span>Visage Sets Directory</span>
+              <span>Visage Sets</span>
             </h1>
             <p className="text-xs text-mh-slate-300">
               Browse community-shared Visage builds and instantly see which ones you can assemble with your cards.
@@ -220,7 +220,7 @@ export default function VisageBuilds() {
             <button
               onClick={() => {
                 builder.reset();
-                navigate('/investigation-notes/visages?mode=builder');
+                navigate('/gallery/collection?mode=builder');
               }}
               className="flex items-center gap-2 rounded-xl bg-mh-gold-500 px-4 py-2.5 text-xs font-bold text-slate-950 hover:bg-mh-gold-400 shadow-md transition-all shrink-0"
             >
