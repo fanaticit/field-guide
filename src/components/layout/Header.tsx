@@ -1,6 +1,5 @@
-import { Menu, ChevronRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
-import { useUIStore } from '../../store/uiStore';
 
 interface PageMeta { title: string; subtitle: string }
 
@@ -8,6 +7,9 @@ function getPageMeta(pathname: string): PageMeta {
   if (pathname === '/') return { title: 'Field Guide', subtitle: 'Quests & Challenge Todos' };
   if (pathname.startsWith('/armory/planner') || pathname.startsWith('/armory/build-planner') || pathname.startsWith('/build-planner')) return { title: "Hunter's Armory", subtitle: 'Build Planner' };
   if (pathname.startsWith('/armory')) return { title: "Hunter's Armory", subtitle: 'Community Builds' };
+  if (pathname.startsWith('/gallery/collection')) return { title: 'Gallery', subtitle: 'Visage Collection' };
+  if (pathname.startsWith('/gallery')) return { title: 'Gallery', subtitle: 'Visage Sets' };
+  if (pathname.startsWith('/challenges')) return { title: 'Challenges', subtitle: 'Hunter Goals & Records' };
   if (pathname.startsWith('/community-hub')) return { title: 'Community Hub', subtitle: 'Browse & Share Challenges' };
   if (pathname.startsWith('/investigation-notes')) return { title: 'Investigation Notes', subtitle: 'Monsters, Weapons & Armour' };
   if (pathname.startsWith('/admin')) return { title: 'Admin Panel', subtitle: 'Manage game data & community' };
@@ -17,23 +19,14 @@ function getPageMeta(pathname: string): PageMeta {
 
 export default function Header() {
   const { pathname } = useLocation();
-  const { setMobileMenuOpen } = useUIStore();
   const { title, subtitle } = getPageMeta(pathname);
 
   return (
     <header
       id="app-header"
-      className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-[var(--border-subtle)] bg-[var(--bg-panel-primary)]/90 px-4 backdrop-blur-md lg:hidden"
+      className="app-header sticky top-0 z-30 h-16 items-center gap-3 border-b border-[var(--border-subtle)] bg-[var(--bg-panel-primary)]/90 px-4 backdrop-blur-md"
     >
-      {/* Hamburger — mobile only */}
-      <button
-        id="mobile-menu-btn"
-        onClick={() => setMobileMenuOpen(true)}
-        aria-label="Open navigation menu"
-        className="flex h-9 w-9 items-center justify-center rounded-lg text-[#A3A3A3] transition-colors hover:bg-white/10 hover:text-white"
-      >
-        <Menu size={20} />
-      </button>
+      <img src="/favicon.png" alt="" className="h-8 w-8 shrink-0 object-contain drop-shadow-md" />
 
       {/* Breadcrumb-style title */}
       <div className="flex items-center gap-1.5 min-w-0">
