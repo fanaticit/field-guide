@@ -20,6 +20,7 @@ import LandingPage from './pages/LandingPage';
 
 import BuildPlanner from './pages/BuildPlanner';
 import Armory from './pages/Armory';
+import VisageBuilds from './pages/VisageBuilds';
 import CommunityHub from './pages/CommunityHub';
 import HunterChallenges from './pages/HunterChallenges';
 import InvestigationNotes from './pages/investigation-notes/InvestigationNotes';
@@ -40,6 +41,7 @@ export const router = createBrowserRouter([
       { path: 'armory', element: <Armory /> },
       { path: 'armory/planner', element: <BuildPlanner /> },
       { path: 'armory/planner/:buildId', element: <BuildPlanner /> },
+      { path: 'armory/visages', element: <VisageBuilds /> },
       { path: 'armory/build-planner', element: <Navigate to="/armory/planner" replace /> },
       { path: 'armory/build-planner/:buildId', element: <BuildPlanner /> },
 

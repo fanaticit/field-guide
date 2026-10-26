@@ -1,14 +1,17 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import {
   Search,
   Layers,
   Loader2,
   Plus,
   Bookmark,
+  BookOpen,
+  Hammer,
+  ChevronDown,
 } from 'lucide-react';
 import { useVisageSetsData } from '../../hooks/useVisageSets';
 import { type DBVisage, type VisageRarity, getInkConfig } from '../../data/schemas/visage';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
 import {
   useHunterChallenges,
@@ -19,11 +22,33 @@ import {
 import VisageCard, { InkIconComponent } from './VisageCard';
 import VisageModal from './VisageModal';
 import LoginModal from '../../components/auth/LoginModal';
+import VisageBuilderPanel from '../../components/visage-builder/VisageBuilderPanel';
+import SaveVisageBuildModal from '../../components/visage-builder/SaveVisageBuildModal';
+import DuplicateBuildModal from '../../components/visage-builder/DuplicateBuildModal';
+import { useVisageBuilderStore } from '../../store/visageBuilderStore';
+import {
+  useVisageBuild,
+  useSaveVisageBuild,
+  useVisageBuildsList,
+  useUserVisageFavorites,
+} from '../../hooks/useVisageBuilds';
+import {
+  VISAGE_BUILD_SLOTS,
+  VISAGE_POINT_CAP,
+  canPlaceCard,
+  firstEmptySlot,
+  ownsCardInk,
+  rowToLoadout,
+  findDuplicateBuild,
+  type VisageBuildRow,
+} from '../../lib/visageBuild';
 import { cn } from '../../lib/utils';
 
 export default function VisageSetsGuide() {
   const {
     sets,
+    dbVisages,
+    collectionMap,
     isLoading,
     getCardCollection,
     setCardRarity,
@@ -39,6 +64,166 @@ export default function VisageSetsGuide() {
   const [filterMode, setFilterMode] = useState<'all' | 'complete' | 'incomplete'>('all');
   const [inspectedCard, setInspectedCard] = useState<DBVisage | null>(null);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const [showCollectedModal, setShowCollectedModal] = useState(false);
+  const collectedMenuRef = useRef<HTMLDivElement>(null);
+
+  // Close collection breakdown modal on outside click
+  useEffect(() => {
+    if (!showCollectedModal) return;
+    function handleOutside(e: MouseEvent) {
+      if (collectedMenuRef.current && !collectedMenuRef.current.contains(e.target as Node)) {
+        setShowCollectedModal(false);
+      }
+    }
+    window.addEventListener('mousedown', handleOutside);
+    return () => window.removeEventListener('mousedown', handleOutside);
+  }, [showCollectedModal]);
+
+  // ── Builder mode (URL driven: ?mode=builder&build=<id>) ──────
+  const [searchParams, setSearchParams] = useSearchParams();
+  const isBuilder = searchParams.get('mode') === 'builder';
+  const buildParam = searchParams.get('build');
+
+  const builder = useVisageBuilderStore();
+  const { loadout, sourceMode } = builder;
+  const [notice, setNotice] = useState<string | null>(null);
+  const [saveModal, setSaveModal] = useState<{ open: boolean; asNew: boolean }>({ open: false, asNew: false });
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [duplicateModal, setDuplicateModal] = useState<{
+    open: boolean;
+    duplicate: VisageBuildRow | null;
+    pendingAsNew: boolean;
+  }>({ open: false, duplicate: null, pendingAsNew: false });
+
+  const saveBuild = useSaveVisageBuild();
+  const { data: loadedBuild } = useVisageBuild(isBuilder ? buildParam : null);
+  const { data: allBuilds = [] } = useVisageBuildsList();
+  const { favoritesSet, addFavorite, isLoading: isFavoriting } = useUserVisageFavorites();
+
+  const visagesById = useMemo(() => new Map(dbVisages.map((v) => [v.id, v])), [dbVisages]);
+
+  // Load a saved build into the builder when ?build= changes
+  useEffect(() => {
+    if (!loadedBuild || visagesById.size === 0) return;
+    if (builder.buildId === loadedBuild.id) return;
+    builder.load({
+      buildId: loadedBuild.id,
+      authorId: loadedBuild.author_id,
+      title: loadedBuild.title,
+      description: loadedBuild.description ?? '',
+      isPublished: loadedBuild.is_published,
+      loadout: rowToLoadout(loadedBuild, visagesById),
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadedBuild, visagesById]);
+
+  const setMode = (mode: 'album' | 'builder') => {
+    const next = new URLSearchParams(searchParams);
+    if (mode === 'builder') {
+      next.set('mode', 'builder');
+      if (builder.buildId) next.set('build', builder.buildId);
+    } else {
+      next.delete('mode');
+      next.delete('build');
+    }
+    setSearchParams(next, { replace: true });
+  };
+
+  const isOwner = !builder.buildId || builder.authorId === user?.id;
+
+  const buildCountFor = (cardId: string, ink: string) =>
+    VISAGE_BUILD_SLOTS.filter((s) => loadout[s].visage?.id === cardId && loadout[s].ink === ink).length;
+
+  const getBuildBlock = (card: DBVisage, ink: string): string | null => {
+    if (sourceMode === 'mine' && !ownsCardInk(collectionMap, card.id, ink)) return 'Not in your collection';
+    const slot = firstEmptySlot(loadout);
+    if (!slot) return 'All slots are full';
+    if (!canPlaceCard(loadout, card, slot)) return `Exceeds ${VISAGE_POINT_CAP} points`;
+    return null;
+  };
+
+  const handleBuildCardClick = (card: DBVisage, ink: string) => {
+    if (buildCountFor(card.id, ink) > 0) {
+      builder.removeCard(card.id, ink);
+      setNotice(null);
+      return;
+    }
+    const block = getBuildBlock(card, ink);
+    if (block) {
+      setNotice(`Can't add ${card.name}: ${block}.`);
+      return;
+    }
+    builder.addCard(card, ink);
+    setNotice(null);
+  };
+
+  const handleSaveRequest = (asNew: boolean) => {
+    if (!user) {
+      setLoginModalOpen(true);
+      return;
+    }
+
+    // Check for duplicate loadout in directory
+    const duplicate = findDuplicateBuild(
+      loadout,
+      allBuilds,
+      visagesById,
+      asNew ? null : builder.buildId,
+    );
+
+    if (duplicate) {
+      setDuplicateModal({
+        open: true,
+        duplicate,
+        pendingAsNew: asNew,
+      });
+      return;
+    }
+
+    setSaveError(null);
+    setSaveModal({ open: true, asNew });
+  };
+
+  const handleFavoriteExistingDuplicate = async (dup: VisageBuildRow) => {
+    try {
+      await addFavorite(dup.id);
+      setNotice(`Favorited "${dup.title}"! Added to your favorites.`);
+      setDuplicateModal({ open: false, duplicate: null, pendingAsNew: false });
+    } catch (e) {
+      alert(e instanceof Error ? e.message : 'Failed to favorite build');
+    }
+  };
+
+  const handleSaveCustomAnyway = () => {
+    const asNew = duplicateModal.pendingAsNew;
+    setDuplicateModal({ open: false, duplicate: null, pendingAsNew: false });
+    setSaveError(null);
+    setSaveModal({ open: true, asNew });
+  };
+
+  const handleSaveConfirm = async (v: { title: string; description: string; isPublished: boolean }) => {
+    if (!user) return;
+    const updateExisting = !saveModal.asNew && builder.buildId && isOwner;
+    try {
+      const id = await saveBuild.mutateAsync({
+        id: updateExisting ? builder.buildId : null,
+        authorId: user.id,
+        title: v.title,
+        description: v.description,
+        isPublished: v.isPublished,
+        loadout,
+      });
+      builder.setMeta(v);
+      builder.markSaved(id, user.id);
+      setSaveModal({ open: false, asNew: false });
+      const next = new URLSearchParams(searchParams);
+      next.set('mode', 'builder');
+      next.set('build', id);
+      setSearchParams(next, { replace: true });
+    } catch (e) {
+      setSaveError(e instanceof Error ? e.message : 'Failed to save build.');
+    }
+  };
 
   // ── Personal Challenges ──────────────────────────────────────
   const { data: challenges = [] } = useHunterChallenges(user?.id);
@@ -153,72 +338,160 @@ export default function VisageSetsGuide() {
   }, [sets, getCardCollection]);
 
   return (
-    <div className="flex flex-col h-[calc(100vh-130px)] bg-gradient-to-b from-[#131722] via-[#0d1017] to-[#0a0c10] text-mh-slate-100 overflow-hidden">
-      {/* ── Subheader Banner & Collection Status Panel ── */}
-      <div className="shrink-0 border-b border-mh-slate-800/80 bg-gradient-to-r from-[#191e2b] via-[#141824] to-[#191e2b] px-6 py-3.5 shadow-xl z-10">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="space-y-1 max-w-xl">
-            <div className="flex items-center gap-2">
-              <span className="rounded bg-mh-gold-500/20 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-mh-gold-400">
-                Monster Hunter Outlanders
-              </span>
-              <span className="text-xs text-mh-slate-400">&bull; Visage Album</span>
-              {isLoading && (
-                <div className="flex items-center gap-1 text-mh-slate-400 ml-2 text-xs">
-                  <Loader2 size={12} className="animate-spin text-mh-gold-400" />
-                  <span>Syncing…</span>
-                </div>
-              )}
-            </div>
-            <h2 className="font-display text-xl sm:text-2xl font-bold text-mh-slate-100 flex items-center gap-2.5">
-              <Layers className="text-mh-gold-400" size={24} />
-              <span>Visage Sets Album</span>
+    <div className="flex flex-col flex-1 min-h-0 h-full bg-gradient-to-b from-[#131722] via-[#0d1017] to-[#0a0c10] text-mh-slate-100 overflow-hidden">
+      {/* ── Streamlined Subheader Banner ── */}
+      <div className="shrink-0 border-b border-mh-slate-800/80 bg-gradient-to-r from-[#191e2b] via-[#141824] to-[#191e2b] px-3 sm:px-6 py-2 shadow-md z-20">
+        <div className="flex items-center justify-between gap-2 sm:gap-4 flex-wrap sm:flex-nowrap">
+          {/* Left: Clean title */}
+          <div className="flex items-center gap-2 min-w-0">
+            <Layers className="text-mh-gold-400 shrink-0 hidden xs:block" size={18} />
+            <h2 className="font-display text-sm sm:text-base md:text-lg font-bold text-mh-slate-100 whitespace-nowrap">
+              Visage Sets Album
             </h2>
-            <p className="text-xs text-mh-slate-300 leading-relaxed">
-              Collect monster visages cards to assemble powerful elemental and offensive ink sets
-            </p>
+            {isLoading && (
+              <Loader2 size={12} className="animate-spin text-mh-gold-400 shrink-0 ml-1" />
+            )}
           </div>
 
-          {/* Quick Stats & Collection Counters (SSR / SR / R) */}
-          <div className="flex flex-wrap items-center gap-2 bg-black/50 rounded-xl p-2.5 border border-mh-slate-800">
-            {/* Total Collected */}
-            <div className="px-3 py-1 text-center border-r border-mh-slate-800">
-              <div className="flex items-center justify-center gap-1 text-[10px] uppercase font-bold text-mh-gold-400">
-                <Bookmark size={11} />
-                <span>Collected</span>
+          {/* Center: Album / Build Set toggle */}
+          <div className="inline-flex rounded-lg border border-mh-slate-700 bg-mh-slate-900/90 p-0.5 text-xs shrink-0 mx-auto sm:mx-0">
+            <button
+              type="button"
+              onClick={() => setMode('album')}
+              className={cn(
+                'flex items-center gap-1.5 rounded-md px-2.5 sm:px-3 py-1 font-bold transition-all text-xs',
+                !isBuilder
+                  ? 'bg-mh-gold-500 text-slate-950 shadow-sm'
+                  : 'text-mh-slate-400 hover:text-white',
+              )}
+            >
+              <BookOpen size={13} />
+              <span>Album</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setMode('builder')}
+              className={cn(
+                'flex items-center gap-1.5 rounded-md px-2.5 sm:px-3 py-1 font-bold transition-all text-xs',
+                isBuilder
+                  ? 'bg-mh-gold-500 text-slate-950 shadow-sm'
+                  : 'text-mh-slate-400 hover:text-white',
+              )}
+            >
+              <Hammer size={13} />
+              <span>Build Set</span>
+              {builder.dirty && <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />}
+            </button>
+          </div>
+
+          {/* Right: Collected Info (desktop breakdown vs mobile compact badge) */}
+          <div className="relative shrink-0">
+            {/* Desktop breakdown (md+) */}
+            <div className="hidden md:flex flex-wrap items-center gap-2 bg-black/50 rounded-xl p-1.5 sm:p-2 border border-mh-slate-800">
+              {/* Total Collected */}
+              <div className="px-2.5 py-0.5 text-center border-r border-mh-slate-800">
+                <div className="flex items-center justify-center gap-1 text-[9px] uppercase font-bold text-mh-gold-400">
+                  <Bookmark size={10} />
+                  <span>Collected</span>
+                </div>
+                <div className="flex items-baseline justify-center gap-1">
+                  <span className="font-display text-sm sm:text-base font-black text-white">{collectionStats.totalCollected}</span>
+                  <span className="text-[10px] text-mh-slate-500">/ {collectionStats.totalSlots}</span>
+                  <span className="text-[9px] font-bold text-emerald-400 ml-0.5">({collectionStats.progressPct}%)</span>
+                </div>
               </div>
-              <div className="flex items-baseline justify-center gap-1 mt-0.5">
-                <span className="font-display text-lg font-black text-white">{collectionStats.totalCollected}</span>
-                <span className="text-xs text-mh-slate-500">/ {collectionStats.totalSlots}</span>
-                <span className="text-[10px] font-bold text-emerald-400 ml-0.5">({collectionStats.progressPct}%)</span>
+
+              {/* SSR (Gold) */}
+              <div className="px-2 py-0.5 text-center">
+                <span className="block text-[9px] font-bold text-amber-400">SSR (Gold)</span>
+                <div className="flex items-baseline justify-center gap-1">
+                  <span className="font-display text-xs sm:text-sm font-bold text-amber-300">{collectionStats.ssrCount}</span>
+                  <span className="text-[9px] text-amber-400/80 font-bold">({collectionStats.ssrPct}%)</span>
+                </div>
+              </div>
+
+              {/* SR (Purple) */}
+              <div className="px-2 py-0.5 text-center">
+                <span className="block text-[9px] font-bold text-purple-400">SR (Purple)</span>
+                <div className="flex items-baseline justify-center gap-1">
+                  <span className="font-display text-xs sm:text-sm font-bold text-purple-300">{collectionStats.srCount}</span>
+                  <span className="text-[9px] text-purple-400/80 font-bold">({collectionStats.srPct}%)</span>
+                </div>
+              </div>
+
+              {/* Rare (Blue) */}
+              <div className="px-2 py-0.5 text-center">
+                <span className="block text-[9px] font-bold text-sky-400">Rare (Blue)</span>
+                <div className="flex items-baseline justify-center gap-1">
+                  <span className="font-display text-xs sm:text-sm font-bold text-sky-300">{collectionStats.rCount}</span>
+                  <span className="text-[9px] text-sky-400/80 font-bold">({collectionStats.rPct}%)</span>
+                </div>
               </div>
             </div>
 
-            {/* SSR (Gold / Superior) */}
-            <div className="px-2.5 py-1 text-center">
-              <span className="block text-[10px] font-bold text-amber-400">SSR (Gold)</span>
-              <div className="flex items-baseline justify-center gap-1 mt-0.5">
-                <span className="font-display text-base font-bold text-amber-300">{collectionStats.ssrCount}</span>
-                <span className="text-[10px] text-amber-400/80 font-bold">({collectionStats.ssrPct}%)</span>
-              </div>
-            </div>
+            {/* Mobile compact badge (< md) */}
+            <div className="md:hidden relative" ref={collectedMenuRef}>
+              <button
+                type="button"
+                onClick={() => setShowCollectedModal((prev) => !prev)}
+                className="flex items-center gap-1.5 bg-black/60 hover:bg-black/80 border border-mh-slate-800 hover:border-mh-gold-500/50 rounded-lg px-2.5 py-1 text-xs transition-all shadow-sm active:scale-95"
+                title="Click to view full collection breakdown"
+              >
+                <Bookmark size={12} className="text-mh-gold-400" />
+                <span className="font-display font-bold text-emerald-400 text-xs">{collectionStats.progressPct}%</span>
+                <span className="text-[10px] text-mh-slate-400 font-mono">({collectionStats.totalCollected}/{collectionStats.totalSlots})</span>
+                <ChevronDown size={11} className={cn("text-mh-slate-400 transition-transform duration-150", showCollectedModal && "rotate-180")} />
+              </button>
 
-            {/* SR (Purple / Epic) */}
-            <div className="px-2.5 py-1 text-center">
-              <span className="block text-[10px] font-bold text-purple-400">SR (Purple)</span>
-              <div className="flex items-baseline justify-center gap-1 mt-0.5">
-                <span className="font-display text-base font-bold text-purple-300">{collectionStats.srCount}</span>
-                <span className="text-[10px] text-purple-400/80 font-bold">({collectionStats.srPct}%)</span>
-              </div>
-            </div>
+              {showCollectedModal && (
+                <div
+                  className="absolute right-0 top-full mt-1.5 z-50 w-60 rounded-xl border border-mh-gold-500/40 bg-mh-slate-950 p-2.5 shadow-2xl animate-in zoom-in-95 duration-100"
+                  style={{
+                    boxShadow: '0 10px 25px rgba(0,0,0,0.8), 0 0 15px rgba(234,179,8,0.25)',
+                  }}
+                >
+                  <div className="flex items-center justify-between pb-1.5 mb-1.5 border-b border-mh-slate-800">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-mh-gold-400 flex items-center gap-1">
+                      <Bookmark size={11} />
+                      <span>Collection Status</span>
+                    </span>
+                    <span className="font-mono text-xs font-bold text-emerald-400">
+                      {collectionStats.progressPct}%
+                    </span>
+                  </div>
 
-            {/* Rare (Blue / Rare) */}
-            <div className="px-2.5 py-1 text-center">
-              <span className="block text-[10px] font-bold text-sky-400">Rare (Blue)</span>
-              <div className="flex items-baseline justify-center gap-1 mt-0.5">
-                <span className="font-display text-base font-bold text-sky-300">{collectionStats.rCount}</span>
-                <span className="text-[10px] text-sky-400/80 font-bold">({collectionStats.rPct}%)</span>
-              </div>
+                  <div className="flex items-center justify-between text-xs py-1 border-b border-mh-slate-900">
+                    <span className="text-mh-slate-300 font-medium text-[11px]">Total Collected</span>
+                    <span className="font-mono font-bold text-white text-xs">
+                      {collectionStats.totalCollected} / {collectionStats.totalSlots}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between text-xs py-1">
+                    <span className="text-amber-400 font-bold text-[11px]">SSR (Gold)</span>
+                    <div className="flex items-center gap-1">
+                      <span className="font-mono font-bold text-amber-300 text-xs">{collectionStats.ssrCount}</span>
+                      <span className="text-[10px] text-amber-400/80 font-mono">({collectionStats.ssrPct}%)</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between text-xs py-1">
+                    <span className="text-purple-400 font-bold text-[11px]">SR (Purple)</span>
+                    <div className="flex items-center gap-1">
+                      <span className="font-mono font-bold text-purple-300 text-xs">{collectionStats.srCount}</span>
+                      <span className="text-[10px] text-purple-400/80 font-mono">({collectionStats.srPct}%)</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between text-xs py-1">
+                    <span className="text-sky-400 font-bold text-[11px]">Rare (Blue)</span>
+                    <div className="flex items-center gap-1">
+                      <span className="font-mono font-bold text-sky-300 text-xs">{collectionStats.rCount}</span>
+                      <span className="text-[10px] text-sky-400/80 font-mono">({collectionStats.rPct}%)</span>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -226,8 +499,90 @@ export default function VisageSetsGuide() {
 
       {/* ── Main Book Container ── */}
       <div className="flex flex-1 min-h-0 flex-col lg:flex-row overflow-hidden">
-        {/* ── Left Sidebar: Sets List ── */}
-        <div className="w-full lg:w-72 xl:w-80 shrink-0 border-b lg:border-b-0 lg:border-r border-mh-slate-800/80 bg-[#0e121a]/95 flex flex-col min-h-0">
+        {/* ── Mobile Horizontal Sets Strip (< lg) ── */}
+        <div className="lg:hidden shrink-0 border-b border-mh-slate-800/80 bg-[#0e121a]/95 flex flex-col min-h-0">
+          {/* Compact search & filter row */}
+          <div className="p-2 border-b border-mh-slate-800/60 flex items-center gap-2">
+            <div className="relative flex-1">
+              <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-mh-slate-500" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search sets or monsters…"
+                className="w-full rounded-md border border-mh-slate-750 bg-mh-slate-900/90 py-1 pl-7 pr-2 text-xs text-mh-slate-200 placeholder-mh-slate-500 outline-none focus:border-mh-gold-500/50"
+              />
+            </div>
+            {/* Filter pills */}
+            <div className="flex rounded-md border border-mh-slate-750 bg-mh-slate-900 p-0.5 text-[10px] shrink-0">
+              {(['all', 'complete', 'incomplete'] as const).map((m) => (
+                <button
+                  key={m}
+                  onClick={() => setFilterMode(m)}
+                  className={cn(
+                    'px-2 py-0.5 rounded capitalize font-medium transition-colors',
+                    filterMode === m ? 'bg-mh-gold-500 text-slate-950 font-bold' : 'text-mh-slate-400 hover:text-white',
+                  )}
+                >
+                  {m === 'all' ? `All (${sets.length})` : m}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Horizontally scrollable sets chips */}
+          <div className="flex items-center gap-1.5 overflow-x-auto p-2 scrollbar-none">
+            {filteredSets.map((s) => {
+              const cfg = getInkConfig(s.id);
+              const isSelected = activeSet?.id === s.id;
+              const isComplete = s.collectedCards === s.totalCards && s.totalCards > 0;
+
+              return (
+                <button
+                  key={s.id}
+                  onClick={() => setSelectedSetId(s.id)}
+                  className={cn(
+                    'flex items-center gap-2 rounded-xl px-2.5 py-1.5 shrink-0 transition-all text-left border select-none',
+                    isSelected
+                      ? 'bg-gradient-to-r from-mh-slate-800 to-mh-slate-850 border-mh-gold-500 shadow-md ring-1 ring-mh-gold-500/40 text-white'
+                      : 'bg-mh-slate-900/70 border-mh-slate-800 hover:bg-mh-slate-800 text-mh-slate-300',
+                  )}
+                >
+                  <div
+                    className={cn(
+                      'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-xs',
+                      cfg.bg,
+                      cfg.border,
+                      cfg.text,
+                    )}
+                  >
+                    <InkIconComponent iconName={s.iconName || cfg.iconName} size={12} />
+                  </div>
+
+                  <span className={cn('text-xs font-bold whitespace-nowrap', isSelected ? 'text-mh-gold-300' : 'text-mh-slate-200')}>
+                    {s.shortName || s.name}
+                  </span>
+
+                  <span
+                    className={cn(
+                      'font-mono text-[10px] font-bold px-1.5 py-0.5 rounded',
+                      isComplete
+                        ? 'text-green-400 bg-green-500/15 border border-green-500/30'
+                        : s.collectedCards > 0
+                          ? 'text-amber-400 bg-amber-500/10'
+                          : 'text-mh-slate-500',
+                    )}
+                  >
+                    {s.collectedCards}/{s.totalCards}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ── Left Sidebar: Sets List (Desktop lg+) ── */}
+        <div className="hidden lg:flex w-72 xl:w-80 shrink-0 border-r border-mh-slate-800/80 bg-[#0e121a]/95 flex-col min-h-0">
           {/* Search & Filter Bar */}
           <div className="p-3 border-b border-mh-slate-800/80 space-y-2 shrink-0">
             <div className="relative">
@@ -348,12 +703,12 @@ export default function VisageSetsGuide() {
         </div>
 
         {/* ── Right Content: Active Set View ── */}
-        <div className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-6 lg:p-8">
+        <div className="flex-1 min-h-0 overflow-y-auto p-2.5 sm:p-4 lg:p-6">
           {activeSet ? (
-            <div className="max-w-6xl mx-auto space-y-6">
+            <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6">
               {/* Set Header Bar */}
-              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-mh-slate-800/80 pb-4">
-                <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3 border-b border-mh-slate-800/80 pb-2 sm:pb-3">
+                <div className="flex items-center gap-2.5 sm:gap-3">
                   <div
                     className={cn(
                       'flex h-9 w-9 items-center justify-center rounded-xl border shadow-md',
@@ -377,9 +732,26 @@ export default function VisageSetsGuide() {
                 </div>
 
                 <div className="text-xs text-mh-slate-400 flex items-center gap-1.5">
-                  <span className="text-mh-slate-500">Click any card to inspect stats &amp; effect</span>
+                  <span className="text-mh-slate-500">
+                    {isBuilder ? 'Click card to add/remove from build' : 'Click any card to inspect stats & effect'}
+                  </span>
                 </div>
               </div>
+
+              {/* Mobile/Tablet Builder Panel (< xl) */}
+              {isBuilder && (
+                <div className="xl:hidden">
+                  <VisageBuilderPanel
+                    sets={sets}
+                    visages={dbVisages}
+                    collectionMap={collectionMap}
+                    isOwner={isOwner}
+                    notice={notice}
+                    onNotice={setNotice}
+                    onSave={handleSaveRequest}
+                  />
+                </div>
+              )}
 
               {/* ── Columns Grouped by Points ── */}
               {activeSet.groupedColumns.length > 0 ? (
@@ -414,7 +786,19 @@ export default function VisageSetsGuide() {
                             onSetQuantity={(qty) => setCardQuantity(card.id, activeSet.id, qty)}
                             onRemoveFromCollection={() => removeCardFromCollection(card.id, activeSet.id)}
                             onAddChallenge={handleAddVisageChallenge}
-                            onClick={() => setInspectedCard(card)}
+                            onClick={() => {
+                              if (isBuilder) {
+                                handleBuildCardClick(card, activeSet.id);
+                              } else {
+                                setInspectedCard(card);
+                              }
+                            }}
+                            buildMode={isBuilder}
+                            isCoreCard={isBuilder && loadout.core.visage?.id === card.id}
+                            buildCount={isBuilder ? buildCountFor(card.id, activeSet.id) : 0}
+                            buildDisabled={isBuilder ? Boolean(getBuildBlock(card, activeSet.id)) : false}
+                            buildDisabledReason={isBuilder ? (getBuildBlock(card, activeSet.id) ?? undefined) : undefined}
+                            onInspect={() => setInspectedCard(card)}
                           />
                         ))}
                       </div>
@@ -493,7 +877,47 @@ export default function VisageSetsGuide() {
             </div>
           )}
         </div>
+
+        {/* ── Desktop Builder Column (xl+) ── */}
+        {isBuilder && (
+          <div className="hidden xl:block w-[380px] 2xl:w-[420px] shrink-0 border-l border-mh-slate-800/80 bg-[#0c1017]/95 overflow-y-auto p-4 min-h-0">
+            <VisageBuilderPanel
+              sets={sets}
+              visages={dbVisages}
+              collectionMap={collectionMap}
+              isOwner={isOwner}
+              notice={notice}
+              onNotice={setNotice}
+              onSave={handleSaveRequest}
+            />
+          </div>
+        )}
       </div>
+
+      {/* ── Duplicate Build Modal ── */}
+      <DuplicateBuildModal
+        open={duplicateModal.open}
+        duplicate={duplicateModal.duplicate}
+        visagesById={visagesById}
+        isFavorite={Boolean(duplicateModal.duplicate && favoritesSet.has(duplicateModal.duplicate.id))}
+        isFavoriting={isFavoriting}
+        onClose={() => setDuplicateModal({ open: false, duplicate: null, pendingAsNew: false })}
+        onFavoriteExisting={handleFavoriteExistingDuplicate}
+        onSaveCustomAnyway={handleSaveCustomAnyway}
+      />
+
+      {/* ── Save Visage Build Modal ── */}
+      <SaveVisageBuildModal
+        open={saveModal.open}
+        asNew={saveModal.asNew}
+        initialTitle={builder.title}
+        initialDescription={builder.description}
+        initialPublished={builder.isPublished}
+        saving={saveBuild.isPending}
+        error={saveError}
+        onClose={() => setSaveModal({ open: false, asNew: false })}
+        onConfirm={handleSaveConfirm}
+      />
 
       {/* ── Card Detail Modal ── */}
       <VisageModal

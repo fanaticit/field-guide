@@ -41,6 +41,17 @@ interface VisageCardProps {
   onRemoveFromCollection?: () => void;
   onAddChallenge?: (card: DBVisage, inkType: string, currentRarity?: VisageRarity | null) => void;
   onClick?: () => void;
+  /** Visage Builder mode: clicking the card adds/removes it from the build */
+  buildMode?: boolean;
+  /** Whether this card is currently equipped in the Core slot (Slot 1) */
+  isCoreCard?: boolean;
+  /** How many times this card+ink is in the current build */
+  buildCount?: number;
+  /** Card can't be added (not owned in "My Cards" mode, or exceeds points) */
+  buildDisabled?: boolean;
+  buildDisabledReason?: string;
+  /** In build mode, opens the detail modal */
+  onInspect?: () => void;
 }
 
 export function InkIconComponent({
@@ -92,6 +103,12 @@ export default function VisageCard({
   onRemoveFromCollection,
   onAddChallenge,
   onClick,
+  buildMode = false,
+  isCoreCard = false,
+  buildCount = 0,
+  buildDisabled = false,
+  buildDisabledReason,
+  onInspect,
 }: VisageCardProps) {
   const [imageError, setImageError] = useState(false);
   const [showRarityMenu, setShowRarityMenu] = useState(false);
@@ -109,6 +126,7 @@ export default function VisageCard({
   const isTracked = Boolean(challenge && challenge.status !== 'abandoned');
   const isChallengeDone = challenge?.status === 'completed';
   const isMaxed = currentRarity === 'superior';
+  const isInBuild = buildMode && buildCount > 0;
 
   // Determine next target rarity name
   const nextRarityName = !currentRarity
@@ -138,12 +156,20 @@ export default function VisageCard({
   const rarityCfg = currentRarity ? VISAGE_RARITY_CONFIG[currentRarity] : null;
   const imageSrc = card.image_small;
 
+  const cardTitle = buildMode
+    ? isInBuild
+      ? `${card.name} (${card.points} Pts) - In build, click to remove`
+      : buildDisabled
+        ? `${card.name} (${card.points} Pts) - ${buildDisabledReason ?? "Can't add"}`
+        : `${card.name} (${card.points} Pts) - Click to add to build`
+    : `${card.name} (${card.points} Pts) - Click to inspect`;
+
   return (
     <div
       onClick={onClick}
       role="button"
       tabIndex={0}
-      title={`${card.name} (${card.points} Pts) - Click to inspect`}
+      title={cardTitle}
       className={cn(
         'group relative flex flex-col justify-between cursor-pointer select-none transition-all duration-200',
         'w-[84px] sm:w-[96px] rounded-xl',
@@ -152,7 +178,9 @@ export default function VisageCard({
         isOwned && rarityCfg
           ? cn(rarityCfg.borderClass, rarityCfg.hoverBorderClass)
           : 'border-mh-slate-800 opacity-55 grayscale hover:opacity-95 hover:grayscale-0 hover:border-mh-slate-600',
-        isTracked && !isChallengeDone && 'ring-2 ring-blue-400/80 ring-offset-1 ring-offset-black',
+        isTracked && !isChallengeDone && !isInBuild && 'ring-2 ring-blue-400/80 ring-offset-1 ring-offset-black',
+        isInBuild && 'ring-2 ring-mh-gold-400 ring-offset-2 ring-offset-black opacity-100 grayscale-0',
+        buildMode && buildDisabled && !isInBuild && 'cursor-not-allowed',
       )}
       style={{
         boxShadow:
@@ -195,6 +223,59 @@ export default function VisageCard({
           >
             {isChallengeDone ? <CheckCircle2 size={10} /> : <Target size={10} />}
           </div>
+        )}
+
+        {/* ── Build mode overlays ── */}
+        {buildMode && (
+          <>
+            {isInBuild && (
+              <div
+                className={cn(
+                  'absolute top-1 left-1 z-10 flex h-4 min-w-4 px-1.5 items-center justify-center rounded-full text-[9px] font-black shadow-md ring-1',
+                  isCoreCard
+                    ? 'bg-rarity-5 text-slate-950 ring-rarity-5/60'
+                    : 'bg-mh-gold-400 text-slate-950 ring-white/50',
+                )}
+                title={isCoreCard ? `Core Card (Slot 1): ${card.core_effect || 'No core effect'}` : 'Equipped in build'}
+              >
+                {isCoreCard ? '⭐ Core' : buildCount > 1 ? `×${buildCount}` : '✓'}
+              </div>
+            )}
+            {onInspect && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onInspect();
+                }}
+                title="Inspect card"
+                className={cn(
+                  'absolute bottom-1 left-1 z-10 h-4 w-4 rounded-full bg-black/80 text-[9px] font-bold text-white ring-1 ring-white/30',
+                  'opacity-0 group-hover:opacity-100 transition-opacity hover:bg-mh-gold-500 hover:text-slate-950',
+                )}
+              >
+                i
+              </button>
+            )}
+            <div
+              className={cn(
+                'pointer-events-none absolute inset-0 flex items-center justify-center bg-black/45 opacity-0 transition-opacity group-hover:opacity-100',
+              )}
+            >
+              <span
+                className={cn(
+                  'rounded-full px-2 py-0.5 text-[10px] font-black shadow',
+                  isInBuild
+                    ? 'bg-rose-500 text-white'
+                    : buildDisabled
+                      ? 'bg-mh-slate-800 text-mh-slate-400'
+                      : 'bg-mh-gold-400 text-slate-950',
+                )}
+              >
+                {isInBuild ? (isCoreCard ? '− Remove Core' : '− Remove') : buildDisabled ? '🔒' : '+ Add'}
+              </span>
+            </div>
+          </>
         )}
       </div>
 

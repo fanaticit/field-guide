@@ -107,6 +107,7 @@ const navItems: NavItem[] = [
 const armorySubNav: SubNavItem[] = [
   { id: 'armory-builds', path: '/armory', label: 'Community Builds', icon: Shield },
   { id: 'armory-planner', path: '/armory/planner', label: 'Build Planner', icon: Sword },
+  { id: 'armory-visages', path: '/armory/visages', label: 'Visage Builds', icon: Sparkles },
 ];
 
 const investigationSubNav: SubNavItem[] = [
@@ -313,9 +314,12 @@ export default function Sidebar() {
                 {isArmory && isArmoryActive && !sidebarCollapsed && (
                   <div className="mt-1 flex flex-col gap-0.5">
                     {armorySubNav.map((sub) => {
-                      const isSubActive = sub.path === '/armory'
-                        ? pathname === '/armory'
-                        : pathname.startsWith('/armory/planner') || pathname.startsWith('/build-planner');
+                      const isSubActive =
+                        sub.path === '/armory'
+                          ? pathname === '/armory'
+                          : sub.path === '/armory/visages'
+                            ? pathname.startsWith('/armory/visages')
+                            : pathname.startsWith('/armory/planner') || pathname.startsWith('/build-planner');
                       const SubIcon = sub.icon;
                       return (
                         <button
