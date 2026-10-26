@@ -93,7 +93,7 @@ export default function VisageBuilderPanel({ sets, visages, collectionMap, isOwn
 
   const copyLink = async () => {
     if (!buildId) return;
-    const url = `${window.location.origin}/investigation-notes/visages?mode=builder&build=${buildId}`;
+    const url = `${window.location.origin}/gallery/collection?mode=builder&build=${buildId}`;
     try {
       await navigator.clipboard.writeText(url);
       setCopied(true);
