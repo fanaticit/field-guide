@@ -15,13 +15,8 @@ export type InvestigationSubPage = 'monster-guide' | 'adventurers' | 'visages' |
 export type AdminSubPage = 'monsters' | 'skills' | 'weapons' | 'armour' | 'adventurers' | 'visages' | 'buddies' | 'content' | 'users' | 'other';
 
 interface UIState {
-  sidebarCollapsed: boolean;
-  mobileMenuOpen: boolean;
   defaultGame: string;
   sectionThemes: Record<string, RarityTheme>;
-  toggleSidebar: () => void;
-  setSidebarCollapsed: (collapsed: boolean) => void;
-  setMobileMenuOpen: (open: boolean) => void;
   setDefaultGame: (game: string) => void;
   setSectionTheme: (sectionPath: string, theme: RarityTheme) => void;
   resetSectionThemes: () => void;
@@ -31,14 +26,8 @@ interface UIState {
 export const useUIStore = create<UIState>()(
   persist(
     (set, get) => ({
-      sidebarCollapsed: false,
-      mobileMenuOpen: false,
       defaultGame: 'mho',
       sectionThemes: DEFAULT_SECTION_THEMES,
-      toggleSidebar: () =>
-        set((state) => ({ sidebarCollapsed: !state.sidebarCollapsed })),
-      setSidebarCollapsed: (collapsed) => set({ sidebarCollapsed: collapsed }),
-      setMobileMenuOpen: (open) => set({ mobileMenuOpen: open }),
       setDefaultGame: (game) => set({ defaultGame: game }),
       setSectionTheme: (sectionPath, theme) =>
         set((state) => ({
@@ -55,7 +44,6 @@ export const useUIStore = create<UIState>()(
     {
       name: 'field-guide-ui',
       partialize: (state) => ({
-        sidebarCollapsed: state.sidebarCollapsed,
         defaultGame: state.defaultGame,
         sectionThemes: state.sectionThemes,
       }),

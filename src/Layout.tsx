@@ -1,16 +1,16 @@
 // ─────────────────────────────────────────────────────────────
 // Layout.tsx — Root layout shell.
-// Renders the persistent chrome (Sidebar, Header, Footer) and
+// Renders the persistent chrome (MainNav, Header, Footer) and
 // an <Outlet /> where the active route's page component renders.
 // ─────────────────────────────────────────────────────────────
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useUIStore } from './store/uiStore';
-import Sidebar from './components/layout/Sidebar';
+import MainNav from './components/layout/MainNav';
 import Header from './components/layout/Header';
 import { cn } from './lib/utils';
 
 export default function Layout() {
-  const { sidebarCollapsed, getThemeForPath } = useUIStore();
+  const { getThemeForPath } = useUIStore();
   const { pathname } = useLocation();
   const activeTheme = getThemeForPath(pathname);
 
@@ -32,20 +32,18 @@ export default function Layout() {
         }}
       />
 
-      {/* Sidebar */}
-      <Sidebar />
+      {/* Main navigation — left rail on desktop/landscape, bottom bar on mobile portrait */}
+      <MainNav />
 
-      {/* Main area — offset by sidebar width & themed by active section */}
+      {/* Main area — offset by the nav rail & themed by active section */}
       <div
         id="main-content"
         className={cn(
-          'sidebar-transition relative z-10 flex min-h-screen flex-col',
+          'app-content relative z-10 flex min-h-screen flex-col',
           `rarity-theme-${activeTheme}`,
-          // On desktop, leave space for sidebar
-          sidebarCollapsed ? 'lg:ml-[72px]' : 'lg:ml-[260px]',
         )}
       >
-        {/* Mobile-only sticky header */}
+        {/* Mobile-portrait-only sticky header */}
         <Header />
 
         {/* Page content — active route renders here */}
