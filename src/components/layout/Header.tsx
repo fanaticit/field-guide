@@ -5,8 +5,8 @@ interface PageMeta { title: string; subtitle: string }
 
 function getPageMeta(pathname: string): PageMeta {
   if (pathname === '/') return { title: 'Field Guide', subtitle: 'Quests & Challenge Todos' };
-  if (pathname.startsWith('/armory/planner') || pathname.startsWith('/armory/build-planner') || pathname.startsWith('/build-planner')) return { title: "Hunter's Armory", subtitle: 'Build Planner' };
-  if (pathname.startsWith('/armory')) return { title: "Hunter's Armory", subtitle: 'Community Builds' };
+  if (pathname.startsWith('/armory/planner') || pathname.startsWith('/armory/build-planner') || pathname.startsWith('/build-planner')) return { title: 'Armory', subtitle: 'Build Planner' };
+  if (pathname.startsWith('/armory')) return { title: 'Armory', subtitle: 'Community Builds' };
   if (pathname.startsWith('/gallery/collection')) return { title: 'Gallery', subtitle: 'Visage Collection' };
   if (pathname.startsWith('/gallery')) return { title: 'Gallery', subtitle: 'Visage Sets' };
   if (pathname.startsWith('/challenges')) return { title: 'Challenges', subtitle: 'Hunter Goals & Records' };

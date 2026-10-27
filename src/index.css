@@ -293,10 +293,25 @@ body {
   --nav-bottom-space: calc(var(--nav-bar-h) + var(--nav-margin) + 28px + env(safe-area-inset-bottom, 0px));
 }
 
+.main-nav__btn[data-accent="superior"],
+.main-nav-submenu[data-accent="superior"] {
+  --nav-accent: var(--accent-gold);
+  --nav-glow: rgba(255, 215, 0, 0.4);
+}
+.main-nav__btn[data-accent="epic"],
+.main-nav-submenu[data-accent="epic"] {
+  --nav-accent: var(--rarity-epic);
+  --nav-glow: rgba(156, 98, 214, 0.5);
+}
 .main-nav__btn[data-accent="fine"],
 .main-nav-submenu[data-accent="fine"] {
   --nav-accent: var(--rarity-fine);
   --nav-glow: rgba(117, 182, 112, 0.45);
+}
+.main-nav__btn[data-accent="rare"],
+.main-nav-submenu[data-accent="rare"] {
+  --nav-accent: var(--rarity-rare);
+  --nav-glow: rgba(98, 169, 209, 0.5);
 }
 
 .app-content {
@@ -366,6 +381,9 @@ body {
   border-radius: 50%;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  user-select: none;
+  touch-action: none;
 }
 
 .main-nav__bubble {
@@ -433,7 +451,7 @@ body {
   box-sizing: content-box;
   padding: 2px;
   border-radius: 50%;
-  color: #1a1408;
+  color: #0b0b0f;
   background: var(--nav-accent);
   transform: rotate(90deg);
   transition: transform 0.25s ease;

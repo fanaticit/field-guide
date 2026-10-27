@@ -198,7 +198,7 @@ export default function Armory() {
         <div>
           <div className="flex items-center gap-2 mb-1.5">
             <Shield size={16} className="text-rarity-5" />
-            <span className="rarity-badge rarity-5 text-[10px] py-0.5 px-2">Hunter's Armory</span>
+            <span className="rarity-badge rarity-5 text-[10px] py-0.5 px-2">Armory</span>
           </div>
           <h1 className="font-display text-2xl font-bold text-mh-slate-100 lg:text-3xl">
             Community Builds

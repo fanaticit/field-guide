@@ -76,7 +76,7 @@ export interface SectionDefinition {
 
 export const SITE_SECTIONS: SectionDefinition[] = [
   { path: '/', label: 'Home', description: 'Landing portal, overview, and quick links' },
-  { path: '/armory', label: "Hunter's Armory", description: 'Community builds, build planner, and armour archives' },
+  { path: '/armory', label: 'Armory', description: 'Community builds, build planner, and armour archives' },
   { path: '/gallery', label: 'Gallery', description: 'Visage sets and visage collection' },
   { path: '/challenges', label: 'Challenges', description: 'Hunter goals, adventurers, buddies, and weapons' },
   { path: '/admin', label: 'Admin Panel', description: 'Game data curation tools' },

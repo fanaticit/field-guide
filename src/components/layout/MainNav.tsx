@@ -5,9 +5,11 @@
 //   • Desktop / mobile landscape → floating rail on the LEFT
 //   • Mobile portrait            → floating bar at the BOTTOM
 // The active item is lifted out of the bar in a notched bubble.
-// Tapping the active item opens its sub-menu.
+// Tap the active item, or press-and-hold any item, to open its sub-menu.
+// Hold → slide your thumb onto a page → release to go there.
 // ─────────────────────────────────────────────────────────────
 import { useEffect, useRef, useState } from 'react';
+import type React from 'react';
 import {
   Sword,
   Shield,
@@ -47,10 +49,12 @@ interface NavSection {
   iconSrc: string;
   // The source artwork has different amounts of transparent padding; zoom normalises the visual size.
   iconZoom: number;
-  accent: 'gold' | 'fine';
+  accent: 'superior' | 'epic' | 'fine' | 'rare';
   active: boolean;
   subItems: SubNavItem[];
 }
+
+const HOLD_MS = 350;
 
 export default function MainNav() {
   const navigate = useNavigate();
@@ -62,7 +66,10 @@ export default function MainNav() {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [openId, setOpenId] = useState<string | null>(null);
   const [anchorY, setAnchorY] = useState(0);
+  const [hoverSubId, setHoverSubId] = useState<string | null>(null);
   const buttonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const holdCleanup = useRef<(() => void) | null>(null);
+  const suppressClick = useRef(false);
 
   const isLoggedIn = !!user;
   const displayName = profile?.display_name ?? profile?.username ?? user?.email?.split('@')[0] ?? 'Hunter';
@@ -77,7 +84,7 @@ export default function MainNav() {
       description: isLoggedIn ? displayName : 'Welcome to Field Guide',
       iconSrc: '/img/ui/Home%20Icon.png',
       iconZoom: 1,
-      accent: 'gold',
+      accent: 'superior',
       active: pathname === '/' || pathname === '/settings' || pathname.startsWith('/admin'),
       subItems: [
         { id: 'home-root', label: 'Home', icon: Home, active: pathname === '/', onSelect: go('/') },
@@ -95,11 +102,11 @@ export default function MainNav() {
     {
       id: 'armory',
       path: '/armory',
-      label: "Hunter's Armory",
+      label: 'Armory',
       description: 'Builds, Planner & Armour',
       iconSrc: '/img/ui/Equipment%20Icon.png',
       iconZoom: 2.1,
-      accent: 'gold',
+      accent: 'epic',
       active: pathname.startsWith('/armory') || pathname.startsWith('/build-planner'),
       subItems: [
         { id: 'armory-builds', label: 'Community Builds', icon: LayoutGrid, active: pathname === '/armory' || pathname === '/armory/builds', onSelect: go('/armory') },
@@ -137,7 +144,7 @@ export default function MainNav() {
       description: 'Hunter Goals & Records',
       iconSrc: '/img/ui/Challenge%20Icon.png',
       iconZoom: 1,
-      accent: 'gold',
+      accent: 'rare',
       active: pathname.startsWith('/challenges'),
       subItems: [
         { id: 'challenges-my', label: 'My Challenges', icon: Target, active: pathname === '/challenges', onSelect: go('/challenges') },
@@ -164,7 +171,64 @@ export default function MainNav() {
     return () => window.removeEventListener('keydown', onKey);
   }, [openId]);
 
+  useEffect(() => () => holdCleanup.current?.(), []);
+
+  const openMenu = (section: NavSection) => {
+    const rect = buttonRefs.current[section.id]?.getBoundingClientRect();
+    if (rect) setAnchorY(rect.top + rect.height / 2);
+    setOpenId(section.id);
+  };
+
+  const subIdAt = (x: number, y: number) =>
+    document.elementFromPoint(x, y)?.closest<HTMLElement>('[data-sub-id]')?.dataset.subId ?? null;
+
+  // Press-and-hold: open the menu, track the pointer over its items, select on release
+  const handlePointerDown = (section: NavSection, e: React.PointerEvent) => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    holdCleanup.current?.();
+
+    let fired = false;
+    const timer = window.setTimeout(() => {
+      fired = true;
+      suppressClick.current = true;
+      openMenu(section);
+      navigator.vibrate?.(12);
+    }, HOLD_MS);
+
+    const onMove = (ev: PointerEvent) => {
+      if (fired) setHoverSubId(subIdAt(ev.clientX, ev.clientY));
+    };
+    const onEnd = (ev: PointerEvent) => {
+      cleanup();
+      setHoverSubId(null);
+      if (!fired) return;
+      // Swallow the click that follows a long press
+      window.setTimeout(() => {
+        suppressClick.current = false;
+      }, 50);
+      if (ev.type !== 'pointerup') return;
+      const sub = section.subItems.find((item) => item.id === subIdAt(ev.clientX, ev.clientY));
+      if (sub) {
+        setOpenId(null);
+        sub.onSelect();
+      }
+    };
+    const cleanup = () => {
+      window.clearTimeout(timer);
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onEnd);
+      window.removeEventListener('pointercancel', onEnd);
+      holdCleanup.current = null;
+    };
+
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onEnd);
+    window.addEventListener('pointercancel', onEnd);
+    holdCleanup.current = cleanup;
+  };
+
   const handleSectionClick = (section: NavSection) => {
+    if (suppressClick.current) return;
     if (!section.active) {
       setOpenId(null);
       navigate(section.path);
@@ -174,9 +238,7 @@ export default function MainNav() {
       setOpenId(null);
       return;
     }
-    const rect = buttonRefs.current[section.id]?.getBoundingClientRect();
-    if (rect) setAnchorY(rect.top + rect.height / 2);
-    setOpenId(section.id);
+    openMenu(section);
   };
 
   return (
@@ -212,6 +274,8 @@ export default function MainNav() {
                 aria-haspopup={section.active ? 'menu' : undefined}
                 aria-expanded={section.active ? openId === section.id : undefined}
                 onClick={() => handleSectionClick(section)}
+                onPointerDown={(e) => handlePointerDown(section, e)}
+                onContextMenu={(e) => e.preventDefault()}
               >
                 <span className="main-nav__bubble">
                   <span className="main-nav__icon">
@@ -264,6 +328,7 @@ export default function MainNav() {
                   key={sub.id}
                   type="button"
                   role="menuitem"
+                  data-sub-id={sub.id}
                   onClick={() => {
                     setOpenId(null);
                     sub.onSelect();
@@ -273,6 +338,7 @@ export default function MainNav() {
                     sub.active
                       ? 'border-[var(--nav-accent)]/50 bg-[var(--bg-panel-primary)] font-bold text-[var(--nav-accent)]'
                       : 'border-transparent text-[#A3A3A3] hover:bg-white/5 hover:text-white',
+                    hoverSubId === sub.id && '!border-[var(--nav-accent)] !bg-white/10 !text-white',
                   )}
                 >
                   <SubIcon size={16} className="shrink-0" />

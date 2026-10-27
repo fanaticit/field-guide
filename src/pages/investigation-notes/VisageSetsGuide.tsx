@@ -67,16 +67,20 @@ export default function VisageSetsGuide() {
   const [showCollectedModal, setShowCollectedModal] = useState(false);
   const collectedMenuRef = useRef<HTMLDivElement>(null);
 
-  // Close collection breakdown modal on outside click
+  // Close collection breakdown modal on outside click / tap
   useEffect(() => {
     if (!showCollectedModal) return;
-    function handleOutside(e: MouseEvent) {
+    function handleOutside(e: MouseEvent | TouchEvent) {
       if (collectedMenuRef.current && !collectedMenuRef.current.contains(e.target as Node)) {
         setShowCollectedModal(false);
       }
     }
     window.addEventListener('mousedown', handleOutside);
-    return () => window.removeEventListener('mousedown', handleOutside);
+    window.addEventListener('touchstart', handleOutside);
+    return () => {
+      window.removeEventListener('mousedown', handleOutside);
+      window.removeEventListener('touchstart', handleOutside);
+    };
   }, [showCollectedModal]);
 
   // ── Builder mode (URL driven: ?mode=builder&build=<id>) ──────
@@ -341,9 +345,9 @@ export default function VisageSetsGuide() {
     <div className="flex flex-col flex-1 min-h-0 h-full bg-gradient-to-b from-[#131722] via-[#0d1017] to-[#0a0c10] text-mh-slate-100 overflow-hidden">
       {/* ── Streamlined Subheader Banner ── */}
       <div className="shrink-0 border-b border-mh-slate-800/80 bg-gradient-to-r from-[#191e2b] via-[#141824] to-[#191e2b] px-3 sm:px-6 py-2 shadow-md z-20">
-        <div className="flex items-center justify-between gap-2 sm:gap-4 flex-wrap sm:flex-nowrap">
-          {/* Left: Clean title */}
-          <div className="flex items-center gap-2 min-w-0">
+        <div className="flex items-center justify-between gap-x-2 gap-y-2 sm:gap-4 flex-wrap sm:flex-nowrap">
+          {/* Left: Clean title (Row 1 Left) */}
+          <div className="order-1 flex items-center gap-2 min-w-0">
             <Layers className="text-mh-gold-400 shrink-0 hidden xs:block" size={18} />
             <h2 className="font-display text-sm sm:text-base md:text-lg font-bold text-mh-slate-100 whitespace-nowrap">
               Visage Sets Album
@@ -353,39 +357,8 @@ export default function VisageSetsGuide() {
             )}
           </div>
 
-          {/* Center: Album / Build Set toggle */}
-          <div className="inline-flex rounded-lg border border-mh-slate-700 bg-mh-slate-900/90 p-0.5 text-xs shrink-0 mx-auto sm:mx-0">
-            <button
-              type="button"
-              onClick={() => setMode('album')}
-              className={cn(
-                'flex items-center gap-1.5 rounded-md px-2.5 sm:px-3 py-1 font-bold transition-all text-xs',
-                !isBuilder
-                  ? 'bg-mh-gold-500 text-slate-950 shadow-sm'
-                  : 'text-mh-slate-400 hover:text-white',
-              )}
-            >
-              <BookOpen size={13} />
-              <span>Album</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setMode('builder')}
-              className={cn(
-                'flex items-center gap-1.5 rounded-md px-2.5 sm:px-3 py-1 font-bold transition-all text-xs',
-                isBuilder
-                  ? 'bg-mh-gold-500 text-slate-950 shadow-sm'
-                  : 'text-mh-slate-400 hover:text-white',
-              )}
-            >
-              <Hammer size={13} />
-              <span>Build Set</span>
-              {builder.dirty && <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />}
-            </button>
-          </div>
-
-          {/* Right: Collected Info (desktop breakdown vs mobile compact badge) */}
-          <div className="relative shrink-0">
+          {/* Right: Collected Info (Row 1 Right on mobile, far right on desktop) */}
+          <div className="order-2 sm:order-3 ml-auto sm:ml-0 relative shrink-0">
             {/* Desktop breakdown (md+) */}
             <div className="hidden md:flex flex-wrap items-center gap-2 bg-black/50 rounded-xl p-1.5 sm:p-2 border border-mh-slate-800">
               {/* Total Collected */}
@@ -445,7 +418,7 @@ export default function VisageSetsGuide() {
 
               {showCollectedModal && (
                 <div
-                  className="absolute right-0 top-full mt-1.5 z-50 w-60 rounded-xl border border-mh-gold-500/40 bg-mh-slate-950 p-2.5 shadow-2xl animate-in zoom-in-95 duration-100"
+                  className="absolute right-0 top-full mt-1.5 z-50 w-60 max-w-[calc(100vw-24px)] rounded-xl border border-mh-gold-500/40 bg-mh-slate-950 p-2.5 shadow-2xl animate-in zoom-in-95 duration-100"
                   style={{
                     boxShadow: '0 10px 25px rgba(0,0,0,0.8), 0 0 15px rgba(234,179,8,0.25)',
                   }}
@@ -492,6 +465,39 @@ export default function VisageSetsGuide() {
                   </div>
                 </div>
               )}
+            </div>
+          </div>
+
+          {/* Center: Album / Build Set toggle (wrapped to row 2 when contracted/mobile, center on desktop) */}
+          <div className="order-3 sm:order-2 w-full sm:w-auto flex justify-center sm:inline-flex shrink-0">
+            <div className="inline-flex rounded-lg border border-mh-slate-700 bg-mh-slate-900/90 p-0.5 text-xs">
+              <button
+                type="button"
+                onClick={() => setMode('album')}
+                className={cn(
+                  'flex items-center gap-1.5 rounded-md px-2.5 sm:px-3 py-1 font-bold transition-all text-xs',
+                  !isBuilder
+                    ? 'bg-mh-gold-500 text-slate-950 shadow-sm'
+                    : 'text-mh-slate-400 hover:text-white',
+                )}
+              >
+                <BookOpen size={13} />
+                <span>Album</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setMode('builder')}
+                className={cn(
+                  'flex items-center gap-1.5 rounded-md px-2.5 sm:px-3 py-1 font-bold transition-all text-xs',
+                  isBuilder
+                    ? 'bg-mh-gold-500 text-slate-950 shadow-sm'
+                    : 'text-mh-slate-400 hover:text-white',
+                )}
+              >
+                <Hammer size={13} />
+                <span>Build Set</span>
+                {builder.dirty && <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />}
+              </button>
             </div>
           </div>
         </div>
