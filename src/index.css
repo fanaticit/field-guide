@@ -287,8 +287,7 @@ body {
   --nav-rail-w: 64px;
   --nav-bar-h: 64px;
   --nav-gap: 14px;
-  /* Extra left inset keeps the rail clear of the camera cut-out when a phone is in landscape */
-  --nav-left: calc(var(--nav-margin) + env(safe-area-inset-left, 0px));
+  --nav-left: var(--nav-margin);
   --nav-offset: calc(var(--nav-left) + var(--nav-rail-w) + var(--nav-gap));
   --nav-cutout: #07080b;
   --nav-accent: var(--accent-gold);
@@ -319,7 +318,6 @@ body {
 
 .app-content {
   margin-left: var(--nav-offset);
-  padding-right: env(safe-area-inset-right, 0px);
 }
 
 .app-header {
@@ -528,7 +526,6 @@ body {
   :root {
     --nav-margin: 8px;
     --nav-gap: 12px;
-    --nav-left: calc(var(--nav-margin) + 8px + env(safe-area-inset-left, 0px));
   }
   .main-nav { padding: 8px 0; }
   .main-nav__brand { display: none; }
