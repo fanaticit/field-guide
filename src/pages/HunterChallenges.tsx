@@ -145,10 +145,8 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
     // ── Compact mobile row ─────────────────────────────────────
     return (
       <div className={cn(
-        'flex items-center gap-3 rounded-xl border p-3 transition-all',
-        isDone
-          ? 'border-sky-800 bg-sky-900/40 opacity-60'
-          : 'border-sky-700 bg-sky-900',
+        'mho-panel flex items-center gap-3 p-3',
+        isDone && 'opacity-60',
       )}>
         {/* Piece icon */}
         <div className="shrink-0 flex items-center justify-center">
@@ -216,10 +214,8 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
   // ── Full desktop card ──────────────────────────────────────
   return (
     <div className={cn(
-      'rounded-2xl border p-4 space-y-3 transition-all',
-      isDone
-        ? 'border-sky-800 bg-sky-900/40 opacity-70'
-        : 'border-sky-700 bg-sky-900 hover:border-sky-600',
+      'mho-panel p-4 space-y-3',
+      isDone ? 'opacity-70' : 'mho-panel-interactive',
     )}>
       {/* Card header */}
       <div className="flex items-start gap-3">
@@ -236,7 +232,7 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0">
-              <h3 className="font-display text-sm font-bold text-sky-100 truncate">
+              <h3 className="font-display text-sm font-bold text-white truncate">
                 {c.set_name ?? 'Unknown Set'}
               </h3>
               <p className="text-xs text-sky-400 mt-0.5">
@@ -389,7 +385,7 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
         <button
           type="button"
           onClick={() => onIncrement(c)}
-          className="w-full flex items-center justify-center gap-2 rounded-xl border border-yellow-500/30 bg-yellow-500/10 py-2 text-xs font-bold text-yellow-300 hover:bg-yellow-500/20 hover:text-yellow-200 transition-colors"
+          className="w-full flex items-center justify-center gap-2 rounded-xl border border-[var(--border-active)] bg-[var(--bg-superior)] py-2 text-xs font-bold text-[#FFD700] hover:shadow-[0_0_12px_var(--accent-gold-glow)] transition-all"
         >
           <Plus size={13} />
           {isVisage
@@ -477,7 +473,7 @@ function HuntingTargetsPanel({
 
   if (monsterGroups.size === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-sky-700 bg-sky-900/40 p-8 text-center">
+      <div className="rounded-2xl border border-dashed border-[var(--border-subtle)] bg-white/5 p-8 text-center">
         <Crosshair size={32} className="text-sky-700 mx-auto mb-3" />
         <p className="text-sm font-semibold text-sky-400">No active hunts</p>
         <p className="text-xs text-sky-600 mt-1">Add an armour piece challenge to see which monsters to hunt.</p>
@@ -501,7 +497,7 @@ function HuntingTargetsPanel({
           return (
             <div
               key={monsterId}
-              className="rounded-2xl border border-sky-700 bg-sky-900 overflow-hidden"
+              className="rounded-2xl border border-[var(--border-subtle)] bg-white/5 overflow-hidden"
             >
               {/* Monster row */}
               <button
@@ -532,7 +528,7 @@ function HuntingTargetsPanel({
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <p className="font-display text-sm font-bold text-sky-100 truncate">
+                  <p className="font-display text-sm font-bold text-white truncate">
                     {group.monsterName}
                   </p>
                   <p className="text-[10px] text-sky-500">
@@ -647,12 +643,12 @@ function HuntingTargetsPanel({
                 className={cn(
                   "w-full flex items-center justify-between border rounded-xl px-3 py-2 text-left transition-colors",
                   selectedMaterial === material 
-                    ? "bg-amber-800 border-amber-600 shadow-md"
-                    : "bg-amber-900/40 border-amber-700/50 hover:bg-amber-800/70"
+                    ? "bg-[var(--bg-superior)] border-[var(--border-active)] shadow-md"
+                    : "bg-white/5 border-[var(--border-subtle)] hover:bg-white/10"
                 )}
               >
-                <span className="text-xs font-semibold text-amber-200 truncate pr-2">{material}</span>
-                <span className="text-[10px] font-bold text-amber-500 bg-amber-900 px-2 py-0.5 rounded-full shrink-0">
+                <span className="text-xs font-semibold text-[#FFD700] truncate pr-2">{material}</span>
+                <span className="text-[10px] font-bold text-[#FFD700] bg-black/30 px-2 py-0.5 rounded-full shrink-0">
                   x{count}
                 </span>
               </button>
@@ -721,12 +717,17 @@ export default function HunterChallenges() {
 
   if (!user) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 p-8">
-        <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-yellow-500/10 border border-yellow-500/30">
-          <Target size={32} className="text-yellow-400" />
-        </div>
+      <>
+      <div className="challenges-theme flex flex-col items-center justify-center min-h-[60vh] gap-6 p-8">
+        <div className="mho-panel flex flex-col items-center gap-6 px-8 py-10 max-w-lg">
+        <img
+          src="/img/ui/Challenge%20Icon.png"
+          alt=""
+          draggable={false}
+          className="h-16 w-16 object-contain"
+        />
         <div className="text-center max-w-md">
-          <h2 className="font-display text-2xl font-bold text-sky-100">Hunter's Challenges</h2>
+          <h2 className="font-display text-2xl font-bold uppercase tracking-wide text-white">Hunter's Challenges</h2>
           <p className="text-sm text-sky-400 mt-2 leading-relaxed">
             Track the armour pieces you want to craft and upgrade. Sign in to save your personal challenges and see which monsters to hunt.
           </p>
@@ -735,7 +736,7 @@ export default function HunterChallenges() {
           <button
             type="button"
             onClick={() => setLoginModalOpen(true)}
-            className="flex items-center gap-2 rounded-xl bg-yellow-500 px-6 py-2.5 text-sm font-bold text-slate-950 hover:bg-yellow-400 transition-colors"
+            className="btn-mho-gold !px-6 !py-2.5"
           >
             <LogIn size={16} />
             Sign in to track challenges
@@ -743,29 +744,35 @@ export default function HunterChallenges() {
           <button
             type="button"
             onClick={() => navigate('/investigation-notes/armour')}
-            className="flex items-center gap-2 rounded-xl border border-sky-700 bg-sky-800 px-6 py-2.5 text-sm font-semibold text-sky-300 hover:bg-sky-700 transition-colors"
+            className="btn-mho-panel !px-6 !py-2.5"
           >
             <Shield size={16} />
             Browse Armour
           </button>
         </div>
-        <LoginModal open={loginModalOpen} onClose={() => setLoginModalOpen(false)} />
+        </div>
       </div>
+      <LoginModal open={loginModalOpen} onClose={() => setLoginModalOpen(false)} />
+      </>
     );
   }
 
   // ── Logged in ───────────────────────────────────────────────
 
   return (
-    <div className="p-4 lg:p-6 space-y-5 w-full">
+    <div className="challenges-theme mx-auto max-w-7xl p-4 sm:p-6 lg:p-8 space-y-5 w-full text-white">
       {/* ── Page Header ── */}
-      <div className="flex items-center justify-between gap-3 border-b border-sky-800 pb-4">
+      <div className="mho-panel flex flex-wrap items-center justify-between gap-3 px-5 py-4 shadow-xl">
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-yellow-500/10 border border-yellow-500/20">
-            <Target size={18} className="text-yellow-400" />
-          </div>
+          <img
+            src="/img/ui/Challenge%20Icon.png"
+            alt=""
+            draggable={false}
+            className="h-10 w-10 shrink-0 object-contain"
+          />
           <div>
-            <h1 className="font-display text-xl font-bold text-sky-100">
+            <h1 className="font-display text-xl font-bold uppercase tracking-wide text-white flex items-center gap-2">
+              <span className="text-[#FFD700] text-base">❖</span>
               Hunter's Challenges
             </h1>
             <p className="text-xs text-sky-500">
@@ -775,7 +782,7 @@ export default function HunterChallenges() {
         </div>
 
         {/* Filter tabs */}
-        <div className="flex items-center rounded-xl border border-sky-700 bg-sky-900 p-0.5 shrink-0">
+        <div className="flex items-center rounded-xl border border-[var(--border-subtle)] bg-black/30 p-0.5 shrink-0">
           {FILTER_TABS.map((tab) => (
             <button
               key={tab.id}
@@ -784,8 +791,8 @@ export default function HunterChallenges() {
               className={cn(
                 'rounded-lg px-3 py-1.5 text-xs font-bold transition-all',
                 filterTab === tab.id
-                  ? 'bg-yellow-500 text-slate-950 shadow-sm'
-                  : 'text-sky-400 hover:text-white',
+                  ? 'bg-gradient-to-b from-[#EAD17A] to-[#C9A042] text-[#1A1408] shadow-[0_0_10px_var(--accent-gold-glow)]'
+                  : 'text-[var(--text-secondary)] hover:text-white',
               )}
             >
               {tab.label}
@@ -804,10 +811,10 @@ export default function HunterChallenges() {
       {!isLoading && (
         <div className="flex flex-col lg:flex-row gap-5 items-start">
           {/* ── LEFT: Filters / Hunting Targets ── */}
-          <div className="w-full lg:w-[280px] xl:w-[320px] shrink-0 space-y-3">
-              <div className="flex items-center gap-2 mb-1">
-                <Crosshair size={15} className="text-yellow-400" />
-                <h2 className="text-xs font-bold uppercase tracking-wider text-sky-300">Hunting Targets</h2>
+          <div className="mho-panel-deep w-full lg:w-[280px] xl:w-[320px] shrink-0 space-y-3 p-3">
+              <div className="flex items-center gap-2 mb-1 pb-2 border-b border-white/10">
+                <span className="text-[#FFD700] text-xs">❖</span>
+                <h2 className="font-display text-xs font-bold uppercase tracking-wider text-white">Hunting Targets</h2>
                 {activeChallenges.length > 0 && (
                   <span className="ml-auto rounded-full bg-sky-800 px-2 py-0.5 text-[10px] font-mono font-bold text-sky-400">
                     {monsterGroups.size} monsters
@@ -834,7 +841,7 @@ export default function HunterChallenges() {
                 : "block"
             )}>
               {filteredChallenges.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-sky-700 bg-sky-900/40 p-10 text-center">
+                <div className="mho-panel border-dashed p-10 text-center">
                   {filterTab === 'active' ? (
                     <>
                       <Target size={32} className="text-sky-700 mx-auto mb-3" />
@@ -845,7 +852,7 @@ export default function HunterChallenges() {
                       <button
                         type="button"
                         onClick={() => navigate('/investigation-notes/armour')}
-                        className="inline-flex items-center gap-2 rounded-xl bg-yellow-500/15 border border-yellow-500/30 px-4 py-2 text-xs font-bold text-yellow-300 hover:bg-yellow-500/25 transition-colors"
+                        className="btn-mho-gold !px-4 !py-2 !text-xs"
                       >
                         <Shield size={13} />
                         Browse Armour

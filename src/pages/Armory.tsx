@@ -194,16 +194,13 @@ export default function Armory() {
   return (
     <div className="flex flex-col gap-6 p-4 lg:p-6 max-w-7xl mx-auto w-full">
       {/* ── Top Header ────────────────────────────────────────────── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="mho-panel flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-5 py-4 shadow-xl">
         <div>
-          <div className="flex items-center gap-2 mb-1.5">
-            <Shield size={16} className="text-rarity-5" />
-            <span className="rarity-badge rarity-5 text-[10px] py-0.5 px-2">Armory</span>
-          </div>
-          <h1 className="font-display text-2xl font-bold text-mh-slate-100 lg:text-3xl">
+          <h1 className="font-display text-2xl font-bold uppercase tracking-wide text-white lg:text-3xl flex items-center gap-2.5">
+            <span className="text-[#FFD700] text-lg">❖</span>
             Community Builds
           </h1>
-          <p className="text-xs text-mh-slate-400 mt-1">
+          <p className="text-xs text-[var(--text-secondary)] mt-1">
             Browse, inspect, and get inspired by gear builds shared by fellow hunters.
           </p>
         </div>
@@ -211,14 +208,14 @@ export default function Armory() {
         {/* Header Right: View Switcher & Create Build */}
         <div className="flex items-center gap-3 self-start sm:self-center">
           {/* View Mode Toggle */}
-          <div className="flex items-center rounded-lg bg-mh-slate-850 p-1 border border-mh-slate-750">
+          <div className="flex items-center rounded-lg bg-black/30 p-1 border border-[var(--border-subtle)]">
             <button
               onClick={() => setViewMode('panel')}
               title="Panel View (Grid Cards)"
               className={`flex items-center gap-1 px-2.5 py-1.5 rounded-md text-xs font-bold transition-all ${
                 viewMode === 'panel'
-                  ? 'bg-mh-slate-700 text-white shadow-sm'
-                  : 'text-mh-slate-400 hover:text-white'
+                  ? 'bg-white/10 text-[#FFD700] shadow-sm'
+                  : 'text-[var(--text-secondary)] hover:text-white'
               }`}
             >
               <LayoutGrid size={14} />
@@ -229,8 +226,8 @@ export default function Armory() {
               title="List View (Row Icons)"
               className={`flex items-center gap-1 px-2.5 py-1.5 rounded-md text-xs font-bold transition-all ${
                 viewMode === 'list'
-                  ? 'bg-mh-slate-700 text-white shadow-sm'
-                  : 'text-mh-slate-400 hover:text-white'
+                  ? 'bg-white/10 text-[#FFD700] shadow-sm'
+                  : 'text-[var(--text-secondary)] hover:text-white'
               }`}
             >
               <List size={14} />
@@ -241,7 +238,7 @@ export default function Armory() {
           {/* New Build action button */}
           <Link
             to="/armory/planner"
-            className="mh-button-primary inline-flex items-center gap-2 px-3.5 py-1.5 text-xs font-bold rounded-lg shadow-md"
+            className="btn-mho-gold !px-3.5 !py-2 !text-xs"
           >
             <Plus size={15} />
             <span>Create Build</span>
@@ -250,32 +247,32 @@ export default function Armory() {
       </div>
 
       {/* ── Search & Filter Bar ───────────────────────────────────── */}
-      <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3 bg-mh-slate-850/70 p-3 rounded-xl border border-mh-slate-750">
+      <div className="mho-panel flex flex-col md:flex-row items-stretch md:items-center gap-3 p-3">
         {/* Search input */}
         <div className="relative flex-1">
           <Search
             size={16}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-mh-slate-400 pointer-events-none"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-secondary)] pointer-events-none"
           />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by title, author, hunter, or weapon..."
-            className="w-full bg-mh-slate-900 border border-mh-slate-750 rounded-lg pl-9 pr-3 py-1.5 text-xs text-mh-slate-200 placeholder:text-mh-slate-500 focus:outline-none focus:border-rarity-5 transition-colors"
+            className="w-full bg-black/30 border border-[var(--border-subtle)] rounded-lg pl-9 pr-3 py-1.5 text-xs text-white placeholder:text-[var(--text-secondary)] focus:outline-none focus:border-[#FFD700]/70 transition-colors"
           />
         </div>
 
         {/* Controls row */}
         <div className="flex flex-wrap items-center gap-2">
           {/* Role Filter Pills */}
-          <div className="flex items-center rounded-lg bg-mh-slate-900 p-0.5 border border-mh-slate-750 text-xs">
+          <div className="flex items-center rounded-lg bg-black/30 p-0.5 border border-[var(--border-subtle)] text-xs">
             <button
               onClick={() => setRoleFilter('all')}
               className={`px-3 py-1 rounded-md font-bold transition-colors ${
                 roleFilter === 'all'
-                  ? 'bg-mh-slate-750 text-white shadow-sm'
-                  : 'text-mh-slate-400 hover:text-white'
+                  ? 'bg-gradient-to-b from-[#EAD17A] to-[#C9A042] text-[#1A1408] shadow-[0_0_10px_var(--accent-gold-glow)]'
+                  : 'text-[var(--text-secondary)] hover:text-white'
               }`}
             >
               All
@@ -284,8 +281,8 @@ export default function Armory() {
               onClick={() => setRoleFilter('main')}
               className={`px-3 py-1 rounded-md font-bold transition-colors ${
                 roleFilter === 'main'
-                  ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                  : 'text-mh-slate-400 hover:text-emerald-400'
+                  ? 'badge-fine'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--rarity-fine)]'
               }`}
             >
               Main
@@ -294,8 +291,8 @@ export default function Armory() {
               onClick={() => setRoleFilter('support')}
               className={`px-3 py-1 rounded-md font-bold transition-colors ${
                 roleFilter === 'support'
-                  ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
-                  : 'text-mh-slate-400 hover:text-amber-400'
+                  ? 'badge-superior'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--rarity-superior)]'
               }`}
             >
               Support
@@ -304,12 +301,12 @@ export default function Armory() {
 
           {/* Weapon Type Filter */}
           {availableWeaponTypes.length > 0 && (
-            <div className="flex items-center gap-1.5 bg-mh-slate-900 px-2.5 py-1 rounded-lg border border-mh-slate-750 text-xs">
-              <Filter size={13} className="text-mh-slate-400" />
+            <div className="flex items-center gap-1.5 bg-black/30 px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] text-xs">
+              <Filter size={13} className="text-[var(--text-secondary)]" />
               <select
                 value={selectedWeaponType}
                 onChange={(e) => setSelectedWeaponType(e.target.value)}
-                className="bg-transparent text-xs text-mh-slate-200 focus:outline-none cursor-pointer pr-1"
+                className="bg-transparent text-xs text-white focus:outline-none cursor-pointer pr-1"
               >
                 <option value="all" className="bg-mh-slate-900 text-mh-slate-200">
                   All Weapons
@@ -324,12 +321,12 @@ export default function Armory() {
           )}
 
           {/* Ink Type Filter */}
-          <div className="flex items-center gap-1.5 bg-mh-slate-900 px-2.5 py-1 rounded-lg border border-mh-slate-750 text-xs">
-            <Sparkles size={13} className="text-mh-slate-400" />
+          <div className="flex items-center gap-1.5 bg-black/30 px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] text-xs">
+            <Sparkles size={13} className="text-[var(--text-secondary)]" />
             <select
               value={selectedInk}
               onChange={(e) => setSelectedInk(e.target.value)}
-              className="bg-transparent text-xs text-mh-slate-200 focus:outline-none cursor-pointer pr-1"
+              className="bg-transparent text-xs text-white focus:outline-none cursor-pointer pr-1"
             >
               <option value="all" className="bg-mh-slate-900 text-mh-slate-200">
                 All Inks
@@ -346,9 +343,9 @@ export default function Armory() {
 
       {/* ── Builds Count Summary ──────────────────────────────────── */}
       {!isLoading && (
-        <div className="flex items-center justify-between text-xs text-mh-slate-400 px-1 -mt-2">
+        <div className="flex items-center justify-between text-xs text-[var(--text-secondary)] px-1 -mt-2">
           <span>
-            Showing <strong className="text-mh-slate-200">{filteredBuilds.length}</strong> {filteredBuilds.length === 1 ? 'build' : 'builds'}
+            Showing <strong className="text-white">{filteredBuilds.length}</strong> {filteredBuilds.length === 1 ? 'build' : 'builds'}
             {builds && filteredBuilds.length !== builds.length && ` (filtered from ${builds.length})`}
           </span>
           {(searchQuery || roleFilter !== 'all' || selectedWeaponType !== 'all' || selectedInk !== 'all') && (
@@ -359,7 +356,7 @@ export default function Armory() {
                 setSelectedWeaponType('all');
                 setSelectedInk('all');
               }}
-              className="text-rarity-5 hover:underline text-[11px] font-bold"
+              className="text-[#FFD700] hover:underline text-[11px] font-bold"
             >
               Clear filters
             </button>
@@ -373,7 +370,7 @@ export default function Armory() {
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <div
               key={i}
-              className={`mh-card bg-mh-slate-850/40 border border-mh-slate-800 animate-pulse rounded-lg ${
+              className={`mho-panel animate-pulse ${
                 viewMode === 'panel' ? 'h-36 p-3 flex flex-col gap-3' : 'h-11 px-3 py-1.5 flex items-center gap-2.5'
               }`}
             >
@@ -411,10 +408,10 @@ export default function Armory() {
           </div>
         )
       ) : (
-        <div className="mh-card p-12 text-center flex flex-col items-center justify-center gap-3 bg-mh-slate-850/40 border border-mh-slate-800 rounded-2xl">
-          <Shield size={36} className="text-mh-slate-600" />
-          <h3 className="font-display font-bold text-lg text-mh-slate-300">No builds found</h3>
-          <p className="text-xs text-mh-slate-500 max-w-sm">
+        <div className="mho-panel border-dashed p-12 text-center flex flex-col items-center justify-center gap-3">
+          <Shield size={36} className="text-[#FFD700]/40" />
+          <h3 className="font-display font-bold text-lg uppercase tracking-wide text-white">No builds found</h3>
+          <p className="text-xs text-[var(--text-secondary)] max-w-sm">
             {searchQuery || roleFilter !== 'all' || selectedWeaponType !== 'all' || selectedInk !== 'all'
               ? 'No community builds matched your current filters. Try relaxing your search criteria.'
               : 'No builds have been published yet. Be the first hunter to forge and publish a build!'}
@@ -427,14 +424,14 @@ export default function Armory() {
                 setSelectedWeaponType('all');
                 setSelectedInk('all');
               }}
-              className="mh-button-secondary text-xs px-3 py-1.5 mt-2"
+              className="btn-mho-panel !px-3 !py-1.5 !text-xs mt-2"
             >
               Reset Filters
             </button>
           ) : (
             <Link
               to="/armory/planner"
-              className="mh-button-primary text-xs px-4 py-2 mt-2"
+              className="btn-mho-gold !px-4 !py-2 !text-xs mt-2"
             >
               Open Build Planner
             </Link>

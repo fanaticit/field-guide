@@ -91,7 +91,7 @@ export function ArmoryBuildCard({ build, monsterMap }: ArmoryBuildCardProps) {
   return (
     <Link
       to={`/armory/planner/${build.id}`}
-      className="mh-card hover:border-rarity-5/70 transition-all duration-150 group cursor-pointer flex flex-col p-3 bg-mh-slate-850/60 border border-mh-slate-750/80 hover:bg-mh-slate-800/80 rounded-xl shadow-md"
+      className="mho-panel mho-panel-interactive group cursor-pointer flex flex-col p-3 shadow-md"
     >
       {/* ── TOP: Character Trio & Build Title (No nested panel box!) ── */}
       <div className="flex items-start gap-2.5">

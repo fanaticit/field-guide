@@ -258,8 +258,8 @@ export function EquipmentSelector() {
       }));
 
   return (
-    <div className="bg-mh-slate-800/30 border border-mh-slate-800 rounded-xl p-4 flex flex-col gap-4">
-      <h2 className="font-display text-base font-bold text-mh-slate-200">Equipment</h2>
+    <div className="mho-panel p-4 flex flex-col gap-4">
+      <h2 className="font-display text-base font-bold uppercase tracking-wide text-white flex items-center gap-2"><span className="text-[#FFD700] text-xs">❖</span>Equipment</h2>
 
       <div className="flex flex-col gap-2.5">
         <SearchableDropdown

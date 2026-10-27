@@ -84,7 +84,7 @@ export function ArmoryBuildRow({ build, monsterMap }: ArmoryBuildRowProps) {
   return (
     <Link
       to={`/armory/planner/${build.id}`}
-      className="mh-card hover:border-rarity-5/70 transition-all duration-150 group cursor-pointer flex flex-col sm:flex-row sm:items-center landscape:flex-row landscape:items-center justify-between px-2.5 sm:px-3 py-1.5 gap-1.5 sm:gap-2.5 landscape:gap-2.5 bg-mh-slate-850/60 border border-mh-slate-750/80 hover:bg-mh-slate-800/80 rounded-lg shadow-sm"
+      className="mho-panel mho-panel-interactive group cursor-pointer flex flex-col sm:flex-row sm:items-center landscape:flex-row landscape:items-center justify-between px-2.5 sm:px-3 py-1.5 gap-1.5 sm:gap-2.5 landscape:gap-2.5 shadow-sm"
     >
       {/* ── Top (Portrait Mobile) / Left (Desktop & Landscape Horizontal): Character Trio + Title/Role ── */}
       <div className="flex items-center gap-2 min-w-0 flex-1">

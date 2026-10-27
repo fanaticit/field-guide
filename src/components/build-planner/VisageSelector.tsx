@@ -290,10 +290,10 @@ export function VisageSelector() {
   };
 
   return (
-    <div className="bg-mh-slate-800/30 border border-mh-slate-800 rounded-xl p-4 flex flex-col gap-4">
+    <div className="mho-panel p-4 flex flex-col gap-4">
       {/* Header */}
       <div className="flex items-center gap-2 flex-wrap">
-        <h2 className="font-display text-base font-bold text-mh-slate-200 mr-auto">Visage Cards</h2>
+        <h2 className="font-display text-base font-bold uppercase tracking-wide text-white mr-auto flex items-center gap-2"><span className="text-[#FFD700] text-xs">❖</span>Visage Cards</h2>
         {/* Collection toggle — only shown to logged-in users */}
         {user && (
           <button

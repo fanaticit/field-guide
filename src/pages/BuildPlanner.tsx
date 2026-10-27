@@ -353,35 +353,34 @@ export default function BuildPlanner() {
 
 
   if (isLoading) {
-    return <div className="p-8 text-center text-mh-slate-400">Loading build...</div>;
+    return <div className="p-8 text-center text-[var(--text-secondary)]">Loading build...</div>;
   }
 
   return (
-    <div className="flex flex-col gap-4 p-4 lg:p-6">
+    <div className="flex flex-col gap-4 p-4 lg:p-6 max-w-[1600px] mx-auto w-full">
       
       {/* 1. Very Top Row: Back to Armory (Left), Centered Title (Center), Action Buttons (Right) */}
-      <div className="grid grid-cols-[auto_1fr_auto] items-center gap-2 sm:gap-4 pb-2 border-b border-mh-slate-800/80">
+      <div className="mho-panel grid grid-cols-[auto_1fr_auto] items-center gap-2 sm:gap-4 px-3 sm:px-5 py-3 shadow-xl">
         {/* Left: Back to Armory */}
         <div className="flex items-center">
           <Link
             to="/armory"
-            className="group inline-flex items-center gap-1.5 text-xs font-semibold text-mh-slate-300 hover:text-white transition-colors py-1.5 px-2.5 sm:px-3 rounded-lg bg-mh-slate-800 hover:bg-mh-slate-700 border border-mh-slate-700 shadow-sm shrink-0"
-            title="Back to Hunter's Armory"
+            className="btn-mho-panel group !px-2.5 sm:!px-3 !py-1.5 !text-xs shrink-0"
+            title="Back to Armory"
           >
-            <ArrowLeft size={14} className="text-mh-slate-400 group-hover:text-white transition-colors" />
+            <ArrowLeft size={14} className="text-[var(--text-secondary)] group-hover:text-white transition-colors" />
             <span className="hidden sm:inline">Back to </span>
             <span>Armory</span>
           </Link>
         </div>
 
-        {/* Center: Build Planner Badge */}
+        {/* Center: Build Planner Title */}
         <div className="flex items-center justify-center">
-          <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-mh-slate-900/90 px-3 py-1 rounded-full border border-rarity-3/30 shadow-sm">
-            <Shield size={16} className="text-rarity-3 shrink-0" />
-            <span className="font-display text-xs sm:text-sm font-bold tracking-wider text-rarity-3 uppercase whitespace-nowrap">
-              Build Planner
-            </span>
-          </div>
+          <h1 className="inline-flex items-center gap-2 font-display text-sm sm:text-lg font-bold tracking-wide text-white uppercase whitespace-nowrap">
+            <span className="text-[#FFD700] text-sm sm:text-base">❖</span>
+            <Shield size={16} className="text-[#FFD700] shrink-0 hidden sm:block" />
+            Build Planner
+          </h1>
         </div>
 
         {/* Right: Action Buttons (Upvote, Save Changes, Clone, Clear/Start New) */}
@@ -394,8 +393,8 @@ export default function BuildPlanner() {
               disabled={hasUpvoted || isVoting}
               className={`relative whitespace-nowrap text-xs sm:text-sm py-1.5 px-2.5 sm:px-3 rounded-lg flex items-center gap-1.5 transition-all font-medium border shadow-sm ${
                 hasUpvoted
-                  ? 'bg-amber-500/15 text-amber-300 border-amber-500/40 cursor-default'
-                  : 'bg-mh-slate-800 hover:bg-mh-slate-700 text-mh-slate-200 border-mh-slate-700 hover:border-mh-slate-600 active:scale-95 cursor-pointer'
+                  ? 'bg-[var(--bg-superior)] text-[#FFD700] border-[var(--border-active)] cursor-default'
+                  : 'bg-black/30 hover:bg-white/10 text-white border-[var(--border-subtle)] hover:border-[#FFD700]/60 active:scale-95 cursor-pointer'
               }`}
               title={hasUpvoted ? 'You have upvoted this build' : 'Upvote this build'}
             >
@@ -408,7 +407,7 @@ export default function BuildPlanner() {
                 size={14}
                 className={`transition-transform duration-300 ${
                   isUpvoteAnimating ? 'scale-125 rotate-[-12deg]' : ''
-                } ${hasUpvoted ? 'text-amber-400 fill-amber-400/40' : 'text-mh-slate-400'}`}
+                } ${hasUpvoted ? 'text-amber-400 fill-amber-400/40' : 'text-[var(--text-secondary)]'}`}
               />
               <span className="hidden md:inline">{hasUpvoted ? 'Upvoted' : 'Upvote'}</span>
               <span
@@ -417,7 +416,7 @@ export default function BuildPlanner() {
                 } ${
                   hasUpvoted
                     ? 'bg-amber-500/25 text-amber-200 border border-amber-500/40'
-                    : 'bg-mh-slate-900/80 text-rarity-3 border border-mh-slate-750'
+                    : 'bg-black/30 text-[var(--rarity-rare)] border border-[var(--border-subtle)]'
                 }`}
               >
                 {store.upvotes}
@@ -434,7 +433,7 @@ export default function BuildPlanner() {
               className={`whitespace-nowrap text-xs sm:text-sm py-1.5 px-2.5 sm:px-3.5 flex items-center gap-1.5 rounded-lg font-bold transition-all shadow-sm ${
                 isJustSaved
                   ? 'bg-emerald-600/30 text-emerald-300 border border-emerald-500/50 shadow-[0_0_12px_rgba(16,185,129,0.3)] scale-105'
-                  : 'btn-mh'
+                  : 'btn-mho-gold !px-2.5 sm:!px-3.5 !py-1.5 !text-xs sm:!text-sm'
               }`}
               title={isSavedBuild ? 'Save Changes' : 'Save Build'}
             >
@@ -454,7 +453,7 @@ export default function BuildPlanner() {
             <button
               type="button"
               onClick={handleClone}
-              className="btn-mh bg-mh-slate-700 hover:bg-mh-slate-600 whitespace-nowrap text-xs sm:text-sm py-1.5 px-2.5 sm:px-3 flex items-center gap-1.5 text-white shadow-none"
+              className="btn-mho-panel whitespace-nowrap !text-xs sm:!text-sm !py-1.5 !px-2.5 sm:!px-3"
               title="Clone build to create a new copy"
             >
               <Copy size={14} />
@@ -466,7 +465,7 @@ export default function BuildPlanner() {
           <button
             type="button"
             onClick={handleClearStartNew}
-            className="btn-mh bg-mh-slate-800 hover:bg-mh-slate-700 text-mh-slate-300 hover:text-white border border-mh-slate-700 whitespace-nowrap text-xs sm:text-sm py-1.5 px-2.5 sm:px-3 flex items-center gap-1.5 shadow-none"
+            className="btn-mho-panel whitespace-nowrap !text-xs sm:!text-sm !py-1.5 !px-2.5 sm:!px-3"
             title="Clear all selections and start a new build"
           >
             <RotateCcw size={14} />
@@ -477,7 +476,7 @@ export default function BuildPlanner() {
       </div>
 
       {/* 2. Second Row: Build Meta & Tactical Loadout Dock */}
-      <div className="flex flex-col gap-3.5 bg-mh-slate-800/40 border border-mh-slate-750/70 rounded-xl p-3.5 shadow-md">
+      <div className="mho-panel flex flex-col gap-3.5 p-3.5 shadow-md">
         {/* Top: Title, Role Toggle, and Description in a tight row */}
         <div className="flex flex-col landscape:flex-row md:flex-row gap-3 items-stretch landscape:items-center md:items-center justify-between">
           {/* Title & Role */}
@@ -486,12 +485,12 @@ export default function BuildPlanner() {
               ref={titleInputRef}
               type="text" 
               placeholder="Build Title (e.g. Thunder Dual Blades Burst)"
-              className="w-full bg-transparent border-b border-mh-slate-700/80 hover:border-mh-slate-600 focus:border-rarity-3 font-display text-lg sm:text-xl font-bold text-mh-slate-100 focus:ring-0 px-1 py-1 placeholder-mh-slate-500 transition-colors"
+              className="w-full bg-transparent border-b border-[var(--border-subtle)] hover:border-white/30 focus:border-[#FFD700] font-display text-lg sm:text-xl font-bold text-white focus:ring-0 px-1 py-1 placeholder-[var(--text-secondary)] transition-colors"
               value={store.title}
               onChange={(e) => store.setTitle(e.target.value)}
             />
             {/* Build Role Toggle */}
-            <div className="flex rounded-md bg-mh-slate-900/90 p-0.5 border border-mh-slate-750 shrink-0">
+            <div className="flex rounded-md bg-black/30 p-0.5 border border-[var(--border-subtle)] shrink-0">
               <button
                 type="button"
                 onClick={() => { store.setBuildRole('main'); triggerFeedback('Build role set to: Main'); }}
@@ -518,7 +517,7 @@ export default function BuildPlanner() {
             <input 
               type="text"
               placeholder="Notes or strategy description (optional)..."
-              className="w-full bg-mh-slate-900/90 border border-mh-slate-750 hover:border-mh-slate-650 rounded-lg text-xs text-mh-slate-200 focus:border-rarity-3 focus:ring-0 px-3 py-1.5 placeholder-mh-slate-500 transition-colors"
+              className="w-full bg-black/30 border border-[var(--border-subtle)] hover:border-white/30 rounded-lg text-xs text-white focus:border-[#FFD700]/70 focus:ring-0 px-3 py-1.5 placeholder-[var(--text-secondary)] transition-colors"
               value={store.description}
               onChange={(e) => store.setDescription(e.target.value)}
             />
@@ -550,7 +549,7 @@ export default function BuildPlanner() {
 
       {/* Selection Feedback Notification Toast */}
       {selectionFeedback && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-mh-slate-850/95 border border-rarity-3/50 text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-2xl backdrop-blur-md animate-in fade-in slide-in-from-bottom-2 duration-200">
+        <div className="fixed bottom-24 lg:bottom-6 right-6 z-50 flex items-center gap-2 mho-panel-deep !border-[var(--border-active)] text-white text-xs font-semibold px-4 py-2.5 shadow-2xl animate-in fade-in slide-in-from-bottom-2 duration-200">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping shrink-0" />
           <span>{selectionFeedback}</span>
         </div>
