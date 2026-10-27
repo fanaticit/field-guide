@@ -305,23 +305,25 @@ export default function VisageBuilderPanel({ sets, visages, collectionMap, isOwn
   };
 
   return (
-    <div ref={rootRef} className="bg-[#121622]/95 border border-mh-gold-500/30 rounded-2xl p-3 sm:p-4 flex flex-col gap-3 shadow-xl backdrop-blur-sm">
+    <div ref={rootRef} className="mho-panel rounded-2xl p-3 sm:p-4 flex flex-col gap-3 shadow-xl">
       {/* Header */}
       <div className="flex items-center gap-2 flex-wrap">
         <div className="mr-auto min-w-0">
-          <h2 className="font-display text-sm font-bold text-mh-gold-300 truncate flex items-center gap-1.5">
+          <h2 className="font-display text-sm font-bold uppercase tracking-wide text-[#FFD700] truncate flex items-center gap-1.5">
             {title || 'New Visage Build'}
             {dirty && <span className="w-1.5 h-1.5 rounded-full bg-amber-400" title="Unsaved changes" />}
           </h2>
         </div>
-        <div className="flex rounded-full border border-mh-slate-700 bg-mh-slate-900 p-0.5 text-[10px] font-bold">
+        <div className="flex rounded-full border border-[var(--border-subtle)] bg-black/30 p-0.5 text-[10px] font-bold">
           {(['mine', 'any'] as const).map((m) => (
             <button
               key={m}
               onClick={() => setSourceMode(m)}
               className={cn(
                 'px-2.5 py-0.5 rounded-full transition-colors',
-                sourceMode === m ? 'bg-mh-gold-500 text-slate-950' : 'text-mh-slate-400 hover:text-white',
+                sourceMode === m
+                  ? 'bg-gradient-to-b from-[#EAD17A] to-[#C9A042] text-[#1A1408]'
+                  : 'text-[var(--text-secondary)] hover:text-white',
               )}
             >
               {m === 'mine' ? '📦 My Cards' : '🌐 Any Cards'}
@@ -403,7 +405,7 @@ export default function VisageBuilderPanel({ sets, visages, collectionMap, isOwn
       )}
 
       {/* Effects (always on xl, collapsible below) */}
-      <div className="border-t border-mh-slate-800 pt-2">
+      <div className="border-t border-white/10 pt-2">
         <button
           onClick={() => setShowEffects((s) => !s)}
           className="xl:hidden w-full flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-mh-slate-400 hover:text-white"
@@ -417,11 +419,11 @@ export default function VisageBuilderPanel({ sets, visages, collectionMap, isOwn
       </div>
 
       {/* Actions */}
-      <div className="flex flex-wrap items-center gap-1.5 border-t border-mh-slate-800 pt-3">
+      <div className="flex flex-wrap items-center gap-1.5 border-t border-white/10 pt-3">
         <button
           onClick={() => onSave(false)}
           disabled={!filled}
-          className="flex items-center gap-1.5 rounded-lg bg-mh-gold-500 px-3 py-1.5 text-xs font-bold text-slate-950 hover:bg-mh-gold-400 disabled:opacity-40 disabled:cursor-not-allowed"
+          className="btn-mho-gold !px-3 !py-1.5 !text-xs disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:transform-none"
         >
           <Save size={13} />
           {buildId && isOwner ? 'Save' : 'Save Build'}
@@ -456,7 +458,7 @@ export default function VisageBuilderPanel({ sets, visages, collectionMap, isOwn
         </button>
         <Link
           to="/armory/visages"
-          className="ml-auto flex items-center gap-1.5 text-[11px] font-semibold text-mh-gold-400 hover:text-mh-gold-300"
+          className="ml-auto flex items-center gap-1.5 text-[11px] font-semibold text-[#FFD700] hover:text-white"
         >
           <Library size={13} />
           Browse builds

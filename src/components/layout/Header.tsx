@@ -3,11 +3,14 @@ import { useLocation } from 'react-router-dom';
 
 interface PageMeta { title: string; subtitle: string }
 
-function getPageMeta(pathname: string): PageMeta {
+function getPageMeta(pathname: string, search = ''): PageMeta {
   if (pathname === '/') return { title: 'Field Guide', subtitle: 'Quests & Challenge Todos' };
   if (pathname.startsWith('/armory/planner') || pathname.startsWith('/armory/build-planner') || pathname.startsWith('/build-planner')) return { title: 'Armory', subtitle: 'Build Planner' };
   if (pathname.startsWith('/armory')) return { title: 'Armory', subtitle: 'Community Builds' };
-  if (pathname.startsWith('/gallery/collection')) return { title: 'Gallery', subtitle: 'Visage Collection' };
+  if (pathname.startsWith('/gallery/collection')) {
+    const isBuilder = new URLSearchParams(search).get('mode') === 'builder';
+    return { title: 'Gallery', subtitle: isBuilder ? 'Building Visage Set' : 'Visage Collection' };
+  }
   if (pathname.startsWith('/gallery')) return { title: 'Gallery', subtitle: 'Visage Sets' };
   if (pathname.startsWith('/challenges')) return { title: 'Challenges', subtitle: 'Hunter Goals & Records' };
   if (pathname.startsWith('/community-hub')) return { title: 'Community Hub', subtitle: 'Browse & Share Challenges' };
@@ -18,8 +21,8 @@ function getPageMeta(pathname: string): PageMeta {
 }
 
 export default function Header() {
-  const { pathname } = useLocation();
-  const { title, subtitle } = getPageMeta(pathname);
+  const { pathname, search } = useLocation();
+  const { title, subtitle } = getPageMeta(pathname, search);
 
   return (
     <header

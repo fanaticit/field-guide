@@ -78,7 +78,12 @@ export default function VisageBuilds() {
   const [inkFilter, setInkFilter] = useState<string>('all');
   const [buildableOnly, setBuildableOnly] = useState(false);
   const [mineOnly, setMineOnly] = useState(false);
-  const [favoritesOnly, setFavoritesOnly] = useState(false);
+  const [favoritesOnly, setFavoritesOnlyState] = useState(() => getCookie('visage_builds_favorites_only') === '1');
+
+  const setFavoritesOnly = (value: boolean) => {
+    setFavoritesOnlyState(value);
+    setCookie('visage_builds_favorites_only', value ? '1' : '0');
+  };
 
   const [viewMode, setViewModeState] = useState<'panel' | 'list'>(() => {
     const saved = getCookie('visage_builds_view_mode');
@@ -162,7 +167,7 @@ export default function VisageBuilds() {
       isPublished: row.is_published,
       loadout,
     });
-    navigate(`/investigation-notes/visages?mode=builder&build=${row.id}`);
+    navigate(`/gallery/collection?mode=builder&build=${row.id}`);
   };
 
   const handleDuplicate = (row: TVisageBuildRow) => {
@@ -175,7 +180,7 @@ export default function VisageBuilds() {
       isPublished: true,
       loadout,
     });
-    navigate(`/investigation-notes/visages?mode=builder`);
+    navigate(`/gallery/collection?mode=builder`);
   };
 
   const handleDelete = async (row: TVisageBuildRow) => {
@@ -266,7 +271,7 @@ export default function VisageBuilds() {
             {/* Favorites toggle */}
             <button
               type="button"
-              onClick={() => setFavoritesOnly((prev) => !prev)}
+              onClick={() => setFavoritesOnly(!favoritesOnly)}
               className={cn(
                 'flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-bold transition-all select-none',
                 favoritesOnly
@@ -374,7 +379,7 @@ export default function VisageBuilds() {
             <button
               onClick={() => {
                 builder.reset();
-                navigate('/investigation-notes/visages?mode=builder');
+                navigate('/gallery/collection?mode=builder');
               }}
               className="mt-4 flex items-center gap-1.5 rounded-lg bg-mh-gold-500 px-4 py-2 text-xs font-bold text-slate-950 hover:bg-mh-gold-400 transition-colors shadow-sm"
             >

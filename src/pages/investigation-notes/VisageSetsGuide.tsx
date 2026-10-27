@@ -25,6 +25,7 @@ import LoginModal from '../../components/auth/LoginModal';
 import VisageBuilderPanel from '../../components/visage-builder/VisageBuilderPanel';
 import SaveVisageBuildModal from '../../components/visage-builder/SaveVisageBuildModal';
 import DuplicateBuildModal from '../../components/visage-builder/DuplicateBuildModal';
+import MissingCardsChallengeModal from '../../components/visage-builder/MissingCardsChallengeModal';
 import { useVisageBuilderStore } from '../../store/visageBuilderStore';
 import {
   useVisageBuild,
@@ -40,9 +41,18 @@ import {
   ownsCardInk,
   rowToLoadout,
   findDuplicateBuild,
+  getBuildability,
+  type MissingCard,
   type VisageBuildRow,
 } from '../../lib/visageBuild';
 import { cn } from '../../lib/utils';
+
+// Shared pill styles that mirror the home page's gold button / panel look
+const ACTIVE_PILL =
+  'bg-gradient-to-b from-[#EAD17A] to-[#C9A042] text-[#1A1408] font-bold shadow-[0_0_10px_var(--accent-gold-glow)]';
+const INACTIVE_PILL = 'text-[var(--text-secondary)] hover:text-white';
+const FIELD_INPUT =
+  'w-full border border-[var(--border-subtle)] bg-black/30 text-xs text-white placeholder-[var(--text-secondary)] outline-none focus:border-[#FFD700]/70';
 
 export default function VisageSetsGuide() {
   const {
@@ -98,6 +108,8 @@ export default function VisageSetsGuide() {
     duplicate: VisageBuildRow | null;
     pendingAsNew: boolean;
   }>({ open: false, duplicate: null, pendingAsNew: false });
+  const [missingPrompt, setMissingPrompt] = useState<MissingCard[]>([]);
+  const [missingError, setMissingError] = useState<string | null>(null);
 
   const saveBuild = useSaveVisageBuild();
   const { data: loadedBuild } = useVisageBuild(isBuilder ? buildParam : null);
@@ -224,8 +236,31 @@ export default function VisageSetsGuide() {
       next.set('mode', 'builder');
       next.set('build', id);
       setSearchParams(next, { replace: true });
+
+      // Offer to track cards the hunter doesn't own yet
+      const missing = getBuildability(loadout, collectionMap).missing.filter(
+        (m) => !getVisageChallenge(challenges, m.visage.id, m.ink),
+      );
+      if (missing.length > 0) {
+        setMissingError(null);
+        setMissingPrompt(missing);
+      }
     } catch (e) {
       setSaveError(e instanceof Error ? e.message : 'Failed to save build.');
+    }
+  };
+
+  const handleConfirmMissingChallenges = async () => {
+    try {
+      for (const m of missingPrompt) {
+        await handleAddVisageChallenge(m.visage, m.ink, collectionMap[`${m.visage.id}:${m.ink}`]?.rarity);
+      }
+      setNotice(
+        `Added ${missingPrompt.length} card${missingPrompt.length > 1 ? 's' : ''} to your Personal Hunter's Challenge.`,
+      );
+      setMissingPrompt([]);
+    } catch (e) {
+      setMissingError(e instanceof Error ? e.message : 'Failed to add challenges.');
     }
   };
 
@@ -342,15 +377,15 @@ export default function VisageSetsGuide() {
   }, [sets, getCardCollection]);
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 h-full bg-gradient-to-b from-[#131722] via-[#0d1017] to-[#0a0c10] text-mh-slate-100 overflow-hidden">
+    <div className="flex flex-col flex-1 min-h-0 h-full gap-3 p-2 sm:p-3 text-white overflow-hidden">
       {/* ── Streamlined Subheader Banner ── */}
-      <div className="shrink-0 border-b border-mh-slate-800/80 bg-gradient-to-r from-[#191e2b] via-[#141824] to-[#191e2b] px-3 sm:px-6 py-2 shadow-md z-20">
+      <div className="mho-panel relative shrink-0 px-3 sm:px-6 py-2.5 shadow-xl z-20">
         <div className="flex items-center justify-between gap-x-2 gap-y-2 sm:gap-4 flex-wrap sm:flex-nowrap">
           {/* Left: Clean title (Row 1 Left) */}
           <div className="order-1 flex items-center gap-2 min-w-0">
-            <Layers className="text-mh-gold-400 shrink-0 hidden xs:block" size={18} />
-            <h2 className="font-display text-sm sm:text-base md:text-lg font-bold text-mh-slate-100 whitespace-nowrap">
-              Visage Sets Album
+            <span className="text-[#FFD700] text-sm shrink-0">❖</span>
+            <h2 className="font-display text-sm sm:text-base md:text-lg font-bold uppercase tracking-wide text-white whitespace-nowrap">
+              {isBuilder ? 'Building Visage Set' : 'Visage Collection'}
             </h2>
             {isLoading && (
               <Loader2 size={12} className="animate-spin text-mh-gold-400 shrink-0 ml-1" />
@@ -360,10 +395,10 @@ export default function VisageSetsGuide() {
           {/* Right: Collected Info (Row 1 Right on mobile, far right on desktop) */}
           <div className="order-2 sm:order-3 ml-auto sm:ml-0 relative shrink-0">
             {/* Desktop breakdown (md+) */}
-            <div className="hidden md:flex flex-wrap items-center gap-2 bg-black/50 rounded-xl p-1.5 sm:p-2 border border-mh-slate-800">
+            <div className="hidden md:flex flex-wrap items-center gap-2 bg-black/30 rounded-xl p-1.5 sm:p-2 border border-[var(--border-subtle)]">
               {/* Total Collected */}
-              <div className="px-2.5 py-0.5 text-center border-r border-mh-slate-800">
-                <div className="flex items-center justify-center gap-1 text-[9px] uppercase font-bold text-mh-gold-400">
+              <div className="px-2.5 py-0.5 text-center border-r border-[var(--border-subtle)]">
+                <div className="flex items-center justify-center gap-1 text-[9px] uppercase font-bold text-[#FFD700]">
                   <Bookmark size={10} />
                   <span>Collected</span>
                 </div>
@@ -407,7 +442,7 @@ export default function VisageSetsGuide() {
               <button
                 type="button"
                 onClick={() => setShowCollectedModal((prev) => !prev)}
-                className="flex items-center gap-1.5 bg-black/60 hover:bg-black/80 border border-mh-slate-800 hover:border-mh-gold-500/50 rounded-lg px-2.5 py-1 text-xs transition-all shadow-sm active:scale-95"
+                className="flex items-center gap-1.5 bg-black/30 hover:bg-black/50 border border-[var(--border-subtle)] hover:border-[#FFD700] rounded-lg px-2.5 py-1 text-xs transition-all shadow-sm active:scale-95"
                 title="Click to view full collection breakdown"
               >
                 <Bookmark size={12} className="text-mh-gold-400" />
@@ -418,13 +453,13 @@ export default function VisageSetsGuide() {
 
               {showCollectedModal && (
                 <div
-                  className="absolute right-0 top-full mt-1.5 z-50 w-60 max-w-[calc(100vw-24px)] rounded-xl border border-mh-gold-500/40 bg-mh-slate-950 p-2.5 shadow-2xl animate-in zoom-in-95 duration-100"
+                  className="mho-panel-deep absolute right-0 top-full mt-1.5 z-50 w-60 max-w-[calc(100vw-24px)] border-[var(--border-active)] p-2.5 shadow-2xl animate-in zoom-in-95 duration-100"
                   style={{
-                    boxShadow: '0 10px 25px rgba(0,0,0,0.8), 0 0 15px rgba(234,179,8,0.25)',
+                    boxShadow: '0 10px 25px rgba(0,0,0,0.8), 0 0 15px var(--accent-gold-glow)',
                   }}
                 >
-                  <div className="flex items-center justify-between pb-1.5 mb-1.5 border-b border-mh-slate-800">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-mh-gold-400 flex items-center gap-1">
+                  <div className="flex items-center justify-between pb-1.5 mb-1.5 border-b border-[var(--border-subtle)]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#FFD700] flex items-center gap-1">
                       <Bookmark size={11} />
                       <span>Collection Status</span>
                     </span>
@@ -433,7 +468,7 @@ export default function VisageSetsGuide() {
                     </span>
                   </div>
 
-                  <div className="flex items-center justify-between text-xs py-1 border-b border-mh-slate-900">
+                  <div className="flex items-center justify-between text-xs py-1 border-b border-white/10">
                     <span className="text-mh-slate-300 font-medium text-[11px]">Total Collected</span>
                     <span className="font-mono font-bold text-white text-xs">
                       {collectionStats.totalCollected} / {collectionStats.totalSlots}
@@ -470,15 +505,13 @@ export default function VisageSetsGuide() {
 
           {/* Center: Album / Build Set toggle (wrapped to row 2 when contracted/mobile, center on desktop) */}
           <div className="order-3 sm:order-2 w-full sm:w-auto flex justify-center sm:inline-flex shrink-0">
-            <div className="inline-flex rounded-lg border border-mh-slate-700 bg-mh-slate-900/90 p-0.5 text-xs">
+            <div className="inline-flex rounded-lg border border-[var(--border-subtle)] bg-black/30 p-0.5 text-xs">
               <button
                 type="button"
                 onClick={() => setMode('album')}
                 className={cn(
                   'flex items-center gap-1.5 rounded-md px-2.5 sm:px-3 py-1 font-bold transition-all text-xs',
-                  !isBuilder
-                    ? 'bg-mh-gold-500 text-slate-950 shadow-sm'
-                    : 'text-mh-slate-400 hover:text-white',
+                  !isBuilder ? ACTIVE_PILL : INACTIVE_PILL,
                 )}
               >
                 <BookOpen size={13} />
@@ -489,9 +522,7 @@ export default function VisageSetsGuide() {
                 onClick={() => setMode('builder')}
                 className={cn(
                   'flex items-center gap-1.5 rounded-md px-2.5 sm:px-3 py-1 font-bold transition-all text-xs',
-                  isBuilder
-                    ? 'bg-mh-gold-500 text-slate-950 shadow-sm'
-                    : 'text-mh-slate-400 hover:text-white',
+                  isBuilder ? ACTIVE_PILL : INACTIVE_PILL,
                 )}
               >
                 <Hammer size={13} />
@@ -504,30 +535,30 @@ export default function VisageSetsGuide() {
       </div>
 
       {/* ── Main Book Container ── */}
-      <div className="flex flex-1 min-h-0 flex-col lg:flex-row overflow-hidden">
+      <div className="flex flex-1 min-h-0 flex-col lg:flex-row gap-3 overflow-hidden">
         {/* ── Mobile Horizontal Sets Strip (< lg) ── */}
-        <div className="lg:hidden shrink-0 border-b border-mh-slate-800/80 bg-[#0e121a]/95 flex flex-col min-h-0">
+        <div className="mho-panel-deep lg:hidden shrink-0 flex flex-col min-h-0">
           {/* Compact search & filter row */}
-          <div className="p-2 border-b border-mh-slate-800/60 flex items-center gap-2">
+          <div className="p-2 border-b border-[var(--border-subtle)] flex items-center gap-2">
             <div className="relative flex-1">
-              <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-mh-slate-500" />
+              <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search sets or monsters…"
-                className="w-full rounded-md border border-mh-slate-750 bg-mh-slate-900/90 py-1 pl-7 pr-2 text-xs text-mh-slate-200 placeholder-mh-slate-500 outline-none focus:border-mh-gold-500/50"
+                className={cn(FIELD_INPUT, 'rounded-md py-1 pl-7 pr-2')}
               />
             </div>
             {/* Filter pills */}
-            <div className="flex rounded-md border border-mh-slate-750 bg-mh-slate-900 p-0.5 text-[10px] shrink-0">
+            <div className="flex rounded-md border border-[var(--border-subtle)] bg-black/30 p-0.5 text-[10px] shrink-0">
               {(['all', 'complete', 'incomplete'] as const).map((m) => (
                 <button
                   key={m}
                   onClick={() => setFilterMode(m)}
                   className={cn(
                     'px-2 py-0.5 rounded capitalize font-medium transition-colors',
-                    filterMode === m ? 'bg-mh-gold-500 text-slate-950 font-bold' : 'text-mh-slate-400 hover:text-white',
+                    filterMode === m ? ACTIVE_PILL : INACTIVE_PILL,
                   )}
                 >
                   {m === 'all' ? `All (${sets.length})` : m}
@@ -550,8 +581,8 @@ export default function VisageSetsGuide() {
                   className={cn(
                     'flex items-center gap-2 rounded-xl px-2.5 py-1.5 shrink-0 transition-all text-left border select-none',
                     isSelected
-                      ? 'bg-gradient-to-r from-mh-slate-800 to-mh-slate-850 border-mh-gold-500 shadow-md ring-1 ring-mh-gold-500/40 text-white'
-                      : 'bg-mh-slate-900/70 border-mh-slate-800 hover:bg-mh-slate-800 text-mh-slate-300',
+                      ? 'bg-[var(--bg-superior)] border-[var(--border-active)] shadow-[0_0_12px_var(--accent-gold-glow)] text-white'
+                      : 'bg-white/5 border-[var(--border-subtle)] hover:border-[#FFD700]/50 text-mh-slate-300',
                   )}
                 >
                   <div
@@ -565,7 +596,7 @@ export default function VisageSetsGuide() {
                     <InkIconComponent iconName={s.iconName || cfg.iconName} size={12} />
                   </div>
 
-                  <span className={cn('text-xs font-bold whitespace-nowrap', isSelected ? 'text-mh-gold-300' : 'text-mh-slate-200')}>
+                  <span className={cn('text-xs font-bold whitespace-nowrap', isSelected ? 'text-[#FFD700]' : 'text-mh-slate-200')}>
                     {s.shortName || s.name}
                   </span>
 
@@ -588,27 +619,27 @@ export default function VisageSetsGuide() {
         </div>
 
         {/* ── Left Sidebar: Sets List (Desktop lg+) ── */}
-        <div className="hidden lg:flex w-72 xl:w-80 shrink-0 border-r border-mh-slate-800/80 bg-[#0e121a]/95 flex-col min-h-0">
+        <div className="mho-panel-deep hidden lg:flex w-72 xl:w-80 shrink-0 flex-col min-h-0 overflow-hidden">
           {/* Search & Filter Bar */}
-          <div className="p-3 border-b border-mh-slate-800/80 space-y-2 shrink-0">
+          <div className="p-3 border-b border-[var(--border-subtle)] space-y-2 shrink-0">
             <div className="relative">
-              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-mh-slate-500" />
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search sets or monsters…"
-                className="w-full rounded-lg border border-mh-slate-750 bg-mh-slate-900/90 py-1.5 pl-8 pr-3 text-xs text-mh-slate-200 placeholder-mh-slate-500 outline-none focus:border-mh-gold-500/50"
+                className={cn(FIELD_INPUT, 'rounded-lg py-1.5 pl-8 pr-3')}
               />
             </div>
 
             {/* Filter mode */}
-            <div className="grid grid-cols-3 rounded-lg border border-mh-slate-750 bg-mh-slate-900 p-0.5 text-xs">
+            <div className="grid grid-cols-3 rounded-lg border border-[var(--border-subtle)] bg-black/30 p-0.5 text-xs">
               <button
                 onClick={() => setFilterMode('all')}
                 className={cn(
                   'rounded-md py-1 font-medium transition-colors text-center text-[11px]',
-                  filterMode === 'all' ? 'bg-mh-gold-500 text-slate-950 font-bold' : 'text-mh-slate-400 hover:text-white',
+                  filterMode === 'all' ? ACTIVE_PILL : INACTIVE_PILL,
                 )}
               >
                 All ({sets.length})
@@ -617,7 +648,7 @@ export default function VisageSetsGuide() {
                 onClick={() => setFilterMode('complete')}
                 className={cn(
                   'rounded-md py-1 font-medium transition-colors text-center text-[11px]',
-                  filterMode === 'complete' ? 'bg-mh-gold-500 text-slate-950 font-bold' : 'text-mh-slate-400 hover:text-white',
+                  filterMode === 'complete' ? ACTIVE_PILL : INACTIVE_PILL,
                 )}
               >
                 Complete
@@ -626,7 +657,7 @@ export default function VisageSetsGuide() {
                 onClick={() => setFilterMode('incomplete')}
                 className={cn(
                   'rounded-md py-1 font-medium transition-colors text-center text-[11px]',
-                  filterMode === 'incomplete' ? 'bg-mh-gold-500 text-slate-950 font-bold' : 'text-mh-slate-400 hover:text-white',
+                  filterMode === 'incomplete' ? ACTIVE_PILL : INACTIVE_PILL,
                 )}
               >
                 Incomplete
@@ -653,8 +684,8 @@ export default function VisageSetsGuide() {
                     className={cn(
                       'w-full flex items-center justify-between rounded-xl px-3 py-2.5 transition-all text-left group border',
                       isSelected
-                        ? 'bg-gradient-to-r from-mh-slate-800 to-mh-slate-850 border-mh-gold-500/50 shadow-md ring-1 ring-mh-gold-500/20'
-                        : 'bg-mh-slate-900/50 border-mh-slate-800/80 hover:bg-mh-slate-800/60 hover:border-mh-slate-700 text-mh-slate-300',
+                        ? 'bg-[var(--bg-superior)] border-[var(--border-active)] shadow-[0_0_12px_var(--accent-gold-glow)]'
+                        : 'bg-white/5 border-[var(--border-subtle)] hover:border-[#FFD700]/50 hover:bg-white/10 text-mh-slate-300',
                     )}
                   >
                     <div className="flex items-center gap-2.5 min-w-0">
@@ -675,12 +706,12 @@ export default function VisageSetsGuide() {
                         <span
                           className={cn(
                             'block text-xs font-bold truncate leading-tight',
-                            isSelected ? 'text-mh-gold-300' : 'text-mh-slate-200 group-hover:text-white',
+                            isSelected ? 'text-[#FFD700]' : 'text-mh-slate-200 group-hover:text-white',
                           )}
                         >
                           {s.name}
                         </span>
-                        <span className="text-[10px] text-mh-slate-500 font-mono">
+                        <span className="text-[10px] text-[var(--text-secondary)] font-mono">
                           {s.cards.length} {s.cards.length === 1 ? 'card' : 'cards'}
                         </span>
                       </div>
@@ -713,7 +744,7 @@ export default function VisageSetsGuide() {
           {activeSet ? (
             <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6">
               {/* Set Header Bar */}
-              <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3 border-b border-mh-slate-800/80 pb-2 sm:pb-3">
+              <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3 border-b border-white/10 pb-2 sm:pb-3">
                 <div className="flex items-center gap-2.5 sm:gap-3">
                   <div
                     className={cn(
@@ -727,7 +758,7 @@ export default function VisageSetsGuide() {
                   </div>
                   <div>
                     <div className="flex items-center gap-2.5">
-                      <h1 className="font-display text-xl sm:text-2xl font-bold text-mh-slate-100 tracking-wide">
+                      <h1 className="font-display text-xl sm:text-2xl font-bold text-white tracking-wide uppercase">
                         {activeSet.name}
                       </h1>
                       <span className="font-mono text-xs font-bold text-green-400 bg-green-500/10 border border-green-500/30 px-2 py-0.5 rounded-md">
@@ -737,8 +768,8 @@ export default function VisageSetsGuide() {
                   </div>
                 </div>
 
-                <div className="text-xs text-mh-slate-400 flex items-center gap-1.5">
-                  <span className="text-mh-slate-500">
+                <div className="text-xs flex items-center gap-1.5">
+                  <span className="text-[var(--text-secondary)]">
                     {isBuilder ? 'Click card to add/remove from build' : 'Click any card to inspect stats & effect'}
                   </span>
                 </div>
@@ -765,12 +796,13 @@ export default function VisageSetsGuide() {
                   {activeSet.groupedColumns.map((col) => (
                     <div
                       key={col.points}
-                      className="flex-1 min-w-[200px] max-w-[340px] rounded-2xl border border-mh-slate-800 bg-[#121622]/80 p-4 shadow-md backdrop-blur-sm"
+                      className="mho-panel flex-1 min-w-[200px] max-w-[340px] p-4 shadow-md"
                     >
                       {/* Group Header */}
-                      <div className="flex items-center justify-between border-b border-mh-slate-750 pb-2.5 mb-3.5">
+                      <div className="flex items-center justify-between border-b border-white/10 pb-2.5 mb-3.5">
                         <div className="flex items-center gap-1.5">
-                          <span className="font-display text-sm font-bold text-mh-slate-200">
+                          <span className="text-[#FFD700] text-xs">❖</span>
+                          <span className="font-display text-sm font-bold uppercase tracking-wide text-white">
                             Points: {col.points}
                           </span>
                         </div>
@@ -812,7 +844,7 @@ export default function VisageSetsGuide() {
                   ))}
                 </div>
               ) : (
-                <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-mh-slate-800 bg-mh-slate-900/40 py-12 px-6 text-center">
+                <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-[var(--border-subtle)] bg-white/5 py-12 px-6 text-center">
                   <div className={cn('flex h-12 w-12 items-center justify-center rounded-xl border mb-3', activeInkCfg.bg, activeInkCfg.border, activeInkCfg.text)}>
                     <InkIconComponent iconName={activeSet.iconName || activeInkCfg.iconName} size={24} />
                   </div>
@@ -835,9 +867,9 @@ export default function VisageSetsGuide() {
               )}
 
               {/* ── Set Bonus Skills Section (Directly underneath the groups) ── */}
-              <div className="rounded-2xl border border-mh-gold-500/30 bg-gradient-to-r from-[#171c2b] via-[#141926] to-[#171c2b] p-5 shadow-lg space-y-3">
+              <div className="mho-card-rarity rarity-theme-standard p-5 shadow-lg space-y-3">
                 {/* Title */}
-                <div className="flex items-center gap-2 text-sm font-bold text-mh-gold-400">
+                <div className="flex items-center gap-2 text-sm font-bold text-[#FFD700]">
                   <div className={cn('flex h-5 w-5 items-center justify-center rounded', activeInkCfg.text)}>
                     <InkIconComponent iconName={activeSet.iconName || activeInkCfg.iconName} size={15} />
                   </div>
@@ -886,7 +918,7 @@ export default function VisageSetsGuide() {
 
         {/* ── Desktop Builder Column (xl+) ── */}
         {isBuilder && (
-          <div className="hidden xl:block w-[380px] 2xl:w-[420px] shrink-0 border-l border-mh-slate-800/80 bg-[#0c1017]/95 overflow-y-auto p-4 min-h-0">
+          <div className="mho-panel-deep hidden xl:block w-[380px] 2xl:w-[420px] shrink-0 overflow-y-auto p-4 min-h-0">
             <VisageBuilderPanel
               sets={sets}
               visages={dbVisages}
@@ -910,6 +942,16 @@ export default function VisageSetsGuide() {
         onClose={() => setDuplicateModal({ open: false, duplicate: null, pendingAsNew: false })}
         onFavoriteExisting={handleFavoriteExistingDuplicate}
         onSaveCustomAnyway={handleSaveCustomAnyway}
+      />
+
+      {/* ── Missing Cards → Personal Hunter's Challenge Prompt ── */}
+      <MissingCardsChallengeModal
+        open={missingPrompt.length > 0}
+        missing={missingPrompt}
+        adding={addVisageChallenge.isPending}
+        error={missingError}
+        onConfirm={handleConfirmMissingChallenges}
+        onDecline={() => setMissingPrompt([])}
       />
 
       {/* ── Save Visage Build Modal ── */}

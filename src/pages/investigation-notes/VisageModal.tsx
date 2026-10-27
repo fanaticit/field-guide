@@ -255,7 +255,12 @@ export default function VisageModal({
             {/* Challenge Tracking CTA */}
             <div className="pt-2 border-t border-mh-slate-800/80 flex items-center justify-between gap-2">
               <div className="flex items-center gap-2">
-                <Target size={15} className="text-yellow-400 shrink-0" />
+                <img
+                  src="/img/ui/Challenge%20Icon.png"
+                  alt=""
+                  draggable={false}
+                  className="h-7 w-7 shrink-0 object-contain"
+                />
                 <div>
                   <p className="text-xs font-bold text-mh-slate-200">Personal Hunter's Challenge</p>
                   <p className="text-[10px] text-mh-slate-400">
