@@ -286,7 +286,10 @@ body {
   --nav-margin: 12px;
   --nav-rail-w: 64px;
   --nav-bar-h: 64px;
-  --nav-offset: 104px;
+  --nav-gap: 14px;
+  /* Extra left inset keeps the rail clear of the camera cut-out when a phone is in landscape */
+  --nav-left: calc(var(--nav-margin) + env(safe-area-inset-left, 0px));
+  --nav-offset: calc(var(--nav-left) + var(--nav-rail-w) + var(--nav-gap));
   --nav-cutout: #07080b;
   --nav-accent: var(--accent-gold);
   --nav-glow: rgba(255, 215, 0, 0.4);
@@ -316,6 +319,7 @@ body {
 
 .app-content {
   margin-left: var(--nav-offset);
+  padding-right: env(safe-area-inset-right, 0px);
 }
 
 .app-header {
@@ -327,7 +331,7 @@ body {
   z-index: 40;
   top: var(--nav-margin);
   bottom: var(--nav-margin);
-  left: var(--nav-margin);
+  left: var(--nav-left);
   width: var(--nav-rail-w);
   display: flex;
   flex-direction: column;
@@ -434,7 +438,7 @@ body {
 /* Active: bubble lifts out of the rail, cutting a notch into it */
 .main-nav__btn[data-active="true"] .main-nav__bubble,
 .main-nav__btn[data-active="true"]:hover .main-nav__bubble {
-  transform: translateX(22px) scale(1.12);
+  transform: translateX(18px) scale(1.12);
   background: radial-gradient(circle at 30% 25%, #34343c 0%, #17171c 75%);
   border-color: var(--nav-accent);
   box-shadow: 0 0 0 5px var(--nav-cutout), 0 0 18px var(--nav-glow);
@@ -495,7 +499,7 @@ body {
   --half-height: min(150px, calc(50dvh - 8px));
   position: fixed;
   z-index: 41;
-  left: calc(var(--nav-margin) + var(--nav-rail-w) + 48px);
+  left: calc(var(--nav-left) + var(--nav-rail-w) + 40px);
   top: clamp(var(--half-height), var(--anchor-y, 50%), calc(100dvh - var(--half-height)));
   transform: translateY(-50%);
   width: 240px;
@@ -523,7 +527,8 @@ body {
 @media (max-height: 520px) {
   :root {
     --nav-margin: 8px;
-    --nav-offset: 96px;
+    --nav-gap: 12px;
+    --nav-left: calc(var(--nav-margin) + 8px + env(safe-area-inset-left, 0px));
   }
   .main-nav { padding: 8px 0; }
   .main-nav__brand { display: none; }

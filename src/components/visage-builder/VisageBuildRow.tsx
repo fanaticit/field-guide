@@ -60,7 +60,7 @@ export default function VisageBuildRow({
   });
 
   return (
-    <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 rounded-xl border border-mh-slate-800 bg-[#121622]/90 hover:border-mh-slate-700 hover:bg-[#141926] p-3 sm:px-4 sm:py-3 transition-all backdrop-blur-sm group">
+    <div className="mho-panel mho-panel-interactive flex flex-col md:flex-row md:items-center justify-between gap-3 p-3 sm:px-4 sm:py-3 group">
       {/* ── Left: Favorite Star, Title, Author & Description ── */}
       <div className="flex items-start gap-2.5 min-w-0 md:w-1/3">
         {/* Favorite Star Button */}
@@ -74,13 +74,13 @@ export default function VisageBuildRow({
           className={cn(
             'p-1.5 -ml-1 rounded-lg transition-colors shrink-0',
             isFavorite
-              ? 'text-mh-gold-400 hover:text-mh-gold-300'
-              : 'text-mh-slate-600 hover:text-mh-gold-400 hover:bg-mh-slate-800/60',
+              ? 'text-[#FFD700] hover:text-white'
+              : 'text-[var(--text-secondary)] hover:text-[#FFD700] hover:bg-white/10',
           )}
         >
           <Star
             size={16}
-            className={cn(isFavorite && 'fill-mh-gold-400')}
+            className={cn(isFavorite && 'fill-[#FFD700]')}
           />
         </button>
 
@@ -88,7 +88,7 @@ export default function VisageBuildRow({
           <div className="flex items-center gap-2">
             <h3
               onClick={onOpenInBuilder}
-              className="font-display text-sm sm:text-base font-bold text-mh-slate-100 hover:text-mh-gold-400 cursor-pointer transition-colors truncate"
+              className="font-display text-sm sm:text-base font-bold text-white hover:text-[#FFD700] cursor-pointer transition-colors truncate"
               title={row.title}
             >
               {row.title}
@@ -222,7 +222,7 @@ export default function VisageBuildRow({
       </div>
 
       {/* ── Right: Points, Buildability & Action Buttons ── */}
-      <div className="flex items-center justify-between sm:justify-end gap-3 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-mh-slate-800">
+      <div className="flex items-center justify-between sm:justify-end gap-3 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-white/10">
         {/* Points & Buildability */}
         <div className="flex sm:flex-col items-center sm:items-end gap-2 sm:gap-0.5">
           <span className="text-[11px] font-bold text-mh-slate-300">
@@ -256,7 +256,7 @@ export default function VisageBuildRow({
           <button
             onClick={onDuplicate}
             title="Copy to Builder"
-            className="flex h-7 w-7 items-center justify-center rounded-lg border border-mh-slate-750 bg-mh-slate-900 text-mh-slate-400 hover:text-white hover:border-mh-slate-600 transition-colors"
+            className="flex h-7 w-7 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-black/30 text-[var(--text-secondary)] hover:text-white hover:border-[#FFD700]/60 transition-colors"
           >
             <Copy size={13} />
           </button>
@@ -265,7 +265,7 @@ export default function VisageBuildRow({
             <button
               onClick={onDelete}
               title="Delete build"
-              className="flex h-7 w-7 items-center justify-center rounded-lg border border-mh-slate-750 bg-mh-slate-900 text-rose-400 hover:text-rose-300 hover:border-rose-500/40 transition-colors"
+              className="flex h-7 w-7 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-black/30 text-rose-400 hover:text-rose-300 hover:border-rose-500/40 transition-colors"
             >
               <Trash2 size={13} />
             </button>
@@ -273,10 +273,10 @@ export default function VisageBuildRow({
 
           <button
             onClick={onOpenInBuilder}
-            className="flex items-center gap-1.5 rounded-lg bg-mh-slate-800 border border-mh-slate-750 hover:bg-mh-slate-700 hover:border-mh-gold-500/50 px-2.5 py-1 text-xs font-bold text-mh-slate-200 hover:text-white transition-all"
+            className="btn-mho-panel !px-2.5 !py-1 !text-xs"
           >
             <span>{isAuthor ? 'Edit' : 'Open'}</span>
-            <ExternalLink size={12} className="text-mh-gold-400" />
+            <ExternalLink size={12} className="text-[#FFD700]" />
           </button>
         </div>
       </div>

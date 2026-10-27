@@ -7,7 +7,6 @@ import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Search,
-  Sparkles,
   Plus,
   Loader2,
   CheckCircle2,
@@ -195,43 +194,39 @@ export default function VisageBuilds() {
   const isLoading = isLoadingBuilds || isLoadingVisages;
 
   return (
-    <div className="flex flex-col min-h-full bg-gradient-to-b from-[#131722] via-[#0d1017] to-[#0a0c10] text-mh-slate-100">
+    <div className="flex flex-col min-h-full text-white">
       {/* ── Subheader Banner ── */}
-      <div className="shrink-0 border-b border-mh-slate-800/80 bg-gradient-to-r from-[#191e2b] via-[#141824] to-[#191e2b] px-6 py-4 shadow-xl">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 max-w-7xl mx-auto">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <span className="rounded bg-mh-gold-500/20 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-mh-gold-400">
-                Hunter's Armory
-              </span>
-              <span className="text-xs text-mh-slate-400">&bull; Shared Visage Sets</span>
-              {isLoading && (
-                <div className="flex items-center gap-1 text-mh-slate-400 ml-2 text-xs">
-                  <Loader2 size={12} className="animate-spin text-mh-gold-400" />
-                  <span>Loading…</span>
-                </div>
-              )}
+      <div className="shrink-0 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 lg:pt-8">
+        <div className="mho-panel px-5 sm:px-6 py-4 shadow-xl">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="space-y-1">
+              <h1 className="font-display text-2xl font-bold uppercase tracking-wide text-white flex items-center gap-2.5">
+                <span className="text-[#FFD700] text-lg">❖</span>
+                <span>Visage Sets</span>
+                {isLoading && (
+                  <span className="flex items-center gap-1 text-[var(--text-secondary)] ml-2 text-xs font-sans font-normal normal-case tracking-normal">
+                    <Loader2 size={12} className="animate-spin text-[#FFD700]" />
+                    <span>Loading…</span>
+                  </span>
+                )}
+              </h1>
+              <p className="text-xs text-[var(--text-secondary)]">
+                Browse community-shared Visage builds and instantly see which ones you can assemble with your cards.
+              </p>
             </div>
-            <h1 className="font-display text-2xl font-bold text-mh-slate-100 flex items-center gap-2.5">
-              <Sparkles className="text-mh-gold-400" size={24} />
-              <span>Visage Sets</span>
-            </h1>
-            <p className="text-xs text-mh-slate-300">
-              Browse community-shared Visage builds and instantly see which ones you can assemble with your cards.
-            </p>
-          </div>
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => {
-                builder.reset();
-                navigate('/gallery/collection?mode=builder');
-              }}
-              className="flex items-center gap-2 rounded-xl bg-mh-gold-500 px-4 py-2.5 text-xs font-bold text-slate-950 hover:bg-mh-gold-400 shadow-md transition-all shrink-0"
-            >
-              <Plus size={15} />
-              <span>New Visage Build</span>
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => {
+                  builder.reset();
+                  navigate('/gallery/collection?mode=builder');
+                }}
+                className="btn-mho-gold shrink-0 !px-4 !py-2.5 !text-xs"
+              >
+                <Plus size={15} />
+                <span>New Visage Build</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -239,16 +234,16 @@ export default function VisageBuilds() {
       {/* ── Main Content Container ── */}
       <div className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
         {/* ── Filter Controls Bar ── */}
-        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 bg-[#121622]/90 border border-mh-slate-800 p-3 sm:p-4 rounded-2xl shadow-md">
+        <div className="mho-panel flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 p-3 sm:p-4 shadow-md">
           {/* Search Input */}
           <div className="relative flex-1 min-w-[200px]">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-mh-slate-500" />
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by build title, card, or author…"
-              className="w-full rounded-xl border border-mh-slate-750 bg-mh-slate-900/90 py-2 pl-9 pr-3 text-xs text-mh-slate-200 placeholder-mh-slate-500 outline-none focus:border-mh-gold-500/50"
+              className="w-full rounded-xl border border-[var(--border-subtle)] bg-black/30 py-2 pl-9 pr-3 text-xs text-white placeholder-[var(--text-secondary)] outline-none focus:border-[#FFD700]/70"
             />
           </div>
 
@@ -258,7 +253,7 @@ export default function VisageBuilds() {
             <select
               value={inkFilter}
               onChange={(e) => setInkFilter(e.target.value)}
-              className="rounded-xl border border-mh-slate-750 bg-mh-slate-900 px-3 py-2 text-xs font-semibold text-mh-slate-200 outline-none focus:border-mh-gold-500/50"
+              className="rounded-xl border border-[var(--border-subtle)] bg-black/30 px-3 py-2 text-xs font-semibold text-white outline-none focus:border-[#FFD700]/70"
             >
               <option value="all">All Ink Sets</option>
               {INK_OPTIONS.map((ink) => (
@@ -275,13 +270,13 @@ export default function VisageBuilds() {
               className={cn(
                 'flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-bold transition-all select-none',
                 favoritesOnly
-                  ? 'border-mh-gold-500/50 bg-mh-gold-500/20 text-mh-gold-300 ring-1 ring-mh-gold-500/30'
-                  : 'border-mh-slate-750 bg-mh-slate-900 text-mh-slate-400 hover:text-white',
+                  ? 'border-[var(--border-active)] bg-[var(--bg-superior)] text-[#FFD700] shadow-[0_0_10px_var(--accent-gold-glow)]'
+                  : 'border-[var(--border-subtle)] bg-black/30 text-[var(--text-secondary)] hover:text-white',
               )}
             >
               <Star
                 size={13}
-                className={cn(favoritesOnly ? 'fill-mh-gold-400 text-mh-gold-400' : 'text-mh-slate-500')}
+                className={cn(favoritesOnly ? 'fill-[#FFD700] text-[#FFD700]' : 'text-[var(--text-secondary)]')}
               />
               <span>Favorites {favorites.length > 0 && `(${favorites.length})`}</span>
             </button>
@@ -294,11 +289,11 @@ export default function VisageBuilds() {
                 className={cn(
                   'flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-bold transition-all select-none',
                   buildableOnly
-                    ? 'border-emerald-500/50 bg-emerald-500/20 text-emerald-300 ring-1 ring-emerald-500/30'
-                    : 'border-mh-slate-750 bg-mh-slate-900 text-mh-slate-400 hover:text-white',
+                    ? 'border-[var(--rarity-fine)] bg-[var(--bg-fine)] text-[var(--rarity-fine)]'
+                    : 'border-[var(--border-subtle)] bg-black/30 text-[var(--text-secondary)] hover:text-white',
                 )}
               >
-                <CheckCircle2 size={13} className={buildableOnly ? 'text-emerald-400' : 'text-mh-slate-500'} />
+                <CheckCircle2 size={13} className={buildableOnly ? 'text-[var(--rarity-fine)]' : 'text-[var(--text-secondary)]'} />
                 <span>Buildable Only</span>
               </button>
             )}
@@ -311,17 +306,17 @@ export default function VisageBuilds() {
                 className={cn(
                   'flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-bold transition-all select-none',
                   mineOnly
-                    ? 'border-mh-gold-500/50 bg-mh-gold-500/20 text-mh-gold-300 ring-1 ring-mh-gold-500/30'
-                    : 'border-mh-slate-750 bg-mh-slate-900 text-mh-slate-400 hover:text-white',
+                    ? 'border-[var(--border-active)] bg-[var(--bg-superior)] text-[#FFD700] shadow-[0_0_10px_var(--accent-gold-glow)]'
+                    : 'border-[var(--border-subtle)] bg-black/30 text-[var(--text-secondary)] hover:text-white',
                 )}
               >
-                <User size={13} className={mineOnly ? 'text-mh-gold-400' : 'text-mh-slate-500'} />
+                <User size={13} className={mineOnly ? 'text-[#FFD700]' : 'text-[var(--text-secondary)]'} />
                 <span>My Builds</span>
               </button>
             )}
 
             {/* View Mode Toggle: Panel / List */}
-            <div className="flex items-center rounded-xl border border-mh-slate-750 bg-mh-slate-900 p-0.5 ml-auto sm:ml-0">
+            <div className="flex items-center rounded-xl border border-[var(--border-subtle)] bg-black/30 p-0.5 ml-auto sm:ml-0">
               <button
                 type="button"
                 onClick={() => setViewMode('panel')}
@@ -329,8 +324,8 @@ export default function VisageBuilds() {
                 className={cn(
                   'flex items-center justify-center p-1.5 rounded-lg transition-colors',
                   viewMode === 'panel'
-                    ? 'bg-mh-slate-800 text-mh-gold-400 shadow-sm'
-                    : 'text-mh-slate-400 hover:text-white',
+                    ? 'bg-white/10 text-[#FFD700] shadow-sm'
+                    : 'text-[var(--text-secondary)] hover:text-white',
                 )}
               >
                 <LayoutGrid size={15} />
@@ -342,8 +337,8 @@ export default function VisageBuilds() {
                 className={cn(
                   'flex items-center justify-center p-1.5 rounded-lg transition-colors',
                   viewMode === 'list'
-                    ? 'bg-mh-slate-800 text-mh-gold-400 shadow-sm'
-                    : 'text-mh-slate-400 hover:text-white',
+                    ? 'bg-white/10 text-[#FFD700] shadow-sm'
+                    : 'text-[var(--text-secondary)] hover:text-white',
                 )}
               >
                 <List size={15} />
@@ -362,14 +357,14 @@ export default function VisageBuilds() {
         {/* ── Builds Display (Grid or List) ── */}
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-20 text-center">
-            <Loader2 size={32} className="animate-spin text-mh-gold-400 mb-3" />
+            <Loader2 size={32} className="animate-spin text-[#FFD700] mb-3" />
             <p className="text-sm font-bold text-mh-slate-300">Loading Visage Sets…</p>
           </div>
         ) : filtered.length === 0 ? (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-mh-slate-800 bg-mh-slate-900/40 py-16 px-6 text-center">
-            <Layers size={40} className="text-mh-gold-400/40 mb-3" />
-            <h3 className="font-display text-base font-bold text-mh-slate-300">No Visage Sets Found</h3>
-            <p className="text-xs text-mh-slate-500 mt-1 max-w-sm">
+          <div className="mho-panel flex flex-col items-center justify-center border-dashed py-16 px-6 text-center">
+            <Layers size={40} className="text-[#FFD700]/40 mb-3" />
+            <h3 className="font-display text-base font-bold uppercase tracking-wide text-white">No Visage Sets Found</h3>
+            <p className="text-xs text-[var(--text-secondary)] mt-1 max-w-sm">
               {favoritesOnly
                 ? "You haven't favorited any visage sets yet. Click the star icon on any visage build to add it to your favorites."
                 : buildableOnly
@@ -381,7 +376,7 @@ export default function VisageBuilds() {
                 builder.reset();
                 navigate('/gallery/collection?mode=builder');
               }}
-              className="mt-4 flex items-center gap-1.5 rounded-lg bg-mh-gold-500 px-4 py-2 text-xs font-bold text-slate-950 hover:bg-mh-gold-400 transition-colors shadow-sm"
+              className="btn-mho-gold mt-4 !px-4 !py-2 !text-xs"
             >
               <Plus size={14} />
               Create a Visage Build
@@ -423,7 +418,7 @@ export default function VisageBuilds() {
               return (
                 <div
                   key={row.id}
-                  className="flex flex-col justify-between rounded-2xl border border-mh-slate-800 bg-[#121622]/90 hover:border-mh-slate-700 hover:shadow-xl transition-all p-4 space-y-3.5 group backdrop-blur-sm"
+                  className="mho-panel mho-panel-interactive flex flex-col justify-between p-4 space-y-3.5 group"
                 >
                   {/* Card Header: Title & Meta */}
                   <div className="space-y-1.5">
@@ -439,26 +434,26 @@ export default function VisageBuilds() {
                           className={cn(
                             'p-1 -ml-1 rounded-md transition-colors shrink-0',
                             isFav
-                              ? 'text-mh-gold-400 hover:text-mh-gold-300'
-                              : 'text-mh-slate-600 hover:text-mh-gold-400 hover:bg-mh-slate-800',
+                              ? 'text-[#FFD700] hover:text-white'
+                              : 'text-[var(--text-secondary)] hover:text-[#FFD700] hover:bg-white/10',
                           )}
                         >
                           <Star
                             size={16}
-                            className={cn(isFav && 'fill-mh-gold-400')}
+                            className={cn(isFav && 'fill-[#FFD700]')}
                           />
                         </button>
 
                         <h3
                           onClick={() => handleOpenInBuilder(row)}
-                          className="font-display text-base font-bold text-mh-slate-100 hover:text-mh-gold-400 cursor-pointer transition-colors leading-snug line-clamp-1"
+                          className="font-display text-base font-bold text-white hover:text-[#FFD700] cursor-pointer transition-colors leading-snug line-clamp-1"
                         >
                           {row.title}
                         </h3>
                       </div>
 
                       {/* Points badge */}
-                      <span className="shrink-0 px-2 py-0.5 rounded-full text-[10px] font-bold bg-mh-slate-800 text-mh-slate-300 border border-mh-slate-700">
+                      <span className="shrink-0 px-2 py-0.5 rounded-full text-[10px] font-bold bg-black/30 text-mh-slate-300 border border-[var(--border-subtle)]">
                         {row.total_points} / {VISAGE_POINT_CAP} pts
                       </span>
                     </div>
@@ -497,7 +492,7 @@ export default function VisageBuilds() {
                   </div>
 
                   {/* ── Active Ink Set Bonuses & Core Effect ── */}
-                  <div className="space-y-2 pt-1 border-t border-mh-slate-800/80">
+                  <div className="space-y-2 pt-1 border-t border-white/10">
                     {/* Active Set Bonuses Badges */}
                     {activeBonuses.length > 0 ? (
                       <div className="flex flex-wrap gap-1.5 items-center">
@@ -548,7 +543,7 @@ export default function VisageBuilds() {
                   </div>
 
                   {/* ── Buildability Status & Action Bar ── */}
-                  <div className="pt-2 border-t border-mh-slate-800/80 flex items-center justify-between gap-2">
+                  <div className="pt-2 border-t border-white/10 flex items-center justify-between gap-2">
                     {/* Buildability Badge */}
                     <div>
                       {user ? (
@@ -578,7 +573,7 @@ export default function VisageBuilds() {
                       <button
                         onClick={() => handleDuplicate(row)}
                         title="Copy to Builder"
-                        className="flex h-7 w-7 items-center justify-center rounded-lg border border-mh-slate-750 bg-mh-slate-900 text-mh-slate-400 hover:text-white hover:border-mh-slate-600 transition-colors"
+                        className="flex h-7 w-7 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-black/30 text-[var(--text-secondary)] hover:text-white hover:border-[#FFD700]/60 transition-colors"
                       >
                         <Copy size={13} />
                       </button>
@@ -587,7 +582,7 @@ export default function VisageBuilds() {
                         <button
                           onClick={() => handleDelete(row)}
                           title="Delete build"
-                          className="flex h-7 w-7 items-center justify-center rounded-lg border border-mh-slate-750 bg-mh-slate-900 text-rose-400 hover:text-rose-300 hover:border-rose-500/40 transition-colors"
+                          className="flex h-7 w-7 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-black/30 text-rose-400 hover:text-rose-300 hover:border-rose-500/40 transition-colors"
                         >
                           <Trash2 size={13} />
                         </button>
@@ -595,10 +590,10 @@ export default function VisageBuilds() {
 
                       <button
                         onClick={() => handleOpenInBuilder(row)}
-                        className="flex items-center gap-1.5 rounded-lg bg-mh-slate-800 border border-mh-slate-750 hover:bg-mh-slate-700 hover:border-mh-gold-500/50 px-2.5 py-1 text-xs font-bold text-mh-slate-200 hover:text-white transition-all"
+                        className="btn-mho-panel !px-2.5 !py-1 !text-xs"
                       >
                         <span>{isAuthor ? 'Edit' : 'Open'}</span>
-                        <ExternalLink size={12} className="text-mh-gold-400" />
+                        <ExternalLink size={12} className="text-[#FFD700]" />
                       </button>
                     </div>
                   </div>
