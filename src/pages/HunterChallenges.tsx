@@ -22,6 +22,7 @@ import {
   X,
   PackageSearch,
   Package,
+  ArrowRight,
 } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import { useUIStore } from '../store/uiStore';
@@ -92,6 +93,14 @@ const CATEGORY_TABS: { id: CategoryFilter; label: string }[] = [
 
 const CATEGORY_SINGULAR: Record<ItemCategory, string> = {
   weapon: 'Weapon', armour: 'Armour', visage: 'Visage', adventurer: 'Adventurer', buddy: 'Buddy',
+};
+
+const CATEGORY_COLLECTION_PATH: Record<ItemCategory, string> = {
+  weapon: '/challenges/weapons',
+  armour: '/armory/armour',
+  adventurer: '/challenges/adventurers',
+  buddy: '/challenges/buddies',
+  visage: '/gallery/collection',
 };
 
 /** Weapons, armour and visage cards come from monsters; adventurers and buddies come from recruitment. */
@@ -936,6 +945,18 @@ export default function HunterChallenges() {
               </span>
             </button>
           ))}
+
+          {category !== 'all' && (
+            <button
+              type="button"
+              onClick={() => navigate(CATEGORY_COLLECTION_PATH[category])}
+              className="ml-auto flex items-center gap-1.5 rounded-lg border border-[var(--theme-accent)] bg-[color-mix(in_srgb,var(--theme-accent)_15%,transparent)] px-3 py-1.5 text-xs font-bold text-[var(--theme-accent)] transition-all hover:text-white"
+              title={`Go to the ${CATEGORY_TABS.find((t) => t.id === category)?.label} collection`}
+            >
+              <span>Go to {CATEGORY_TABS.find((t) => t.id === category)?.label} Collection</span>
+              <ArrowRight size={12} />
+            </button>
+          )}
         </div>
 
       {/* ── Loading ── */}
