@@ -48,7 +48,10 @@ export default function Layout() {
         </main>
 
         {/* Footer */}
-        <footer className="border-t border-mh-slate-800 px-6 py-4 flex flex-col items-center justify-center gap-2">
+        <footer className="border-t border-mh-slate-800 px-6 py-5 flex flex-col items-center justify-center gap-3">
+          <p className="rounded-full border border-[var(--border-active)]/20 bg-[var(--bg-superior)] px-4 py-1.5 text-center text-xs font-medium uppercase tracking-wider text-[var(--accent-gold)]/70 sm:text-sm">
+            Unofficial Fan Project &ndash; Not affiliated with Capcom or TiMi Studio Group
+          </p>
           <p className="text-center text-xs text-mh-slate-600">
             Field Guide &copy; {new Date().getFullYear()} &mdash; Monster Hunter Outlanders Community Tracker
           </p>
