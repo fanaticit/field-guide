@@ -12,12 +12,20 @@ import { router } from '../router';
 // Map the stored Page identifier to a route path
 const pageToPath: Record<string, string> = {
   'field-guide': '/',
-  'build-planner': '/build-planner',
-  'community-hub': '/community-hub',
-  'investigation-notes': '/investigation-notes/monster-guide',
+  'armory': '/armory',
+  'build-planner': '/armory/planner',
+  'armour': '/armory/armour',
+  'gallery': '/gallery',
+  'visage-collection': '/gallery/collection',
+  'challenges': '/challenges',
+  'adventurers': '/challenges/adventurers',
+  'buddies': '/challenges/buddies',
+  'weapons': '/challenges/weapons',
   'admin': '/admin/monsters',
   'settings': '/settings',
   'profile': '/settings',
+  'community-hub': '/armory',
+  'investigation-notes': '/armory/armour',
 };
 
 export type UserRole = 'member' | 'admin' | 'moderator';

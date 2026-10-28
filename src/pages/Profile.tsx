@@ -2,9 +2,8 @@
 // Profile & Settings Page
 // Allows hunters to manage identity and default application settings:
 //   1. Default landing page on login / visit
-//   2. Default active game (MHN / MHO) for Admin & planner tools
-//   3. Hunter identity (display name, username, avatar)
-//   4. Locale and active games played
+//   2. Hunter identity (display name, username, avatar)
+//   3. Locale and active games played
 // ─────────────────────────────────────────────────────────────
 import { useState, useEffect } from 'react';
 import {
@@ -22,8 +21,11 @@ import {
   Sparkles,
   BookOpen,
   Sword,
-  Users,
   BookMarked,
+  LayoutGrid,
+  Target,
+  UserCheck,
+  Cat,
   Image as ImageIcon,
   LogIn,
   Palette,
@@ -61,30 +63,16 @@ interface LandingPageOption {
 }
 
 const LANDING_PAGE_OPTIONS: LandingPageOption[] = [
-  {
-    id: 'field-guide',
-    title: 'Field Guide',
-    desc: 'Quests, urgent hunts, and daily tracking checklist',
-    icon: BookOpen,
-  },
-  {
-    id: 'build-planner',
-    title: 'Build Planner',
-    desc: 'Weapon crafting, armour optimization, and driftstone skills',
-    icon: Sword,
-  },
-  {
-    id: 'community-hub',
-    title: 'Community Hub',
-    desc: 'Community hunter builds and speedrun challenges',
-    icon: Users,
-  },
-  {
-    id: 'investigation-notes',
-    title: 'Investigation Notes',
-    desc: 'Monster weaknesses, species database, and lore',
-    icon: BookMarked,
-  },
+  { id: 'field-guide', title: 'Home', desc: 'Overview of the Field Guide', icon: BookOpen },
+  { id: 'armory', title: 'Community Builds', desc: 'Browse and upvote builds shared by the community', icon: LayoutGrid },
+  { id: 'build-planner', title: 'Build Planner', desc: 'Plan weapons, armour, visage cards and skills', icon: Sword },
+  { id: 'armour', title: 'Armour', desc: 'Every armour set with its skills and set bonuses', icon: Shield },
+  { id: 'gallery', title: 'Visage Sets', desc: 'Community Visage sets you can build with your cards', icon: Sparkles },
+  { id: 'visage-collection', title: 'Visage Collection', desc: 'Manage the Visage Cards you own', icon: BookMarked },
+  { id: 'challenges', title: 'My Challenges', desc: 'Your hunting targets and personal goals', icon: Target },
+  { id: 'adventurers', title: 'Adventurers', desc: 'Browse and track your adventurers', icon: UserCheck },
+  { id: 'buddies', title: 'Buddies', desc: 'Track which buddies you have collected', icon: Cat },
+  { id: 'weapons', title: 'Weapons', desc: 'Weapons collection and crafting progress', icon: Sword },
   {
     id: 'admin',
     title: 'Admin Panel',
@@ -94,11 +82,24 @@ const LANDING_PAGE_OPTIONS: LandingPageOption[] = [
   },
 ];
 
+// Pages that were renamed or removed; map them onto the closest current page.
+const LEGACY_PAGES: Partial<Record<string, Page>> = {
+  'community-hub': 'armory',
+  'investigation-notes': 'armour',
+  settings: 'field-guide',
+  profile: 'field-guide',
+};
+
+function normalizePage(page?: string | null): Page {
+  if (!page) return 'field-guide';
+  return (LEGACY_PAGES[page] ?? page) as Page;
+}
+
 export default function ProfilePage() {
   const { user, profile, updateProfile, authLoading, authError, clearAuthError } = useAuthStore();
   const isAdmin = useAuthStore(selectIsAdmin);
   const canModerate = useAuthStore(selectCanModerate);
-  const { defaultGame, setDefaultGame, sectionThemes, setSectionTheme, resetSectionThemes } = useUIStore();
+  const { sectionThemes, setSectionTheme, resetSectionThemes } = useUIStore();
 
   const [loginOpen, setLoginOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -107,7 +108,6 @@ export default function ProfilePage() {
   const [displayName, setDisplayName] = useState('');
   const [username, setUsername] = useState('');
   const [avatarUrl, setAvatarUrl] = useState('');
-  const [selectedDefaultGame, setSelectedDefaultGame] = useState('mho');
   const [selectedDefaultPage, setSelectedDefaultPage] = useState<Page>('field-guide');
   const [locale, setLocale] = useState('en');
   const [gameIds, setGameIds] = useState<string[]>(['mho']);
@@ -119,14 +119,11 @@ export default function ProfilePage() {
       setDisplayName(profile.display_name ?? '');
       setUsername(profile.username ?? '');
       setAvatarUrl(profile.avatar_url ?? '');
-      setSelectedDefaultGame(profile.default_game || defaultGame || 'mho');
-      setSelectedDefaultPage((profile.default_page as Page) || 'field-guide');
+      setSelectedDefaultPage(normalizePage(profile.default_page));
       setLocale(profile.locale || 'en');
       setGameIds(profile.game_ids || ['mho']);
-    } else {
-      setSelectedDefaultGame(defaultGame || 'mho');
     }
-  }, [profile, defaultGame]);
+  }, [profile]);
 
   const isLoggedIn = !!user;
 
@@ -136,14 +133,10 @@ export default function ProfilePage() {
     clearAuthError();
     setSuccessMessage(null);
 
-    // Save default game in uiStore regardless of login
-    setDefaultGame(selectedDefaultGame);
-
     const success = await updateProfile({
       display_name: displayName.trim() || null,
       username: username.trim() || profile?.username || 'hunter',
       avatar_url: avatarUrl.trim() || null,
-      default_game: selectedDefaultGame,
       default_page: selectedDefaultPage,
       locale,
       game_ids: gameIds,
@@ -160,8 +153,7 @@ export default function ProfilePage() {
       setDisplayName(profile.display_name ?? '');
       setUsername(profile.username ?? '');
       setAvatarUrl(profile.avatar_url ?? '');
-      setSelectedDefaultGame(profile.default_game || defaultGame || 'mho');
-      setSelectedDefaultPage((profile.default_page as Page) || 'field-guide');
+      setSelectedDefaultPage(normalizePage(profile.default_page));
       setLocale(profile.locale || 'en');
       setGameIds(profile.game_ids || ['mho']);
     }
@@ -193,7 +185,7 @@ export default function ProfilePage() {
           Profile & Preferences
         </h1>
         <p className="text-sm text-mh-slate-400">
-          Customize your hunter identity, default game environment, and startup preferences.
+          Customize your hunter identity and startup preferences.
         </p>
       </div>
 
@@ -417,65 +409,15 @@ export default function ProfilePage() {
               <Gamepad2 size={18} />
             </div>
             <div>
-              <h2 className="text-base font-bold text-mh-slate-100">Default Game Setting</h2>
+              <h2 className="text-base font-bold text-mh-slate-100">Games You Play</h2>
               <p className="text-xs text-mh-slate-500">
-                Configure which Monster Hunter title loads by default in Admin and planning tools
+                Choose which Monster Hunter titles you play and track
               </p>
             </div>
           </div>
 
-          {/* Game Selection Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {SUPPORTED_GAMES.map((game) => {
-              const isSelected = selectedDefaultGame === game.id;
-              return (
-                <button
-                  key={game.id}
-                  type="button"
-                  onClick={() => setSelectedDefaultGame(game.id)}
-                  className={cn(
-                    'flex flex-col text-left p-4 rounded-xl border transition-all relative overflow-hidden',
-                    isSelected
-                      ? game.color === 'blue'
-                        ? 'border-blue-500/80 bg-blue-500/10 ring-2 ring-blue-500/30 shadow-lg'
-                        : 'border-orange-500/80 bg-orange-500/10 ring-2 ring-orange-500/30 shadow-lg'
-                      : 'border-mh-slate-700/70 bg-mh-slate-800/40 hover:border-mh-slate-600 hover:bg-mh-slate-800/70',
-                  )}
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <span
-                      className={cn(
-                        'rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider',
-                        game.color === 'blue'
-                          ? 'bg-blue-500/20 text-blue-400'
-                          : 'bg-orange-500/20 text-orange-400',
-                      )}
-                    >
-                      {game.short}
-                    </span>
-                    <span className="text-[10px] text-mh-slate-500">{game.tag}</span>
-                  </div>
-                  <p className="font-bold text-sm text-mh-slate-100">{game.name}</p>
-                  <p className="text-xs text-mh-slate-400 mt-1">{game.desc}</p>
-
-                  <div className="mt-3 pt-3 border-t border-mh-slate-700/50 flex items-center justify-between text-xs">
-                    <span className="text-mh-slate-500">Default Game Status:</span>
-                    <span
-                      className={cn(
-                        'font-semibold',
-                        isSelected ? 'text-mh-gold-400' : 'text-mh-slate-600',
-                      )}
-                    >
-                      {isSelected ? '✓ Active Default' : 'Select as Default'}
-                    </span>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-
           {/* Active Games Played Multi-Select */}
-          <div className="pt-2">
+          <div>
             <label className="block text-xs font-semibold text-mh-slate-300 mb-2">
               Games You Play & Track
             </label>
@@ -520,7 +462,7 @@ export default function ProfilePage() {
             <div>
               <h2 className="text-base font-bold text-mh-slate-100">Default Startup Page</h2>
               <p className="text-xs text-mh-slate-500">
-                Choose which page automatically loads when you log in or visit the Field Guide
+                Choose which page loads automatically when you log in
               </p>
             </div>
           </div>

@@ -17,6 +17,7 @@ import OtherManager from './other/OtherManager';
 import VisageManager from './visages/VisageManager';
 import BuddyManager from './buddies/BuddyManager';
 import AdventurerManager from './adventurers/AdventurerManager';
+import UserManager from './users/UserManager';
 
 interface AdminTab {
   id: AdminSubPage;
@@ -34,7 +35,7 @@ const TABS: AdminTab[] = [
   { id: 'visages', label: 'Visages (MHO)', icon: SquareLibrary, description: 'Manage Outlanders Visage cards' },
   { id: 'buddies', label: 'Buddies (MHO)', icon: Cat, description: 'Manage Outlanders Companion Buddies' },
   { id: 'content', label: 'Content', icon: FileText, description: 'Moderate community content' },
-  { id: 'users', label: 'Users', icon: Users, description: 'Manage user roles' },
+  { id: 'users', label: 'Users', icon: Users, description: 'User list, total count and last login' },
   { id: 'other', label: 'Other', icon: SlidersHorizontal, description: 'Manage weapon types game availability & settings' },
 ];
 
@@ -105,7 +106,7 @@ export default function AdminPage() {
         {adminSubPage === 'visages' && <VisageManager />}
         {adminSubPage === 'buddies' && <BuddyManager />}
         {adminSubPage === 'content' && <ComingSoon label="Content Moderation" />}
-        {adminSubPage === 'users' && <ComingSoon label="User Management" />}
+        {adminSubPage === 'users' && <UserManager />}
         {adminSubPage === 'other' && <OtherManager />}
       </div>
     </div>

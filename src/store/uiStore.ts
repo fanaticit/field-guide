@@ -4,12 +4,21 @@ import { type RarityTheme, DEFAULT_SECTION_THEMES, resolveSectionTheme } from '.
 
 export type Page =
   | 'field-guide'
+  | 'armory'
   | 'build-planner'
-  | 'community-hub'
-  | 'investigation-notes'
+  | 'armour'
+  | 'gallery'
+  | 'visage-collection'
+  | 'challenges'
+  | 'adventurers'
+  | 'buddies'
+  | 'weapons'
   | 'admin'
   | 'settings'
-  | 'profile';
+  | 'profile'
+  // Legacy values still stored on older profiles
+  | 'community-hub'
+  | 'investigation-notes';
 
 export type InvestigationSubPage = 'monster-guide' | 'adventurers' | 'visages' | 'buddies' | 'weapons' | 'armour';
 export type AdminSubPage = 'monsters' | 'skills' | 'weapons' | 'armour' | 'adventurers' | 'visages' | 'buddies' | 'content' | 'users' | 'other';

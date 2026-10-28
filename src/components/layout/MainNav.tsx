@@ -67,6 +67,7 @@ export default function MainNav() {
   const isAdmin = useAuthStore(selectIsAdmin);
   const challengesTheme = useUIStore((s) => s.sectionThemes['/challenges'] ?? DEFAULT_SECTION_THEMES['/challenges']);
   const armoryTheme = useUIStore((s) => s.sectionThemes['/armory'] ?? DEFAULT_SECTION_THEMES['/armory']);
+  const galleryTheme = useUIStore((s) => s.sectionThemes['/gallery'] ?? DEFAULT_SECTION_THEMES['/gallery']);
 
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [openId, setOpenId] = useState<string | null>(null);
@@ -136,7 +137,7 @@ export default function MainNav() {
       description: 'Visage Sets & Collection',
       iconSrc: '/img/ui/Visage%20Icon.png',
       iconZoom: 0.85,
-      accent: 'fine',
+      accent: themeToNavAccent(galleryTheme),
       active: pathname.startsWith('/gallery'),
       subItems: [
         { id: 'gallery-sets', label: 'Visage Sets', icon: Sparkles, active: pathname === '/gallery' || pathname === '/gallery/sets', onSelect: go('/gallery') },
