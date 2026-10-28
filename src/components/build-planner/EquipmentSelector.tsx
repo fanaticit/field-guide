@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useBuildPlannerStore, type Weapon, type ArmourPiece } from '../../store/buildPlannerStore';
 
@@ -95,7 +96,7 @@ function SearchableDropdown({
 
         {/* Dropdown panel */}
         {isOpen && (
-          <div className="absolute top-full left-0 right-0 mt-1 bg-[#1a1b2e] border border-mh-slate-700 rounded-lg shadow-2xl z-40 flex flex-col overflow-hidden" style={{ minWidth: '220px' }}>
+          <div data-dropdown-open="true" className="absolute top-full left-0 right-0 mt-1 bg-[#1a1b2e] border border-mh-slate-700 rounded-lg shadow-2xl z-40 flex flex-col overflow-hidden" style={{ minWidth: '220px' }}>
             <div className="p-2 border-b border-mh-slate-700/60">
               <input
                 ref={inputRef}
@@ -176,6 +177,7 @@ const getHighlightClasses = (cat: string | null) => {
 export function EquipmentSelector() {
   const { adventurer, weaponType, weapon, setWeapon, helm, chest, gloves, waist, greaves, setArmour, hoveredSkillId, hoveredSkillCategory } = useBuildPlannerStore();
 
+  const navigate = useNavigate();
   const isReady = !!adventurer;
 
   const activeWeaponTypeId = adventurer?.is_default
@@ -258,8 +260,19 @@ export function EquipmentSelector() {
       }));
 
   return (
-    <div className="mho-panel p-4 flex flex-col gap-4">
-      <h2 className="font-display text-base font-bold uppercase tracking-wide text-white flex items-center gap-2"><span className="text-[#FFD700] text-xs">❖</span>Equipment</h2>
+    // Lift the whole panel above its siblings while a dropdown is open
+    <div className="mho-panel has-[[data-dropdown-open]]:relative has-[[data-dropdown-open]]:z-30 p-4 flex flex-col gap-4">
+      <div className="flex items-center justify-between gap-2">
+        <h2 className="font-display text-base font-bold uppercase tracking-wide text-white flex items-center gap-2"><span className="text-[#FFD700] text-xs">❖</span>Equipment</h2>
+        <button
+          type="button"
+          onClick={() => navigate('/armory/armour')}
+          className="btn-mho-panel !px-3 !py-1.5 !text-xs !border-[var(--theme-accent)] !text-[var(--theme-accent)] !bg-[color-mix(in_srgb,var(--theme-accent)_15%,transparent)] hover:!text-white"
+          title="Browse armour sets and send one back to this build"
+        >
+          Make an Armour Set
+        </button>
+      </div>
 
       <div className="flex flex-col gap-2.5">
         <SearchableDropdown

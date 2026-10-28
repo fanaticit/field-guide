@@ -15,7 +15,7 @@ const CATEGORY_CONFIG: Record<string, { color: string, bg: string, border: strin
 };
 
 export function SkillSummaryPanel() {
-  const { getActiveSkills, hoveredSkillId, setHoveredSkillId } = useBuildPlannerStore();
+  const { getActiveSkills, hoveredSkillId, setHoveredSkillId, buddy, coreVisage } = useBuildPlannerStore();
   const activeSkills = getActiveSkills();
 
   // Fetch full skill definitions to display names and max levels
@@ -32,6 +32,23 @@ export function SkillSummaryPanel() {
     <div className="mho-panel p-4 flex flex-col gap-4">
       <h2 className="font-display text-base font-bold uppercase tracking-wide text-white flex items-center gap-2"><span className="text-[#FFD700] text-xs">❖</span>Skills</h2>
       
+      {(buddy || coreVisage) && (
+        <div className="flex flex-col gap-2">
+          {buddy && (
+            <div className="flex flex-col gap-1 p-2.5 rounded-lg border border-orange-500/30 bg-orange-500/10">
+              <span className="text-[10px] font-bold text-orange-400 uppercase tracking-wider">Buddy Core Passive — {buddy.name}</span>
+              <p className="text-xs text-mh-slate-200 leading-snug">{buddy.core_passive || 'No core passive listed.'}</p>
+            </div>
+          )}
+          {coreVisage && (
+            <div className="flex flex-col gap-1 p-2.5 rounded-lg border border-rarity-5/40 bg-rarity-5/5">
+              <span className="text-[10px] font-bold text-rarity-5 uppercase tracking-wider">Visage Core Effect — {coreVisage.name}</span>
+              <p className="text-xs text-mh-slate-200 leading-snug">{coreVisage.core_effect || 'No core effect listed.'}</p>
+            </div>
+          )}
+        </div>
+      )}
+
       {isLoading ? (
         <p className="text-sm text-mh-slate-500">Loading skills...</p>
       ) : activeSkills.length > 0 ? (

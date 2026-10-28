@@ -320,10 +320,6 @@ body {
   margin-left: var(--nav-offset);
 }
 
-.app-header {
-  display: none;
-}
-
 .main-nav {
   position: fixed;
   z-index: 40;
@@ -541,9 +537,6 @@ body {
   .app-content {
     padding-bottom: var(--nav-bottom-space);
   }
-  .app-header {
-    display: flex;
-  }
 
   .main-nav {
     top: auto;
@@ -755,6 +748,37 @@ body {
    this scope those shades resolve to the home-page neutral + gold
    palette so the whole page follows the Field Guide theme.
    ============================================================ */
+/* Shared section theme: `.challenges-theme` (Challenges pages) and `.section-theme` (other sections,
+   e.g. the Armory) both pick up the accent colour from the section's data-rarity-theme. */
+.challenges-theme,
+.section-theme {
+  /* Page accent — overridden by the section's selected rarity theme (Profile & Settings) */
+  --theme-accent: #FFD700;
+  --theme-grad-from: #EAD17A;
+  --theme-grad-to: #C9A042;
+  --theme-on-accent: #1A1408;
+  --theme-glow: rgba(255, 215, 0, 0.3);
+
+  /* Re-point the shared gold tokens so panels, hovers and buttons follow the theme */
+  --accent-gold: var(--theme-accent);
+  --accent-gold-glow: var(--theme-glow);
+  --border-active: var(--theme-accent);
+  --bg-superior: color-mix(in srgb, var(--theme-accent) 15%, transparent);
+
+  --color-yellow-200: color-mix(in srgb, var(--theme-accent) 45%, white);
+  --color-yellow-300: color-mix(in srgb, var(--theme-accent) 70%, white);
+  --color-yellow-400: var(--theme-accent);
+  --color-yellow-500: color-mix(in srgb, var(--theme-accent) 85%, black);
+
+  /* Existing mh-gold utilities follow the section theme too */
+  --color-mh-gold-300: var(--color-yellow-300);
+  --color-mh-gold-400: var(--theme-accent);
+  --color-mh-gold-500: var(--theme-accent);
+  --color-mh-gold-600: color-mix(in srgb, var(--theme-accent) 85%, black);
+  --color-mh-gold-700: color-mix(in srgb, var(--theme-accent) 70%, black);
+}
+
+/* Challenges-only: remap the sky/blue utilities the page was authored with */
 .challenges-theme {
   --color-sky-950: #0E0F14;
   --color-sky-900: #1C1D25;
@@ -767,12 +791,51 @@ body {
   --color-sky-200: #E4E5EA;
   --color-sky-100: #FFFFFF;
 
-  --color-yellow-200: #F3DE8E;
-  --color-yellow-300: #EAD17A;
-  --color-yellow-400: #FFD700;
-  --color-yellow-500: #DEC267;
-
   --color-blue-300: #A9D0E6;
   --color-blue-400: #62A9D1;
   --color-blue-500: #4E8FB5;
+}
+
+.challenges-theme[data-rarity-theme="fine"],
+.section-theme[data-rarity-theme="fine"] {
+  --theme-accent: #75B670;
+  --theme-grad-from: #8FCB8A;
+  --theme-grad-to: #5E9A59;
+  --theme-glow: rgba(117, 182, 112, 0.3);
+}
+.challenges-theme[data-rarity-theme="rare"],
+.section-theme[data-rarity-theme="rare"] {
+  --theme-accent: #62A9D1;
+  --theme-grad-from: #7DBDE0;
+  --theme-grad-to: #4E8FB5;
+  --theme-glow: rgba(98, 169, 209, 0.3);
+}
+.challenges-theme[data-rarity-theme="epic"],
+.section-theme[data-rarity-theme="epic"] {
+  --theme-accent: #9C62D6;
+  --theme-grad-from: #B07FE3;
+  --theme-grad-to: #7E49B8;
+  --theme-on-accent: #FFFFFF;
+  --theme-glow: rgba(156, 98, 214, 0.3);
+}
+.challenges-theme[data-rarity-theme="superior"],
+.section-theme[data-rarity-theme="superior"] {
+  --theme-accent: #DEC267;
+  --theme-grad-from: #EAD17A;
+  --theme-grad-to: #C9A042;
+  --theme-glow: rgba(222, 194, 103, 0.3);
+}
+
+.challenges-theme .btn-mho-gold,
+.section-theme .btn-mho-gold {
+  background: linear-gradient(180deg, var(--theme-grad-from) 0%, var(--theme-grad-to) 100%);
+  color: var(--theme-on-accent);
+  border-color: var(--theme-grad-from);
+  box-shadow: 0 2px 10px var(--theme-glow), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  text-shadow: none;
+}
+.challenges-theme .btn-mho-gold:hover,
+.section-theme .btn-mho-gold:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 0 18px var(--theme-glow), inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }

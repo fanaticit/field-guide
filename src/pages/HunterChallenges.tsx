@@ -24,6 +24,8 @@ import {
   Package,
 } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
+import { useUIStore } from '../store/uiStore';
+import { DEFAULT_SECTION_THEMES } from '../config/themes';
 import {
   useHunterChallenges,
   useIncrementChallenge,
@@ -36,6 +38,7 @@ import {
 } from '../hooks/useHunterChallenges';
 import LoginModal from '../components/auth/LoginModal';
 import { cn } from '../lib/utils';
+import PageTitlePanel from '../components/layout/PageTitlePanel';
 
 // ── Slot display helpers ──────────────────────────────────────
 
@@ -73,15 +76,57 @@ function statusStyle(status: ChallengeStatus) {
   }
 }
 
-// ── Filter tabs ───────────────────────────────────────────────
+// ── Collection categories ─────────────────────────────────────
 
-type FilterTab = 'active' | 'completed' | 'all';
+type ItemCategory = 'weapon' | 'armour' | 'visage' | 'adventurer' | 'buddy';
+type CategoryFilter = 'all' | ItemCategory;
 
-const FILTER_TABS: { id: FilterTab; label: string }[] = [
-  { id: 'active',    label: 'Active' },
-  { id: 'completed', label: 'Completed' },
-  { id: 'all',       label: 'All' },
+const CATEGORY_TABS: { id: CategoryFilter; label: string }[] = [
+  { id: 'all',        label: 'All' },
+  { id: 'weapon',     label: 'Weapons' },
+  { id: 'armour',     label: 'Armour' },
+  { id: 'visage',     label: 'Visage Cards' },
+  { id: 'adventurer', label: 'Adventurers' },
+  { id: 'buddy',      label: 'Buddies' },
 ];
+
+const CATEGORY_SINGULAR: Record<ItemCategory, string> = {
+  weapon: 'Weapon', armour: 'Armour', visage: 'Visage', adventurer: 'Adventurer', buddy: 'Buddy',
+};
+
+/** Weapons, armour and visage cards come from monsters; adventurers and buddies come from recruitment. */
+const HUNT_CATEGORIES: ItemCategory[] = ['weapon', 'armour', 'visage'];
+const RECRUIT_CATEGORIES: ItemCategory[] = ['adventurer', 'buddy'];
+
+function getCategory(c: HunterChallenge): ItemCategory {
+  if (c.challenge_type === 'visage_set' || c.visage_id) return 'visage';
+  if (c.challenge_type === 'weapon' || c.weapon_id) return 'weapon';
+  if (c.challenge_type === 'adventurer' || c.adventurer_id) return 'adventurer';
+  if (c.challenge_type === 'buddy' || c.buddy_id) return 'buddy';
+  return 'armour';
+}
+
+const isOpen = (c: HunterChallenge) => c.status === 'crafting' || c.status === 'upgrading';
+const isHuntItem = (c: HunterChallenge) => HUNT_CATEGORIES.includes(getCategory(c));
+const isRecruitItem = (c: HunterChallenge) => RECRUIT_CATEGORIES.includes(getCategory(c));
+const matchesCategory = (c: HunterChallenge, category: CategoryFilter) =>
+  category === 'all' || getCategory(c) === category;
+
+const INTRO_HIDDEN_KEY = 'challenges-intro-hidden';
+
+type Selection =
+  | { kind: 'monster' | 'activity' | 'material' | 'recruit'; value: string }
+  | null;
+
+function getSlotLabel(c: HunterChallenge): string {
+  switch (getCategory(c)) {
+    case 'visage':     return `Visage Card · ${c.ink_type ? c.ink_type.charAt(0).toUpperCase() + c.ink_type.slice(1) : 'Ink Set'}`;
+    case 'weapon':     return `Weapon · ${c.weapon_type_id ?? 'Hunter Weapon'}`;
+    case 'adventurer': return 'Adventurer · Playable Hero';
+    case 'buddy':      return 'Companion · Buddy';
+    default:           return SLOT_LABELS[c.armour_slot ?? ''] ?? c.armour_slot ?? '—';
+  }
+}
 
 // ── Challenge Card ────────────────────────────────────────────
 
@@ -104,19 +149,10 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
   };
 
   const isVisage = c.challenge_type === 'visage_set' || Boolean(c.visage_id);
-  const isWeapon = c.challenge_type === 'weapon' || Boolean(c.weapon_id);
   const isAdventurer = c.challenge_type === 'adventurer' || Boolean(c.adventurer_id);
   const isBuddy = c.challenge_type === 'buddy' || Boolean(c.buddy_id);
 
-  const slotLabel = isVisage
-    ? `Visage Card · ${c.ink_type ? c.ink_type.charAt(0).toUpperCase() + c.ink_type.slice(1) : 'Ink Set'}`
-    : isWeapon
-    ? `Weapon · ${c.weapon_type_id ?? 'Hunter Weapon'}`
-    : isAdventurer
-    ? 'Adventurer · Playable Hero'
-    : isBuddy
-    ? 'Companion · Buddy'
-    : SLOT_LABELS[c.armour_slot ?? ''] ?? c.armour_slot ?? '—';
+  const slotLabel = getSlotLabel(c);
   const slotIcon  = SLOT_ICONS[c.armour_slot ?? ''] ?? null;
   const pieceImg  = c.piece_image ?? slotIcon;
   const isActive  = c.status === 'crafting' || c.status === 'upgrading';
@@ -385,7 +421,7 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
         <button
           type="button"
           onClick={() => onIncrement(c)}
-          className="w-full flex items-center justify-center gap-2 rounded-xl border border-[var(--border-active)] bg-[var(--bg-superior)] py-2 text-xs font-bold text-[#FFD700] hover:shadow-[0_0_12px_var(--accent-gold-glow)] transition-all"
+          className="w-full flex items-center justify-center gap-2 rounded-xl border border-[var(--border-active)] bg-[var(--bg-superior)] py-2 text-xs font-bold text-[var(--theme-accent)] hover:shadow-[0_0_12px_var(--accent-gold-glow)] transition-all"
         >
           <Plus size={13} />
           {isVisage
@@ -419,24 +455,15 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
 
 interface HuntingTargetsPanelProps {
   monsterGroups: Map<string, { monsterName: string; setIcon: string | null; challenges: HunterChallenge[] }>;
-  selectedMonster: string | null;
-  onSelectMonster: (monsterName: string | null) => void;
-  selectedActivity: string | null;
-  onSelectActivity: (activityName: string | null) => void;
-  selectedMaterial: string | null;
-  onSelectMaterial: (material: string | null) => void;
+  selection: Selection;
+  onSelect: (selection: Selection) => void;
 }
 
-function HuntingTargetsPanel({ 
-  monsterGroups, 
-  selectedMonster, 
-  onSelectMonster, 
-  selectedActivity, 
-  onSelectActivity,
-  selectedMaterial,
-  onSelectMaterial
-}: HuntingTargetsPanelProps) {
+function HuntingTargetsPanel({ monsterGroups, selection, onSelect }: HuntingTargetsPanelProps) {
   const [expandedMonster, setExpandedMonster] = useState<string | null>(null);
+  const selectedMonster = selection?.kind === 'monster' ? selection.value : null;
+  const selectedActivity = selection?.kind === 'activity' ? selection.value : null;
+  const selectedMaterial = selection?.kind === 'material' ? selection.value : null;
 
   // Sort monster groups by count desc
   const sortedMonsters = useMemo(() => {
@@ -475,8 +502,8 @@ function HuntingTargetsPanel({
     return (
       <div className="rounded-2xl border border-dashed border-[var(--border-subtle)] bg-white/5 p-8 text-center">
         <Crosshair size={32} className="text-sky-700 mx-auto mb-3" />
-        <p className="text-sm font-semibold text-sky-400">No active hunts</p>
-        <p className="text-xs text-sky-600 mt-1">Add an armour piece challenge to see which monsters to hunt.</p>
+        <p className="text-sm font-semibold text-sky-400">No monsters to hunt</p>
+        <p className="text-xs text-sky-600 mt-1">Add weapons, armour or visage cards you want to collect and the monsters to hunt will show up here.</p>
       </div>
     );
   }
@@ -489,10 +516,18 @@ function HuntingTargetsPanel({
           const isExpanded = expandedMonster === monsterId;
           const challengeCount = group.challenges.length;
 
-          // Gather unique ranks needed for this monster
+          // Ranks only apply to craftable gear; visage cards are found, not crafted
           const ranksNeeded = Array.from(new Set(
-            group.challenges.map(c => (c.current_rarity || 0) + 1)
+            group.challenges
+              .filter(c => getCategory(c) !== 'visage')
+              .map(c => (c.current_rarity || 0) + 1)
           )).sort((a, b) => a - b).map(r => toRoman(r)).join(', ');
+
+          const breakdown = HUNT_CATEGORIES
+            .map(cat => ({ cat, n: group.challenges.filter(c => getCategory(c) === cat).length }))
+            .filter(x => x.n > 0)
+            .map(x => `${x.n} ${CATEGORY_SINGULAR[x.cat]}`)
+            .join(' · ');
 
           return (
             <div
@@ -504,9 +539,7 @@ function HuntingTargetsPanel({
                 type="button"
                 onClick={() => {
                   setExpandedMonster(isExpanded ? null : monsterId);
-                  onSelectMonster(selectedMonster === group.monsterName ? null : group.monsterName);
-                  onSelectActivity(null);
-                  onSelectMaterial(null);
+                  onSelect(selectedMonster === group.monsterName ? null : { kind: 'monster', value: group.monsterName });
                 }}
                 className={cn(
                   "w-full flex items-center gap-3 p-3 text-left transition-colors",
@@ -532,7 +565,7 @@ function HuntingTargetsPanel({
                     {group.monsterName}
                   </p>
                   <p className="text-[10px] text-sky-500">
-                    {challengeCount} piece{challengeCount !== 1 ? 's' : ''} to track
+                    {breakdown || `${challengeCount} item${challengeCount !== 1 ? 's' : ''}`}
                     {ranksNeeded && <span className="ml-1.5 text-yellow-500/80">· Needs Rank {ranksNeeded}</span>}
                   </p>
                 </div>
@@ -547,8 +580,9 @@ function HuntingTargetsPanel({
                 <div className="border-t border-sky-800 divide-y divide-sky-800/60">
                   {group.challenges.map((c) => {
                     const style = statusStyle(c.status);
-                    const slotLabel = SLOT_LABELS[c.armour_slot ?? ''] ?? c.armour_slot ?? '—';
+                    const slotLabel = getSlotLabel(c);
                     const slotIcon = SLOT_ICONS[c.armour_slot ?? ''] ?? null;
+                    const isVisageItem = getCategory(c) === 'visage';
 
                     return (
                       <div key={c.id} className="flex flex-col gap-1.5 px-3 py-2.5">
@@ -571,7 +605,7 @@ function HuntingTargetsPanel({
                           </div>
 
                           <span className={cn('rounded px-1.5 py-0.5 text-[9px] font-bold border shrink-0', style.badge)}>
-                            {c.status === 'crafting' ? 'Craft' : c.status === 'upgrading' ? `→R${c.max_rarity}` : 'Done'}
+                            {isVisageItem ? 'Find' : c.status === 'crafting' ? 'Craft' : c.status === 'upgrading' ? `→R${c.max_rarity}` : 'Done'}
                           </span>
                         </div>
                         {c.missing_material && (
@@ -601,11 +635,7 @@ function HuntingTargetsPanel({
             {sortedActivities.map(([activity, count]) => (
               <button
                 key={activity}
-                onClick={() => {
-                  onSelectActivity(selectedActivity === activity ? null : activity);
-                  onSelectMonster(null);
-                  onSelectMaterial(null);
-                }}
+                onClick={() => onSelect(selectedActivity === activity ? null : { kind: 'activity', value: activity })}
                 className={cn(
                   "w-full flex items-center justify-between border rounded-xl px-3 py-2 text-left transition-colors",
                   selectedActivity === activity 
@@ -634,12 +664,7 @@ function HuntingTargetsPanel({
             {sortedMaterials.map(([material, count]) => (
               <button
                 key={material}
-                onClick={() => {
-                  onSelectMaterial(selectedMaterial === material ? null : material);
-                  onSelectActivity(null);
-                  onSelectMaterial(null);
-                  onSelectMonster(null);
-                }}
+                onClick={() => onSelect(selectedMaterial === material ? null : { kind: 'material', value: material })}
                 className={cn(
                   "w-full flex items-center justify-between border rounded-xl px-3 py-2 text-left transition-colors",
                   selectedMaterial === material 
@@ -647,8 +672,8 @@ function HuntingTargetsPanel({
                     : "bg-white/5 border-[var(--border-subtle)] hover:bg-white/10"
                 )}
               >
-                <span className="text-xs font-semibold text-[#FFD700] truncate pr-2">{material}</span>
-                <span className="text-[10px] font-bold text-[#FFD700] bg-black/30 px-2 py-0.5 rounded-full shrink-0">
+                <span className="text-xs font-semibold text-[var(--theme-accent)] truncate pr-2">{material}</span>
+                <span className="text-[10px] font-bold text-[var(--theme-accent)] bg-black/30 px-2 py-0.5 rounded-full shrink-0">
                   x{count}
                 </span>
               </button>
@@ -656,6 +681,81 @@ function HuntingTargetsPanel({
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+// ── Recruitment Panel ─────────────────────────────────────────
+// Adventurers and buddies are not hunted — this is just a "shopping list" for recruitment.
+
+interface RecruitmentPanelProps {
+  recruits: HunterChallenge[];
+  selection: Selection;
+  onSelect: (selection: Selection) => void;
+}
+
+function RecruitmentPanel({ recruits, selection, onSelect }: RecruitmentPanelProps) {
+  if (recruits.length === 0) {
+    return (
+      <div className="rounded-2xl border border-dashed border-[var(--border-subtle)] bg-white/5 p-6 text-center">
+        <p className="text-sm font-semibold text-sky-400">Nobody to recruit</p>
+        <p className="text-xs text-sky-600 mt-1">Add adventurers or buddies you want and they'll be listed here.</p>
+      </div>
+    );
+  }
+
+  const sections: { cat: ItemCategory; title: string }[] = [
+    { cat: 'adventurer', title: 'Adventurers' },
+    { cat: 'buddy',      title: 'Buddies' },
+  ];
+
+  return (
+    <div className="space-y-3">
+      {sections.map(({ cat, title }) => {
+        const items = recruits.filter((c) => getCategory(c) === cat);
+        if (items.length === 0) return null;
+        return (
+          <div key={cat} className="space-y-1.5">
+            <h3 className="text-[10px] font-bold text-sky-400 px-1 uppercase tracking-wider">
+              {title} <span className="text-sky-600">· {items.length}</span>
+            </h3>
+            {items.map((c) => {
+              const isSelected = selection?.kind === 'recruit' && selection.value === c.id;
+              const img = c.piece_image ?? c.set_icon;
+              return (
+                <button
+                  key={c.id}
+                  type="button"
+                  onClick={() => onSelect(isSelected ? null : { kind: 'recruit', value: c.id })}
+                  className={cn(
+                    'w-full flex items-center gap-3 rounded-xl border px-3 py-2 text-left transition-colors',
+                    isSelected
+                      ? 'bg-sky-800 border-sky-600 shadow-md'
+                      : 'bg-sky-800/40 border-sky-700/50 hover:bg-sky-800/70',
+                  )}
+                >
+                  <div className="shrink-0 flex h-9 w-9 items-center justify-center">
+                    {img ? (
+                      <img
+                        src={img}
+                        alt={c.set_name ?? ''}
+                        className="h-9 w-9 object-contain"
+                        onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }}
+                      />
+                    ) : (
+                      <Shield size={20} className="text-sky-600" />
+                    )}
+                  </div>
+                  <span className="flex-1 min-w-0 text-xs font-semibold text-sky-200 truncate">
+                    {c.set_name ?? 'Unknown'}
+                  </span>
+                  <span className="shrink-0 text-[10px] font-bold text-sky-500">Recruit</span>
+                </button>
+              );
+            })}
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -669,42 +769,67 @@ export default function HunterChallenges() {
   const deleteChallenge = useDeleteChallenge();
   const updateMaterial = useUpdateChallengeMaterial();
 
-  const [filterTab, setFilterTab]         = useState<FilterTab>('active');
+  const [category, setCategory]       = useState<CategoryFilter>('all');
+  const [showCollected, setShowCollected] = useState(false);
+  const theme = useUIStore((s) => s.sectionThemes['/challenges'] ?? DEFAULT_SECTION_THEMES['/challenges']);
+  const [introHidden, setIntroHidden] = useState(() => localStorage.getItem(INTRO_HIDDEN_KEY) === '1');
+
+  const toggleIntro = () => {
+    const next = !introHidden;
+    setIntroHidden(next);
+    localStorage.setItem(INTRO_HIDDEN_KEY, next ? '1' : '0');
+  };
   const [loginModalOpen, setLoginModalOpen] = useState(false);
-  const [selectedMonster, setSelectedMonster] = useState<string | null>(null);
-  const [selectedActivity, setSelectedActivity] = useState<string | null>(null);
-  const [selectedMaterial, setSelectedMaterial] = useState<string | null>(null);
+  const [selection, setSelection]     = useState<Selection>(null);
 
   // ── Derived data ────────────────────────────────────────────
 
   const filteredChallenges = useMemo(() => {
-    let baseList = challenges;
-    switch (filterTab) {
-      case 'active':
-        baseList = challenges.filter((c) => c.status === 'crafting' || c.status === 'upgrading');
-        break;
-      case 'completed':
-        baseList = challenges.filter((c) => c.status === 'completed' || c.status === 'abandoned');
-        break;
-    }
-    
-    if (selectedMonster) {
-      baseList = baseList.filter(c => c.monster_name === selectedMonster);
-    } else if (selectedActivity) {
-      baseList = baseList.filter(c => c.missing_material_activity?.trim() === selectedActivity);
-    } else if (selectedMaterial) {
-      baseList = baseList.filter(c => c.missing_material?.trim() === selectedMaterial);
-    }
-    
-    return baseList;
-  }, [challenges, filterTab, selectedMonster, selectedActivity, selectedMaterial]);
+    let list = challenges.filter((c) => matchesCategory(c, category) && (showCollected || isOpen(c)));
 
-  // Only show active challenges in the Hunting Targets panel
-  const activeChallenges = useMemo(
-    () => challenges.filter((c) => c.status === 'crafting' || c.status === 'upgrading'),
-    [challenges],
+    if (selection) {
+      list = list.filter((c) => {
+        switch (selection.kind) {
+          case 'monster':  return isHuntItem(c) && c.monster_name === selection.value;
+          case 'activity': return c.missing_material_activity?.trim() === selection.value;
+          case 'material': return c.missing_material?.trim() === selection.value;
+          case 'recruit':  return c.id === selection.value;
+        }
+      });
+    }
+
+    return list;
+  }, [challenges, category, showCollected, selection]);
+
+  const openChallenges = useMemo(() => challenges.filter(isOpen), [challenges]);
+  const completedCount = challenges.filter((c) => c.status === 'completed').length;
+
+  // Open items per category, shown as counts on the category tabs
+  const openCounts = useMemo(() => {
+    const counts: Record<CategoryFilter, number> = { all: 0, weapon: 0, armour: 0, visage: 0, adventurer: 0, buddy: 0 };
+    for (const c of openChallenges) {
+      counts.all += 1;
+      counts[getCategory(c)] += 1;
+    }
+    return counts;
+  }, [openChallenges]);
+
+  const huntChallenges = useMemo(
+    () => openChallenges.filter((c) => isHuntItem(c) && matchesCategory(c, category)),
+    [openChallenges, category],
   );
-  const monsterGroups = useMemo(() => groupChallengesByMonster(activeChallenges), [activeChallenges]);
+  const recruitChallenges = useMemo(
+    () => openChallenges.filter((c) => isRecruitItem(c) && matchesCategory(c, category)),
+    [openChallenges, category],
+  );
+  const monsterGroups = useMemo(() => groupChallengesByMonster(huntChallenges), [huntChallenges]);
+  const showHuntSection = category === 'all' || HUNT_CATEGORIES.includes(category as ItemCategory);
+  const showRecruitSection = category === 'all' || RECRUIT_CATEGORIES.includes(category as ItemCategory);
+
+  const handleCategoryChange = (next: CategoryFilter) => {
+    setCategory(next);
+    setSelection(null);
+  };
 
   const incrementChallenge = useIncrementChallenge();
 
@@ -718,7 +843,7 @@ export default function HunterChallenges() {
   if (!user) {
     return (
       <>
-      <div className="challenges-theme flex flex-col items-center justify-center min-h-[60vh] gap-6 p-8">
+      <div data-rarity-theme={theme} className="challenges-theme flex flex-col items-center justify-center min-h-[60vh] gap-6 p-8">
         <div className="mho-panel flex flex-col items-center gap-6 px-8 py-10 max-w-lg">
         <img
           src="/img/ui/Challenge%20Icon.png"
@@ -760,46 +885,58 @@ export default function HunterChallenges() {
   // ── Logged in ───────────────────────────────────────────────
 
   return (
-    <div className="challenges-theme mx-auto max-w-7xl p-4 sm:p-6 lg:p-8 space-y-5 w-full text-white">
-      {/* ── Page Header ── */}
-      <div className="mho-panel flex flex-wrap items-center justify-between gap-3 px-5 py-4 shadow-xl">
-        <div className="flex items-center gap-3">
-          <img
-            src="/img/ui/Challenge%20Icon.png"
-            alt=""
-            draggable={false}
-            className="h-10 w-10 shrink-0 object-contain"
+    <div data-rarity-theme={theme} className="challenges-theme mx-auto max-w-7xl px-4 pb-4 pt-4 sm:px-6 sm:pb-6 sm:pt-5 lg:px-8 lg:pb-8 lg:pt-7 space-y-4 w-full text-white">
+      <PageTitlePanel
+        icon="/img/ui/Challenge%20Icon.png"
+        title="Hunter's Challenges"
+        hidden={introHidden}
+        onToggleHidden={toggleIntro}
+        description={
+          <>
+            Complete your collection of weapons, armour, visage cards, adventurers and buddies to unlock better builds.
+            Weapons, armour and visage cards tell you which <span className="text-sky-200 font-semibold">monsters to hunt</span>;
+            adventurers and buddies go on your <span className="text-sky-200 font-semibold">recruitment list</span>.
+          </>
+        }
+      >
+        <span className="text-[11px] text-sky-500">
+          {completedCount} collected · {openChallenges.length} still to get
+        </span>
+        <label className="flex items-center gap-2 text-xs font-semibold text-sky-300 cursor-pointer select-none">
+          <input
+            type="checkbox"
+            checked={showCollected}
+            onChange={(e) => setShowCollected(e.target.checked)}
+            className="h-3.5 w-3.5 accent-yellow-500"
           />
-          <div>
-            <h1 className="font-display text-xl font-bold uppercase tracking-wide text-white flex items-center gap-2">
-              <span className="text-[#FFD700] text-base">❖</span>
-              Hunter's Challenges
-            </h1>
-            <p className="text-xs text-sky-500">
-              {activeChallenges.length} active · {challenges.filter((c) => c.status === 'completed').length} completed
-            </p>
-          </div>
-        </div>
+          {introHidden ? 'Show all' : "Also show items I've already collected"}
+        </label>
+      </PageTitlePanel>
 
-        {/* Filter tabs */}
-        <div className="flex items-center rounded-xl border border-[var(--border-subtle)] bg-black/30 p-0.5 shrink-0">
-          {FILTER_TABS.map((tab) => (
+      {/* Category tabs — counts are items still to collect */}
+      <div className="flex flex-wrap items-center gap-1.5">
+          {CATEGORY_TABS.map((tab) => (
             <button
               key={tab.id}
               type="button"
-              onClick={() => setFilterTab(tab.id)}
+              onClick={() => handleCategoryChange(tab.id)}
               className={cn(
-                'rounded-lg px-3 py-1.5 text-xs font-bold transition-all',
-                filterTab === tab.id
-                  ? 'bg-gradient-to-b from-[#EAD17A] to-[#C9A042] text-[#1A1408] shadow-[0_0_10px_var(--accent-gold-glow)]'
-                  : 'text-[var(--text-secondary)] hover:text-white',
+                'flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all border',
+                category === tab.id
+                  ? 'bg-gradient-to-b from-[var(--theme-grad-from)] to-[var(--theme-grad-to)] text-[var(--theme-on-accent)] border-transparent shadow-[0_0_10px_var(--accent-gold-glow)]'
+                  : 'border-[var(--border-subtle)] bg-black/30 text-[var(--text-secondary)] hover:text-white',
               )}
             >
               {tab.label}
+              <span className={cn(
+                'rounded-full px-1.5 text-[10px] font-mono',
+                category === tab.id ? 'bg-black/20' : 'bg-sky-800 text-sky-400',
+              )}>
+                {openCounts[tab.id]}
+              </span>
             </button>
           ))}
         </div>
-      </div>
 
       {/* ── Loading ── */}
       {isLoading && (
@@ -810,59 +947,96 @@ export default function HunterChallenges() {
 
       {!isLoading && (
         <div className="flex flex-col lg:flex-row gap-5 items-start">
-          {/* ── LEFT: Filters / Hunting Targets ── */}
-          <div className="mho-panel-deep w-full lg:w-[280px] xl:w-[320px] shrink-0 space-y-3 p-3">
-              <div className="flex items-center gap-2 mb-1 pb-2 border-b border-white/10">
-                <span className="text-[#FFD700] text-xs">❖</span>
-                <h2 className="font-display text-xs font-bold uppercase tracking-wider text-white">Hunting Targets</h2>
-                {activeChallenges.length > 0 && (
-                  <span className="ml-auto rounded-full bg-sky-800 px-2 py-0.5 text-[10px] font-mono font-bold text-sky-400">
-                    {monsterGroups.size} monsters
-                  </span>
-                )}
+          {/* ── LEFT: Monsters to hunt + Recruitment list ── */}
+          <div className="w-full lg:w-[280px] xl:w-[320px] shrink-0 space-y-4">
+            {showHuntSection && (
+              <div className="mho-panel-deep space-y-3 p-3">
+                <div className="mb-1 pb-2 border-b border-white/10">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[var(--theme-accent)] text-xs">❖</span>
+                    <h2 className="font-display text-xs font-bold uppercase tracking-wider text-white">Hunting Targets</h2>
+                    {monsterGroups.size > 0 && (
+                      <span className="ml-auto rounded-full bg-sky-800 px-2 py-0.5 text-[10px] font-mono font-bold text-sky-400">
+                        {monsterGroups.size} monsters
+                      </span>
+                    )}
+                  </div>
+                  <p className="mt-1 text-[10px] text-sky-500">Monsters to hunt for your weapons, armour and visage cards.</p>
+                </div>
+                <HuntingTargetsPanel
+                  monsterGroups={monsterGroups}
+                  selection={selection}
+                  onSelect={setSelection}
+                />
               </div>
-              <HuntingTargetsPanel 
-                monsterGroups={monsterGroups} 
-                selectedMonster={selectedMonster}
-                onSelectMonster={setSelectedMonster}
-                selectedActivity={selectedActivity}
-                onSelectActivity={setSelectedActivity}
-                selectedMaterial={selectedMaterial}
-                onSelectMaterial={setSelectedMaterial}
-              />
+            )}
 
-            </div>
+            {showRecruitSection && (
+              <div className="mho-panel-deep space-y-3 p-3">
+                <div className="mb-1 pb-2 border-b border-white/10">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[var(--theme-accent)] text-xs">❖</span>
+                    <h2 className="font-display text-xs font-bold uppercase tracking-wider text-white">Recruitment List</h2>
+                    {recruitChallenges.length > 0 && (
+                      <span className="ml-auto rounded-full bg-sky-800 px-2 py-0.5 text-[10px] font-mono font-bold text-sky-400">
+                        {recruitChallenges.length} to recruit
+                      </span>
+                    )}
+                  </div>
+                  <p className="mt-1 text-[10px] text-sky-500">Adventurers and buddies to aim for when recruiting — no hunting needed.</p>
+                </div>
+                <RecruitmentPanel
+                  recruits={recruitChallenges}
+                  selection={selection}
+                  onSelect={setSelection}
+                />
+              </div>
+            )}
+          </div>
 
             {/* ── RIGHT: Challenge list ── */}
             <div className={cn(
               "flex-1 min-w-0 space-y-3",
-              !selectedMonster && !selectedActivity && !selectedMaterial && filterTab === 'active' 
-                ? "hidden lg:block" 
+              !selection && category === 'all' && !showCollected
+                ? "hidden lg:block"
                 : "block"
             )}>
               {filteredChallenges.length === 0 ? (
                 <div className="mho-panel border-dashed p-10 text-center">
-                  {filterTab === 'active' ? (
+                  {openChallenges.length === 0 && !showCollected ? (
                     <>
                       <Target size={32} className="text-sky-700 mx-auto mb-3" />
-                      <p className="text-sm font-semibold text-sky-400">No active challenges yet</p>
+                      <p className="text-sm font-semibold text-sky-400">Nothing on your list yet</p>
                       <p className="text-xs text-sky-600 mt-1 mb-4">
-                        Open the Armour guide, select a piece, and tap "Add to My Challenges".
+                        Open a guide, pick a weapon, armour piece, visage card, adventurer or buddy, and tap "Add to My Challenges".
                       </p>
-                      <button
-                        type="button"
-                        onClick={() => navigate('/investigation-notes/armour')}
-                        className="btn-mho-gold !px-4 !py-2 !text-xs"
-                      >
-                        <Shield size={13} />
-                        Browse Armour
-                      </button>
+                      <div className="flex flex-wrap justify-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => navigate('/investigation-notes/weapons')}
+                          className="btn-mho-panel !px-4 !py-2 !text-xs"
+                        >
+                          Browse Weapons
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => navigate('/investigation-notes/armour')}
+                          className="btn-mho-gold !px-4 !py-2 !text-xs"
+                        >
+                          <Shield size={13} />
+                          Browse Armour
+                        </button>
+                      </div>
                     </>
                   ) : (
                     <>
                       <CheckCircle2 size={32} className="text-sky-700 mx-auto mb-3" />
-                      <p className="text-sm font-semibold text-sky-400">No completed challenges yet</p>
-                      <p className="text-xs text-sky-600 mt-1">Complete an active challenge to see it here.</p>
+                      <p className="text-sm font-semibold text-sky-400">Nothing to show here</p>
+                      <p className="text-xs text-sky-600 mt-1">
+                        {selection || category !== 'all'
+                          ? 'No items match this selection. Try another category or tick "Also show items I\'ve already collected".'
+                          : 'Everything on your list is collected.'}
+                      </p>
                     </>
                   )}
                 </div>

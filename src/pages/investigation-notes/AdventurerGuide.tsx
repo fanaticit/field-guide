@@ -14,11 +14,15 @@ import {
   Plus,
   CheckCircle2,
   Eye,
+  Bookmark,
 } from 'lucide-react';
 import {
   type DBAdventurer,
+  type AdventurerRarity,
   ADVENTURER_ROLE_CONFIG,
   ADVENTURER_ROLES,
+  ADVENTURER_RARITIES,
+  ADVENTURER_RARITY_CONFIG,
   ELEMENT_OPTIONS,
 } from '../../data/schemas/adventurer';
 import { WEAPON_TYPES } from '../../data/core/weapon-types';
@@ -29,14 +33,18 @@ import {
   useAddAdventurerChallenge,
   getAdventurerChallenge,
 } from '../../hooks/useHunterChallenges';
-import { useAuthStore, selectIsAdmin } from '../../store/authStore';
-import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../store/authStore';
+import { useUIStore } from '../../store/uiStore';
+import { DEFAULT_SECTION_THEMES } from '../../config/themes';
 import AdventurerCard from './AdventurerCard';
 import AdventurerModal from './AdventurerModal';
+import AdventurerRarityBadge from './AdventurerRarityBadge';
+import PageTitlePanel from '../../components/layout/PageTitlePanel';
 import LoginModal from '../../components/auth/LoginModal';
 import { cn } from '../../lib/utils';
 
 type ViewMode = 'grid' | 'table';
+const INTRO_HIDDEN_KEY = 'adventurers-intro-hidden';
 type OwnershipFilter = 'all' | 'recruited' | 'missing';
 
 const ROLE_ICONS: Record<string, typeof Swords> = {
@@ -50,6 +58,7 @@ export default function AdventurerGuide() {
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState<string>('all');
   const [elementFilter, setElementFilter] = useState<string>('all');
+  const [rarityFilter, setRarityFilter] = useState<'all' | AdventurerRarity>('all');
   const [weaponFilter, setWeaponFilter] = useState<string>('all');
   const [ownershipFilter, setOwnershipFilter] = useState<OwnershipFilter>('all');
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
@@ -57,8 +66,14 @@ export default function AdventurerGuide() {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
 
   const { user } = useAuthStore();
-  const isAdmin = useAuthStore(selectIsAdmin);
-  const navigate = useNavigate();
+  const theme = useUIStore((s) => s.sectionThemes['/challenges'] ?? DEFAULT_SECTION_THEMES['/challenges']);
+  const [introHidden, setIntroHidden] = useState(() => localStorage.getItem(INTRO_HIDDEN_KEY) === '1');
+
+  const toggleIntro = () => {
+    const next = !introHidden;
+    setIntroHidden(next);
+    localStorage.setItem(INTRO_HIDDEN_KEY, next ? '1' : '0');
+  };
 
   const { data: adventurers = [], isLoading } = usePublicAdventurers();
   const updateWeaponMutation = useUpdateAdventurerWeapon();
@@ -93,13 +108,13 @@ export default function AdventurerGuide() {
     const recruitedCount = adventurers.filter((a) => isRecruited(a)).length;
     const percent = total > 0 ? Math.round((recruitedCount / total) * 100) : 0;
 
-    const roleCounts = {
-      Assault: adventurers.filter((a) => a.role === 'Assault').length,
-      Disrupter: adventurers.filter((a) => a.role === 'Disrupter' || a.role === 'Disruptor').length,
-      Support: adventurers.filter((a) => a.role === 'Support').length,
-    };
+    const rarity = {} as Record<AdventurerRarity, { total: number; recruited: number }>;
+    for (const r of ADVENTURER_RARITIES) {
+      const inTier = adventurers.filter((a) => a.rarity === r);
+      rarity[r] = { total: inTier.length, recruited: inTier.filter((a) => isRecruited(a)).length };
+    }
 
-    return { total, recruitedCount, percent, roleCounts };
+    return { total, recruitedCount, percent, rarity };
   }, [adventurers, isRecruited]);
 
   // Filtered roster of all adventurers (including player character)
@@ -131,6 +146,10 @@ export default function AdventurerGuide() {
       list = list.filter((a) => a.element_specialization === elementFilter);
     }
 
+    if (rarityFilter !== 'all') {
+      list = list.filter((a) => a.rarity === rarityFilter);
+    }
+
     if (weaponFilter !== 'all') {
       list = list.filter(
         (a) =>
@@ -155,7 +174,7 @@ export default function AdventurerGuide() {
     });
 
     return list;
-  }, [adventurers, search, roleFilter, elementFilter, weaponFilter, ownershipFilter, isRecruited]);
+  }, [adventurers, search, roleFilter, elementFilter, rarityFilter, weaponFilter, ownershipFilter, isRecruited]);
 
   async function handleWeaponSwitch(weaponType: string) {
     if (!defaultAdventurer) return;
@@ -165,107 +184,52 @@ export default function AdventurerGuide() {
     });
   }
 
-  function handleNavigateToAdmin() {
-    navigate('/admin/adventurers');
-  }
-
   return (
-    <div className="p-6 lg:p-8 space-y-8 max-w-7xl mx-auto">
-      {/* ── Header Introduction & Recruitment Metrics ── */}
-      <div className="rounded-2xl border border-mh-slate-700 bg-gradient-to-r from-mh-slate-900 via-mh-slate-850 to-mh-slate-900 p-6 shadow-xl">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-mh-slate-800 pb-5 mb-5">
-          <div className="flex items-center gap-3.5">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-mh-gold-500/10 text-mh-gold-400 ring-1 ring-mh-gold-500/30 shadow-inner">
-              <User size={24} />
+    <div data-rarity-theme={theme} className="challenges-theme px-6 pb-6 pt-2 lg:px-8 lg:pb-8 lg:pt-3 space-y-8 max-w-7xl mx-auto text-white">
+      <PageTitlePanel
+        icon="/img/ui/Adventurer%20Icon.png"
+        title="Adventurers"
+        hidden={introHidden}
+        onToggleHidden={toggleIntro}
+        description={
+          <>
+            Build your roster of playable Outlanders adventurers and keep track of who you've recruited.
+            Each adventurer has a combat role, a weapon discipline and an elemental specialty, so a full roster
+            gives you more options for your builds. Tap a card to inspect abilities, weapons and lore, mark
+            the ones you've recruited, or add the ones you're missing to your Hunter's Challenges
+            <span className="text-mh-slate-200 font-semibold"> recruitment list</span> so you know who to aim for.
+          </>
+        }
+      >
+        {/* Collection status */}
+        <div className="flex flex-wrap items-center gap-1.5 bg-black/30 rounded-xl p-1 border border-[var(--border-subtle)]">
+          <div className="px-2.5 py-0.5 text-center border-r border-[var(--border-subtle)]">
+            <div className="flex items-center justify-center gap-1 text-[9px] uppercase font-bold text-[var(--theme-accent)]">
+              <Bookmark size={10} />
+              <span>Recruited</span>
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="font-display text-2xl font-bold text-mh-slate-100">
-                  Outlanders Adventurers
-                </h1>
+            <div className="flex items-baseline justify-center gap-1">
+              <span className="font-display text-sm font-black text-white">{metrics.recruitedCount}</span>
+              <span className="text-[10px] text-mh-slate-500">/ {metrics.total}</span>
+              <span className="text-[9px] font-bold text-emerald-400 ml-0.5">({metrics.percent}%)</span>
+            </div>
+          </div>
+
+          {ADVENTURER_RARITIES.map((r) => {
+            const cfg = ADVENTURER_RARITY_CONFIG[r];
+            const tier = metrics.rarity[r];
+            return (
+              <div key={r} className="px-2 py-0.5 text-center" title={`${tier.recruited} of ${tier.total} ${cfg.short} adventurers recruited`}>
+                <span className="block text-[9px] font-bold" style={{ color: cfg.color }}>{cfg.label}</span>
+                <div className="flex items-baseline justify-center gap-1">
+                  <span className="font-display text-xs font-bold" style={{ color: cfg.color }}>{tier.recruited}</span>
+                  <span className="text-[9px] text-mh-slate-500 font-bold">/ {tier.total}</span>
+                </div>
               </div>
-              <p className="text-xs text-mh-slate-400 mt-0.5">
-                Playable characters in Monster Hunter Outlanders. Master tactical combat roles, weapon proficiencies, and elemental synergies.
-              </p>
-            </div>
-          </div>
-
-          {isAdmin && (
-            <button
-              type="button"
-              onClick={handleNavigateToAdmin}
-              className="flex items-center gap-1.5 rounded-xl bg-mh-slate-800 hover:bg-mh-slate-700 border border-mh-slate-700 px-3.5 py-2 text-xs font-bold text-mh-gold-400 transition-all shadow-sm shrink-0 self-start md:self-auto"
-            >
-              <Plus size={14} />
-              <span>Manage Adventurers in Admin</span>
-            </button>
-          )}
+            );
+          })}
         </div>
-
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {/* Total Roster */}
-          <div className="rounded-xl border border-mh-slate-750 bg-mh-slate-950/60 p-3.5">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-mh-slate-400">
-              Total Roster
-            </span>
-            <div className="flex items-baseline gap-2 mt-1">
-              <span className="font-display text-2xl font-bold text-mh-slate-100">
-                {metrics.total}
-              </span>
-              <span className="text-xs text-mh-slate-500 font-medium">Characters</span>
-            </div>
-          </div>
-
-          {/* Recruited Progress */}
-          <div className="rounded-xl border border-mh-gold-500/30 bg-mh-gold-500/5 p-3.5 space-y-1.5">
-            <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-mh-gold-400">
-              <span>Recruitment</span>
-              <span>{metrics.percent}%</span>
-            </div>
-            <div className="flex items-baseline justify-between">
-              <span className="font-display text-xl font-bold text-mh-gold-300">
-                {metrics.recruitedCount} <span className="text-xs text-mh-slate-400 font-normal">/ {metrics.total}</span>
-              </span>
-              <span className="text-[10px] text-mh-slate-400">Unlocked</span>
-            </div>
-            <div className="h-1.5 w-full overflow-hidden rounded-full bg-mh-slate-800">
-              <div
-                className="h-full bg-gradient-to-r from-mh-gold-500 to-amber-300 transition-all duration-300 rounded-full"
-                style={{ width: `${metrics.percent}%` }}
-              />
-            </div>
-          </div>
-
-          {/* Combat Roles */}
-          <div className="rounded-xl border border-mh-slate-750 bg-mh-slate-950/60 p-3.5">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-mh-slate-400">
-              Combat Roles
-            </span>
-            <div className="flex items-center gap-2 mt-2">
-              <span className="inline-flex items-center gap-1 rounded bg-red-500/15 border border-red-500/30 px-1.5 py-0.5 text-[10px] font-bold text-red-400" title="Assault">
-                <Swords size={10} /> {metrics.roleCounts.Assault}
-              </span>
-              <span className="inline-flex items-center gap-1 rounded bg-purple-500/15 border border-purple-500/30 px-1.5 py-0.5 text-[10px] font-bold text-purple-400" title="Disrupter">
-                <Zap size={10} /> {metrics.roleCounts.Disrupter}
-              </span>
-              <span className="inline-flex items-center gap-1 rounded bg-emerald-500/15 border border-emerald-500/30 px-1.5 py-0.5 text-[10px] font-bold text-emerald-400" title="Support">
-                <Heart size={10} /> {metrics.roleCounts.Support}
-              </span>
-            </div>
-          </div>
-
-          {/* Guide Hint */}
-          <div className="rounded-xl border border-mh-slate-750 bg-mh-slate-950/60 p-3.5 flex flex-col justify-between">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-mh-slate-400">
-              Field Tip
-            </span>
-            <p className="text-[11px] text-mh-slate-400 leading-snug mt-1">
-              Click any character card to inspect tactical abilities, weapons, and lore.
-            </p>
-          </div>
-        </div>
-      </div>
+      </PageTitlePanel>
 
       {/* ── Adventurers Roster ── */}
       <div className="space-y-4">
@@ -361,6 +325,20 @@ export default function AdventurerGuide() {
               {Object.values(ELEMENT_OPTIONS).map((opt) => (
                 <option key={opt.id} value={opt.id}>
                   {opt.label}
+                </option>
+              ))}
+            </select>
+
+            {/* Rarity Filter */}
+            <select
+              value={rarityFilter}
+              onChange={(e) => setRarityFilter(e.target.value as 'all' | AdventurerRarity)}
+              className="rounded-xl border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-300 focus:border-mh-gold-500/50 focus:outline-none"
+            >
+              <option value="all">All Rarities</option>
+              {ADVENTURER_RARITIES.map((r) => (
+                <option key={r} value={r}>
+                  {ADVENTURER_RARITY_CONFIG[r].label}
                 </option>
               ))}
             </select>
@@ -485,6 +463,7 @@ export default function AdventurerGuide() {
                           <div>
                             <div className="flex items-center gap-1.5">
                               <p className="font-bold text-mh-slate-100">{adv.name}</p>
+                              <AdventurerRarityBadge rarity={adv.rarity} className="!rounded !px-1.5 !py-0 !text-[9px]" />
                               {adv.is_default && (
                                 <span className="rounded bg-mh-gold-500/20 border border-mh-gold-500/40 px-1.5 py-0.2 text-[9px] font-bold text-mh-gold-300 uppercase">
                                   You

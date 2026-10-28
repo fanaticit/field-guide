@@ -72,27 +72,32 @@ export interface SectionDefinition {
   path: string;
   label: string;
   description: string;
+  /** True once the section actually reacts to its selected theme. */
+  live?: boolean;
 }
 
 export const SITE_SECTIONS: SectionDefinition[] = [
   { path: '/', label: 'Home', description: 'Landing portal, overview, and quick links' },
-  { path: '/armory', label: 'Armory', description: 'Community builds, build planner, and armour archives' },
+  { path: '/armory', label: 'Armory', description: 'Community builds, build planner, and armour archives', live: true },
   { path: '/gallery', label: 'Gallery', description: 'Visage sets and visage collection' },
-  { path: '/challenges', label: 'Challenges', description: 'Hunter goals, adventurers, buddies, and weapons' },
-  { path: '/admin', label: 'Admin Panel', description: 'Game data curation tools' },
-  { path: '/settings', label: 'Profile & Settings', description: 'Hunter identity and application preferences' },
+  { path: '/challenges', label: 'Challenges', description: 'Hunter goals, adventurers, buddies, and weapons', live: true },
 ];
 
 /** Default theme per section */
 export const DEFAULT_SECTION_THEMES: Record<string, RarityTheme> = {
   '/': 'standard',
-  '/armory': 'standard',
+  '/armory': 'epic',
   '/gallery': 'fine',
-  '/challenges': 'standard',
+  '/challenges': 'rare',
   '/admin': 'standard',
   '/settings': 'standard',
   '/investigation-notes': 'fine',
 };
+
+/** Main navigation accents; the nav's gold accent is named "superior". */
+export function themeToNavAccent(theme: RarityTheme): 'superior' | 'epic' | 'fine' | 'rare' {
+  return theme === 'standard' ? 'superior' : theme;
+}
 
 /**
  * Resolves the active theme for a given pathname against registered section themes.

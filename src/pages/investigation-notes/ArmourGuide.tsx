@@ -2,7 +2,7 @@
 // ArmourGuide — Investigation Notes Armour Explorer & Simulation
 // Left-aligned layout, combined skill levels, highlighted set effects, and clean reference format.
 // ─────────────────────────────────────────────────────────────
-import { useState, useMemo, useEffect, useCallback } from 'react';
+import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Shield,
@@ -12,7 +12,6 @@ import {
   Lock,
   Flame,
   Swords,
-  Target,
   CheckCircle2,
   LogIn,
   Plus,
@@ -36,6 +35,10 @@ import { getRarityBadgeStyle } from '../admin/armour/MonsterArmourBuilder';
 import { cn } from '../../lib/utils';
 import { supabase } from '../../lib/supabase';
 import { useAuthStore } from '../../store/authStore';
+import { useUIStore } from '../../store/uiStore';
+import { DEFAULT_SECTION_THEMES } from '../../config/themes';
+import ChallengeIcon from '../../components/ChallengeIcon';
+import PageTitlePanel from '../../components/layout/PageTitlePanel';
 import { useBuildPlannerStore } from '../../store/buildPlannerStore';
 import {
   useHunterChallenges,
@@ -44,6 +47,8 @@ import {
   isArmourPieceTracked,
 } from '../../hooks/useHunterChallenges';
 import LoginModal from '../../components/auth/LoginModal';
+
+const INTRO_HIDDEN_KEY = 'armour-intro-hidden';
 
 // Canonical 5 Armour Slots in order
 export const SLOTS_ORDER: Array<{
@@ -234,6 +239,15 @@ export default function ArmourGuide() {
   // Game Selector (Defaults to MHO)
   const [game] = useState<string>('mho');
   const [search, setSearch] = useState('');
+
+  const armoryTheme = useUIStore((s) => s.sectionThemes['/armory'] ?? DEFAULT_SECTION_THEMES['/armory']);
+  const [introHidden, setIntroHidden] = useState(() => localStorage.getItem(INTRO_HIDDEN_KEY) === '1');
+
+  const toggleIntro = () => {
+    const next = !introHidden;
+    setIntroHidden(next);
+    localStorage.setItem(INTRO_HIDDEN_KEY, next ? '1' : '0');
+  };
   
   // Multi-skill filter
   const [selectedSkillIds, setSelectedSkillIds] = useState<string[]>([]);
@@ -314,40 +328,46 @@ export default function ArmourGuide() {
 
   const handleSendToBuildPlanner = useCallback(async () => {
     const store = useBuildPlannerStore.getState();
-    store.resetBuild();
 
     // Auto-select default adventurer if none selected so equipment selector is immediately ready
-    try {
-      const { data: defaultAdv } = await supabase
-        .from('adventurers')
-        .select('*')
-        .eq('is_default', true)
-        .eq('is_active', true)
-        .maybeSingle();
+    if (!store.adventurer) {
+      try {
+        const { data: defaultAdv } = await supabase
+          .from('adventurers')
+          .select('*')
+          .eq('is_default', true)
+          .eq('is_active', true)
+          .maybeSingle();
 
-      if (defaultAdv) {
-        store.setAdventurer(defaultAdv as any);
+        if (defaultAdv) {
+          store.setAdventurer(defaultAdv as any);
+        }
+      } catch {
+        // ignore
       }
-    } catch {
-      // ignore
     }
 
     for (const slotDef of SLOTS_ORDER) {
       const equipped = exampleBuild[slotDef.id];
-      if (equipped?.piece) {
-        store.setArmour(slotDef.id, {
-          id: equipped.piece.id,
-          slot: slotDef.id,
-          set_name: equipped.set.displayName || equipped.set.setName,
-          monster_id: equipped.set.monsterId,
-          monster_name: equipped.set.monsterName,
-          image: equipped.piece.image ?? undefined,
-          skills: equipped.piece.skills?.map((s) => ({ id: s.id, level: s.level })) ?? [],
-        });
+      if (!equipped?.piece) {
+        // The example build mirrors the planner, so a slot removed here is removed there too
+        store.setArmour(slotDef.id, null);
+        continue;
       }
+      store.setArmour(slotDef.id, {
+        id: equipped.piece.id,
+        slot: slotDef.id,
+        set_name: equipped.set.displayName || equipped.set.setName,
+        monster_id: equipped.set.monsterId,
+        monster_name: equipped.set.monsterName,
+        image: equipped.piece.image ?? undefined,
+        skills: equipped.piece.skills?.map((s) => ({ id: s.id, level: s.level })) ?? [],
+      });
     }
 
-    navigate('/armory/planner');
+    // Keep editing the same build (saved or draft) the hunter left behind
+    const { buildId } = useBuildPlannerStore.getState();
+    navigate(buildId ? `/armory/planner/${buildId}` : '/armory/planner');
   }, [exampleBuild, navigate]);
 
   // Group pieces into complete Armour Sets
@@ -449,6 +469,24 @@ export default function ArmourGuide() {
 
     return result;
   }, [pieces, monstersMap]);
+
+  // Pre-fill the example build with whatever armour the hunter already has in the Build Planner
+  const seededFromPlannerRef = useRef(false);
+  useEffect(() => {
+    if (seededFromPlannerRef.current || allSets.length === 0) return;
+    seededFromPlannerRef.current = true;
+
+    const planner = useBuildPlannerStore.getState();
+    const seeded: ExampleBuild = {};
+    for (const slotDef of SLOTS_ORDER) {
+      const pieceId = planner[slotDef.id]?.id;
+      if (!pieceId) continue;
+      const set = allSets.find((g) => g.pieces[slotDef.id]?.id === pieceId);
+      const piece = set?.pieces[slotDef.id];
+      if (set && piece) seeded[slotDef.id] = { piece, set };
+    }
+    if (Object.keys(seeded).length > 0) setExampleBuild((prev) => ({ ...seeded, ...prev }));
+  }, [allSets]);
 
   // Sorted unselected skills available for the skill picker
   const sortedAvailableSkills = useMemo(() => {
@@ -1002,7 +1040,7 @@ export default function ArmourGuide() {
                     ) : justAdded ? (
                       <><CheckCircle2 size={14} /> Added to challenges!</>
                     ) : (
-                      <><Target size={14} /> Add {slotLabel} to Challenges</>
+                      <><ChallengeIcon size={18} /> Add {slotLabel} to Challenges</>
                     )}
                   </button>
                 )}
@@ -1547,7 +1585,24 @@ export default function ArmourGuide() {
   };
 
   return (
-    <div className="p-4 lg:p-6 space-y-4 w-full">
+    <div data-rarity-theme={armoryTheme} className="section-theme px-4 pb-4 pt-2 lg:px-6 lg:pb-6 lg:pt-3 space-y-4 w-full">
+      {/* ── Header: title & description ── */}
+      <PageTitlePanel
+        icon="/img/ui/Equipment%20Icon.png"
+        title="Armour"
+        hidden={introHidden}
+        onToggleHidden={toggleIntro}
+        description={
+          <>
+            Browse every armour set by monster, with each piece's defence, resistances, skills and set bonuses at
+            any upgrade rank. Search for a monster or skill, filter by the skills you want, and pin pieces into an
+            example build to see how the skills add up. Add a piece to your Hunter's Challenges and the monsters you
+            need to hunt for it appear in your
+            <span className="text-mh-slate-200 font-semibold"> Hunting Targets</span>.
+          </>
+        }
+      />
+
       {/* ── Compact Top Toolbar ── */}
       <div className="space-y-2 border-b border-mh-slate-800 pb-3">
         <div className="flex flex-wrap items-center justify-between gap-3">

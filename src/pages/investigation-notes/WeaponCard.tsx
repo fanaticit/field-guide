@@ -14,7 +14,6 @@ import {
   Zap,
   Snowflake,
   Skull,
-  Target,
   LogIn,
 } from 'lucide-react';
 import {
@@ -32,6 +31,7 @@ import {
   
 } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
+import ChallengeIcon from '../../components/ChallengeIcon';
 
 const ELEMENT_ICONS: Record<WeaponElementType, React.ComponentType<{ size?: number; className?: string }>> = {
   raw: Shield,
@@ -102,7 +102,7 @@ export default function WeaponCard({
         isTracked
           ? isCompleted
             ? 'border-emerald-500/40 bg-mh-slate-900 hover:border-emerald-500/60'
-            : 'border-blue-500/40 bg-mh-slate-900 hover:border-blue-500/60'
+            : 'border-yellow-500/40 bg-mh-slate-900 hover:border-yellow-500/60'
           : 'border-mh-slate-750 bg-mh-slate-900 hover:border-mh-slate-600',
       )}
     >
@@ -213,10 +213,10 @@ export default function WeaponCard({
 
           {/* Challenge Tracking Progress Status (if actively tracked) */}
           {isTracked && challenge && (
-            <div className="rounded-xl border border-blue-500/30 bg-blue-500/10 p-2 text-xs">
+            <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-2 text-xs">
               <div className="flex items-center justify-between text-[11px] font-bold">
-                <div className="flex items-center gap-1.5 text-blue-300 min-w-0 truncate">
-                  <Target size={13} className="text-blue-400 shrink-0" />
+                <div className="flex items-center gap-1.5 text-yellow-300 min-w-0 truncate">
+                  <ChallengeIcon size={16} />
                   <span className="truncate">
                     {isCompleted
                       ? `✓ R${challenge.max_rarity} Mastered`
@@ -225,7 +225,7 @@ export default function WeaponCard({
                       : `Craft Goal (R${challenge.craft_rarity})`}
                   </span>
                 </div>
-                <span className="font-mono text-blue-400 shrink-0 ml-1">
+                <span className="font-mono text-yellow-400 shrink-0 ml-1">
                   {isCompleted ? '100%' : `${Math.round(((challenge.current_rarity || 0) / (challenge.max_rarity || 16)) * 100)}%`}
                 </span>
               </div>
@@ -301,7 +301,7 @@ export default function WeaponCard({
               disabled={isAddingChallenge}
               className="inline-flex items-center gap-1.5 rounded-xl border border-sky-600/50 bg-transparent text-sky-400 hover:bg-sky-900 hover:border-sky-500 hover:text-sky-200 px-2.5 py-1 text-xs font-bold transition-all shadow-sm"
             >
-              <Target size={13} />
+              <ChallengeIcon size={16} />
               <span>+ Challenge</span>
             </button>
           )}

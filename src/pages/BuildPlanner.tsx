@@ -1,17 +1,21 @@
-import { Shield, Save, Copy, ArrowLeft, ThumbsUp, RotateCcw, CheckCircle2 } from 'lucide-react';
+import { Save, Copy, ArrowLeft, ThumbsUp, RotateCcw, CheckCircle2 } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '../store/authStore';
 import { useBuildPlannerStore } from '../store/buildPlannerStore';
+import { useUIStore } from '../store/uiStore';
+import { DEFAULT_SECTION_THEMES } from '../config/themes';
 import { HeroBuddySelector } from '../components/build-planner/HeroBuddySelector';
 import { EquipmentSelector } from '../components/build-planner/EquipmentSelector';
 import { VisageSelector } from '../components/build-planner/VisageSelector';
 import { SkillSummaryPanel } from '../components/build-planner/SkillSummaryPanel';
+import { clearBuildDraft } from '../store/buildDraftCookie';
 import { supabase } from '../lib/supabase';
 
 export default function BuildPlanner() {
   const { user } = useAuthStore();
+  const theme = useUIStore((s) => s.sectionThemes['/armory'] ?? DEFAULT_SECTION_THEMES['/armory']);
   const store = useBuildPlannerStore();
   const { buildId } = useParams();
   const navigate = useNavigate();
@@ -271,6 +275,7 @@ export default function BuildPlanner() {
         const { data, error } = await supabase.from('mho_builds').insert(buildData).select('id').single();
         if (error) throw error;
         if (data) {
+          clearBuildDraft();
           store.setBuildId(data.id);
           store.setAuthorId(user.id);
           store.setUpvotes(0);
@@ -357,28 +362,31 @@ export default function BuildPlanner() {
   }
 
   return (
-    <div className="flex flex-col gap-4 p-4 lg:p-6 max-w-[1600px] mx-auto w-full">
+    <div data-rarity-theme={theme} className="section-theme flex flex-col gap-4 p-4 lg:p-6 max-w-[1600px] mx-auto w-full">
       
-      {/* 1. Very Top Row: Back to Armory (Left), Centered Title (Center), Action Buttons (Right) */}
-      <div className="mho-panel grid grid-cols-[auto_1fr_auto] items-center gap-2 sm:gap-4 px-3 sm:px-5 py-3 shadow-xl">
-        {/* Left: Back to Armory */}
+      {/* 1. Very Top Row: Back to Community Collections (Left), Centered Title (Center), Action Buttons (Right) */}
+      <div className="mho-panel mho-card-rarity grid grid-cols-[auto_1fr_auto] items-center gap-2 sm:gap-4 px-3 sm:px-5 py-3 shadow-xl">
+        {/* Left: Back to Community Collections */}
         <div className="flex items-center">
           <Link
             to="/armory"
             className="btn-mho-panel group !px-2.5 sm:!px-3 !py-1.5 !text-xs shrink-0"
-            title="Back to Armory"
+            title="Back to Community Collections"
           >
             <ArrowLeft size={14} className="text-[var(--text-secondary)] group-hover:text-white transition-colors" />
-            <span className="hidden sm:inline">Back to </span>
-            <span>Armory</span>
+            <span>Community Collections</span>
           </Link>
         </div>
 
         {/* Center: Build Planner Title */}
         <div className="flex items-center justify-center">
           <h1 className="inline-flex items-center gap-2 font-display text-sm sm:text-lg font-bold tracking-wide text-white uppercase whitespace-nowrap">
-            <span className="text-[#FFD700] text-sm sm:text-base">❖</span>
-            <Shield size={16} className="text-[#FFD700] shrink-0 hidden sm:block" />
+            <img
+              src="/img/ui/Equipment%20Icon.png"
+              alt=""
+              draggable={false}
+              className="h-8 w-8 sm:h-10 sm:w-10 shrink-0 object-contain"
+            />
             Build Planner
           </h1>
         </div>
@@ -393,8 +401,8 @@ export default function BuildPlanner() {
               disabled={hasUpvoted || isVoting}
               className={`relative whitespace-nowrap text-xs sm:text-sm py-1.5 px-2.5 sm:px-3 rounded-lg flex items-center gap-1.5 transition-all font-medium border shadow-sm ${
                 hasUpvoted
-                  ? 'bg-[var(--bg-superior)] text-[#FFD700] border-[var(--border-active)] cursor-default'
-                  : 'bg-black/30 hover:bg-white/10 text-white border-[var(--border-subtle)] hover:border-[#FFD700]/60 active:scale-95 cursor-pointer'
+                  ? 'bg-[var(--bg-superior)] text-[var(--theme-accent)] border-[var(--border-active)] cursor-default'
+                  : 'bg-black/30 hover:bg-white/10 text-white border-[var(--border-subtle)] hover:border-[var(--theme-accent)] active:scale-95 cursor-pointer'
               }`}
               title={hasUpvoted ? 'You have upvoted this build' : 'Upvote this build'}
             >
@@ -476,7 +484,7 @@ export default function BuildPlanner() {
       </div>
 
       {/* 2. Second Row: Build Meta & Tactical Loadout Dock */}
-      <div className="mho-panel flex flex-col gap-3.5 p-3.5 shadow-md">
+      <div className="mho-panel has-[[data-dropdown-open]]:relative has-[[data-dropdown-open]]:z-30 flex flex-col gap-3.5 p-3.5 shadow-md">
         {/* Top: Title, Role Toggle, and Description in a tight row */}
         <div className="flex flex-col landscape:flex-row md:flex-row gap-3 items-stretch landscape:items-center md:items-center justify-between">
           {/* Title & Role */}
@@ -529,21 +537,15 @@ export default function BuildPlanner() {
       </div>
 
 
-      {/* 3. Main Layout: 1 col in portrait mobile; 2 cols in landscape/tablet with Visage underneath; 3 cols on large desktop */}
-      <div className="grid grid-cols-1 landscape:grid-cols-2 md:grid-cols-2 xl:grid-cols-12 gap-4 items-start w-full">
-        {/* Left Column: Equipment / Armour */}
-        <div className="w-full col-span-1 landscape:col-span-1 md:col-span-1 xl:col-span-5">
+      {/* 3. Main Layout: Equipment + Visage stacked on the left, Skills on the right so a long skill list scrolls past the visage cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start w-full">
+        <div className="flex flex-col gap-4 w-full min-w-0">
           <EquipmentSelector />
-        </div>
-
-        {/* Right Column in landscape/tablet (Middle on desktop): Skills */}
-        <div className="w-full col-span-1 landscape:col-span-1 md:col-span-1 xl:col-span-4">
-          <SkillSummaryPanel />
-        </div>
-
-        {/* Visage Cards: Underneath both columns in landscape/tablet, 3rd column on large desktop */}
-        <div className="w-full col-span-1 landscape:col-span-2 md:col-span-2 xl:col-span-3">
           <VisageSelector />
+        </div>
+
+        <div className="w-full min-w-0">
+          <SkillSummaryPanel />
         </div>
       </div>
 

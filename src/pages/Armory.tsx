@@ -12,6 +12,10 @@ import {
   type MonsterLookup,
 } from '../types/armory';
 import { INK_CONFIG } from '../data/schemas/visage';
+import PageTitlePanel from '../components/layout/PageTitlePanel';
+import { useUIStore } from '../store/uiStore';
+import { DEFAULT_SECTION_THEMES } from '../config/themes';
+const INTRO_HIDDEN_KEY = 'armory-builds-intro-hidden';
 
 function getCookie(name: string): string | null {
   if (typeof document === 'undefined') return null;
@@ -34,6 +38,15 @@ function isMobileDevice(): boolean {
 }
 
 export default function Armory() {
+  const theme = useUIStore((s) => s.sectionThemes['/armory'] ?? DEFAULT_SECTION_THEMES['/armory']);
+  const [introHidden, setIntroHidden] = useState(() => localStorage.getItem(INTRO_HIDDEN_KEY) === '1');
+
+  const toggleIntro = () => {
+    const next = !introHidden;
+    setIntroHidden(next);
+    localStorage.setItem(INTRO_HIDDEN_KEY, next ? '1' : '0');
+  };
+
   const [searchQuery, setSearchQuery] = useState('');
   const [roleFilter, setRoleFilter] = useState<'all' | 'main' | 'support'>('all');
   const [selectedWeaponType, setSelectedWeaponType] = useState<string>('all');
@@ -192,59 +205,58 @@ export default function Armory() {
   const isLoading = isBuildsLoading || isMonstersLoading;
 
   return (
-    <div className="flex flex-col gap-6 p-4 lg:p-6 max-w-7xl mx-auto w-full">
-      {/* ── Top Header ────────────────────────────────────────────── */}
-      <div className="mho-panel flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-5 py-4 shadow-xl">
-        <div>
-          <h1 className="font-display text-2xl font-bold uppercase tracking-wide text-white lg:text-3xl flex items-center gap-2.5">
-            <span className="text-[#FFD700] text-lg">❖</span>
-            Community Builds
-          </h1>
-          <p className="text-xs text-[var(--text-secondary)] mt-1">
-            Browse, inspect, and get inspired by gear builds shared by fellow hunters.
-          </p>
-        </div>
-
-        {/* Header Right: View Switcher & Create Build */}
-        <div className="flex items-center gap-3 self-start sm:self-center">
-          {/* View Mode Toggle */}
-          <div className="flex items-center rounded-lg bg-black/30 p-1 border border-[var(--border-subtle)]">
-            <button
-              onClick={() => setViewMode('panel')}
-              title="Panel View (Grid Cards)"
-              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-md text-xs font-bold transition-all ${
-                viewMode === 'panel'
-                  ? 'bg-white/10 text-[#FFD700] shadow-sm'
-                  : 'text-[var(--text-secondary)] hover:text-white'
-              }`}
-            >
-              <LayoutGrid size={14} />
-              <span className="hidden sm:inline">Panel</span>
-            </button>
-            <button
-              onClick={() => setViewMode('list')}
-              title="List View (Row Icons)"
-              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-md text-xs font-bold transition-all ${
-                viewMode === 'list'
-                  ? 'bg-white/10 text-[#FFD700] shadow-sm'
-                  : 'text-[var(--text-secondary)] hover:text-white'
-              }`}
-            >
-              <List size={14} />
-              <span className="hidden sm:inline">List</span>
-            </button>
-          </div>
-
-          {/* New Build action button */}
-          <Link
-            to="/armory/planner"
-            className="btn-mho-gold !px-3.5 !py-2 !text-xs"
+    <div data-rarity-theme={theme} className="section-theme flex flex-col gap-6 px-4 pb-4 pt-5 lg:px-6 lg:pb-6 lg:pt-7 max-w-7xl mx-auto w-full">
+      <PageTitlePanel
+        icon="/img/ui/Equipment%20Icon.png"
+        title="Community Builds"
+        hidden={introHidden}
+        onToggleHidden={toggleIntro}
+        description={
+          <>
+            Browse, inspect and get inspired by gear builds shared by fellow hunters. Search by title, author,
+            hunter or weapon, filter by role, weapon type or ink, and open any build to see its equipment, visages
+            and skills. Found something you like? Open it in the Build Planner to make it your own, or
+            <span className="text-mh-slate-200 font-semibold"> create a new build</span> and share it with the community.
+          </>
+        }
+      >
+        {/* View Mode Toggle */}
+        <div className="flex items-center rounded-lg bg-black/30 p-0.5 border border-[var(--border-subtle)]">
+          <button
+            onClick={() => setViewMode('panel')}
+            title="Panel View (Grid Cards)"
+            className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs font-bold transition-all ${
+              viewMode === 'panel'
+                ? 'bg-white/10 text-[var(--theme-accent)] shadow-sm'
+                : 'text-[var(--text-secondary)] hover:text-white'
+            }`}
           >
-            <Plus size={15} />
-            <span>Create Build</span>
-          </Link>
+            <LayoutGrid size={14} />
+            <span className="hidden sm:inline">Panel</span>
+          </button>
+          <button
+            onClick={() => setViewMode('list')}
+            title="List View (Row Icons)"
+            className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs font-bold transition-all ${
+              viewMode === 'list'
+                ? 'bg-white/10 text-[var(--theme-accent)] shadow-sm'
+                : 'text-[var(--text-secondary)] hover:text-white'
+            }`}
+          >
+            <List size={14} />
+            <span className="hidden sm:inline">List</span>
+          </button>
         </div>
-      </div>
+
+        {/* New Build action button */}
+        <Link
+          to="/armory/planner"
+          className="btn-mho-gold !px-3 !py-1.5 !text-xs"
+        >
+          <Plus size={15} />
+          <span>Create Build</span>
+        </Link>
+      </PageTitlePanel>
 
       {/* ── Search & Filter Bar ───────────────────────────────────── */}
       <div className="mho-panel flex flex-col md:flex-row items-stretch md:items-center gap-3 p-3">
@@ -259,7 +271,7 @@ export default function Armory() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by title, author, hunter, or weapon..."
-            className="w-full bg-black/30 border border-[var(--border-subtle)] rounded-lg pl-9 pr-3 py-1.5 text-xs text-white placeholder:text-[var(--text-secondary)] focus:outline-none focus:border-[#FFD700]/70 transition-colors"
+            className="w-full bg-black/30 border border-[var(--border-subtle)] rounded-lg pl-9 pr-3 py-1.5 text-xs text-white placeholder:text-[var(--text-secondary)] focus:outline-none focus:border-[var(--theme-accent)] transition-colors"
           />
         </div>
 
@@ -356,7 +368,7 @@ export default function Armory() {
                 setSelectedWeaponType('all');
                 setSelectedInk('all');
               }}
-              className="text-[#FFD700] hover:underline text-[11px] font-bold"
+              className="text-[var(--theme-accent)] hover:underline text-[11px] font-bold"
             >
               Clear filters
             </button>
@@ -409,7 +421,7 @@ export default function Armory() {
         )
       ) : (
         <div className="mho-panel border-dashed p-12 text-center flex flex-col items-center justify-center gap-3">
-          <Shield size={36} className="text-[#FFD700]/40" />
+          <Shield size={36} className="text-[var(--theme-accent)] opacity-40" />
           <h3 className="font-display font-bold text-lg uppercase tracking-wide text-white">No builds found</h3>
           <p className="text-xs text-[var(--text-secondary)] max-w-sm">
             {searchQuery || roleFilter !== 'all' || selectedWeaponType !== 'all' || selectedInk !== 'all'

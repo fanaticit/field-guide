@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Plus, Search } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '../../lib/supabase';
@@ -27,6 +28,7 @@ const INK_SET_BONUSES: Record<string, { pieces: number; description: string }[]>
 
 export function VisageSelector() {
   const { user } = useAuthStore();
+  const navigate = useNavigate();
   const {
     buddy, coreVisage, visage2, visage3, visage4, visage5,
     setVisage, setSlotInkType, selectedInkTypes, getTotalVisagePoints,
@@ -164,7 +166,7 @@ export function VisageSelector() {
 
             {/* Ink picker popover */}
             {isInkPickOpen && hasMultipleInks && (
-              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 flex flex-col gap-1 p-1.5 bg-mh-slate-900 border border-mh-slate-700 rounded-lg shadow-xl z-40">
+              <div data-dropdown-open="true" className="absolute top-full left-1/2 -translate-x-1/2 mt-1 flex flex-col gap-1 p-1.5 bg-mh-slate-900 border border-mh-slate-700 rounded-lg shadow-xl z-40">
                 {selected.ink_types.map(ink => {
                   const c = getInkConfig(ink);
                   const isActive = chosenInk === ink;
@@ -188,7 +190,7 @@ export function VisageSelector() {
 
         {/* Visage Picker Popover */}
         {openSlot === slot && (
-          <div className="absolute top-[105%] left-1/2 -translate-x-1/2 w-[300px] sm:w-[320px] max-h-[400px] overflow-hidden bg-mh-slate-900 border border-mh-slate-700 rounded-xl shadow-2xl p-2 z-50 flex flex-col gap-2">
+          <div data-dropdown-open="true" className={`absolute top-[105%] ${core ? 'left-0' : 'left-1/2 -translate-x-1/2'} w-[300px] sm:w-[320px] max-h-[400px] overflow-hidden bg-mh-slate-900 border border-mh-slate-700 rounded-xl shadow-2xl p-2 z-50 flex flex-col gap-2`}>
             <div className="flex flex-col gap-2 px-1 border-b border-mh-slate-800 pb-2 mb-1 shrink-0">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
@@ -290,10 +292,18 @@ export function VisageSelector() {
   };
 
   return (
-    <div className="mho-panel p-4 flex flex-col gap-4">
+    <div className="mho-panel has-[[data-dropdown-open]]:relative has-[[data-dropdown-open]]:z-30 p-4 flex flex-col gap-4">
       {/* Header */}
       <div className="flex items-center gap-2 flex-wrap">
         <h2 className="font-display text-base font-bold uppercase tracking-wide text-white mr-auto flex items-center gap-2"><span className="text-[#FFD700] text-xs">❖</span>Visage Cards</h2>
+        <button
+          type="button"
+          onClick={() => navigate('/gallery')}
+          className="btn-mho-panel !px-3 !py-1 !text-[10px] !border-[var(--theme-accent)] !text-[var(--theme-accent)] !bg-[color-mix(in_srgb,var(--theme-accent)_15%,transparent)] hover:!text-white"
+          title="Browse Visage Sets and load one into this build"
+        >
+          Load a Visage Set
+        </button>
         {/* Collection toggle — only shown to logged-in users */}
         {user && (
           <button
@@ -314,19 +324,20 @@ export function VisageSelector() {
         </span>
       </div>
 
-      {/* Flexible row: Core | divider | 4 slots */}
+      {/* Compact row: Core | divider | 4 slots */}
       <div className="flex w-full items-start gap-2 sm:gap-3">
-        <div className="w-[28%] sm:w-[22%] shrink-0">
+        <div className="w-16 shrink-0">
           {renderCard('core', 'Core', coreVisage, true)}
         </div>
-        
-        <div className="w-px self-stretch bg-mh-slate-700/50 hidden sm:block" />
-        
-        <div className="flex-1 grid grid-cols-4 gap-1.5 sm:gap-2">
-          {renderCard(2, 'Slot 2', visage2, false)}
-          {renderCard(3, 'Slot 3', visage3, false)}
-          {renderCard(4, 'Slot 4', visage4, false)}
-          {renderCard(5, 'Slot 5', visage5, false)}
+
+        <div className="w-px self-stretch bg-mh-slate-700/50" />
+
+        <div className="flex gap-2">
+          {([[2, visage2], [3, visage3], [4, visage4], [5, visage5]] as const).map(([slot, card]) => (
+            <div key={slot} className="w-16 shrink-0">
+              {renderCard(slot, `Slot ${slot}`, card, false)}
+            </div>
+          ))}
         </div>
       </div>
 
@@ -337,14 +348,6 @@ export function VisageSelector() {
           <p className="text-[11px] text-amber-300 leading-snug">
             Set effects from Visage with the same name do not stack.
           </p>
-        </div>
-      )}
-
-      {/* Core Visage effect */}
-      {coreVisage && (
-        <div className="flex flex-col gap-1 p-2.5 rounded-lg border border-rarity-5/40 bg-rarity-5/5">
-          <span className="text-[10px] font-bold text-rarity-5 uppercase tracking-wider">Core Effect — {coreVisage.name}</span>
-          <p className="text-xs text-mh-slate-300 leading-snug">{coreVisage.core_effect || 'No core effect listed.'}</p>
         </div>
       )}
 

@@ -27,6 +27,7 @@ import {
   useToggleAdventurerActive,
 } from '../../../hooks/useAdminAdventurers';
 import AdventurerEditModal from './AdventurerEditModal';
+import AdventurerRarityBadge from '../../investigation-notes/AdventurerRarityBadge';
 import { cn } from '../../../lib/utils';
 
 type ViewMode = 'grid' | 'table';
@@ -343,6 +344,7 @@ export default function AdventurerManager() {
                         <RoleIcon size={11} />
                         <span>{roleCfg.label}</span>
                       </span>
+                      <AdventurerRarityBadge rarity={adventurer.rarity} className="!rounded-md !py-0.5 !text-[10px]" />
                     </div>
 
                     <div className="flex items-center gap-2">

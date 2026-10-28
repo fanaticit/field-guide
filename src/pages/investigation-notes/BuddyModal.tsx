@@ -10,6 +10,7 @@ import {
   type BuddyCollectionEntry,
   TIER_CONFIG,
   ROLE_CONFIG,
+  buddyTierBorder,
 } from '../../data/schemas/buddy';
 import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
@@ -87,6 +88,7 @@ export default function BuddyModal({
                 : 'border-blue-500/40 shadow-blue-500/10'
             : 'border-mh-slate-800',
         )}
+        style={buddyTierBorder(buddy.tier)}
       >
         {/* Header Bar */}
         <div className="flex items-center justify-between border-b border-mh-slate-800 bg-mh-slate-950/80 px-6 py-4">

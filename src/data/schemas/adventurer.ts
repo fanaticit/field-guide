@@ -44,7 +44,33 @@ export const ADVENTURER_ROLE_CONFIG: Record<'Assault' | 'Disrupter' | 'Support',
   },
 };
 
+/** Inline border colour for cards/panels; dimmed when `strong` is false. Undefined if no rarity is set. */
+export function adventurerRarityBorder(
+  rarity: AdventurerRarity | null | undefined,
+  strong = true,
+): { borderColor: string; boxShadow?: string } | undefined {
+  if (!rarity) return undefined;
+  const { color } = ADVENTURER_RARITY_CONFIG[rarity];
+  return strong
+    ? { borderColor: color, boxShadow: `0 0 14px color-mix(in srgb, ${color} 25%, transparent)` }
+    : { borderColor: `color-mix(in srgb, ${color} 70%, transparent)` };
+}
+
 export const ADVENTURER_ROLES: ('Assault' | 'Disrupter' | 'Support')[] = ['Assault', 'Disrupter', 'Support'];
+
+/** In-game recruit rarity, using the same keys as visage cards (superior = SSR, epic = SR, rare = R). */
+export type AdventurerRarity = 'rare' | 'epic' | 'superior';
+
+export const ADVENTURER_RARITIES: AdventurerRarity[] = ['superior', 'epic', 'rare'];
+
+export const ADVENTURER_RARITY_CONFIG: Record<
+  AdventurerRarity,
+  { label: string; short: string; color: string; bg: string }
+> = {
+  superior: { label: 'SSR (Gold)',  short: 'SSR',  color: 'var(--rarity-superior)', bg: 'var(--bg-superior)' },
+  epic:     { label: 'SR (Purple)', short: 'SR',   color: 'var(--rarity-epic)',     bg: 'var(--bg-epic)' },
+  rare:     { label: 'Rare (Blue)', short: 'Rare', color: 'var(--rarity-rare)',     bg: 'var(--bg-rare)' },
+};
 
 export interface ElementOption {
   id: string;
@@ -78,6 +104,8 @@ export interface DBAdventurer {
   allowed_weapon_types: string[];
   element_specialization: string | null;
   role: AdventurerRole;
+  /** Null/undefined until an admin assigns one. */
+  rarity?: AdventurerRarity | null;
   description: string | null;
   notes: string | null;
   is_active: boolean;

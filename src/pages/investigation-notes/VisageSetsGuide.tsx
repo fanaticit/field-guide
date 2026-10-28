@@ -46,6 +46,11 @@ import {
   type VisageBuildRow,
 } from '../../lib/visageBuild';
 import { cn } from '../../lib/utils';
+import PageTitlePanel from '../../components/layout/PageTitlePanel';
+import { useUIStore } from '../../store/uiStore';
+import { DEFAULT_SECTION_THEMES } from '../../config/themes';
+
+const INTRO_HIDDEN_KEY = 'visage-collection-intro-hidden';
 
 // Shared pill styles that mirror the home page's gold button / panel look
 const ACTIVE_PILL =
@@ -55,6 +60,15 @@ const FIELD_INPUT =
   'w-full border border-[var(--border-subtle)] bg-black/30 text-xs text-white placeholder-[var(--text-secondary)] outline-none focus:border-[#FFD700]/70';
 
 export default function VisageSetsGuide() {
+  const theme = useUIStore((s) => s.sectionThemes['/gallery'] ?? DEFAULT_SECTION_THEMES['/gallery']);
+  const [introHidden, setIntroHidden] = useState(() => localStorage.getItem(INTRO_HIDDEN_KEY) === '1');
+
+  const toggleIntro = () => {
+    const next = !introHidden;
+    setIntroHidden(next);
+    localStorage.setItem(INTRO_HIDDEN_KEY, next ? '1' : '0');
+  };
+
   const {
     sets,
     dbVisages,
@@ -377,23 +391,36 @@ export default function VisageSetsGuide() {
   }, [sets, getCardCollection]);
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 h-full gap-3 p-2 sm:p-3 text-white overflow-hidden">
-      {/* ── Streamlined Subheader Banner ── */}
-      <div className="mho-panel relative shrink-0 px-3 sm:px-6 py-2.5 shadow-xl z-20">
-        <div className="flex items-center justify-between gap-x-2 gap-y-2 sm:gap-4 flex-wrap sm:flex-nowrap">
-          {/* Left: Clean title (Row 1 Left) */}
-          <div className="order-1 flex items-center gap-2 min-w-0">
-            <span className="text-[#FFD700] text-sm shrink-0">❖</span>
-            <h2 className="font-display text-sm sm:text-base md:text-lg font-bold uppercase tracking-wide text-white whitespace-nowrap">
-              {isBuilder ? 'Building Visage Set' : 'Visage Collection'}
-            </h2>
-            {isLoading && (
-              <Loader2 size={12} className="animate-spin text-mh-gold-400 shrink-0 ml-1" />
-            )}
-          </div>
+    <div data-rarity-theme={theme} className="section-theme flex flex-col flex-1 min-h-0 h-full gap-3 p-2 sm:p-3 text-white overflow-hidden">
+      {/* ── Title panel ── */}
+      <div className="relative z-20 shrink-0">
+        <PageTitlePanel
+          icon="/img/ui/Visage%20Icon.png"
+          title={isBuilder ? 'Building Visage Set' : 'Visage Collection'}
+          hidden={introHidden}
+          onToggleHidden={toggleIntro}
+          description={
+            isBuilder ? (
+              <>
+                Pick {VISAGE_BUILD_SLOTS.length} cards from your album to assemble a Visage set within the
+                {' '}{VISAGE_POINT_CAP}-point cap. Click a card to add or remove it, choose which card is the core,
+                and keep an eye on the point total and the set bonuses that activate as you build. Save it to share it with the community, or send it straight to
+                the Build Planner.
+              </>
+            ) : (
+              <>
+                Your Visage card album. Browse every set and card, click a card to inspect its stats and effect, and
+                mark the ones you own so the Gallery can tell you which community builds you can assemble. The
+                collection status shows your progress by rarity. Switch to
+                <span className="text-mh-slate-200 font-semibold"> Build Set</span> to start putting a set together.
+              </>
+            )
+          }
+        >
+          {isLoading && <Loader2 size={14} className="animate-spin text-[var(--theme-accent)]" />}
 
-          {/* Right: Collected Info (Row 1 Right on mobile, far right on desktop) */}
-          <div className="order-2 sm:order-3 ml-auto sm:ml-0 relative shrink-0">
+          {/* Collected Info */}
+          <div className="relative shrink-0">
             {/* Desktop breakdown (md+) */}
             <div className="hidden md:flex flex-wrap items-center gap-2 bg-black/30 rounded-xl p-1.5 sm:p-2 border border-[var(--border-subtle)]">
               {/* Total Collected */}
@@ -503,8 +530,8 @@ export default function VisageSetsGuide() {
             </div>
           </div>
 
-          {/* Center: Album / Build Set toggle (wrapped to row 2 when contracted/mobile, center on desktop) */}
-          <div className="order-3 sm:order-2 w-full sm:w-auto flex justify-center sm:inline-flex shrink-0">
+          {/* Album / Build Set toggle */}
+          <div className="shrink-0">
             <div className="inline-flex rounded-lg border border-[var(--border-subtle)] bg-black/30 p-0.5 text-xs">
               <button
                 type="button"
@@ -531,7 +558,7 @@ export default function VisageSetsGuide() {
               </button>
             </div>
           </div>
-        </div>
+        </PageTitlePanel>
       </div>
 
       {/* ── Main Book Container ── */}

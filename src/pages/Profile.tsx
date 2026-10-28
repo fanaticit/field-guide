@@ -30,7 +30,7 @@ import {
 } from 'lucide-react';
 import { useAuthStore, selectIsAdmin, selectCanModerate } from '../store/authStore';
 import { useUIStore, type Page } from '../store/uiStore';
-import { SITE_SECTIONS, THEME_REGISTRY, type RarityTheme } from '../config/themes';
+import { DEFAULT_SECTION_THEMES, SITE_SECTIONS, THEME_REGISTRY, type RarityTheme } from '../config/themes';
 import LoginModal from '../components/auth/LoginModal';
 import { cn } from '../lib/utils';
 
@@ -591,9 +591,9 @@ export default function ProfilePage() {
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {SITE_SECTIONS.map((sec) => {
-              const currentTheme = sectionThemes[sec.path] ?? 'standard';
+              const currentTheme = sectionThemes[sec.path] ?? DEFAULT_SECTION_THEMES[sec.path] ?? 'standard';
               const meta = THEME_REGISTRY[currentTheme];
 
               return (
@@ -603,7 +603,14 @@ export default function ProfilePage() {
                 >
                   <div>
                     <div className="flex items-center justify-between gap-2 mb-1">
-                      <span className="font-bold text-sm text-white">{sec.label}</span>
+                      <span className="font-bold text-sm text-white">
+                        {sec.label}
+                        {!sec.live && (
+                          <span className="ml-2 text-[9px] font-mono font-normal uppercase text-[#A3A3A3]/70">
+                            Not applied yet
+                          </span>
+                        )}
+                      </span>
                       <span
                         className="px-2 py-0.5 rounded-full text-[10px] font-bold border"
                         style={{

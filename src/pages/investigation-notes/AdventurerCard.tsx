@@ -16,11 +16,13 @@ import {
 import {
   type DBAdventurer,
   ADVENTURER_ROLE_CONFIG,
+  adventurerRarityBorder,
   ELEMENT_OPTIONS,
 } from '../../data/schemas/adventurer';
 import { WEAPON_TYPES } from '../../data/core/weapon-types';
 import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
+import AdventurerRarityBadge from './AdventurerRarityBadge';
 
 const ROLE_ICONS: Record<string, typeof Swords> = {
   Assault: Swords,
@@ -70,6 +72,7 @@ export default function AdventurerCard({
       role="button"
       tabIndex={0}
       title={`${adventurer.name} — Click to inspect`}
+      style={adventurerRarityBorder(adventurer.rarity, activeRecruited)}
       className={cn(
         'group relative flex flex-col justify-between rounded-2xl border cursor-pointer select-none transition-all duration-200 p-5 shadow-md hover:scale-[1.01] hover:shadow-xl hover:z-10',
         activeRecruited
@@ -117,6 +120,8 @@ export default function AdventurerCard({
           >
             <span>{elemCfg.label}</span>
           </span>
+
+          <AdventurerRarityBadge rarity={adventurer.rarity} />
         </div>
 
         {/* Recruitment & Challenge Buttons */}

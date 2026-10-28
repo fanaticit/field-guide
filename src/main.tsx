@@ -4,6 +4,7 @@ import { RouterProvider } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { router } from './router.tsx'
 import { initAuth } from './store/authStore.ts'
+import { initBuildDraftPersistence } from './store/buildDraftCookie.ts'
 import './index.css'
 
 // Bootstrap Supabase session listener before the React tree renders.
@@ -11,6 +12,9 @@ import './index.css'
 // to auth state changes (sign in, sign out, token refresh) for the
 // app's lifetime.
 initAuth()
+
+// Restore the hunter's unsaved Build Planner selections from their cookie.
+initBuildDraftPersistence()
 
 const queryClient = new QueryClient({
   defaultOptions: {

@@ -43,7 +43,7 @@ export const router = createBrowserRouter([
       { path: 'armory/builds', element: <Navigate to="/armory" replace /> },
       { path: 'armory/planner', element: <BuildPlanner /> },
       { path: 'armory/planner/:buildId', element: <BuildPlanner /> },
-      { path: 'armory/armour', element: <div className="p-6 lg:p-8 min-h-full"><ArmourGuide /></div> },
+      { path: 'armory/armour', element: <div className="px-6 pb-6 pt-3 lg:px-8 lg:pb-8 lg:pt-4 min-h-full"><ArmourGuide /></div> },
 
       // ── 2. Gallery ──
       { path: 'gallery', element: <VisageBuilds /> },
@@ -52,9 +52,9 @@ export const router = createBrowserRouter([
 
       // ── 3. Challenges ──
       { path: 'challenges', element: <HunterChallenges /> },
-      { path: 'challenges/adventurers', element: <div className="p-6 lg:p-8 min-h-full"><AdventurerGuide /></div> },
-      { path: 'challenges/buddies', element: <div className="p-6 lg:p-8 min-h-full"><BuddyGuide /></div> },
-      { path: 'challenges/weapons', element: <div className="p-6 lg:p-8 min-h-full"><WeaponGuide /></div> },
+      { path: 'challenges/adventurers', element: <div className="px-6 pb-6 pt-3 lg:px-8 lg:pb-8 lg:pt-4 min-h-full"><AdventurerGuide /></div> },
+      { path: 'challenges/buddies', element: <div className="px-6 pb-6 pt-3 lg:px-8 lg:pb-8 lg:pt-4 min-h-full"><BuddyGuide /></div> },
+      { path: 'challenges/weapons', element: <div className="px-6 pb-6 pt-3 lg:px-8 lg:pb-8 lg:pt-4 min-h-full"><WeaponGuide /></div> },
 
       // ── User & Admin ──
       { path: 'settings', element: <SettingsPage /> },

@@ -9,6 +9,7 @@ import {
   type BuddyCollectionEntry,
   TIER_CONFIG,
   ROLE_CONFIG,
+  buddyTierBorder,
 } from '../../data/schemas/buddy';
 import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
@@ -74,6 +75,7 @@ export default function BuddyCard({
       role="button"
       tabIndex={0}
       title={`${buddy.name} [${buddy.tier}] — Click to inspect`}
+      style={buddyTierBorder(buddy.tier, isOwned)}
       className={cn(
         'group relative flex flex-col justify-between rounded-2xl border cursor-pointer select-none transition-all duration-200',
         'p-4 shadow-md hover:scale-[1.01] hover:shadow-xl hover:z-10',

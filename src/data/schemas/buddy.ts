@@ -2,6 +2,8 @@
 // Buddy (MHO Companions) Schema & Configuration
 // ─────────────────────────────────────────────────────────────
 
+import { adventurerRarityBorder, type AdventurerRarity } from './adventurer';
+
 export type BuddyTier = 'R' | 'SR' | 'SSR';
 export type BuddyRole = 'Assault' | 'Disruptor' | 'Support';
 
@@ -74,6 +76,16 @@ export const ROLE_CONFIG: Record<BuddyRole, RoleConfig> = {
 };
 
 export const BUDDY_TIERS: BuddyTier[] = ['SSR', 'SR', 'R'];
+
+/** Buddy tiers map onto the shared rarity keys (and colours) used by visages and adventurers. */
+export const BUDDY_TIER_RARITY: Record<BuddyTier, AdventurerRarity> = {
+  SSR: 'superior',
+  SR: 'epic',
+  R: 'rare',
+};
+
+export const buddyTierBorder = (tier: BuddyTier, strong = true) =>
+  adventurerRarityBorder(BUDDY_TIER_RARITY[tier], strong);
 export const BUDDY_ROLES: BuddyRole[] = ['Assault', 'Disruptor', 'Support'];
 
 export interface DBBuddy {

@@ -18,11 +18,13 @@ import {
 import {
   type DBAdventurer,
   ADVENTURER_ROLE_CONFIG,
+  adventurerRarityBorder,
   ELEMENT_OPTIONS,
 } from '../../data/schemas/adventurer';
 import { WEAPON_TYPES } from '../../data/core/weapon-types';
 import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
+import AdventurerRarityBadge from './AdventurerRarityBadge';
 
 const ROLE_ICONS: Record<string, typeof Swords> = {
   Assault: Swords,
@@ -82,6 +84,7 @@ export default function AdventurerModal({
             ? 'border-mh-gold-500/50 shadow-mh-gold-500/10'
             : 'border-mh-slate-800 shadow-black/50',
         )}
+        style={adventurerRarityBorder(adventurer.rarity)}
       >
         {/* Header Bar */}
         <div className="flex items-center justify-between border-b border-mh-slate-800 bg-mh-slate-950/80 px-6 py-4">
@@ -117,6 +120,8 @@ export default function AdventurerModal({
             >
               <span>{elemCfg.label} Affinity</span>
             </span>
+
+            <AdventurerRarityBadge rarity={adventurer.rarity} className="py-1 text-[11px]" />
           </div>
 
           <button

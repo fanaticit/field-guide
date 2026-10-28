@@ -134,7 +134,7 @@ export function HeroBuddySelector() {
 
         {/* Adventurer Dropdown Popover */}
         {showAdvList && (
-          <div className="absolute top-full left-0 mt-1.5 z-50 w-72 sm:w-80 bg-mh-slate-900 border border-mh-slate-700 rounded-xl shadow-2xl p-3 backdrop-blur-md animate-in fade-in zoom-in-95 duration-150">
+          <div data-dropdown-open="true" className="absolute top-full left-0 mt-1.5 z-50 w-72 sm:w-80 bg-mh-slate-900 border border-mh-slate-700 rounded-xl shadow-2xl p-3 backdrop-blur-md animate-in fade-in zoom-in-95 duration-150">
             <div className="flex items-center justify-between pb-2 mb-2 border-b border-mh-slate-800 text-xs font-bold text-mh-slate-300">
               <span>Select Hunter</span>
               <span className="text-[10px] font-normal text-mh-slate-500">{adventurers?.length || 0} available</span>
@@ -226,7 +226,7 @@ export function HeroBuddySelector() {
 
         {/* Weapon Type Dropdown Popover */}
         {showWtList && !isWeaponLocked && (
-          <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 z-50 w-72 sm:w-84 bg-mh-slate-900 border border-mh-slate-700 rounded-xl shadow-2xl p-2.5 backdrop-blur-md animate-in fade-in zoom-in-95 duration-150">
+          <div data-dropdown-open="true" className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 z-50 w-72 sm:w-84 bg-mh-slate-900 border border-mh-slate-700 rounded-xl shadow-2xl p-2.5 backdrop-blur-md animate-in fade-in zoom-in-95 duration-150">
             <div className="flex items-center justify-between pb-2 mb-2 border-b border-mh-slate-800 text-xs font-bold text-mh-slate-300 px-1">
               <span>Select Weapon Type</span>
               <span className="text-[10px] font-normal text-mh-slate-500">{weaponTypes?.length || 0} types</span>
@@ -310,7 +310,7 @@ export function HeroBuddySelector() {
 
         {/* Buddy Dropdown Popover */}
         {showBuddyList && (
-          <div className="absolute top-full right-0 mt-1.5 z-50 w-72 sm:w-84 bg-mh-slate-900 border border-mh-slate-700 rounded-xl shadow-2xl p-3 backdrop-blur-md animate-in fade-in zoom-in-95 duration-150">
+          <div data-dropdown-open="true" className="absolute top-full right-0 mt-1.5 z-50 w-72 sm:w-84 bg-mh-slate-900 border border-mh-slate-700 rounded-xl shadow-2xl p-3 backdrop-blur-md animate-in fade-in zoom-in-95 duration-150">
             <div className="flex items-center justify-between pb-2 mb-2 border-b border-mh-slate-800 text-xs font-bold text-mh-slate-300">
               <span>Select Companion</span>
               <span className="text-[10px] font-normal text-mh-slate-500">{buddies?.length || 0} available</span>

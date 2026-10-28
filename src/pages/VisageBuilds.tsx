@@ -12,7 +12,6 @@ import {
   CheckCircle2,
   AlertCircle,
   ExternalLink,
-  Copy,
   Trash2,
   User,
   Calendar,
@@ -21,6 +20,9 @@ import {
   List,
   Star,
 } from 'lucide-react';
+import PageTitlePanel from '../components/layout/PageTitlePanel';
+import { useUIStore } from '../store/uiStore';
+import { DEFAULT_SECTION_THEMES } from '../config/themes';
 import { useAuthStore } from '../store/authStore';
 import { useVisageSetsData } from '../hooks/useVisageSets';
 import {
@@ -38,6 +40,7 @@ import {
   type VisageBuildRow as TVisageBuildRow,
 } from '../lib/visageBuild';
 import { getInkConfig, INK_OPTIONS } from '../data/schemas/visage';
+import { loadVisageLoadoutIntoPlanner } from '../lib/loadVisageSetIntoPlanner';
 import VisageLoadoutStrip from '../components/visage-builder/VisageLoadoutStrip';
 import VisageBuildRow from '../components/visage-builder/VisageBuildRow';
 import { InkIconComponent } from './investigation-notes/VisageCard';
@@ -63,7 +66,18 @@ function isMobileDevice(): boolean {
   return isMobileUA || isSmallScreen;
 }
 
+const INTRO_HIDDEN_KEY = 'gallery-intro-hidden';
+
 export default function VisageBuilds() {
+  const theme = useUIStore((s) => s.sectionThemes['/gallery'] ?? DEFAULT_SECTION_THEMES['/gallery']);
+  const [introHidden, setIntroHidden] = useState(() => localStorage.getItem(INTRO_HIDDEN_KEY) === '1');
+
+  const toggleIntro = () => {
+    const next = !introHidden;
+    setIntroHidden(next);
+    localStorage.setItem(INTRO_HIDDEN_KEY, next ? '1' : '0');
+  };
+
   const { user } = useAuthStore();
   const navigate = useNavigate();
 
@@ -169,17 +183,8 @@ export default function VisageBuilds() {
     navigate(`/gallery/collection?mode=builder&build=${row.id}`);
   };
 
-  const handleDuplicate = (row: TVisageBuildRow) => {
-    const loadout = rowToLoadout(row, visagesById);
-    builder.load({
-      buildId: null, // Detached as new build
-      authorId: null,
-      title: `${row.title} (Copy)`,
-      description: row.description ?? '',
-      isPublished: true,
-      loadout,
-    });
-    navigate(`/gallery/collection?mode=builder`);
+  const handleLoadToPlanner = (row: TVisageBuildRow) => {
+    navigate(loadVisageLoadoutIntoPlanner(rowToLoadout(row, visagesById)));
   };
 
   const handleDelete = async (row: TVisageBuildRow) => {
@@ -194,45 +199,40 @@ export default function VisageBuilds() {
   const isLoading = isLoadingBuilds || isLoadingVisages;
 
   return (
-    <div className="flex flex-col min-h-full text-white">
-      {/* ── Subheader Banner ── */}
-      <div className="shrink-0 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 lg:pt-8">
-        <div className="mho-panel px-5 sm:px-6 py-4 shadow-xl">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="space-y-1">
-              <h1 className="font-display text-2xl font-bold uppercase tracking-wide text-white flex items-center gap-2.5">
-                <span className="text-[#FFD700] text-lg">❖</span>
-                <span>Visage Sets</span>
-                {isLoading && (
-                  <span className="flex items-center gap-1 text-[var(--text-secondary)] ml-2 text-xs font-sans font-normal normal-case tracking-normal">
-                    <Loader2 size={12} className="animate-spin text-[#FFD700]" />
-                    <span>Loading…</span>
-                  </span>
-                )}
-              </h1>
-              <p className="text-xs text-[var(--text-secondary)]">
-                Browse community-shared Visage builds and instantly see which ones you can assemble with your cards.
-              </p>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => {
-                  builder.reset();
-                  navigate('/gallery/collection?mode=builder');
-                }}
-                className="btn-mho-gold shrink-0 !px-4 !py-2.5 !text-xs"
-              >
-                <Plus size={15} />
-                <span>New Visage Build</span>
-              </button>
-            </div>
-          </div>
-        </div>
+    <div data-rarity-theme={theme} className="section-theme flex flex-col min-h-full text-white">
+      <div className="shrink-0 max-w-7xl w-full mx-auto px-4 pt-5 lg:px-6 lg:pt-7">
+        <PageTitlePanel
+          icon="/img/ui/Visage%20Icon.png"
+          title="Visage Sets"
+          hidden={introHidden}
+          onToggleHidden={toggleIntro}
+          description={
+            <>
+              Browse Visage builds shared by the community and instantly see which ones you can assemble with the
+              cards you own. Search by title, card or author, filter by ink set, and favourite the builds you want
+              to come back to. Each card shows its active set bonuses and core effect, and a missing-card check once
+              you're signed in. Open any set in the Visage builder to tweak it, or
+              <span className="text-mh-slate-200 font-semibold"> send it to the Build Planner</span> to pair it with
+              your armour and weapon.
+            </>
+          }
+        >
+          {isLoading && <Loader2 size={14} className="animate-spin text-[var(--theme-accent)]" />}
+          <button
+            onClick={() => {
+              builder.reset();
+              navigate('/gallery/collection?mode=builder');
+            }}
+            className="btn-mho-gold shrink-0 !px-3 !py-1.5 !text-xs"
+          >
+            <Plus size={15} />
+            <span>New Visage Build</span>
+          </button>
+        </PageTitlePanel>
       </div>
 
       {/* ── Main Content Container ── */}
-      <div className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+      <div className="flex-1 max-w-7xl w-full mx-auto px-4 pb-4 pt-6 lg:px-6 lg:pb-6 space-y-6">
         {/* ── Filter Controls Bar ── */}
         <div className="mho-panel flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 p-3 sm:p-4 shadow-md">
           {/* Search Input */}
@@ -399,7 +399,7 @@ export default function VisageBuilds() {
                 isSignedIn={Boolean(user)}
                 onToggleFavorite={() => toggleFavorite(row.id)}
                 onOpenInBuilder={() => handleOpenInBuilder(row)}
-                onDuplicate={() => handleDuplicate(row)}
+                onLoadToPlanner={() => handleLoadToPlanner(row)}
                 onDelete={() => handleDelete(row)}
               />
             ))}
@@ -528,7 +528,7 @@ export default function VisageBuilds() {
 
                     {/* Core effect summary */}
                     {loadout.core.visage && (
-                      <p className="text-[11px] text-mh-slate-400 line-clamp-1 italic">
+                      <p className="text-[11px] text-mh-slate-400 italic leading-relaxed whitespace-pre-line break-words">
                         <span className="text-rarity-5 font-semibold not-italic">Core: </span>
                         {loadout.core.visage.core_effect || loadout.core.visage.name}
                       </p>
@@ -543,7 +543,7 @@ export default function VisageBuilds() {
                   </div>
 
                   {/* ── Buildability Status & Action Bar ── */}
-                  <div className="pt-2 border-t border-white/10 flex items-center justify-between gap-2">
+                  <div className="pt-2 border-t border-white/10 flex flex-wrap items-center justify-between gap-x-2 gap-y-2">
                     {/* Buildability Badge */}
                     <div>
                       {user ? (
@@ -564,19 +564,21 @@ export default function VisageBuilds() {
                           </div>
                         )
                       ) : (
-                        <span className="text-[10px] text-mh-slate-500">Sign in to check cards</span>
+                        <span className="text-[10px] text-mh-slate-500 whitespace-nowrap">Sign in to check cards</span>
                       )}
                     </div>
 
                     {/* Actions */}
-                    <div className="flex items-center gap-1.5">
+                    <div className="ml-auto flex items-center gap-1.5">
                       <button
-                        onClick={() => handleDuplicate(row)}
-                        title="Copy to Builder"
-                        className="flex h-7 w-7 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-black/30 text-[var(--text-secondary)] hover:text-white hover:border-[#FFD700]/60 transition-colors"
+                        onClick={() => handleLoadToPlanner(row)}
+                        title="Send this set to the Build Planner"
+                        className="flex h-7 items-center gap-1.5 whitespace-nowrap rounded-lg bg-amber-500/20 border border-amber-500/40 px-2.5 text-xs font-bold text-amber-300 hover:bg-amber-500/30 hover:border-amber-400 hover:text-amber-200 transition-all shadow-sm"
                       >
-                        <Copy size={13} />
+                        <Layers size={12} className="text-amber-400" />
+                        <span>Send to Planner</span>
                       </button>
+
 
                       {isAuthor && (
                         <button
@@ -590,7 +592,7 @@ export default function VisageBuilds() {
 
                       <button
                         onClick={() => handleOpenInBuilder(row)}
-                        className="btn-mho-panel !px-2.5 !py-1 !text-xs"
+                        className="btn-mho-panel !h-7 !gap-1.5 !px-2.5 !py-0 !text-xs whitespace-nowrap"
                       >
                         <span>{isAuthor ? 'Edit' : 'Open'}</span>
                         <ExternalLink size={12} className="text-[#FFD700]" />

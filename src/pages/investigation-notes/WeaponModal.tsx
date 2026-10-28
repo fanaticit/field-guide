@@ -7,7 +7,6 @@ import {
   Sword,
   Sparkles,
   CheckCircle2,
-  Plus,
   Shield,
   Flame,
   Droplets,
@@ -15,7 +14,6 @@ import {
   Snowflake,
   Skull,
   Info,
-  Target,
   LogIn,
   Trash2,
   ChevronRight,
@@ -40,6 +38,7 @@ import {
 } from '../../hooks/useHunterChallenges';
 import { useAuthStore } from '../../store/authStore';
 import { cn } from '../../lib/utils';
+import ChallengeIcon from '../../components/ChallengeIcon';
 
 const ELEMENT_ICONS: Record<WeaponElementType, React.ComponentType<{ size?: number; className?: string }>> = {
   raw: Shield,
@@ -329,11 +328,11 @@ export default function WeaponModal({
           {/* Scrollable Content Body */}
           <div className="flex-1 overflow-y-auto p-6 space-y-5">
             {/* ── Personal Hunter's Challenge Card ── */}
-            <div className="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-950/40 via-mh-slate-900 to-mh-slate-950 p-5 space-y-4 shadow-lg">
+            <div className="rounded-2xl border border-yellow-500/30 bg-gradient-to-br from-yellow-500/10 via-mh-slate-900 to-mh-slate-950 p-5 space-y-4 shadow-lg">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Target size={18} className="text-blue-400" />
-                  <h3 className="font-display text-sm font-bold text-blue-200 uppercase tracking-wider">
+                  <ChallengeIcon size={22} />
+                  <h3 className="font-display text-sm font-bold text-yellow-200 uppercase tracking-wider">
                     Hunter's Weapon Challenge
                   </h3>
                 </div>
@@ -346,7 +345,7 @@ export default function WeaponModal({
                         isCompleted
                           ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
                           : isCrafted
-                          ? 'bg-blue-500/20 border-blue-500/40 text-blue-300'
+                          ? 'bg-yellow-500/20 border-yellow-500/40 text-yellow-300'
                           : 'bg-amber-500/20 border-amber-500/40 text-amber-300',
                       )}
                     >
@@ -465,7 +464,7 @@ export default function WeaponModal({
                             className={cn(
                               'rounded-lg px-2.5 py-1 text-xs font-bold font-mono border transition-all',
                               isSelected
-                                ? 'bg-blue-500 text-slate-950 border-blue-400 shadow-md scale-105 font-black'
+                                ? 'bg-yellow-500 text-slate-950 border-yellow-400 shadow-md scale-105 font-black'
                                 : 'bg-mh-slate-800 text-mh-slate-300 border-mh-slate-700 hover:border-mh-slate-500',
                             )}
                           >
@@ -486,7 +485,7 @@ export default function WeaponModal({
                       disabled={addChallenge.isPending}
                       className="flex items-center gap-2 rounded-xl border border-sky-600/50 bg-transparent text-sky-400 hover:bg-sky-900 hover:border-sky-500 hover:text-sky-200 px-4 py-2 text-xs font-bold transition-all shadow-md disabled:opacity-50"
                     >
-                      <Plus size={15} />
+                      <ChallengeIcon size={20} />
                       <span>+ Add to Hunter Challenges</span>
                     </button>
                   </div>
@@ -498,7 +497,7 @@ export default function WeaponModal({
                   <div>
                     <div className="flex items-center justify-between text-xs font-bold mb-2">
                       <span className="text-mh-slate-300">Progression Tier</span>
-                      <span className="text-blue-300 font-mono">
+                      <span className="text-yellow-300 font-mono">
                         {isCrafted ? `R${currentRarity} of R${maxR}` : `Not Crafted (Goal: R${craftR})`}
                       </span>
                     </div>
@@ -510,7 +509,7 @@ export default function WeaponModal({
                           'h-full transition-all duration-500 rounded-full',
                           isCompleted
                             ? 'bg-emerald-500'
-                            : 'bg-gradient-to-r from-blue-500 to-mh-gold-400',
+                            : 'bg-gradient-to-r from-yellow-500 to-mh-gold-400',
                         )}
                         style={{
                           width: `${Math.min(100, Math.round(((currentRarity || 0) / maxR) * 100))}%`,
@@ -531,9 +530,9 @@ export default function WeaponModal({
                             className={cn(
                               'rounded px-2 py-0.5 text-[10px] font-bold font-mono border transition-all',
                               isActive
-                                ? 'bg-blue-500 text-slate-950 border-blue-400'
+                                ? 'bg-yellow-500 text-slate-950 border-yellow-400'
                                 : isReached
-                                ? 'bg-blue-500/20 text-blue-300 border-blue-500/40'
+                                ? 'bg-yellow-500/20 text-yellow-300 border-yellow-500/40'
                                 : 'bg-mh-slate-800 text-mh-slate-400 border-mh-slate-700 hover:border-mh-slate-600',
                             )}
                           >
@@ -564,7 +563,7 @@ export default function WeaponModal({
                         type="button"
                         onClick={handleIncrement}
                         disabled={incrementChallenge.isPending}
-                        className="flex items-center gap-1.5 rounded-xl bg-blue-500 hover:bg-blue-400 text-slate-950 px-4 py-1.5 text-xs font-bold transition-all shadow-md disabled:opacity-50"
+                        className="flex items-center gap-1.5 rounded-xl bg-yellow-500 hover:bg-yellow-400 text-slate-950 px-4 py-1.5 text-xs font-bold transition-all shadow-md disabled:opacity-50"
                       >
                         <ChevronRight size={15} />
                         <span>{isCrafted ? `Upgrade to R${currentRarity + 1}` : `Mark as Crafted (R${craftR})`}</span>

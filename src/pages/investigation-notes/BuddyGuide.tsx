@@ -10,7 +10,6 @@ import {
   Heart,
   LayoutGrid,
   List,
-  Plus,
   Info,
   CheckCircle2,
   Bookmark,
@@ -20,10 +19,12 @@ import {
   type BuddyTier,
   type BuddyRole,
   BUDDY_TIERS,
+  BUDDY_TIER_RARITY,
   BUDDY_ROLES,
   TIER_CONFIG,
   ROLE_CONFIG,
 } from '../../data/schemas/buddy';
+import { ADVENTURER_RARITY_CONFIG } from '../../data/schemas/adventurer';
 import { useAdminBuddies } from '../../hooks/useAdminBuddies';
 import { useUserBuddyCollection } from '../../hooks/useUserBuddyCollection';
 import {
@@ -31,15 +32,18 @@ import {
   useAddBuddyChallenge,
   getBuddyChallenge,
 } from '../../hooks/useHunterChallenges';
-import { useAuthStore, selectIsAdmin } from '../../store/authStore';
-import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../store/authStore';
+import { useUIStore } from '../../store/uiStore';
+import { DEFAULT_SECTION_THEMES } from '../../config/themes';
 import BuddyCard from './BuddyCard';
 import BuddyModal from './BuddyModal';
+import PageTitlePanel from '../../components/layout/PageTitlePanel';
 import LoginModal from '../../components/auth/LoginModal';
 import { cn } from '../../lib/utils';
 
 type ViewMode = 'grid' | 'table';
 type OwnershipFilter = 'all' | 'owned' | 'unowned';
+const INTRO_HIDDEN_KEY = 'buddies-intro-hidden';
 
 const ROLE_ICONS: Record<BuddyRole, React.ComponentType<{ size?: number; className?: string }>> = {
   Assault: Swords,
@@ -63,8 +67,14 @@ export default function BuddyGuide() {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
 
   const { user } = useAuthStore();
-  const isAdmin = useAuthStore(selectIsAdmin);
-  const navigate = useNavigate();
+  const theme = useUIStore((s) => s.sectionThemes['/challenges'] ?? DEFAULT_SECTION_THEMES['/challenges']);
+  const [introHidden, setIntroHidden] = useState(() => localStorage.getItem(INTRO_HIDDEN_KEY) === '1');
+
+  const toggleIntro = () => {
+    const next = !introHidden;
+    setIntroHidden(next);
+    localStorage.setItem(INTRO_HIDDEN_KEY, next ? '1' : '0');
+  };
 
   const { data: buddies = [], isLoading } = useAdminBuddies({ isActive: true });
   const {
@@ -135,94 +145,63 @@ export default function BuddyGuide() {
   // Statistics
   const stats = useMemo(() => {
     const total = buddies.length;
-    const ssrCount = buddies.filter((b) => b.tier === 'SSR').length;
-    const srCount = buddies.filter((b) => b.tier === 'SR').length;
-    const rCount = buddies.filter((b) => b.tier === 'R').length;
-
-    const ownedSSR = buddies.filter((b) => b.tier === 'SSR' && collectionMap[b.id]).length;
-    const ownedSR = buddies.filter((b) => b.tier === 'SR' && collectionMap[b.id]).length;
-    const ownedR = buddies.filter((b) => b.tier === 'R' && collectionMap[b.id]).length;
+    const tiers = {} as Record<BuddyTier, { total: number; owned: number }>;
+    for (const tier of BUDDY_TIERS) {
+      const inTier = buddies.filter((b) => b.tier === tier);
+      tiers[tier] = { total: inTier.length, owned: inTier.filter((b) => collectionMap[b.id]).length };
+    }
 
     const progressPct = total > 0 ? Math.round((totalCollected / total) * 100) : 0;
 
-    return {
-      total,
-      totalCollected,
-      progressPct,
-      ssrCount,
-      srCount,
-      rCount,
-      ownedSSR,
-      ownedSR,
-      ownedR,
-    };
+    return { total, totalCollected, progressPct, tiers };
   }, [buddies, collectionMap, totalCollected]);
 
   return (
-    <div className="flex flex-col gap-6 p-6 lg:p-8">
-      {/* ── Top Header Banner & Collection Stats ── */}
-      <div className="relative overflow-hidden rounded-2xl border border-mh-gold-500/30 bg-gradient-to-r from-[#191e2b] via-[#141824] to-[#191e2b] p-6 shadow-xl">
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-1.5 max-w-xl">
-            <div className="flex items-center gap-2">
-              <span className="rounded bg-mh-gold-500/20 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-mh-gold-400">
-                Monster Hunter Outlanders
-              </span>
-              <span className="text-xs text-mh-slate-400">&bull; Companion Collection</span>
+    <div data-rarity-theme={theme} className="challenges-theme flex flex-col gap-6 px-6 pb-6 pt-2 lg:px-8 lg:pb-8 lg:pt-3 text-white">
+      <PageTitlePanel
+        icon="/img/ui/Buddy%20Icon.png"
+        title="Buddies"
+        hidden={introHidden}
+        onToggleHidden={toggleIntro}
+        description={
+          <>
+            Collect the Aesoland companions that fight alongside you. Each buddy has a rarity, a combat role
+            (Assault, Disruptor or Support) and a core passive, and you can own several copies of the same one.
+            Tap a card to inspect passives and update how many you own, or add the ones you're missing to your
+            Hunter's Challenges <span className="text-mh-slate-200 font-semibold">recruitment list</span> so you
+            know who to aim for.
+          </>
+        }
+      >
+        {/* Collection status */}
+        <div className="flex flex-wrap items-center gap-1.5 bg-black/30 rounded-xl p-1 border border-[var(--border-subtle)]">
+          <div className="px-2.5 py-0.5 text-center border-r border-[var(--border-subtle)]">
+            <div className="flex items-center justify-center gap-1 text-[9px] uppercase font-bold text-[var(--theme-accent)]">
+              <Bookmark size={10} />
+              <span>Collected</span>
             </div>
-            <h2 className="font-display text-2xl font-bold text-mh-slate-100 flex items-center gap-2.5">
-              <Cat className="text-mh-gold-400" size={26} />
-              <span>Buddy Companions</span>
-            </h2>
-            <p className="text-xs text-mh-slate-300 leading-relaxed">
-              Track your Aesoland companions and quantities (1 to 5+). Click any companion to inspect passives, combat roles (Assault, Disruptor, Support), and manage your hunter collection.
-            </p>
-          </div>
-
-          {/* Quick Stats & Collection Counters */}
-          <div className="flex flex-wrap items-center gap-2.5 bg-black/50 rounded-xl p-3 border border-mh-slate-800">
-            {/* Collection Progress */}
-            <div className="px-3 py-1 text-center border-r border-mh-slate-800">
-              <div className="flex items-center justify-center gap-1 text-[10px] uppercase font-bold text-mh-gold-400">
-                <Bookmark size={11} />
-                <span>Collected</span>
-              </div>
-              <div className="flex items-baseline justify-center gap-1 mt-0.5">
-                <span className="font-display text-lg font-black text-white">{stats.totalCollected}</span>
-                <span className="text-xs text-mh-slate-500">/ {stats.total}</span>
-                <span className="text-[10px] font-bold text-emerald-400 ml-0.5">({stats.progressPct}%)</span>
-              </div>
-            </div>
-
-            {/* SSR */}
-            <div className="px-2.5 py-1 text-center">
-              <span className="block text-[10px] font-bold text-amber-400">SSR</span>
-              <div className="flex items-baseline justify-center gap-0.5">
-                <span className="font-display text-base font-bold text-amber-300">{stats.ownedSSR}</span>
-                <span className="text-[10px] text-mh-slate-500">/{stats.ssrCount}</span>
-              </div>
-            </div>
-
-            {/* SR */}
-            <div className="px-2.5 py-1 text-center">
-              <span className="block text-[10px] font-bold text-purple-400">SR</span>
-              <div className="flex items-baseline justify-center gap-0.5">
-                <span className="font-display text-base font-bold text-purple-300">{stats.ownedSR}</span>
-                <span className="text-[10px] text-mh-slate-500">/{stats.srCount}</span>
-              </div>
-            </div>
-
-            {/* R */}
-            <div className="px-2.5 py-1 text-center">
-              <span className="block text-[10px] font-bold text-blue-400">R</span>
-              <div className="flex items-baseline justify-center gap-0.5">
-                <span className="font-display text-base font-bold text-blue-300">{stats.ownedR}</span>
-                <span className="text-[10px] text-mh-slate-500">/{stats.rCount}</span>
-              </div>
+            <div className="flex items-baseline justify-center gap-1">
+              <span className="font-display text-sm font-black text-white">{stats.totalCollected}</span>
+              <span className="text-[10px] text-mh-slate-500">/ {stats.total}</span>
+              <span className="text-[9px] font-bold text-emerald-400 ml-0.5">({stats.progressPct}%)</span>
             </div>
           </div>
+
+          {BUDDY_TIERS.map((tier) => {
+            const cfg = ADVENTURER_RARITY_CONFIG[BUDDY_TIER_RARITY[tier]];
+            const tierStats = stats.tiers[tier];
+            return (
+              <div key={tier} className="px-2 py-0.5 text-center" title={`${tierStats.owned} of ${tierStats.total} ${tier} buddies collected`}>
+                <span className="block text-[9px] font-bold" style={{ color: cfg.color }}>{cfg.label}</span>
+                <div className="flex items-baseline justify-center gap-1">
+                  <span className="font-display text-xs font-bold" style={{ color: cfg.color }}>{tierStats.owned}</span>
+                  <span className="text-[9px] text-mh-slate-500 font-bold">/ {tierStats.total}</span>
+                </div>
+              </div>
+            );
+          })}
         </div>
-      </div>
+      </PageTitlePanel>
 
       {/* ── Filter & Search Toolbar ── */}
       <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
@@ -392,15 +371,6 @@ export default function BuddyGuide() {
               ? 'No buddies matched your active search and filter criteria.'
               : 'No active companions have been registered in the database yet.'}
           </p>
-          {isAdmin && (
-            <button
-              onClick={() => navigate('/admin/buddies')}
-              className="mt-4 flex items-center gap-1.5 rounded-lg bg-mh-gold-500/15 border border-mh-gold-500/30 px-4 py-2 text-xs font-bold text-mh-gold-300 hover:bg-mh-gold-500/25 transition-colors shadow-sm"
-            >
-              <Plus size={14} />
-              Manage Buddies in Admin Panel
-            </button>
-          )}
         </div>
       ) : viewMode === 'grid' ? (
         /* ── Grid View ── */

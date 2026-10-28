@@ -1,12 +1,11 @@
 // ─────────────────────────────────────────────────────────────
 // Layout.tsx — Root layout shell.
-// Renders the persistent chrome (MainNav, Header, Footer) and
+// Renders the persistent chrome (MainNav, Footer) and
 // an <Outlet /> where the active route's page component renders.
 // ─────────────────────────────────────────────────────────────
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useUIStore } from './store/uiStore';
 import MainNav from './components/layout/MainNav';
-import Header from './components/layout/Header';
 import { cn } from './lib/utils';
 
 export default function Layout() {
@@ -43,9 +42,6 @@ export default function Layout() {
           `rarity-theme-${activeTheme}`,
         )}
       >
-        {/* Mobile-portrait-only sticky header */}
-        <Header />
-
         {/* Page content — active route renders here */}
         <main id="page-main" className="flex-1">
           <Outlet />

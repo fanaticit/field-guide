@@ -43,6 +43,15 @@ export const useUIStore = create<UIState>()(
     }),
     {
       name: 'field-guide-ui',
+      version: 1,
+      // v0 stored every section as 'standard' before themes were applied anywhere; pick up the new defaults.
+      migrate: (persisted, version) => {
+        const state = (persisted ?? {}) as Partial<UIState>;
+        if (version < 1) {
+          return { ...state, sectionThemes: DEFAULT_SECTION_THEMES } as UIState;
+        }
+        return state as UIState;
+      },
       partialize: (state) => ({
         defaultGame: state.defaultGame,
         sectionThemes: state.sectionThemes,

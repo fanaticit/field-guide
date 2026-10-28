@@ -16,8 +16,11 @@ import {
   type DBAdventurer,
   type AdventurerUpsert,
   type AdventurerRole,
+  type AdventurerRarity,
   ADVENTURER_ROLE_CONFIG,
   ADVENTURER_ROLES,
+  ADVENTURER_RARITIES,
+  ADVENTURER_RARITY_CONFIG,
   ELEMENT_OPTIONS,
 } from '../../../data/schemas/adventurer';
 import { WEAPON_TYPES } from '../../../data/core/weapon-types';
@@ -242,6 +245,7 @@ export default function AdventurerEditModal({
   const [nameJa, setNameJa] = useState(adventurer?.name_ja ?? '');
   const [isDefault, setIsDefault] = useState(adventurer?.is_default ?? false);
   const [role, setRole] = useState<AdventurerRole>(adventurer?.role ?? 'Assault');
+  const [rarity, setRarity] = useState<AdventurerRarity | null>(adventurer?.rarity ?? null);
   const [element, setElement] = useState(adventurer?.element_specialization ?? 'raw');
   const [weaponType, setWeaponType] = useState(adventurer?.weapon_type ?? 'great_sword');
   const [image, setImage] = useState<string | null>(adventurer?.image ?? null);
@@ -264,6 +268,7 @@ export default function AdventurerEditModal({
       setNameJa(adventurer.name_ja ?? '');
       setIsDefault(adventurer.is_default);
       setRole(adventurer.role);
+      setRarity(adventurer.rarity ?? null);
       setElement(adventurer.element_specialization ?? 'raw');
       setWeaponType(adventurer.weapon_type ?? 'great_sword');
       setImage(adventurer.image ?? null);
@@ -278,6 +283,7 @@ export default function AdventurerEditModal({
       setNameJa('');
       setIsDefault(false);
       setRole('Assault');
+      setRarity(null);
       setElement('raw');
       setWeaponType('great_sword');
       setImage(null);
@@ -330,6 +336,8 @@ export default function AdventurerEditModal({
       notes: notes.trim() || null,
       sort_order: Number(sortOrder) || 0,
       is_active: isActive,
+      // Only sent when changed, so other edits keep working if the rarity column isn't migrated yet
+      ...(rarity !== (adventurer?.rarity ?? null) ? { rarity } : {}),
     };
 
     try {
@@ -512,6 +520,49 @@ export default function AdventurerEditModal({
                       </span>
                     </div>
                     <span className="text-[10px] text-mh-slate-400 line-clamp-1">{cfg.description}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Rarity (SSR / SR / Rare) */}
+          <div>
+            <label className="block text-xs font-bold uppercase tracking-wider text-mh-slate-300 mb-1.5">
+              Rarity
+            </label>
+            <div className="grid grid-cols-4 gap-2">
+              <button
+                type="button"
+                onClick={() => setRarity(null)}
+                className={cn(
+                  'rounded-xl border p-2 text-xs font-bold transition-all',
+                  rarity === null
+                    ? 'border-mh-slate-500 bg-mh-slate-700 text-white ring-1 ring-white/20'
+                    : 'border-mh-slate-750 bg-mh-slate-800/80 text-mh-slate-400 hover:border-mh-slate-600',
+                )}
+              >
+                Not set
+              </button>
+              {ADVENTURER_RARITIES.map((r) => {
+                const cfg = ADVENTURER_RARITY_CONFIG[r];
+                const isSelected = rarity === r;
+                return (
+                  <button
+                    key={r}
+                    type="button"
+                    onClick={() => setRarity(r)}
+                    className={cn(
+                      'rounded-xl border p-2 text-xs font-bold transition-all',
+                      !isSelected && 'border-mh-slate-750 bg-mh-slate-800/80 hover:border-mh-slate-600',
+                      isSelected && 'ring-1 ring-white/20',
+                    )}
+                    style={{
+                      color: cfg.color,
+                      ...(isSelected ? { borderColor: cfg.color, backgroundColor: cfg.bg } : {}),
+                    }}
+                  >
+                    {cfg.label}
                   </button>
                 );
               })}

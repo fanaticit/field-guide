@@ -30,6 +30,8 @@ import {
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
 import { useBuildPlannerStore } from '../../store/buildPlannerStore';
+import { useUIStore } from '../../store/uiStore';
+import { DEFAULT_SECTION_THEMES, themeToNavAccent } from '../../config/themes';
 import { cn } from '../../lib/utils';
 import LoginModal from '../auth/LoginModal';
 
@@ -37,6 +39,8 @@ interface SubNavItem {
   id: string;
   label: string;
   icon: LucideIcon;
+  /** Optional artwork that replaces the Lucide icon */
+  iconSrc?: string;
   active: boolean;
   onSelect: () => void;
 }
@@ -47,7 +51,7 @@ interface NavSection {
   label: string;
   description: string;
   iconSrc: string;
-  // The source artwork has different amounts of transparent padding; zoom normalises the visual size.
+  // Full-bleed artwork is scaled down slightly so it fits inside the round bubble.
   iconZoom: number;
   accent: 'superior' | 'epic' | 'fine' | 'rare';
   active: boolean;
@@ -61,7 +65,8 @@ export default function MainNav() {
   const { pathname } = useLocation();
   const { user, profile, signOut } = useAuthStore();
   const isAdmin = useAuthStore(selectIsAdmin);
-  const resetBuild = useBuildPlannerStore((s) => s.resetBuild);
+  const challengesTheme = useUIStore((s) => s.sectionThemes['/challenges'] ?? DEFAULT_SECTION_THEMES['/challenges']);
+  const armoryTheme = useUIStore((s) => s.sectionThemes['/armory'] ?? DEFAULT_SECTION_THEMES['/armory']);
 
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [openId, setOpenId] = useState<string | null>(null);
@@ -105,8 +110,8 @@ export default function MainNav() {
       label: 'Armory',
       description: 'Builds, Planner & Armour',
       iconSrc: '/img/ui/Equipment%20Icon.png',
-      iconZoom: 2.1,
-      accent: 'epic',
+      iconZoom: 0.85,
+      accent: themeToNavAccent(armoryTheme),
       active: pathname.startsWith('/armory') || pathname.startsWith('/build-planner'),
       subItems: [
         { id: 'armory-builds', label: 'Community Builds', icon: LayoutGrid, active: pathname === '/armory' || pathname === '/armory/builds', onSelect: go('/armory') },
@@ -116,11 +121,12 @@ export default function MainNav() {
           icon: Sword,
           active: pathname.startsWith('/armory/planner') || pathname.startsWith('/build-planner'),
           onSelect: () => {
-            resetBuild();
-            navigate('/armory/planner');
+            // Keep the hunter's in-progress build; "Clear / Start New" is the explicit reset
+            const { buildId } = useBuildPlannerStore.getState();
+            navigate(buildId ? `/armory/planner/${buildId}` : '/armory/planner');
           },
         },
-        { id: 'armory-armour', label: 'Armour', icon: Shield, active: pathname.startsWith('/armory/armour'), onSelect: go('/armory/armour') },
+        { id: 'armory-armour', label: 'Armour', icon: Shield, iconSrc: '/img/ui/Equipment%20Icon.png', active: pathname.startsWith('/armory/armour'), onSelect: go('/armory/armour') },
       ],
     },
     {
@@ -129,7 +135,7 @@ export default function MainNav() {
       label: 'Gallery',
       description: 'Visage Sets & Collection',
       iconSrc: '/img/ui/Visage%20Icon.png',
-      iconZoom: 2.1,
+      iconZoom: 0.85,
       accent: 'fine',
       active: pathname.startsWith('/gallery'),
       subItems: [
@@ -144,13 +150,13 @@ export default function MainNav() {
       description: 'Hunter Goals & Records',
       iconSrc: '/img/ui/Challenge%20Icon.png',
       iconZoom: 1,
-      accent: 'rare',
+      accent: themeToNavAccent(challengesTheme),
       active: pathname.startsWith('/challenges'),
       subItems: [
         { id: 'challenges-my', label: 'My Challenges', icon: Target, active: pathname === '/challenges', onSelect: go('/challenges') },
-        { id: 'challenges-adventurers', label: 'Adventurer', icon: UserCheck, active: pathname.startsWith('/challenges/adventurers'), onSelect: go('/challenges/adventurers') },
-        { id: 'challenges-buddies', label: 'Buddies', icon: Cat, active: pathname.startsWith('/challenges/buddies'), onSelect: go('/challenges/buddies') },
-        { id: 'challenges-weapons', label: 'Weapons', icon: Sword, active: pathname.startsWith('/challenges/weapons'), onSelect: go('/challenges/weapons') },
+        { id: 'challenges-adventurers', label: 'Adventurer', icon: UserCheck, iconSrc: '/img/ui/Adventurer%20Icon.png', active: pathname.startsWith('/challenges/adventurers'), onSelect: go('/challenges/adventurers') },
+        { id: 'challenges-buddies', label: 'Buddies', icon: Cat, iconSrc: '/img/ui/Buddy%20Icon.png', active: pathname.startsWith('/challenges/buddies'), onSelect: go('/challenges/buddies') },
+        { id: 'challenges-weapons', label: 'Weapons', icon: Sword, iconSrc: '/img/ui/Weapons%20Icon.png', active: pathname.startsWith('/challenges/weapons'), onSelect: go('/challenges/weapons') },
       ],
     },
   ];
@@ -341,7 +347,11 @@ export default function MainNav() {
                     hoverSubId === sub.id && '!border-[var(--nav-accent)] !bg-white/10 !text-white',
                   )}
                 >
-                  <SubIcon size={16} className="shrink-0" />
+                  {sub.iconSrc ? (
+                    <img src={sub.iconSrc} alt="" draggable={false} className="h-5 w-5 shrink-0 object-contain" />
+                  ) : (
+                    <SubIcon size={16} className="shrink-0" />
+                  )}
                   <span className="truncate">{sub.label}</span>
                 </button>
               );

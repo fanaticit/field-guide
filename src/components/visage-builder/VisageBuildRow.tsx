@@ -3,13 +3,13 @@
 // ─────────────────────────────────────────────────────────────
 import {
   Star,
-  Copy,
   Trash2,
   ExternalLink,
   CheckCircle2,
   AlertCircle,
   User,
   Calendar,
+  Layers,
 } from 'lucide-react';
 import {
   type VisageBuildRow as TVisageBuildRow,
@@ -35,7 +35,7 @@ interface Props {
   isSignedIn: boolean;
   onToggleFavorite: () => void;
   onOpenInBuilder: () => void;
-  onDuplicate: () => void;
+  onLoadToPlanner: () => void;
   onDelete: () => void;
 }
 
@@ -51,7 +51,7 @@ export default function VisageBuildRow({
   isSignedIn,
   onToggleFavorite,
   onOpenInBuilder,
-  onDuplicate,
+  onLoadToPlanner,
   onDelete,
 }: Props) {
   const dateStr = new Date(row.created_at).toLocaleDateString(undefined, {
@@ -254,12 +254,14 @@ export default function VisageBuildRow({
         {/* Action Buttons */}
         <div className="flex items-center gap-1.5">
           <button
-            onClick={onDuplicate}
-            title="Copy to Builder"
-            className="flex h-7 w-7 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-black/30 text-[var(--text-secondary)] hover:text-white hover:border-[#FFD700]/60 transition-colors"
+            onClick={onLoadToPlanner}
+            title="Send this set to the Build Planner"
+            className="flex h-7 items-center gap-1.5 whitespace-nowrap rounded-lg bg-amber-500/20 border border-amber-500/40 px-2.5 text-xs font-bold text-amber-300 hover:bg-amber-500/30 hover:border-amber-400 hover:text-amber-200 transition-all shadow-sm"
           >
-            <Copy size={13} />
+            <Layers size={12} className="text-amber-400" />
+            <span>Send to Planner</span>
           </button>
+
 
           {isAuthor && (
             <button

@@ -9,7 +9,7 @@ import {
   LayoutGrid,
   List,
   Shield,
-  Plus,
+  Bookmark,
   Flame,
   Droplets,
   Zap,
@@ -39,6 +39,10 @@ import {
   getWeaponChallenge,
 } from '../../hooks/useHunterChallenges';
 import { useAuthStore } from '../../store/authStore';
+import { useUIStore } from '../../store/uiStore';
+import { DEFAULT_SECTION_THEMES } from '../../config/themes';
+import ChallengeIcon from '../../components/ChallengeIcon';
+import PageTitlePanel from '../../components/layout/PageTitlePanel';
 import { useNavigate } from 'react-router-dom';
 import WeaponCard from './WeaponCard';
 import WeaponModal from './WeaponModal';
@@ -48,6 +52,7 @@ import { cn } from '../../lib/utils';
 type ChallengeFilter = 'all' | 'tracked' | 'crafting' | 'upgrading' | 'mastered';
 type ViewMode = 'grid' | 'table';
 type SortOrder = 'rarity-desc' | 'rarity-asc' | 'name-asc' | 'default';
+const INTRO_HIDDEN_KEY = 'weapons-intro-hidden';
 
 const ELEMENT_ICONS: Record<WeaponElementType, React.ComponentType<{ size?: number; className?: string }>> = {
   raw: Shield,
@@ -64,7 +69,14 @@ const ELEMENT_ICONS: Record<WeaponElementType, React.ComponentType<{ size?: numb
 
 export default function WeaponGuide() {
   const { user } = useAuthStore();
+  const theme = useUIStore((s) => s.sectionThemes['/challenges'] ?? DEFAULT_SECTION_THEMES['/challenges']);
+  const [introHidden, setIntroHidden] = useState(() => localStorage.getItem(INTRO_HIDDEN_KEY) === '1');
 
+  const toggleIntro = () => {
+    const next = !introHidden;
+    setIntroHidden(next);
+    localStorage.setItem(INTRO_HIDDEN_KEY, next ? '1' : '0');
+  };
   const [search, setSearch] = useState('');
   const [filterChallenge, setFilterChallenge] = useState<ChallengeFilter>('all');
   const [filterWeaponType, setFilterWeaponType] = useState<string>('all');
@@ -186,74 +198,64 @@ export default function WeaponGuide() {
     return list;
   }, [weapons, search, filterWeaponType, filterElement, filterSource, filterChallenge, sortOrder, challenges, monstersMap, skillsMap]);
 
-  // Challenge metrics
-  const activeChallenges = challenges.filter(
-    (c) => c.challenge_type === 'weapon' && (c.status === 'crafting' || c.status === 'upgrading'),
-  );
-  const completedChallenges = challenges.filter(
-    (c) => c.challenge_type === 'weapon' && c.status === 'completed',
-  );
+  // Collection status (a weapon counts as collected once its challenge is mastered at R16)
+  const stats = useMemo(() => {
+    const weaponChallenges = challenges.filter((c) => c.challenge_type === 'weapon' && c.status !== 'abandoned');
+    const mastered = weaponChallenges.filter((c) => c.status === 'completed').length;
+    const total = weapons.length;
+    return {
+      total,
+      mastered,
+      masteredPct: total > 0 ? Math.round((mastered / total) * 100) : 0,
+      tracked: weaponChallenges.length,
+      crafting: weaponChallenges.filter((c) => c.status === 'crafting').length,
+      upgrading: weaponChallenges.filter((c) => c.status === 'upgrading').length,
+    };
+  }, [challenges, weapons]);
 
   return (
-    <div className="p-6 lg:p-8 space-y-6 max-w-7xl mx-auto">
-      {/* ── Header & Personal Challenge Tracker Stats ── */}
-      <div className="relative overflow-hidden rounded-3xl border border-mh-slate-700 bg-gradient-to-r from-mh-slate-900 via-mh-slate-850 to-mh-slate-900 p-6 sm:p-8 shadow-2xl">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-          <div className="flex items-start gap-4">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-mh-gold-500/20 to-mh-gold-700/10 text-mh-gold-400 ring-1 ring-mh-gold-500/40 shadow-inner">
-              <Sword size={28} />
+    <div data-rarity-theme={theme} className="challenges-theme px-6 pb-6 pt-2 lg:px-8 lg:pb-8 lg:pt-3 space-y-6 max-w-7xl mx-auto text-white">
+      <PageTitlePanel
+        icon="/img/ui/Weapons%20Icon.png"
+        title="Weapons Collection"
+        hidden={introHidden}
+        onToggleHidden={toggleIntro}
+        description={
+          <>
+            Browse weapons across all 14 Monster Hunter weapon types, with their special skills, elemental
+            affinities and attached skills. Add a weapon to your Hunter's Challenges to start tracking it from the
+            rarity you craft it at up to Rarity 16. The monsters you need to hunt for it then appear in your
+            <span className="text-mh-slate-200 font-semibold"> Hunting Targets</span>, and the Mastered count
+            fills in as you finish each weapon.
+          </>
+        }
+      >
+        {/* Collection status */}
+        <div className="flex flex-wrap items-center gap-1.5 bg-black/30 rounded-xl p-1 border border-[var(--border-subtle)]">
+          <div className="px-2.5 py-0.5 text-center border-r border-[var(--border-subtle)]">
+            <div className="flex items-center justify-center gap-1 text-[9px] uppercase font-bold text-[var(--theme-accent)]">
+              <Bookmark size={10} />
+              <span>Mastered (R16)</span>
             </div>
-            <div>
-              <div className="flex items-center gap-2.5">
-                <h1 className="font-display text-2xl sm:text-3xl font-bold text-mh-slate-100">
-                  Weapon Armory
-                </h1>
-                <span className="rounded-full bg-blue-500/10 px-3 py-0.5 text-xs font-bold text-blue-400 border border-blue-500/25">
-                  Hunter's Challenge Forge
-                </span>
-              </div>
-              <p className="mt-1 text-xs sm:text-sm text-mh-slate-400 max-w-xl leading-relaxed">
-                Explore weapons across all 14 Monster Hunter weapon types, special finisher skills, elemental affinities, and challenge yourself to forge and upgrade to Rarity 16.
-              </p>
+            <div className="flex items-baseline justify-center gap-1">
+              <span className="font-display text-sm font-black text-white">{stats.mastered}</span>
+              <span className="text-[10px] text-mh-slate-500">/ {stats.total}</span>
+              <span className="text-[9px] font-bold text-emerald-400 ml-0.5">({stats.masteredPct}%)</span>
             </div>
           </div>
+
+          {[
+            { label: 'Tracked', value: stats.tracked, color: 'var(--theme-accent)' },
+            { label: 'Crafting', value: stats.crafting, color: 'var(--rarity-superior)' },
+            { label: 'Upgrading', value: stats.upgrading, color: 'var(--rarity-rare)' },
+          ].map((cell) => (
+            <div key={cell.label} className="px-2 py-0.5 text-center">
+              <span className="block text-[9px] font-bold" style={{ color: cell.color }}>{cell.label}</span>
+              <span className="font-display text-xs font-bold" style={{ color: cell.color }}>{cell.value}</span>
+            </div>
+          ))}
         </div>
-
-        {/* Hunter's Challenges Summary Stats Row */}
-        <div className="mt-6 pt-6 border-t border-mh-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {/* Active Goals Card */}
-          <div className="rounded-2xl border border-mh-slate-750 bg-mh-slate-950/70 p-4 space-y-1">
-            <div className="flex items-center justify-between text-xs font-bold">
-              <span className="text-mh-slate-300">Active Forge Goals</span>
-              <span className="text-blue-400 font-mono">{activeChallenges.length} Active</span>
-            </div>
-            <p className="text-[11px] text-mh-slate-400">
-              Weapons currently tracked for forging or upgrading to R16.
-            </p>
-          </div>
-
-          {/* Mastered R16 Card */}
-          <div className="rounded-2xl border border-mh-slate-750 bg-mh-slate-950/70 p-4 space-y-1">
-            <div className="flex items-center justify-between text-xs font-bold">
-              <span className="text-mh-slate-300">Mastered (R16)</span>
-              <span className="text-emerald-400 font-mono">{completedChallenges.length} Mastered</span>
-            </div>
-            <p className="text-[11px] text-mh-slate-400">
-              Weapons fully forged and upgraded to maximum rank 16.
-            </p>
-          </div>
-
-          {/* Quick Tip */}
-          <div className="rounded-2xl border border-mh-slate-750 bg-mh-slate-950/70 p-4 flex items-center gap-3">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-mh-slate-800 text-mh-gold-400">
-              <Sparkles size={18} />
-            </div>
-            <p className="text-xs text-mh-slate-400 leading-relaxed">
-              <strong className="text-mh-slate-200">Hunter's Field Note:</strong> Add weapons to your challenges to set starting rarities and track monster hunting targets.
-            </p>
-          </div>
-        </div>
-      </div>
+      </PageTitlePanel>
 
       {/* ── Filters & Search Toolbar ── */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-mh-slate-800 pb-3">
@@ -298,7 +300,7 @@ export default function WeaponGuide() {
                 className={cn(
                   'rounded-lg px-2.5 py-1 text-xs font-semibold transition-all',
                   filterChallenge === opt.id
-                    ? 'bg-blue-500 text-slate-950 font-bold shadow-sm'
+                    ? 'bg-yellow-500 text-slate-950 font-bold shadow-sm'
                     : 'text-mh-slate-400 hover:text-white',
                 )}
               >
@@ -604,7 +606,7 @@ export default function WeaponGuide() {
                           }}
                           className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold border border-sky-600/50 bg-transparent text-sky-400 hover:bg-sky-900 hover:border-sky-500 hover:text-sky-200 transition-all shadow-sm"
                         >
-                          <Plus size={11} />
+                          <ChallengeIcon size={14} />
                           <span>+ Challenge</span>
                         </button>
                       )}
