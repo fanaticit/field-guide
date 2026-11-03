@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import {
   type DBAdventurer,
+  ADVENTURER_MAX_INSIGHT,
   ADVENTURER_ROLE_CONFIG,
   adventurerRarityBorder,
   ELEMENT_OPTIONS,
@@ -25,6 +26,7 @@ import { WEAPON_TYPES } from '../../data/core/weapon-types';
 import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
 import AdventurerRarityBadge from './AdventurerRarityBadge';
+import { ChallengeGoalMenu, InsightPill, InsightRow } from './AdventurerInsight';
 
 const ROLE_ICONS: Record<string, typeof Swords> = {
   Assault: Swords,
@@ -38,9 +40,12 @@ interface AdventurerModalProps {
   open: boolean;
   onClose: () => void;
   isRecruited?: boolean;
+  /** 1-7 when recruited, 0 otherwise. */
+  insightLevel?: number;
   challenge?: HunterChallenge;
   onToggleRecruit?: () => void;
-  onAddChallenge?: (adventurer: DBAdventurer) => void;
+  onSetInsight?: (level: number) => void;
+  onAddChallenge?: (adventurer: DBAdventurer, targetInsight: number) => void;
   onSelectWeapon?: (weapon: string) => void;
 }
 
@@ -49,13 +54,16 @@ export default function AdventurerModal({
   open,
   onClose,
   isRecruited = false,
+  insightLevel = 0,
   challenge,
   onToggleRecruit,
+  onSetInsight,
   onAddChallenge,
   onSelectWeapon,
 }: AdventurerModalProps) {
   const navigate = useNavigate();
   const [imageError, setImageError] = useState(false);
+  const [backgroundError, setBackgroundError] = useState(false);
 
   if (!open || !adventurer) return null;
 
@@ -64,6 +72,11 @@ export default function AdventurerModal({
   const RoleIcon = ROLE_ICONS[roleKey] || Swords;
   const elemCfg = ELEMENT_OPTIONS[adventurer.element_specialization || 'raw'] || ELEMENT_OPTIONS.raw;
   const activeWeaponObj = WEAPON_TYPES.find((w) => w.id === adventurer.weapon_type);
+  const currentInsight = isRecruited ? Math.max(1, insightLevel) : 0;
+  const hasOpenChallenge = Boolean(
+    challenge && challenge.status !== 'abandoned' && challenge.status !== 'completed',
+  );
+  const showBackground = Boolean(adventurer.background_image) && !backgroundError;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -86,8 +99,21 @@ export default function AdventurerModal({
         )}
         style={adventurerRarityBorder(adventurer.rarity)}
       >
+        {/* Panel background art, dimmed so text stays readable */}
+        {showBackground && (
+          <div className="pointer-events-none absolute inset-0">
+            <img
+              src={adventurer.background_image!}
+              alt=""
+              onError={() => setBackgroundError(true)}
+              className="h-full w-full object-cover opacity-50"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#0f121a]/60 via-[#0f121a]/80 to-[#0f121a]/95" />
+          </div>
+        )}
+
         {/* Header Bar */}
-        <div className="flex items-center justify-between border-b border-mh-slate-800 bg-mh-slate-950/80 px-6 py-4">
+        <div className="relative flex items-center justify-between border-b border-mh-slate-800 bg-mh-slate-950/80 px-6 py-4">
           <div className="flex items-center gap-2 flex-wrap">
             {adventurer.is_default && (
               <span className="flex items-center gap-1 rounded-lg bg-mh-gold-500 px-2.5 py-1 text-xs font-black text-mh-slate-950 shadow-sm">
@@ -133,7 +159,7 @@ export default function AdventurerModal({
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 space-y-5 max-h-[80vh] overflow-y-auto">
+        <div className="relative p-6 space-y-5 max-h-[80vh] overflow-y-auto">
           {/* Identity & Portrait (No extra border, large & visible) */}
           <div className="flex items-center gap-5">
             <div className="relative flex h-28 w-28 sm:h-32 sm:w-32 shrink-0 items-center justify-center">
@@ -201,25 +227,25 @@ export default function AdventurerModal({
                 </p>
 
                 <div className="flex items-center gap-2 shrink-0">
-                  {!isRecruited && (
-                    challenge && challenge.status !== 'abandoned' && challenge.status !== 'completed' ? (
-                      <button
-                        type="button"
-                        onClick={() => navigate('/challenges')}
-                        className="flex items-center gap-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25 px-3 py-1.5 text-xs font-bold transition-all shadow-sm"
-                      >
-                        <CheckCircle2 size={13} className="text-emerald-400" />
-                        <span>Go to Challenge ➔</span>
-                      </button>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => onAddChallenge?.(adventurer)}
-                        className="flex items-center gap-1.5 rounded-lg border border-sky-600/50 bg-transparent text-sky-400 hover:bg-sky-900 hover:border-sky-500 hover:text-sky-200 px-3 py-1.5 text-xs font-bold transition-all shadow-sm"
+                  {hasOpenChallenge ? (
+                    <button
+                      type="button"
+                      onClick={() => navigate('/challenges')}
+                      className="flex items-center gap-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25 px-3 py-1.5 text-xs font-bold transition-all shadow-sm"
+                    >
+                      <CheckCircle2 size={13} className="text-emerald-400" />
+                      <span>Go to Challenge ➔</span>
+                    </button>
+                  ) : (
+                    currentInsight < ADVENTURER_MAX_INSIGHT && (
+                      <ChallengeGoalMenu
+                        currentLevel={currentInsight}
+                        onSelect={(target) => onAddChallenge?.(adventurer, target)}
+                        className="rounded-lg px-3 py-1.5 text-xs"
                       >
                         <Target size={13} />
                         <span>+ Challenge</span>
-                      </button>
+                      </ChallengeGoalMenu>
                     )
                   )}
 
@@ -246,6 +272,18 @@ export default function AdventurerModal({
                     )}
                   </button>
                 </div>
+              </div>
+            )}
+
+            {isRecruited && (
+              <div className="space-y-2 pt-2 border-t border-mh-slate-800">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-wider text-mh-slate-300">
+                    Insight Level
+                  </span>
+                  <InsightPill level={currentInsight} />
+                </div>
+                <InsightRow level={currentInsight} onChange={(lvl) => onSetInsight?.(lvl)} />
               </div>
             )}
           </div>
@@ -362,7 +400,7 @@ export default function AdventurerModal({
         </div>
 
         {/* Footer */}
-        <div className="border-t border-mh-slate-800 bg-mh-slate-950/90 px-6 py-3 flex items-center justify-between text-xs text-mh-slate-500">
+        <div className="relative border-t border-mh-slate-800 bg-mh-slate-950/90 px-6 py-3 flex items-center justify-between text-xs text-mh-slate-500">
           <span>Monster Hunter Outlanders Adventurer</span>
           <button
             onClick={onClose}

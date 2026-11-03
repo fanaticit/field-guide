@@ -11,10 +11,10 @@ import {
   Heart,
   Check,
   Plus,
-  Target,
 } from 'lucide-react';
 import {
   type DBAdventurer,
+  ADVENTURER_MAX_INSIGHT,
   ADVENTURER_ROLE_CONFIG,
   adventurerRarityBorder,
   ELEMENT_OPTIONS,
@@ -23,6 +23,7 @@ import { WEAPON_TYPES } from '../../data/core/weapon-types';
 import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
 import AdventurerRarityBadge from './AdventurerRarityBadge';
+import { ChallengeGoalMenu, InsightPicker } from './AdventurerInsight';
 
 const ROLE_ICONS: Record<string, typeof Swords> = {
   Assault: Swords,
@@ -34,9 +35,12 @@ const ROLE_ICONS: Record<string, typeof Swords> = {
 interface AdventurerCardProps {
   adventurer: DBAdventurer;
   isRecruited?: boolean;
+  /** 1-7 when recruited, 0 otherwise. */
+  insightLevel?: number;
   challenge?: HunterChallenge;
   onToggleRecruit?: () => void;
-  onAddChallenge?: (adventurer: DBAdventurer) => void;
+  onSetInsight?: (level: number) => void;
+  onAddChallenge?: (adventurer: DBAdventurer, targetInsight: number) => void;
   onClick?: () => void;
   onSelectWeapon?: (weaponType: string) => void;
 }
@@ -44,12 +48,15 @@ interface AdventurerCardProps {
 export default function AdventurerCard({
   adventurer,
   isRecruited = false,
+  insightLevel = 0,
   challenge,
   onToggleRecruit,
+  onSetInsight,
   onAddChallenge,
   onClick,
 }: AdventurerCardProps) {
   const [imageError, setImageError] = useState(false);
+  const [backgroundError, setBackgroundError] = useState(false);
 
   const isPlayerCharacter = adventurer.is_default;
   const navigate = useNavigate();
@@ -57,6 +64,8 @@ export default function AdventurerCard({
   const activeRecruited = isPlayerCharacter || isRecruited;
   const isTracked = Boolean(challenge && challenge.status !== 'abandoned');
   const isChallengeDone = challenge?.status === 'completed';
+  const currentInsight = activeRecruited ? Math.max(1, insightLevel) : 0;
+  const showBackground = Boolean(adventurer.background_image) && !backgroundError;
 
   const roleKey = (adventurer.role === 'Disruptor' ? 'Disrupter' : adventurer.role) as 'Assault' | 'Disrupter' | 'Support';
   const roleCfg = ADVENTURER_ROLE_CONFIG[roleKey] || ADVENTURER_ROLE_CONFIG.Assault;
@@ -84,11 +93,27 @@ export default function AdventurerCard({
                 ? 'border-purple-500/50 bg-gradient-to-b from-[#1b1424] via-[#161926] to-[#121520] hover:border-purple-400 shadow-purple-500/10'
                 : 'border-emerald-500/50 bg-gradient-to-b from-[#13201a] via-[#161926] to-[#121520] hover:border-emerald-400 shadow-emerald-500/10'
           : 'border-mh-slate-800 bg-[#131622]/90 hover:border-mh-slate-700',
-        isTracked && !isChallengeDone && !activeRecruited && 'ring-2 ring-blue-400/80 ring-offset-1 ring-offset-black',
+        isTracked && !isChallengeDone && 'ring-2 ring-blue-400/80 ring-offset-1 ring-offset-black',
       )}
     >
+      {/* Panel background art, dimmed so text stays readable */}
+      {showBackground && (
+        <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
+          <img
+            src={adventurer.background_image!}
+            alt=""
+            onError={() => setBackgroundError(true)}
+            className={cn(
+              'h-full w-full object-cover transition-all duration-300 group-hover:scale-105',
+              activeRecruited ? 'opacity-60' : 'opacity-30 grayscale',
+            )}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0b0d14] via-[#0b0d14]/60 to-[#0b0d14]/30" />
+        </div>
+      )}
+
       {/* Top Badges & Recruitment / Challenge Status */}
-      <div className="flex items-center justify-between gap-2 mb-3">
+      <div className="relative flex items-center justify-between gap-2 mb-3">
         <div className="flex items-center gap-1.5 flex-wrap">
           {isPlayerCharacter ? (
             <span className="flex items-center gap-1 rounded-lg bg-mh-gold-500 px-2.5 py-0.5 text-xs font-black text-mh-slate-950 shadow-sm">
@@ -135,33 +160,26 @@ export default function AdventurerCard({
             </span>
           ) : (
             <>
-              {/* Challenge Button if not already recruited */}
-              {!activeRecruited && (
-                isTracked && !isChallengeDone ? (
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate('/challenges');
-                    }}
-                    className="flex h-6 items-center gap-1 rounded-full border border-emerald-500/50 bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25 px-2 text-[10px] font-bold shadow-xs transition-all"
-                  >
-                    <Check size={11} className="text-emerald-400" />
-                    <span>Go to Challenge ➔</span>
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onAddChallenge?.(adventurer);
-                    }}
-                    title="Add recruitment challenge to Hunter's Challenges"
-                    className="flex h-6 items-center gap-1 rounded-full px-2 text-[10px] font-bold border border-sky-600/50 bg-transparent text-sky-400 hover:bg-sky-900 hover:border-sky-500 hover:text-sky-200 shadow-xs transition-all hover:scale-105"
-                  >
-                    <Target size={11} />
-                    <span>+ Challenge</span>
-                  </button>
+              {/* Challenge: go to the open one, or pick a recruit / insight goal */}
+              {isTracked && !isChallengeDone ? (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate('/challenges');
+                  }}
+                  className="flex h-6 items-center gap-1 rounded-full border border-emerald-500/50 bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25 px-2 text-[10px] font-bold shadow-xs transition-all"
+                >
+                  <Check size={11} className="text-emerald-400" />
+                  <span>Go to Challenge ➔</span>
+                </button>
+              ) : (
+                currentInsight < ADVENTURER_MAX_INSIGHT && (
+                  <ChallengeGoalMenu
+                    currentLevel={currentInsight}
+                    onSelect={(target) => onAddChallenge?.(adventurer, target)}
+                    className="h-6 rounded-full px-2 text-[10px] hover:scale-105"
+                  />
                 )
               )}
 
@@ -199,7 +217,7 @@ export default function AdventurerCard({
       </div>
 
       {/* Center: Large Portrait & Name (No extra border on image, more visible) */}
-      <div className="flex items-center gap-4 my-2">
+      <div className="relative flex items-center gap-4 my-2">
         <div className="relative h-24 w-24 sm:h-28 sm:w-28 shrink-0 flex items-center justify-center">
           {adventurer.image && !imageError ? (
             <img
@@ -239,7 +257,7 @@ export default function AdventurerCard({
       </div>
 
       {/* Bottom Section: Weapon Discipline */}
-      <div className="mt-4 pt-3 border-t border-mh-slate-800/80">
+      <div className="relative mt-4 pt-3 border-t border-mh-slate-800/80">
         <div className="flex items-center justify-between text-xs">
           <span className="text-mh-slate-500 font-medium">
             {isPlayerCharacter ? 'Active Weapon:' : 'Weapon Discipline:'}
@@ -249,6 +267,13 @@ export default function AdventurerCard({
             <span>{activeWeaponObj?.name || activeWeaponId}</span>
           </span>
         </div>
+
+        {activeRecruited && (
+          <div className="relative z-20 mt-2 flex items-center justify-between text-xs">
+            <span className="text-mh-slate-500 font-medium">Insight:</span>
+            <InsightPicker level={currentInsight} onChange={(lvl) => onSetInsight?.(lvl)} />
+          </div>
+        )}
       </div>
     </div>
   );

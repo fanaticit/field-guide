@@ -34,11 +34,14 @@ import {
   useDeleteChallenge,
   groupChallengesByMonster,
   challengeStatusLabel,
+  challengeMaxRarity,
   type HunterChallenge,
   type ChallengeStatus,
 } from '../hooks/useHunterChallenges';
 import LoginModal from '../components/auth/LoginModal';
 import { cn } from '../lib/utils';
+import { adventurerInsightLabel } from '../data/schemas/adventurer';
+import { usePublicAdventurers } from '../hooks/useAdminAdventurers';
 import PageTitlePanel from '../components/layout/PageTitlePanel';
 
 // ── Slot display helpers ──────────────────────────────────────
@@ -137,6 +140,25 @@ function getSlotLabel(c: HunterChallenge): string {
   }
 }
 
+// ── Adventurer panel background ───────────────────────────────
+
+/** Dimmed art behind an adventurer's challenge; the parent must be `relative isolate overflow-hidden`. */
+function PanelBackground({ src, fade = false }: { src?: string | null; fade?: boolean }) {
+  const [failed, setFailed] = useState(false);
+  if (!src || failed) return null;
+  return (
+    <div className="pointer-events-none absolute inset-0 -z-10">
+      <img
+        src={src}
+        alt=""
+        onError={() => setFailed(true)}
+        className={cn('h-full w-full object-cover', fade ? 'opacity-25' : 'opacity-40')}
+      />
+      <div className="absolute inset-0 bg-gradient-to-r from-sky-950/90 via-sky-950/60 to-sky-950/30" />
+    </div>
+  );
+}
+
 // ── Challenge Card ────────────────────────────────────────────
 
 interface ChallengeCardProps {
@@ -144,10 +166,12 @@ interface ChallengeCardProps {
   onIncrement: (challenge: HunterChallenge) => void;
   onUpdateMaterial: (id: string, material: string | null, activity: string | null) => void;
   onDelete: (id: string) => void;
+  /** Adventurer panel art, when the challenge is for an adventurer that has one. */
+  backgroundImage?: string | null;
   compact?: boolean;
 }
 
-function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, compact = false }: ChallengeCardProps) {
+function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, backgroundImage, compact = false }: ChallengeCardProps) {
   const [isEditingMaterial, setIsEditingMaterial] = useState(false);
   const [editMaterial, setEditMaterial] = useState(c.missing_material ?? '');
   const [editActivity, setEditActivity] = useState(c.missing_material_activity ?? '');
@@ -168,19 +192,24 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
   const isDone    = c.status === 'completed' || c.status === 'abandoned';
 
   // Rarity progress
-  const maxR = (isAdventurer || isBuddy) ? 1 : isVisage ? 4 : (c.max_rarity || 16);
+  const maxR = challengeMaxRarity(c);
+  const insightGoal = isAdventurer && maxR > 1;
   const progressPct = maxR > 0
     ? Math.round((c.current_rarity / maxR) * 100)
     : 0;
 
   const currentRarityName = isVisage
     ? c.current_rarity === 0 ? 'Unowned' : c.current_rarity === 1 ? 'Fine (Green)' : c.current_rarity === 2 ? 'Rare (Blue)' : c.current_rarity === 3 ? 'Epic (Purple)' : 'Superior (Gold)'
-    : (isAdventurer || isBuddy)
+    : isAdventurer
+    ? c.current_rarity === 0 ? 'Not Recruited' : insightGoal ? `Insight ${adventurerInsightLabel(c.current_rarity).replace('Lv ', '')}` : 'Recruited'
+    : isBuddy
     ? c.current_rarity === 0 ? 'Not Recruited' : 'Recruited'
     : `R${c.current_rarity} crafted`;
   const targetRarityName = isVisage
     ? 'Superior (Gold)'
-    : (isAdventurer || isBuddy)
+    : isAdventurer
+    ? insightGoal ? `Target: Insight ${adventurerInsightLabel(maxR).replace('Lv ', '')}` : 'Recruit to Roster'
+    : isBuddy
     ? 'Recruit to Roster'
     : `Target: R${c.max_rarity}`;
   const style = statusStyle(c.status);
@@ -190,9 +219,10 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
     // ── Compact mobile row ─────────────────────────────────────
     return (
       <div className={cn(
-        'mho-panel flex items-center gap-3 p-3',
+        'mho-panel relative isolate overflow-hidden flex items-center gap-3 p-3',
         isDone && 'opacity-60',
       )}>
+        <PanelBackground src={backgroundImage} fade />
         {/* Piece icon */}
         <div className="shrink-0 flex items-center justify-center">
           {pieceImg && (
@@ -219,7 +249,9 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
               </p>
             ) : isAdventurer ? (
               <p className="text-[10px] text-sky-400 truncate">
-                {!isDone ? 'Recruit in Aesoland' : 'Recruited to Roster'}
+                {!isDone
+                  ? c.current_rarity === 0 ? 'Recruit in Aesoland' : `Raise insight to ${adventurerInsightLabel(c.current_rarity + 1)}`
+                  : insightGoal ? 'Insight goal reached' : 'Recruited to Roster'}
               </p>
             ) : isBuddy ? (
               <p className="text-[10px] text-sky-400 truncate">
@@ -259,7 +291,7 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
   // ── Full desktop card ──────────────────────────────────────
   return (
     <div className={cn(
-      'mho-panel p-4 space-y-3',
+      'mho-panel relative isolate overflow-hidden p-4 space-y-3',
       isDone ? 'opacity-70' : 'mho-panel-interactive',
     )}>
       {/* Card header */}
@@ -290,7 +322,11 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
                   ) : null
                 ) : isAdventurer ? (
                   !isDone ? (
-                    <span className="text-sky-500"> · Recruit in Aesoland</span>
+                    <span className="text-sky-500">
+                      {c.current_rarity === 0
+                        ? ' · Recruit in Aesoland'
+                        : ` · Raise insight to ${adventurerInsightLabel(c.current_rarity + 1)}`}
+                    </span>
                   ) : null
                 ) : isBuddy ? (
                   !isDone ? (
@@ -441,7 +477,11 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
               : c.current_rarity === 2
               ? 'Found Epic (Purple)'
               : 'Found Superior (Gold)'
-            : isAdventurer || isBuddy
+            : isAdventurer
+            ? c.current_rarity === 0
+              ? 'Mark as Recruited'
+              : `Raise Insight to ${adventurerInsightLabel(c.current_rarity + 1)}`
+            : isBuddy
             ? 'Mark as Recruited'
             : c.status === 'crafting'
             ? 'Mark as Crafted (R1)'
@@ -456,6 +496,8 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
           Completed {new Date(c.completed_at).toLocaleDateString()}
         </p>
       )}
+
+      <PanelBackground src={backgroundImage} />
     </div>
   );
 }
@@ -701,9 +743,11 @@ interface RecruitmentPanelProps {
   recruits: HunterChallenge[];
   selection: Selection;
   onSelect: (selection: Selection) => void;
+  /** Adventurer ID → panel background image. */
+  backgrounds?: Map<string, string>;
 }
 
-function RecruitmentPanel({ recruits, selection, onSelect }: RecruitmentPanelProps) {
+function RecruitmentPanel({ recruits, selection, onSelect, backgrounds }: RecruitmentPanelProps) {
   if (recruits.length === 0) {
     return (
       <div className="rounded-2xl border border-dashed border-[var(--border-subtle)] bg-white/5 p-6 text-center">
@@ -737,12 +781,13 @@ function RecruitmentPanel({ recruits, selection, onSelect }: RecruitmentPanelPro
                   type="button"
                   onClick={() => onSelect(isSelected ? null : { kind: 'recruit', value: c.id })}
                   className={cn(
-                    'w-full flex items-center gap-3 rounded-xl border px-3 py-2 text-left transition-colors',
+                    'relative isolate overflow-hidden w-full flex items-center gap-3 rounded-xl border px-3 py-2 text-left transition-colors',
                     isSelected
                       ? 'bg-sky-800 border-sky-600 shadow-md'
                       : 'bg-sky-800/40 border-sky-700/50 hover:bg-sky-800/70',
                   )}
                 >
+                  <PanelBackground src={c.adventurer_id ? backgrounds?.get(c.adventurer_id) : null} fade />
                   <div className="shrink-0 flex h-9 w-9 items-center justify-center">
                     {img ? (
                       <img
@@ -758,7 +803,9 @@ function RecruitmentPanel({ recruits, selection, onSelect }: RecruitmentPanelPro
                   <span className="flex-1 min-w-0 text-xs font-semibold text-sky-200 truncate">
                     {c.set_name ?? 'Unknown'}
                   </span>
-                  <span className="shrink-0 text-[10px] font-bold text-sky-500">Recruit</span>
+                  <span className="shrink-0 text-[10px] font-bold text-sky-500">
+                    {getCategory(c) === 'adventurer' ? challengeStatusLabel(c) : 'Recruit'}
+                  </span>
                 </button>
               );
             })}
@@ -775,6 +822,11 @@ export default function HunterChallenges() {
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const { data: challenges = [], isLoading } = useHunterChallenges(user?.id);
+  const { data: adventurers = [] } = usePublicAdventurers();
+  const adventurerBackgrounds = useMemo(
+    () => new Map(adventurers.filter((a) => a.background_image).map((a) => [a.id, a.background_image as string])),
+    [adventurers],
+  );
   const deleteChallenge = useDeleteChallenge();
   const updateMaterial = useUpdateChallengeMaterial();
 
@@ -1010,6 +1062,7 @@ export default function HunterChallenges() {
                   recruits={recruitChallenges}
                   selection={selection}
                   onSelect={setSelection}
+                  backgrounds={adventurerBackgrounds}
                 />
               </div>
             )}
@@ -1072,6 +1125,7 @@ export default function HunterChallenges() {
                         onIncrement={(c) => incrementChallenge.mutateAsync(c)}
                         onUpdateMaterial={(id, material, activity) => updateMaterial.mutateAsync({ id, material, activity })}
                         onDelete={handleDelete}
+                        backgroundImage={c.adventurer_id ? adventurerBackgrounds.get(c.adventurer_id) : null}
                       />
                     ))}
                   </div>
@@ -1085,6 +1139,7 @@ export default function HunterChallenges() {
                         onIncrement={(c) => incrementChallenge.mutateAsync(c)}
                         onUpdateMaterial={(id, material, activity) => updateMaterial.mutateAsync({ id, material, activity })}
                         onDelete={handleDelete}
+                        backgroundImage={c.adventurer_id ? adventurerBackgrounds.get(c.adventurer_id) : null}
                         compact
                       />
                     ))}

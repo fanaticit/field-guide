@@ -15,10 +15,12 @@ import {
   CheckCircle2,
   Eye,
   Bookmark,
+  Star,
 } from 'lucide-react';
 import {
   type DBAdventurer,
   type AdventurerRarity,
+  ADVENTURER_MAX_INSIGHT,
   ADVENTURER_ROLE_CONFIG,
   ADVENTURER_ROLES,
   ADVENTURER_RARITIES,
@@ -31,6 +33,7 @@ import { useUserAdventurerCollection } from '../../hooks/useUserAdventurerCollec
 import {
   useHunterChallenges,
   useAddAdventurerChallenge,
+  useUpdateChallengeStatus,
   getAdventurerChallenge,
 } from '../../hooks/useHunterChallenges';
 import { useAuthStore } from '../../store/authStore';
@@ -39,6 +42,7 @@ import { DEFAULT_SECTION_THEMES } from '../../config/themes';
 import AdventurerCard from './AdventurerCard';
 import AdventurerModal from './AdventurerModal';
 import AdventurerRarityBadge from './AdventurerRarityBadge';
+import { InsightPicker } from './AdventurerInsight';
 import PageTitlePanel from '../../components/layout/PageTitlePanel';
 import LoginModal from '../../components/auth/LoginModal';
 import { cn } from '../../lib/utils';
@@ -77,12 +81,37 @@ export default function AdventurerGuide() {
 
   const { data: adventurers = [], isLoading } = usePublicAdventurers();
   const updateWeaponMutation = useUpdateAdventurerWeapon();
-  const { isRecruited, toggleRecruited } = useUserAdventurerCollection();
+  const { isRecruited, toggleRecruited, getInsightLevel, setInsightLevel } = useUserAdventurerCollection();
 
   const { data: challenges = [] } = useHunterChallenges(user?.id);
   const addAdventurerChallenge = useAddAdventurerChallenge();
+  const updateChallenge = useUpdateChallengeStatus();
 
-  const handleAddChallenge = async (adv: DBAdventurer) => {
+  // Keep an open recruit / insight challenge in step with the roster
+  const syncChallenge = (adv: DBAdventurer, level: number) => {
+    const challenge = getAdventurerChallenge(challenges, adv.id);
+    if (!challenge || (challenge.status !== 'crafting' && challenge.status !== 'upgrading')) return;
+    const done = level >= Math.max(1, challenge.max_rarity || 1);
+    updateChallenge.mutate({
+      challengeId: challenge.id,
+      status: done ? 'completed' : level > 0 ? 'upgrading' : 'crafting',
+      currentRarity: level,
+      completedAt: done ? new Date().toISOString() : null,
+    });
+  };
+
+  const handleToggleRecruit = (adv: DBAdventurer) => {
+    const recruiting = !isRecruited(adv);
+    toggleRecruited(adv.id);
+    syncChallenge(adv, recruiting ? 1 : 0);
+  };
+
+  const handleSetInsight = (adv: DBAdventurer, level: number) => {
+    setInsightLevel(adv.id, level);
+    syncChallenge(adv, level);
+  };
+
+  const handleAddChallenge = async (adv: DBAdventurer, targetInsight = 1) => {
     if (!user) {
       setLoginModalOpen(true);
       return;
@@ -94,6 +123,8 @@ export default function AdventurerGuide() {
       pieceImage: adv.image,
       role: adv.role,
       element: adv.element_specialization,
+      currentInsight: getInsightLevel(adv),
+      targetInsight,
     });
   };
 
@@ -114,8 +145,10 @@ export default function AdventurerGuide() {
       rarity[r] = { total: inTier.length, recruited: inTier.filter((a) => isRecruited(a)).length };
     }
 
-    return { total, recruitedCount, percent, rarity };
-  }, [adventurers, isRecruited]);
+    const maxInsightCount = adventurers.filter((a) => getInsightLevel(a) >= ADVENTURER_MAX_INSIGHT).length;
+
+    return { total, recruitedCount, percent, rarity, maxInsightCount };
+  }, [adventurers, isRecruited, getInsightLevel]);
 
   // Filtered roster of all adventurers (including player character)
   const filteredAdventurers = useMemo(() => {
@@ -212,6 +245,17 @@ export default function AdventurerGuide() {
               <span className="font-display text-sm font-black text-white">{metrics.recruitedCount}</span>
               <span className="text-[10px] text-mh-slate-500">/ {metrics.total}</span>
               <span className="text-[9px] font-bold text-emerald-400 ml-0.5">({metrics.percent}%)</span>
+            </div>
+          </div>
+
+          <div className="px-2.5 py-0.5 text-center border-r border-[var(--border-subtle)]" title="Adventurers at max insight (level 7)">
+            <div className="flex items-center justify-center gap-1 text-[9px] uppercase font-bold text-[var(--theme-accent)]">
+              <Star size={10} />
+              <span>Max Insight</span>
+            </div>
+            <div className="flex items-baseline justify-center gap-1">
+              <span className="font-display text-xs font-bold text-white">{metrics.maxInsightCount}</span>
+              <span className="text-[10px] text-mh-slate-500">/ {metrics.total}</span>
             </div>
           </div>
 
@@ -407,8 +451,10 @@ export default function AdventurerGuide() {
                 key={adv.id}
                 adventurer={adv}
                 isRecruited={isRecruited(adv)}
+                insightLevel={getInsightLevel(adv)}
                 challenge={getAdventurerChallenge(challenges, adv.id)}
-                onToggleRecruit={() => toggleRecruited(adv.id)}
+                onToggleRecruit={() => handleToggleRecruit(adv)}
+                onSetInsight={(level) => handleSetInsight(adv, level)}
                 onAddChallenge={handleAddChallenge}
                 onClick={() => setInspectedAdventurer(adv)}
               />
@@ -416,7 +462,7 @@ export default function AdventurerGuide() {
           </div>
         ) : (
           /* Table View */
-          <div className="overflow-hidden rounded-2xl border border-mh-slate-750 bg-mh-slate-900/80 shadow-md">
+          <div className="rounded-2xl border border-mh-slate-750 bg-mh-slate-900/80 shadow-md [&_thead_th:first-child]:rounded-tl-2xl [&_thead_th:last-child]:rounded-tr-2xl">
             <table className="w-full text-left text-xs text-mh-slate-300">
               <thead className="border-b border-mh-slate-750 bg-mh-slate-950/80 text-[11px] font-bold uppercase tracking-wider text-mh-slate-400">
                 <tr>
@@ -425,6 +471,7 @@ export default function AdventurerGuide() {
                   <th className="px-3 py-3">Element</th>
                   <th className="px-3 py-3">Weapon Discipline</th>
                   <th className="px-3 py-3 text-center">Recruitment</th>
+                  <th className="px-3 py-3 text-center">Insight</th>
                   <th className="py-3 pl-3 pr-4 text-right">Actions</th>
                 </tr>
               </thead>
@@ -516,7 +563,7 @@ export default function AdventurerGuide() {
                         ) : (
                           <button
                             type="button"
-                            onClick={() => toggleRecruited(adv.id)}
+                            onClick={() => handleToggleRecruit(adv)}
                             className={cn(
                               'inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold transition-transform hover:scale-105 active:scale-95',
                               recruited
@@ -536,6 +583,20 @@ export default function AdventurerGuide() {
                               </>
                             )}
                           </button>
+                        )}
+                      </td>
+
+                      {/* Insight */}
+                      <td className="px-3 py-3 text-center" onClick={(e) => e.stopPropagation()}>
+                        {recruited ? (
+                          <div className="flex justify-center">
+                            <InsightPicker
+                              level={Math.max(1, getInsightLevel(adv))}
+                              onChange={(level) => handleSetInsight(adv, level)}
+                            />
+                          </div>
+                        ) : (
+                          <span className="text-mh-slate-600">—</span>
                         )}
                       </td>
 
@@ -570,8 +631,10 @@ export default function AdventurerGuide() {
           open={Boolean(inspectedAdventurer)}
           onClose={() => setInspectedAdventurer(null)}
           isRecruited={isRecruited(inspectedAdventurer)}
+          insightLevel={getInsightLevel(inspectedAdventurer)}
           challenge={getAdventurerChallenge(challenges, inspectedAdventurer.id)}
-          onToggleRecruit={() => toggleRecruited(inspectedAdventurer.id)}
+          onToggleRecruit={() => handleToggleRecruit(inspectedAdventurer)}
+          onSetInsight={(level) => handleSetInsight(inspectedAdventurer, level)}
           onAddChallenge={handleAddChallenge}
           onSelectWeapon={handleWeaponSwitch}
         />

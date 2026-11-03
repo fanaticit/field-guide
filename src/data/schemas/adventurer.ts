@@ -72,6 +72,20 @@ export const ADVENTURER_RARITY_CONFIG: Record<
   rare:     { label: 'Rare (Blue)', short: 'Rare', color: 'var(--rarity-rare)',     bg: 'var(--bg-rare)' },
 };
 
+/** Insight levels run 1-7; the top level is shown as "Max". */
+export const ADVENTURER_MAX_INSIGHT = 7;
+export const ADVENTURER_INSIGHT_LEVELS = [1, 2, 3, 4, 5, 6, 7] as const;
+
+export function adventurerInsightLabel(level: number): string {
+  return level >= ADVENTURER_MAX_INSIGHT ? 'Max' : `Lv ${level}`;
+}
+
+export function clampInsightLevel(level: unknown): number {
+  const n = Math.round(Number(level));
+  if (!Number.isFinite(n)) return 1;
+  return Math.min(ADVENTURER_MAX_INSIGHT, Math.max(1, n));
+}
+
 export interface ElementOption {
   id: string;
   label: string;
@@ -98,7 +112,10 @@ export interface DBAdventurer {
   id: string;
   name: string;
   name_ja: string | null;
+  /** Portrait shown on cards and in the modal header. */
   image: string | null;
+  /** Large image used as the background of the information panel. Null until uploaded. */
+  background_image?: string | null;
   is_default: boolean;
   weapon_type: string | null;
   allowed_weapon_types: string[];

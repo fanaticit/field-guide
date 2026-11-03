@@ -39,12 +39,14 @@ function ImageUploadField({
   value,
   onChange,
   slug,
+  kind = 'portrait',
 }: {
   label: string;
   subLabel: string;
   value: string | null;
   onChange: (url: string | null) => void;
   slug: string;
+  kind?: 'portrait' | 'background';
 }) {
   const [uploading, setUploading] = useState(false);
   const [showUrlInput, setShowUrlInput] = useState(false);
@@ -61,7 +63,7 @@ function ImageUploadField({
     try {
       const fileExt = file.name.split('.').pop()?.toLowerCase() || 'png';
       const cleanSlug = slug.trim() ? slug : 'adventurer';
-      const path = `${cleanSlug}_portrait_${Date.now()}.${fileExt}`;
+      const path = `${cleanSlug}_${kind}_${Date.now()}.${fileExt}`;
 
       const { error } = await supabase.storage
         .from('adventurers')
@@ -125,7 +127,10 @@ function ImageUploadField({
               <img
                 src={value}
                 alt="Preview"
-                className="h-12 w-12 rounded-lg object-contain bg-mh-slate-800 border border-mh-slate-700"
+                className={cn(
+                  'h-12 rounded-lg bg-mh-slate-800 border border-mh-slate-700',
+                  kind === 'background' ? 'w-20 object-cover' : 'w-12 object-contain',
+                )}
                 onError={(e) => {
                   (e.target as HTMLElement).style.display = 'none';
                 }}
@@ -176,13 +181,16 @@ function ImageUploadField({
             <div className="flex w-full items-center gap-4">
               <img
                 src={value}
-                alt="Uploaded portrait"
-                className="h-16 w-16 shrink-0 rounded-xl object-contain bg-mh-slate-800 border border-mh-gold-500/30 p-1 shadow-md"
+                alt={`Uploaded ${kind}`}
+                className={cn(
+                  'h-16 shrink-0 rounded-xl bg-mh-slate-800 border border-mh-gold-500/30 shadow-md',
+                  kind === 'background' ? 'w-28 object-cover' : 'w-16 object-contain p-1',
+                )}
               />
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-1.5 text-xs font-bold text-mh-gold-300">
                   <Check size={14} className="text-mh-gold-400" />
-                  <span>Portrait Attached</span>
+                  <span>{kind === 'background' ? 'Background Attached' : 'Portrait Attached'}</span>
                 </div>
                 <p className="mt-0.5 truncate text-[11px] text-mh-slate-400">{value}</p>
                 <div className="mt-2 flex items-center gap-3">
@@ -209,7 +217,7 @@ function ImageUploadField({
               </div>
               <div>
                 <p className="text-xs font-semibold text-mh-slate-300 group-hover:text-mh-gold-400 transition-colors">
-                  Upload portrait image
+                  {kind === 'background' ? 'Upload background image' : 'Upload portrait image'}
                 </p>
                 <p className="mt-0.5 text-[11px] text-mh-slate-500">
                   Drag & drop image here, or click to browse
@@ -249,6 +257,7 @@ export default function AdventurerEditModal({
   const [element, setElement] = useState(adventurer?.element_specialization ?? 'raw');
   const [weaponType, setWeaponType] = useState(adventurer?.weapon_type ?? 'great_sword');
   const [image, setImage] = useState<string | null>(adventurer?.image ?? null);
+  const [backgroundImage, setBackgroundImage] = useState<string | null>(adventurer?.background_image ?? null);
   const [description, setDescription] = useState(adventurer?.description ?? '');
   const [notes, setNotes] = useState(adventurer?.notes ?? '');
   const [sortOrder, setSortOrder] = useState(adventurer?.sort_order ?? nextSortOrder);
@@ -272,6 +281,7 @@ export default function AdventurerEditModal({
       setElement(adventurer.element_specialization ?? 'raw');
       setWeaponType(adventurer.weapon_type ?? 'great_sword');
       setImage(adventurer.image ?? null);
+      setBackgroundImage(adventurer.background_image ?? null);
       setDescription(adventurer.description ?? '');
       setNotes(adventurer.notes ?? '');
       setSortOrder(adventurer.sort_order);
@@ -287,6 +297,7 @@ export default function AdventurerEditModal({
       setElement('raw');
       setWeaponType('great_sword');
       setImage(null);
+      setBackgroundImage(null);
       setDescription('');
       setNotes('');
       setSortOrder(nextSortOrder);
@@ -338,6 +349,8 @@ export default function AdventurerEditModal({
       is_active: isActive,
       // Only sent when changed, so other edits keep working if the rarity column isn't migrated yet
       ...(rarity !== (adventurer?.rarity ?? null) ? { rarity } : {}),
+      // Same for the background image (column added in 20261101000001)
+      ...(backgroundImage !== (adventurer?.background_image ?? null) ? { background_image: backgroundImage } : {}),
     };
 
     try {
@@ -621,6 +634,16 @@ export default function AdventurerEditModal({
             value={image}
             onChange={setImage}
             slug={id || name}
+          />
+
+          {/* Panel Background Image */}
+          <ImageUploadField
+            label="Panel Background Image"
+            subLabel="Large image shown behind the adventurer's information panel (cards and detail view)"
+            value={backgroundImage}
+            onChange={setBackgroundImage}
+            slug={id || name}
+            kind="background"
           />
 
           {/* Description */}

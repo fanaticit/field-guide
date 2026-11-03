@@ -7,6 +7,7 @@
 // ─────────────────────────────────────────────────────────────
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '../lib/supabase';
+import { ADVENTURER_MAX_INSIGHT, adventurerInsightLabel } from '../data/schemas/adventurer';
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -120,6 +121,10 @@ export interface AddAdventurerChallengePayload {
   role?:           string | null;
   element?:        string | null;
   notes?:          string | null;
+  /** Current insight level of the adventurer: 0 = not recruited yet. */
+  currentInsight?: number;
+  /** Goal: 1 = just recruit, 2-7 = reach that insight level (7 = Max). */
+  targetInsight?:  number;
 }
 
 export interface AddBuddyChallengePayload {
@@ -359,18 +364,21 @@ export function useAddAdventurerChallenge() {
 
   return useMutation({
     mutationFn: async (payload: AddAdventurerChallengePayload) => {
-      // Check if an active challenge already exists for this adventurer
       const { data: existing } = await supabase
         .from('hunter_challenges')
         .select('id, status, created_at')
         .eq('user_id', payload.userId)
         .eq('adventurer_id', payload.adventurerId)
-        .in('status', ['crafting', 'upgrading'])
         .maybeSingle();
 
-      if (existing) {
+      if (existing && (existing.status === 'crafting' || existing.status === 'upgrading')) {
         return { challenge: existing as unknown as HunterChallenge, wasAlreadyTracked: true };
       }
+
+      const curInsight = Math.max(0, Math.min(ADVENTURER_MAX_INSIGHT, payload.currentInsight ?? 0));
+      const target = Math.max(1, Math.min(ADVENTURER_MAX_INSIGHT, payload.targetInsight ?? 1));
+      const isComplete = curInsight >= target;
+      const status: ChallengeStatus = isComplete ? 'completed' : curInsight > 0 ? 'upgrading' : 'crafting';
 
       const row = {
         user_id:         payload.userId,
@@ -382,17 +390,19 @@ export function useAddAdventurerChallenge() {
         set_icon:        payload.pieceImage,
         monster_name:    payload.adventurerName,
         craft_rarity:    1,
-        current_rarity:  0,
-        max_rarity:      1,
-        status:          'crafting' as ChallengeStatus,
+        current_rarity:  curInsight,
+        max_rarity:      target,
+        status,
+        completed_at:    isComplete ? new Date().toISOString() : null,
         notes:           payload.notes || null,
       };
 
-      const { data, error } = await supabase
-        .from('hunter_challenges')
-        .insert(row)
-        .select()
-        .single();
+      // One row per user + adventurer (unique index), so a finished or abandoned goal is reused
+      const query = existing
+        ? supabase.from('hunter_challenges').update(row).eq('id', existing.id)
+        : supabase.from('hunter_challenges').insert(row);
+
+      const { data, error } = await query.select().single();
 
       if (error) throw error;
       return { challenge: data as HunterChallenge, wasAlreadyTracked: false };
@@ -456,6 +466,16 @@ export function useAddBuddyChallenge() {
   });
 }
 
+/** Highest rarity / level a challenge can reach: adventurer insight goal, 1 for buddies, 4 for visages. */
+export function challengeMaxRarity(c: HunterChallenge): number {
+  if (c.challenge_type === 'adventurer' || c.adventurer_id) {
+    return Math.min(ADVENTURER_MAX_INSIGHT, Math.max(1, c.max_rarity || 1));
+  }
+  if (c.challenge_type === 'buddy' || c.buddy_id) return 1;
+  if (c.challenge_type === 'visage_set' || c.visage_id) return 4;
+  return c.max_rarity || 16;
+}
+
 // ── useIncrementChallenge ─────────────────────────────────────
 // Increments rarity and automatically syncs collection details for Visages, Adventurers & Buddies.
 
@@ -469,7 +489,7 @@ export function useIncrementChallenge() {
       const isBuddy = challenge.challenge_type === 'buddy' || Boolean(challenge.buddy_id);
 
       const cur = challenge.current_rarity ?? 0;
-      const maxR = (isAdventurer || isBuddy) ? 1 : isVisage ? 4 : (challenge.max_rarity || 16);
+      const maxR = challengeMaxRarity(challenge);
       const craft = challenge.craft_rarity || 1;
       const newRarity = cur === 0 ? craft : Math.min(maxR, cur + 1);
       const isComplete = newRarity >= maxR;
@@ -514,6 +534,7 @@ export function useIncrementChallenge() {
           {
             user_id:       challenge.user_id,
             adventurer_id: challenge.adventurer_id,
+            insight_level: newRarity,
             updated_at:    new Date().toISOString(),
           },
           { onConflict: 'user_id,adventurer_id' },
@@ -538,12 +559,8 @@ export function useIncrementChallenge() {
 
     onMutate: async (challenge) => {
       await qc.cancelQueries({ queryKey: [HUNTER_CHALLENGES_KEY] });
-      const isVisage = challenge.challenge_type === 'visage_set' || Boolean(challenge.visage_id);
-      const isAdventurer = challenge.challenge_type === 'adventurer' || Boolean(challenge.adventurer_id);
-      const isBuddy = challenge.challenge_type === 'buddy' || Boolean(challenge.buddy_id);
-
       const cur = challenge.current_rarity ?? 0;
-      const maxR = (isAdventurer || isBuddy) ? 1 : isVisage ? 4 : (challenge.max_rarity || 16);
+      const maxR = challengeMaxRarity(challenge);
       const craft = challenge.craft_rarity || 1;
       const newRarity = cur === 0 ? craft : Math.min(maxR, cur + 1);
       const isComplete = newRarity >= maxR;
@@ -875,8 +892,13 @@ export function challengeStatusLabel(c: HunterChallenge): string {
 
   const isAdventurer = c.challenge_type === 'adventurer' || Boolean(c.adventurer_id);
   if (isAdventurer) {
-    if (c.status === 'completed') return 'Recruited';
-    return 'Recruit';
+    const target = challengeMaxRarity(c);
+    if (target <= 1) return c.status === 'completed' ? 'Recruited' : 'Recruit';
+    if (c.status === 'completed') return `Insight ${adventurerInsightLabel(target)}`;
+    if (c.status === 'upgrading') {
+      return `Insight ${adventurerInsightLabel(c.current_rarity)} → ${adventurerInsightLabel(target)}`;
+    }
+    return `Recruit → ${adventurerInsightLabel(target)}`;
   }
 
   const isBuddy = c.challenge_type === 'buddy' || Boolean(c.buddy_id);
