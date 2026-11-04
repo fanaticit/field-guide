@@ -1,12 +1,11 @@
 // ─────────────────────────────────────────────────────────────
-// SkillManager — two views:
-//   "List" — detailed table with search, category filter, sorting, edit actions
-//   "Game Roster" — matrix for assigning skills to games and max levels
+// SkillManager — detailed table (one row per skill level) with search,
+// category filter, sorting and edit actions
 // ─────────────────────────────────────────────────────────────
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import {
   Search, Plus, RefreshCw, ChevronUp, ChevronDown,
-  List, Gamepad2, Sparkles, Edit2, Trash2,
+  Edit2, Trash2,
 } from 'lucide-react';
 import {
   useAdminSkills,
@@ -17,63 +16,18 @@ import {
 import SkillEditModal, {
   CATEGORY_CONFIG,
   CATEGORY_OPTIONS,
-  GAME_OPTIONS,
 } from './SkillEditModal';
-import SkillGameRosterView from './SkillGameRosterView';
-import { useUIStore } from '../../../store/uiStore';
 import { cn } from '../../../lib/utils';
 
-type SortKey = 'name' | 'category' | 'max_level' | 'games';
+type SortKey = 'name' | 'category' | 'level';
 type SortDir = 'asc' | 'desc';
-type ViewMode = 'list' | 'roster';
 
-function GamePills({ games }: { games: string[] }) {
+function LevelPills({ skill }: { skill: DBSkill }) {
+  const { level, max_levels: maxLevel, is_set_bonus: isSetBonus } = skill;
   return (
-    <div className="flex gap-1">
-      {games.map((g) => (
-        <span
-          key={g}
-          className={cn(
-            'rounded px-1.5 py-px text-[9px] font-bold uppercase tracking-wider',
-            'bg-orange-500/20 text-orange-400',
-          )}
-        >
-          {g.toUpperCase()}
-        </span>
-      ))}
-    </div>
-  );
-}
-
-function MaxLevelPills({
-  skill,
-}: {
-  skill: DBSkill;
-}) {
-  const { max_levels: maxLevels, games, is_set_bonus: isSetBonus, set_thresholds: setThresholds } = skill;
-  const entries = GAME_OPTIONS.filter((g) => games.includes(g.value));
-  if (!entries.length) return <span className="text-mh-slate-700 text-xs">—</span>;
-
-  return (
-    <div className="flex flex-col gap-0.5">
-      {entries.map((g) => (
-        <span key={g.value} className="flex items-center gap-1 text-[11px] tabular-nums">
-          <span
-            className={cn(
-              'rounded px-1 py-px text-[8px] font-bold uppercase',
-              'text-orange-500',
-            )}
-          >
-            {g.short}
-          </span>
-          <span className="text-mh-slate-300 font-semibold">
-            {isSetBonus
-              ? `Tier ${maxLevels[g.value] ?? (setThresholds?.length || 2)}`
-              : `Lv ${maxLevels[g.value] ?? 5}`}
-          </span>
-        </span>
-      ))}
-    </div>
+    <span className="text-[11px] font-semibold tabular-nums text-mh-slate-300">
+      {isSetBonus ? maxLevel + ' tiers' : 'Lv ' + level + ' / ' + maxLevel}
+    </span>
   );
 }
 
@@ -100,78 +54,28 @@ function ActiveToggle({ skill }: { skill: DBSkill }) {
   );
 }
 
-function ViewModeToggle({
-  current,
-  onChange,
-  onAdd,
-}: {
-  current: ViewMode;
-  onChange: (m: ViewMode) => void;
-  onAdd: () => void;
-}) {
+function AddSkillButton({ onAdd }: { onAdd: () => void }) {
   return (
-    <div className="flex items-center gap-2">
-      <div className="flex rounded-lg border border-mh-slate-700 bg-mh-slate-800 p-0.5">
-        <button
-          onClick={() => onChange('list')}
-          className={cn(
-            'flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition-all',
-            current === 'list'
-              ? 'bg-mh-gold-500 text-mh-slate-950 shadow-sm'
-              : 'text-mh-slate-400 hover:text-mh-slate-200',
-          )}
-        >
-          <List size={13} />
-          List
-        </button>
-        <button
-          onClick={() => onChange('roster')}
-          className={cn(
-            'flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition-all',
-            current === 'roster'
-              ? 'bg-mh-gold-500 text-mh-slate-950 shadow-sm'
-              : 'text-mh-slate-400 hover:text-mh-slate-200',
-          )}
-        >
-          <Gamepad2 size={13} />
-          Game Roster
-        </button>
-      </div>
-
-      <button
-        onClick={onAdd}
-        className="flex items-center gap-1.5 rounded-lg bg-mh-gold-500 px-3 py-2 text-xs font-bold text-mh-slate-950 hover:bg-mh-gold-400 transition-colors shadow-sm"
-      >
-        <Plus size={14} />
-        Add Skill or Set
-      </button>
-    </div>
+    <button
+      onClick={onAdd}
+      className="flex items-center gap-1.5 rounded-lg bg-mh-gold-500 px-3 py-2 text-xs font-bold text-mh-slate-950 hover:bg-mh-gold-400 transition-colors shadow-sm"
+    >
+      <Plus size={14} />
+      Add Skill or Set
+    </button>
   );
 }
 
 export default function SkillManager() {
-  const defaultGame = useUIStore((s) => s.defaultGame);
-  const [viewMode, setViewMode] = useState<ViewMode>('list');
   const [search, setSearch] = useState('');
-  const [filterGame, setFilterGame] = useState(defaultGame || '');
   const [filterCategory, setFilterCategory] = useState('');
   const [filterType, setFilterType] = useState<'' | 'skill' | 'set'>('');
   const [filterActive, setFilterActive] = useState<'' | 'active' | 'inactive'>('');
   const [sortKey, setSortKey] = useState<SortKey>('name');
   const [sortDir, setSortDir] = useState<SortDir>('asc');
-  const [sortGame, setSortGame] = useState<string>(defaultGame || 'mho');
   const [editSkill, setEditSkill] = useState<DBSkill | null | 'new'>(null);
 
-  useEffect(() => {
-    if (defaultGame) {
-      setFilterGame(defaultGame);
-      setSortGame(defaultGame);
-    }
-  }, [defaultGame]);
-
-  const { data: skills = [], isLoading, refetch } = useAdminSkills(
-    filterGame ? { game: filterGame } : {},
-  );
+  const { data: skills = [], isLoading, refetch } = useAdminSkills();
   const remove = useDeleteSkill();
 
   const filtered = useMemo(() => {
@@ -202,26 +106,28 @@ export default function SkillManager() {
       } else if (sortKey === 'category') {
         av = a.category;
         bv = b.category;
-      } else if (sortKey === 'max_level') {
-        av = a.max_levels[sortGame] ?? (a.games.length ? 5 : 0);
-        bv = b.max_levels[sortGame] ?? (b.games.length ? 5 : 0);
-      } else if (sortKey === 'games') {
-        av = a.games.length;
-        bv = b.games.length;
+      } else if (sortKey === 'level') {
+        av = a.level;
+        bv = b.level;
       }
 
       if (av < bv) return sortDir === 'asc' ? -1 : 1;
       if (av > bv) return sortDir === 'asc' ? 1 : -1;
-      return a.name.localeCompare(b.name);
+      return a.name.localeCompare(b.name) || a.level - b.level;
     });
 
     return list;
-  }, [skills, search, filterCategory, filterType, filterActive, sortKey, sortDir, sortGame]);
+  }, [skills, search, filterCategory, filterType, filterActive, sortKey, sortDir]);
 
   const activeCount = skills.filter((s) => s.is_active).length;
   const inactiveCount = skills.length - activeCount;
   const setBonusCount = skills.filter((s) => s.is_set_bonus).length;
   const standardSkillCount = skills.length - setBonusCount;
+
+  const categoryOptions = useMemo(
+    () => [...new Set([...CATEGORY_OPTIONS, ...skills.map((s) => s.category)])],
+    [skills],
+  );
 
   const skillsMap = useMemo(
     () => new Map(skills.map((s) => [s.id, s])),
@@ -245,29 +151,6 @@ export default function SkillManager() {
 
   const thCls = 'px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-mh-slate-500 select-none';
   const thBtnCls = 'flex items-center gap-1 hover:text-mh-slate-300 transition-colors cursor-pointer';
-
-  // ── Game Roster View ──
-  if (viewMode === 'roster') {
-    return (
-      <div className="flex h-full flex-col">
-        <div className="flex shrink-0 items-center justify-between border-b border-mh-slate-700 bg-mh-slate-900/30 px-6 py-3">
-          <div className="flex items-center gap-2">
-            <Sparkles size={16} className="text-mh-gold-400" />
-            <span className="text-sm font-bold text-mh-slate-100">Skills Matrix</span>
-          </div>
-          <ViewModeToggle current={viewMode} onChange={setViewMode} onAdd={() => setEditSkill('new')} />
-        </div>
-        <div className="min-h-0 flex-1 overflow-hidden">
-          <SkillGameRosterView skills={skills} isLoading={isLoading} onRefetch={refetch} />
-        </div>
-        <SkillEditModal
-          skill={editSkill === 'new' ? null : editSkill}
-          open={editSkill !== null}
-          onClose={() => setEditSkill(null)}
-        />
-      </div>
-    );
-  }
 
   // ── List View ──
   return (
@@ -295,7 +178,7 @@ export default function SkillManager() {
             )}
           </div>
 
-          <ViewModeToggle current={viewMode} onChange={setViewMode} onAdd={() => setEditSkill('new')} />
+          <AddSkillButton onAdd={() => setEditSkill('new')} />
         </div>
 
         {/* Filters */}
@@ -322,23 +205,14 @@ export default function SkillManager() {
           </select>
 
           <select
-            value={filterGame}
-            onChange={(e) => setFilterGame(e.target.value)}
-            className="rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-300 outline-none"
-          >
-            <option value="">All games</option>
-            <option value="mho">MHO</option>
-          </select>
-
-          <select
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
             className="rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-300 outline-none"
           >
             <option value="">All categories</option>
-            {CATEGORY_OPTIONS.map((cat) => (
+            {categoryOptions.map((cat) => (
               <option key={cat} value={cat}>
-                {CATEGORY_CONFIG[cat].label}
+                {CATEGORY_CONFIG[cat]?.label ?? cat}
               </option>
             ))}
           </select>
@@ -352,17 +226,6 @@ export default function SkillManager() {
             <option value="active">Active only</option>
             <option value="inactive">Inactive only</option>
           </select>
-
-          {sortKey === 'max_level' && (
-            <select
-              value={sortGame}
-              onChange={(e) => setSortGame(e.target.value)}
-              className="rounded-lg border border-mh-gold-500/40 bg-mh-slate-800 px-3 py-2 text-sm text-mh-gold-400 outline-none"
-              title="Select which game's max level to sort by"
-            >
-              <option value="mho">Sort by MHO Level</option>
-            </select>
-          )}
 
           <button
             onClick={() => refetch()}
@@ -391,14 +254,9 @@ export default function SkillManager() {
                   Category <SortIcon k="category" />
                 </button>
               </th>
-              <th className={cn(thCls, 'w-28')}>
-                <button onClick={() => handleSort('games')} className={thBtnCls}>
-                  Games <SortIcon k="games" />
-                </button>
-              </th>
               <th className={cn(thCls, 'w-36')}>
-                <button onClick={() => handleSort('max_level')} className={thBtnCls}>
-                  Max Level / Tiers <SortIcon k="max_level" />
+                <button onClick={() => handleSort('level')} className={thBtnCls}>
+                  Level / Max <SortIcon k="level" />
                 </button>
               </th>
               <th className={cn(thCls, 'w-24 text-right')}>Actions</th>
@@ -407,7 +265,7 @@ export default function SkillManager() {
           <tbody className="divide-y divide-mh-slate-800">
             {filtered.length === 0 ? (
               <tr>
-                <td colSpan={6} className="py-12 text-center text-sm text-mh-slate-500">
+                <td colSpan={5} className="py-12 text-center text-sm text-mh-slate-500">
                   No skills or sets found matching your filters.
                 </td>
               </tr>
@@ -440,7 +298,11 @@ export default function SkillManager() {
                               : `${categoryCfg.bg} ${categoryCfg.text} ${categoryCfg.border}`,
                           )}
                         >
-                          <CatIcon size={16} />
+                          {skill.icon ? (
+                            <img src={skill.icon} alt="" className="h-6 w-6 object-contain" loading="lazy" />
+                          ) : (
+                            <CatIcon size={16} />
+                          )}
                         </div>
                         <div>
                           <div className="flex flex-wrap items-center gap-2">
@@ -504,14 +366,9 @@ export default function SkillManager() {
                       </span>
                     </td>
 
-                    {/* Games */}
+                    {/* Level / max level */}
                     <td className="px-4 py-3">
-                      <GamePills games={skill.games} />
-                    </td>
-
-                    {/* Max Level per game */}
-                    <td className="px-4 py-3">
-                      <MaxLevelPills skill={skill} />
+                      <LevelPills skill={skill} />
                     </td>
 
                     {/* Actions */}

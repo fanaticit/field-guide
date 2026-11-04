@@ -27,11 +27,11 @@ import {
 import {
   type ArmourSlot,
   type ArmourSkill,
+  getRarityBadgeStyle,
 } from '../../data/schemas/armour';
 import { useAdminArmourPieces, type DBArmourPiece } from '../../hooks/useAdminArmour';
 import { useAdminMonsters } from '../../hooks/useAdminMonsters';
 import { useAdminSkills, type DBSkill } from '../../hooks/useAdminSkills';
-import { getRarityBadgeStyle } from '../admin/armour/MonsterArmourBuilder';
 import { cn } from '../../lib/utils';
 import { supabase } from '../../lib/supabase';
 import { useAuthStore } from '../../store/authStore';
@@ -272,7 +272,7 @@ export default function ArmourGuide() {
   // Queries
   const { data: pieces = [], isLoading: isLoadingPieces } = useAdminArmourPieces(game);
   const { data: monsters = [] } = useAdminMonsters({ game, isActive: true });
-  const { data: dbSkills = [] } = useAdminSkills({ game, isActive: true });
+  const { data: dbSkills = [] } = useAdminSkills({ isActive: true });
 
   // ── Challenge tracking & Auth ─────────────────────────────────
   const { user, profile } = useAuthStore();
@@ -577,7 +577,7 @@ export default function ArmourGuide() {
           const name = meta?.name ?? s.id;
           const maxLevel = isSetBonus
             ? maxPiecesRequired
-            : (meta?.max_levels?.[game] ?? (meta?.max_levels ? Object.values(meta.max_levels)[0] : undefined) ?? 5);
+            : (meta?.max_levels ?? 5);
 
           const current = map.get(s.id);
           if (current) {
@@ -632,7 +632,7 @@ export default function ArmourGuide() {
       } else {
         const meta = skillsMap.get(grant.grantedSkillId);
         const name = meta?.name ?? grant.grantedSkillId;
-        const maxLevel = meta?.max_levels?.[game] ?? (meta?.max_levels ? Object.values(meta.max_levels)[0] : undefined) ?? 5;
+        const maxLevel = meta?.max_levels ?? 5;
         map.set(grant.grantedSkillId, {
           id: grant.grantedSkillId,
           name,
@@ -658,7 +658,7 @@ export default function ArmourGuide() {
       if (a.isSetBonus !== b.isSetBonus) return a.isSetBonus ? -1 : 1;
       return b.totalLevel - a.totalLevel || a.name.localeCompare(b.name);
     });
-  }, [exampleBuild, sliderRarity, selectedSetId, skillsMap, game]);
+  }, [exampleBuild, sliderRarity, selectedSetId, skillsMap]);
 
   // Filtered sets based on search and multi-skill filter
   const filteredSets = useMemo(() => {
@@ -784,10 +784,7 @@ export default function ArmourGuide() {
         const ur = skill.unlockRarity ?? skill.unlock_rarity ?? null;
         const isActiveAtSlider = ur === null || ur <= sliderRarity;
         const meta = skillsMap.get(skill.id);
-        const maxLvl =
-          meta?.max_levels?.[game] ??
-          (meta?.max_levels ? Object.values(meta.max_levels)[0] : undefined) ??
-          5;
+        const maxLvl = meta?.max_levels ?? 5;
 
         if (meta?.is_set_bonus) {
           setBonusSkillsFound.add(skill.id);
@@ -844,7 +841,7 @@ export default function ArmourGuide() {
     lockedList.sort((a, b) => a.unlockRarity - b.unlockRarity);
 
     return { combinedActiveSkills, setBonusSummaries, lockedSkillTiers: lockedList };
-  }, [currentSet, sliderRarity, skillsMap, game]);
+  }, [currentSet, sliderRarity, skillsMap]);
 
   // ── Combined Skills Aggregation for Single Piece View ─────────
   const { pieceSetBonuses, pieceActiveSkills, pieceLockedSkills } = useMemo(() => {
@@ -858,7 +855,7 @@ export default function ArmourGuide() {
       const ur = s.unlockRarity ?? s.unlock_rarity ?? null;
       const meta = skillsMap.get(s.id);
       const isSetBonus = meta?.is_set_bonus ?? false;
-      const maxLvl = meta?.max_levels?.[game] ?? 5;
+      const maxLvl = meta?.max_levels ?? 5;
 
       if (isSetBonus) {
         // Set Bonus goes to separate prominent highlight
@@ -901,7 +898,7 @@ export default function ArmourGuide() {
     const pieceLockedSkills = Array.from(lockedSkillMap.values()).sort((a, b) => a.unlockRarity - b.unlockRarity);
 
     return { pieceSetBonuses: setBonuses, pieceActiveSkills, pieceLockedSkills };
-  }, [currentPiece, sliderRarity, skillsMap, game]);
+  }, [currentPiece, sliderRarity, skillsMap]);
 
   // ── Render Detail Card Content (Shared between Desktop Right Pane & Mobile Mini-Window) ──
   const renderDetailCard = (isModal = false) => {

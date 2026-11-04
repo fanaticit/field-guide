@@ -3,7 +3,7 @@
 // Full-featured form for editing or creating skills.
 // ─────────────────────────────────────────────────────────────
 import { useState, useEffect } from 'react';
-import { X, Loader2, Trash2, AlertTriangle, Sparkles, Swords, Crosshair, Shield, HeartPulse, Skull, Sliders, Heart, Plus } from 'lucide-react';
+import { X, Loader2, Trash2, AlertTriangle, Sparkles, Swords, Crosshair, Shield, HeartPulse, Skull, Sliders, Heart, Plus, Compass } from 'lucide-react';
 import {
   type DBSkill,
   type SkillUpsert,
@@ -13,12 +13,11 @@ import {
   useUpsertSkill,
   useDeleteSkill,
 } from '../../../hooks/useAdminSkills';
-import type { SkillCategory } from '../../../data/schemas/skill';
 import { cn } from '../../../lib/utils';
 
 // ── Category Configuration ──────────────────────────────────
 export const CATEGORY_CONFIG: Record<
-  SkillCategory,
+  string,
   { label: string; bg: string; text: string; border: string; icon: React.ComponentType<{ size?: number; className?: string }> }
 > = {
   attack:   { label: 'Attack',   bg: 'bg-red-500/15',     text: 'text-red-400',     border: 'border-red-500/30',     icon: Swords     },
@@ -29,22 +28,25 @@ export const CATEGORY_CONFIG: Record<
   utility:  { label: 'Utility',  bg: 'bg-teal-500/15',    text: 'text-teal-400',    border: 'border-teal-500/30',    icon: Sliders    },
   health:   { label: 'Health',   bg: 'bg-lime-500/15',    text: 'text-lime-400',    border: 'border-lime-500/30',    icon: Heart      },
   general:  { label: 'General',  bg: 'bg-purple-500/15',  text: 'text-purple-400',  border: 'border-purple-500/30',  icon: Sparkles   },
+  // Categories used by the game data (import/MHO_skills.csv)
+  'Hunt (General)': { label: 'Hunt (General)', bg: 'bg-red-500/15',     text: 'text-red-400',     border: 'border-red-500/30',     icon: Swords     },
+  'Hunt (Ranged)':  { label: 'Hunt (Ranged)',  bg: 'bg-pink-500/15',    text: 'text-pink-400',    border: 'border-pink-500/30',    icon: Crosshair  },
+  'Weapon-specific': { label: 'Weapon-specific', bg: 'bg-orange-500/15', text: 'text-orange-400', border: 'border-orange-500/30', icon: Sliders    },
+  Attributes:       { label: 'Attributes',     bg: 'bg-blue-500/15',    text: 'text-blue-400',    border: 'border-blue-500/30',    icon: Shield     },
+  Resistance:       { label: 'Resistance',     bg: 'bg-amber-500/15',   text: 'text-amber-400',   border: 'border-amber-500/30',   icon: Skull      },
+  Survival:         { label: 'Survival',       bg: 'bg-emerald-500/15', text: 'text-emerald-400', border: 'border-emerald-500/30', icon: HeartPulse },
+  Exploration:      { label: 'Exploration',    bg: 'bg-teal-500/15',    text: 'text-teal-400',    border: 'border-teal-500/30',    icon: Compass    },
 };
 
-export const CATEGORY_OPTIONS: SkillCategory[] = [
-  'attack',
-  'critical',
-  'defense',
-  'survival',
-  'status',
-  'utility',
-  'health',
-  'general',
+export const CATEGORY_OPTIONS: string[] = [
+  'Hunt (General)',
+  'Hunt (Ranged)',
+  'Weapon-specific',
+  'Attributes',
+  'Resistance',
+  'Survival',
+  'Exploration',
 ];
-
-export const GAME_OPTIONS = [
-  { value: 'mho', label: 'Monster Hunter Outlanders', short: 'MHO', color: 'orange' },
-] as const;
 
 function toSlug(s: string) {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
@@ -55,9 +57,9 @@ function emptyForm(): SkillUpsert {
     id: '',
     name: '',
     name_ja: null,
-    category: 'general',
-    games: ['mho'],
-    max_levels: { mho: 3 },
+    category: CATEGORY_OPTIONS[0],
+    level: 1,
+    max_levels: 3,
     is_set_bonus: false,
     set_thresholds: [
       { pieces: 2, granted_skill_id: null, granted_skill_level: 1, description: null },
@@ -96,9 +98,9 @@ export default function SkillEditModal({ skill, open, onClose }: Props) {
           id: skill.id,
           name: skill.name,
           name_ja: skill.name_ja ?? null,
-          category: skill.category ?? 'general',
-          games: skill.games ?? ['mho'],
-          max_levels: skill.max_levels ?? { mho: 3 },
+          category: skill.category ?? CATEGORY_OPTIONS[0],
+          level: skill.level ?? 1,
+          max_levels: skill.max_levels ?? 3,
           is_set_bonus: skill.is_set_bonus ?? false,
           set_thresholds: parsedThresholds.length > 0
             ? parsedThresholds
@@ -132,35 +134,14 @@ export default function SkillEditModal({ skill, open, onClose }: Props) {
     }));
   }
 
-  function toggleGame(gameId: string) {
-    setForm((prev) => {
-      const inGame = prev.games.includes(gameId);
-      const nextGames = inGame
-        ? prev.games.filter((g) => g !== gameId)
-        : [...prev.games, gameId];
-      
-      const nextMaxLevels = { ...prev.max_levels };
-      if (!inGame && !nextMaxLevels[gameId]) {
-        nextMaxLevels[gameId] = gameId === 'mho' ? 3 : 5;
-      }
-
-      return {
-        ...prev,
-        games: nextGames,
-        max_levels: nextMaxLevels,
-      };
-    });
+  function handleMaxLevelChange(level: number) {
+    const validLevel = Math.max(1, Math.min(12, level || 1));
+    setForm((prev) => ({ ...prev, max_levels: validLevel }));
   }
 
-  function handleMaxLevelChange(gameId: string, level: number) {
-    const validLevel = Math.max(1, Math.min(10, level || 1));
-    setForm((prev) => ({
-      ...prev,
-      max_levels: {
-        ...prev.max_levels,
-        [gameId]: validLevel,
-      },
-    }));
+  function handleLevelChange(level: number) {
+    const validLevel = Math.max(1, Math.min(12, level || 1));
+    setForm((prev) => ({ ...prev, level: validLevel }));
   }
 
   function handleToggleSetBonus(isSet: boolean) {
@@ -171,18 +152,12 @@ export default function SkillEditModal({ skill, open, onClose }: Props) {
             { pieces: 2, granted_skill_id: null, granted_skill_level: 1, description: null },
             { pieces: 4, granted_skill_id: null, granted_skill_level: 1, description: null },
           ];
-      const nextMaxLevels = { ...prev.max_levels };
-      if (isSet) {
-        // Automatically sync maxLevel with the number of tiers
-        prev.games.forEach((g) => {
-          nextMaxLevels[g] = thresholds.length;
-        });
-      }
       return {
         ...prev,
         is_set_bonus: isSet,
         set_thresholds: thresholds,
-        max_levels: nextMaxLevels,
+        // Automatically sync maxLevel with the number of tiers
+        max_levels: isSet ? thresholds.length : prev.max_levels,
       };
     });
   }
@@ -203,17 +178,10 @@ export default function SkillEditModal({ skill, open, onClose }: Props) {
       };
 
       const nextTiers = [...existingTiers, newTier];
-      const nextMaxLevels = { ...prev.max_levels };
-      if (prev.is_set_bonus) {
-        prev.games.forEach((g) => {
-          nextMaxLevels[g] = nextTiers.length;
-        });
-      }
-
       return {
         ...prev,
         set_thresholds: nextTiers,
-        max_levels: nextMaxLevels,
+        max_levels: prev.is_set_bonus ? nextTiers.length : prev.max_levels,
       };
     });
   }
@@ -233,16 +201,10 @@ export default function SkillEditModal({ skill, open, onClose }: Props) {
   function handleRemoveTier(index: number) {
     setForm((prev) => {
       const nextTiers = (prev.set_thresholds || []).filter((_, idx) => idx !== index);
-      const nextMaxLevels = { ...prev.max_levels };
-      if (prev.is_set_bonus && nextTiers.length > 0) {
-        prev.games.forEach((g) => {
-          nextMaxLevels[g] = nextTiers.length;
-        });
-      }
       return {
         ...prev,
         set_thresholds: nextTiers,
-        max_levels: nextMaxLevels,
+        max_levels: prev.is_set_bonus && nextTiers.length > 0 ? nextTiers.length : prev.max_levels,
       };
     });
   }
@@ -256,8 +218,8 @@ export default function SkillEditModal({ skill, open, onClose }: Props) {
       setErrorMsg('Skill ID is required.');
       return;
     }
-    if (form.games.length === 0) {
-      setErrorMsg('Skill must be assigned to at least one game.');
+    if (form.level > form.max_levels) {
+      setErrorMsg('Level cannot be higher than the max level.');
       return;
     }
 
@@ -385,12 +347,12 @@ export default function SkillEditModal({ skill, open, onClose }: Props) {
               </label>
               <select
                 value={form.category}
-                onChange={(e) => setForm((p) => ({ ...p, category: e.target.value as SkillCategory }))}
+                onChange={(e) => setForm((p) => ({ ...p, category: e.target.value }))}
                 className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-100 outline-none focus:border-mh-gold-500/50"
               >
-                {CATEGORY_OPTIONS.map((cat) => (
+                {(CATEGORY_OPTIONS.includes(form.category) ? CATEGORY_OPTIONS : [form.category, ...CATEGORY_OPTIONS]).map((cat) => (
                   <option key={cat} value={cat}>
-                    {CATEGORY_CONFIG[cat].label}
+                    {CATEGORY_CONFIG[cat]?.label ?? cat}
                   </option>
                 ))}
               </select>
@@ -455,7 +417,7 @@ export default function SkillEditModal({ skill, open, onClose }: Props) {
                 <div className="space-y-2.5">
                   {(form.set_thresholds || []).map((tier, idx) => {
                     const selectedSkillMeta = standardSkills.find((s) => s.id === tier.granted_skill_id);
-                    const selectedMaxLevel = selectedSkillMeta?.max_levels[form.games[0] || 'mho'] ?? 5;
+                    const selectedMaxLevel = selectedSkillMeta?.max_levels ?? 5;
 
                     return (
                       <div
@@ -518,7 +480,7 @@ export default function SkillEditModal({ skill, open, onClose }: Props) {
                               <option value="">(None / Custom Effect Only)</option>
                               {standardSkills.map((sk) => (
                                 <option key={sk.id} value={sk.id}>
-                                  {sk.name} ({CATEGORY_CONFIG[sk.category]?.label || sk.category})
+                                  {sk.name} Lv{sk.level} ({CATEGORY_CONFIG[sk.category]?.label || sk.category})
                                 </option>
                               ))}
                             </select>
@@ -569,63 +531,34 @@ export default function SkillEditModal({ skill, open, onClose }: Props) {
             )}
           </div>
 
-          {/* Game assignment & Max levels */}
+          {/* Level & Max level */}
           <div className="rounded-xl border border-mh-slate-700/80 bg-mh-slate-800/30 p-4 space-y-3">
             <label className="block text-xs font-semibold uppercase tracking-wider text-mh-slate-400">
-              Game Availability & Max Levels
+              Level & Max Level
             </label>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {GAME_OPTIONS.map((g) => {
-                const inGame = form.games.includes(g.value);
-                const maxLv = form.max_levels[g.value] ?? 5;
-                return (
-                  <div
-                    key={g.value}
-                    className={cn(
-                      'flex flex-col gap-2 rounded-lg border p-3 transition-all',
-                      inGame
-                        ? 'border-orange-500/40 bg-orange-500/10'
-                        : 'border-mh-slate-700/60 bg-mh-slate-800/50 opacity-70',
-                    )}
-                  >
-                    <div className="flex items-center justify-between">
-                      <label className="flex items-center gap-2 cursor-pointer select-none">
-                        <input
-                          type="checkbox"
-                          checked={inGame}
-                          onChange={() => toggleGame(g.value)}
-                          className="h-4 w-4 rounded border-mh-slate-700 bg-mh-slate-800 text-mh-gold-500 focus:ring-0"
-                        />
-                        <span className={cn(
-                          'text-xs font-bold uppercase tracking-wider',
-                          inGame
-                            ? 'text-orange-400'
-                            : 'text-mh-slate-400',
-                        )}>
-                          {g.label} ({g.short})
-                        </span>
-                      </label>
-                    </div>
-
-                    {inGame && (
-                      <div className="flex items-center gap-2 pt-1 border-t border-mh-slate-700/40">
-                        <span className="text-xs text-mh-slate-400">Max Level:</span>
-                        <div className="flex items-center gap-1.5">
-                          <input
-                            type="number"
-                            min="1"
-                            max="10"
-                            value={maxLv}
-                            onChange={(e) => handleMaxLevelChange(g.value, parseInt(e.target.value, 10))}
-                            className="w-16 rounded border border-mh-slate-700 bg-mh-slate-800 px-2 py-1 text-center text-xs font-bold text-mh-slate-100 outline-none focus:border-mh-gold-500/50"
-                          />
-                          <span className="text-[11px] text-mh-slate-500 font-mono">Lv {maxLv}</span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+            <div className="grid grid-cols-2 gap-3">
+              <label className="flex items-center gap-2 text-xs text-mh-slate-400">
+                Level
+                <input
+                  type="number"
+                  min="1"
+                  max="12"
+                  value={form.level}
+                  onChange={(e) => handleLevelChange(parseInt(e.target.value, 10))}
+                  className="w-16 rounded border border-mh-slate-700 bg-mh-slate-800 px-2 py-1 text-center text-xs font-bold text-mh-slate-100 outline-none focus:border-mh-gold-500/50"
+                />
+              </label>
+              <label className="flex items-center gap-2 text-xs text-mh-slate-400">
+                {form.is_set_bonus ? 'Tiers' : 'Max Level'}
+                <input
+                  type="number"
+                  min="1"
+                  max="12"
+                  value={form.max_levels}
+                  onChange={(e) => handleMaxLevelChange(parseInt(e.target.value, 10))}
+                  className="w-16 rounded border border-mh-slate-700 bg-mh-slate-800 px-2 py-1 text-center text-xs font-bold text-mh-slate-100 outline-none focus:border-mh-gold-500/50"
+                />
+              </label>
             </div>
           </div>
 

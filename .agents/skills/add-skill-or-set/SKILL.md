@@ -23,30 +23,16 @@ When the user provides raw text, patch notes, or specifications for a Monster Hu
       { "pieces": 4, "description": "Effect description" }
     ]
     ```
-  - Set `max_levels = '{"mho": <tier_count>}'::jsonb` (e.g. `{"mho": 2}`).
+  - Set `max_levels = <tier_count>` (e.g. `2`) and `level = 1`.
 
 - **Standard Skill (`is_set_bonus = false`)**:
-  - Has level progression (e.g. Lv 1 to Lv 3 or Lv 5).
-  - Set `is_set_bonus = FALSE`.
-  - Set `set_thresholds = '[]'::jsonb`.
-  - Set `max_levels` (defaults to `{"mho": 3}` for MHO skills).
+  - Standard skills now come from the game data: update `import/MHO_skills.csv` and run `python3 scripts/import_mho_skills.py` (one row per skill level, id = game Entry ID) instead of writing SQL by hand.
 
 ### B. Slug ID Generation
-- Format name as lowercase `snake_case` (e.g. `Ink of Dragon` → `ink_of_dragon`, `Attack Boost` → `attack_boost`).
+- Format name as lowercase `snake_case` (e.g. `Ink of Dragon` → `ink_of_dragon`).
 
 ### C. Infer Category
-Must be one of the allowed categories:
-- `attack` — Attack power, raw damage, elemental damage (Fire, Water, Thunder, Ice, Dragon).
-- `critical` — Affinity, Critical Eye, Weakness Exploit, Critical Boost.
-- `defense` — Defense Boost, elemental resistances, Divine Blessing.
-- `survival` — Guts, Fortify, Last Stand, Heroics.
-- `status` — Poison, Paralysis, Sleep, Blast attack boosts/buildup.
-- `utility` — Earplugs, Tremor Resistance, Windproof, Evade Extender.
-- `health` — Health Boost, Recovery Speed.
-- `general` — Focus, Concentration, Special Boost, Lock On, Power Prolonger.
-
-### D. Game Scope
-- Unless the user specifies MH Now (`mhn`), default game scope to `ARRAY['mho']` (Monster Hunter Outlanders).
+- Set bonuses keep using the legacy lowercase categories: `attack`, `critical`, `defense`, `survival`, `status`, `utility`, `health`, `general` (pick the closest fit for the effect, e.g. elemental damage → `attack`).
 
 ---
 
@@ -60,7 +46,7 @@ INSERT INTO public.skills (
   name,
   name_ja,
   category,
-  games,
+  level,
   max_levels,
   is_set_bonus,
   set_thresholds,
@@ -70,16 +56,16 @@ INSERT INTO public.skills (
   '<Display Name>',
   NULL, -- or '<Japanese Name>' if provided
   '<category>',
-  ARRAY['mho'],
-  '{"mho": <max_level_or_tier_count>}'::jsonb,
-  <true_or_false>,
-  '<json_set_thresholds_or_empty_array>'::jsonb,
+  1,
+  <tier_count>,
+  TRUE,
+  '<json_set_thresholds>'::jsonb,
   TRUE
 ) ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
   name_ja = COALESCE(EXCLUDED.name_ja, public.skills.name_ja),
   category = EXCLUDED.category,
-  games = EXCLUDED.games,
+  level = EXCLUDED.level,
   max_levels = EXCLUDED.max_levels,
   is_set_bonus = EXCLUDED.is_set_bonus,
   set_thresholds = EXCLUDED.set_thresholds,
@@ -96,4 +82,4 @@ INSERT INTO public.skills (
 
 2. **Output to User**:
    - Present the SQL clearly inside a single copy-pasteable SQL block.
-   - Summarize the parsed attributes (ID, Category, Games, Pieces/Levels) for easy review.
+   - Summarize the parsed attributes (ID, Category, Pieces/Levels) for easy review.

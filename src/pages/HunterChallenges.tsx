@@ -634,6 +634,10 @@ function HuntingTargetsPanel({ monsterGroups, selection, onSelect, sketches }: H
               .map(c => (c.current_rarity || 0) + 1)
           )).sort((a, b) => a - b).map(r => toRoman(r)).join(', ');
 
+          // The monster's sketch is shown on its row when it has a visage challenge, tinted by that card's target rarity
+          const sketchVisage = group.challenges.find((c) => getCategory(c) === 'visage');
+          const sketch = sketchVisage?.monster_id ? sketches?.get(sketchVisage.monster_id) : null;
+
           const breakdown = HUNT_CATEGORIES
             .map(cat => ({ cat, n: group.challenges.filter(c => getCategory(c) === cat).length }))
             .filter(x => x.n > 0)
@@ -652,11 +656,14 @@ function HuntingTargetsPanel({ monsterGroups, selection, onSelect, sketches }: H
                   setExpandedMonster(isExpanded ? null : monsterId);
                   onSelect(selectedMonster === group.monsterName ? null : { kind: 'monster', value: group.monsterName });
                 }}
+                data-rarity-theme={sketch && sketchVisage ? visageTargetRarity(sketchVisage) : undefined}
                 className={cn(
-                  "w-full flex items-center gap-3 p-3 text-left transition-colors",
+                  "relative isolate overflow-hidden w-full flex items-center gap-3 p-3 text-left transition-colors",
+                  sketch && "challenges-theme",
                   selectedMonster === group.monsterName ? "bg-sky-800" : "hover:bg-sky-800/60"
                 )}
               >
+                {sketch && <MonsterSketchBackground src={sketch} fill />}
                 {/* Monster icon */}
                 <div className="shrink-0 flex items-center justify-center">
                   {group.setIcon ? (
@@ -696,15 +703,7 @@ function HuntingTargetsPanel({ monsterGroups, selection, onSelect, sketches }: H
                     const isVisageItem = getCategory(c) === 'visage';
 
                     return (
-                      <div
-                        key={c.id}
-                        data-rarity-theme={isVisageItem ? visageTargetRarity(c) : undefined}
-                        className={cn(
-                          'relative isolate overflow-hidden flex flex-col gap-1.5 px-3 py-2.5',
-                          isVisageItem && 'challenges-theme',
-                        )}
-                      >
-                        {isVisageItem && <MonsterSketchBackground src={c.monster_id ? sketches?.get(c.monster_id) : null} fill />}
+                      <div key={c.id} className="flex flex-col gap-1.5 px-3 py-2.5">
                         <div className="flex items-center gap-2.5">
                           {/* Slot icon */}
                           <div className="shrink-0 flex items-center justify-center">

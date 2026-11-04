@@ -78,7 +78,7 @@ export default function WeaponEquipmentManager() {
   // Queries
   const { data: weapons = [], isLoading, refetch } = useAdminWeapons({ game });
   const { data: monsters = [] } = useAdminMonsters({ game, isActive: true });
-  const { data: skills = [] } = useAdminSkills({ game, isActive: true });
+  const { data: skills = [] } = useAdminSkills({ isActive: true });
 
   const toggleActiveMutation = useToggleWeaponActive();
   const deleteMutation = useDeleteWeapon();

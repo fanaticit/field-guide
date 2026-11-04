@@ -102,7 +102,7 @@ export default function WeaponEditModal({
 
   // Queries
   const { data: monsters = [] } = useAdminMonsters({ game, isActive: true });
-  const { data: dbSkills = [] } = useAdminSkills({ game, isActive: true });
+  const { data: dbSkills = [] } = useAdminSkills({ isActive: true });
   const upsertMutation = useUpsertWeapon();
 
   // Auto-generate ID slug for new weapons
@@ -790,7 +790,7 @@ export default function WeaponEditModal({
                       >
                         <span>{s.name}</span>
                         <span className="text-[10px] text-mh-slate-500 font-mono">
-                          Lv Max {s.max_levels[game] ?? 5}
+                          Lv Max {s.max_levels}
                         </span>
                       </button>
                     ))}
