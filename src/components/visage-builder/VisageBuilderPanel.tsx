@@ -7,7 +7,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronDown, Copy, Library, Plus, RotateCcw, Save, Search, Check, Sparkles } from 'lucide-react';
-import { getInkConfig, type DBVisage } from '../../data/schemas/visage';
+import { getInkConfig, DEFAULT_VISAGE_RARITY, type DBVisage } from '../../data/schemas/visage';
 import type { CardCollectionEntry, VisageSet } from '../../hooks/useVisageSets';
 import { InkIconComponent } from '../../pages/investigation-notes/VisageCard';
 import { useVisageBuilderStore } from '../../store/visageBuilderStore';
@@ -23,6 +23,7 @@ import {
 } from '../../lib/visageBuild';
 import VisageBuildEffects from './VisageBuildEffects';
 import { cn } from '../../lib/utils';
+import VisageIcon from '../visage/VisageIcon';
 
 interface Props {
   sets: VisageSet[];
@@ -131,11 +132,7 @@ export default function VisageBuilderPanel({ sets, visages, collectionMap, isOwn
         >
           {visage ? (
             <>
-              {visage.image_small ? (
-                <img src={visage.image_small} alt={visage.name} className={cn('w-full h-full object-cover', notOwned && 'opacity-60')} />
-              ) : (
-                <span className="text-[10px] font-bold text-mh-slate-300 text-center px-1 leading-tight">{visage.name}</span>
-              )}
+              <VisageIcon visage={visage} rarity={DEFAULT_VISAGE_RARITY} className={cn(notOwned && 'opacity-60')} />
               <div className="absolute top-0.5 right-0.5 bg-black/80 px-1 rounded text-[10px] font-bold text-white leading-tight">{visage.points}</div>
               {notOwned && (
                 <div className="absolute bottom-0.5 left-0.5 text-[10px]" title="You don't own this card + ink">
@@ -285,11 +282,9 @@ export default function VisageBuilderPanel({ sets, visages, collectionMap, isOwn
                         : 'border-mh-slate-600 hover:border-mh-slate-400',
                 )}
               >
-                {v.image_small ? (
-                  <img src={v.image_small} alt={v.name} className="w-full h-full object-cover" />
-                ) : (
-                  <span className="text-[9px] font-bold text-mh-slate-400 text-center leading-tight block px-0.5 pt-1">{v.name}</span>
-                )}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <VisageIcon visage={v} rarity={DEFAULT_VISAGE_RARITY} />
+                </div>
                 <div className={cn('absolute top-0.5 left-0.5 w-3 h-3 rounded-full flex items-center justify-center text-white ring-1 ring-black/30', firstInk.dotColor)}>
                   <InkIconComponent iconName={firstInk.iconName} size={8} />
                 </div>

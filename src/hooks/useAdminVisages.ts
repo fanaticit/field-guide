@@ -3,6 +3,7 @@
 // ─────────────────────────────────────────────────────────────
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '../lib/supabase';
+import { VISAGE_SELECT, normalizeVisageRow } from '../data/schemas/visage';
 import type { DBVisage, VisageUpsert, InkType } from '../data/schemas/visage';
 
 export interface VisageFilters {
@@ -22,7 +23,7 @@ export function useAdminVisages(filters: VisageFilters = {}) {
     queryFn: async () => {
       let q = supabase
         .from('visages')
-        .select('*')
+        .select(VISAGE_SELECT)
         .order('sort_order', { ascending: true })
         .order('name', { ascending: true });
 
@@ -42,13 +43,7 @@ export function useAdminVisages(filters: VisageFilters = {}) {
       const { data, error } = await q;
       if (error) throw error;
 
-      return (data ?? []).map((row: Record<string, unknown>) => ({
-        ...row,
-        points: typeof row.points === 'number' ? row.points : 1,
-        rarity: typeof row.rarity === 'number' ? row.rarity : 1,
-        ink_types: (Array.isArray(row.ink_types) ? row.ink_types : []) as InkType[],
-        is_active: Boolean(row.is_active),
-      })) as DBVisage[];
+      return (data ?? []).map((row) => normalizeVisageRow(row as Record<string, unknown>));
     },
     staleTime: 1000 * 30,
   });
@@ -85,6 +80,7 @@ export function useUpsertVisage() {
         ink_types: finalInkTypes,
       };
       delete (payload as { mergeInks?: boolean }).mergeInks;
+      delete (payload as { monster_icon?: string | null }).monster_icon;
 
       const { data, error } = await supabase
         .from('visages')

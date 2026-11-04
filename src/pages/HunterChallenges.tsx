@@ -3,8 +3,8 @@
 // Desktop: two-column layout — Hunting Targets (left) + Challenge list (right).
 // Mobile:  single-column compact list with monster strip at top.
 // ─────────────────────────────────────────────────────────────
-import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useMemo, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   Target,
   Shield,
@@ -42,7 +42,10 @@ import LoginModal from '../components/auth/LoginModal';
 import { cn } from '../lib/utils';
 import { adventurerInsightLabel } from '../data/schemas/adventurer';
 import { usePublicAdventurers } from '../hooks/useAdminAdventurers';
+import { usePublicMonsters } from '../hooks/useAdminMonsters';
 import PageTitlePanel from '../components/layout/PageTitlePanel';
+import VisageIcon from '../components/visage/VisageIcon';
+import { VISAGE_RARITY_OPTIONS, type VisageRarity } from '../data/schemas/visage';
 
 // ── Slot display helpers ──────────────────────────────────────
 
@@ -159,6 +162,30 @@ function PanelBackground({ src, fade = false }: { src?: string | null; fade?: bo
   );
 }
 
+/** The monster's sketch, drawn in the panel's rarity colour on the right; the parent must be `relative isolate overflow-hidden`. */
+function MonsterSketchBackground({ src }: { src?: string | null }) {
+  if (!src) return null;
+  const mask = `url("${src}")`;
+  return (
+    <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+      <div
+        className="absolute inset-y-0 right-0 w-3/4 opacity-40 sm:w-3/5"
+        style={{
+          backgroundColor: 'var(--theme-accent)',
+          maskImage: mask,
+          WebkitMaskImage: mask,
+          maskRepeat: 'no-repeat',
+          WebkitMaskRepeat: 'no-repeat',
+          maskSize: 'contain',
+          WebkitMaskSize: 'contain',
+          maskPosition: 'right center',
+          WebkitMaskPosition: 'right center',
+        }}
+      />
+    </div>
+  );
+}
+
 // ── Challenge Card ────────────────────────────────────────────
 
 interface ChallengeCardProps {
@@ -168,10 +195,28 @@ interface ChallengeCardProps {
   onDelete: (id: string) => void;
   /** Adventurer panel art, when the challenge is for an adventurer that has one. */
   backgroundImage?: string | null;
+  /** Monster sketch drawn behind visage challenges. */
+  sketchImage?: string | null;
   compact?: boolean;
 }
 
-function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, backgroundImage, compact = false }: ChallengeCardProps) {
+/** The rarity of the visage card being searched for: Fine -> Rare -> Epic -> Superior. */
+function visageTargetRarity(c: HunterChallenge): VisageRarity {
+  const idx = Math.min(Math.max(c.current_rarity || 0, 0), VISAGE_RARITY_OPTIONS.length - 1);
+  return VISAGE_RARITY_OPTIONS[idx];
+}
+
+function visageArt(c: HunterChallenge, className: string) {
+  return (
+    <VisageIcon
+      visage={{ name: c.set_name ?? 'Visage', monster_icon: c.piece_image }}
+      rarity={visageTargetRarity(c)}
+      className={className}
+    />
+  );
+}
+
+function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, backgroundImage, sketchImage, compact = false }: ChallengeCardProps) {
   const [isEditingMaterial, setIsEditingMaterial] = useState(false);
   const [editMaterial, setEditMaterial] = useState(c.missing_material ?? '');
   const [editActivity, setEditActivity] = useState(c.missing_material_activity ?? '');
@@ -218,14 +263,19 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
   if (compact) {
     // ── Compact mobile row ─────────────────────────────────────
     return (
-      <div className={cn(
-        'mho-panel relative isolate overflow-hidden flex items-center gap-3 p-3',
-        isDone && 'opacity-60',
-      )}>
+      <div
+        data-rarity-theme={isVisage ? visageTargetRarity(c) : undefined}
+        className={cn(
+          'mho-panel relative isolate overflow-hidden flex items-center gap-3 p-3',
+          isVisage && 'challenges-theme mho-card-rarity',
+          isDone && 'opacity-60',
+        )}
+      >
         <PanelBackground src={backgroundImage} fade />
+        {isVisage && <MonsterSketchBackground src={sketchImage} />}
         {/* Piece icon */}
         <div className="shrink-0 flex items-center justify-center">
-          {pieceImg && (
+          {isVisage ? visageArt(c, 'h-10 w-10') : pieceImg && (
             <img src={pieceImg} alt={slotLabel} className="h-10 w-10 object-contain"
               onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }} />
           )}
@@ -290,15 +340,19 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
 
   // ── Full desktop card ──────────────────────────────────────
   return (
-    <div className={cn(
-      'mho-panel relative isolate overflow-hidden p-4 space-y-3',
-      isDone ? 'opacity-70' : 'mho-panel-interactive',
-    )}>
+    <div
+      data-rarity-theme={isVisage ? visageTargetRarity(c) : undefined}
+      className={cn(
+        'mho-panel relative isolate overflow-hidden p-4 space-y-3',
+        isVisage && 'challenges-theme mho-card-rarity',
+        isDone ? 'opacity-70' : 'mho-panel-interactive',
+      )}
+    >
       {/* Card header */}
       <div className="flex items-start gap-3">
         {/* Piece image */}
         <div className="shrink-0 flex items-center justify-center">
-          {pieceImg ? (
+          {isVisage ? visageArt(c, 'h-16 w-16') : pieceImg ? (
             <img src={pieceImg} alt={slotLabel} className="h-16 w-16 object-contain"
               onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }} />
           ) : (
@@ -498,6 +552,7 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
       )}
 
       <PanelBackground src={backgroundImage} />
+      {isVisage && <MonsterSketchBackground src={sketchImage} />}
     </div>
   );
 }
@@ -640,7 +695,7 @@ function HuntingTargetsPanel({ monsterGroups, selection, onSelect }: HuntingTarg
                         <div className="flex items-center gap-2.5">
                           {/* Slot icon */}
                           <div className="shrink-0 flex items-center justify-center">
-                            {(c.piece_image ?? slotIcon) && (
+                            {isVisageItem ? visageArt(c, 'h-7 w-7') : (c.piece_image ?? slotIcon) && (
                               <img
                                 src={c.piece_image ?? slotIcon!}
                                 alt={slotLabel}
@@ -827,6 +882,11 @@ export default function HunterChallenges() {
     () => new Map(adventurers.filter((a) => a.background_image).map((a) => [a.id, a.background_image as string])),
     [adventurers],
   );
+  const { data: monsters = [] } = usePublicMonsters();
+  const monsterSketches = useMemo(
+    () => new Map(monsters.filter((m) => m.sketch).map((m) => [m.id, m.sketch as string])),
+    [monsters],
+  );
   const deleteChallenge = useDeleteChallenge();
   const updateMaterial = useUpdateChallengeMaterial();
 
@@ -842,6 +902,24 @@ export default function HunterChallenges() {
   };
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [selection, setSelection]     = useState<Selection>(null);
+
+  // Deep link from the guides: /challenges?challenge=<id> selects that item's monster (or recruit)
+  const [searchParams, setSearchParams] = useSearchParams();
+  const focusId = searchParams.get('challenge');
+  useEffect(() => {
+    if (!focusId || isLoading) return;
+    const target = challenges.find((c) => c.id === focusId);
+    if (target) {
+      setCategory('all');
+      setShowCollected(!isOpen(target));
+      setSelection(
+        isRecruitItem(target)
+          ? { kind: 'recruit', value: target.id }
+          : { kind: 'monster', value: target.monster_name ?? '' },
+      );
+    }
+    setSearchParams({}, { replace: true });
+  }, [focusId, isLoading, challenges, setSearchParams]);
 
   // ── Derived data ────────────────────────────────────────────
 
@@ -1126,6 +1204,7 @@ export default function HunterChallenges() {
                         onUpdateMaterial={(id, material, activity) => updateMaterial.mutateAsync({ id, material, activity })}
                         onDelete={handleDelete}
                         backgroundImage={c.adventurer_id ? adventurerBackgrounds.get(c.adventurer_id) : null}
+                        sketchImage={c.monster_id ? monsterSketches.get(c.monster_id) : null}
                       />
                     ))}
                   </div>
@@ -1140,6 +1219,7 @@ export default function HunterChallenges() {
                         onUpdateMaterial={(id, material, activity) => updateMaterial.mutateAsync({ id, material, activity })}
                         onDelete={handleDelete}
                         backgroundImage={c.adventurer_id ? adventurerBackgrounds.get(c.adventurer_id) : null}
+                        sketchImage={c.monster_id ? monsterSketches.get(c.monster_id) : null}
                         compact
                       />
                     ))}

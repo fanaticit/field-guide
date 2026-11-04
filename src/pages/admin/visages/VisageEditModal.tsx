@@ -1,206 +1,22 @@
 // ─────────────────────────────────────────────────────────────
 // VisageEditModal — Create or edit an MHO Visage Card
 // ─────────────────────────────────────────────────────────────
-import { useState, useEffect, useRef, useMemo } from 'react';
-import { X, Trash2, Loader2, Sparkles, Check, AlertCircle, Upload } from 'lucide-react';
+import { useState, useEffect, useMemo } from 'react';
+import { X, Trash2, Loader2, Sparkles, Check, AlertCircle } from 'lucide-react';
 import {
   type DBVisage,
   type VisageUpsert,
   type InkType,
   getInkConfig,
+  VISAGE_MAX_LEVEL_LABELS,
 } from '../../../data/schemas/visage';
 import { useUpsertVisage, useDeleteVisage, useAdminVisages } from '../../../hooks/useAdminVisages';
 import { useAdminSkills, type DBSkill } from '../../../hooks/useAdminSkills';
 import { useAdminMonsters } from '../../../hooks/useAdminMonsters';
-import { supabase } from '../../../lib/supabase';
 import { cn } from '../../../lib/utils';
 
 function toSlug(s: string) {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
-}
-
-// ── Direct Supabase Storage Image Uploader ──────────────────
-function ImageUploadField({
-  label,
-  subLabel,
-  value,
-  onChange,
-  aspect = 'portrait',
-  slug,
-  fieldKey,
-}: {
-  label: string;
-  subLabel: string;
-  value: string | null;
-  onChange: (url: string | null) => void;
-  aspect?: 'portrait' | 'square';
-  slug: string;
-  fieldKey: string;
-}) {
-  const [uploading, setUploading] = useState(false);
-  const [showUrlInput, setShowUrlInput] = useState(false);
-  const [uploadError, setUploadError] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  async function handleFile(file: File) {
-    if (!file.type.startsWith('image/')) {
-      setUploadError('Please select a valid image file (PNG, JPG, WebP, etc.).');
-      return;
-    }
-    setUploadError(null);
-    setUploading(true);
-    try {
-      const fileExt = file.name.split('.').pop()?.toLowerCase() || 'png';
-      const cleanSlug = slug.trim() ? slug : 'visage';
-      const path = `${cleanSlug}_${fieldKey}_${Date.now()}.${fileExt}`;
-
-      const { error } = await supabase.storage
-        .from('visages')
-        .upload(path, file, {
-          cacheControl: '3600',
-          upsert: true,
-        });
-
-      if (error) throw error;
-
-      const { data } = supabase.storage.from('visages').getPublicUrl(path);
-      onChange(data.publicUrl);
-    } catch (err: unknown) {
-      setUploadError((err as Error).message || 'Failed to upload image to Supabase storage.');
-    } finally {
-      setUploading(false);
-    }
-  }
-
-  function handleDrop(e: React.DragEvent) {
-    e.preventDefault();
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      handleFile(e.dataTransfer.files[0]);
-    }
-  }
-
-  return (
-    <div className="space-y-2">
-      <div className="flex items-center justify-between">
-        <label className="block text-xs font-bold uppercase tracking-wider text-mh-slate-300">
-          {label}
-        </label>
-        <button
-          type="button"
-          onClick={() => setShowUrlInput(!showUrlInput)}
-          className="text-[11px] text-mh-gold-400 hover:text-mh-gold-300 underline"
-        >
-          {showUrlInput ? 'Hide URL field' : 'Enter URL manually'}
-        </button>
-      </div>
-      <p className="text-[11px] text-mh-slate-500">{subLabel}</p>
-
-      {uploadError && (
-        <p className="text-[11px] text-red-400 font-medium">{uploadError}</p>
-      )}
-
-      {/* Upload Dropzone / Preview Container */}
-      <div
-        onDragOver={(e) => e.preventDefault()}
-        onDrop={handleDrop}
-        className={cn(
-          'relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed transition-all p-3',
-          value
-            ? 'border-mh-slate-700 bg-mh-slate-850'
-            : 'border-mh-slate-700 hover:border-mh-gold-500/50 bg-mh-slate-800/40 hover:bg-mh-slate-800/80',
-        )}
-      >
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          className="hidden"
-          onChange={(e) => {
-            if (e.target.files && e.target.files[0]) {
-              handleFile(e.target.files[0]);
-            }
-          }}
-        />
-
-        {value ? (
-          <div className="flex w-full items-center gap-3">
-            <div
-              className={cn(
-                'relative shrink-0 overflow-hidden rounded-2xl flex items-center justify-center shadow-md',
-                aspect === 'portrait' ? 'h-24 w-16' : 'h-16 w-16',
-              )}
-            >
-              <img
-                src={value}
-                alt={label}
-                className="h-full w-full object-cover rounded-2xl"
-                onError={(e) => {
-                  (e.target as HTMLElement).style.display = 'none';
-                }}
-              />
-            </div>
-
-            <div className="min-w-0 flex-1 space-y-1">
-              <p className="text-xs font-semibold text-mh-slate-200 truncate">
-                {value.split('/').pop()}
-              </p>
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  disabled={uploading}
-                  onClick={() => fileInputRef.current?.click()}
-                  className="flex items-center gap-1 rounded bg-mh-slate-700 px-2 py-1 text-[11px] font-semibold text-mh-slate-200 hover:bg-mh-slate-600 transition-colors"
-                >
-                  <Upload size={12} />
-                  Change Image
-                </button>
-                <button
-                  type="button"
-                  onClick={() => onChange(null)}
-                  className="rounded p-1 text-mh-slate-500 hover:bg-red-500/20 hover:text-red-400 transition-colors"
-                  title="Remove image"
-                >
-                  <Trash2 size={13} />
-                </button>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center text-center py-3">
-            {uploading ? (
-              <div className="flex flex-col items-center gap-2 py-2">
-                <Loader2 size={24} className="animate-spin text-mh-gold-400" />
-                <span className="text-xs font-semibold text-mh-slate-300">Uploading to Supabase…</span>
-              </div>
-            ) : (
-              <>
-                <Upload size={22} className="text-mh-slate-500 mb-1.5" />
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  className="rounded-lg bg-mh-gold-500/15 border border-mh-gold-500/30 px-3 py-1 text-xs font-bold text-mh-gold-300 hover:bg-mh-gold-500/25 transition-all shadow-sm mb-1"
-                >
-                  Upload File to Supabase
-                </button>
-                <p className="text-[10px] text-mh-slate-500">or drag and drop here (PNG, JPG, WebP)</p>
-              </>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* Manual URL Input */}
-      {showUrlInput && (
-        <input
-          type="text"
-          value={value ?? ''}
-          onChange={(e) => onChange(e.target.value || null)}
-          placeholder="https://... or /images/..."
-          className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-100 placeholder-mh-slate-500 outline-none focus:border-mh-gold-500/50"
-        />
-      )}
-    </div>
-  );
 }
 
 function emptyForm(): VisageUpsert {
@@ -211,9 +27,8 @@ function emptyForm(): VisageUpsert {
     monster_id: null,
     monster_type: 'small',
     points: 1,
-    rarity: 1,
-    ink_types: ['thunder'],
-    image_small: null,
+    max_levels: [1, 2, 3, 4, 4],
+    ink_types: [],
     core_effect: null,
     is_active: true,
     notes: null,
@@ -292,9 +107,8 @@ export default function VisageEditModal({ visage, open, onClose }: Props) {
           monster_id: visage.monster_id ?? null,
           monster_type: visage.monster_type ?? 'small',
           points: visage.points ?? 1,
-          rarity: visage.rarity ?? 1,
-          ink_types: visage.ink_types && visage.ink_types.length > 0 ? visage.ink_types : ['thunder'],
-          image_small: visage.image_small ?? null,
+          max_levels: visage.max_levels?.length ? visage.max_levels : [1, 2, 3, 4, 4],
+          ink_types: visage.ink_types ?? [],
           core_effect: visage.core_effect ?? null,
           is_active: visage.is_active,
           notes: visage.notes ?? null,
@@ -323,7 +137,6 @@ export default function VisageEditModal({ visage, open, onClose }: Props) {
       monster_id: match ? (match.monster_id ?? prev.monster_id) : prev.monster_id,
       monster_type: match ? (match.monster_type ?? prev.monster_type) : prev.monster_type,
       points: match ? (match.points ?? prev.points) : prev.points,
-      image_small: match ? (match.image_small ?? prev.image_small) : prev.image_small,
       core_effect: match ? (match.core_effect ?? prev.core_effect) : prev.core_effect,
       ink_types: match && match.ink_types && match.ink_types.length > 0
         ? Array.from(new Set([...match.ink_types, ...prev.ink_types]))
@@ -335,8 +148,6 @@ export default function VisageEditModal({ visage, open, onClose }: Props) {
     setForm((prev) => {
       const exists = prev.ink_types.includes(ink);
       if (exists) {
-        // Must have at least 1 ink
-        if (prev.ink_types.length <= 1) return prev;
         return {
           ...prev,
           ink_types: prev.ink_types.filter((i) => i !== ink),
@@ -359,10 +170,6 @@ export default function VisageEditModal({ visage, open, onClose }: Props) {
     }
     if (!form.id.trim()) {
       setErrorMsg('Visage ID is required.');
-      return;
-    }
-    if (form.ink_types.length === 0) {
-      setErrorMsg('Visage must have at least 1 possible ink type.');
       return;
     }
 
@@ -549,15 +356,41 @@ export default function VisageEditModal({ visage, open, onClose }: Props) {
             </div>
           </div>
 
+          {/* Max level per card rarity */}
+          <div className="rounded-xl border border-mh-slate-750 bg-mh-slate-850 p-4 space-y-2">
+            <p className="text-xs font-bold text-mh-slate-200">Max Level by Rarity</p>
+            <div className="grid grid-cols-5 gap-2">
+              {VISAGE_MAX_LEVEL_LABELS.map((label, i) => (
+                <div key={label}>
+                  <label className="block text-[10px] font-medium text-mh-slate-400 mb-1">{label}</label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="99"
+                    value={form.max_levels[i] ?? 0}
+                    onChange={(e) =>
+                      setForm((p) => {
+                        const next = VISAGE_MAX_LEVEL_LABELS.map((_, k) => p.max_levels[k] ?? 0);
+                        next[i] = Math.max(0, parseInt(e.target.value, 10) || 0);
+                        return { ...p, max_levels: next };
+                      })
+                    }
+                    className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-2 py-1.5 text-sm font-bold text-mh-gold-400 outline-none focus:border-mh-gold-500/50"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* ── Ink Types Pool Selector ── */}
           <div className="rounded-xl border border-mh-slate-750 bg-mh-slate-850 p-4 space-y-3">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs font-bold text-mh-slate-200">
-                  Possible Ink Types ({form.ink_types.length}/3 selected)
+                  Ink Types ({form.ink_types.length}/3 selected)
                 </p>
                 <p className="text-[11px] text-mh-slate-500">
-                  When obtained in MHO, this card rolls randomly as one of these 1 to 3 ink types.
+                  Ink set(s) this card belongs to. Leave empty for cards without a set.
                 </p>
               </div>
             </div>
@@ -612,19 +445,6 @@ export default function VisageEditModal({ visage, open, onClose }: Props) {
               onChange={(e) => setForm((p) => ({ ...p, core_effect: e.target.value || null }))}
               placeholder="e.g. When health is above 70%, increases attack by 10%"
               className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-xs text-mh-slate-100 placeholder-mh-slate-500 outline-none focus:border-mh-gold-500/50"
-            />
-          </div>
-
-          {/* Row 4: Card Image Uploader */}
-          <div>
-            <ImageUploadField
-              label="Visage Monster Icon / Card Art"
-              subLabel="Compact square icon for cards and collection views"
-              value={form.image_small}
-              onChange={(url) => setForm((p) => ({ ...p, image_small: url }))}
-              aspect="square"
-              slug={form.id}
-              fieldKey="icon"
             />
           </div>
 

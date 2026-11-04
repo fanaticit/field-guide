@@ -301,8 +301,8 @@ export default function VisageSetsGuide() {
       inkType: (inkType || 'flames').toLowerCase(),
       monsterId: card.monster_id ?? null,
       monsterName: card.name,
-      pieceImage: card.image_small ?? null,
-      setIcon: card.image_small ?? null,
+      pieceImage: card.monster_icon ?? null,
+      setIcon: card.monster_icon ?? null,
       currentRarity: rarityIdx,
       craftRarity: 1, // Fine
       maxRarity: 4, // Superior

@@ -1,10 +1,13 @@
 // ─────────────────────────────────────────────────────────────
 // VisageModal — Detailed card inspect view for MHO Visage Cards
 // ─────────────────────────────────────────────────────────────
-import { X, Sparkles, Star, Trash2, Target, CheckCircle2, Plus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { X, Sparkles, Trash2, Target, CheckCircle2, Plus } from 'lucide-react';
 import type { DBVisage, VisageRarity } from '../../data/schemas/visage';
 import {
   INK_CONFIG,
+  DEFAULT_VISAGE_RARITY,
+  VISAGE_MAX_LEVEL_LABELS,
   getInkConfig,
   VISAGE_RARITY_CONFIG,
   VISAGE_RARITY_OPTIONS,
@@ -13,6 +16,7 @@ import type { CardCollectionEntry } from '../../hooks/useVisageSets';
 import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { InkIconComponent } from './VisageCard';
 import { cn } from '../../lib/utils';
+import VisageIcon from '../../components/visage/VisageIcon';
 
 interface VisageModalProps {
   card: DBVisage | null;
@@ -39,11 +43,12 @@ export default function VisageModal({
   onRemoveFromCollection,
   onAddChallenge,
 }: VisageModalProps) {
+  const navigate = useNavigate();
+
   if (!open || !card) return null;
 
   const primaryInk = currentInk || card.ink_types[0] || 'flames';
   const inkCfg = getInkConfig(primaryInk);
-  const imageSrc = card.image_small;
 
   const isOwned = Boolean(collectionEntry);
   const currentRarity = collectionEntry?.rarity;
@@ -135,15 +140,7 @@ export default function VisageModal({
                     : 'bg-gradient-to-b from-[#f3e5be] via-[#e2cf9f] to-[#cfba84]',
                 )}
               >
-                {imageSrc ? (
-                  <img
-                    src={imageSrc}
-                    alt={card.name}
-                    className="w-full h-full object-contain p-2 drop-shadow-md"
-                  />
-                ) : (
-                  <Sparkles size={36} className="text-amber-800" />
-                )}
+                <VisageIcon visage={card} rarity={currentRarity ?? DEFAULT_VISAGE_RARITY} />
               </div>
 
               <div className="w-full flex items-center justify-between p-2 bg-black/85 border-t border-black/30">
@@ -173,15 +170,18 @@ export default function VisageModal({
 
                 <div className="rounded-lg bg-mh-slate-800/80 p-2.5 border border-mh-slate-750">
                   <span className="block text-[10px] uppercase font-bold text-mh-slate-400">
-                    Inherent Base Rarity
+                    Max Level
                   </span>
-                  <div className="flex items-center gap-0.5 mt-0.5 text-mh-gold-400">
-                    {Array.from({ length: Math.min(5, card.rarity || 1) }).map((_, i) => (
-                      <Star key={i} size={13} fill="currentColor" />
+                  <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs font-bold text-mh-slate-300">
+                    {card.max_levels.length === 0 && <span>—</span>}
+                    {card.max_levels.map((level, i) => (
+                      <span key={i} title={VISAGE_MAX_LEVEL_LABELS[i]} className="inline-flex items-center gap-0.5">
+                        <span className="text-[9px] uppercase text-mh-slate-500">
+                          {VISAGE_MAX_LEVEL_LABELS[i]}
+                        </span>
+                        <span className="text-mh-gold-400">{level}</span>
+                      </span>
                     ))}
-                    <span className="ml-1 text-xs font-bold text-mh-slate-300">
-                      R{card.rarity || 1}
-                    </span>
                   </div>
                 </div>
               </div>
@@ -189,9 +189,12 @@ export default function VisageModal({
               {/* Possible Ink Rolls Pool */}
               <div className="rounded-lg bg-mh-slate-800/80 p-2.5 border border-mh-slate-750">
                 <span className="block text-[10px] uppercase font-bold text-mh-slate-400 mb-1.5">
-                  Possible Inks Pool
+                  Ink Type
                 </span>
                 <div className="flex flex-wrap gap-1.5">
+                  {card.ink_types.length === 0 && (
+                    <span className="text-[11px] text-mh-slate-500">None</span>
+                  )}
                   {card.ink_types.map((ink) => {
                     const cfg = INK_CONFIG[ink] || getInkConfig(ink);
                     return (
@@ -279,10 +282,15 @@ export default function VisageModal({
                   <span>Found (Superior)</span>
                 </span>
               ) : isTracked && !isChallengeDone ? (
-                <span className="inline-flex items-center gap-1 rounded-lg bg-blue-500/15 border border-blue-500/30 px-3 py-1.5 text-xs font-bold text-blue-300">
+                <button
+                  type="button"
+                  onClick={() => navigate(`/challenges?challenge=${challenge?.id}`)}
+                  title="Go to this search on the Challenges page"
+                  className="inline-flex items-center gap-1 rounded-lg bg-blue-500/15 border border-blue-500/30 px-3 py-1.5 text-xs font-bold text-blue-300 hover:bg-blue-500/25 transition-colors shrink-0"
+                >
                   <Target size={13} className="text-blue-400" />
-                  <span>Searching</span>
-                </span>
+                  <span>Searching ➔</span>
+                </button>
               ) : (
                 <button
                   type="button"

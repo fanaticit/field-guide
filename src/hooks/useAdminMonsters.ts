@@ -18,6 +18,7 @@ export interface DBMonster {
   games?: string[];
   is_active: boolean;
   icon: string | null;
+  sketch?: string | null;
   sort_order: number | null;
   sort_orders?: Record<string, number>;
   notes: string | null;
@@ -36,6 +37,9 @@ export interface MonsterFilters {
 }
 
 export const MONSTERS_KEY = 'admin-monsters';
+
+/** Shown for any monster that has no icon of its own. */
+export const DEFAULT_MONSTER_ICON = '/images/monsters/MonsterIcon_Unknow.png';
 
 // ── Queries ───────────────────────────────────────────────────
 
@@ -66,6 +70,7 @@ export function useAdminMonsters(filters: MonsterFilters = {}) {
       const list = (data as DBMonster[]) ?? [];
       return list.map((m) => ({
         ...m,
+        icon: m.icon || DEFAULT_MONSTER_ICON,
         sort_order: m.sort_order ?? m.sort_orders?.['mho'] ?? null,
       }));
     },
@@ -110,6 +115,7 @@ export function usePublicMonsters(game: string = 'mho') {
 
       const monsters = ((data as DBMonster[]) ?? []).map((m) => ({
         ...m,
+        icon: m.icon || DEFAULT_MONSTER_ICON,
         sort_order: m.sort_order ?? m.sort_orders?.[game] ?? m.sort_orders?.['mho'] ?? null,
       }));
 
@@ -162,6 +168,7 @@ export function useUpsertMonster() {
         is_radiant: monster.is_radiant,
         is_active: monster.is_active,
         icon: monster.icon,
+        sketch: monster.sketch ?? null,
         sort_order: monster.sort_order ?? (monster.sort_orders?.['mho'] ?? null),
         notes: monster.notes,
       };

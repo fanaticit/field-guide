@@ -19,7 +19,8 @@ import {
   VISAGE_BUILD_SLOTS,
   VISAGE_POINT_CAP,
 } from '../../lib/visageBuild';
-import { getInkConfig } from '../../data/schemas/visage';
+import { getInkConfig, DEFAULT_VISAGE_RARITY } from '../../data/schemas/visage';
+import VisageIcon from '../visage/VisageIcon';
 import { InkIconComponent } from '../../pages/investigation-notes/VisageCard';
 import { cn } from '../../lib/utils';
 
@@ -155,17 +156,7 @@ export default function VisageBuildRow({
                 )}
               >
                 {visage ? (
-                  visage.image_small ? (
-                    <img
-                      src={visage.image_small}
-                      alt={visage.name}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <span className="text-[7px] font-bold text-mh-slate-300 text-center px-0.5 line-clamp-2">
-                      {visage.name}
-                    </span>
-                  )
+                  <VisageIcon visage={visage} rarity={DEFAULT_VISAGE_RARITY} />
                 ) : (
                   <span className="text-mh-slate-600 text-xs">—</span>
                 )}

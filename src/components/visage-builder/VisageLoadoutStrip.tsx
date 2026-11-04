@@ -1,7 +1,8 @@
 // ─────────────────────────────────────────────────────────────
 // VisageLoadoutStrip — compact, read-only Core + 4 portrait row.
 // ─────────────────────────────────────────────────────────────
-import { getInkConfig } from '../../data/schemas/visage';
+import { getInkConfig, DEFAULT_VISAGE_RARITY } from '../../data/schemas/visage';
+import VisageIcon from '../visage/VisageIcon';
 import { InkIconComponent } from '../../pages/investigation-notes/VisageCard';
 import { VISAGE_BUILD_SLOTS, type VisageLoadout } from '../../lib/visageBuild';
 import { cn } from '../../lib/utils';
@@ -31,11 +32,7 @@ export default function VisageLoadoutStrip({ loadout, missingKeys }: Props) {
               )}
             >
               {visage ? (
-                visage.image_small ? (
-                  <img src={visage.image_small} alt={visage.name} className="w-full h-full object-cover" />
-                ) : (
-                  <span className="text-[8px] font-bold text-mh-slate-300 text-center px-0.5 leading-tight">{visage.name}</span>
-                )
+                <VisageIcon visage={visage} rarity={DEFAULT_VISAGE_RARITY} />
               ) : (
                 <span className="text-mh-slate-700 text-sm">—</span>
               )}

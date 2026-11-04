@@ -312,10 +312,12 @@ export interface DBVisage {
   monster_id: string | null;
   monster_type: VisageMonsterType;
   points: number;
-  rarity: number;
-  /** Pool of 1-3 ink types this card can randomly roll in-game */
+  /** Max level per card rarity: [Fine, Rare, Epic, Superior, Superior+] */
+  max_levels: number[];
+  /** Ink types this card belongs to */
   ink_types: InkType[];
-  image_small: string | null;
+  /** Joined from monsters.icon; the card art is composed from this + a rarity background */
+  monster_icon?: string | null;
   /** Inherent / Core Effect of this Visage card */
   core_effect: string | null;
   is_active: boolean;
@@ -325,7 +327,26 @@ export interface DBVisage {
   updated_at: string;
 }
 
-export type VisageUpsert = Omit<DBVisage, 'created_at' | 'updated_at'>;
+export type VisageUpsert = Omit<DBVisage, 'created_at' | 'updated_at' | 'monster_icon'>;
+
+/** Supabase select that pulls the linked monster icon along with the visage row */
+export const VISAGE_SELECT = '*, monster:monsters(icon)';
+
+/** Flattens the joined `monster` relation into `monster_icon` and normalises array columns */
+export function normalizeVisageRow(row: Record<string, unknown>): DBVisage {
+  const { monster, ...rest } = row as Record<string, unknown> & { monster?: { icon?: string | null } | null };
+  return {
+    ...rest,
+    points: typeof rest.points === 'number' ? rest.points : 1,
+    max_levels: Array.isArray(rest.max_levels) ? (rest.max_levels as number[]) : [],
+    ink_types: (Array.isArray(rest.ink_types) ? rest.ink_types : []) as InkType[],
+    is_active: Boolean(rest.is_active),
+    monster_icon: monster?.icon ?? null,
+  } as DBVisage;
+}
+
+/** Labels for the entries of DBVisage.max_levels */
+export const VISAGE_MAX_LEVEL_LABELS = ['Fine', 'Rare', 'Epic', 'Superior', 'Superior+'] as const;
 
 // ── 4 Card Rarity Types (Fine, Rare, Epic, Superior) ───────────
 
@@ -396,6 +417,17 @@ export const VISAGE_RARITY_CONFIG: Record<VisageRarity, VisageRarityConfig> = {
 };
 
 export const VISAGE_RARITY_OPTIONS: VisageRarity[] = ['fine', 'rare', 'epic', 'superior'];
+
+/** Rarity used for card art where the user's owned rarity is unknown */
+export const DEFAULT_VISAGE_RARITY: VisageRarity = 'superior';
+
+/** Card background image for each rarity; the monster icon is layered on top */
+export const VISAGE_BACKGROUNDS: Record<VisageRarity, string> = {
+  fine: '/images/visages/Role_Amulet_Icon_Quality_01.png',
+  rare: '/images/visages/Role_Amulet_Icon_Quality_02.png',
+  epic: '/images/visages/Role_Amulet_Icon_Quality_03.png',
+  superior: '/images/visages/Role_Amulet_Icon_Quality_04.png',
+};
 
 export interface UserVisageCollectionItem {
   user_id: string;

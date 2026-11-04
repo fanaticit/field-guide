@@ -8,7 +8,6 @@ import {
   RefreshCw,
   LayoutGrid,
   List,
-  Sparkles,
   Edit2,
   Trash2,
   Layers,
@@ -17,6 +16,7 @@ import {
   type DBVisage,
   type InkType,
   getInkConfig,
+  DEFAULT_VISAGE_RARITY,
 } from '../../../data/schemas/visage';
 import {
   useAdminVisages,
@@ -25,6 +25,7 @@ import {
 } from '../../../hooks/useAdminVisages';
 import { useAdminSkills } from '../../../hooks/useAdminSkills';
 import VisageEditModal from './VisageEditModal';
+import VisageIcon from '../../../components/visage/VisageIcon';
 import { cn } from '../../../lib/utils';
 
 type ViewMode = 'grid' | 'table';
@@ -346,20 +347,7 @@ export default function VisageManager() {
 
                   {/* Body: Card Art & Name */}
                   <div className="py-4 flex items-center gap-3.5">
-                    {visage.image_small ? (
-                      <img
-                        src={visage.image_small}
-                        alt={visage.name}
-                        className="h-16 w-16 rounded-2xl object-cover shadow-sm shrink-0"
-                        onError={(e) => {
-                          (e.target as HTMLElement).style.display = 'none';
-                        }}
-                      />
-                    ) : (
-                      <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-mh-slate-800 text-mh-gold-400 shadow-sm">
-                        <Sparkles size={24} />
-                      </div>
-                    )}
+                    <VisageIcon visage={visage} rarity={DEFAULT_VISAGE_RARITY} className="h-16 w-16 shrink-0" />
 
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-1.5">
@@ -448,20 +436,7 @@ export default function VisageManager() {
 
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        {visage.image_small ? (
-                          <img
-                            src={visage.image_small}
-                            alt={visage.name}
-                            className="h-10 w-10 rounded-xl object-cover shadow-sm shrink-0"
-                            onError={(e) => {
-                              (e.target as HTMLElement).style.display = 'none';
-                            }}
-                          />
-                        ) : (
-                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-mh-slate-800 text-mh-gold-400">
-                            <Sparkles size={14} />
-                          </div>
-                        )}
+                        <VisageIcon visage={visage} rarity={DEFAULT_VISAGE_RARITY} className="h-10 w-10 shrink-0" />
                         <div>
                           <span className="font-semibold text-mh-slate-100">
                             {visage.name}

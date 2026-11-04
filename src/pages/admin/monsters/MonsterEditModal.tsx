@@ -84,6 +84,7 @@ function emptyForm(): MonsterUpsert {
     is_radiant: false,
     is_active: true,
     icon: null,
+    sketch: null,
     sort_order: null,
     notes: null,
   };
@@ -181,12 +182,16 @@ function ImageUploadField({
   value,
   onChange,
   slug,
+  noun = 'Icon',
+  placeholder = '/images/monsters/MHO-..._Icon.png or https://...',
 }: {
   label: string;
   subLabel: string;
   value: string | null;
   onChange: (url: string | null) => void;
   slug: string;
+  noun?: string;
+  placeholder?: string;
 }) {
   const [uploading, setUploading] = useState(false);
   const [showUrlInput, setShowUrlInput] = useState(false);
@@ -203,7 +208,7 @@ function ImageUploadField({
     try {
       const fileExt = file.name.split('.').pop()?.toLowerCase() || 'png';
       const cleanSlug = slug.trim() ? slug : 'monster';
-      const path = `MHO-${cleanSlug}_Icon_${Date.now()}.${fileExt}`;
+      const path = `MHO-${cleanSlug}_${noun}_${Date.now()}.${fileExt}`;
 
       const { error } = await supabase.storage
         .from('monsters')
@@ -299,13 +304,13 @@ function ImageUploadField({
                   className="flex items-center gap-1 rounded bg-mh-slate-700 px-2.5 py-1 text-[11px] font-semibold text-mh-slate-200 hover:bg-mh-slate-600 transition-colors"
                 >
                   <Upload size={12} />
-                  Change Icon
+                  Change {noun}
                 </button>
                 <button
                   type="button"
                   onClick={() => onChange(null)}
                   className="rounded p-1 text-mh-slate-500 hover:bg-red-500/20 hover:text-red-400 transition-colors"
-                  title="Remove icon"
+                  title={`Remove ${noun.toLowerCase()}`}
                 >
                   <Trash2 size={13} />
                 </button>
@@ -317,7 +322,7 @@ function ImageUploadField({
             {uploading ? (
               <div className="flex flex-col items-center gap-2 py-2">
                 <Loader2 size={22} className="animate-spin text-mh-gold-400" />
-                <span className="text-xs font-semibold text-mh-slate-300">Uploading icon…</span>
+                <span className="text-xs font-semibold text-mh-slate-300">Uploading {noun.toLowerCase()}…</span>
               </div>
             ) : (
               <>
@@ -327,7 +332,7 @@ function ImageUploadField({
                   onClick={() => fileInputRef.current?.click()}
                   className="rounded-lg bg-mh-gold-500/15 border border-mh-gold-500/30 px-3 py-1 text-xs font-bold text-mh-gold-300 hover:bg-mh-gold-500/25 transition-all shadow-sm mb-1"
                 >
-                  Upload Monster Icon
+                  Upload Monster {noun}
                 </button>
                 <p className="text-[10px] text-mh-slate-500">or drag and drop here (PNG, JPG, WebP)</p>
               </>
@@ -342,7 +347,7 @@ function ImageUploadField({
           type="text"
           value={value ?? ''}
           onChange={(e) => onChange(e.target.value || null)}
-          placeholder="/images/monsters/MHO-..._Icon.png or https://..."
+          placeholder={placeholder}
           className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-100 placeholder-mh-slate-500 outline-none focus:border-mh-gold-500/50"
         />
       )}
@@ -491,6 +496,17 @@ export default function MonsterEditModal({ monster, open, onClose }: Props) {
               value={form.icon}
               onChange={(url) => setForm((f) => ({ ...f, icon: url }))}
               slug={form.id}
+            />
+
+            {/* Monster Sketch */}
+            <ImageUploadField
+              label="Monster Sketch"
+              subLabel="Hand-drawn sketch artwork for this monster."
+              value={form.sketch ?? null}
+              onChange={(url) => setForm((f) => ({ ...f, sketch: url }))}
+              slug={form.id}
+              noun="Sketch"
+              placeholder="/images/sketch/BigMonster/..._D1.png or https://..."
             />
 
             {/* Species + Tier */}

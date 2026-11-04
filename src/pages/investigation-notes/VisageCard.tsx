@@ -24,12 +24,14 @@ import {
 import type { DBVisage, VisageRarity } from '../../data/schemas/visage';
 import {
   getInkConfig,
+  DEFAULT_VISAGE_RARITY,
   VISAGE_RARITY_CONFIG,
   VISAGE_RARITY_OPTIONS,
 } from '../../data/schemas/visage';
 import type { CardCollectionEntry } from '../../hooks/useVisageSets';
 import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
+import VisageIcon from '../../components/visage/VisageIcon';
 
 interface VisageCardProps {
   card: DBVisage;
@@ -110,7 +112,6 @@ export default function VisageCard({
   buildDisabledReason,
   onInspect,
 }: VisageCardProps) {
-  const [imageError, setImageError] = useState(false);
   const [showRarityMenu, setShowRarityMenu] = useState(false);
   const [showQtyMenu, setShowQtyMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -154,15 +155,17 @@ export default function VisageCard({
 
   // Rarity theme configuration
   const rarityCfg = currentRarity ? VISAGE_RARITY_CONFIG[currentRarity] : null;
-  const imageSrc = card.image_small;
 
-  const cardTitle = buildMode
+  const cardAction = buildMode
     ? isInBuild
-      ? `${card.name} (${card.points} Pts) - In build, click to remove`
+      ? 'In build, click to remove'
       : buildDisabled
-        ? `${card.name} (${card.points} Pts) - ${buildDisabledReason ?? "Can't add"}`
-        : `${card.name} (${card.points} Pts) - Click to add to build`
-    : `${card.name} (${card.points} Pts) - Click to inspect`;
+        ? (buildDisabledReason ?? "Can't add")
+        : 'Click to add to build'
+    : 'Click to inspect';
+  const cardTitle = `${card.name} (${card.points} Pts) - ${cardAction}${
+    card.core_effect ? `\nCore effect: ${card.core_effect}` : ''
+  }`;
 
   return (
     <div
@@ -198,18 +201,7 @@ export default function VisageCard({
           isOwned && rarityCfg ? rarityCfg.bgGradient : 'bg-[#151922]',
         )}
       >
-        {imageSrc && !imageError ? (
-          <img
-            src={imageSrc}
-            alt={card.name}
-            onError={() => setImageError(true)}
-            className="w-full h-auto block object-contain drop-shadow-md"
-          />
-        ) : (
-          <div className="flex h-16 w-full items-center justify-center bg-black/20 text-amber-900 font-display font-bold text-xs">
-            {card.name.slice(0, 3).toUpperCase()}
-          </div>
-        )}
+        <VisageIcon visage={card} rarity={currentRarity ?? DEFAULT_VISAGE_RARITY} />
 
         {/* Challenge Tracking Active Indicator Badge */}
         {isTracked && (
@@ -409,7 +401,7 @@ export default function VisageCard({
                 ) : isTracked && challenge ? (
                   <button
                     type="button"
-                    onClick={() => navigate('/challenges')}
+                    onClick={() => navigate(`/challenges?challenge=${challenge.id}`)}
                     className="w-full flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-[10px] font-bold bg-emerald-500/15 border border-emerald-500/35 text-emerald-300 hover:bg-emerald-500/25 transition-colors shadow-sm"
                   >
                     <CheckCircle2 size={12} className="text-emerald-400 shrink-0" />

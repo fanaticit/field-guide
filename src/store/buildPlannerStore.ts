@@ -52,7 +52,7 @@ export interface Visage {
   points: number;
   core_effect: string;
   ink_types: string[];
-  image_small?: string;
+  monster_icon?: string | null;
 }
 
 // Which ink type a given slot has selected (only relevant when card has 2+ ink types)

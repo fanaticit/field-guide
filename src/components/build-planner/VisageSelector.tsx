@@ -6,7 +6,8 @@ import { supabase } from '../../lib/supabase';
 import { useAuthStore } from '../../store/authStore';
 import { useBuildPlannerStore } from '../../store/buildPlannerStore';
 import type { Visage, VisageSlot } from '../../store/buildPlannerStore';
-import { getInkConfig } from '../../data/schemas/visage';
+import { getInkConfig, DEFAULT_VISAGE_RARITY, VISAGE_SELECT, normalizeVisageRow } from '../../data/schemas/visage';
+import VisageIcon from '../visage/VisageIcon';
 import { InkIconComponent } from '../../pages/investigation-notes/VisageCard';
 
 
@@ -42,9 +43,9 @@ export function VisageSelector() {
   const { data: visages, isLoading: isVisageLoading } = useQuery({
     queryKey: ['visages'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('visages').select('*').eq('is_active', true).order('sort_order', { ascending: true });
+      const { data, error } = await supabase.from('visages').select(VISAGE_SELECT).eq('is_active', true).order('sort_order', { ascending: true });
       if (error) throw error;
-      return data as Visage[];
+      return (data ?? []).map((row) => normalizeVisageRow(row as Record<string, unknown>)) as Visage[];
     }
   });
 
@@ -130,11 +131,7 @@ export function VisageSelector() {
         >
           {selected ? (
             <>
-              {selected.image_small ? (
-                <img src={selected.image_small} alt={selected.name} className="w-full h-full object-cover" />
-              ) : (
-                <span className="text-[10px] sm:text-xs font-bold text-mh-slate-300 text-center px-1 leading-tight">{selected.name}</span>
-              )}
+              <VisageIcon visage={selected} rarity={DEFAULT_VISAGE_RARITY} />
               <div className="absolute top-0.5 right-0.5 bg-black/80 px-1 rounded text-[10px] font-bold text-white leading-tight">
                 {selected.points}
               </div>
@@ -260,11 +257,9 @@ export function VisageSelector() {
                               : 'border-mh-slate-800 opacity-40 hover:opacity-70 hover:border-mh-slate-700'
                         }`}
                       >
-                        {v.image_small ? (
-                          <img src={v.image_small} alt={v.name} className="w-full h-full object-cover" />
-                        ) : (
-                          <span className="text-[9px] font-bold text-mh-slate-400 text-center leading-tight block px-0.5 pt-1">{v.name}</span>
-                        )}
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <VisageIcon visage={v} rarity={DEFAULT_VISAGE_RARITY} />
+                        </div>
                         {/* Ink dot in top-left */}
                         {ink && (
                           <div className={`absolute top-0.5 left-0.5 w-3 h-3 rounded-full flex items-center justify-center ${inkC.dotColor} text-white shadow-sm ring-1 ring-black/30`}>
