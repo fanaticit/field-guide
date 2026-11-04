@@ -83,6 +83,81 @@ export function useDeleteVisageBuild() {
 }
 
 // ─────────────────────────────────────────────────────────────
+// useUserVisageVotes — Upvoting shared visage builds (one vote per user)
+// ─────────────────────────────────────────────────────────────
+export function useUserVisageVotes() {
+  const { user } = useAuthStore();
+  const qc = useQueryClient();
+  const votesKey = [VISAGE_BUILDS_KEY, 'votes', user?.id ?? 'guest'];
+  const listKey = [VISAGE_BUILDS_KEY, 'list'];
+
+  const { data: votes = [] } = useQuery({
+    queryKey: votesKey,
+    enabled: Boolean(user),
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('user_visage_build_votes')
+        .select('visage_build_id')
+        .eq('user_id', user!.id);
+      if (error) throw error;
+      return (data ?? []).map((r) => r.visage_build_id as string);
+    },
+    staleTime: 1000 * 60,
+  });
+
+  const votedSet = useMemo(() => new Set(votes), [votes]);
+
+  const mutation = useMutation({
+    mutationFn: async ({ buildId, vote }: { buildId: string; vote: boolean }) => {
+      if (!user) throw new Error('Sign in to upvote');
+      if (vote) {
+        const { error } = await supabase
+          .from('user_visage_build_votes')
+          .insert({ user_id: user.id, visage_build_id: buildId });
+        if (error && error.code !== '23505') throw error;
+      } else {
+        const { error } = await supabase
+          .from('user_visage_build_votes')
+          .delete()
+          .eq('user_id', user.id)
+          .eq('visage_build_id', buildId);
+        if (error) throw error;
+      }
+    },
+    onMutate: async ({ buildId, vote }) => {
+      await Promise.all([qc.cancelQueries({ queryKey: votesKey }), qc.cancelQueries({ queryKey: listKey })]);
+      const previousVotes = qc.getQueryData<string[]>(votesKey) ?? [];
+      const previousList = qc.getQueryData<VisageBuildRow[]>(listKey);
+      qc.setQueryData(votesKey, vote ? [...previousVotes, buildId] : previousVotes.filter((id) => id !== buildId));
+      if (previousList) {
+        qc.setQueryData(
+          listKey,
+          previousList.map((r) =>
+            r.id === buildId ? { ...r, upvotes: Math.max(0, r.upvotes + (vote ? 1 : -1)) } : r,
+          ),
+        );
+      }
+      return { previousVotes, previousList };
+    },
+    onError: (_err, _vars, ctx) => {
+      if (ctx) {
+        qc.setQueryData(votesKey, ctx.previousVotes);
+        if (ctx.previousList) qc.setQueryData(listKey, ctx.previousList);
+      }
+    },
+    onSettled: () => {
+      qc.invalidateQueries({ queryKey: votesKey });
+      qc.invalidateQueries({ queryKey: listKey });
+    },
+  });
+
+  return {
+    votedSet,
+    toggleVote: (buildId: string) => mutation.mutateAsync({ buildId, vote: !votedSet.has(buildId) }),
+  };
+}
+
+// ─────────────────────────────────────────────────────────────
 // useUserVisageFavorites — Favoriting shared visage builds
 // ─────────────────────────────────────────────────────────────
 export function useUserVisageFavorites() {

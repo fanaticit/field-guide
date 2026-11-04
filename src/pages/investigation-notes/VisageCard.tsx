@@ -65,6 +65,21 @@ export function InkIconComponent({
   size?: number;
   className?: string;
 }) {
+  if (iconName.startsWith('/')) {
+    // The ink artwork has built-in padding, so it is drawn larger than the line icons
+    const imgSize = Math.round(size * 1.4);
+    return (
+      <img
+        src={iconName}
+        alt=""
+        draggable={false}
+        width={imgSize}
+        height={imgSize}
+        style={{ width: imgSize, height: imgSize }}
+        className={cn('shrink-0 object-contain', className)}
+      />
+    );
+  }
   switch (iconName) {
     case 'sword':
       return <Sword size={size} className={className} />;
@@ -283,7 +298,7 @@ export default function VisageCard({
           )}
         >
           <div className={cn('text-xs flex items-center justify-center', inkCfg.text)}>
-            <InkIconComponent iconName={inkCfg.iconName} size={10} />
+            <InkIconComponent iconName={inkCfg.iconName} size={12} />
           </div>
           <span className="font-display text-[10px] sm:text-[11px] font-bold leading-none text-amber-300">
             {card.points}

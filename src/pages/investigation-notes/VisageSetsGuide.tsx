@@ -562,9 +562,11 @@ export default function VisageSetsGuide() {
       </div>
 
       {/* ── Main Book Container ── */}
-      <div className="flex flex-1 min-h-0 flex-col lg:flex-row gap-3 overflow-hidden">
-        {/* ── Mobile Horizontal Sets Strip (< lg) ── */}
-        <div className="mho-panel-deep lg:hidden shrink-0 flex flex-col min-h-0">
+      {/* Layout follows the width of this container (not the screen) so the cards never need a sideways scroll */}
+      <div className="@container flex flex-1 min-h-0 flex-col overflow-hidden">
+      <div className="flex flex-1 min-h-0 flex-col @[1250px]:flex-row gap-3 overflow-hidden">
+        {/* ── Compact Sets Strip on top (narrow containers) ── */}
+        <div className="mho-panel-deep @[1250px]:hidden shrink-0 flex flex-col min-h-0">
           {/* Compact search & filter row */}
           <div className="p-2 border-b border-[var(--border-subtle)] flex items-center gap-2">
             <div className="relative flex-1">
@@ -645,8 +647,8 @@ export default function VisageSetsGuide() {
           </div>
         </div>
 
-        {/* ── Left Sidebar: Sets List (Desktop lg+) ── */}
-        <div className="mho-panel-deep hidden lg:flex w-72 xl:w-80 shrink-0 flex-col min-h-0 overflow-hidden">
+        {/* ── Left Sidebar: Sets List (wide containers) ── */}
+        <div className="mho-panel-deep hidden @[1250px]:flex w-72 @[1500px]:w-80 shrink-0 flex-col min-h-0 overflow-hidden">
           {/* Search & Filter Bar */}
           <div className="p-3 border-b border-[var(--border-subtle)] space-y-2 shrink-0">
             <div className="relative">
@@ -802,9 +804,9 @@ export default function VisageSetsGuide() {
                 </div>
               </div>
 
-              {/* Mobile/Tablet Builder Panel (< xl) */}
+              {/* Inline Builder Panel (narrower containers) */}
               {isBuilder && (
-                <div className="xl:hidden">
+                <div className="@[1640px]:hidden">
                   <VisageBuilderPanel
                     sets={sets}
                     visages={dbVisages}
@@ -819,7 +821,7 @@ export default function VisageSetsGuide() {
 
               {/* ── Columns Grouped by Points ── */}
               {activeSet.groupedColumns.length > 0 ? (
-                <div className="flex flex-wrap lg:flex-nowrap gap-4 sm:gap-6 items-start overflow-x-auto pb-3">
+                <div className="flex flex-wrap gap-4 sm:gap-6 items-start pb-3">
                   {activeSet.groupedColumns.map((col) => (
                     <div
                       key={col.points}
@@ -943,9 +945,9 @@ export default function VisageSetsGuide() {
           )}
         </div>
 
-        {/* ── Desktop Builder Column (xl+) ── */}
+        {/* ── Builder Column (wide containers) ── */}
         {isBuilder && (
-          <div className="mho-panel-deep hidden xl:block w-[380px] 2xl:w-[420px] shrink-0 overflow-y-auto p-4 min-h-0">
+          <div className="mho-panel-deep hidden @[1640px]:block w-[380px] @[1900px]:w-[420px] shrink-0 overflow-y-auto p-4 min-h-0">
             <VisageBuilderPanel
               sets={sets}
               visages={dbVisages}
@@ -957,6 +959,7 @@ export default function VisageSetsGuide() {
             />
           </div>
         )}
+      </div>
       </div>
 
       {/* ── Duplicate Build Modal ── */}

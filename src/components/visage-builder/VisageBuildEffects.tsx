@@ -45,7 +45,7 @@ export default function VisageBuildEffects({ loadout, sets, onAddForInk }: Props
             return (
               <div key={b.ink} className="flex flex-col gap-2">
                 <div className="flex items-center gap-2">
-                  <div className={cn('w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-white', c.dotColor)}>
+                  <div className="w-5 h-5 flex items-center justify-center shrink-0">
                     <InkIconComponent iconName={c.iconName} size={10} />
                   </div>
                   <span className={cn('text-xs font-bold truncate', c.text)}>{b.name}</span>

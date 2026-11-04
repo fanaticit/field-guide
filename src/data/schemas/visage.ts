@@ -19,7 +19,8 @@ export type InkType =
   | 'sleep'
   | 'blast'
   | 'resonance'
-  | 'protection';
+  | 'protection'
+  | 'kushala_daoras_tempest';
 
 export type VisageMonsterType = 'small' | 'large';
 
@@ -32,7 +33,10 @@ export interface InkConfig {
   border: string;
   dotColor: string;
   glowColor: string;
-  iconName: 'sword' | 'flame' | 'droplet' | 'zap' | 'swords' | 'link' | 'sparkles' | 'snowflake' | 'skull' | 'moon' | 'shield' | 'activity';
+  /** A lucide icon name, or a `/images/...` path to an ink icon image. */
+  iconName:
+    | 'sword' | 'flame' | 'droplet' | 'zap' | 'swords' | 'link' | 'sparkles' | 'snowflake' | 'skull' | 'moon' | 'shield' | 'activity'
+    | `/${string}`;
 }
 
 export const INK_CONFIG: Record<InkType, InkConfig> = {
@@ -45,7 +49,7 @@ export const INK_CONFIG: Record<InkType, InkConfig> = {
     border: 'border-red-500/30',
     dotColor: 'bg-red-500',
     glowColor: 'rgba(239, 68, 68, 0.4)',
-    iconName: 'sword',
+    iconName: '/images/inks/AmuletSuitIcon_Might.png',
   },
   flames: {
     id: 'flames',
@@ -56,7 +60,7 @@ export const INK_CONFIG: Record<InkType, InkConfig> = {
     border: 'border-amber-500/30',
     dotColor: 'bg-amber-500',
     glowColor: 'rgba(245, 158, 11, 0.4)',
-    iconName: 'flame',
+    iconName: '/images/inks/AmuletSuitIcon_Blaze.png',
   },
   fire: {
     id: 'fire',
@@ -67,7 +71,7 @@ export const INK_CONFIG: Record<InkType, InkConfig> = {
     border: 'border-amber-500/30',
     dotColor: 'bg-amber-500',
     glowColor: 'rgba(245, 158, 11, 0.4)',
-    iconName: 'flame',
+    iconName: '/images/inks/AmuletSuitIcon_Blaze.png',
   },
   water: {
     id: 'water',
@@ -78,18 +82,18 @@ export const INK_CONFIG: Record<InkType, InkConfig> = {
     border: 'border-sky-500/30',
     dotColor: 'bg-sky-400',
     glowColor: 'rgba(56, 189, 248, 0.4)',
-    iconName: 'droplet',
+    iconName: '/images/inks/AmuletSuitIcon_Tide.png',
   },
   thunder: {
     id: 'thunder',
     name: 'Ink of Thunder',
     shortName: 'Thunder',
-    bg: 'bg-yellow-500/15',
-    text: 'text-yellow-400',
-    border: 'border-yellow-500/30',
-    dotColor: 'bg-yellow-400',
-    glowColor: 'rgba(250, 204, 21, 0.4)',
-    iconName: 'zap',
+    bg: 'bg-[#FFE600]/15',
+    text: 'text-[#FFE600]',
+    border: 'border-[#FFE600]/35',
+    dotColor: 'bg-[#FFE600]',
+    glowColor: 'rgba(255, 230, 0, 0.45)',
+    iconName: '/images/inks/AmuletSuitIcon_Bolt.png',
   },
   combat: {
     id: 'combat',
@@ -100,7 +104,7 @@ export const INK_CONFIG: Record<InkType, InkConfig> = {
     border: 'border-rose-600/30',
     dotColor: 'bg-rose-500',
     glowColor: 'rgba(225, 29, 72, 0.4)',
-    iconName: 'swords',
+    iconName: '/images/inks/AmuletSuitIcon_Assault.png',
   },
   guidance: {
     id: 'guidance',
@@ -111,7 +115,7 @@ export const INK_CONFIG: Record<InkType, InkConfig> = {
     border: 'border-emerald-500/30',
     dotColor: 'bg-emerald-400',
     glowColor: 'rgba(16, 185, 129, 0.4)',
-    iconName: 'link',
+    iconName: '/images/inks/AmuletSuitIcon_Bind.png',
   },
   grace: {
     id: 'grace',
@@ -122,7 +126,7 @@ export const INK_CONFIG: Record<InkType, InkConfig> = {
     border: 'border-teal-500/30',
     dotColor: 'bg-teal-300',
     glowColor: 'rgba(45, 212, 191, 0.4)',
-    iconName: 'sparkles',
+    iconName: '/images/inks/AmuletSuitIcon_Grace.png',
   },
   ice: {
     id: 'ice',
@@ -133,7 +137,7 @@ export const INK_CONFIG: Record<InkType, InkConfig> = {
     border: 'border-cyan-500/30',
     dotColor: 'bg-cyan-400',
     glowColor: 'rgba(6, 182, 212, 0.4)',
-    iconName: 'snowflake',
+    iconName: '/images/inks/AmuletSuitIcon_Frost.png',
   },
   frost: {
     id: 'frost',
@@ -144,7 +148,7 @@ export const INK_CONFIG: Record<InkType, InkConfig> = {
     border: 'border-cyan-500/30',
     dotColor: 'bg-cyan-400',
     glowColor: 'rgba(6, 182, 212, 0.4)',
-    iconName: 'snowflake',
+    iconName: '/images/inks/AmuletSuitIcon_Frost.png',
   },
   dragon: {
     id: 'dragon',
@@ -155,7 +159,7 @@ export const INK_CONFIG: Record<InkType, InkConfig> = {
     border: 'border-purple-500/30',
     dotColor: 'bg-purple-400',
     glowColor: 'rgba(168, 85, 247, 0.4)',
-    iconName: 'sparkles',
+    iconName: '/images/inks/AmuletSuitIcon_Drake.png',
   },
   poison: {
     id: 'poison',
@@ -210,18 +214,29 @@ export const INK_CONFIG: Record<InkType, InkConfig> = {
     border: 'border-emerald-600/30',
     dotColor: 'bg-emerald-300',
     glowColor: 'rgba(5, 150, 105, 0.4)',
-    iconName: 'activity',
+    iconName: '/images/inks/AmuletSuitIcon_Arts.png',
   },
   protection: {
     id: 'protection',
     name: 'Ink of Protection',
     shortName: 'Protection',
-    bg: 'bg-sky-600/15',
-    text: 'text-sky-300',
-    border: 'border-sky-600/30',
-    dotColor: 'bg-sky-300',
-    glowColor: 'rgba(2, 132, 199, 0.4)',
-    iconName: 'shield',
+    bg: 'bg-[#8B5A2B]/20',
+    text: 'text-[#C48A52]',
+    border: 'border-[#8B5A2B]/45',
+    dotColor: 'bg-[#8B5A2B]',
+    glowColor: 'rgba(139, 90, 43, 0.45)',
+    iconName: '/images/inks/AmuletSuitIcon_Guard.png',
+  },
+  kushala_daoras_tempest: {
+    id: 'kushala_daoras_tempest',
+    name: "Kushala Daora's Tempest",
+    shortName: 'Tempest',
+    bg: 'bg-slate-400/15',
+    text: 'text-slate-300',
+    border: 'border-slate-400/35',
+    dotColor: 'bg-slate-400',
+    glowColor: 'rgba(148, 163, 184, 0.4)',
+    iconName: '/images/inks/AmuletSuitIcon_KushalaDaora.png',
   },
 };
 
@@ -242,7 +257,11 @@ export const INK_OPTIONS: InkType[] = [
   'blast',
   'resonance',
   'protection',
+  'kushala_daoras_tempest',
 ];
+
+/** Sets that are not named "Ink of ..." but are still selectable on cards */
+export const CUSTOM_SET_INKS: InkType[] = ['kushala_daoras_tempest'];
 
 export function getInkConfig(ink: string | null | undefined, customName?: string): InkConfig {
   if (!ink) return INK_CONFIG.flames;

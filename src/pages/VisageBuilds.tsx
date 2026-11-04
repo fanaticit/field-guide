@@ -29,6 +29,7 @@ import {
   useVisageBuildsList,
   useDeleteVisageBuild,
   useUserVisageFavorites,
+  useUserVisageVotes,
 } from '../hooks/useVisageBuilds';
 import { useVisageBuilderStore } from '../store/visageBuilderStore';
 import {
@@ -43,6 +44,8 @@ import { getInkConfig, INK_OPTIONS } from '../data/schemas/visage';
 import { loadVisageLoadoutIntoPlanner } from '../lib/loadVisageSetIntoPlanner';
 import VisageLoadoutStrip from '../components/visage-builder/VisageLoadoutStrip';
 import VisageBuildRow from '../components/visage-builder/VisageBuildRow';
+import UpvoteButton from '../components/visage-builder/UpvoteButton';
+import RankBadge from '../components/visage-builder/RankBadge';
 import { InkIconComponent } from './investigation-notes/VisageCard';
 import { cn } from '../lib/utils';
 
@@ -86,6 +89,30 @@ export default function VisageBuilds() {
   const deleteBuild = useDeleteVisageBuild();
   const builder = useVisageBuilderStore();
   const { favorites, favoritesSet, toggleFavorite } = useUserVisageFavorites();
+  const { votedSet, toggleVote } = useUserVisageVotes();
+  const [sortMode, setSortMode] = useState<'top' | 'new'>('top');
+
+  // Ranking across all shared builds: more upvotes ranks higher, ties share a rank
+  const rankById = useMemo(() => {
+    const ranked = rawBuilds
+      .filter((b) => b.is_published && b.upvotes > 0)
+      .sort((a, b) => b.upvotes - a.upvotes);
+    const map = new Map<string, number>();
+    ranked.forEach((b, i) => {
+      map.set(b.id, i > 0 && ranked[i - 1].upvotes === b.upvotes ? map.get(ranked[i - 1].id)! : i + 1);
+    });
+    return map;
+  }, [rawBuilds]);
+
+  const voteDisabledReason = (row: TVisageBuildRow): string | null => {
+    if (!user) return 'Sign in to upvote';
+    if (!row.is_published) return 'Only published sets can be upvoted';
+    if (row.author_id === user.id) return "You can't upvote your own set";
+    return null;
+  };
+  const handleToggleVote = (row: TVisageBuildRow) => {
+    if (!voteDisabledReason(row)) void toggleVote(row.id);
+  };
 
   const [searchQuery, setSearchQuery] = useState('');
   const [inkFilter, setInkFilter] = useState<string>('all');
@@ -136,7 +163,7 @@ export default function VisageBuilds() {
 
   // Filtered builds
   const filtered = useMemo(() => {
-    return processedBuilds.filter(({ row, loadout, buildability, activeBonuses }) => {
+    const matches = processedBuilds.filter(({ row, loadout, buildability, activeBonuses }) => {
       // 0. Favorites only
       if (favoritesOnly && !favoritesSet.has(row.id)) return false;
 
@@ -168,7 +195,11 @@ export default function VisageBuilds() {
 
       return true;
     });
-  }, [processedBuilds, favoritesOnly, favoritesSet, mineOnly, user, buildableOnly, inkFilter, searchQuery]);
+
+    if (sortMode === 'new') return matches;
+    // Top rated first; the list arrives newest-first, so ties stay newest-first
+    return [...matches].sort((a, b) => b.row.upvotes - a.row.upvotes);
+  }, [processedBuilds, favoritesOnly, favoritesSet, mineOnly, user, buildableOnly, inkFilter, searchQuery, sortMode]);
 
   const handleOpenInBuilder = (row: TVisageBuildRow) => {
     const loadout = rowToLoadout(row, visagesById);
@@ -249,6 +280,17 @@ export default function VisageBuilds() {
 
           {/* Quick Filters Group */}
           <div className="flex flex-wrap items-center gap-2">
+            {/* Sort */}
+            <select
+              value={sortMode}
+              onChange={(e) => setSortMode(e.target.value as 'top' | 'new')}
+              aria-label="Sort sets"
+              className="rounded-xl border border-[var(--border-subtle)] bg-black/30 px-3 py-2 text-xs font-semibold text-white outline-none focus:border-[#FFD700]/70"
+            >
+              <option value="top">Top rated</option>
+              <option value="new">Newest</option>
+            </select>
+
             {/* Ink Set Dropdown */}
             <select
               value={inkFilter}
@@ -398,6 +440,10 @@ export default function VisageBuilds() {
                 isAuthor={user?.id === row.author_id}
                 isSignedIn={Boolean(user)}
                 onToggleFavorite={() => toggleFavorite(row.id)}
+                rank={rankById.get(row.id) ?? null}
+                hasVoted={votedSet.has(row.id)}
+                voteDisabledReason={voteDisabledReason(row)}
+                onToggleVote={() => handleToggleVote(row)}
                 onOpenInBuilder={() => handleOpenInBuilder(row)}
                 onLoadToPlanner={() => handleLoadToPlanner(row)}
                 onDelete={() => handleDelete(row)}
@@ -444,6 +490,7 @@ export default function VisageBuilds() {
                           />
                         </button>
 
+                        {rankById.has(row.id) && <RankBadge rank={rankById.get(row.id)!} />}
                         <h3
                           onClick={() => handleOpenInBuilder(row)}
                           className="font-display text-base font-bold text-white hover:text-[#FFD700] cursor-pointer transition-colors leading-snug line-clamp-1"
@@ -452,10 +499,18 @@ export default function VisageBuilds() {
                         </h3>
                       </div>
 
-                      {/* Points badge */}
-                      <span className="shrink-0 px-2 py-0.5 rounded-full text-[10px] font-bold bg-black/30 text-mh-slate-300 border border-[var(--border-subtle)]">
-                        {row.total_points} / {VISAGE_POINT_CAP} pts
-                      </span>
+                      {/* Upvotes & points */}
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <UpvoteButton
+                          count={row.upvotes}
+                          voted={votedSet.has(row.id)}
+                          disabledReason={voteDisabledReason(row)}
+                          onClick={() => handleToggleVote(row)}
+                        />
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-black/30 text-mh-slate-300 border border-[var(--border-subtle)]">
+                          {row.total_points} / {VISAGE_POINT_CAP} pts
+                        </span>
+                      </div>
                     </div>
 
                     {/* Author & date & privacy */}

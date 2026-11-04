@@ -117,36 +117,54 @@ export default function VisageBuilderPanel({ sets, visages, collectionMap, isOwn
           {slotLabel(slot)}
         </label>
 
-        <button
-          onClick={() => {
-            setOpenSlot(openSlot === slot ? null : slot);
-            setInkPickSlot(null);
-            setFilterInk(null);
-            setSearch('');
-          }}
-          className={cn(
-            'relative w-full aspect-[4/5] bg-mh-slate-800 border-2 rounded-lg overflow-hidden flex items-center justify-center transition-colors group',
-            core ? 'border-rarity-5 hover:border-rarity-4 shadow-[0_0_10px_rgba(255,215,0,0.15)]' : 'border-mh-slate-700 hover:border-mh-slate-500',
-            openSlot === slot && 'ring-2 ring-mh-gold-400',
-          )}
-        >
-          {visage ? (
-            <>
-              <VisageIcon visage={visage} rarity={DEFAULT_VISAGE_RARITY} className={cn(notOwned && 'opacity-60')} />
-              <div className="absolute top-0.5 right-0.5 bg-black/80 px-1 rounded text-[10px] font-bold text-white leading-tight">{visage.points}</div>
-              {notOwned && (
-                <div className="absolute bottom-0.5 left-0.5 text-[10px]" title="You don't own this card + ink">
-                  🔒
-                </div>
-              )}
-              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <span className="text-white text-[12px] font-bold">✎</span>
+        {visage ? (
+          // Filled slots aren't edited here: cards are picked from the album below
+          <div
+            className={cn(
+              'relative w-full aspect-[4/5] bg-mh-slate-800 border-2 rounded-lg overflow-hidden flex items-center justify-center',
+              core ? 'border-rarity-5 shadow-[0_0_10px_rgba(255,215,0,0.15)]' : 'border-mh-slate-700',
+            )}
+          >
+            <VisageIcon visage={visage} rarity={DEFAULT_VISAGE_RARITY} className={cn(notOwned && 'opacity-60')} />
+            <div className="absolute top-0.5 right-0.5 bg-black/80 px-1 rounded text-[10px] font-bold text-white leading-tight">{visage.points}</div>
+            {notOwned && (
+              <div className="absolute bottom-0.5 left-0.5 text-[10px]" title="You don't own this card + ink">
+                🔒
               </div>
-            </>
-          ) : (
+            )}
+          </div>
+        ) : (
+          <button
+            onClick={() => {
+              setOpenSlot(openSlot === slot ? null : slot);
+              setInkPickSlot(null);
+              setFilterInk(null);
+              setSearch('');
+            }}
+            className={cn(
+              'relative w-full aspect-[4/5] bg-mh-slate-800 border-2 rounded-lg overflow-hidden flex items-center justify-center transition-colors',
+              core ? 'border-rarity-5 hover:border-rarity-4 shadow-[0_0_10px_rgba(255,215,0,0.15)]' : 'border-mh-slate-700 hover:border-mh-slate-500',
+              openSlot === slot && 'ring-2 ring-mh-gold-400',
+            )}
+          >
             <span className="text-mh-slate-600 text-lg font-light">+</span>
-          )}
-        </button>
+          </button>
+        )}
+
+        {visage && (
+          <button
+            type="button"
+            onClick={() => {
+              setSlot(slot, null);
+              setInkPickSlot(null);
+              onNotice(null);
+            }}
+            title={`Remove ${visage.name}`}
+            className="mt-1 w-full rounded border border-red-500/30 bg-red-500/10 py-0.5 text-[10px] font-bold text-red-300 hover:bg-red-500/25 hover:text-red-200 transition-colors"
+          >
+            ✕ Remove
+          </button>
+        )}
 
         {visage && visage.ink_types.length > 0 && (
           <div className="relative mt-1">
@@ -160,8 +178,8 @@ export default function VisageBuilderPanel({ sets, visages, collectionMap, isOwn
               }}
               title={ink ? cfg.name : 'No ink'}
               className={cn(
-                'w-6 h-6 rounded-full flex items-center justify-center ring-1 ring-black/40 text-white shadow-sm transition-all',
-                ink ? cfg.dotColor : 'bg-mh-slate-700',
+                'w-6 h-6 rounded-full flex items-center justify-center text-white transition-all',
+                !ink && 'bg-mh-slate-700 ring-1 ring-black/40',
                 multiInk ? 'cursor-pointer hover:scale-110 hover:ring-2' : 'cursor-default',
               )}
             >
@@ -192,7 +210,7 @@ export default function VisageBuilderPanel({ sets, visages, collectionMap, isOwn
                         disabled && 'opacity-40 cursor-not-allowed hover:bg-transparent',
                       )}
                     >
-                      <div className={cn('w-4 h-4 rounded-full flex items-center justify-center text-white shrink-0', active ? 'bg-white/20' : c.dotColor)}>
+                      <div className="w-4 h-4 flex items-center justify-center shrink-0">
                         <InkIconComponent iconName={c.iconName} size={10} />
                       </div>
                       {c.shortName}
@@ -285,8 +303,8 @@ export default function VisageBuilderPanel({ sets, visages, collectionMap, isOwn
                 <div className="absolute inset-0 flex items-center justify-center">
                   <VisageIcon visage={v} rarity={DEFAULT_VISAGE_RARITY} />
                 </div>
-                <div className={cn('absolute top-0.5 left-0.5 w-3 h-3 rounded-full flex items-center justify-center text-white ring-1 ring-black/30', firstInk.dotColor)}>
-                  <InkIconComponent iconName={firstInk.iconName} size={8} />
+                <div className="absolute top-0.5 left-0.5 w-4 h-4 flex items-center justify-center drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">
+                  <InkIconComponent iconName={firstInk.iconName} size={9} />
                 </div>
                 <div className="absolute bottom-0 right-0 bg-black/80 px-0.5 text-[8px] font-bold text-white">{v.points}</div>
                 {!owned && <div className="absolute bottom-0 left-0 text-[8px]">🔒</div>}

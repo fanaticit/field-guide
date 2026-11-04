@@ -16,6 +16,7 @@ import {
   type DBVisage,
   type InkType,
   getInkConfig,
+  CUSTOM_SET_INKS,
   DEFAULT_VISAGE_RARITY,
 } from '../../../data/schemas/visage';
 import {
@@ -87,6 +88,8 @@ export default function VisageManager() {
         set.add(slug);
       }
     });
+
+    CUSTOM_SET_INKS.forEach((i) => set.add(i));
 
     // Also include any inks from loaded visage cards
     visages.forEach((v) => {

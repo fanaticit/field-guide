@@ -30,7 +30,8 @@ import {
   LogIn,
   Palette,
 } from 'lucide-react';
-import { useAuthStore, selectIsAdmin, selectCanModerate } from '../store/authStore';
+import { useAuthStore, selectIsAdmin, selectCanModerate, type EquipmentGender } from '../store/authStore';
+import EquipmentGenderPicker from '../components/auth/EquipmentGenderPicker';
 import { useUIStore, type Page } from '../store/uiStore';
 import { DEFAULT_SECTION_THEMES, SITE_SECTIONS, THEME_REGISTRY, type RarityTheme } from '../config/themes';
 import LoginModal from '../components/auth/LoginModal';
@@ -111,6 +112,7 @@ export default function ProfilePage() {
   const [selectedDefaultPage, setSelectedDefaultPage] = useState<Page>('field-guide');
   const [locale, setLocale] = useState('en');
   const [gameIds, setGameIds] = useState<string[]>(['mho']);
+  const [equipmentGender, setEquipmentGender] = useState<EquipmentGender>('male');
   const [showAvatarPicker, setShowAvatarPicker] = useState(false);
 
   // Sync state from profile or store
@@ -122,6 +124,7 @@ export default function ProfilePage() {
       setSelectedDefaultPage(normalizePage(profile.default_page));
       setLocale(profile.locale || 'en');
       setGameIds(profile.game_ids || ['mho']);
+      setEquipmentGender(profile.equipment_gender ?? 'male');
     }
   }, [profile]);
 
@@ -140,6 +143,7 @@ export default function ProfilePage() {
       default_page: selectedDefaultPage,
       locale,
       game_ids: gameIds,
+      equipment_gender: equipmentGender,
     });
 
     if (success) {
@@ -156,6 +160,7 @@ export default function ProfilePage() {
       setSelectedDefaultPage(normalizePage(profile.default_page));
       setLocale(profile.locale || 'en');
       setGameIds(profile.game_ids || ['mho']);
+      setEquipmentGender(profile.equipment_gender ?? 'male');
     }
     clearAuthError();
     setSuccessMessage(null);
@@ -449,6 +454,17 @@ export default function ProfilePage() {
             </div>
             <p className="text-[11px] text-mh-slate-500 mt-1.5">
               Select which games appear in your quick filters and tabs across the app.
+            </p>
+          </div>
+
+          {/* Equipment image preference */}
+          <div>
+            <label className="block text-xs font-semibold text-mh-slate-300 mb-2">
+              Equipment Images
+            </label>
+            <EquipmentGenderPicker value={equipmentGender} onChange={setEquipmentGender} className="max-w-xs" />
+            <p className="text-[11px] text-mh-slate-500 mt-1.5">
+              Choose whether armour pieces are shown with male or female equipment images.
             </p>
           </div>
         </div>

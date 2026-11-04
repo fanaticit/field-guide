@@ -839,3 +839,10 @@ body {
   filter: brightness(1.08);
   box-shadow: 0 0 18px var(--theme-glow), inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
+
+/* Discourage casual image saving */
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}

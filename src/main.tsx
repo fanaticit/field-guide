@@ -16,6 +16,11 @@ initAuth()
 // Restore the hunter's unsaved Build Planner selections from their cookie.
 initBuildDraftPersistence()
 
+// Discourage casual image saving: block the context menu and dragging on images only.
+const isImage = (e: Event) => (e.target as HTMLElement | null)?.tagName === 'IMG'
+document.addEventListener('contextmenu', (e) => { if (isImage(e)) e.preventDefault() })
+document.addEventListener('dragstart', (e) => { if (isImage(e)) e.preventDefault() })
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

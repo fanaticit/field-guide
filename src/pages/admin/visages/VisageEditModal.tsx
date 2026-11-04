@@ -8,6 +8,7 @@ import {
   type VisageUpsert,
   type InkType,
   getInkConfig,
+  CUSTOM_SET_INKS,
   VISAGE_MAX_LEVEL_LABELS,
 } from '../../../data/schemas/visage';
 import { useUpsertVisage, useDeleteVisage, useAdminVisages } from '../../../hooks/useAdminVisages';
@@ -81,6 +82,8 @@ export default function VisageEditModal({ visage, open, onClose }: Props) {
         set.add(slug);
       }
     });
+
+    CUSTOM_SET_INKS.forEach((i) => set.add(i));
 
     // Also preserve any existing inks currently selected on the card
     (form.ink_types || []).forEach((i) => {

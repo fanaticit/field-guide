@@ -4,7 +4,9 @@
 // ─────────────────────────────────────────────────────────────
 import { useState, useEffect } from 'react';
 import { X,  Eye, EyeOff, Loader2, AlertCircle, CheckCircle2, ArrowLeft } from 'lucide-react';
-import { useAuthStore } from '../../store/authStore';
+import { useAuthStore, type EquipmentGender } from '../../store/authStore';
+import HumanCheck, { useHumanCheck } from './HumanCheck';
+import EquipmentGenderPicker from './EquipmentGenderPicker';
 import { cn } from '../../lib/utils';
 
 type Mode = 'signin' | 'signup' | 'forgot';
@@ -34,21 +36,36 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [equipmentGender, setEquipmentGender] = useState<EquipmentGender>('male');
+  const [localError, setLocalError] = useState<string | null>(null);
+  const humanCheck = useHumanCheck();
+  const { reset: resetHumanCheck } = humanCheck;
 
   // Clear state when modal opens/closes or mode changes
   useEffect(() => {
     if (open) {
       clearAuthError();
       setSuccessMessage(null);
+      setLocalError(null);
+      resetHumanCheck();
     }
-  }, [open, clearAuthError]);
+  }, [open, clearAuthError, resetHumanCheck]);
 
   useEffect(() => {
     clearAuthError();
     setSuccessMessage(null);
-  }, [mode, clearAuthError]);
+    setLocalError(null);
+    resetHumanCheck();
+  }, [mode, clearAuthError, resetHumanCheck]);
 
   if (!open) return null;
+
+  const passHumanCheck = () => {
+    setLocalError(null);
+    if (humanCheck.verify()) return true;
+    setLocalError("That answer wasn't right — please try the new question.");
+    return false;
+  };
 
   const handleGoogleSignIn = async () => {
     await signInWithGoogle();
@@ -57,13 +74,15 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!passHumanCheck()) return;
     const ok = await signInWithEmail(email, password);
     if (ok) onClose();
   };
 
   const handleEmailSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { needsConfirmation } = await signUpWithEmail(email, password);
+    if (!passHumanCheck()) return;
+    const { needsConfirmation } = await signUpWithEmail(email, password, equipmentGender);
     if (needsConfirmation) {
       setSuccessMessage(`Check your inbox at ${email} for a confirmation link, then sign in.`);
     }
@@ -141,10 +160,10 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
           </p>
 
           {/* Error banner */}
-          {authError && (
+          {(authError || localError) && (
             <div className="mb-4 flex items-start gap-2.5 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2.5">
               <AlertCircle size={15} className="mt-0.5 shrink-0 text-red-400" />
-              <p className="text-xs text-red-300">{authError}</p>
+              <p className="text-xs text-red-300">{localError ?? authError}</p>
             </div>
           )}
 
@@ -243,6 +262,14 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
                   </div>
                 </div>
 
+                <HumanCheck
+                  id="signin-human"
+                  question={humanCheck.challenge.question}
+                  value={humanCheck.answer}
+                  onChange={humanCheck.setAnswer}
+                  onRefresh={humanCheck.reset}
+                />
+
                 <button
                   type="submit"
                   disabled={authLoading}
@@ -323,6 +350,24 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
                   Your username will be set from your email — you can change it in Settings.
                 </p>
               </div>
+
+              <div>
+                <span className="mb-1.5 block text-xs font-medium text-mh-slate-400">
+                  Equipment images
+                </span>
+                <EquipmentGenderPicker value={equipmentGender} onChange={setEquipmentGender} />
+                <p className="mt-1 text-[10px] text-mh-slate-600">
+                  Show male or female armour. You can change this later in your profile.
+                </p>
+              </div>
+
+              <HumanCheck
+                id="signup-human"
+                question={humanCheck.challenge.question}
+                value={humanCheck.answer}
+                onChange={humanCheck.setAnswer}
+                onRefresh={humanCheck.reset}
+              />
 
               <button
                 type="submit"

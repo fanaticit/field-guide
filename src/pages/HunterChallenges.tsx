@@ -162,22 +162,25 @@ function PanelBackground({ src, fade = false }: { src?: string | null; fade?: bo
   );
 }
 
-/** The monster's sketch, drawn in the panel's rarity colour on the right; the parent must be `relative isolate overflow-hidden`. */
-function MonsterSketchBackground({ src }: { src?: string | null }) {
+/**
+ * The monster's sketch, drawn in the panel's rarity colour on the right; the parent must be `relative isolate overflow-hidden`.
+ * `fill` crops the sketch across the whole panel instead of shrinking it to fit, so short rows (mobile portrait) still show it.
+ */
+function MonsterSketchBackground({ src, fill = false }: { src?: string | null; fill?: boolean }) {
   if (!src) return null;
   const mask = `url("${src}")`;
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
       <div
-        className="absolute inset-y-0 right-0 w-3/4 opacity-40 sm:w-3/5"
+        className={cn('absolute inset-y-0 right-0', fill ? 'w-full opacity-30' : 'w-3/4 opacity-40 sm:w-3/5')}
         style={{
           backgroundColor: 'var(--theme-accent)',
           maskImage: mask,
           WebkitMaskImage: mask,
           maskRepeat: 'no-repeat',
           WebkitMaskRepeat: 'no-repeat',
-          maskSize: 'contain',
-          WebkitMaskSize: 'contain',
+          maskSize: fill ? 'cover' : 'contain',
+          WebkitMaskSize: fill ? 'cover' : 'contain',
           maskPosition: 'right center',
           WebkitMaskPosition: 'right center',
         }}
@@ -272,7 +275,7 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
         )}
       >
         <PanelBackground src={backgroundImage} fade />
-        {isVisage && <MonsterSketchBackground src={sketchImage} />}
+        {isVisage && <MonsterSketchBackground src={sketchImage} fill />}
         {/* Piece icon */}
         <div className="shrink-0 flex items-center justify-center">
           {isVisage ? visageArt(c, 'h-10 w-10') : pieceImg && (
@@ -563,9 +566,11 @@ interface HuntingTargetsPanelProps {
   monsterGroups: Map<string, { monsterName: string; setIcon: string | null; challenges: HunterChallenge[] }>;
   selection: Selection;
   onSelect: (selection: Selection) => void;
+  /** Monster ID → sketch, drawn behind visage rows. */
+  sketches?: Map<string, string>;
 }
 
-function HuntingTargetsPanel({ monsterGroups, selection, onSelect }: HuntingTargetsPanelProps) {
+function HuntingTargetsPanel({ monsterGroups, selection, onSelect, sketches }: HuntingTargetsPanelProps) {
   const [expandedMonster, setExpandedMonster] = useState<string | null>(null);
   const selectedMonster = selection?.kind === 'monster' ? selection.value : null;
   const selectedActivity = selection?.kind === 'activity' ? selection.value : null;
@@ -691,7 +696,15 @@ function HuntingTargetsPanel({ monsterGroups, selection, onSelect }: HuntingTarg
                     const isVisageItem = getCategory(c) === 'visage';
 
                     return (
-                      <div key={c.id} className="flex flex-col gap-1.5 px-3 py-2.5">
+                      <div
+                        key={c.id}
+                        data-rarity-theme={isVisageItem ? visageTargetRarity(c) : undefined}
+                        className={cn(
+                          'relative isolate overflow-hidden flex flex-col gap-1.5 px-3 py-2.5',
+                          isVisageItem && 'challenges-theme',
+                        )}
+                      >
+                        {isVisageItem && <MonsterSketchBackground src={c.monster_id ? sketches?.get(c.monster_id) : null} fill />}
                         <div className="flex items-center gap-2.5">
                           {/* Slot icon */}
                           <div className="shrink-0 flex items-center justify-center">
@@ -1118,6 +1131,7 @@ export default function HunterChallenges() {
                   monsterGroups={monsterGroups}
                   selection={selection}
                   onSelect={setSelection}
+                  sketches={monsterSketches}
                 />
               </div>
             )}

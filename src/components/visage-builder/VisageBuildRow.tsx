@@ -23,6 +23,8 @@ import { getInkConfig, DEFAULT_VISAGE_RARITY } from '../../data/schemas/visage';
 import VisageIcon from '../visage/VisageIcon';
 import { InkIconComponent } from '../../pages/investigation-notes/VisageCard';
 import { cn } from '../../lib/utils';
+import UpvoteButton from './UpvoteButton';
+import RankBadge from './RankBadge';
 
 interface Props {
   row: TVisageBuildRow;
@@ -35,6 +37,11 @@ interface Props {
   isAuthor: boolean;
   isSignedIn: boolean;
   onToggleFavorite: () => void;
+  /** Position in the community ranking (null when the build has no upvotes yet) */
+  rank: number | null;
+  hasVoted: boolean;
+  voteDisabledReason: string | null;
+  onToggleVote: () => void;
   onOpenInBuilder: () => void;
   onLoadToPlanner: () => void;
   onDelete: () => void;
@@ -51,6 +58,10 @@ export default function VisageBuildRow({
   isAuthor,
   isSignedIn,
   onToggleFavorite,
+  rank,
+  hasVoted,
+  voteDisabledReason,
+  onToggleVote,
   onOpenInBuilder,
   onLoadToPlanner,
   onDelete,
@@ -85,8 +96,11 @@ export default function VisageBuildRow({
           />
         </button>
 
+        <UpvoteButton count={row.upvotes} voted={hasVoted} disabledReason={voteDisabledReason} onClick={onToggleVote} />
+
         <div className="min-w-0 space-y-1">
           <div className="flex items-center gap-2">
+            {rank !== null && <RankBadge rank={rank} />}
             <h3
               onClick={onOpenInBuilder}
               className="font-display text-sm sm:text-base font-bold text-white hover:text-[#FFD700] cursor-pointer transition-colors truncate"
@@ -163,13 +177,8 @@ export default function VisageBuildRow({
 
                 {/* Ink Dot */}
                 {visage && ink && (
-                  <div
-                    className={cn(
-                      'absolute bottom-0 right-0 w-3.5 h-3.5 rounded-tl flex items-center justify-center text-white',
-                      cfg.dotColor,
-                    )}
-                  >
-                    <InkIconComponent iconName={cfg.iconName} size={8} />
+                  <div className="absolute bottom-0 right-0 w-4 h-4 flex items-center justify-center drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">
+                    <InkIconComponent iconName={cfg.iconName} size={9} />
                   </div>
                 )}
 

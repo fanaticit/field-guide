@@ -44,7 +44,7 @@ export default function VisageLoadoutStrip({ loadout, missingKeys }: Props) {
               {missing && <div className="absolute inset-0 flex items-center justify-center text-xs">🔒</div>}
             </div>
             {visage && ink ? (
-              <div className={cn('w-4 h-4 rounded-full flex items-center justify-center text-white ring-1 ring-black/40', cfg.dotColor)}>
+              <div className="w-4 h-4 flex items-center justify-center drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">
                 <InkIconComponent iconName={cfg.iconName} size={9} />
               </div>
             ) : (

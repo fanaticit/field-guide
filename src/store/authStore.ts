@@ -28,6 +28,8 @@ const pageToPath: Record<string, string> = {
   'investigation-notes': '/armory/armour',
 };
 
+export type EquipmentGender = 'male' | 'female';
+
 export type UserRole = 'member' | 'admin' | 'moderator';
 
 export interface UserProfile {
@@ -40,6 +42,7 @@ export interface UserProfile {
   role: UserRole;
   default_game?: string;
   default_page?: string;
+  equipment_gender?: EquipmentGender;
 }
 
 /** Convenience selector — true if the signed-in user is admin */
@@ -66,7 +69,7 @@ interface AuthState {
 
   signInWithGoogle: () => Promise<void>;
   signInWithEmail: (email: string, password: string) => Promise<boolean>;
-  signUpWithEmail: (email: string, password: string) => Promise<{ needsConfirmation: boolean }>;
+  signUpWithEmail: (email: string, password: string, equipmentGender?: EquipmentGender) => Promise<{ needsConfirmation: boolean }>;
   resetPassword: (email: string) => Promise<boolean>;
   signOut: () => Promise<void>;
   fetchProfile: (userId: string) => Promise<void>;
@@ -134,12 +137,15 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   // ── Email + Password sign-up ────────────────────────────────
-  signUpWithEmail: async (email, password) => {
+  signUpWithEmail: async (email, password, equipmentGender = 'male') => {
     set({ authLoading: true, authError: null });
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { emailRedirectTo: window.location.origin },
+      options: {
+        emailRedirectTo: window.location.origin,
+        data: { equipment_gender: equipmentGender },
+      },
     });
     if (error) {
       const msg =
@@ -180,7 +186,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   fetchProfile: async (userId: string) => {
     const { data, error } = await supabase
       .from('profiles')
-      .select('id, username, display_name, avatar_url, game_ids, locale, role, default_game, default_page')
+      .select('id, username, display_name, avatar_url, game_ids, locale, role, default_game, default_page, equipment_gender')
       .eq('id', userId)
       .single();
 

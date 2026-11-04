@@ -4,10 +4,13 @@ import { Shield, ChevronRight, Sparkles, Flame } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import LoginModal from '../components/auth/LoginModal';
 import FeatureShowcase from '../components/home/FeatureShowcase';
+import { useUIStore } from '../store/uiStore';
+import { DEFAULT_SECTION_THEMES } from '../config/themes';
 
 export default function LandingPage() {
   const navigate = useNavigate();
   const { user } = useAuthStore();
+  const galleryTheme = useUIStore((s) => s.sectionThemes['/gallery'] ?? DEFAULT_SECTION_THEMES['/gallery']);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
 
   const handleCTA = () => {
@@ -87,13 +90,12 @@ export default function LandingPage() {
 
           {/* Call to Actions */}
           <div className="mt-10 flex flex-col sm:flex-row items-center gap-4">
-            <button
-              onClick={handleCTA}
-              className="btn-mho-gold w-full sm:w-auto"
-            >
-              <span>{user ? 'Continue the Hunt' : 'Join the Hunt'}</span>
-              <ChevronRight size={18} />
-            </button>
+            <div data-rarity-theme={galleryTheme} className="section-theme w-full sm:w-auto">
+              <Link to="/gallery/collection?mode=builder" className="btn-mho-gold w-full sm:w-auto">
+                <span>Build a Visage Set</span>
+                <ChevronRight size={18} />
+              </Link>
+            </div>
             <Link
               to="/armory"
               className="btn-mho-panel w-full sm:w-auto"
