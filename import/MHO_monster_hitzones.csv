@@ -1,0 +1,468 @@
+﻿Monster ID,Monster,Part,State,Cut,Impact,Shot,Fire,Water,Thunder,Ice,Dragon,Weak point stars
+110101,Great Jagras,Head,,80,85,75,100,70,90,85,80,3
+110101,Great Jagras,Neck,,65,70,60,88,65,78,72,72,0
+110101,Great Jagras,Back,,45,40,35,59,45,49,49,45,0
+110101,Great Jagras,Body,,50,45,40,68,50,58,55,50,0
+110101,Great Jagras,Forelegs,,65,60,55,88,65,78,78,72,2
+110101,Great Jagras,Hindlegs,,45,40,35,59,45,49,45,45,0
+110101,Great Jagras,Tail,,45,45,40,59,45,49,45,45,0
+110101,Great Jagras,Stomach,,90,95,85,100,70,90,85,80,3
+110701,Kulu-Ya-Ku,Head,,85,85,75,80,90,80,80,80,3
+110701,Kulu-Ya-Ku,Body,,45,45,40,51,61,51,51,51,0
+110701,Kulu-Ya-Ku,Foreclaws,,65,70,55,78,88,78,78,78,0
+110701,Kulu-Ya-Ku,Tail,,55,50,35,64,74,64,64,64,0
+110701,Kulu-Ya-Ku,Rock,,5,5,5,253,7,253,253,253,0
+110701,Kulu-Ya-Ku,Pot,,15,15,15,15,20,15,15,15,0
+110701,Kulu-Ya-Ku,Egg,,65,70,55,65,85,65,65,65,0
+110201,Pukei-Pukei,Head,,95,90,85,85,70,100,90,80,3
+110201,Pukei-Pukei,Tongue,,75,80,70,85,70,100,90,80,0
+110201,Pukei-Pukei,Neck,,40,35,30,44,40,54,44,44,0
+110201,Pukei-Pukei,Body,,35,35,30,35,35,46,36,36,0
+110201,Pukei-Pukei,Wings,,50,45,40,58,50,68,58,55,2
+110201,Pukei-Pukei,Legs,,45,45,40,45,45,59,49,45,0
+110201,Pukei-Pukei,Tail,,55,50,45,64,55,74,64,61,2
+104401,Barroth,Head,,22,75,10,90,60,60,70,65,0
+104401,Barroth,Head_Mud,,20,28,9,25,37,25,27,27,0
+104401,Barroth,Body,,46,46,50,62,46,46,52,51,0
+104401,Barroth,Body_Mud,,24,24,20,22,32,22,22,22,0
+104401,Barroth,Foreclaws,,80,85,75,100,70,70,80,75,3
+104401,Barroth,Foreclaws,Mud,35,38,30,35,47,35,37,37,1
+104401,Barroth,Left Hind Leg,,40,35,25,54,40,40,44,44,0
+104401,Barroth,LeftHindleg_Mud,,24,24,20,22,32,22,22,22,0
+104401,Barroth,Right Hind Leg,,40,35,25,54,40,40,44,44,0
+104401,Barroth,RightHindleg_Mud,,24,24,20,22,32,22,22,22,0
+104401,Barroth,Tail,,55,50,40,74,55,55,64,64,2
+104401,Barroth,Tail,Mud,25,25,22,24,34,24,24,24,1
+110801,Jyuratodus,Head,,63,63,63,66,63,76,66,66,3
+110801,Jyuratodus,Neck,,43,43,43,42,42,52,42,42,0
+110801,Jyuratodus,Body,,35,35,35,37,35,47,37,37,0
+110801,Jyuratodus,Back,,25,25,25,23,23,33,23,23,0
+110801,Jyuratodus,Fin,,25,25,25,24,24,34,24,24,0
+110801,Jyuratodus,Left Leg,,30,30,25,31,30,41,31,31,0
+110801,Jyuratodus,Right Leg,,30,30,25,31,30,41,31,31,0
+110801,Jyuratodus,Tail,,55,50,45,56,55,66,56,56,3
+110801,Jyuratodus,Head,Mud,50,50,40,50,68,50,55,55,3
+110801,Jyuratodus,Body_Mud,,30,30,25,30,41,30,31,31,0
+110801,Jyuratodus,LeftLeg_Mud,,35,35,30,35,47,35,37,37,0
+110801,Jyuratodus,RightLeg_Mud,,35,35,30,35,47,35,37,37,0
+110801,Jyuratodus,Tail,Mud,50,50,40,50,68,50,55,55,3
+110901,Tobi-Kadachi,Head,,60,60,50,71,81,60,71,66,2
+110901,Tobi-Kadachi,Neck,,60,60,50,71,81,60,71,66,0
+110901,Tobi-Kadachi,Body,,45,45,35,49,59,45,49,45,0
+110901,Tobi-Kadachi,Back,,45,45,60,49,59,45,49,45,0
+110901,Tobi-Kadachi,Foreclaws,,35,35,15,36,46,35,36,35,0
+110901,Tobi-Kadachi,Hindlegs,,30,30,10,29,39,29,29,29,0
+110901,Tobi-Kadachi,Tail,,80,80,70,90,100,70,90,85,3
+110001,Anjanath,Nose,,80,75,90,70,100,85,90,80,0
+110001,Anjanath,Head,,70,70,65,70,95,80,85,75,3
+110001,Anjanath,Neck,,30,30,10,30,41,31,31,31,0
+110001,Anjanath,Wings,,80,45,90,70,100,85,90,80,0
+110001,Anjanath,Body,,30,30,45,29,39,29,29,29,0
+110001,Anjanath,Left Leg,,30,30,10,29,39,29,29,29,0
+110001,Anjanath,Right Leg,,30,30,10,29,39,29,29,29,0
+110001,Anjanath,Tail,,60,60,75,60,81,71,71,66,2
+110001,Anjanath,LeftLegWounded,,45,45,50,45,59,49,49,45,0
+110001,Anjanath,RightLegWounded,,45,45,50,45,59,49,49,45,0
+100101,Rathian,Head,,70,75,65,70,85,85,85,95,3
+100101,Rathian,Neck,,40,45,35,40,40,42,40,52,0
+100101,Rathian,Body,,35,30,25,35,37,37,37,47,0
+100101,Rathian,Back,,35,30,25,35,37,37,37,47,0
+100101,Rathian,Left Wing,,55,50,45,55,55,61,55,72,2
+100101,Rathian,Right Wing,,55,50,45,55,64,64,64,74,2
+100101,Rathian,Left Leg,,40,40,35,40,40,42,40,52,0
+100101,Rathian,Right Leg,,40,40,35,40,44,44,44,54,0
+100101,Rathian,Tail,,45,40,35,45,50,51,50,61,2
+100101,Rathian,TailTip,,45,40,35,45,50,51,50,61,0
+112001,Tzitzi-Ya-Ku,Flash Fins,,75,65,70,80,80,90,90,80,3
+112001,Tzitzi-Ya-Ku,Head,,65,55,55,78,78,88,88,78,0
+112001,Tzitzi-Ya-Ku,Body,,45,60,35,51,51,61,61,51,0
+112001,Tzitzi-Ya-Ku,ForeLegs,,45,60,35,51,51,61,61,51,0
+112001,Tzitzi-Ya-Ku,Tail,,40,40,35,44,44,54,54,44,0
+111001,Paolumu,Head,,55,55,45,74,55,64,64,64,2
+111001,Paolumu,Neck,,40,40,30,54,40,44,44,44,0
+111001,Paolumu,Neck Pouch,,75,75,60,95,70,85,80,80,3
+111001,Paolumu,Body,,46,46,42,60,46,50,50,50,0
+111001,Paolumu,Left Leg,,40,35,25,52,40,42,42,42,0
+111001,Paolumu,Right Leg,,40,35,25,52,40,42,42,42,0
+111001,Paolumu,Left Wing,,35,35,45,46,35,36,36,36,0
+111001,Paolumu,Right Wing,,35,35,45,46,35,36,36,36,0
+111001,Paolumu,Tail,,25,25,15,34,24,24,24,24,0
+111101,Legiana,Head,,65,70,60,78,78,88,65,78,3
+111101,Legiana,Neck,,35,40,30,36,36,46,35,36,0
+111101,Legiana,Body,,25,25,20,23,23,33,23,23,0
+111101,Legiana,Back,,25,25,20,23,23,33,23,23,0
+111101,Legiana,Left Wing,,50,45,40,58,58,68,50,55,2
+111101,Legiana,Right Wing,,50,45,40,58,58,68,50,55,2
+111101,Legiana,Left Leg,,35,35,30,32,32,42,32,32,0
+111101,Legiana,Right Leg,,35,35,30,32,32,42,32,32,0
+111101,Legiana,Tail,,45,40,35,49,49,59,45,49,2
+100201,Rathalos,Head,,65,70,60,65,78,78,78,88,3
+100201,Rathalos,Neck,,35,40,30,35,37,37,37,47,0
+100201,Rathalos,Body,,25,25,20,24,24,24,24,34,0
+100201,Rathalos,Back,,25,25,20,24,24,24,24,34,0
+100201,Rathalos,Left Wing,,50,45,40,50,58,58,58,68,2
+100201,Rathalos,Right Wing,,50,45,40,50,58,58,58,68,2
+100201,Rathalos,Left Leg,,35,35,30,35,35,36,35,46,0
+100201,Rathalos,Right Leg,,35,35,30,35,35,36,35,46,0
+100201,Rathalos,Tail,,45,40,35,45,50,51,50,61,2
+100201,Rathalos,TailTip,,45,40,35,45,50,51,50,61,0
+100701,Diablos,Horns,,21,42,20,18,18,18,28,18,0
+100701,Diablos,Head,,45,63,40,45,51,51,61,51,2
+100701,Diablos,Neck,,40,40,25,40,44,44,54,44,0
+100701,Diablos,Stomach,,73,78,40,70,89,80,99,89,3
+100701,Diablos,Back,,24,42,35,22,22,22,32,22,0
+100701,Diablos,Left Wing,,40,30,60,40,44,44,54,44,2
+100701,Diablos,Right Wing,,40,30,60,40,44,44,54,44,2
+100701,Diablos,Left Leg,,35,35,35,35,36,36,46,36,0
+100701,Diablos,Right Leg,,35,35,35,35,36,36,46,36,0
+100701,Diablos,Tail,,50,24,45,50,68,58,58,58,0
+100701,Diablos,TailTip,,23,33,10,21,21,21,31,21,0
+100701,Diablos,Body,,73,78,40,70,89,80,99,89,0
+111201,Great Girros,Head,,80,85,75,85,100,70,90,80,3
+111201,Great Girros,Neck01,,40,45,35,44,54,40,44,44,0
+111201,Great Girros,Spine,,35,35,30,35,46,35,36,35,0
+111201,Great Girros,Tail01,,35,35,30,35,46,35,36,35,0
+111201,Great Girros,Forelegs,,55,50,45,64,74,55,64,61,2
+111201,Great Girros,Hindlegs,,40,40,35,40,52,40,42,40,0
+111201,Great Girros,Tail,,50,45,40,55,68,50,58,55,2
+110301,Nergigante,Left Horn,,20,25,35,17,17,27,17,17,0
+110301,Nergigante,Right Horn,,20,25,35,17,17,27,17,17,0
+110301,Nergigante,Head,,45,60,40,49,49,49,59,49,2
+110301,Nergigante,Head,White,75,90,70,75,75,75,85,75,3
+110301,Nergigante,Head,Black,20,25,15,17,17,27,17,17,1
+110301,Nergigante,Body,,35,30,35,32,32,42,32,32,0
+110301,Nergigante,Back,,30,35,30,26,26,36,26,26,0
+110301,Nergigante,Left Foreleg,,50,45,40,55,55,65,50,55,3
+110301,Nergigante,Left Foreleg,White,70,60,55,75,75,85,70,75,3
+110301,Nergigante,Left Foreleg,Black,10,15,10,4,4,14,4,4,1
+110301,Nergigante,Right Foreleg,,50,45,40,55,55,65,50,55,3
+110301,Nergigante,Right Foreleg,White,70,60,55,75,75,85,70,75,3
+110301,Nergigante,Right Foreleg,Black,10,15,10,4,4,14,4,4,1
+110301,Nergigante,Left Hind Leg,,35,30,35,32,32,42,32,32,0
+110301,Nergigante,Right Hind Leg,,35,30,35,32,32,42,32,32,0
+110301,Nergigante,Left Wing,,40,30,30,48,38,38,38,38,0
+110301,Nergigante,LeftWing_White,,65,55,40,85,72,75,72,75,0
+110301,Nergigante,LeftWing_Black,,25,20,10,24,24,34,24,24,0
+110301,Nergigante,Right Wing,,40,30,30,48,38,38,38,38,0
+110301,Nergigante,RightWing_White,,65,55,40,85,72,75,72,75,0
+110301,Nergigante,RightWing_Black,,25,20,10,24,24,34,24,24,0
+110301,Nergigante,Tail,,60,45,25,72,62,62,62,62,0
+110301,Nergigante,Tail_White,,55,45,45,62,61,62,61,72,0
+110301,Nergigante,Tail_Black,,28,25,25,28,28,28,28,38,0
+110301,Nergigante,LeftHornWounded,,35,40,45,37,37,47,35,37,0
+110301,Nergigante,RightHornWounded,,35,40,45,37,37,47,35,37,0
+111401,Radobaan,Head,,80,90,50,90,90,90,90,100,3
+111401,Radobaan,Neck,,30,30,25,31,31,31,31,41,0
+111401,Radobaan,Body,,45,50,30,51,51,51,51,61,0
+111401,Radobaan,Hind Legs,,55,45,40,62,62,62,62,72,2
+111401,Radobaan,Right Hind Leg,,55,45,40,62,62,62,62,72,0
+111401,Radobaan,Tail,,45,30,30,49,49,49,49,49,0
+111401,Radobaan,Head_Bone,,24,25,15,14,14,14,14,14,0
+111401,Radobaan,LeftHindleg_Bone,,20,25,15,10,10,10,10,10,0
+111401,Radobaan,RightHindleg_Bone,,20,25,15,10,10,10,10,10,0
+111301,Odogaron,Head,,70,75,65,80,85,85,95,70,3
+111301,Odogaron,Neck,,40,45,35,40,44,44,54,40,0
+111301,Odogaron,Body,,30,30,25,29,29,29,39,29,0
+111301,Odogaron,Back,,30,30,25,29,29,29,39,29,0
+111301,Odogaron,Foreclaws,,55,50,45,61,64,64,74,55,2
+111301,Odogaron,Hindlegs,,45,40,35,50,51,51,61,45,0
+111301,Odogaron,Tail,,45,40,35,50,50,51,61,45,2
+100702,Black Diablos,Horns,,19,37,15,16,16,16,26,16,0
+100702,Black Diablos,Head,,43,55,30,43,48,48,58,43,2
+100702,Black Diablos,Neck,,40,40,25,40,44,44,54,40,0
+100702,Black Diablos,Stomach,,63,68,35,63,75,75,85,63,3
+100702,Black Diablos,Back,,24,42,30,22,22,22,32,22,0
+100702,Black Diablos,Left Wing,,40,30,60,40,44,44,54,40,2
+100702,Black Diablos,Right Wing,,40,30,60,40,44,44,54,40,2
+100702,Black Diablos,Left Leg,,35,35,35,35,36,36,46,35,0
+100702,Black Diablos,Right Leg,,35,35,35,35,36,36,46,35,0
+100702,Black Diablos,Tail,,45,24,45,45,51,51,51,45,0
+100702,Black Diablos,TailTip,,20,24,10,17,17,17,27,17,0
+100702,Black Diablos,Body,,63,68,35,63,75,75,85,63,0
+102401,Kushala Daora,Head,,55,50,45,64,61,74,55,64,3
+102401,Kushala Daora,Body,,35,50,25,36,36,46,35,36,0
+102401,Kushala Daora,Forelegs,,45,50,30,51,50,61,45,51,2
+102401,Kushala Daora,Hind Legs,,30,30,25,29,29,39,29,29,0
+102401,Kushala Daora,Wing,,24,22,24,17,17,27,17,17,0
+100102,Pink Rathian,Head,,60,65,55,60,71,71,71,81,3
+100102,Pink Rathian,Neck,,30,35,25,29,29,29,29,39,0
+100102,Pink Rathian,Body,,22,22,20,20,20,20,20,30,0
+100102,Pink Rathian,Back,,22,22,20,20,20,20,20,30,0
+100102,Pink Rathian,Left Wing,,50,45,40,50,58,58,58,68,2
+100102,Pink Rathian,Right Wing,,50,45,40,50,58,58,58,68,2
+100102,Pink Rathian,Left Leg,,40,40,35,40,40,42,40,52,0
+100102,Pink Rathian,Right Leg,,40,40,35,40,40,42,40,52,0
+100102,Pink Rathian,Tail,,20,25,20,17,17,17,17,27,2
+100102,Pink Rathian,TailTip,,50,45,40,50,55,58,55,68,0
+110110,Radiant Great Jagras,Head,,80,85,75,244,150,150,150,150,0
+110110,Radiant Great Jagras,Neck,,65,70,60,184,132,132,132,132,0
+110110,Radiant Great Jagras,Back,,45,40,35,167,89,89,89,89,0
+110110,Radiant Great Jagras,Body,,50,45,40,212,102,102,102,102,0
+110110,Radiant Great Jagras,Foreclaws,,65,60,55,184,132,132,132,132,0
+110110,Radiant Great Jagras,Hindlegs,,45,40,35,167,89,89,89,89,0
+110110,Radiant Great Jagras,Tail,,45,45,40,167,89,89,89,89,0
+110110,Radiant Great Jagras,Stomach,,90,95,85,244,150,150,150,150,2
+110210,Radiant Pukei-Pukei,Head,,95,90,85,150,150,244,150,150,3
+110210,Radiant Pukei-Pukei,Tongue,,75,80,70,150,150,244,150,150,0
+110210,Radiant Pukei-Pukei,Neck,,40,35,30,81,81,142,81,81,0
+110210,Radiant Pukei-Pukei,Body,,35,35,30,69,69,230,69,69,0
+110210,Radiant Pukei-Pukei,Wings,,50,45,40,102,102,212,102,102,0
+110210,Radiant Pukei-Pukei,Legs,,45,45,40,89,89,167,89,89,0
+110210,Radiant Pukei-Pukei,Tail,,55,50,45,111,111,242,111,111,0
+104410,Radiant Barroth,Head,,80,85,75,244,135,135,135,135,2
+104410,Radiant Barroth,Head,Mud,35,38,30,235,56,38,38,38,1
+104410,Radiant Barroth,Body,,46,46,50,182,93,93,93,93,0
+104410,Radiant Barroth,Body_Mud,,24,24,20,160,48,33,33,33,0
+104410,Radiant Barroth,Foreclaws,,80,85,75,244,150,150,150,150,3
+104410,Radiant Barroth,Foreclaws,Mud,35,38,30,235,71,53,53,53,1
+104410,Radiant Barroth,Left Hind Leg,,40,35,25,142,81,81,81,81,0
+104410,Radiant Barroth,LeftHindleg_Mud,,24,24,20,160,48,33,33,33,0
+104410,Radiant Barroth,Right Hind Leg,,40,35,25,142,81,81,81,81,0
+104410,Radiant Barroth,RightHindleg_Mud,,24,24,20,160,48,33,33,33,0
+104410,Radiant Barroth,Tail,,55,50,40,242,111,111,111,111,0
+104410,Radiant Barroth,Tail_Mud,,25,25,22,170,51,36,36,36,0
+110810,Radiant Jyuratodus,Head,,63,63,63,114,114,114,202,114,3
+110810,Radiant Jyuratodus,Neck,,43,43,43,78,78,78,210,78,0
+110810,Radiant Jyuratodus,Body,,63,63,63,71,71,71,202,71,3
+110810,Radiant Jyuratodus,Back,,25,25,25,50,50,50,115,50,0
+110810,Radiant Jyuratodus,Fin,,25,25,25,51,51,51,120,51,0
+110810,Radiant Jyuratodus,Left Leg,,30,30,25,62,62,62,155,62,0
+110810,Radiant Jyuratodus,Right Leg,,30,30,25,62,62,62,155,62,0
+110810,Radiant Jyuratodus,Tail,,55,50,45,99,99,99,152,99,0
+110810,Radiant Jyuratodus,Head,Mud,50,50,40,75,102,75,212,75,3
+110810,Radiant Jyuratodus,Body,Mud,50,50,40,45,62,45,212,45,3
+110810,Radiant Jyuratodus,LeftLeg_Mud,,35,35,30,53,71,53,235,53,0
+110810,Radiant Jyuratodus,RightLeg_Mud,,35,35,30,53,71,53,235,53,0
+110810,Radiant Jyuratodus,Tail_Mud,,50,50,40,75,102,75,212,75,0
+110010,Radiant Anjanath,Nose,,80,75,90,150,244,150,150,150,0
+110010,Radiant Anjanath,Head,,70,70,65,143,244,143,143,143,3
+110010,Radiant Anjanath,Neck,,30,30,10,62,205,62,62,62,0
+110010,Radiant Anjanath,Wings,,80,45,90,150,244,150,150,150,0
+110010,Radiant Anjanath,Body,,30,30,45,59,195,59,59,59,0
+110010,Radiant Anjanath,Left Leg,,30,30,10,59,195,59,59,59,0
+110010,Radiant Anjanath,Right Leg,,30,30,10,59,195,59,59,59,0
+110010,Radiant Anjanath,Tail,,60,60,75,122,149,122,122,122,0
+110010,Radiant Anjanath,LeftLegWounded,,45,45,50,89,167,89,89,89,0
+110010,Radiant Anjanath,RightLegWounded,,45,45,50,89,167,89,89,89,0
+100210,Radiant Rathalos,Head,,65,70,60,132,132,134,132,132,2
+100210,Radiant Rathalos,Neck,,35,40,30,71,71,185,71,71,0
+100210,Radiant Rathalos,Body,,25,25,20,51,51,120,51,51,0
+100210,Radiant Rathalos,Back,,25,25,20,51,51,120,51,51,0
+100210,Radiant Rathalos,Left Wing,,50,45,40,102,102,162,102,102,0
+100210,Radiant Rathalos,Right Wing,,50,45,40,102,102,162,102,102,0
+100210,Radiant Rathalos,Left Leg,,35,35,30,69,69,180,69,69,0
+100210,Radiant Rathalos,Right Leg,,35,35,30,69,69,180,69,69,0
+100210,Radiant Rathalos,Tail,,45,40,35,92,92,255,92,92,0
+100210,Radiant Rathalos,TailTip,,45,40,35,92,92,255,92,92,0
+100710,Radiant Diablos,Horns,,73,78,40,42,42,42,239,42,0
+100710,Radiant Diablos,Head,,73,78,40,92,92,92,239,92,2
+100710,Radiant Diablos,Neck,,40,40,25,81,81,81,142,81,0
+100710,Radiant Diablos,Stomach,,73,78,40,149,149,149,239,149,3
+100710,Radiant Diablos,Back,,24,42,35,48,48,48,160,48,0
+100710,Radiant Diablos,Left Wing,,40,30,60,81,81,81,142,81,0
+100710,Radiant Diablos,Right Wing,,40,30,60,81,81,81,142,81,0
+100710,Radiant Diablos,Left Leg,,35,35,35,69,69,69,230,69,0
+100710,Radiant Diablos,Right Leg,,35,35,35,69,69,69,230,69,0
+100710,Radiant Diablos,Tail,,50,24,45,87,87,87,162,87,0
+100710,Radiant Diablos,TailTip,,23,33,10,47,47,47,155,47,0
+100710,Radiant Diablos,Body,,73,78,40,149,149,149,239,149,0
+110710,Radiant Kulu-Ya-Ku,Head,,85,85,75,135,194,135,135,135,3
+110710,Radiant Kulu-Ya-Ku,Body,,45,45,40,92,177,92,92,92,0
+110710,Radiant Kulu-Ya-Ku,Foreclaws,,85,85,75,132,194,132,132,132,2
+110710,Radiant Kulu-Ya-Ku,Tail,,55,50,35,111,242,111,111,111,0
+110710,Radiant Kulu-Ya-Ku,Rock,,5,5,5,5,5,5,5,5,0
+110710,Radiant Kulu-Ya-Ku,Pot,,15,15,15,15,15,15,15,15,0
+110710,Radiant Kulu-Ya-Ku,Rongshi,,10,18,8,10,24,10,10,10,0
+110710,Radiant Kulu-Ya-Ku,RongshiBoom,,25,40,20,25,35,25,25,25,0
+110710,Radiant Kulu-Ya-Ku,RongshiMax,,15,25,10,15,25,15,15,15,0
+110710,Radiant Kulu-Ya-Ku,Egg,,60,60,55,30,60,30,30,30,0
+111010,Radiant Paolumu,Head,,75,75,60,242,111,111,111,111,3
+111010,Radiant Paolumu,Neck,,40,40,30,142,81,81,81,81,0
+111010,Radiant Paolumu,Neck Pouch,,75,75,60,219,143,143,143,143,3
+111010,Radiant Paolumu,Body,,46,46,42,172,90,90,90,90,0
+111010,Radiant Paolumu,Left Leg,,40,35,25,132,78,78,78,78,0
+111010,Radiant Paolumu,Right Leg,,40,35,25,132,78,78,78,78,0
+111010,Radiant Paolumu,Left Wing,,35,35,45,230,69,69,69,69,0
+111010,Radiant Paolumu,Right Wing,,35,35,45,230,69,69,69,69,0
+111010,Radiant Paolumu,Tail,,25,25,15,170,51,51,51,51,0
+111110,Radiant Legiana,Head,,65,70,60,134,132,132,132,132,3
+111110,Radiant Legiana,Neck,,35,40,30,180,69,69,69,69,0
+111110,Radiant Legiana,Body,,25,25,20,115,50,50,50,50,0
+111110,Radiant Legiana,Back,,25,25,20,115,50,50,50,50,0
+111110,Radiant Legiana,Left Wing,,65,70,60,134,102,102,102,102,3
+111110,Radiant Legiana,Right Wing,,65,70,60,134,102,102,102,102,3
+111110,Radiant Legiana,Left Leg,,35,35,30,160,63,63,63,63,0
+111110,Radiant Legiana,Right Leg,,35,35,30,160,63,63,63,63,0
+111110,Radiant Legiana,Tail,,45,40,35,245,89,89,89,89,0
+111210,Radiant Great Girros,Head,,80,85,75,150,150,150,150,144,2
+111210,Radiant Great Girros,Neck01,,40,45,35,81,81,81,81,220,0
+111210,Radiant Great Girros,Spine,,35,35,30,69,69,69,69,175,0
+111210,Radiant Great Girros,Tail01,,35,35,30,69,69,69,69,175,0
+111210,Radiant Great Girros,Foreclaws,,55,50,45,111,111,111,111,177,0
+111210,Radiant Great Girros,Hindlegs,,40,40,35,78,78,78,78,200,0
+111210,Radiant Great Girros,Tail02,,50,45,40,102,102,102,102,147,0
+110910,Radiant Tobi-Kadachi,Head,,60,60,50,122,149,122,122,122,0
+110910,Radiant Tobi-Kadachi,Neck,,60,60,50,122,149,122,122,122,0
+110910,Radiant Tobi-Kadachi,Body,,45,45,35,89,167,89,89,89,0
+110910,Radiant Tobi-Kadachi,Back,,45,45,60,89,167,89,89,89,0
+110910,Radiant Tobi-Kadachi,Foreclaws,,35,35,15,69,230,69,69,69,0
+110910,Radiant Tobi-Kadachi,Hindlegs,,30,30,10,59,195,59,59,59,0
+110910,Radiant Tobi-Kadachi,Tail,,80,80,70,150,244,150,150,150,3
+111410,Radiant Radobaan,Head,,80,90,50,150,150,150,150,244,3
+111410,Radiant Radobaan,Neck,,30,30,25,62,62,62,62,205,0
+111410,Radiant Radobaan,Body,,80,90,50,92,92,92,92,244,3
+111410,Radiant Radobaan,Left Hind Leg,,55,45,40,108,108,108,108,232,0
+111410,Radiant Radobaan,Right Hind Leg,,55,45,40,108,108,108,108,232,0
+111410,Radiant Radobaan,Tail,,45,30,30,74,74,74,74,245,0
+111410,Radiant Radobaan,Head_Bone,,24,25,15,21,21,21,21,70,0
+111410,Radiant Radobaan,LeftHindleg_Bone,,20,25,15,15,15,15,15,50,0
+111410,Radiant Radobaan,RightHindleg_Bone,,20,25,15,15,15,15,15,50,0
+100111,Radiant Pink Rathian,Head,,60,65,55,122,122,122,122,149,3
+100111,Radiant Pink Rathian,Neck,,30,35,25,59,59,59,59,195,0
+100111,Radiant Pink Rathian,Body,,22,22,20,45,45,45,45,150,0
+100111,Radiant Pink Rathian,Back,,22,22,20,45,45,45,45,150,0
+100111,Radiant Pink Rathian,Left Wing,,50,45,40,102,102,102,102,212,0
+100111,Radiant Pink Rathian,Right Wing,,50,45,40,102,102,102,102,212,0
+100111,Radiant Pink Rathian,Left Leg,,40,40,35,78,78,78,78,132,0
+100111,Radiant Pink Rathian,Right Leg,,40,40,35,78,78,78,78,132,0
+100111,Radiant Pink Rathian,Tail,,60,65,55,41,41,41,41,149,3
+100111,Radiant Pink Rathian,TailTip,,60,65,55,102,102,102,102,149,0
+112010,Radiant Tzitzi-Ya-Ku,Flash Fins,,75,65,70,135,135,135,135,144,3
+112010,Radiant Tzitzi-Ya-Ku,Head,,65,55,55,132,132,132,132,134,0
+112010,Radiant Tzitzi-Ya-Ku,Body,,45,60,35,92,92,92,92,255,0
+112010,Radiant Tzitzi-Ya-Ku,ForeLegs,,45,60,35,92,92,92,92,255,0
+112010,Radiant Tzitzi-Ya-Ku,Tail,,40,40,35,81,81,81,81,220,0
+100711,Radiant Black Diablos,Horns,,63,68,35,39,39,39,169,39,0
+100711,Radiant Black Diablos,Head,,63,68,35,87,87,87,169,87,2
+100711,Radiant Black Diablos,Neck,,40,40,25,81,81,81,142,81,0
+100711,Radiant Black Diablos,Stomach,,63,68,35,128,128,128,169,128,3
+100711,Radiant Black Diablos,Back,,24,42,30,48,48,48,160,48,0
+100711,Radiant Black Diablos,Left Wing,,40,30,60,81,81,81,142,81,0
+100711,Radiant Black Diablos,Right Wing,,40,30,60,81,81,81,142,81,0
+100711,Radiant Black Diablos,Left Leg,,35,35,35,69,69,69,230,69,0
+100711,Radiant Black Diablos,Right Leg,,35,35,35,69,69,69,230,69,0
+100711,Radiant Black Diablos,Tail,,45,24,45,77,77,77,255,77,0
+100711,Radiant Black Diablos,TailTip,,20,24,10,41,41,41,135,41,0
+100711,Radiant Black Diablos,Body,,63,68,35,128,128,128,169,128,0
+111310,Radiant Odogaron,Head,,70,75,65,143,143,143,219,143,3
+111310,Radiant Odogaron,Neck,,40,45,35,81,81,81,142,81,0
+111310,Radiant Odogaron,Body,,30,30,25,59,59,59,195,59,0
+111310,Radiant Odogaron,Back,,30,30,25,59,59,59,195,59,0
+111310,Radiant Odogaron,Foreclaws,,70,75,65,111,111,111,219,111,3
+111310,Radiant Odogaron,Hindlegs,,45,40,35,92,92,92,177,92,0
+111310,Radiant Odogaron,Tail,,45,40,35,92,92,92,177,92,0
+140001,Ruger Aidal,Head,,35,60,55,45,26,25,45,30,1
+140001,Ruger Aidal,Body,,35,40,30,40,18,18,40,26,0
+140001,Ruger Aidal,Wings,,42,36,42,63,32,29,63,41,2
+140001,Ruger Aidal,Right Wing,,42,36,42,63,32,29,63,41,0
+140001,Ruger Aidal,Forelegs,,55,50,40,65,37,35,65,45,2
+140001,Ruger Aidal,Right Foreleg,,55,50,40,65,37,35,65,45,0
+140001,Ruger Aidal,Left Hind Leg,,35,40,30,44,26,25,44,30,0
+140001,Ruger Aidal,Right Hind Leg,,35,40,30,44,26,25,44,30,0
+140001,Ruger Aidal,Tail,,65,30,40,55,32,24,55,38,3
+140001,Ruger Aidal,LeftWingShieldNew,,60,80,55,55,35,55,55,55,0
+140001,Ruger Aidal,LeftWingShield,,60,80,55,55,35,55,55,55,0
+140001,Ruger Aidal,RightWingShield,,60,80,55,55,35,55,55,55,0
+140001,Ruger Aidal,Head,,75,90,85,43,33,42,50,45,2
+140001,Ruger Aidal,BodyBroken,,35,40,30,38,18,18,40,26,0
+140001,Ruger Aidal,LeftForelegBroken,,55,50,40,57,37,35,65,45,0
+140001,Ruger Aidal,RightForelegBroken,,55,50,40,57,37,35,65,45,0
+140001,Ruger Aidal,LeftWingBroken,,42,36,42,52,32,29,63,41,0
+140001,Ruger Aidal,RightWingBroken,,42,36,42,52,32,29,63,41,0
+140001,Ruger Aidal,TailBroken,,65,30,40,50,32,24,55,38,0
+140001,Ruger Aidal,HeadBouncing,,1,1,1,50,50,50,50,50,0
+140001,Ruger Aidal,BodyBouncing,,1,1,1,50,50,50,50,50,0
+140001,Ruger Aidal,LeftForelegBouncing,,1,1,1,50,50,50,50,50,0
+140001,Ruger Aidal,RightForelegBouncing,,1,1,1,50,50,50,50,50,0
+140001,Ruger Aidal,LeftHindlegBouncing,,1,1,1,50,50,50,50,50,0
+140001,Ruger Aidal,RightHindlegBouncing,,1,1,1,50,50,50,50,50,0
+140001,Ruger Aidal,LeftWingBouncing,,1,1,1,50,50,50,50,50,0
+140001,Ruger Aidal,RightWingBouncing,,1,1,1,50,50,50,50,50,0
+140001,Ruger Aidal,TailBouncing,,1,1,1,50,50,50,50,50,0
+140001,Ruger Aidal,Wings,,1,1,1,1,1,1,1,1,0
+140001,Ruger Aidal,Wings,,1,1,1,1,1,1,1,1,0
+140001,Ruger Aidal,Head,,35,35,30,95,95,143,95,48,3
+140001,Ruger Aidal,BodyMadKing,,45,50,40,35,35,53,35,18,0
+140001,Ruger Aidal,Wings,,45,50,45,50,50,75,50,25,2
+140001,Ruger Aidal,Wings,,45,50,45,50,50,75,50,25,2
+140001,Ruger Aidal,LeftForelegMadKing,,55,55,55,45,45,68,45,23,0
+140001,Ruger Aidal,RightForelegMadKing,,55,55,55,45,45,68,45,23,0
+140001,Ruger Aidal,LeftHindlegMadKing,,35,35,30,18,18,53,18,35,0
+140001,Ruger Aidal,RightHindlegMadKing,,35,35,30,18,18,53,18,35,0
+140001,Ruger Aidal,Tail,,35,35,30,55,55,83,55,28,2
+140001,Ruger Aidal,HeadBrokenMadKing,,75,90,70,95,95,143,95,48,0
+140001,Ruger Aidal,BodyBrokenMadKing,,55,55,55,95,95,143,95,48,0
+140001,Ruger Aidal,LeftForelegBrokenMadKing,,60,60,60,45,45,68,45,23,0
+140001,Ruger Aidal,RightForelegBrokenMadKing,,60,60,60,45,45,68,45,23,0
+140001,Ruger Aidal,Wings,,70,70,70,50,50,75,50,25,2
+140001,Ruger Aidal,Wings,,70,70,70,50,50,75,50,25,2
+140001,Ruger Aidal,Tail,,25,25,25,55,55,83,55,28,2
+100110,Rathian,Head,,70,75,65,143,143,169,143,143,3
+100110,Rathian,Neck,,40,45,35,78,78,210,78,78,0
+100110,Rathian,Body,,35,30,25,71,71,185,71,71,0
+100110,Rathian,Back,,35,30,25,71,71,185,71,71,0
+100110,Rathian,Left Wing,,55,50,45,108,108,177,108,108,0
+100110,Rathian,Right Wing,,55,50,45,111,111,192,111,111,0
+100110,Rathian,Left Leg,,40,40,35,78,78,210,78,78,0
+100110,Rathian,Right Leg,,40,40,35,81,81,220,81,81,0
+100110,Rathian,Tail,,70,75,65,92,92,169,92,92,3
+100110,Rathian,TailTip,,70,75,65,92,92,169,92,92,0
+100110,Rathian,Head,,70,75,65,143,143,169,143,143,3
+100110,Rathian,Neck_PJ,,40,45,35,78,78,210,78,78,0
+100110,Rathian,Body_PJ,,35,30,25,71,71,185,71,71,0
+100110,Rathian,Back_PJ,,35,30,25,71,71,185,71,71,0
+100110,Rathian,LeftWing_PJ,,55,50,45,108,108,177,108,108,0
+100110,Rathian,RightWing_PJ,,55,50,45,111,111,192,111,111,0
+100110,Rathian,LeftLeg_PJ,,40,40,35,78,78,210,78,78,0
+100110,Rathian,RightLeg_PJ,,40,40,35,81,81,220,81,81,0
+100110,Rathian,Tail,,70,75,65,92,92,169,92,92,3
+100110,Rathian,TailTip_PJ,,70,75,65,92,92,169,92,92,0
+200101,Aptonoth,Head,,70,70,100,91,70,91,70,49,0
+200101,Aptonoth,Body,,80,80,100,104,80,104,80,56,0
+200201,Apceros,Head,,60,60,60,78,60,78,60,42,0
+200201,Apceros,Body,,60,60,60,78,60,78,60,42,0
+200301,Kelbi,Head,,85,85,80,111,111,111,111,60,0
+200301,Kelbi,Body,,85,85,80,111,111,111,111,60,0
+200302,Kelbi,Head,,85,85,80,111,111,111,111,60,0
+200302,Kelbi,Body,,85,85,80,111,111,111,111,60,0
+200501,Hornetaur,Body,,80,100,80,104,80,80,104,56,0
+200510,Radiant Hornetaur,Body,,80,100,80,104,80,80,104,56,0
+200601,Vespoid,Body,,85,85,85,111,85,85,85,60,0
+202901,Gajau,Head,,80,80,80,104,80,104,80,56,0
+202901,Gajau,Body,,70,70,70,91,70,91,70,49,0
+204901,Jagras,Head,,90,90,90,117,63,117,90,90,0
+204901,Jagras,Body,,80,80,80,104,56,104,80,80,0
+204910,Radiant Jagras,Head,,90,90,90,117,63,117,90,90,0
+204910,Radiant Jagras,Body,,80,80,80,104,56,104,80,80,0
+205001,Mernos,Head,,90,90,80,117,117,117,117,90,0
+205001,Mernos,Body,,90,90,90,117,117,117,117,90,0
+205010,Radiant Mernos,Head,,90,90,80,117,117,117,117,90,0
+205010,Radiant Mernos,Body,,90,90,90,117,117,117,117,90,0
+205101,Kestodon,Head,,35,35,35,35,46,35,46,25,0
+205101,Kestodon,Body,,80,80,80,80,104,80,104,56,0
+205102,Kestodon,Head,,50,50,50,50,65,50,65,35,0
+205102,Kestodon,Body,,80,80,80,80,104,80,104,56,0
+205110,Radiant Kestodon,Head,,35,35,35,35,46,35,46,25,0
+205110,Radiant Kestodon,Body,,80,80,80,80,104,80,104,56,0
+205111,Kestodon,Head,,50,50,50,50,65,50,65,35,0
+205111,Kestodon,Body,,80,80,80,80,104,80,104,56,0
+205301,Raphinos,Head,,90,90,90,90,90,117,90,63,0
+205301,Raphinos,Body,,90,90,80,90,90,117,90,63,0
+205310,Radiant Raphinos,Head,,90,90,90,90,90,117,90,63,0
+205310,Radiant Raphinos,Body,,90,90,80,90,90,117,90,63,0
+205401,Shamos,Head,,80,80,80,104,80,104,80,56,0
+205401,Shamos,Body,,70,70,70,91,70,91,70,49,0
+205410,Radiant Shamos,Head,,80,80,80,104,80,104,80,56,0
+205410,Radiant Shamos,Body,,70,70,70,91,70,91,70,49,0
+205501,Barnos,Head,,45,45,45,45,32,45,45,59,0
+205501,Barnos,Body,,45,45,45,45,32,45,45,59,0
+205601,Girros,Head,,90,90,90,117,63,117,90,90,0
+205601,Girros,Body,,80,80,80,104,56,104,80,80,0
+205610,Radiant Girros,Head,,90,90,90,117,63,117,90,90,0
+205610,Radiant Girros,Body,,80,80,80,104,56,104,80,80,0
+205801,Gastodon,Head,,35,35,35,25,35,46,35,25,0
+205801,Gastodon,Body,,65,65,65,46,65,85,65,46,0
+205901,Noios,Head,,90,90,80,90,117,117,117,90,0
+205901,Noios,Body,,90,90,90,90,117,117,117,90,0
+206101,Warrior Atecoli,Head,,80,90,90,80,80,104,104,56,0
+206101,Warrior Atecoli,Body,,45,60,70,45,45,59,59,32,0

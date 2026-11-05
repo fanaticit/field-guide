@@ -77,30 +77,30 @@ As they burrow, they sweep up Radiantite and hurl it, then charge with their mas
 Once frenzied, they draw on the radiant particles within their bodies to accelerate their metabolism, causing their claws to overgrow and greatly extend their attack range. These overgrown claws eventually fracture on their own—destroying them first can weaken their momentum.","Radiantite-corrupted Fanged Wyverns unique to Aesoland. The mutation has accelerated the growth of their claws' keratin, dramatically extending their attack range and enabling them to inflict bleeding in a far greater variety of ways","Once frenzied, they draw on the radiant particles within their bodies to accelerate their metabolism, causing their claws to overgrow and greatly extend their attack range. These overgrown claws eventually fracture on their own—destroying them first can weaken their momentum.",MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Odogaron_LightingStone.png,MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZOdogaron/Sketch_RGZOdogaron_D1.png
 140001,Ruger Aidal,yes,Thunder,3,1,3,3,1,2,3,2,2,Head: Breakable; Wings: Breakable; Body: Breakable; Tail: Severable,"A newly discovered Elder Dragon species on Aesoland. They harden the radiant particles clinging to their bodies into armor-like plating, using them for both offense and defense; they can also absorb ambient radiant particles to unleash devastating attacks.
 They form spikes and clusters of Radiantite from radiant particles to attack, but these are unstable when freshly formed—well-timed consecutive blows can shatter the crystals and stagger them.","A newly discovered Elder Dragon species on Aesoland. They harden the radiant particles clinging to their bodies into armor-like plating, using them for both offense and defense; they can also absorb ambient radiant particles to unleash devastating attacks","They attack using spikes and Radiantite clusters formed from radiant particles, but these are unstable right after forming. Well-timed consecutive blows can shatter the crystals and stagger them.",MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_PrismireKnight.png,MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RugerAidal/Sketch_RugerAidal_D1.png
-100110,Rathian,,Thunder,0,0,3,0,0,,,,,,,,,,
-200101,Aptonoth,,Fire,3,1,3,1,0,,,,,,,,,,
-200201,Apceros,,Fire,3,1,3,1,0,,,,,,,,,,
-200301,Kelbi,,Water,3,3,3,3,0,,,,,,,,,,
-200302,Kelbi,,Water,3,3,3,3,0,,,,,,,,,,
-200501,Hornetaur,,Fire,3,1,1,3,0,,,,,,,,,,
-200510,Radiant Hornetaur,,Fire,3,1,1,3,0,,,,,,,,,,
-200601,Vespoid,,Fire,3,1,1,1,0,,,,,,,,,,
-202901,Gajau,,Fire,3,1,3,1,0,,,,,,,,,,
-204901,Jagras,,Fire,3,0,3,1,1,,,,,,,,,,
-204910,Radiant Jagras,,Fire,3,0,3,1,1,,,,,,,,,,
-205001,Mernos,,Water,3,3,3,3,1,,,,,,,,,,
-205010,Radiant Mernos,,Water,3,3,3,3,1,,,,,,,,,,
-205101,Kestodon,,Water,1,3,1,3,0,,,,,,,,,,
-205102,Kestodon,,Water,1,3,1,3,0,,,,,,,,,,
-205110,Radiant Kestodon,,Water,1,3,1,3,0,,,,,,,,,,
-205111,Kestodon,,Water,1,3,1,3,0,,,,,,,,,,
-205301,Raphinos,,Thunder,1,1,3,1,0,,,,,,,,,,
-205310,Radiant Raphinos,,Thunder,1,1,3,1,0,,,,,,,,,,
-205401,Shamos,,Fire,3,1,3,1,0,,,,,,,,,,
-205410,Radiant Shamos,,Fire,3,1,3,1,0,,,,,,,,,,
-205501,Barnos,,Dragon,1,0,1,1,3,,,,,,,,,,
-205601,Girros,,Fire,3,0,3,1,1,,,,,,,,,,
-205610,Radiant Girros,,Fire,3,0,3,1,1,,,,,,,,,,
-205801,Gastodon,,Thunder,0,1,3,1,0,,,,,,,,,,
-205901,Noios,,Water,1,3,3,3,1,,,,,,,,,,
-206101,Warrior Atecoli,,Ice,1,1,3,3,0,,,,,,,,,,
+100110,Rathian,,Thunder,0,0,3,0,0,,,,,,,,,MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathian_LightingStone.png,MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathian/Sketch_Rathian_D1_Coloured.png
+200101,Aptonoth,,Fire,3,1,3,1,0,,,,,,,,,MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Aptonoth.png,MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Aptonoth/Sketch_Aptonoth_Coloured.png
+200201,Apceros,,Fire,3,1,3,1,0,,,,,,,,,MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Apceros.png,MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Apceros/Sketch_Apceros_Coloured.png
+200301,Kelbi,,Water,3,3,3,3,0,,,,,,,,,MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Kelbi.png,MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/FemaleKelbi/Sketch_FemaleKelbi_Coloured.png
+200302,Kelbi,,Water,3,3,3,3,0,,,,,,,,,MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Kelbi.png,MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/FemaleKelbi/Sketch_FemaleKelbi_Coloured.png
+200501,Hornetaur,,Fire,3,1,1,3,0,,,,,,,,,MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Hornetaur.png,MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Hornetaur/Sketch_Hornetaur_Coloured.png
+200510,Radiant Hornetaur,,Fire,3,1,1,3,0,,,,,,,,,MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Hornetaur_LightingStone.png,MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Hornetaur/Sketch_Hornetaur_Coloured.png
+200601,Vespoid,,Fire,3,1,1,1,0,,,,,,,,,MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Vespoid.png,MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Vespoid/Sketch_Vespoid_Coloured.png
+202901,Gajau,,Fire,3,1,3,1,0,,,,,,,,,MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Gajau.png,MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajau/Sketch_Gajau_Coloured.png
+204901,Jagras,,Fire,3,0,3,1,1,,,,,,,,,MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Jagras.png,MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Jagras/Sketch_Jagras_Coloured.png
+204910,Radiant Jagras,,Fire,3,0,3,1,1,,,,,,,,,MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Jagras_LightingStone.png,MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Jagras/Sketch_Jagras_Coloured.png
+205001,Mernos,,Water,3,3,3,3,1,,,,,,,,,MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Mernos.png,MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Mernos/Sketch_Mernos_Coloured.png
+205010,Radiant Mernos,,Water,3,3,3,3,1,,,,,,,,,MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Mernos_LightingStone.png,MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Mernos/Sketch_Mernos_Coloured.png
+205101,Kestodon,,Water,1,3,1,3,0,,,,,,,,,MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Corontosaurus_01.png,MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/MaleKestodon/Sketch_MaleKestodon_Coloured.png
+205102,Kestodon,,Water,1,3,1,3,0,,,,,,,,,MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Corontosaurus_01.png,MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/MaleKestodon/Sketch_MaleKestodon_Coloured.png
+205110,Radiant Kestodon,,Water,1,3,1,3,0,,,,,,,,,MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Corontosaurus_01_LightingStone.png,MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/MaleKestodon/Sketch_MaleKestodon_Coloured.png
+205111,Kestodon,,Water,1,3,1,3,0,,,,,,,,,MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Corontosaurus_01_LightingStone.png,MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/MaleKestodon/Sketch_MaleKestodon_Coloured.png
+205301,Raphinos,,Thunder,1,1,3,1,0,,,,,,,,,MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Raphinos.png,MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Raphinos/Sketch_Raphinos_Coloured.png
+205310,Radiant Raphinos,,Thunder,1,1,3,1,0,,,,,,,,,MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Raphinos_LightingStone.png,MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Raphinos/Sketch_Raphinos_Coloured.png
+205401,Shamos,,Fire,3,1,3,1,0,,,,,,,,,MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Shamos.png,MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Shamos/Sketch_Shamos_Coloured.png
+205410,Radiant Shamos,,Fire,3,1,3,1,0,,,,,,,,,MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Shamos_LightingStone.png,MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Shamos/Sketch_Shamos_Coloured.png
+205501,Barnos,,Dragon,1,0,1,1,3,,,,,,,,,MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Barnos.png,MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Barnos/Sketch_Barnos_Coloured.png
+205601,Girros,,Fire,3,0,3,1,1,,,,,,,,,MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Girros.png,MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Girros/Sketch_Girros_Coloured.png
+205610,Radiant Girros,,Fire,3,0,3,1,1,,,,,,,,,MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Girros_LightingStone.png,MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Girros/Sketch_Girros_Coloured.png
+205801,Gastodon,,Thunder,0,1,3,1,0,,,,,,,,,MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Gastodon.png,MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gastodon/Sketch_Gastodon_Coloured.png
+205901,Noios,,Water,1,3,3,3,1,,,,,,,,,MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Noios.png,MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Noios/Sketch_Noios_Coloured.png
+206101,Warrior Atecoli,,Ice,1,1,3,3,0,,,,,,,,,MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Carapaceon.png,MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajalaka/Sketch_Gajalaka_Coloured.png

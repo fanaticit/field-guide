@@ -125,10 +125,32 @@ export interface DBAdventurer {
   rarity?: AdventurerRarity | null;
   description: string | null;
   notes: string | null;
+  /** Epithet shown under the name, e.g. "Sword Inferno". */
+  title?: string | null;
+  gender?: 'male' | 'female' | null;
+  /** Name of the buddy the adventurer starts with. */
+  default_buddy?: string | null;
+  traits?: AdventurerTrait[];
+  playstyle?: string | null;
+  height?: string | null;
   is_active: boolean;
   sort_order: number;
   created_at: string;
   updated_at: string;
+}
+
+export interface AdventurerTrait {
+  name: string;
+  description: string;
+}
+
+export interface AdventurerSkill {
+  id: string;
+  adventurer_id: string;
+  sort_order: number;
+  name: string;
+  skill_type: string | null;
+  description: string | null;
 }
 
 export type AdventurerUpsert = Omit<DBAdventurer, 'created_at' | 'updated_at'>;

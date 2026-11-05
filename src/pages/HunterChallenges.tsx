@@ -45,6 +45,7 @@ import { usePublicAdventurers } from '../hooks/useAdminAdventurers';
 import { usePublicMonsters } from '../hooks/useAdminMonsters';
 import PageTitlePanel from '../components/layout/PageTitlePanel';
 import VisageIcon from '../components/visage/VisageIcon';
+import ArtBackdrop from '../components/ArtBackdrop';
 import { VISAGE_RARITY_OPTIONS, type VisageRarity } from '../data/schemas/visage';
 
 // ── Slot display helpers ──────────────────────────────────────
@@ -146,7 +147,7 @@ function getSlotLabel(c: HunterChallenge): string {
 // ── Adventurer panel background ───────────────────────────────
 
 /** Dimmed art behind an adventurer's challenge; the parent must be `relative isolate overflow-hidden`. */
-function PanelBackground({ src, fade = false }: { src?: string | null; fade?: boolean }) {
+function PanelBackground({ src, fade = false, grey = false }: { src?: string | null; fade?: boolean; grey?: boolean }) {
   const [failed, setFailed] = useState(false);
   if (!src || failed) return null;
   return (
@@ -155,7 +156,7 @@ function PanelBackground({ src, fade = false }: { src?: string | null; fade?: bo
         src={src}
         alt=""
         onError={() => setFailed(true)}
-        className={cn('h-full w-full object-cover', fade ? 'opacity-25' : 'opacity-40')}
+        className={cn('h-full w-full object-cover', fade ? 'opacity-25' : 'opacity-40', grey && 'grayscale')}
       />
       <div className="absolute inset-0 bg-gradient-to-r from-sky-950/90 via-sky-950/60 to-sky-950/30" />
     </div>
@@ -230,6 +231,8 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
   };
 
   const isVisage = c.challenge_type === 'visage_set' || Boolean(c.visage_id);
+  // Armour pieces show the sketch of the monster they are made from
+  const showsSketch = isVisage || c.challenge_type === 'armour_piece';
   const isAdventurer = c.challenge_type === 'adventurer' || Boolean(c.adventurer_id);
   const isBuddy = c.challenge_type === 'buddy' || Boolean(c.buddy_id);
 
@@ -238,6 +241,8 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
   const pieceImg  = c.piece_image ?? slotIcon;
   const isActive  = c.status === 'crafting' || c.status === 'upgrading';
   const isDone    = c.status === 'completed' || c.status === 'abandoned';
+  // Art stays greyed out until the item is collected / recruited
+  const isCollected = c.status === 'completed';
 
   // Rarity progress
   const maxR = challengeMaxRarity(c);
@@ -274,8 +279,9 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
           isDone && 'opacity-60',
         )}
       >
-        <PanelBackground src={backgroundImage} fade />
-        {isVisage && <MonsterSketchBackground src={sketchImage} fill />}
+        <PanelBackground src={backgroundImage} fade grey={!isCollected} />
+        {isBuddy && <ArtBackdrop src={c.piece_image} active={isCollected} />}
+        {showsSketch && <MonsterSketchBackground src={sketchImage} fill />}
         {/* Piece icon */}
         <div className="shrink-0 flex items-center justify-center">
           {isVisage ? visageArt(c, 'h-10 w-10') : pieceImg && (
@@ -554,8 +560,9 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
         </p>
       )}
 
-      <PanelBackground src={backgroundImage} />
-      {isVisage && <MonsterSketchBackground src={sketchImage} />}
+      <PanelBackground src={backgroundImage} grey={!isCollected} />
+      {isBuddy && <ArtBackdrop src={c.piece_image} active={isCollected} />}
+      {showsSketch && <MonsterSketchBackground src={sketchImage} />}
     </div>
   );
 }
@@ -854,7 +861,8 @@ function RecruitmentPanel({ recruits, selection, onSelect, backgrounds }: Recrui
                       : 'bg-sky-800/40 border-sky-700/50 hover:bg-sky-800/70',
                   )}
                 >
-                  <PanelBackground src={c.adventurer_id ? backgrounds?.get(c.adventurer_id) : null} fade />
+                  <PanelBackground src={c.adventurer_id ? backgrounds?.get(c.adventurer_id) : null} fade grey />
+                  {c.buddy_id && <ArtBackdrop src={c.piece_image} active={false} />}
                   <div className="shrink-0 flex h-9 w-9 items-center justify-center">
                     {img ? (
                       <img

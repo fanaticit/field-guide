@@ -1,0 +1,4900 @@
+[
+ {
+  "id": 43,
+  "name": "Health Boost",
+  "category": "Survival",
+  "max_level": 3,
+  "description": "Increases the Adventurer's health.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_17.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Health +10."
+   },
+   {
+    "level": 2,
+    "description": "Health +20."
+   },
+   {
+    "level": 3,
+    "description": "Health +30."
+   }
+  ]
+ },
+ {
+  "id": 7,
+  "name": "Recovery Booster",
+  "category": "Survival",
+  "max_level": 3,
+  "description": "Increases the amount of recovery gained from using items or interactive objects that provide health recovery.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_17.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Increases Health recovery by 1.1x when healing."
+   },
+   {
+    "level": 2,
+    "description": "Increases Health recovery by 1.2x when healing."
+   },
+   {
+    "level": 3,
+    "description": "Increases Health recovery by 1.3x when healing."
+   }
+  ]
+ },
+ {
+  "id": 25,
+  "name": "Health Recovery",
+  "category": "Survival",
+  "max_level": 3,
+  "description": "Speeds healing of recoverable damage (the gray portion of the health gauge).",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_17.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Increases the recovery speed of gray health by 2x."
+   },
+   {
+    "level": 2,
+    "description": "Increases the recovery speed of gray health by 3x."
+   },
+   {
+    "level": 3,
+    "description": "Increases the recovery speed of gray health by 4x."
+   }
+  ]
+ },
+ {
+  "id": 58,
+  "name": "Attack",
+  "category": "Hunt (General)",
+  "max_level": 7,
+  "description": "Increases the Adventurer's attack.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_20.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Attack +{SkillB_One_10081_01}"
+   },
+   {
+    "level": 2,
+    "description": "Attack +{SkillB_One_10081_01}"
+   },
+   {
+    "level": 3,
+    "description": "Attack +{SkillB_One_10081_01}"
+   },
+   {
+    "level": 4,
+    "description": "Attack +{SkillB_One_10081_01}"
+   },
+   {
+    "level": 5,
+    "description": "Attack +{SkillB_One_10081_01}"
+   },
+   {
+    "level": 6,
+    "description": "Attack +{SkillB_One_10081_01}"
+   },
+   {
+    "level": 7,
+    "description": "Attack +{SkillB_One_10081_01}"
+   }
+  ]
+ },
+ {
+  "id": 59,
+  "name": "Defense Up",
+  "category": "Attributes",
+  "max_level": 7,
+  "description": "Increases defense.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_04.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Defense +5"
+   },
+   {
+    "level": 2,
+    "description": "Defense +10"
+   },
+   {
+    "level": 3,
+    "description": "Defense +15"
+   },
+   {
+    "level": 4,
+    "description": "Defense +20"
+   },
+   {
+    "level": 5,
+    "description": "Defense +25"
+   },
+   {
+    "level": 6,
+    "description": "Defense +30"
+   },
+   {
+    "level": 7,
+    "description": "Defense +35"
+   }
+  ]
+ },
+ {
+  "id": 60,
+  "name": "Insight",
+  "category": "Hunt (General)",
+  "max_level": 7,
+  "description": "Increases affinity.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_10.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Affinity +2%."
+   },
+   {
+    "level": 2,
+    "description": "Affinity +4%."
+   },
+   {
+    "level": 3,
+    "description": "Affinity +6%."
+   },
+   {
+    "level": 4,
+    "description": "Affinity +8%."
+   },
+   {
+    "level": 5,
+    "description": "Affinity +10%."
+   },
+   {
+    "level": 6,
+    "description": "Affinity +13%."
+   },
+   {
+    "level": 7,
+    "description": "Affinity +16%."
+   }
+  ]
+ },
+ {
+  "id": 61,
+  "name": "Critical Boost",
+  "category": "Hunt (General)",
+  "max_level": 5,
+  "description": "Increases non-elemental critical hit damage.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_10.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Increases non-elemental damage dealt by critical hits by {SkillB_One_10111_01}."
+   },
+   {
+    "level": 2,
+    "description": "Increases non-elemental damage dealt by critical hits by {SkillB_One_10111_01}."
+   },
+   {
+    "level": 3,
+    "description": "Increases non-elemental damage dealt by critical hits by {SkillB_One_10111_01}."
+   },
+   {
+    "level": 4,
+    "description": "Increases non-elemental damage dealt by critical hits by {SkillB_One_10111_01}."
+   },
+   {
+    "level": 5,
+    "description": "Increases non-elemental damage dealt by critical hits by {SkillB_One_10111_01}."
+   }
+  ]
+ },
+ {
+  "id": 77,
+  "name": "Guard Technique",
+  "category": "Survival",
+  "max_level": 5,
+  "description": "Reduces stagger time when guarding and stamina cost of guarding.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_03.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Very slightly decreases the impact of attacks."
+   },
+   {
+    "level": 2,
+    "description": "Slightly decreases the impact of attacks and reduces stamina depletion by 15%."
+   },
+   {
+    "level": 3,
+    "description": "Decreases the impact of attacks and reduces stamina depletion by 15%."
+   },
+   {
+    "level": 4,
+    "description": "Decreases the impact of attacks and reduces stamina depletion by 30%."
+   },
+   {
+    "level": 5,
+    "description": "Greatly decreases the impact of attacks and reduces stamina depletion by 50%."
+   }
+  ]
+ },
+ {
+  "id": 78,
+  "name": "Flawless",
+  "category": "Attributes",
+  "max_level": 3,
+  "description": "Increases damage dealt when health is full.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_20.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While active, damage +3%."
+   },
+   {
+    "level": 2,
+    "description": "While active, damage +6%."
+   },
+   {
+    "level": 3,
+    "description": "While active, damage +9%."
+   }
+  ]
+ },
+ {
+  "id": 79,
+  "name": "Rejuvenation",
+  "category": "Attributes",
+  "max_level": 3,
+  "description": "Health will continuously recover until it reaches a certain value.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_01.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Health will automatically recover until it reaches 75."
+   },
+   {
+    "level": 2,
+    "description": "Health will automatically recover until it reaches 100."
+   },
+   {
+    "level": 3,
+    "description": "Health will automatically recover until it reaches 125."
+   }
+  ]
+ },
+ {
+  "id": 19,
+  "name": "Fearless",
+  "category": "Hunt (General)",
+  "max_level": 5,
+  "description": "Increases damage when you have recoverable damage (the gray portion of your health gauge).",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_11.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While active, damage +3%."
+   },
+   {
+    "level": 2,
+    "description": "While active, damage +6%."
+   },
+   {
+    "level": 3,
+    "description": "While active, damage +10%."
+   },
+   {
+    "level": 4,
+    "description": "While active, damage +14%."
+   },
+   {
+    "level": 5,
+    "description": "While active, damage +19%."
+   }
+  ]
+ },
+ {
+  "id": 42,
+  "name": "Desperation",
+  "category": "Hunt (General)",
+  "max_level": 1,
+  "description": "Increases defense and damage when health falls below a certain threshold.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_20.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Damage +23% and defense +50 when health is below 61."
+   }
+  ]
+ },
+ {
+  "id": 17,
+  "name": "Unleashed",
+  "category": "Hunt (General)",
+  "max_level": 5,
+  "description": "Temporarily increases affinity when certain conditions are met.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_20.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "90s after a hunt begins, or after taking 100 total damage, increases affinity by 3% for 180s."
+   },
+   {
+    "level": 2,
+    "description": "90s after a hunt begins, or after taking 100 total damage, increases affinity by 6% for 180s."
+   },
+   {
+    "level": 3,
+    "description": "90s after a hunt begins, or after taking 100 total damage, increases affinity by 9% for 180s."
+   },
+   {
+    "level": 4,
+    "description": "90s after a hunt begins, or after taking 100 total damage, increases affinity by 12% for 180s."
+   },
+   {
+    "level": 5,
+    "description": "90s after a hunt begins, or after taking 100 total damage, increases affinity by 15% for 180s."
+   }
+  ]
+ },
+ {
+  "id": 80,
+  "name": "Guts",
+  "category": "Hunt (General)",
+  "max_level": 5,
+  "description": "When above a certain health threshold, you will not faint from damage that exceeds your remaining health.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_20.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Above {SkillB_One_11061_01} Health, you withstand an attack that would normally cart you."
+   },
+   {
+    "level": 2,
+    "description": "Above 80 health, you withstand an attack that would normally cause you to faint."
+   },
+   {
+    "level": 3,
+    "description": "Above 70 health, you withstand an attack that would normally cause you to faint."
+   },
+   {
+    "level": 4,
+    "description": "Above 60 health, you withstand an attack that would normally cause you to faint."
+   },
+   {
+    "level": 5,
+    "description": "Above 50 health, you withstand an attack that would normally cause you to faint."
+   }
+  ]
+ },
+ {
+  "id": 62,
+  "name": "Adversity",
+  "category": "Hunt (General)",
+  "max_level": 1,
+  "description": "Temporarily increases damage and defense after each faint, up to 2 times.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_11.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Each faint increases damage by x1.1 and defense by +10."
+   }
+  ]
+ },
+ {
+  "id": 34,
+  "name": "Charge Up",
+  "category": "Hunt (General)",
+  "max_level": 7,
+  "description": "Increases damage dealt as long as stamina is kept full for a set duration.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_20.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Damage +4% when stamina gauge is full for 5s."
+   },
+   {
+    "level": 2,
+    "description": "Damage +8% when stamina gauge is full for 5s."
+   },
+   {
+    "level": 3,
+    "description": "Damage +12% when stamina gauge is full for 5s."
+   },
+   {
+    "level": 4,
+    "description": "Damage +16% when stamina gauge is full for 5s."
+   },
+   {
+    "level": 5,
+    "description": "Damage +20% when stamina gauge is full for 5s."
+   },
+   {
+    "level": 6,
+    "description": "Damage +24% when stamina gauge is full for 5s."
+   },
+   {
+    "level": 7,
+    "description": "Elemental attack +50. Damage +31% when stamina gauge is full for 5s."
+   }
+  ]
+ },
+ {
+  "id": 16,
+  "name": "Battle Spirit",
+  "category": "Hunt (General)",
+  "max_level": 5,
+  "description": "Increases affinity when large monsters become enraged or are in Radiant Rage.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_20.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While active, affinity +3%."
+   },
+   {
+    "level": 2,
+    "description": "While active, affinity +5%."
+   },
+   {
+    "level": 3,
+    "description": "While active, affinity +7%."
+   },
+   {
+    "level": 4,
+    "description": "While active, affinity +11%."
+   },
+   {
+    "level": 5,
+    "description": "While active, affinity +15%."
+   }
+  ]
+ },
+ {
+  "id": 81,
+  "name": "Health Conversion",
+  "category": "Hunt (General)",
+  "max_level": 1,
+  "description": "At set intervals, continually hitting a monster with attacks will recover health.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_01.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While continuously dealing damage, recover 2 health every 5s."
+   }
+  ]
+ },
+ {
+  "id": 8,
+  "name": "Weakspot Exploit",
+  "category": "Hunt (General)",
+  "max_level": 3,
+  "description": "Increases affinity when attacking the monster's weak point.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_10.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "When attacking weak points, affinity +4%."
+   },
+   {
+    "level": 2,
+    "description": "When attacking weak points, affinity +8%."
+   },
+   {
+    "level": 3,
+    "description": "When attacking weak points, affinity +14%."
+   }
+  ]
+ },
+ {
+  "id": 20,
+  "name": "Breaker",
+  "category": "Hunt (General)",
+  "max_level": 3,
+  "description": "Makes it easier to break or sever parts of large monsters.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_03.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Part damage x1.1."
+   },
+   {
+    "level": 2,
+    "description": "Part damage x1.2."
+   },
+   {
+    "level": 3,
+    "description": "Part damage x1.3."
+   }
+  ]
+ },
+ {
+  "id": 82,
+  "name": "Offensive Defense",
+  "category": "Hunt (General)",
+  "max_level": 7,
+  "description": "After a successful Perfect Guard, increases damage for a set duration.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_01.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "After activation, damage +4% for 30s."
+   },
+   {
+    "level": 2,
+    "description": "After activation, damage +8% for 30s."
+   },
+   {
+    "level": 3,
+    "description": "After activation, damage +12% for 30s."
+   },
+   {
+    "level": 4,
+    "description": "After activation, damage +16% for 30s."
+   },
+   {
+    "level": 5,
+    "description": "After activation, damage +20% for 30s."
+   },
+   {
+    "level": 6,
+    "description": "After activation, damage +24% for 30s."
+   },
+   {
+    "level": 7,
+    "description": "Elemental attack +50. After activation, damage +31% for 30s."
+   }
+  ]
+ },
+ {
+  "id": 50,
+  "name": "Evade Window",
+  "category": "Survival",
+  "max_level": 3,
+  "description": "Extends the invulnerability period when evading.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_13.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Slightly increases invulnerability window."
+   },
+   {
+    "level": 2,
+    "description": "Greatly increases invulnerability window."
+   },
+   {
+    "level": 3,
+    "description": "Massively increases invulnerability window."
+   }
+  ]
+ },
+ {
+  "id": 12,
+  "name": "Evade Extender",
+  "category": "Survival",
+  "max_level": 2,
+  "description": "Increases evade distance.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_13.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Slightly extends evasion distance."
+   },
+   {
+    "level": 2,
+    "description": "Greatly extends evasion distance."
+   }
+  ]
+ },
+ {
+  "id": 83,
+  "name": "Sturdy Guard",
+  "category": "Attributes",
+  "max_level": 1,
+  "description": "Allows you to guard against ordinarily unblockable attacks.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_04.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Allows you to guard against ordinarily unblockable attacks."
+   }
+  ]
+ },
+ {
+  "id": 35,
+  "name": "Flinching-Free",
+  "category": "Survival",
+  "max_level": 3,
+  "description": "Reduces reactions to minor damage.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_03.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Prevents knockbacks from minor damage."
+   },
+   {
+    "level": 2,
+    "description": "Prevents knockbacks from minor damage. Tripping is reduced to a knockback."
+   },
+   {
+    "level": 3,
+    "description": "Prevents knockbacks and tripping from minor damage."
+   }
+  ]
+ },
+ {
+  "id": 11,
+  "name": "Blessing",
+  "category": "Survival",
+  "max_level": 5,
+  "description": "Has a chance to reduce damage taken.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_18.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "When taking damage, has a 25% chance to reduce that damage by 15%."
+   },
+   {
+    "level": 2,
+    "description": "When taking damage, has a 25% chance to reduce that damage by 30%."
+   },
+   {
+    "level": 3,
+    "description": "When taking damage, has a 25% chance to reduce that damage by 50%."
+   },
+   {
+    "level": 4,
+    "description": "When taking damage, has a 25% chance to reduce that damage by 60%."
+   },
+   {
+    "level": 5,
+    "description": "When taking damage, has a 40% chance to reduce that damage by 60%."
+   }
+  ]
+ },
+ {
+  "id": 1,
+  "name": "Roar Resistance",
+  "category": "Survival",
+  "max_level": 3,
+  "description": "Grants protection against large monsters' roars.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_01.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Reduces the effects of weak monster roars."
+   },
+   {
+    "level": 2,
+    "description": "Nullifies weak monster roars and reduces the effects of strong monster roars."
+   },
+   {
+    "level": 3,
+    "description": "Nullifies weak and strong monster roars."
+   }
+  ]
+ },
+ {
+  "id": 5,
+  "name": "Windproof",
+  "category": "Resistance",
+  "max_level": 3,
+  "description": "Grants protection against wind pressure.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_01.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Reduces the effects of minor wind pressure."
+   },
+   {
+    "level": 2,
+    "description": "Negates minor wind pressure and reduces the effects of major wind pressure."
+   },
+   {
+    "level": 3,
+    "description": "Negates minor and major wind pressure."
+   }
+  ]
+ },
+ {
+  "id": 24,
+  "name": "Tremor Resistance",
+  "category": "Resistance",
+  "max_level": 3,
+  "description": "Grants protection against ground tremors.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_03.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Nullifies minor ground tremors."
+   },
+   {
+    "level": 2,
+    "description": "Nullifies minor ground tremors and reduces the effects of major ground tremors."
+   },
+   {
+    "level": 3,
+    "description": "Nullifies minor and major ground tremors."
+   }
+  ]
+ },
+ {
+  "id": 64,
+  "name": "Accelerated Poison",
+  "category": "Hunt (General)",
+  "max_level": 3,
+  "description": "Poison Buildup Rate Up",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_12.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Poison Buildup Rate x{SkillB_One_14001_01}."
+   },
+   {
+    "level": 2,
+    "description": "Poison Buildup Rate x{SkillB_One_14001_01}."
+   },
+   {
+    "level": 3,
+    "description": "Poison Buildup Rate x{SkillB_One_14001_01}."
+   }
+  ]
+ },
+ {
+  "id": 84,
+  "name": "Poison Duration Up",
+  "category": "Attributes",
+  "max_level": 1,
+  "description": "Extends the duration of poison on monsters.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_17.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Extends the duration of monsters' poison effect by {SkillB_One_14009_01}."
+   }
+  ]
+ },
+ {
+  "id": 65,
+  "name": "Paralysis Attack",
+  "category": "Hunt (General)",
+  "max_level": 4,
+  "description": "Increases the rate of paralysis buildup.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_21.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Paralysis buildup x{SkillB_One_14011_01}."
+   },
+   {
+    "level": 2,
+    "description": "Paralysis buildup x{SkillB_One_14011_01}."
+   },
+   {
+    "level": 3,
+    "description": "Paralysis buildup x{SkillB_One_14011_01}."
+   },
+   {
+    "level": 4,
+    "description": "Paralysis buildup x{SkillB_One_14011_01}."
+   }
+  ]
+ },
+ {
+  "id": 66,
+  "name": "Sleep Attack",
+  "category": "Hunt (General)",
+  "max_level": 4,
+  "description": "Increases the rate of sleep buildup.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_13.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Sleep buildup x{SkillB_One_14021_01}."
+   },
+   {
+    "level": 2,
+    "description": "Sleep buildup x{SkillB_One_14021_01}."
+   },
+   {
+    "level": 3,
+    "description": "Sleep buildup x{SkillB_One_14021_01}."
+   },
+   {
+    "level": 4,
+    "description": "Sleep buildup x{SkillB_One_14021_01}."
+   }
+  ]
+ },
+ {
+  "id": 67,
+  "name": "Blast Attack",
+  "category": "Hunt (General)",
+  "max_level": 4,
+  "description": "Increases the rate of blast buildup.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_14.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Blast buildup x{SkillB_One_14031_01}."
+   },
+   {
+    "level": 2,
+    "description": "Blast buildup x{SkillB_One_14031_01}."
+   },
+   {
+    "level": 3,
+    "description": "Blast buildup x{SkillB_One_14031_01}."
+   },
+   {
+    "level": 4,
+    "description": "Blast buildup x{SkillB_One_14031_01}."
+   }
+  ]
+ },
+ {
+  "id": 85,
+  "name": "Critical Status",
+  "category": "Attributes",
+  "max_level": 1,
+  "description": "Increases ailment buildup (paralysis, poison, sleep, blast) when landing critical hits.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_04.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Multiplies ailment buildup x{SkillB_One_14041_01} (paralysis, poison, sleep, blast) when landing critical hits."
+   }
+  ]
+ },
+ {
+  "id": 86,
+  "name": "True Critical Status",
+  "category": "Attributes",
+  "max_level": 1,
+  "description": "Greatly increases ailment buildup (paralysis, poison, sleep, blast) when landing critical hits.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_19.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Multiplies ailment buildup x1.4 (paralysis, poison, sleep, blast) when landing critical hits."
+   }
+  ]
+ },
+ {
+  "id": 31,
+  "name": "Knockout King",
+  "category": "Hunt (General)",
+  "max_level": 5,
+  "description": "Makes it easier to stun monsters.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_09.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Stun power +20%."
+   },
+   {
+    "level": 2,
+    "description": "Stun power +30%."
+   },
+   {
+    "level": 3,
+    "description": "Stun power +40%."
+   },
+   {
+    "level": 4,
+    "description": "Stun power x1.5."
+   },
+   {
+    "level": 5,
+    "description": "Stun power x1.6"
+   }
+  ]
+ },
+ {
+  "id": 18,
+  "name": "Resuscitate",
+  "category": "Survival",
+  "max_level": 1,
+  "description": "Improves Evade Window when afflicted with ailments.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_13.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While active, greatly improves evasion invulnerability time."
+   }
+  ]
+ },
+ {
+  "id": 15,
+  "name": "Poison Resistance",
+  "category": "Resistance",
+  "max_level": 3,
+  "description": "Reduces damage while poisoned.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_12.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Shortens the duration of poison by 30%."
+   },
+   {
+    "level": 2,
+    "description": "Shortens the duration of poison by 60%."
+   },
+   {
+    "level": 3,
+    "description": "Prevents poison."
+   }
+  ]
+ },
+ {
+  "id": 22,
+  "name": "Paralysis Resistance",
+  "category": "Resistance",
+  "max_level": 3,
+  "description": "Shortens the duration of paralysis.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_21.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Shortens the duration of paralysis by 30%."
+   },
+   {
+    "level": 2,
+    "description": "Shortens the duration of paralysis by 60%."
+   },
+   {
+    "level": 3,
+    "description": "Prevents paralysis."
+   }
+  ]
+ },
+ {
+  "id": 23,
+  "name": "Sleep Resistance",
+  "category": "Resistance",
+  "max_level": 3,
+  "description": "Shortens the duration of sleep.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_13.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Shortens the duration of sleep by 30%."
+   },
+   {
+    "level": 2,
+    "description": "Shortens the duration of sleep by 60%."
+   },
+   {
+    "level": 3,
+    "description": "Prevents sleep."
+   }
+  ]
+ },
+ {
+  "id": 51,
+  "name": "Blast Resistance",
+  "category": "Resistance",
+  "max_level": 3,
+  "description": "Grants protection against blastblight.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_14.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Delays blastblight and reduces blast damage."
+   },
+   {
+    "level": 2,
+    "description": "Greatly delays blastblight and greatly reduces blast damage."
+   },
+   {
+    "level": 3,
+    "description": "Prevents blastblight."
+   }
+  ]
+ },
+ {
+  "id": 2,
+  "name": "Muck Resistance",
+  "category": "Resistance",
+  "max_level": 1,
+  "description": "Reduces limits on movement speed and evasion.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_03.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Reduces limits on movement speed and evasion."
+   }
+  ]
+ },
+ {
+  "id": 14,
+  "name": "Stun Resistance",
+  "category": "Resistance",
+  "max_level": 3,
+  "description": "Shortens stun duration.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_09.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Shortens the duration of stun by 60%."
+   },
+   {
+    "level": 2,
+    "description": "Shortens the duration of stun by 90%."
+   },
+   {
+    "level": 3,
+    "description": "Prevents stun."
+   }
+  ]
+ },
+ {
+  "id": 87,
+  "name": "Bleeding Resistance",
+  "category": "Hunt (General)",
+  "max_level": 3,
+  "description": "Grants protection against bleeding.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_04.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Reduces damage while bleeding."
+   },
+   {
+    "level": 2,
+    "description": "Greatly reduces damage while bleeding."
+   },
+   {
+    "level": 3,
+    "description": "Prevents bleeding."
+   }
+  ]
+ },
+ {
+  "id": 88,
+  "name": "Iron Skin",
+  "category": "Hunt (General)",
+  "max_level": 3,
+  "description": "Grants protection against Defense Down.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_04.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Shortens the duration of Defense Down by 50%."
+   },
+   {
+    "level": 2,
+    "description": "Shortens the duration of Defense Down by 75%."
+   },
+   {
+    "level": 3,
+    "description": "Prevents Defense Down."
+   }
+  ]
+ },
+ {
+  "id": 89,
+  "name": "Peril Averted",
+  "category": "Hunt (General)",
+  "max_level": 3,
+  "description": "Temporarily enhances damage and ailment buildup after recovering from blights or ailments.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_12.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While active, damage +3% and ailment buildup x1.05 for 30s."
+   },
+   {
+    "level": 2,
+    "description": "While active, damage +6% and ailment buildup x1.1 for 30s."
+   },
+   {
+    "level": 3,
+    "description": "While active, damage +9% and ailment buildup x1.15 for 30s."
+   }
+  ]
+ },
+ {
+  "id": 90,
+  "name": "Non-elemental Boost",
+  "category": "Attributes",
+  "max_level": 3,
+  "description": "Increases the base attack of non-elemental weapons.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_04.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Increases the base attack of non-elemental weapons by {SkillB_One_15001_01}."
+   },
+   {
+    "level": 2,
+    "description": "Increases the base attack of non-elemental weapons by {SkillB_One_15001_01}."
+   },
+   {
+    "level": 3,
+    "description": "Increases the base attack of non-elemental weapons by {SkillB_One_15001_01}."
+   }
+  ]
+ },
+ {
+  "id": 68,
+  "name": "Fire Damage Up",
+  "category": "Attributes",
+  "max_level": 7,
+  "description": "Increases fire damage. The effect is enhanced against Radiant monsters.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_20.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Fire damage +3%; against Radiant monsters, fire damage +8% instead."
+   },
+   {
+    "level": 2,
+    "description": "Fire damage +6%; against Radiant monsters, fire damage +15% instead."
+   },
+   {
+    "level": 3,
+    "description": "Fire damage +9%; against Radiant monsters, fire damage +23% instead."
+   },
+   {
+    "level": 4,
+    "description": "Fire damage +12%; against Radiant monsters, fire damage +30% instead."
+   },
+   {
+    "level": 5,
+    "description": "Fire damage +16%; against Radiant monsters, fire damage +40% instead."
+   },
+   {
+    "level": 6,
+    "description": "Fire damage +20%; against Radiant monsters, fire damage +50% instead."
+   },
+   {
+    "level": 7,
+    "description": "Fire attack +50; fire damage +28%; against Radiant monsters, fire damage +70% instead."
+   }
+  ]
+ },
+ {
+  "id": 69,
+  "name": "Water Damage Up",
+  "category": "Attributes",
+  "max_level": 7,
+  "description": "Increases water damage. The effect is enhanced against Radiant monsters.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_18.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Water damage +3%; against Radiant monsters, water damage +8% instead."
+   },
+   {
+    "level": 2,
+    "description": "Water damage +6%; against Radiant monsters, water damage +15% instead."
+   },
+   {
+    "level": 3,
+    "description": "Water damage +9%; against Radiant monsters, water damage +23% instead."
+   },
+   {
+    "level": 4,
+    "description": "Water damage +12%; against Radiant monsters, water damage +30% instead."
+   },
+   {
+    "level": 5,
+    "description": "Water damage +16%; against Radiant monsters, water damage +40% instead."
+   },
+   {
+    "level": 6,
+    "description": "Water damage +20%; against Radiant monsters, water damage +50% instead."
+   },
+   {
+    "level": 7,
+    "description": "Water attack +50; water damage +28%; against Radiant monsters, water damage +70% instead."
+   }
+  ]
+ },
+ {
+  "id": 70,
+  "name": "Ice Damage Up",
+  "category": "Attributes",
+  "max_level": 7,
+  "description": "Increases ice damage. The effect is enhanced against Radiant monsters.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_01.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Ice damage +3%; against Radiant monsters, ice damage +8% instead."
+   },
+   {
+    "level": 2,
+    "description": "Ice damage +6%; against Radiant monsters, ice damage +15% instead."
+   },
+   {
+    "level": 3,
+    "description": "Ice damage +9%; against Radiant monsters, ice damage +23% instead."
+   },
+   {
+    "level": 4,
+    "description": "Ice damage +12%; against Radiant monsters, ice damage +30% instead."
+   },
+   {
+    "level": 5,
+    "description": "Ice damage +16%; against Radiant monsters, ice damage +40% instead."
+   },
+   {
+    "level": 6,
+    "description": "Ice damage +20%; against Radiant monsters, ice damage +50% instead."
+   },
+   {
+    "level": 7,
+    "description": "Ice attack +50; ice damage +28%; against Radiant monsters, ice damage +70% instead."
+   }
+  ]
+ },
+ {
+  "id": 71,
+  "name": "Thunder Damage Up",
+  "category": "Attributes",
+  "max_level": 7,
+  "description": "Increases thunder damage. The effect is enhanced against Radiant monsters.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_09.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Thunder damage +3%; against Radiant monsters, thunder damage +8% instead."
+   },
+   {
+    "level": 2,
+    "description": "Thunder damage +6%; against Radiant monsters, thunder damage +15% instead."
+   },
+   {
+    "level": 3,
+    "description": "Thunder damage +9%; against Radiant monsters, thunder damage +23% instead."
+   },
+   {
+    "level": 4,
+    "description": "Thunder damage +12%; against Radiant monsters, thunder damage +30% instead."
+   },
+   {
+    "level": 5,
+    "description": "Thunder damage +16%; against Radiant monsters, thunder damage +40% instead."
+   },
+   {
+    "level": 6,
+    "description": "Thunder damage +20%; against Radiant monsters, thunder damage +50% instead."
+   },
+   {
+    "level": 7,
+    "description": "Thunder attack +50, thunder damage +28%; +70% instead against Radiant monsters."
+   }
+  ]
+ },
+ {
+  "id": 72,
+  "name": "Dragon Damage Up",
+  "category": "Attributes",
+  "max_level": 7,
+  "description": "Increases dragon damage. The effect is enhanced against Radiant monsters.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_11.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Dragon damage +3%; against Radiant monsters, dragon damage +8% instead."
+   },
+   {
+    "level": 2,
+    "description": "Dragon damage +6%; against Radiant monsters, dragon damage +15% instead."
+   },
+   {
+    "level": 3,
+    "description": "Dragon damage +9%; against Radiant monsters, dragon damage +23% instead."
+   },
+   {
+    "level": 4,
+    "description": "Dragon damage +12%; against Radiant monsters, dragon damage +30% instead."
+   },
+   {
+    "level": 5,
+    "description": "Dragon damage +16%; against Radiant monsters, dragon damage +40% instead."
+   },
+   {
+    "level": 6,
+    "description": "Dragon damage +20%; against Radiant monsters, dragon damage +50% instead."
+   },
+   {
+    "level": 7,
+    "description": "Dragon attack +50; dragon damage +28%; against Radiant monsters, dragon damage +70% instead."
+   }
+  ]
+ },
+ {
+  "id": 91,
+  "name": "Critical Element",
+  "category": "Attributes",
+  "max_level": 3,
+  "description": "Increases elemental damage (fire, water, thunder, ice, dragon) when landing critical hits.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_01.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Increases elemental damage by 5% when landing critical hits."
+   },
+   {
+    "level": 2,
+    "description": "Increases elemental damage by 10% when landing critical hits."
+   },
+   {
+    "level": 3,
+    "description": "Increases elemental damage by 15% when landing critical hits."
+   }
+  ]
+ },
+ {
+  "id": 92,
+  "name": "True Critical Element",
+  "category": "Attributes",
+  "max_level": 4,
+  "description": "Greatly increases elemental damage (fire, water, thunder, ice, dragon) when landing critical hits.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_01.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Increases elemental critical damage by 4%."
+   },
+   {
+    "level": 2,
+    "description": "Increases elemental critical damage by 8%."
+   },
+   {
+    "level": 3,
+    "description": "Increases elemental critical damage by 12%."
+   },
+   {
+    "level": 4,
+    "description": "Increases elemental critical damage by 16%."
+   }
+  ]
+ },
+ {
+  "id": 45,
+  "name": "Fire Resistance",
+  "category": "Resistance",
+  "max_level": 3,
+  "description": "Increases the Adventurer's fire resistance.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_20.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Fire resistance +6."
+   },
+   {
+    "level": 2,
+    "description": "Fire resistance +12."
+   },
+   {
+    "level": 3,
+    "description": "Fire resistance +20."
+   }
+  ]
+ },
+ {
+  "id": 46,
+  "name": "Water Resistance",
+  "category": "Resistance",
+  "max_level": 3,
+  "description": "Increases the Adventurer's water resistance.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_18.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Water resistance +6."
+   },
+   {
+    "level": 2,
+    "description": "Water resistance +12."
+   },
+   {
+    "level": 3,
+    "description": "Water resistance +20."
+   }
+  ]
+ },
+ {
+  "id": 47,
+  "name": "Ice Resistance",
+  "category": "Resistance",
+  "max_level": 3,
+  "description": "Increases the Adventurer's ice resistance.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_01.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Ice resistance +6."
+   },
+   {
+    "level": 2,
+    "description": "Ice resistance +12."
+   },
+   {
+    "level": 3,
+    "description": "Ice resistance +20."
+   }
+  ]
+ },
+ {
+  "id": 48,
+  "name": "Thunder Resistance",
+  "category": "Resistance",
+  "max_level": 3,
+  "description": "Increases the Adventurer's thunder resistance.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_09.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Thunder resistance +6."
+   },
+   {
+    "level": 2,
+    "description": "Thunder resistance +12."
+   },
+   {
+    "level": 3,
+    "description": "Thunder resistance +20."
+   }
+  ]
+ },
+ {
+  "id": 49,
+  "name": "Dragon Resistance",
+  "category": "Resistance",
+  "max_level": 3,
+  "description": "Increases the Adventurer's Dragon Resistance.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_11.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Dragon Resistance +6."
+   },
+   {
+    "level": 2,
+    "description": "Dragon Resistance +12."
+   },
+   {
+    "level": 3,
+    "description": "Dragon Resistance +20."
+   }
+  ]
+ },
+ {
+  "id": 26,
+  "name": "Ailment Resistance",
+  "category": "Resistance",
+  "max_level": 3,
+  "description": "Grants Ailment Resistance.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_10.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Shortens the duration of all elemental ailments by 50%."
+   },
+   {
+    "level": 2,
+    "description": "Shortens the duration of all elemental ailments by 75%."
+   },
+   {
+    "level": 3,
+    "description": "Nullifies all elemental ailments."
+   }
+  ]
+ },
+ {
+  "id": 93,
+  "name": "All Elemental Resistance",
+  "category": "Attributes",
+  "max_level": 1,
+  "description": "Increases all elemental resistances.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_08.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Increases all elemental resistances by {SkillB_One_15141_01}x."
+   }
+  ]
+ },
+ {
+  "id": 94,
+  "name": "Element Conversion",
+  "category": "Attributes",
+  "max_level": 1,
+  "description": "Equipped weapon's elemental attack increases as your armor's elemental resistance increases.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_08.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "For every point of elemental resistance in your guard, your weapon's elemental attack increases by 2, up to a maximum of 50."
+   }
+  ]
+ },
+ {
+  "id": 95,
+  "name": "Instinct",
+  "category": "Attributes",
+  "max_level": 1,
+  "description": "Prevents attacks from being deflected.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_20.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Prevents attacks from being deflected."
+   }
+  ]
+ },
+ {
+  "id": 112,
+  "name": "Ballistics",
+  "category": "Attributes",
+  "max_level": 1,
+  "description": "Shortens the distance before ammo and arrows reach maximum power.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_20.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Shortens the distance before ammo and arrows reach maximum power."
+   }
+  ]
+ },
+ {
+  "id": 97,
+  "name": "Ammo Enhancement - Normal",
+  "category": "Hunt (Ranged)",
+  "max_level": 3,
+  "description": "Increases the attack of the bowguns' normal ammo.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_01.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Normal Ammo Damage +4%."
+   },
+   {
+    "level": 2,
+    "description": "Normal Ammo Damage +8%."
+   },
+   {
+    "level": 3,
+    "description": "Normal Ammo Damage +12%."
+   }
+  ]
+ },
+ {
+  "id": 98,
+  "name": "Ammo Enhancement - Pierce",
+  "category": "Hunt (Ranged)",
+  "max_level": 3,
+  "description": "Increases the attack of the bowguns' pierce ammo.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_18.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Pierce Ammo Damage +4%."
+   },
+   {
+    "level": 2,
+    "description": "Pierce Ammo Damage +8%."
+   },
+   {
+    "level": 3,
+    "description": "Pierce Ammo Damage +12%."
+   }
+  ]
+ },
+ {
+  "id": 99,
+  "name": "Ammo Enhancement - Spread",
+  "category": "Hunt (Ranged)",
+  "max_level": 3,
+  "description": "Increases the attack of the bowguns' spread ammo.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_05.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Spread Ammo Damage +4%."
+   },
+   {
+    "level": 2,
+    "description": "Spread Ammo Damage +8%."
+   },
+   {
+    "level": 3,
+    "description": "Spread Ammo Damage +12%."
+   }
+  ]
+ },
+ {
+  "id": 10,
+  "name": "Special Ammo Boost",
+  "category": "Hunt (Ranged)",
+  "max_level": 3,
+  "description": "Increases the power of the bowguns' special ammo.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_03.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Increases bowgun special ammo damage by {SkillB_One_16111_01}."
+   },
+   {
+    "level": 2,
+    "description": "Increases bowgun special ammo damage by {SkillB_One_16111_01}."
+   },
+   {
+    "level": 3,
+    "description": "Increases bowgun special ammo damage by {SkillB_One_16111_01}."
+   }
+  ]
+ },
+ {
+  "id": 100,
+  "name": "Bow Shot Enhancement",
+  "category": "Hunt (Ranged)",
+  "max_level": 3,
+  "description": "Increases the bow's basic attack and evasion attack damage.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_01.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Increases the bow's basic attack and evasion attack damage by {SkillB_One_16121_01}."
+   },
+   {
+    "level": 2,
+    "description": "Increases the bow's basic attack and evasion attack damage by {SkillB_One_16121_01}."
+   },
+   {
+    "level": 3,
+    "description": "Increases the bow's basic attack and evasion attack damage by {SkillB_One_16121_01}."
+   }
+  ]
+ },
+ {
+  "id": 101,
+  "name": "Bow Skill Boost",
+  "category": "Hunt (Ranged)",
+  "max_level": 4,
+  "description": "Increases the damage of the bow's Skill 1, Skill 2, and Skill 3.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_18.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Skill damage +4%."
+   },
+   {
+    "level": 2,
+    "description": "Skill damage +8%."
+   },
+   {
+    "level": 3,
+    "description": "Skill damage +13%."
+   },
+   {
+    "level": 4,
+    "description": "Elemental attack +25. Skill damage +20%."
+   }
+  ]
+ },
+ {
+  "id": 102,
+  "name": "Bow Ultimate Enhancement",
+  "category": "Hunt (Ranged)",
+  "max_level": 3,
+  "description": "Increases Bow Ultimate and Co-op Skill damage.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_05.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Increases the bow's Ultimate and Co-op Skill damage by {SkillB_One_16141_01}."
+   },
+   {
+    "level": 2,
+    "description": "Increases the bow's Ultimate and Co-op Skill damage by {SkillB_One_16141_01}."
+   },
+   {
+    "level": 3,
+    "description": "Increases the bow's Ultimate and Co-op Skill damage by {SkillB_One_16141_01}."
+   }
+  ]
+ },
+ {
+  "id": 103,
+  "name": "Heat Guard",
+  "category": "Attributes",
+  "max_level": 1,
+  "description": "Nullifies damage from heat.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_04.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Nullifies heat damage."
+   }
+  ]
+ },
+ {
+  "id": 6,
+  "name": "Quick-Bite",
+  "category": "Survival",
+  "max_level": 3,
+  "description": "Increases the speed of meat-eating and consumption speed of items like potions and antidotes.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_04.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Slightly increases the speed of meat-eating and consumption speed of items like potions and antidotes."
+   },
+   {
+    "level": 2,
+    "description": "Increases the speed of meat-eating and consumption speed of items like potions and antidotes."
+   },
+   {
+    "level": 3,
+    "description": "Greatly increases the speed of meat-eating and consumption speed of items like potions and antidotes."
+   }
+  ]
+ },
+ {
+  "id": 73,
+  "name": "Thrifty Meal",
+  "category": "Attributes",
+  "max_level": 3,
+  "description": "Grants a chance to use food or drink items without consuming them.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_09.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Activates 25% of the time."
+   },
+   {
+    "level": 2,
+    "description": "Activates 50% of the time."
+   },
+   {
+    "level": 3,
+    "description": "Activates 75% of the time."
+   }
+  ]
+ },
+ {
+  "id": 36,
+  "name": "Improviser",
+  "category": "Exploration",
+  "max_level": 3,
+  "description": "Recovers extra health from environmental interactables like Sporepuffs and similar items.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_01.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Interactables restore an additional 50 health."
+   },
+   {
+    "level": 2,
+    "description": "Interactables restore an additional 80 health."
+   },
+   {
+    "level": 3,
+    "description": "Interactables restore an additional 100 health."
+   }
+  ]
+ },
+ {
+  "id": 105,
+  "name": "Deterrence",
+  "category": "Hunt (General)",
+  "max_level": 3,
+  "description": "Reduces the chance of small monsters attacking after being spotted. (No effect on Neopterons, etc.)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_01.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Discourages monsters from engaging after being spotted."
+   },
+   {
+    "level": 2,
+    "description": "Highly discourages monsters from engaging after being spotted."
+   },
+   {
+    "level": 3,
+    "description": "Prevents monsters from engaging after being spotted."
+   }
+  ]
+ },
+ {
+  "id": 106,
+  "name": "Gathering Master",
+  "category": "Attributes",
+  "max_level": 1,
+  "description": "Allows you to gather more quickly, and also prevents attacks from staggering you while gathering.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_02.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Speeds up gathering and prevents stagger while gathering."
+   }
+  ]
+ },
+ {
+  "id": 74,
+  "name": "Botanical Expert",
+  "category": "Exploration",
+  "max_level": 3,
+  "description": "Increases the quantity of herbs and other consumable items gathered.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_02.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "+1 consumable herb item per gather."
+   },
+   {
+    "level": 2,
+    "description": "One extra consumable fruit or seed item per gather +1."
+   },
+   {
+    "level": 3,
+    "description": "One extra consumable insect item per gather +1."
+   }
+  ]
+ },
+ {
+  "id": 107,
+  "name": "Geo Expert",
+  "category": "Hunt (General)",
+  "max_level": 3,
+  "description": "Increases the number of times you can use a gathering point.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_09.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Allows you to gather 1 extra time from bonepiles."
+   },
+   {
+    "level": 2,
+    "description": "Allows you to gather 1 extra 1|plural(one=time, other=times) from special item gathering points."
+   },
+   {
+    "level": 3,
+    "description": "Allows you to gather 1 extra time from mining outcrops."
+   }
+  ]
+ },
+ {
+  "id": 75,
+  "name": "Honey Harvester",
+  "category": "Exploration",
+  "max_level": 1,
+  "description": "Increases the quantity of honey received when gathering in the field.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_04.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Honey gathered +1."
+   }
+  ]
+ },
+ {
+  "id": 108,
+  "name": "Carve Master",
+  "category": "Attributes",
+  "max_level": 1,
+  "description": "Lets you carve 1 additional time. (No effect when joining mid-quest.)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_19.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Lets you carve 1 additional 1|plural(one=time, other=times). (No effect when joining mid-quest.)"
+   }
+  ]
+ },
+ {
+  "id": 3,
+  "name": "Unflinching Carver",
+  "category": "Exploration",
+  "max_level": 1,
+  "description": "Prevents stagger from attacks while carving.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_03.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Prevents stagger from attacks while carving."
+   }
+  ]
+ },
+ {
+  "id": 76,
+  "name": "Capturing Expert",
+  "category": "Exploration",
+  "max_level": 1,
+  "description": "High chance of increased capture rewards. (No effect when joining mid-quest.)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "High chance of increased capture rewards. (No effect when joining mid-quest.)"
+   }
+  ]
+ },
+ {
+  "id": 109,
+  "name": "Specimen Expert",
+  "category": "Hunt (General)",
+  "max_level": 3,
+  "description": "Decreases the chances of destroying the bodies of small insect monsters, allowing them to be carved.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_17.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Increases the chance of a corpse being left behind."
+   },
+   {
+    "level": 2,
+    "description": "Increases the chance of a corpse being left behind."
+   },
+   {
+    "level": 3,
+    "description": "Carves are guaranteed to remain."
+   }
+  ]
+ },
+ {
+  "id": 110,
+  "name": "Radiant Power Surge",
+  "category": "Hunt (General)",
+  "max_level": 3,
+  "description": "Reduces maximum health and increases damage.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_20.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Reduces max health by 5%. Damage +3%."
+   },
+   {
+    "level": 2,
+    "description": "Reduces max health by 10%. Damage +6%."
+   },
+   {
+    "level": 3,
+    "description": "Reduces max health by 60%. Damage +9%."
+   }
+  ]
+ },
+ {
+  "id": 53,
+  "name": "Resolve",
+  "category": "Hunt (General)",
+  "max_level": 1,
+  "description": "When 3 pieces of radiant armor are equipped, maximum health will decrease. After 5s with no damage taken, critical hit damage is increased.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_11.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "When 3 pieces of radiant armor are equipped, maximum health decreases by {SkillB_One_20781_01}. After 5s with no damage taken, critical damage +{SkillB_One_20781_02} and elemental critical damage +{SkillB_One_20781_03}."
+   }
+  ]
+ },
+ {
+  "id": 54,
+  "name": "Battle Hunger",
+  "category": "Hunt (General)",
+  "max_level": 1,
+  "description": "Every 10s, maximum health decreases by 10% while attack increases by 15%. Dealing damage equal to 5% of the monster's maximum health within 30s restores 30% of maximum health.\nHealing effects are disabled.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_20.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Increases stamina cap."
+   }
+  ]
+ },
+ {
+  "id": 38,
+  "name": "Carving Pro",
+  "category": "Hunt (General)",
+  "max_level": 5,
+  "description": "Prevents stagger from attacks while carving.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_20.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While the monster still has fortitude, your attacks reduce its fire resistance by 10%."
+   },
+   {
+    "level": 2,
+    "description": "While the monster still has fortitude, your attacks reduce its fire resistance by 20%."
+   },
+   {
+    "level": 3,
+    "description": "While the monster still has fortitude, your attacks reduce its fire resistance by 30%."
+   },
+   {
+    "level": 4,
+    "description": "While the monster still has fortitude, your attacks reduce its fire resistance by 40%."
+   },
+   {
+    "level": 5,
+    "description": "While the monster still has fortitude, your attacks reduce its fire resistance by 50%."
+   }
+  ]
+ },
+ {
+  "id": 39,
+  "name": "Heroics",
+  "category": "Hunt (General)",
+  "max_level": 5,
+  "description": "Increases defense and damage when health drops below a certain percentage.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_09.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Increases fortitude depletion efficiency against monsters by 5%."
+   },
+   {
+    "level": 2,
+    "description": "Increases fortitude depletion efficiency against monsters by 10%."
+   },
+   {
+    "level": 3,
+    "description": "Increases fortitude depletion efficiency against monsters by 15%."
+   },
+   {
+    "level": 4,
+    "description": "Increases fortitude depletion efficiency against monsters by 20%."
+   },
+   {
+    "level": 5,
+    "description": "Increases fortitude depletion efficiency against monsters by 25%, and by an additional 10% while the monster is enraged."
+   }
+  ]
+ },
+ {
+  "id": 40,
+  "name": "Evade Extender",
+  "category": "Hunt (General)",
+  "max_level": 5,
+  "description": "Increases evade distance.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_19.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "When the monster's fortitude is depleted, it takes 20% more damage."
+   },
+   {
+    "level": 2,
+    "description": "When the monster's fortitude is depleted, it takes 40% more damage."
+   },
+   {
+    "level": 3,
+    "description": "When the monster's fortitude is depleted, it takes 60% more damage."
+   },
+   {
+    "level": 4,
+    "description": "When the monster's fortitude is depleted, it takes 80% more damage."
+   },
+   {
+    "level": 5,
+    "description": "When the monster's fortitude is depleted, it takes 100% more damage."
+   }
+  ]
+ },
+ {
+  "id": 41,
+  "name": "Resuscitate",
+  "category": "Hunt (General)",
+  "max_level": 5,
+  "description": "Improves Evade Window when afflicted with ailments.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_03.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "When the monster's fortitude is depleted, your attacks apply a 10% armor reduction for 5s."
+   },
+   {
+    "level": 2,
+    "description": "When the monster's fortitude is depleted, your attacks apply a 20% armor reduction for 5s."
+   },
+   {
+    "level": 3,
+    "description": "When the monster's fortitude is depleted, your attacks apply a 30% armor reduction for 5s."
+   },
+   {
+    "level": 4,
+    "description": "When the monster's fortitude is depleted, your attacks apply a 40% armor reduction for 5s."
+   },
+   {
+    "level": 5,
+    "description": "When the monster's fortitude is depleted, your attacks apply a 40% armor reduction for 8s."
+   }
+  ]
+ },
+ {
+  "id": 55,
+  "name": "Battleborn Instinct",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Temporarily increases affinity and reduces stamina depletion when certain conditions are met.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_12.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Attack +3."
+   }
+  ]
+ },
+ {
+  "id": 56,
+  "name": "Muck Resistance",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Reduces limits on movement speed and evasion.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_13.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Defense +5."
+   }
+  ]
+ },
+ {
+  "id": 113,
+  "name": "Nourished",
+  "category": "Hunt (General)",
+  "max_level": 3,
+  "description": "When the Resonance Ultimate's charge is triggered, there is a chance to increase its effect.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_10.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "When the Resonance Ultimate's charge is triggered, there is a 5% chance to double its effect."
+   },
+   {
+    "level": 2,
+    "description": "When the Resonance Ultimate's charge is triggered, there is a 10% chance to double its effect."
+   },
+   {
+    "level": 3,
+    "description": "When the Resonance Ultimate's charge is triggered, there is a 20% chance to double its effect."
+   }
+  ]
+ },
+ {
+  "id": 114,
+  "name": "Weakspot Follow-Up",
+  "category": "Hunt (General)",
+  "max_level": 5,
+  "description": "Attacking a monster's broken part has a chance to deliver an extra hit.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_20.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "75% chance to activate, dealing additional damage equal to 4%."
+   },
+   {
+    "level": 2,
+    "description": "75% chance to activate, dealing additional damage equal to 9%."
+   },
+   {
+    "level": 3,
+    "description": "75% chance to activate, dealing additional damage equal to 14%."
+   },
+   {
+    "level": 4,
+    "description": "75% chance to activate, dealing additional damage equal to 18%."
+   },
+   {
+    "level": 5,
+    "description": "75% chance to activate, dealing additional damage equal to 25%."
+   }
+  ]
+ },
+ {
+  "id": 115,
+  "name": "Relentless Pursuit",
+  "category": "Hunt (General)",
+  "max_level": 3,
+  "description": "After a monster is staggered or suppressed, increases damage for a set duration. ",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_20.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While active, damage +4% for 15s."
+   },
+   {
+    "level": 2,
+    "description": "While active, damage +8% for 15s."
+   },
+   {
+    "level": 3,
+    "description": "While active, damage +11% for 15s."
+   }
+  ]
+ },
+ {
+  "id": 116,
+  "name": "Critical Element",
+  "category": "Hunt (General)",
+  "max_level": 3,
+  "description": "Increases damage against monsters under control effects.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_09.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Increases damage against monsters toppled by Co-op Skills by 5%."
+   },
+   {
+    "level": 2,
+    "description": "Increases damage against monsters toppled by Co-op Skills by 10%."
+   },
+   {
+    "level": 3,
+    "description": "Increases damage against monsters toppled by Co-op Skills by 15%."
+   }
+  ]
+ },
+ {
+  "id": 117,
+  "name": "Co-op: Support",
+  "category": "Attributes",
+  "max_level": 3,
+  "description": "Increases healing received by squad members.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_19.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Increases healing received by squad members by 25%."
+   },
+   {
+    "level": 2,
+    "description": "Increases healing received by squad members by 50%."
+   },
+   {
+    "level": 3,
+    "description": "Increases healing received by squad members by 100%."
+   }
+  ]
+ },
+ {
+  "id": 118,
+  "name": "Counter Boost",
+  "category": "Hunt (General)",
+  "max_level": 7,
+  "description": "After triggering Perfect Evade or Parry, increases damage for a set duration.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_20.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Upon activation, increases damage by 4% for 20s."
+   },
+   {
+    "level": 2,
+    "description": "Upon activation, increases damage by 8% for 20s."
+   },
+   {
+    "level": 3,
+    "description": "Upon activation, increases damage by 12% for 20s."
+   },
+   {
+    "level": 4,
+    "description": "Upon activation, increases damage by 16% for 20s."
+   },
+   {
+    "level": 5,
+    "description": "Upon activation, increases damage by 20% for 20s."
+   },
+   {
+    "level": 6,
+    "description": "Upon activation, increases damage by 24% for 20s."
+   },
+   {
+    "level": 7,
+    "description": "Elemental attack +50. Upon activation, increases damage by 31% for 20s."
+   }
+  ]
+ },
+ {
+  "id": 119,
+  "name": "Chain Flash",
+  "category": "Hunt (General)",
+  "max_level": 1,
+  "description": "After a perfect evade, temporarily extends the window for triggering a perfect evade.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_12.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Within {SkillB_One_20071_01}s of a perfect evade, extends the window for triggering another perfect evade by {SkillB_One_20071_02}s."
+   }
+  ]
+ },
+ {
+  "id": 120,
+  "name": "Soulmate",
+  "category": "Attributes",
+  "max_level": 3,
+  "description": "When a Buddy is within 5m, the Buddy Ultimate charge rate increases.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_13.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While active, increases deployed Buddy's Ultimate charge rate by 10%."
+   },
+   {
+    "level": 2,
+    "description": "While active, increases deployed Buddy's Ultimate charge rate by 20%."
+   },
+   {
+    "level": 3,
+    "description": "While active, increases deployed Buddy's Ultimate charge rate by 30%."
+   }
+  ]
+ },
+ {
+  "id": 121,
+  "name": "Protection",
+  "category": "Attributes",
+  "max_level": 3,
+  "description": "Increases defense when a facility is nearby.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_01.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While active, increases defense by 10."
+   },
+   {
+    "level": 2,
+    "description": "While active, increases defense by 30."
+   },
+   {
+    "level": 3,
+    "description": "While active, increases defense by 50."
+   }
+  ]
+ },
+ {
+  "id": 122,
+  "name": "Resilient Wings",
+  "category": "Attributes",
+  "max_level": 3,
+  "description": "Trillan's stamina consumption is reduced while flying.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_18.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Reduces stamina depletion by 25%."
+   },
+   {
+    "level": 2,
+    "description": "Reduces stamina depletion by 40%."
+   },
+   {
+    "level": 3,
+    "description": "Reduces stamina depletion by 50%."
+   }
+  ]
+ },
+ {
+  "id": 123,
+  "name": "Bitter Counterstrike",
+  "category": "Hunt (General)",
+  "max_level": 3,
+  "description": "Increases damage for each ailment you have.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_05.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Increases damage by 5% for each ailment."
+   },
+   {
+    "level": 2,
+    "description": "Increases damage by 10% for each ailment."
+   },
+   {
+    "level": 3,
+    "description": "Increases damage by 15% for each ailment."
+   }
+  ]
+ },
+ {
+  "id": 124,
+  "name": "Radiant Sense",
+  "category": "Hunt (General)",
+  "max_level": 5,
+  "description": "Increases adventurer damage against monsters in Radiant Rage.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_10.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While active, damage +4%."
+   },
+   {
+    "level": 2,
+    "description": "While active, damage +8%."
+   },
+   {
+    "level": 3,
+    "description": "While active, damage +13%."
+   },
+   {
+    "level": 4,
+    "description": "While active, damage +18%."
+   },
+   {
+    "level": 5,
+    "description": "While active, damage +25%."
+   }
+  ]
+ },
+ {
+  "id": 125,
+  "name": "Consecutive Battle",
+  "category": "Hunt (General)",
+  "max_level": 3,
+  "description": "After successfully slaying a monster, damage is increased for 2 minutes. Stacks up to 2 times.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_20.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While active, increases damage by 5%."
+   },
+   {
+    "level": 2,
+    "description": "While active, increases damage by 10%."
+   },
+   {
+    "level": 3,
+    "description": "While active, increases damage by 15%."
+   }
+  ]
+ },
+ {
+  "id": 126,
+  "name": "Swift",
+  "category": "Hunt (General)",
+  "max_level": 5,
+  "description": "When moving beyond a specified distance in a short period, damage dealt is increased for a set duration.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_20.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "When moving more than {SkillB_One_20141_01}m in a short period, increases damage by {SkillB_One_20141_02} for {SkillB_One_20141_03}s."
+   },
+   {
+    "level": 2,
+    "description": "When moving more than {SkillB_One_20141_01}m in a short period, increases damage by {SkillB_One_20141_02} for {SkillB_One_20141_03}s."
+   },
+   {
+    "level": 3,
+    "description": "When moving more than {SkillB_One_20141_01}m in a short period, increases damage by {SkillB_One_20141_02} for {SkillB_One_20141_03}s."
+   },
+   {
+    "level": 4,
+    "description": "When moving more than {SkillB_One_20141_01}m in a short period, increases damage by {SkillB_One_20141_02} for {SkillB_One_20141_03}s."
+   },
+   {
+    "level": 5,
+    "description": "When moving more than {SkillB_One_20141_01}m in a short period, increases damage by {SkillB_One_20141_02} for {SkillB_One_20141_03}s."
+   }
+  ]
+ },
+ {
+  "id": 127,
+  "name": "Rescue Master",
+  "category": "Attributes",
+  "max_level": 1,
+  "description": "Prevents stagger from attacks while rescuing.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_09.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Prevents stagger from attacks while rescuing."
+   }
+  ]
+ },
+ {
+  "id": 128,
+  "name": "Rescue Expert",
+  "category": "Attributes",
+  "max_level": 3,
+  "description": "Increases rescue speed.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_19.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Increases rescue speed by 25%."
+   },
+   {
+    "level": 2,
+    "description": "Increases rescue speed by 60%."
+   },
+   {
+    "level": 3,
+    "description": "Increases rescue speed by 100%."
+   }
+  ]
+ },
+ {
+  "id": 129,
+  "name": "Life Coach: Inspiration",
+  "category": "Attributes",
+  "max_level": 3,
+  "description": "Increases healing received by rescued squad members. At higher levels, also grants increased defense.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_03.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "After a rescue, increases healing received by squad members by 50% for 10s."
+   },
+   {
+    "level": 2,
+    "description": "After a rescue, increases healing received by squad members by 50% for 15s."
+   },
+   {
+    "level": 3,
+    "description": "After a rescue, increases healing received by squad members by 50% and defense by 50 for 20s."
+   }
+  ]
+ },
+ {
+  "id": 130,
+  "name": "Life Coach: Encouragement",
+  "category": "Attributes",
+  "max_level": 3,
+  "description": "Rescued squad members automatically recover health.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_12.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "After a rescue, squad members recover 50 health."
+   },
+   {
+    "level": 2,
+    "description": "After a rescue, squad members recover 75 health."
+   },
+   {
+    "level": 3,
+    "description": "After a rescue, squad members recover 100 health."
+   }
+  ]
+ },
+ {
+  "id": 131,
+  "name": "Counterstrike",
+  "category": "Hunt (General)",
+  "max_level": 5,
+  "description": "After taking a Flinch Shot-level attack, your damage dealt is increased for a period of time.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_03.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While active, increases damage dealt by {SkillB_One_20191_01} for {SkillB_One_20191_02}s."
+   },
+   {
+    "level": 2,
+    "description": "While active, increases damage dealt by {SkillB_One_20191_01} for {SkillB_One_20191_02}s."
+   },
+   {
+    "level": 3,
+    "description": "While active, increases damage dealt by {SkillB_One_20191_01} for {SkillB_One_20191_02}s."
+   },
+   {
+    "level": 4,
+    "description": "While active, increases damage dealt by {SkillB_One_20191_01} for {SkillB_One_20191_02}s."
+   },
+   {
+    "level": 5,
+    "description": "While active, increases damage dealt by {SkillB_One_20191_01} for {SkillB_One_20191_02}s."
+   }
+  ]
+ },
+ {
+  "id": 132,
+  "name": "Sneak Attack",
+  "category": "Hunt (General)",
+  "max_level": 5,
+  "description": "Increases damage when attacking large monsters from behind.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_20.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While active, increases damage dealt by {SkillB_One_20201_01}."
+   },
+   {
+    "level": 2,
+    "description": "While active, increases damage dealt by {SkillB_One_20201_01}."
+   },
+   {
+    "level": 3,
+    "description": "While active, increases damage dealt by {SkillB_One_20201_01}."
+   },
+   {
+    "level": 4,
+    "description": "While active, increases damage dealt by {SkillB_One_20201_01}."
+   },
+   {
+    "level": 5,
+    "description": "While active, increases damage dealt by {SkillB_One_20201_01}."
+   }
+  ]
+ },
+ {
+  "id": 133,
+  "name": "Health Cycle",
+  "category": "Hunt (General)",
+  "max_level": 3,
+  "description": "When hitting a large monster's broken part, recovers a certain amount of health based on the damage dealt.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_18.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Recovers 2 health. Can only trigger once every 8s."
+   },
+   {
+    "level": 2,
+    "description": "Recovers 3 health. Can only trigger once every 8s."
+   },
+   {
+    "level": 3,
+    "description": "Recovers 4 health. Can only trigger once every 8s."
+   }
+  ]
+ },
+ {
+  "id": 134,
+  "name": "Fortune",
+  "category": "Attributes",
+  "max_level": 1,
+  "description": "When using a recovery move, gray health will not disappear.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_05.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "When using a recovery move, gray health will not disappear."
+   }
+  ]
+ },
+ {
+  "id": 135,
+  "name": "Foray",
+  "category": "Attributes",
+  "max_level": 5,
+  "description": "When attacking monsters afflicted with ailments, attack and elemental attack increase.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_20.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While active, increases damage dealt by {SkillB_One_20231_01}."
+   },
+   {
+    "level": 2,
+    "description": "While active, increases damage dealt by {SkillB_One_20231_01}."
+   },
+   {
+    "level": 3,
+    "description": "While active, increases damage dealt by {SkillB_One_20231_01}."
+   },
+   {
+    "level": 4,
+    "description": "While active, increases damage dealt by {SkillB_One_20231_01}."
+   },
+   {
+    "level": 5,
+    "description": "While active, increases damage dealt by {SkillB_One_20231_01}."
+   }
+  ]
+ },
+ {
+  "id": 21,
+  "name": "Airborne",
+  "category": "Hunt (General)",
+  "max_level": 3,
+  "description": "Increases non-elemental damage of airborne attacks.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_18.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Increases non-elemental damage of airborne attacks by {SkillB_One_20761_01}."
+   },
+   {
+    "level": 2,
+    "description": "Increases non-elemental damage of airborne attacks by {SkillB_One_20761_01}."
+   },
+   {
+    "level": 3,
+    "description": "Increases non-elemental damage of airborne attacks by {SkillB_One_20761_01}."
+   }
+  ]
+ },
+ {
+  "id": 111,
+  "name": "Airborne",
+  "category": "Hunt (General)",
+  "max_level": 7,
+  "description": "Increases airborne attack damage.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_18.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Airborne attack damage +5%."
+   },
+   {
+    "level": 2,
+    "description": "Airborne attack damage +9%."
+   },
+   {
+    "level": 3,
+    "description": "Airborne attack damage +14%."
+   },
+   {
+    "level": 4,
+    "description": "Airborne attack damage +19%."
+   },
+   {
+    "level": 5,
+    "description": "Airborne attack damage +24%."
+   },
+   {
+    "level": 6,
+    "description": "Airborne attack damage +29%."
+   },
+   {
+    "level": 7,
+    "description": "Elemental attack +50. Airborne attack damage +37%."
+   }
+  ]
+ },
+ {
+  "id": 145,
+  "name": "Wind Immunity",
+  "category": "Hunt (General)",
+  "max_level": 1,
+  "description": "Negates all wind pressure.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_01.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Negates all wind pressure."
+   }
+  ]
+ },
+ {
+  "id": 37,
+  "name": "Master Climber",
+  "category": "Hunt (General)",
+  "max_level": 1,
+  "description": "Reduces stamina depletion when evading while clinging to walls or vines.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_04.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Reduces stamina depletion by 25%."
+   }
+  ]
+ },
+ {
+  "id": 104,
+  "name": "Item Master",
+  "category": "Hunt (General)",
+  "max_level": 3,
+  "description": "Extends the duration of some item effects.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_09.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Increases effect duration by 1.1x."
+   },
+   {
+    "level": 2,
+    "description": "Increases effect duration by 1.25x."
+   },
+   {
+    "level": 3,
+    "description": "Increases effect duration by 1.5x."
+   }
+  ]
+ },
+ {
+  "id": 136,
+  "name": "Radiant Frenzy",
+  "category": "Hunt (General)",
+  "max_level": 1,
+  "description": "When affected by radiant particles, adventurers deal increased damage for a period of time, but after the effect ends, damage dealt and maximum stamina decrease for a period of time.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_11.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While affected by radiant particles, damage +10% for 30s. After it ends, damage -10% and maximum stamina -50 for 30s."
+   }
+  ]
+ },
+ {
+  "id": 137,
+  "name": "Unshaken Resolve",
+  "category": "Hunt (General)",
+  "max_level": 2,
+  "description": "Easier to recover from the damage reduction state of Radiant Frenzy, and increases crit damage.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_11.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Radiant Frenzy's damage reduction duration is decreased by {SkillB_One_20811_01}. After recovery, crit damage and elemental damage are increased by {SkillB_One_20811_02}."
+   },
+   {
+    "level": 2,
+    "description": "Radiant Frenzy's damage reduction duration is decreased by {SkillB_One_20811_01}. After recovery, crit damage and elemental damage are increased by {SkillB_One_20811_02}."
+   }
+  ]
+ },
+ {
+  "id": 138,
+  "name": "Combo Enhancement",
+  "category": "Hunt (General)",
+  "max_level": 7,
+  "description": "Consecutively hitting a monster within a short time increases damage for a set duration. (Pierce or rupture damage cannot trigger this effect.)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_20.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Landing 5 hits within 3s increases damage by 4% for 12s."
+   },
+   {
+    "level": 2,
+    "description": "Landing 5 hits within 3s increases damage by 8% for 12s."
+   },
+   {
+    "level": 3,
+    "description": "Landing 5 hits within 3s increases damage by 12% for 12s."
+   },
+   {
+    "level": 4,
+    "description": "Landing 5 hits within 3s increases damage by 16% for 12s."
+   },
+   {
+    "level": 5,
+    "description": "Landing 5 hits within 3s increases damage by 20% for 12s."
+   },
+   {
+    "level": 6,
+    "description": "Landing 5 hits within 3s increases damage by 24% for 12s."
+   },
+   {
+    "level": 7,
+    "description": "Elemental attack +50. Landing 5 hits within 3s increases damage by 31% for 12s."
+   }
+  ]
+ },
+ {
+  "id": 142,
+  "name": "Buddy Boost",
+  "category": "Hunt (General)",
+  "max_level": 1,
+  "description": "Increases buddy damage.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_11.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Multiplies buddy damage by 1.1x."
+   }
+  ]
+ },
+ {
+  "id": 143,
+  "name": "Bento Lover",
+  "category": "Hunt (General)",
+  "max_level": 7,
+  "description": "After consuming BBQ or a portable meal in combat, increases damage for a set duration.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_11.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While active, damage +4% for 30s."
+   },
+   {
+    "level": 2,
+    "description": "While active, damage +8% for 30s."
+   },
+   {
+    "level": 3,
+    "description": "While active, damage +12% for 30s."
+   },
+   {
+    "level": 4,
+    "description": "While active, damage +16% for 30s."
+   },
+   {
+    "level": 5,
+    "description": "While active, damage +20% for 30s."
+   },
+   {
+    "level": 6,
+    "description": "While active, damage +24% for 30s."
+   },
+   {
+    "level": 7,
+    "description": "Elemental attack +50. Upon activation, damage +31% for 30s."
+   }
+  ]
+ },
+ {
+  "id": 139,
+  "name": "Charge Enhancement",
+  "category": "Hunt (General)",
+  "max_level": 7,
+  "description": "After a charged slashing or charged blunt attack hits a monster, increases damage for a set duration.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_18.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Upon activation, damage +4% for 15s."
+   },
+   {
+    "level": 2,
+    "description": "Upon activation, damage +8% for 15s."
+   },
+   {
+    "level": 3,
+    "description": "Upon activation, damage +12% for 15s."
+   },
+   {
+    "level": 4,
+    "description": "Upon activation, damage +16% for 15s."
+   },
+   {
+    "level": 5,
+    "description": "Upon activation, damage +20% for 15s."
+   },
+   {
+    "level": 6,
+    "description": "Upon activation, damage +24% for 15s."
+   },
+   {
+    "level": 7,
+    "description": "Elemental attack +50. Upon activation, damage +31% for 15s."
+   }
+  ]
+ },
+ {
+  "id": 140,
+  "name": "Buildup Attack Boost",
+  "category": "Hunt (General)",
+  "max_level": 5,
+  "description": "When attacks cause monsters to accumulate ailments, increases damage dealt.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_20.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While active, increases damage dealt by {SkillB_One_21011_01}."
+   },
+   {
+    "level": 2,
+    "description": "While active, increases damage dealt by {SkillB_One_21011_01}."
+   },
+   {
+    "level": 3,
+    "description": "While active, increases damage dealt by {SkillB_One_21011_01}."
+   },
+   {
+    "level": 4,
+    "description": "While active, increases damage dealt by {SkillB_One_21011_01}."
+   },
+   {
+    "level": 5,
+    "description": "While active, increases damage dealt by {SkillB_One_21011_01}."
+   }
+  ]
+ },
+ {
+  "id": 141,
+  "name": "Sliding Blitz",
+  "category": "Hunt (General)",
+  "max_level": 1,
+  "description": "Sliding increases damage for a period of time.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_20.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "After sliding, increases damage dealt by 4% for 60s."
+   }
+  ]
+ },
+ {
+  "id": 144,
+  "name": "Hunting Instinct",
+  "category": "Hunt (General)",
+  "max_level": 3,
+  "description": "Temporarily increases damage while using devices or endemic life.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_09.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While active, increases damage by 4% for 120s."
+   },
+   {
+    "level": 2,
+    "description": "While active, increases damage by 8% for 120s."
+   },
+   {
+    "level": 3,
+    "description": "While active, increases damage by 12% for 120s."
+   }
+  ]
+ },
+ {
+  "id": 30,
+  "name": "Flash Draw",
+  "category": "Hunt (General)",
+  "max_level": 7,
+  "description": "After a Draw attack, increases damage for a set duration. ",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_10.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While active, damage +4% for 30s."
+   },
+   {
+    "level": 2,
+    "description": "While active, damage +8% for 30s."
+   },
+   {
+    "level": 3,
+    "description": "While active, damage +12% for 30s."
+   },
+   {
+    "level": 4,
+    "description": "While active, damage +16% for 30s."
+   },
+   {
+    "level": 5,
+    "description": "While active, damage +20% for 30s."
+   },
+   {
+    "level": 6,
+    "description": "While active, damage +24% for 30s."
+   },
+   {
+    "level": 7,
+    "description": "Elemental attack +50. Upon activation, damage +31% for 30s."
+   }
+  ]
+ },
+ {
+  "id": 152,
+  "name": "Spirit Bind Blade",
+  "category": "Hunt (General)",
+  "max_level": 4,
+  "description": "Temporarily increases damage when Spirit Gauge level increases.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_20.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Upon activation, damage +3% for 30s."
+   },
+   {
+    "level": 2,
+    "description": "Upon activation, damage +7% for 30s."
+   },
+   {
+    "level": 3,
+    "description": "Upon activation, damage +11% for 30s."
+   },
+   {
+    "level": 4,
+    "description": "Elemental attack +25. Upon activation, damage +16% for 30s."
+   }
+  ]
+ },
+ {
+  "id": 153,
+  "name": "Demonic Strength",
+  "category": "Hunt (General)",
+  "max_level": 4,
+  "description": "Increases damage dealt while in Demon Mode.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_11.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While active, damage +4%."
+   },
+   {
+    "level": 2,
+    "description": "While active, damage +8%."
+   },
+   {
+    "level": 3,
+    "description": "While active, damage +13%."
+   },
+   {
+    "level": 4,
+    "description": "Elemental attack +25. While active, damage +20%."
+   }
+  ]
+ },
+ {
+  "id": 154,
+  "name": "Piercing Strike",
+  "category": "Hunt (General)",
+  "max_level": 7,
+  "description": "A single Pierce attack that lands at least 3 hits increases damage.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_18.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While active, damage +5%."
+   },
+   {
+    "level": 2,
+    "description": "While active, damage +9%."
+   },
+   {
+    "level": 3,
+    "description": "While active, damage +14%."
+   },
+   {
+    "level": 4,
+    "description": "While active, damage +19%."
+   },
+   {
+    "level": 5,
+    "description": "While active, damage +24%."
+   },
+   {
+    "level": 6,
+    "description": "While active, damage +29%."
+   },
+   {
+    "level": 7,
+    "description": "Elemental attack +50. Upon activation, damage +37%."
+   }
+  ]
+ },
+ {
+  "id": 155,
+  "name": "Incitement",
+  "category": "Hunt (General)",
+  "max_level": 1,
+  "description": "While equipped and deployed, increases the Main Adventurer's damage.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_18.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Main Adventurer's damage +10%."
+   }
+  ]
+ },
+ {
+  "id": 156,
+  "name": "Charged Power Shot",
+  "category": "Hunt (General)",
+  "max_level": 7,
+  "description": "Increases damage dealt while maintaining a charge level with a ranged weapon.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_18.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While active, damage +5%."
+   },
+   {
+    "level": 2,
+    "description": "While active, damage +9%."
+   },
+   {
+    "level": 3,
+    "description": "While active, damage +14%."
+   },
+   {
+    "level": 4,
+    "description": "While active, damage +19%."
+   },
+   {
+    "level": 5,
+    "description": "While active, damage +24%."
+   },
+   {
+    "level": 6,
+    "description": "While active, damage +29%."
+   },
+   {
+    "level": 7,
+    "description": "Elemental attack +50. While active, damage +37%."
+   }
+  ]
+ },
+ {
+  "id": 157,
+  "name": "Immovable Stance",
+  "category": "Hunt (General)",
+  "max_level": 7,
+  "description": "Triggering ferocity increases damage for a set duration.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_18.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "After triggering ferocity, damage +4% for 30s."
+   },
+   {
+    "level": 2,
+    "description": "After triggering ferocity, damage +8% for 30s."
+   },
+   {
+    "level": 3,
+    "description": "After triggering ferocity, damage +12% for 30s."
+   },
+   {
+    "level": 4,
+    "description": "After triggering ferocity, damage +16% for 30s."
+   },
+   {
+    "level": 5,
+    "description": "After triggering ferocity, damage +20% for 30s."
+   },
+   {
+    "level": 6,
+    "description": "After triggering ferocity, damage +24% for 30s."
+   },
+   {
+    "level": 7,
+    "description": "Elemental attack +50. After triggering Ferocity, damage +31% for 30s."
+   }
+  ]
+ },
+ {
+  "id": 158,
+  "name": "Stamina Conversion",
+  "category": "Hunt (General)",
+  "max_level": 7,
+  "description": "Using attack skills that cost stamina increases the damage of that attack.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_18.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "When this skill activates, the triggering attack's damage +5%."
+   },
+   {
+    "level": 2,
+    "description": "When this skill activates, the triggering attack's damage +9%."
+   },
+   {
+    "level": 3,
+    "description": "When this skill activates, the triggering attack's damage +14%."
+   },
+   {
+    "level": 4,
+    "description": "When this skill activates, the triggering attack's damage +19%."
+   },
+   {
+    "level": 5,
+    "description": "When this skill activates, the triggering attack's damage +24%."
+   },
+   {
+    "level": 6,
+    "description": "When this skill activates, the triggering attack's damage +29%."
+   },
+   {
+    "level": 7,
+    "description": "Elemental attack +50. Upon activation, the triggering attack's damage +37%."
+   }
+  ]
+ },
+ {
+  "id": 159,
+  "name": "Capacity Boost",
+  "category": "Hunt (General)",
+  "max_level": 7,
+  "description": "Reloading ammo increases damage for a set duration.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_18.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "After reloading, damage +4% for 30s."
+   },
+   {
+    "level": 2,
+    "description": "After reloading, damage +8% for 30s."
+   },
+   {
+    "level": 3,
+    "description": "After reloading, damage +12% for 30s."
+   },
+   {
+    "level": 4,
+    "description": "After reloading, damage +16% for 30s."
+   },
+   {
+    "level": 5,
+    "description": "After reloading, damage +20% for 30s."
+   },
+   {
+    "level": 6,
+    "description": "After reloading, damage +24% for 30s."
+   },
+   {
+    "level": 7,
+    "description": "Elemental attack +50. After reloading, damage +31% for 30s."
+   }
+  ]
+ },
+ {
+  "id": 160,
+  "name": "Wrecker",
+  "category": "Hunt (General)",
+  "max_level": 4,
+  "description": "Staggering a monster or breaking a part with a great sword increases damage for a set duration.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_18.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While active, damage +3% for 60s."
+   },
+   {
+    "level": 2,
+    "description": "While active, damage +7% for 60s."
+   },
+   {
+    "level": 3,
+    "description": "While active, damage +11% for 60s."
+   },
+   {
+    "level": 4,
+    "description": "While active, damage +16%, elemental attack +25 for 60s."
+   }
+  ]
+ },
+ {
+  "id": 161,
+  "name": "Pierce",
+  "category": "Hunt (General)",
+  "max_level": 4,
+  "description": "Consecutively hitting the same monster part with a Lance increases damage for a set duration.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_18.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "After hitting the same part 3 times within 8s, damage +3% for 30s."
+   },
+   {
+    "level": 2,
+    "description": "After hitting the same part 3 times within 8s, damage +7% for 30s."
+   },
+   {
+    "level": 3,
+    "description": "After hitting the same part 3 times within 8s, damage +11% for 30s."
+   },
+   {
+    "level": 4,
+    "description": "Elemental attack +25. After hitting the same part 3 times within 8s, damage +16% for 30s."
+   }
+  ]
+ },
+ {
+  "id": 162,
+  "name": "Intimidation",
+  "category": "Hunt (General)",
+  "max_level": 4,
+  "description": "Building up stun on a monster with a blunt weapon increases damage for a set duration.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_18.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While active, damage +3% for 15s."
+   },
+   {
+    "level": 2,
+    "description": "While active, damage +7% for 15s."
+   },
+   {
+    "level": 3,
+    "description": "While active, damage +11% for 15s."
+   },
+   {
+    "level": 4,
+    "description": "Elemental attack +25. Upon activation, damage +16% for 15s."
+   }
+  ]
+ },
+ {
+  "id": 163,
+  "name": "Ammo Enhancement",
+  "category": "Hunt (General)",
+  "max_level": 4,
+  "description": "Increases the damage of the bowgun's normal ammo, spread ammo, and pierce ammo.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_18.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Damage +3% for Normal Ammo, Spread Ammo, and Pierce Ammo."
+   },
+   {
+    "level": 2,
+    "description": "Damage +7% for Normal Ammo, Spread Ammo, and Pierce Ammo."
+   },
+   {
+    "level": 3,
+    "description": "Damage +11% for Normal Ammo, Spread Ammo, and Pierce Ammo."
+   },
+   {
+    "level": 4,
+    "description": "Elemental attack +25. Damage +16% for Normal Ammo, Spread Ammo, and Pierce Ammo."
+   }
+  ]
+ },
+ {
+  "id": 164,
+  "name": "Unshaken Resolve",
+  "category": "Hunt (General)",
+  "max_level": 3,
+  "description": "When afflicted with a status ailment or Radiant Frenzy, damage is increased for a period of time, and the negative effect duration of Radiant Frenzy is reduced.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_18.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While active, damage +3%. Reduces the duration of Radiant Frenzy's negative effect by 20%."
+   },
+   {
+    "level": 2,
+    "description": "While active, damage +6%. Reduces the duration of Radiant Frenzy's negative effect by 50%."
+   },
+   {
+    "level": 3,
+    "description": "While active, damage +12%. Eliminates Radiant Frenzy's negative effect duration."
+   }
+  ]
+ },
+ {
+  "id": 165,
+  "name": "Grace Under Pressure",
+  "category": "Hunt (General)",
+  "max_level": 3,
+  "description": "Increases adventurer defense when Radiant monsters are in Radiant Rage.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_18.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While active, increases defense by 20."
+   },
+   {
+    "level": 2,
+    "description": "While active, increases defense by 40."
+   },
+   {
+    "level": 3,
+    "description": "While active, increases defense by 60."
+   }
+  ]
+ },
+ {
+  "id": 166,
+  "name": "Suppression Recovery",
+  "category": "Hunt (General)",
+  "max_level": 3,
+  "description": "Dealing damage to a suppressed monster recovers health.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_18.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While active, recovers 5 health, with a minimum interval of 3s."
+   },
+   {
+    "level": 2,
+    "description": "While active, recovers 10 health, with a minimum interval of 3s."
+   },
+   {
+    "level": 3,
+    "description": "While active, recovers 15 health, with a minimum interval of 3s."
+   }
+  ]
+ },
+ {
+  "id": 167,
+  "name": "Morph Boost",
+  "category": "Hunt (General)",
+  "max_level": 4,
+  "description": "Increases damage for a period of time when the weapon transforms.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_18.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Upon activation, damage +3% for 60s."
+   },
+   {
+    "level": 2,
+    "description": "Upon activation, damage +7% for 60s."
+   },
+   {
+    "level": 3,
+    "description": "Upon activation, damage +11% for 60s."
+   },
+   {
+    "level": 4,
+    "description": "Upon activation, damage +16%, elemental attack +25 for 60s."
+   }
+  ]
+ },
+ {
+  "id": 60001,
+  "name": "BH Monster Lore",
+  "category": "Hunt (General)",
+  "max_level": 1,
+  "description": "[Equip,60001EntryTypeDesc]",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_11.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Reduces the damage BH takes by 20% and increases the damage dealt by 10%."
+   }
+  ]
+ },
+ {
+  "id": 60002,
+  "name": "BH Evade Guard",
+  "category": "Hunt (General)",
+  "max_level": 1,
+  "description": "[Equip,60002EntryTypeDesc]",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_11.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "After a BH evades, increases defense by 30% for 10s."
+   }
+  ]
+ },
+ {
+  "id": 60003,
+  "name": "BH Elemental Specialization",
+  "category": "Hunt (General)",
+  "max_level": 1,
+  "description": "[Equip,60003EntryTypeDesc]",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_11.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Increases all elemental damage from BH by 10%."
+   }
+  ]
+ },
+ {
+  "id": 60004,
+  "name": "BH Relentless Pursuit",
+  "category": "Hunt (General)",
+  "max_level": 1,
+  "description": "[Equip,60004EntryTypeDesc]",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_11.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "When BH monsters are staggered, hits that land reduce defense by 50% for 8s."
+   }
+  ]
+ },
+ {
+  "id": 60005,
+  "name": "BH Ultimate Healing - Madelyn",
+  "category": "Hunt (General)",
+  "max_level": 1,
+  "description": "[Equip,60005EntryTypeDesc]",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_11.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "After a BH Ultimate hits a monster, squad members within 20m of it are healed for 6x the current spore level."
+   }
+  ]
+ },
+ {
+  "id": 60006,
+  "name": "BH Ultimate Energy Recovery - Madelyn",
+  "category": "Hunt (General)",
+  "max_level": 1,
+  "description": "[Equip,60006EntryTypeDesc]",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_11.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "After a BH Ultimate is charged, squad members within 15m of it are healed for 0.5x the current spore level. The Ultimate's charge speed also increases by 5%."
+   }
+  ]
+ },
+ {
+  "id": 60007,
+  "name": "BH Evade Boost",
+  "category": "Hunt (General)",
+  "max_level": 1,
+  "description": "[Equip,60007EntryTypeDesc]",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_11.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "BH greatly increases invulnerability window."
+   }
+  ]
+ },
+ {
+  "id": 60008,
+  "name": "BH Big Health Boost",
+  "category": "Hunt (General)",
+  "max_level": 1,
+  "description": "[Equip,60008EntryTypeDesc]",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_11.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Increases BH's max health by 18%."
+   }
+  ]
+ },
+ {
+  "id": 60009,
+  "name": "BH Elemental Resistance",
+  "category": "Hunt (General)",
+  "max_level": 1,
+  "description": "[Equip,60009EntryTypeDesc]",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_11.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Reduces incoming elemental damage by 18% when BH is afflicted with ailments."
+   }
+  ]
+ },
+ {
+  "id": 60010,
+  "name": "BH Ultimate Charge Boost",
+  "category": "Hunt (General)",
+  "max_level": 1,
+  "description": "[Equip,60010EntryTypeDesc]",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_11.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Increases BH's Ultimate charge rate by 15%."
+   }
+  ]
+ },
+ {
+  "id": 8025101,
+  "name": "Dual Blades Mastery",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Increases affinity when dealing combo damage to radiant monsters for the rest of the hunt. (Season 0 only)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While hunting radiant monsters, dealing combo damage increases affinity by 1%, gaining up to 1 stack per second, up to 20 stacks, for the rest of the hunt. (Season 0 only)"
+   }
+  ]
+ },
+ {
+  "id": 802510,
+  "name": "Demonic Fang",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Each stack of this weapon's affinity boost increases damage dealt to radiant monsters. (Season 0 only)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Each stack of this weapon's affinity boost increases damage dealt to radiant monsters by 0.5%. (Season 0 only)"
+   }
+  ]
+ },
+ {
+  "id": 802511,
+  "name": "Demon Counter",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Reduces demon gauge consumption rate and increases damage dealt to radiant monsters after a successful Perfect Evade or Parry. (Season 0 only)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "After a successful perfect evade or parry, Demon Gauge consumption speed is reduced by 10% and damage dealt to Radiant monsters is increased by 8.25% for 20s. (Season 0 only)"
+   }
+  ]
+ },
+ {
+  "id": 802512,
+  "name": "Like the Wind",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Upon receiving a hit that would deal a large amount of damage, negates that damage and increases movement speed.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Upon taking a hit that would deal more than 60% of the max health in damage, negates that damage and increases movement speed by 10% for 10s. Activates only once every 60s. Active in select high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 8025301,
+  "name": "Long Sword Mastery",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Increases damage dealt to radiant monsters; each spirit gauge level gained increases damage dealt by an additional amount for the rest of the hunt. (Season 0 only)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While this weapon is equipped, damage dealt to radiant monsters increases by 8%. For each 1 Spirit Gauge level gained, damage dealt to radiant monsters increases by an additional 1.4% for the rest of the hunt, up to 3 stacks. (Season 0 only)"
+   }
+  ]
+ },
+ {
+  "id": 802530,
+  "name": "Spirit Edge",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Increases damage dealt to radiant monsters after consuming a spirit gauge level. (Season 0 only)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Consuming 1 Spirit Gauge level increases damage dealt to radiant monsters by 9% for 10s. (Season 0 only)"
+   }
+  ]
+ },
+ {
+  "id": 802531,
+  "name": "Spirit Break",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Breaking a part on a radiant monster gains a spirit gauge level and increases damage. (Season 0 only)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "After breaking a part on a radiant monster, the character gains 1 spirit gauge level and increases damage by 12% for 30s. (Season 0 only)"
+   }
+  ]
+ },
+ {
+  "id": 802532,
+  "name": "Scarlet Demon",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Gains Unwavering and reduces damage take when the Spirit Gauge becomes red.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Gains Unwavering and reduces damage taken by an additional 15% for 10s when the Spirit Gauge becomes red. Active in select high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 8025501,
+  "name": "Heavy Bowgun Mastery",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Increases damage dealt to radiant monsters; increases the boost further after unleashing the ultimate. (Season 0 only)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While this weapon is equipped, damage dealt to radiant monsters increases by 8%; after unleashing the ultimate, damage increases to 12% for 10s. (Season 0 only)"
+   }
+  ]
+ },
+ {
+  "id": 802550,
+  "name": "Weakspot Lock",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Increases damage after hitting a radiant monster's weak point. (Season 0 only)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Hitting a radiant monster's weak point increases damage by 9% for 15s. (Season 0 only)"
+   }
+  ]
+ },
+ {
+  "id": 802551,
+  "name": "Third Power Shot",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Increases damage dealt to radiant monsters when the 3rd round in the bowgun's magazine lands for the rest of the hunt. (Season 0 only)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "When the 3rd round in the bowgun's magazine lands, damage dealt to radiant monsters increases by 2% for the rest of the hunt, up to 8 stacks. (Season 0 only)"
+   }
+  ]
+ },
+ {
+  "id": 802552,
+  "name": "Tempest Protection",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "After using the Ultimate, further reduces damage taken by an additional amount for you and all squad members. Active in select high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Reduces damage taken by an additional 8% for you and all squad members after unleashing the ultimate. Active in select high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 8025701,
+  "name": "Great Sword Mastery",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Increases damage dealt to radiant monsters; when a skill's charge reaches optimal timing, draw weapon attacks against radiant monsters gain increased affinity. (Season 0 only)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While this weapon is equipped, damage dealt to radiant monsters increases by 8%. When a skill's Charge reaches optimal timing, affinity of Draw Weapon attacks against radiant monsters increases by 12%. (Season 0 only)"
+   }
+  ]
+ },
+ {
+  "id": 802570,
+  "name": "Wind-up Slash",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Landing hits at different charge levels (yellow/orange) increases damage dealt to radiant monsters. (Season 0 only)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Landing hits at different Charge levels (Yellow/Orange) increases damage dealt to radiant monsters by 7.5%/10.5% for 20s. (Season 0 only)"
+   }
+  ]
+ },
+ {
+  "id": 802571,
+  "name": "Ultimate Aftershock",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Increases damage dealt to radiant monsters after unleashing the ultimate. (Season 0 only)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Increases damage dealt to radiant monsters by 9% for 20s after unleashing the ultimate. (Season 0 only)"
+   }
+  ]
+ },
+ {
+  "id": 802572,
+  "name": "Immovable",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Reduces damage taken by an additional amount while charging. Active in select high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Reduces damage taken by an additional 25% for 3s while charging. Activates once every 8s. Active in select high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 8025901,
+  "name": "Lance Mastery",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Reduces stamina consumption in hunts, increases damage dealt to radiant monsters, and increases squad members' ultimate charge efficiency while affected by an ultimate. (Season 0 only)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While this weapon is equipped, stamina consumption in hunt decreases by an additional 5%, and damage dealt to radiant monsters increases by an additional 8%; squad members' Ultimate charge rate increases by 6% while affected by an Ultimate. (Season 0 only)"
+   }
+  ]
+ },
+ {
+  "id": 802590,
+  "name": "Charged Suppression",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Increases damage dealt after a charged skill hits a radiant monster. (Season 0 only)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Increases damage by 10.5% for 20s after a charged skill hits a radiant monster. (Season 0 only)"
+   }
+  ]
+ },
+ {
+  "id": 802591,
+  "name": "Perfect Phalanx",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Increases damage dealt to radiant monsters after a successful perfect guard. (Season 0 only)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Perfect Guard increases damage dealt to radiant monsters by 10.5% for 15s. (Season 0 only)"
+   }
+  ]
+ },
+ {
+  "id": 802592,
+  "name": "Last Stand",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "When health is low, recover health each second.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Recovers 3 health per second for 10s when dropping below 30% health. Can be triggered at most once every 45s. Active in select high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 8026101,
+  "name": "Bow Mastery",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Increases damage dealt to radiant monsters; consuming energy further increases damage dealt to radiant monsters for the rest of the hunt. (Season 0 only)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While this weapon is equipped, damage dealt to radiant monsters increases by 8%. Each time bow energy is consumed, additional damage dealt to radiant monsters increases by 1% for the rest of the hunt, up to 3 stacks. (Season 0 only)"
+   }
+  ]
+ },
+ {
+  "id": 802610,
+  "name": "Chain Blitz",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Hitting a radiant monster has a chance to increase damage for the rest of the hunt. (Season 0 only)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "20% chance to increase damage by 0.9% after hitting radiant monsters. Stacks up to 10 times and lasts until the hunt ends. (Season 0 only)"
+   }
+  ]
+ },
+ {
+  "id": 802611,
+  "name": "Weakspot Reload",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Hitting a radiant monster's weak point increases energy gain efficiency and damage. (Season 0 only)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "After hitting a radiant monster's weak point, energy gain efficiency increases by 7.5%, and damage increases by 7.5% for 10s. (Season 0 only)"
+   }
+  ]
+ },
+ {
+  "id": 802612,
+  "name": "Recycling Energy",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Immediately recovers health after applying several coatings. Active in select high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Immediately recovers 10 health for every 5 coatings applied. Activates up to once every 25s. Active in select high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 8026301,
+  "name": "Hammer Mastery",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Increases damage dealt to radiant monsters; hitting a radiant monster's head deals additional damage and increases stun buildup. (Season 0 only)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While this weapon is equipped, damage against radiant monsters increases by an additional 8%. Hitting a radiant monster's head deals an additional 3% damage and increases stun buildup. (Season 0 only)"
+   }
+  ]
+ },
+ {
+  "id": 802630,
+  "name": "Massive Impact",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Hitting a radiant monster at the perfect charge timing increases damage. (Season 0 only)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Increases damage by 9% for 20s after hitting a radiant monster at the perfect charge timing. (Season 0 only)"
+   }
+  ]
+ },
+ {
+  "id": 802631,
+  "name": "Earthshatter",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Increases damage after stunning a radiant monster. (Season 0 only)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "After stunning a radiant monster, damage increases by 12% for 30s. (Season 0 only)"
+   }
+  ]
+ },
+ {
+  "id": 802632,
+  "name": "Unstoppable",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "[Equip,802632EntryTypeDesc]",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Reduces damage taken while charging by an additional 20% for 5s. Can be triggered at most once every 10s. Active in select high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 8026501,
+  "name": "Charge Blade Mastery",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Increases damage dealt to radiant monsters; building up Phial Energy further increases damage dealt to radiant monsters. (Season 0 only)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "While this weapon is equipped, damage dealt to radiant monsters increases by 8%. After building up Phial Energy, damage dealt to radiant monsters increases by an additional 12% for 8s. (Season 0 only)"
+   }
+  ]
+ },
+ {
+  "id": 802650,
+  "name": "Guardian Strike",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Increases damage dealt to radiant monsters after a successful parry or guard; increases Sword Energy gain rate in sword mode. (Season 0 only)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "After a successful Parry or Guard, damage dealt to radiant monsters increases by 9% for 20s; in Sword Mode, Sword Energy charge speed increases by 7.5%. (Season 0 only)"
+   }
+  ]
+ },
+ {
+  "id": 802651,
+  "name": "Torrential Blitz",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Spending all phials at once increases damage dealt to radiant monsters and accumulates some phials. (Season 0 only)",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Spending all phials at once increases damage against radiant monsters by 9% and accumulates 2 phials. (Season 0 only)"
+   }
+  ]
+ },
+ {
+  "id": 900,
+  "name": "Guild Might - Weapon",
+  "category": "Weapon-specific",
+  "max_level": 12,
+  "description": "Equipment issued by the Crimson Crest Adventurers. Its rarity scales up alongside your Adventurer Rank.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_03.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 1."
+   },
+   {
+    "level": 2,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 2."
+   },
+   {
+    "level": 3,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 3."
+   },
+   {
+    "level": 4,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 4."
+   },
+   {
+    "level": 5,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 5."
+   },
+   {
+    "level": 6,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 6."
+   },
+   {
+    "level": 7,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 7."
+   },
+   {
+    "level": 8,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 8."
+   },
+   {
+    "level": 9,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 9."
+   },
+   {
+    "level": 10,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 10."
+   },
+   {
+    "level": 11,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 11."
+   },
+   {
+    "level": 12,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 12."
+   }
+  ]
+ },
+ {
+  "id": 901,
+  "name": "Guild Might - Helm",
+  "category": "Weapon-specific",
+  "max_level": 12,
+  "description": "Equipment issued by the Crimson Crest Adventurers. Its rarity scales up alongside your Adventurer Rank.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_03.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 1."
+   },
+   {
+    "level": 2,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 2."
+   },
+   {
+    "level": 3,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 3."
+   },
+   {
+    "level": 4,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 4."
+   },
+   {
+    "level": 5,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 5."
+   },
+   {
+    "level": 6,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 6."
+   },
+   {
+    "level": 7,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 7."
+   },
+   {
+    "level": 8,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 8."
+   },
+   {
+    "level": 9,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 9."
+   },
+   {
+    "level": 10,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 10."
+   },
+   {
+    "level": 11,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 11."
+   },
+   {
+    "level": 12,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 12."
+   }
+  ]
+ },
+ {
+  "id": 902,
+  "name": "Guild Might - Mail",
+  "category": "Weapon-specific",
+  "max_level": 12,
+  "description": "Equipment issued by the Crimson Crest Adventurers. Its rarity scales up alongside your Adventurer Rank.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_03.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 1."
+   },
+   {
+    "level": 2,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 2."
+   },
+   {
+    "level": 3,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 3."
+   },
+   {
+    "level": 4,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 4."
+   },
+   {
+    "level": 5,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 5."
+   },
+   {
+    "level": 6,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 6."
+   },
+   {
+    "level": 7,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 7."
+   },
+   {
+    "level": 8,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 8."
+   },
+   {
+    "level": 9,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 9."
+   },
+   {
+    "level": 10,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 10."
+   },
+   {
+    "level": 11,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 11."
+   },
+   {
+    "level": 12,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 12."
+   }
+  ]
+ },
+ {
+  "id": 903,
+  "name": "Guild Might - Gauntlets",
+  "category": "Weapon-specific",
+  "max_level": 12,
+  "description": "Equipment issued by the Crimson Crest Adventurers. Its rarity scales up alongside your Adventurer Rank.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_03.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 1."
+   },
+   {
+    "level": 2,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 2."
+   },
+   {
+    "level": 3,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 3."
+   },
+   {
+    "level": 4,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 4."
+   },
+   {
+    "level": 5,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 5."
+   },
+   {
+    "level": 6,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 6."
+   },
+   {
+    "level": 7,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 7."
+   },
+   {
+    "level": 8,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 8."
+   },
+   {
+    "level": 9,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 9."
+   },
+   {
+    "level": 10,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 10."
+   },
+   {
+    "level": 11,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 11."
+   },
+   {
+    "level": 12,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 12."
+   }
+  ]
+ },
+ {
+  "id": 904,
+  "name": "Guild Might - Coil",
+  "category": "Weapon-specific",
+  "max_level": 12,
+  "description": "Equipment issued by the Crimson Crest Adventurers. Its rarity scales up alongside your Adventurer Rank.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_03.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 1."
+   },
+   {
+    "level": 2,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 2."
+   },
+   {
+    "level": 3,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 3."
+   },
+   {
+    "level": 4,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 4."
+   },
+   {
+    "level": 5,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 5."
+   },
+   {
+    "level": 6,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 6."
+   },
+   {
+    "level": 7,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 7."
+   },
+   {
+    "level": 8,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 8."
+   },
+   {
+    "level": 9,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 9."
+   },
+   {
+    "level": 10,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 10."
+   },
+   {
+    "level": 11,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 11."
+   },
+   {
+    "level": 12,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 12."
+   }
+  ]
+ },
+ {
+  "id": 905,
+  "name": "Guild Might - Greaves",
+  "category": "Weapon-specific",
+  "max_level": 12,
+  "description": "Equipment issued by the Crimson Crest Adventurers. Its rarity scales up alongside your Adventurer Rank.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_03.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 1."
+   },
+   {
+    "level": 2,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 2."
+   },
+   {
+    "level": 3,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 3."
+   },
+   {
+    "level": 4,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 4."
+   },
+   {
+    "level": 5,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 5."
+   },
+   {
+    "level": 6,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 6."
+   },
+   {
+    "level": 7,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 7."
+   },
+   {
+    "level": 8,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 8."
+   },
+   {
+    "level": 9,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 9."
+   },
+   {
+    "level": 10,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 10."
+   },
+   {
+    "level": 11,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 11."
+   },
+   {
+    "level": 12,
+    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 12."
+   }
+  ]
+ },
+ {
+  "id": 900001,
+  "name": "Demonic Fang",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Each stack of this weapon's affinity boost increases damage dealt to radiant monsters by 0.5%. Active in select high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Each stack of this weapon's affinity boost increases damage dealt to radiant monsters by 0.5%. Active in select high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900002,
+  "name": "Demon Counter",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "After a successful Perfect Evade or Parry, Demon Gauge consumption rate decreases by 10%, and damage dealt to radiant monsters increases by 8.25% for 20s. Active in select high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "After a successful Perfect Evade or Parry, Demon Gauge consumption rate decreases by 10%, and damage dealt to radiant monsters increases by 8.25% for 20s. Active in select high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900003,
+  "name": "Spirit Edge",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Consuming 1 Spirit Gauge level increases damage dealt to radiant monsters by 9% for 10s. Active in select high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Consuming 1 Spirit Gauge level increases damage dealt to radiant monsters by 9% for 10s. Active in select high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900004,
+  "name": "Spirit Break",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "After breaking a part on a radiant monster, the character gains 1 spirit gauge level and increases damage by 12% for 30s. Active in select high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "After breaking a part on a radiant monster, the character gains 1 spirit gauge level and increases damage by 12% for 30s. Active in select high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900005,
+  "name": "Weakspot Lock",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Hitting a radiant monster's weak point increases damage by 9% for 15s. Active in select high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Hitting a radiant monster's weak point increases damage by 9% for 15s. Active in select high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900006,
+  "name": "Third Power Shot",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "When the 3rd round in the bowgun's magazine lands, damage dealt to radiant monsters increases by 2% for the rest of the hunt, up to 8 stacks. Active in select high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "When the 3rd round in the bowgun's magazine lands, damage dealt to radiant monsters increases by 2% for the rest of the hunt, up to 8 stacks. Active in select high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900007,
+  "name": "Wind-up Slash",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Landing hits at different Charge levels (Yellow/Orange) increases damage dealt to radiant monsters by 7.5%/10.5% for 20s. Active in select high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Landing hits at different Charge levels (Yellow/Orange) increases damage dealt to radiant monsters by 7.5%/10.5% for 20s. Active in select high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900008,
+  "name": "Ultimate Aftershock",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "After unleashing the Ultimate, damage dealt to radiant monsters increases by 9% for 20s. Active in select high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "After unleashing the Ultimate, damage dealt to radiant monsters increases by 9% for 20s. Active in select high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900009,
+  "name": "Charged Suppression",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Increases damage by 10.5% for 20s after a charged skill hits a radiant monster. Active in select high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Increases damage by 10.5% for 20s after a charged skill hits a radiant monster. Active in select high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900010,
+  "name": "Perfect Phalanx",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Perfect Guard increases damage dealt to radiant monsters by 10.5% for 15s. Active in select high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Perfect Guard increases damage dealt to radiant monsters by 10.5% for 15s. Active in select high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900011,
+  "name": "Chain Blitz",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "20% chance to increase damage by 0.9% after hitting radiant monsters, up to 10 stacks, and lasts until the hunt ends. Active in select high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "20% chance to increase damage by 0.9% after hitting radiant monsters, up to 10 stacks, and lasts until the hunt ends. Active in select high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900012,
+  "name": "Weakspot Reload",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "After hitting a radiant monster's weak point, energy gain efficiency increases by 7.5%, and damage increases by 7.5% for 10s. Active in select high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "After hitting a radiant monster's weak point, energy gain efficiency increases by 7.5%, and damage increases by 7.5% for 10s. Active in select high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900013,
+  "name": "Massive Impact",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Increases damage by 9% for 20s after hitting a radiant monster at the perfect charge timing. Active in select high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Increases damage by 9% for 20s after hitting a radiant monster at the perfect charge timing. Active in select high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900014,
+  "name": "Earthshatter",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "After stunning a radiant monster, damage increases by 12% for 30s. Active in select high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "After stunning a radiant monster, damage increases by 12% for 30s. Active in select high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900015,
+  "name": "Guardian Strike",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "After a successful Parry or Guard, damage dealt to radiant monsters increases by 9% for 20s; in Sword Mode, Sword Energy charge speed increases by 7.5%. Active in select high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "After a successful Parry or Guard, damage dealt to radiant monsters increases by 9% for 20s; in Sword Mode, Sword Energy charge speed increases by 7.5%. Active in select high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900016,
+  "name": "Torrential Blitz",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Spending all phials at once increases damage against radiant monsters by 9% and accumulates 2 phials. Active in select high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Spending all phials at once increases damage against radiant monsters by 9% and accumulates 2 phials. Active in select high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900017,
+  "name": "Water Damage Bonus",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Water damage +7%.  is active in certain high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Water damage +7%.  is active in certain high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900018,
+  "name": "Fire Damage Bonus",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Fire damage +7%.  is active in certain high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Fire damage +7%.  is active in certain high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900019,
+  "name": "Ice Damage Bonus",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Ice damage +7%.  is active in certain high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Ice damage +7%.  is active in certain high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900020,
+  "name": "Thunder Damage Bonus",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Thunder damage +7%.  is active in certain high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Thunder damage +7%.  is active in certain high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900021,
+  "name": "Dragon Damage Bonus",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Dragon damage +7%.  is active in certain high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Dragon damage +7%.  is active in certain high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900022,
+  "name": "Physical Damage Boost",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Physical damage +7%.  is active in certain high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Physical damage +7%.  is active in certain high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900023,
+  "name": "Affinity Bonus",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Affinity +4%.  is active in certain high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Affinity +4%.  is active in certain high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900024,
+  "name": "Ultimate Charge Efficiency Bonus",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Ultimate charge efficiency +3%.  is active in certain high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Ultimate charge efficiency +3%.  is active in certain high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900025,
+  "name": "Water Damage Bonus",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Water damage +7%.  is active in certain high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Water damage +7%.  is active in certain high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900026,
+  "name": "Fire Damage Bonus",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Fire damage +7%.  is active in certain high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Fire damage +7%.  is active in certain high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900027,
+  "name": "Ice Damage Bonus",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Ice damage +7%.  is active in certain high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Ice damage +7%.  is active in certain high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900028,
+  "name": "Thunder Damage Bonus",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Thunder damage +7%.  is active in certain high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Thunder damage +7%.  is active in certain high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900029,
+  "name": "Dragon Damage Bonus",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Dragon damage +7%.  is active in certain high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Dragon damage +7%.  is active in certain high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900030,
+  "name": "Physical Damage Boost",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Physical damage +7%.  is active in certain high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Physical damage +7%.  is active in certain high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900031,
+  "name": "Affinity Bonus",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Affinity +4%.  is active in certain high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Affinity +4%.  is active in certain high-difficulty challenges."
+   }
+  ]
+ },
+ {
+  "id": 900032,
+  "name": "Ultimate Charge Efficiency Bonus",
+  "category": "Weapon-specific",
+  "max_level": 1,
+  "description": "Ultimate charge efficiency +3%.  is active in certain high-difficulty challenges.",
+  "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_16.png",
+  "levels": [
+   {
+    "level": 1,
+    "description": "Ultimate charge efficiency +3%.  is active in certain high-difficulty challenges."
+   }
+  ]
+ }
+]

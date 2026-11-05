@@ -14,6 +14,9 @@ import {
 } from '../../data/schemas/buddy';
 import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
+import ArtBackdrop from '../../components/ArtBackdrop';
+import { useBuddySkills } from '../../hooks/useAdminBuddies';
+import { usePublicAdventurers } from '../../hooks/useAdminAdventurers';
 
 const ROLE_ICONS: Record<BuddyRole, React.ComponentType<{ size?: number; className?: string }>> = {
   Assault: Swords,
@@ -52,8 +55,17 @@ export default function BuddyModal({
 }: BuddyModalProps) {
   const [imageError, setImageError] = useState(false);
   const navigate = useNavigate();
+  const { data: skills = [] } = useBuddySkills(open ? buddy?.id : null);
+  const { data: adventurers = [] } = usePublicAdventurers();
 
   if (!open || !buddy) return null;
+
+  const defaultOf = adventurers.find((a) => a.id === buddy.default_of_adventurer_id);
+  const skillGroups = [
+    { kind: 'skill', title: 'Skills' },
+    { kind: 'passive', title: 'Passive Skills' },
+    { kind: 'other', title: 'Unique Skills' },
+  ] as const;
 
   const isOwned = Boolean(collectionEntry);
   const currentQty = collectionEntry?.quantity ?? 1;
@@ -78,7 +90,7 @@ export default function BuddyModal({
         role="dialog"
         aria-modal="true"
         className={cn(
-          'relative z-10 w-full max-w-lg overflow-hidden rounded-2xl border shadow-2xl animate-in zoom-in-95 duration-150',
+          'relative isolate z-10 w-full max-w-lg overflow-hidden rounded-2xl border shadow-2xl animate-in zoom-in-95 duration-150',
           'bg-gradient-to-b from-[#161a26] to-[#0f121a]',
           isOwned
             ? isSSR
@@ -90,6 +102,8 @@ export default function BuddyModal({
         )}
         style={buddyTierBorder(buddy.tier)}
       >
+        <ArtBackdrop src={buddy.image} active={isOwned} />
+
         {/* Header Bar */}
         <div className="flex items-center justify-between border-b border-mh-slate-800 bg-mh-slate-950/80 px-6 py-4">
           <div className="flex items-center gap-3">
@@ -159,8 +173,11 @@ export default function BuddyModal({
                 Identifier: <span className="text-mh-slate-400">{buddy.id}</span>
               </p>
               <p className="text-xs text-mh-slate-400 mt-1">
-                Aesoland Companion &bull; Monster Hunter Outlanders
+                {buddy.species ? `${buddy.species} Companion` : 'Aesoland Companion'} &bull; Monster Hunter Outlanders
               </p>
+              {defaultOf && (
+                <p className="text-xs text-mh-slate-400 mt-1">Default buddy of {defaultOf.name}</p>
+              )}
             </div>
           </div>
 
@@ -264,6 +281,33 @@ export default function BuddyModal({
               </p>
             </div>
           </div>
+
+          {/* Description */}
+          {buddy.description && (
+            <p className="text-xs italic text-mh-slate-400 leading-relaxed px-1">{buddy.description}</p>
+          )}
+
+          {/* Skills */}
+          {skillGroups.map(({ kind, title }) => {
+            const list = skills.filter((s) => s.kind === kind);
+            if (list.length === 0) return null;
+            return (
+              <div key={kind} className="rounded-xl border border-mh-slate-800 bg-mh-slate-900/60 p-4 space-y-2">
+                <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-mh-slate-300">
+                  <Zap size={13} className="text-mh-gold-400" />
+                  <span>{title}</span>
+                </div>
+                <ul className="divide-y divide-mh-slate-800/80">
+                  {list.map((sk) => (
+                    <li key={sk.id} className="py-1.5 text-xs">
+                      <span className="font-semibold text-mh-slate-200">{sk.name}</span>
+                      {sk.description && <p className="text-mh-slate-400 leading-relaxed mt-0.5">{sk.description}</p>}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
 
           {/* Notes & Extra Lore */}
           {buddy.notes && (

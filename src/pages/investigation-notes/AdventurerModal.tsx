@@ -25,6 +25,7 @@ import {
 import { WEAPON_TYPES } from '../../data/core/weapon-types';
 import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
+import { useAdventurerSkills } from '../../hooks/useAdminAdventurers';
 import AdventurerRarityBadge from './AdventurerRarityBadge';
 import { ChallengeGoalMenu, InsightPill, InsightRow } from './AdventurerInsight';
 
@@ -64,6 +65,7 @@ export default function AdventurerModal({
   const navigate = useNavigate();
   const [imageError, setImageError] = useState(false);
   const [backgroundError, setBackgroundError] = useState(false);
+  const { data: skills = [] } = useAdventurerSkills(open ? adventurer?.id : null);
 
   if (!open || !adventurer) return null;
 
@@ -91,7 +93,7 @@ export default function AdventurerModal({
         role="dialog"
         aria-modal="true"
         className={cn(
-          'relative z-10 w-full max-w-xl overflow-hidden rounded-2xl border shadow-2xl animate-in zoom-in-95 duration-150',
+          'relative isolate z-10 w-full max-w-xl overflow-hidden rounded-2xl border shadow-2xl animate-in zoom-in-95 duration-150',
           'bg-gradient-to-b from-[#161a26] to-[#0f121a]',
           isRecruited
             ? 'border-mh-gold-500/50 shadow-mh-gold-500/10'
@@ -106,7 +108,7 @@ export default function AdventurerModal({
               src={adventurer.background_image!}
               alt=""
               onError={() => setBackgroundError(true)}
-              className="h-full w-full object-cover opacity-50"
+              className={cn('h-full w-full object-cover', isRecruited ? 'opacity-50' : 'opacity-30 grayscale')}
             />
             <div className="absolute inset-0 bg-gradient-to-b from-[#0f121a]/60 via-[#0f121a]/80 to-[#0f121a]/95" />
           </div>
@@ -186,12 +188,26 @@ export default function AdventurerModal({
                   </span>
                 )}
               </div>
+              {adventurer.title && (
+                <p className="text-sm font-semibold italic text-mh-gold-300 mt-0.5">{adventurer.title}</p>
+              )}
               <p className="font-mono text-xs text-mh-slate-500 mt-1">
                 Identifier: <span className="text-mh-slate-400">{adventurer.id}</span>
               </p>
               <p className="text-xs text-mh-slate-400 mt-1">
                 Aesoland Adventurer &bull; Monster Hunter Outlanders
               </p>
+              {(adventurer.gender || adventurer.height || adventurer.default_buddy) && (
+                <p className="text-xs text-mh-slate-400 mt-1">
+                  {[
+                    adventurer.gender && adventurer.gender.charAt(0).toUpperCase() + adventurer.gender.slice(1),
+                    adventurer.height,
+                    adventurer.default_buddy && `Default buddy: ${adventurer.default_buddy}`,
+                  ]
+                    .filter(Boolean)
+                    .join(' • ')}
+                </p>
+              )}
             </div>
           </div>
 
@@ -382,6 +398,56 @@ export default function AdventurerModal({
               <p className="text-xs text-mh-slate-300 leading-relaxed whitespace-pre-line">
                 {adventurer.description}
               </p>
+            </div>
+          )}
+
+          {/* Playstyle */}
+          {adventurer.playstyle && (
+            <div className="rounded-xl border border-mh-slate-750 bg-mh-slate-900/60 p-4 space-y-1.5">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-mh-slate-400 uppercase tracking-wider">
+                <Swords size={13} />
+                <span>Playstyle</span>
+              </div>
+              <p className="text-xs text-mh-slate-300 leading-relaxed whitespace-pre-line">{adventurer.playstyle}</p>
+            </div>
+          )}
+
+          {/* Traits */}
+          {adventurer.traits && adventurer.traits.length > 0 && (
+            <div className="rounded-xl border border-mh-slate-750 bg-mh-slate-900/60 p-4 space-y-2">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-mh-slate-400 uppercase tracking-wider">
+                <Sparkles size={13} className="text-mh-gold-400" />
+                <span>Traits</span>
+              </div>
+              <ul className="space-y-2">
+                {adventurer.traits.map((t) => (
+                  <li key={t.name} className="text-xs leading-relaxed">
+                    <span className="font-bold text-mh-gold-300">{t.name}</span>
+                    <span className="text-mh-slate-300 whitespace-pre-line">{t.description && `: ${t.description}`}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Skills */}
+          {skills.length > 0 && (
+            <div className="rounded-xl border border-mh-slate-750 bg-mh-slate-900/60 p-4 space-y-2">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-mh-slate-400 uppercase tracking-wider">
+                <Swords size={13} />
+                <span>Skills</span>
+              </div>
+              <ul className="divide-y divide-mh-slate-800/80">
+                {skills.map((sk) => (
+                  <li key={sk.id} className="py-1.5 text-xs">
+                    <div className="flex items-baseline justify-between gap-2">
+                      <span className="font-semibold text-mh-slate-200">{sk.name}</span>
+                      {sk.skill_type && <span className="text-[10px] text-mh-slate-500 shrink-0">{sk.skill_type}</span>}
+                    </div>
+                    {sk.description && <p className="text-mh-slate-400 leading-relaxed mt-0.5">{sk.description}</p>}
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
 

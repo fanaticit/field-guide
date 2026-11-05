@@ -1,0 +1,27 @@
+﻿Set ID,Set,Pieces,Effect,Icon
+1000,Ink of Might,2,Physical damage +5%.,MHMobile/Content/UI/Dynamic/AmuletSuitIcon/AmuletSuitIcon_Might.png
+1000,Ink of Might,4,"After landing a critical hit, physical damage +12% for 60s.",MHMobile/Content/UI/Dynamic/AmuletSuitIcon/AmuletSuitIcon_Might.png
+1001,Ink of Flames,2,Fire damage +5%.,MHMobile/Content/UI/Dynamic/AmuletSuitIcon/AmuletSuitIcon_Blaze.png
+1001,Ink of Flames,4,"After hitting a weak point, fire damage +24% for 20s.",MHMobile/Content/UI/Dynamic/AmuletSuitIcon/AmuletSuitIcon_Blaze.png
+1002,Ink of Water,2,Water damage +5%.,MHMobile/Content/UI/Dynamic/AmuletSuitIcon/AmuletSuitIcon_Tide.png
+1002,Ink of Water,4,"Each time a squad member unleashes an ultimate, water damage +6% for 60s, up to 4 stacks.",MHMobile/Content/UI/Dynamic/AmuletSuitIcon/AmuletSuitIcon_Tide.png
+1003,Ink of Thunder,2,Thunder damage +5%.,MHMobile/Content/UI/Dynamic/AmuletSuitIcon/AmuletSuitIcon_Bolt.png
+1003,Ink of Thunder,4,"After dealing damage to monsters, thunder damage +5% for 12s, up to 5 stacks.",MHMobile/Content/UI/Dynamic/AmuletSuitIcon/AmuletSuitIcon_Bolt.png
+1004,Ink of Combat,2,Affinity +5%.,MHMobile/Content/UI/Dynamic/AmuletSuitIcon/AmuletSuitIcon_Assault.png
+1004,Ink of Combat,4,"When an ultimate inflicts a debuff on a monster, squad damage +6.5% for 60s.",MHMobile/Content/UI/Dynamic/AmuletSuitIcon/AmuletSuitIcon_Assault.png
+1005,Ink of Guidance,2,Ultimate charge rate +5%.,MHMobile/Content/UI/Dynamic/AmuletSuitIcon/AmuletSuitIcon_Bind.png
+1005,Ink of Guidance,4,"Within 8s after an ultimate inflicts suppression on a monster, each time the squad uses an ultimate, squad damage +2.2% for 60s, up to 3 stacks.",MHMobile/Content/UI/Dynamic/AmuletSuitIcon/AmuletSuitIcon_Bind.png
+1006,Ink of Grace,2,Ultimate charge rate +5%.,MHMobile/Content/UI/Dynamic/AmuletSuitIcon/AmuletSuitIcon_Grace.png
+1006,Ink of Grace,4,"When an adventurer grants a squad member a buff, squad damage +6.5% for 60s.",MHMobile/Content/UI/Dynamic/AmuletSuitIcon/AmuletSuitIcon_Grace.png
+1007,Ink of Protection,2,Ultimate charge rate +5%.,MHMobile/Content/UI/Dynamic/AmuletSuitIcon/AmuletSuitIcon_Guard.png
+1007,Ink of Protection,4,"When an adventurer and Buddy grant a squad member healing or shield effect, the effect +20%, squad damage +6% for 45s.",MHMobile/Content/UI/Dynamic/AmuletSuitIcon/AmuletSuitIcon_Guard.png
+1008,Ink of Dragon,2,Dragon damage +5%.,MHMobile/Content/UI/Dynamic/AmuletSuitIcon/AmuletSuitIcon_Drake.png
+1008,Ink of Dragon,4,"After using an ultimate, dragon damage +24% for 60s.",MHMobile/Content/UI/Dynamic/AmuletSuitIcon/AmuletSuitIcon_Drake.png
+1009,Ink of Resonance,2,Affinity +5%.,MHMobile/Content/UI/Dynamic/AmuletSuitIcon/AmuletSuitIcon_Arts.png
+1009,Ink of Resonance,4,"When not the Main Adventurer, ultimate damage +32%.",MHMobile/Content/UI/Dynamic/AmuletSuitIcon/AmuletSuitIcon_Arts.png
+1010,Ink of Frost,2,Ice damage +5%.,MHMobile/Content/UI/Dynamic/AmuletSuitIcon/AmuletSuitIcon_Frost.png
+1010,Ink of Frost,4,"After hitting a monster, ice damage +24% for 8s.",MHMobile/Content/UI/Dynamic/AmuletSuitIcon/AmuletSuitIcon_Frost.png
+1011,Test Loadout,999,Physical damage +5%.,MHMobile/Content/UI/Dynamic/AmuletSuitIcon/AmuletSuitIcon_Might.png
+1011,Test Loadout,999,"After landing a critical hit, physical damage +12% for 60s.",MHMobile/Content/UI/Dynamic/AmuletSuitIcon/AmuletSuitIcon_Might.png
+1012,Kushala Daora's Tempest,1,Elemental Damage +2% (Season 0 only),MHMobile/Content/UI/Dynamic/AmuletSuitIcon/AmuletSuitIcon_KushalaDaora.png
+1012,Kushala Daora's Tempest,2,"Elemental Damage +3%, increased to 10% when the monster is suppressed. (Season 0 only)",MHMobile/Content/UI/Dynamic/AmuletSuitIcon/AmuletSuitIcon_KushalaDaora.png

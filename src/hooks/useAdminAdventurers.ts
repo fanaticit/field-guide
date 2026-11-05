@@ -3,7 +3,7 @@
 // ─────────────────────────────────────────────────────────────
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '../lib/supabase';
-import type { DBAdventurer, AdventurerUpsert, AdventurerRole } from '../data/schemas/adventurer';
+import type { DBAdventurer, AdventurerUpsert, AdventurerRole, AdventurerSkill } from '../data/schemas/adventurer';
 
 export interface AdventurerFilters {
   search?: string;
@@ -60,6 +60,24 @@ export function useAdminAdventurers(filters: AdventurerFilters = {}) {
   });
 }
 
+/** Skill list (name + type) for one adventurer, in the in-game order. */
+export function useAdventurerSkills(adventurerId: string | null | undefined) {
+  return useQuery({
+    queryKey: ['adventurer-skills', adventurerId],
+    enabled: Boolean(adventurerId),
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('adventurer_skills')
+        .select('*')
+        .eq('adventurer_id', adventurerId!)
+        .order('sort_order', { ascending: true });
+      if (error) throw error;
+      return (data ?? []) as AdventurerSkill[];
+    },
+    staleTime: 1000 * 60 * 10,
+  });
+}
+
 export function usePublicAdventurers() {
   return useQuery({
     queryKey: [PUBLIC_ADVENTURERS_KEY],
@@ -80,6 +98,7 @@ export function usePublicAdventurers() {
         is_default: Boolean(row.is_default),
         is_active: Boolean(row.is_active),
         allowed_weapon_types: Array.isArray(row.allowed_weapon_types) ? row.allowed_weapon_types : [],
+        traits: Array.isArray(row.traits) ? row.traits : [],
       })) as DBAdventurer[];
     },
     staleTime: 1000 * 60 * 5,

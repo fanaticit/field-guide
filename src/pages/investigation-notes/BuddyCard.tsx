@@ -13,6 +13,7 @@ import {
 } from '../../data/schemas/buddy';
 import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
+import ArtBackdrop from '../../components/ArtBackdrop';
 
 const ROLE_ICONS: Record<BuddyRole, React.ComponentType<{ size?: number; className?: string }>> = {
   Assault: Swords,
@@ -77,7 +78,7 @@ export default function BuddyCard({
       title={`${buddy.name} [${buddy.tier}] — Click to inspect`}
       style={buddyTierBorder(buddy.tier, isOwned)}
       className={cn(
-        'group relative flex flex-col justify-between rounded-2xl border cursor-pointer select-none transition-all duration-200',
+        'group relative isolate overflow-hidden flex flex-col justify-between rounded-2xl border cursor-pointer select-none transition-all duration-200',
         'p-4 shadow-md hover:scale-[1.01] hover:shadow-xl hover:z-10',
         isOwned
           ? isSSR
@@ -89,6 +90,8 @@ export default function BuddyCard({
         isTracked && !isChallengeDone && !isOwned && 'ring-2 ring-blue-400/80 ring-offset-1 ring-offset-black',
       )}
     >
+      <ArtBackdrop src={buddy.image} active={isOwned} />
+
       {/* SSR / High Tier Decorative Corner Accent (When Owned) */}
       {isOwned && isSSR && (
         <div className="pointer-events-none absolute -top-px -right-px h-10 w-10 overflow-hidden rounded-tr-2xl">

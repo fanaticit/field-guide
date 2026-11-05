@@ -1,0 +1,733 @@
+﻿Armour ID,Armour,Slot,Set,Starting rarity,Unlocks at rarity,Skill,Skill level,Change,Description
+201000101,Jagras Helm I,Head,Great Jagras Set I,1,1,Stun Resistance,1,New skill,Shortens the duration of stun by 60%.
+201000101,Jagras Helm I,Head,Great Jagras Set I,1,5,Bento Lover,1,New skill,"While active, damage +4% for 30s."
+201000101,Jagras Helm I,Head,Great Jagras Set I,1,7,Fearless,1,New skill,"While active, damage +3%."
+201000101,Jagras Helm I,Head,Great Jagras Set I,1,9,Bento Lover,2,Level up (Lv1 > Lv2),"While active, damage +8% for 30s."
+201000102,Jagras Mail I,Chest,Great Jagras Set I,1,1,Fearless,1,New skill,"While active, damage +3%."
+201000102,Jagras Mail I,Chest,Great Jagras Set I,1,5,Stun Resistance,1,New skill,Shortens the duration of stun by 60%.
+201000102,Jagras Mail I,Chest,Great Jagras Set I,1,7,Deterrence,1,New skill,Discourages monsters from engaging after being spotted.
+201000103,Jagras Vambraces I,Arms,Great Jagras Set I,1,1,Spirit Bind Blade,1,New skill,"Upon activation, damage +3% for 30s."
+201000103,Jagras Vambraces I,Arms,Great Jagras Set I,1,5,Deterrence,1,New skill,Discourages monsters from engaging after being spotted.
+201000103,Jagras Vambraces I,Arms,Great Jagras Set I,1,7,Spirit Bind Blade,2,Level up (Lv1 > Lv2),"Upon activation, damage +7% for 30s."
+201000103,Jagras Vambraces I,Arms,Great Jagras Set I,1,9,Relentless Pursuit,1,New skill,"While active, damage +4% for 15s."
+201000104,Jagras Coil I,Waist,Great Jagras Set I,1,1,Flash Draw,1,New skill,"While active, damage +4% for 30s."
+201000104,Jagras Coil I,Waist,Great Jagras Set I,1,5,Thrifty Meal,1,New skill,Activates 25% of the time.
+201000105,Jagras Greaves I,Legs,Great Jagras Set I,1,1,Bento Lover,1,New skill,"While active, damage +4% for 30s."
+201000105,Jagras Greaves I,Legs,Great Jagras Set I,1,5,Deterrence,1,New skill,Discourages monsters from engaging after being spotted.
+201000105,Jagras Greaves I,Legs,Great Jagras Set I,1,7,Adversity,1,New skill,Each faint increases damage by x1.1 and defense by +10.
+201000201,Kulu Headpiece I,Head,Kulu-Ya-Ku Set I,1,1,Insight,1,New skill,Affinity +2%.
+201000201,Kulu Headpiece I,Head,Kulu-Ya-Ku Set I,1,5,Carve Master,1,New skill,"Lets you carve 1 additional 1|plural(one=time, other=times). (No effect when joining mid-quest.)"
+201000201,Kulu Headpiece I,Head,Kulu-Ya-Ku Set I,1,7,Insight,2,Level up (Lv1 > Lv2),Affinity +4%.
+201000202,Kulu Mail I,Chest,Kulu-Ya-Ku Set I,1,1,Weakspot Exploit,1,New skill,"When attacking weak points, affinity +4%."
+201000202,Kulu Mail I,Chest,Kulu-Ya-Ku Set I,1,5,Fire Resistance,1,New skill,Fire resistance +6.
+201000202,Kulu Mail I,Chest,Kulu-Ya-Ku Set I,1,7,Thrifty Meal,1,New skill,Activates 25% of the time.
+201000203,Kulu Vambraces I,Arms,Kulu-Ya-Ku Set I,1,1,Item Master,1,New skill,Increases effect duration by 1.1x.
+201000203,Kulu Vambraces I,Arms,Kulu-Ya-Ku Set I,1,5,Insight,1,New skill,Affinity +2%.
+201000203,Kulu Vambraces I,Arms,Kulu-Ya-Ku Set I,1,7,Recovery Booster,1,New skill,Increases Health recovery by 1.1x when healing.
+201000204,Kulu Coil I,Waist,Kulu-Ya-Ku Set I,1,1,Fire Resistance,1,New skill,Fire resistance +6.
+201000204,Kulu Coil I,Waist,Kulu-Ya-Ku Set I,1,5,Combo Enhancement,1,New skill,Landing 5 hits within 3s increases damage by 4% for 12s.
+201000204,Kulu Coil I,Waist,Kulu-Ya-Ku Set I,1,7,Weakspot Exploit,1,New skill,"When attacking weak points, affinity +4%."
+201000204,Kulu Coil I,Waist,Kulu-Ya-Ku Set I,1,9,Combo Enhancement,2,Level up (Lv1 > Lv2),Landing 5 hits within 3s increases damage by 8% for 12s.
+201000205,Kulu Greaves I,Legs,Kulu-Ya-Ku Set I,1,1,Demonic Strength,1,New skill,"While active, damage +4%."
+201000205,Kulu Greaves I,Legs,Kulu-Ya-Ku Set I,1,5,Item Master,1,New skill,Increases effect duration by 1.1x.
+201000205,Kulu Greaves I,Legs,Kulu-Ya-Ku Set I,1,7,Weakspot Exploit,1,New skill,"When attacking weak points, affinity +4%."
+201000205,Kulu Greaves I,Legs,Kulu-Ya-Ku Set I,1,9,Demonic Strength,2,Level up (Lv1 > Lv2),"While active, damage +8%."
+201000301,Pukei Hood I,Head,Pukei-Pukei Set I,1,1,Ballistics,1,New skill,Shortens the distance before ammo and arrows reach maximum power.
+201000301,Pukei Hood I,Head,Pukei-Pukei Set I,1,5,Bow Skill Boost,1,New skill,Skill damage +4%.
+201000301,Pukei Hood I,Head,Pukei-Pukei Set I,1,7,Botanical Expert,1,New skill,+1 consumable herb item per gather.
+201000301,Pukei Hood I,Head,Pukei-Pukei Set I,1,9,Bow Skill Boost,2,Level up (Lv1 > Lv2),Skill damage +8%.
+201000302,Pukei Mail I,Chest,Pukei-Pukei Set I,1,1,Charged Power Shot,1,New skill,"While active, damage +5%."
+201000302,Pukei Mail I,Chest,Pukei-Pukei Set I,1,5,Improviser,1,New skill,Interactables restore an additional 50 health.
+201000302,Pukei Mail I,Chest,Pukei-Pukei Set I,1,7,Botanical Expert,1,New skill,+1 consumable herb item per gather.
+201000303,Pukei Vambraces I,Arms,Pukei-Pukei Set I,1,1,Battle Spirit,1,New skill,"While active, affinity +3%."
+201000303,Pukei Vambraces I,Arms,Pukei-Pukei Set I,1,5,Poison Resistance,1,New skill,Shortens the duration of poison by 30%.
+201000303,Pukei Vambraces I,Arms,Pukei-Pukei Set I,1,7,Improviser,1,New skill,Interactables restore an additional 50 health.
+201000304,Pukei Coil I,Waist,Pukei-Pukei Set I,1,1,Poison Resistance,1,New skill,Shortens the duration of poison by 30%.
+201000304,Pukei Coil I,Waist,Pukei-Pukei Set I,1,5,Charged Power Shot,1,New skill,"While active, damage +5%."
+201000304,Pukei Coil I,Waist,Pukei-Pukei Set I,1,7,Charged Power Shot,2,Level up (Lv1 > Lv2),"While active, damage +9%."
+201000304,Pukei Coil I,Waist,Pukei-Pukei Set I,1,9,Charged Power Shot,3,Level up (Lv2 > Lv3),"While active, damage +14%."
+201000305,Pukei Greaves I,Legs,Pukei-Pukei Set I,1,1,Battle Spirit,1,New skill,"While active, affinity +3%."
+201000305,Pukei Greaves I,Legs,Pukei-Pukei Set I,1,5,Botanical Expert,1,New skill,+1 consumable herb item per gather.
+201000305,Pukei Greaves I,Legs,Pukei-Pukei Set I,1,7,Improviser,1,New skill,Interactables restore an additional 50 health.
+201080301,Alloy Helm I,Head,Alloy Set I,3,3,Water Resistance,1,New skill,Water resistance +6.
+201080301,Alloy Helm I,Head,Alloy Set I,3,6,Offensive Defense,1,New skill,"After activation, damage +4% for 30s."
+201080301,Alloy Helm I,Head,Alloy Set I,3,8,Breaker,1,New skill,Part damage x1.1.
+201080301,Alloy Helm I,Head,Alloy Set I,3,10,Offensive Defense,2,Level up (Lv1 > Lv2),"After activation, damage +8% for 30s."
+201080302,Alloy Mail I,Chest,Alloy Set I,3,3,Immovable Stance,1,New skill,"After triggering ferocity, damage +4% for 30s."
+201080302,Alloy Mail I,Chest,Alloy Set I,3,6,Breaker,1,New skill,Part damage x1.1.
+201080302,Alloy Mail I,Chest,Alloy Set I,3,8,Poison Resistance,1,New skill,Shortens the duration of poison by 30%.
+201080303,Alloy Vambraces I,Arms,Alloy Set I,3,3,Windproof,1,New skill,Reduces the effects of minor wind pressure.
+201080303,Alloy Vambraces I,Arms,Alloy Set I,3,6,Defense Up,1,New skill,Defense +5
+201080304,Alloy Coil I,Waist,Alloy Set I,3,3,Windproof,1,New skill,Reduces the effects of minor wind pressure.
+201080304,Alloy Coil I,Waist,Alloy Set I,3,6,Immovable Stance,1,New skill,"After triggering ferocity, damage +4% for 30s."
+201080304,Alloy Coil I,Waist,Alloy Set I,3,8,Water Resistance,1,New skill,Water resistance +6.
+201080305,Alloy Greaves I,Legs,Alloy Set I,3,3,Offensive Defense,1,New skill,"After activation, damage +4% for 30s."
+201080305,Alloy Greaves I,Legs,Alloy Set I,3,6,Defense Up,1,New skill,Defense +5
+201080305,Alloy Greaves I,Legs,Alloy Set I,3,8,Poison Resistance,1,New skill,Shortens the duration of poison by 30%.
+201080901,Hornetaur Helm I,Head,Hornetaur Set I,4,4,Dragon Resistance,1,New skill,Dragon Resistance +6.
+201080901,Hornetaur Helm I,Head,Hornetaur Set I,4,6,Unflinching Carver,1,New skill,Prevents stagger from attacks while carving.
+201080902,Hornetaur Mail I,Chest,Hornetaur Set I,4,4,Bento Lover,1,New skill,"While active, damage +4% for 30s."
+201080902,Hornetaur Mail I,Chest,Hornetaur Set I,4,6,Weakspot Follow-Up,1,New skill,"75% chance to activate, dealing additional damage equal to 4%."
+201080902,Hornetaur Mail I,Chest,Hornetaur Set I,4,8,Thrifty Meal,1,New skill,Activates 25% of the time.
+201080903,Hornetaur Vambraces I,Arms,Hornetaur Set I,4,4,Critical Element,1,New skill,Increases elemental damage by 5% when landing critical hits.
+201080903,Hornetaur Vambraces I,Arms,Hornetaur Set I,4,6,Dragon Damage Up,1,New skill,"Dragon damage +3%; against Radiant monsters, dragon damage +8% instead."
+201080903,Hornetaur Vambraces I,Arms,Hornetaur Set I,4,8,Dragon Damage Up,2,Level up (Lv1 > Lv2),"Dragon damage +6%; against Radiant monsters, dragon damage +15% instead."
+201080903,Hornetaur Vambraces I,Arms,Hornetaur Set I,4,10,Health Boost,1,New skill,Health +10.
+201080904,Hornetaur Coil I,Waist,Hornetaur Set I,4,4,Dragon Damage Up,1,New skill,"Dragon damage +3%; against Radiant monsters, dragon damage +8% instead."
+201080904,Hornetaur Coil I,Waist,Hornetaur Set I,4,6,Weakspot Follow-Up,1,New skill,"75% chance to activate, dealing additional damage equal to 4%."
+201080904,Hornetaur Coil I,Waist,Hornetaur Set I,4,8,Thrifty Meal,1,New skill,Activates 25% of the time.
+201080905,Hornetaur Greaves I,Legs,Hornetaur Set I,4,4,Dragon Resistance,1,New skill,Dragon Resistance +6.
+201080905,Hornetaur Greaves I,Legs,Hornetaur Set I,4,6,Health Boost,1,New skill,Health +10.
+201082001,Guild Helm I,Head,Adventurers' Guild Set I,1,1,Recovery Booster,1,New skill,Increases Health recovery by 1.1x when healing.
+201082001,Guild Helm I,Head,Adventurers' Guild Set I,1,5,Quick-Bite,1,New skill,Slightly increases the speed of meat-eating and consumption speed of items like potions and antidotes.
+201082002,Guild Mail I,Chest,Adventurers' Guild Set I,1,1,Blessing,1,New skill,"When taking damage, has a 25% chance to reduce that damage by 15%."
+201082002,Guild Mail I,Chest,Adventurers' Guild Set I,1,5,Quick-Bite,1,New skill,Slightly increases the speed of meat-eating and consumption speed of items like potions and antidotes.
+201082003,Guild Gauntlets I,Arms,Adventurers' Guild Set I,1,1,Blessing,1,New skill,"When taking damage, has a 25% chance to reduce that damage by 15%."
+201082003,Guild Gauntlets I,Arms,Adventurers' Guild Set I,1,5,Recovery Booster,1,New skill,Increases Health recovery by 1.1x when healing.
+201082004,Guild Coil I,Waist,Adventurers' Guild Set I,1,1,Blessing,1,New skill,"When taking damage, has a 25% chance to reduce that damage by 15%."
+201082004,Guild Coil I,Waist,Adventurers' Guild Set I,1,5,Flinching-Free,1,New skill,Prevents knockbacks from minor damage.
+201082005,Guild Greaves I,Legs,Adventurers' Guild Set I,1,1,Quick-Bite,1,New skill,Slightly increases the speed of meat-eating and consumption speed of items like potions and antidotes.
+201082005,Guild Greaves I,Legs,Adventurers' Guild Set I,1,5,Recovery Booster,1,New skill,Increases Health recovery by 1.1x when healing.
+202000401,Barroth Helm I,Head,Barroth Set I,2,2,Battle Spirit,1,New skill,"While active, affinity +3%."
+202000401,Barroth Helm I,Head,Barroth Set I,2,5,Immovable Stance,1,New skill,"After triggering ferocity, damage +4% for 30s."
+202000401,Barroth Helm I,Head,Barroth Set I,2,7,Immovable Stance,2,Level up (Lv1 > Lv2),"After triggering ferocity, damage +8% for 30s."
+202000401,Barroth Helm I,Head,Barroth Set I,2,9,Stun Resistance,1,New skill,Shortens the duration of stun by 60%.
+202000402,Barroth Mail I,Chest,Barroth Set I,2,2,Battle Spirit,1,New skill,"While active, affinity +3%."
+202000402,Barroth Mail I,Chest,Barroth Set I,2,5,Pierce,1,New skill,"After hitting the same part 3 times within 8s, damage +3% for 30s."
+202000402,Barroth Mail I,Chest,Barroth Set I,2,7,Pierce,2,Level up (Lv1 > Lv2),"After hitting the same part 3 times within 8s, damage +7% for 30s."
+202000402,Barroth Mail I,Chest,Barroth Set I,2,9,Defense Up,1,New skill,Defense +5
+202000403,Barroth Vambraces I,Arms,Barroth Set I,2,2,Stun Resistance,1,New skill,Shortens the duration of stun by 60%.
+202000403,Barroth Vambraces I,Arms,Barroth Set I,2,5,Guard Technique,1,New skill,Very slightly decreases the impact of attacks.
+202000404,Barroth Coil I,Waist,Barroth Set I,2,2,Immovable Stance,1,New skill,"After triggering ferocity, damage +4% for 30s."
+202000404,Barroth Coil I,Waist,Barroth Set I,2,5,Defense Up,1,New skill,Defense +5
+202000404,Barroth Coil I,Waist,Barroth Set I,2,7,Defense Up,2,Level up (Lv1 > Lv2),Defense +10
+202000405,Barroth Greaves I,Legs,Barroth Set I,2,2,Battle Spirit,1,New skill,"While active, affinity +3%."
+202000405,Barroth Greaves I,Legs,Barroth Set I,2,5,Guard Technique,1,New skill,Very slightly decreases the impact of attacks.
+202000405,Barroth Greaves I,Legs,Barroth Set I,2,7,Defense Up,1,New skill,Defense +5
+202000501,Jyura Helm I,Head,Jyuratodus Set I,2,2,Unleashed,1,New skill,"90s after a hunt begins, or after taking 100 total damage, increases affinity by 3% for 180s."
+202000501,Jyura Helm I,Head,Jyuratodus Set I,2,5,Water Damage Up,1,New skill,"Water damage +3%; against Radiant monsters, water damage +8% instead."
+202000501,Jyura Helm I,Head,Jyuratodus Set I,2,7,Health Recovery,1,New skill,Increases the recovery speed of gray health by 2x.
+202000501,Jyura Helm I,Head,Jyuratodus Set I,2,9,Water Damage Up,2,Level up (Lv1 > Lv2),"Water damage +6%; against Radiant monsters, water damage +15% instead."
+202000502,Jyura Mail I,Chest,Jyuratodus Set I,2,2,Water Damage Up,1,New skill,"Water damage +3%; against Radiant monsters, water damage +8% instead."
+202000502,Jyura Mail I,Chest,Jyuratodus Set I,2,5,Ice Resistance,1,New skill,Ice resistance +6.
+202000502,Jyura Mail I,Chest,Jyuratodus Set I,2,7,Health Boost,1,New skill,Health +10.
+202000503,Jyura Vambraces I,Arms,Jyuratodus Set I,2,2,Unleashed,1,New skill,"90s after a hunt begins, or after taking 100 total damage, increases affinity by 3% for 180s."
+202000503,Jyura Vambraces I,Arms,Jyuratodus Set I,2,5,Charge Up,1,New skill,Damage +4% when stamina gauge is full for 5s.
+202000503,Jyura Vambraces I,Arms,Jyuratodus Set I,2,7,Ice Resistance,1,New skill,Ice resistance +6.
+202000503,Jyura Vambraces I,Arms,Jyuratodus Set I,2,9,Charge Up,2,Level up (Lv1 > Lv2),Damage +8% when stamina gauge is full for 5s.
+202000504,Jyura Coil I,Waist,Jyuratodus Set I,2,2,Charge Up,1,New skill,Damage +4% when stamina gauge is full for 5s.
+202000504,Jyura Coil I,Waist,Jyuratodus Set I,2,5,Ice Resistance,1,New skill,Ice resistance +6.
+202000504,Jyura Coil I,Waist,Jyuratodus Set I,2,7,Health Recovery,1,New skill,Increases the recovery speed of gray health by 2x.
+202000505,Jyura Greaves I,Legs,Jyuratodus Set I,2,2,Unleashed,1,New skill,"90s after a hunt begins, or after taking 100 total damage, increases affinity by 3% for 180s."
+202000505,Jyura Greaves I,Legs,Jyuratodus Set I,2,5,Suppression Recovery,1,New skill,"While active, recovers 5 health, with a minimum interval of 3s."
+202000505,Jyura Greaves I,Legs,Jyuratodus Set I,2,7,Health Recovery,1,New skill,Increases the recovery speed of gray health by 2x.
+202001101,Girros Mask I,Head,Great Girros Set I,2,2,Critical Element,1,New skill,Increases elemental damage by 5% when landing critical hits.
+202001101,Girros Mask I,Head,Great Girros Set I,2,5,Paralysis Resistance,1,New skill,Shortens the duration of paralysis by 30%.
+202001101,Girros Mask I,Head,Great Girros Set I,2,7,Critical Element,2,Level up (Lv1 > Lv2),Increases elemental damage by 10% when landing critical hits.
+202001102,Girros Mail I,Chest,Great Girros Set I,2,2,Thunder Damage Up,1,New skill,"Thunder damage +3%; against Radiant monsters, thunder damage +8% instead."
+202001102,Girros Mail I,Chest,Great Girros Set I,2,5,Improviser,1,New skill,Interactables restore an additional 50 health.
+202001102,Girros Mail I,Chest,Great Girros Set I,2,7,Health Boost,1,New skill,Health +10.
+202001103,Girros Vambraces I,Arms,Great Girros Set I,2,2,Thunder Damage Up,1,New skill,"Thunder damage +3%; against Radiant monsters, thunder damage +8% instead."
+202001103,Girros Vambraces I,Arms,Great Girros Set I,2,5,Deterrence,1,New skill,Discourages monsters from engaging after being spotted.
+202001103,Girros Vambraces I,Arms,Great Girros Set I,2,7,Thunder Damage Up,2,Level up (Lv1 > Lv2),"Thunder damage +6%; against Radiant monsters, thunder damage +15% instead."
+202001103,Girros Vambraces I,Arms,Great Girros Set I,2,9,Unleashed,1,New skill,"90s after a hunt begins, or after taking 100 total damage, increases affinity by 3% for 180s."
+202001104,Girros Coil I,Waist,Great Girros Set I,2,2,Relentless Pursuit,1,New skill,"While active, damage +4% for 15s."
+202001104,Girros Coil I,Waist,Great Girros Set I,2,5,Buddy Boost,1,New skill,Multiplies buddy damage by 1.1x.
+202001104,Girros Coil I,Waist,Great Girros Set I,2,7,Relentless Pursuit,2,Level up (Lv1 > Lv2),"While active, damage +8% for 15s."
+202001105,Girros Greaves I,Legs,Great Girros Set I,2,2,Critical Element,1,New skill,Increases elemental damage by 5% when landing critical hits.
+202001105,Girros Greaves I,Legs,Great Girros Set I,2,5,Paralysis Resistance,1,New skill,Shortens the duration of paralysis by 30%.
+202001105,Girros Greaves I,Legs,Great Girros Set I,2,7,Health Boost,1,New skill,Health +10.
+202011101,Radiant Girros Mask II,Head,Radiant Great Girros Set III,7,7,Combo Enhancement,1,New skill,Landing 5 hits within 3s increases damage by 4% for 12s.
+202011101,Radiant Girros Mask II,Head,Radiant Great Girros Set III,7,7,Radiant Sense,1,New skill,"While active, damage +4%."
+202011101,Radiant Girros Mask II,Head,Radiant Great Girros Set III,7,7,Paralysis Resistance,1,New skill,Shortens the duration of paralysis by 30%.
+202011101,Radiant Girros Mask II,Head,Radiant Great Girros Set III,7,9,Combo Enhancement,2,Level up (Lv1 > Lv2),Landing 5 hits within 3s increases damage by 8% for 12s.
+202011102,Radiant Girros Mail II,Chest,Radiant Great Girros Set III,7,7,Thunder Damage Up,2,New skill,"Thunder damage +6%; against Radiant monsters, thunder damage +15% instead."
+202011102,Radiant Girros Mail II,Chest,Radiant Great Girros Set III,7,7,Paralysis Resistance,1,New skill,Shortens the duration of paralysis by 30%.
+202011102,Radiant Girros Mail II,Chest,Radiant Great Girros Set III,7,9,Thunder Damage Up,3,Level up (Lv2 > Lv3),"Thunder damage +9%; against Radiant monsters, thunder damage +23% instead."
+202011103,Radiant Girros Vambraces II,Arms,Radiant Great Girros Set III,7,7,Combo Enhancement,2,New skill,Landing 5 hits within 3s increases damage by 8% for 12s.
+202011103,Radiant Girros Vambraces II,Arms,Radiant Great Girros Set III,7,7,Flinching-Free,1,New skill,Prevents knockbacks from minor damage.
+202011103,Radiant Girros Vambraces II,Arms,Radiant Great Girros Set III,7,9,Combo Enhancement,3,Level up (Lv2 > Lv3),Landing 5 hits within 3s increases damage by 12% for 12s.
+202011104,Radiant Girros Coil II,Waist,Radiant Great Girros Set III,7,7,Thunder Damage Up,1,New skill,"Thunder damage +3%; against Radiant monsters, thunder damage +8% instead."
+202011104,Radiant Girros Coil II,Waist,Radiant Great Girros Set III,7,7,Fearless,1,New skill,"While active, damage +3%."
+202011104,Radiant Girros Coil II,Waist,Radiant Great Girros Set III,7,7,Health Recovery,1,New skill,Increases the recovery speed of gray health by 2x.
+202011104,Radiant Girros Coil II,Waist,Radiant Great Girros Set III,7,9,Thunder Damage Up,2,Level up (Lv1 > Lv2),"Thunder damage +6%; against Radiant monsters, thunder damage +15% instead."
+202011105,Radiant Girros Greaves II,Legs,Radiant Great Girros Set III,7,7,Health Recovery,2,New skill,Increases the recovery speed of gray health by 3x.
+202011105,Radiant Girros Greaves II,Legs,Radiant Great Girros Set III,7,7,Flinching-Free,1,New skill,Prevents knockbacks from minor damage.
+202080501,Bone Helm I,Head,Bone Set I,2,2,Morph Boost,1,New skill,"Upon activation, damage +3% for 60s."
+202080501,Bone Helm I,Head,Bone Set I,2,5,Health Boost,1,New skill,Health +10.
+202080501,Bone Helm I,Head,Bone Set I,2,7,Morph Boost,2,Level up (Lv1 > Lv2),"Upon activation, damage +7% for 60s."
+202080501,Bone Helm I,Head,Bone Set I,2,9,Breaker,1,New skill,Part damage x1.1.
+202080502,Bone Mail I,Chest,Bone Set I,2,2,Dragon Damage Up,1,New skill,"Dragon damage +3%; against Radiant monsters, dragon damage +8% instead."
+202080502,Bone Mail I,Chest,Bone Set I,2,5,Health Recovery,1,New skill,Increases the recovery speed of gray health by 2x.
+202080502,Bone Mail I,Chest,Bone Set I,2,7,Health Boost,1,New skill,Health +10.
+202080503,Bone Vambraces I,Arms,Bone Set I,2,2,Breaker,1,New skill,Part damage x1.1.
+202080503,Bone Vambraces I,Arms,Bone Set I,2,5,Specimen Expert,1,New skill,Increases the chance of a corpse being left behind.
+202080503,Bone Vambraces I,Arms,Bone Set I,2,7,Health Recovery,1,New skill,Increases the recovery speed of gray health by 2x.
+202080504,Bone Coil I,Waist,Bone Set I,2,2,Specimen Expert,1,New skill,Increases the chance of a corpse being left behind.
+202080504,Bone Coil I,Waist,Bone Set I,2,5,Health Boost,1,New skill,Health +10.
+202080505,Bone Greaves I,Legs,Bone Set I,2,2,Stun Resistance,1,New skill,Shortens the duration of stun by 60%.
+202080505,Bone Greaves I,Legs,Bone Set I,2,5,Dragon Damage Up,1,New skill,"Dragon damage +3%; against Radiant monsters, dragon damage +8% instead."
+202080505,Bone Greaves I,Legs,Bone Set I,2,7,Dragon Damage Up,2,Level up (Lv1 > Lv2),"Dragon damage +6%; against Radiant monsters, dragon damage +15% instead."
+202080505,Bone Greaves I,Legs,Bone Set I,2,9,Breaker,1,New skill,Part damage x1.1.
+202080801,Vespoid Helm I,Head,Vespoid Set I,2,2,Paralysis Resistance,1,New skill,Shortens the duration of paralysis by 30%.
+202080801,Vespoid Helm I,Head,Vespoid Set I,2,5,Windproof,1,New skill,Reduces the effects of minor wind pressure.
+202080802,Vespoid Mail I,Chest,Vespoid Set I,2,2,Critical Element,1,New skill,Increases elemental damage by 5% when landing critical hits.
+202080802,Vespoid Mail I,Chest,Vespoid Set I,2,5,Health Boost,1,New skill,Health +10.
+202080803,Vespoid Vambraces I,Arms,Vespoid Set I,2,2,Paralysis Resistance,1,New skill,Shortens the duration of paralysis by 30%.
+202080803,Vespoid Vambraces I,Arms,Vespoid Set I,2,5,Counter Boost,1,New skill,"Upon activation, increases damage by 4% for 20s."
+202080803,Vespoid Vambraces I,Arms,Vespoid Set I,2,7,Insight,1,New skill,Affinity +2%.
+202080803,Vespoid Vambraces I,Arms,Vespoid Set I,2,9,Counter Boost,2,Level up (Lv1 > Lv2),"Upon activation, increases damage by 8% for 20s."
+202080804,Vespoid Coil I,Waist,Vespoid Set I,2,2,Critical Element,1,New skill,Increases elemental damage by 5% when landing critical hits.
+202080804,Vespoid Coil I,Waist,Vespoid Set I,2,5,Paralysis Resistance,1,New skill,Shortens the duration of paralysis by 30%.
+202080804,Vespoid Coil I,Waist,Vespoid Set I,2,7,Honey Harvester,1,New skill,Honey gathered +1.
+202080805,Vespoid Greaves I,Legs,Vespoid Set I,2,2,Counter Boost,1,New skill,"Upon activation, increases damage by 4% for 20s."
+202080805,Vespoid Greaves I,Legs,Vespoid Set I,2,5,Health Boost,1,New skill,Health +10.
+202080805,Vespoid Greaves I,Legs,Vespoid Set I,2,7,Windproof,1,New skill,Reduces the effects of minor wind pressure.
+202081301,Chainmail Headgear I,Head,Chainmail Set I,1,1,Ice Damage Up,1,New skill,"Ice damage +3%; against Radiant monsters, ice damage +8% instead."
+202081301,Chainmail Headgear I,Head,Chainmail Set I,1,5,Water Resistance,1,New skill,Water resistance +6.
+202081301,Chainmail Headgear I,Head,Chainmail Set I,1,7,Health Recovery,1,New skill,Increases the recovery speed of gray health by 2x.
+202081302,Chainmail Vest I,Chest,Chainmail Set I,1,1,Water Resistance,1,New skill,Water resistance +6.
+202081302,Chainmail Vest I,Chest,Chainmail Set I,1,5,Guard Technique,1,New skill,Very slightly decreases the impact of attacks.
+202081303,Chainmail Gloves I,Arms,Chainmail Set I,1,1,Charge Enhancement,1,New skill,"Upon activation, damage +4% for 15s."
+202081303,Chainmail Gloves I,Arms,Chainmail Set I,1,5,Water Resistance,1,New skill,Water resistance +6.
+202081303,Chainmail Gloves I,Arms,Chainmail Set I,1,7,Guard Technique,1,New skill,Very slightly decreases the impact of attacks.
+202081304,Chainmail Belt I,Waist,Chainmail Set I,1,1,Unleashed,1,New skill,"90s after a hunt begins, or after taking 100 total damage, increases affinity by 3% for 180s."
+202081304,Chainmail Belt I,Waist,Chainmail Set I,1,5,Ice Damage Up,1,New skill,"Ice damage +3%; against Radiant monsters, ice damage +8% instead."
+202081304,Chainmail Belt I,Waist,Chainmail Set I,1,7,Ice Damage Up,2,Level up (Lv1 > Lv2),"Ice damage +6%; against Radiant monsters, ice damage +15% instead."
+202081304,Chainmail Belt I,Waist,Chainmail Set I,1,9,Health Recovery,1,New skill,Increases the recovery speed of gray health by 2x.
+202081305,Chainmail Trousers I,Legs,Chainmail Set I,1,1,Intimidation,1,New skill,"While active, damage +3% for 15s."
+202081305,Chainmail Trousers I,Legs,Chainmail Set I,1,5,Health Recovery,1,New skill,Increases the recovery speed of gray health by 2x.
+202081305,Chainmail Trousers I,Legs,Chainmail Set I,1,7,Intimidation,2,Level up (Lv1 > Lv2),"While active, damage +7% for 15s."
+202081305,Chainmail Trousers I,Legs,Chainmail Set I,1,9,Unleashed,1,New skill,"90s after a hunt begins, or after taking 100 total damage, increases affinity by 3% for 180s."
+203000701,Anja Helm I,Head,Anjanath Set I,3,3,Weakspot Follow-Up,1,New skill,"75% chance to activate, dealing additional damage equal to 4%."
+203000701,Anja Helm I,Head,Anjanath Set I,3,6,Wrecker,1,New skill,"While active, damage +3% for 60s."
+203000701,Anja Helm I,Head,Anjanath Set I,3,8,Quick-Bite,1,New skill,Slightly increases the speed of meat-eating and consumption speed of items like potions and antidotes.
+203000701,Anja Helm I,Head,Anjanath Set I,3,10,Wrecker,2,Level up (Lv1 > Lv2),"While active, damage +7% for 60s."
+203000702,Anja Mail I,Chest,Anjanath Set I,3,3,Fire Resistance,1,New skill,Fire resistance +6.
+203000702,Anja Mail I,Chest,Anjanath Set I,3,6,Charge Enhancement,1,New skill,"Upon activation, damage +4% for 15s."
+203000702,Anja Mail I,Chest,Anjanath Set I,3,8,Weakspot Follow-Up,1,New skill,"75% chance to activate, dealing additional damage equal to 4%."
+203000702,Anja Mail I,Chest,Anjanath Set I,3,10,Charge Enhancement,2,Level up (Lv1 > Lv2),"Upon activation, damage +8% for 15s."
+203000703,Anja Vambraces I,Arms,Anjanath Set I,3,3,Weakspot Follow-Up,1,New skill,"75% chance to activate, dealing additional damage equal to 4%."
+203000703,Anja Vambraces I,Arms,Anjanath Set I,3,6,Health Cycle,1,New skill,Recovers 2 health. Can only trigger once every 8s.
+203000703,Anja Vambraces I,Arms,Anjanath Set I,3,8,Quick-Bite,1,New skill,Slightly increases the speed of meat-eating and consumption speed of items like potions and antidotes.
+203000704,Anja Coil I,Waist,Anjanath Set I,3,3,Fire Damage Up,1,New skill,"Fire damage +3%; against Radiant monsters, fire damage +8% instead."
+203000704,Anja Coil I,Waist,Anjanath Set I,3,6,Health Cycle,1,New skill,Recovers 2 health. Can only trigger once every 8s.
+203000704,Anja Coil I,Waist,Anjanath Set I,3,8,Fire Damage Up,2,Level up (Lv1 > Lv2),"Fire damage +6%; against Radiant monsters, fire damage +15% instead."
+203000704,Anja Coil I,Waist,Anjanath Set I,3,10,Quick-Bite,1,New skill,Slightly increases the speed of meat-eating and consumption speed of items like potions and antidotes.
+203000705,Anja Greaves I,Legs,Anjanath Set I,3,3,Fire Damage Up,1,New skill,"Fire damage +3%; against Radiant monsters, fire damage +8% instead."
+203000705,Anja Greaves I,Legs,Anjanath Set I,3,6,Health Cycle,1,New skill,Recovers 2 health. Can only trigger once every 8s.
+203000705,Anja Greaves I,Legs,Anjanath Set I,3,8,Adversity,1,New skill,Each faint increases damage by x1.1 and defense by +10.
+203010101,Radiant Jagras Helm I,Head,Radiant Great Jagras Set I,4,4,Charge Up,1,New skill,Damage +4% when stamina gauge is full for 5s.
+203010101,Radiant Jagras Helm I,Head,Radiant Great Jagras Set I,4,5,Breaker,1,New skill,Part damage x1.1.
+203010101,Radiant Jagras Helm I,Head,Radiant Great Jagras Set I,4,7,Insight,1,New skill,Affinity +2%.
+203010102,Radiant Jagras Mail I,Chest,Radiant Great Jagras Set I,4,4,Charge Up,1,New skill,Damage +4% when stamina gauge is full for 5s.
+203010102,Radiant Jagras Mail I,Chest,Radiant Great Jagras Set I,4,5,Stun Resistance,1,New skill,Shortens the duration of stun by 60%.
+203010102,Radiant Jagras Mail I,Chest,Radiant Great Jagras Set I,4,7,Charge Up,2,Level up (Lv1 > Lv2),Damage +8% when stamina gauge is full for 5s.
+203010102,Radiant Jagras Mail I,Chest,Radiant Great Jagras Set I,4,9,Unleashed,1,New skill,"90s after a hunt begins, or after taking 100 total damage, increases affinity by 3% for 180s."
+203010103,Radiant Jagras Vambraces I,Arms,Radiant Great Jagras Set I,4,4,Insight,1,New skill,Affinity +2%.
+203010103,Radiant Jagras Vambraces I,Arms,Radiant Great Jagras Set I,4,5,Bento Lover,1,New skill,"While active, damage +4% for 30s."
+203010103,Radiant Jagras Vambraces I,Arms,Radiant Great Jagras Set I,4,7,Insight,2,Level up (Lv1 > Lv2),Affinity +4%.
+203010104,Radiant Jagras Coil I,Waist,Radiant Great Jagras Set I,4,4,Bento Lover,1,New skill,"While active, damage +4% for 30s."
+203010104,Radiant Jagras Coil I,Waist,Radiant Great Jagras Set I,4,5,Thrifty Meal,1,New skill,Activates 25% of the time.
+203010104,Radiant Jagras Coil I,Waist,Radiant Great Jagras Set I,4,7,Bento Lover,2,Level up (Lv1 > Lv2),"While active, damage +8% for 30s."
+203010104,Radiant Jagras Coil I,Waist,Radiant Great Jagras Set I,4,9,Unleashed,1,New skill,"90s after a hunt begins, or after taking 100 total damage, increases affinity by 3% for 180s."
+203010105,Radiant Jagras Greaves I,Legs,Radiant Great Jagras Set I,4,4,Breaker,1,New skill,Part damage x1.1.
+203010105,Radiant Jagras Greaves I,Legs,Radiant Great Jagras Set I,4,5,Stun Resistance,1,New skill,Shortens the duration of stun by 60%.
+203010105,Radiant Jagras Greaves I,Legs,Radiant Great Jagras Set I,4,7,Thrifty Meal,1,New skill,Activates 25% of the time.
+203010301,Radiant Pukei Hood I,Head,Radiant Pukei-Pukei Set I,4,4,Charged Power Shot,1,New skill,"While active, damage +5%."
+203010301,Radiant Pukei Hood I,Head,Radiant Pukei-Pukei Set I,4,5,Improviser,1,New skill,Interactables restore an additional 50 health.
+203010301,Radiant Pukei Hood I,Head,Radiant Pukei-Pukei Set I,4,7,Charged Power Shot,2,Level up (Lv1 > Lv2),"While active, damage +9%."
+203010301,Radiant Pukei Hood I,Head,Radiant Pukei-Pukei Set I,4,9,Flawless,1,New skill,"While active, damage +3%."
+203010302,Radiant Pukei Mail I,Chest,Radiant Pukei-Pukei Set I,4,4,Bow Skill Boost,1,New skill,Skill damage +4%.
+203010302,Radiant Pukei Mail I,Chest,Radiant Pukei-Pukei Set I,4,5,Suppression Recovery,1,New skill,"While active, recovers 5 health, with a minimum interval of 3s."
+203010302,Radiant Pukei Mail I,Chest,Radiant Pukei-Pukei Set I,4,7,Hunting Instinct,1,New skill,"While active, increases damage by 4% for 120s."
+203010302,Radiant Pukei Mail I,Chest,Radiant Pukei-Pukei Set I,4,9,Bow Skill Boost,2,Level up (Lv1 > Lv2),Skill damage +8%.
+203010303,Radiant Pukei Vambraces I,Arms,Radiant Pukei-Pukei Set I,4,4,Hunting Instinct,1,New skill,"While active, increases damage by 4% for 120s."
+203010303,Radiant Pukei Vambraces I,Arms,Radiant Pukei-Pukei Set I,4,5,Item Master,1,New skill,Increases effect duration by 1.1x.
+203010303,Radiant Pukei Vambraces I,Arms,Radiant Pukei-Pukei Set I,4,7,Suppression Recovery,1,New skill,"While active, recovers 5 health, with a minimum interval of 3s."
+203010304,Radiant Pukei Coil I,Waist,Radiant Pukei-Pukei Set I,4,4,Hunting Instinct,1,New skill,"While active, increases damage by 4% for 120s."
+203010304,Radiant Pukei Coil I,Waist,Radiant Pukei-Pukei Set I,4,5,Stamina Conversion,1,New skill,"When this skill activates, the triggering attack's damage +5%."
+203010304,Radiant Pukei Coil I,Waist,Radiant Pukei-Pukei Set I,4,7,Item Master,1,New skill,Increases effect duration by 1.1x.
+203010305,Radiant Pukei Greaves I,Legs,Radiant Pukei-Pukei Set I,4,4,Bow Skill Boost,1,New skill,Skill damage +4%.
+203010305,Radiant Pukei Greaves I,Legs,Radiant Pukei-Pukei Set I,4,5,Improviser,1,New skill,Interactables restore an additional 50 health.
+203010305,Radiant Pukei Greaves I,Legs,Radiant Pukei-Pukei Set I,4,7,Flawless,1,New skill,"While active, damage +3%."
+203010305,Radiant Pukei Greaves I,Legs,Radiant Pukei-Pukei Set I,4,9,Bow Skill Boost,2,Level up (Lv1 > Lv2),Skill damage +8%.
+203010801,Radiant Rathian Helm I,Head,Radiant Rathian Set I,3,3,Recovery Booster,1,New skill,Increases Health recovery by 1.1x when healing.
+203010801,Radiant Rathian Helm I,Head,Radiant Rathian Set I,3,6,Flash Draw,1,New skill,"While active, damage +4% for 30s."
+203010801,Radiant Rathian Helm I,Head,Radiant Rathian Set I,3,8,Flash Draw,2,Level up (Lv1 > Lv2),"While active, damage +8% for 30s."
+203010801,Radiant Rathian Helm I,Head,Radiant Rathian Set I,3,10,Flash Draw,3,Level up (Lv2 > Lv3),"While active, damage +12% for 30s."
+203010802,Radiant Rathian Mail I,Chest,Radiant Rathian Set I,3,3,Radiant Sense,1,New skill,"While active, damage +4%."
+203010802,Radiant Rathian Mail I,Chest,Radiant Rathian Set I,3,6,Spirit Bind Blade,1,New skill,"Upon activation, damage +3% for 30s."
+203010802,Radiant Rathian Mail I,Chest,Radiant Rathian Set I,3,8,Recovery Booster,1,New skill,Increases Health recovery by 1.1x when healing.
+203010802,Radiant Rathian Mail I,Chest,Radiant Rathian Set I,3,10,Spirit Bind Blade,2,Level up (Lv1 > Lv2),"Upon activation, damage +7% for 30s."
+203010803,Radiant Rathian Vambraces I,Arms,Radiant Rathian Set I,3,3,Airborne,1,New skill,Airborne attack damage +5%.
+203010803,Radiant Rathian Vambraces I,Arms,Radiant Rathian Set I,3,6,Health Boost,1,New skill,Health +10.
+203010803,Radiant Rathian Vambraces I,Arms,Radiant Rathian Set I,3,8,Poison Resistance,1,New skill,Shortens the duration of poison by 30%.
+203010804,Radiant Rathian Coil I,Waist,Radiant Rathian Set I,3,3,Radiant Sense,1,New skill,"While active, damage +4%."
+203010804,Radiant Rathian Coil I,Waist,Radiant Rathian Set I,3,6,Health Boost,1,New skill,Health +10.
+203010804,Radiant Rathian Coil I,Waist,Radiant Rathian Set I,3,8,Botanical Expert,1,New skill,+1 consumable herb item per gather.
+203010805,Radiant Rathian Greaves I,Legs,Radiant Rathian Set I,3,3,Flash Draw,1,New skill,"While active, damage +4% for 30s."
+203010805,Radiant Rathian Greaves I,Legs,Radiant Rathian Set I,3,6,Hunting Instinct,1,New skill,"While active, increases damage by 4% for 120s."
+203010805,Radiant Rathian Greaves I,Legs,Radiant Rathian Set I,3,8,Botanical Expert,1,New skill,+1 consumable herb item per gather.
+203010805,Radiant Rathian Greaves I,Legs,Radiant Rathian Set I,3,10,Flash Draw,2,Level up (Lv1 > Lv2),"While active, damage +8% for 30s."
+203080201,Leather Headgear I,Head,Leather Set I,1,1,Item Master,1,New skill,Increases effect duration by 1.1x.
+203080201,Leather Headgear I,Head,Leather Set I,1,5,Recovery Booster,1,New skill,Increases Health recovery by 1.1x when healing.
+203080202,Leather Vest I,Chest,Leather Set I,1,1,Critical Element,1,New skill,Increases elemental damage by 5% when landing critical hits.
+203080202,Leather Vest I,Chest,Leather Set I,1,5,Item Master,1,New skill,Increases effect duration by 1.1x.
+203080202,Leather Vest I,Chest,Leather Set I,1,7,Critical Element,2,Level up (Lv1 > Lv2),Increases elemental damage by 10% when landing critical hits.
+203080203,Leather Gloves I,Arms,Leather Set I,1,1,Piercing Strike,1,New skill,"While active, damage +5%."
+203080203,Leather Gloves I,Arms,Leather Set I,1,5,Fire Resistance,1,New skill,Fire resistance +6.
+203080203,Leather Gloves I,Arms,Leather Set I,1,7,Iron Skin,1,New skill,Shortens the duration of Defense Down by 50%.
+203080204,Leather Belt I,Waist,Leather Set I,1,1,Fire Resistance,1,New skill,Fire resistance +6.
+203080204,Leather Belt I,Waist,Leather Set I,1,5,Master Climber,1,New skill,Reduces stamina depletion by 25%.
+203080205,Leather Pants I,Legs,Leather Set I,1,1,Iron Skin,1,New skill,Shortens the duration of Defense Down by 50%.
+203080205,Leather Pants I,Legs,Leather Set I,1,5,Piercing Strike,1,New skill,"While active, damage +5%."
+203080205,Leather Pants I,Legs,Leather Set I,1,7,Ballistics,1,New skill,Shortens the distance before ammo and arrows reach maximum power.
+203080205,Leather Pants I,Legs,Leather Set I,1,9,Piercing Strike,2,Level up (Lv1 > Lv2),"While active, damage +9%."
+203081601,Butterfly Vertex I,Head,Butterfly Set I,4,4,Airborne,1,New skill,Airborne attack damage +5%.
+203081601,Butterfly Vertex I,Head,Butterfly Set I,4,6,Insight,1,New skill,Affinity +2%.
+203081601,Butterfly Vertex I,Head,Butterfly Set I,4,8,Improviser,1,New skill,Interactables restore an additional 50 health.
+203081601,Butterfly Vertex I,Head,Butterfly Set I,4,10,Airborne,2,Level up (Lv1 > Lv2),Airborne attack damage +9%.
+203081602,Butterfly Thorax I,Chest,Butterfly Set I,4,4,Counter Boost,1,New skill,"Upon activation, increases damage by 4% for 20s."
+203081602,Butterfly Thorax I,Chest,Butterfly Set I,4,6,Insight,1,New skill,Affinity +2%.
+203081602,Butterfly Thorax I,Chest,Butterfly Set I,4,8,Improviser,1,New skill,Interactables restore an additional 50 health.
+203081603,Butterfly Brachia I,Arms,Butterfly Set I,4,4,Sleep Resistance,1,New skill,Shortens the duration of sleep by 30%.
+203081603,Butterfly Brachia I,Arms,Butterfly Set I,4,6,Counter Boost,1,New skill,"Upon activation, increases damage by 4% for 20s."
+203081603,Butterfly Brachia I,Arms,Butterfly Set I,4,8,Botanical Expert,1,New skill,+1 consumable herb item per gather.
+203081604,Butterfly Elytra I,Waist,Butterfly Set I,4,4,Sleep Resistance,1,New skill,Shortens the duration of sleep by 30%.
+203081604,Butterfly Elytra I,Waist,Butterfly Set I,4,6,Honey Harvester,1,New skill,Honey gathered +1.
+203081605,Butterfly Crura I,Legs,Butterfly Set I,4,4,Airborne,1,New skill,Airborne attack damage +5%.
+203081605,Butterfly Crura I,Legs,Butterfly Set I,4,6,Ballistics,1,New skill,Shortens the distance before ammo and arrows reach maximum power.
+203081605,Butterfly Crura I,Legs,Butterfly Set I,4,8,Botanical Expert,1,New skill,+1 consumable herb item per gather.
+204000601,Kadachi Helm I,Head,Kadachi Set II,5,5,Deterrence,1,New skill,Discourages monsters from engaging after being spotted.
+204000601,Kadachi Helm I,Head,Kadachi Set II,5,5,Thunder Damage Up,1,New skill,"Thunder damage +3%; against Radiant monsters, thunder damage +8% instead."
+204000601,Kadachi Helm I,Head,Kadachi Set II,5,7,Thunder Damage Up,2,Level up (Lv1 > Lv2),"Thunder damage +6%; against Radiant monsters, thunder damage +15% instead."
+204000601,Kadachi Helm I,Head,Kadachi Set II,5,9,Thunder Damage Up,3,Level up (Lv2 > Lv3),"Thunder damage +9%; against Radiant monsters, thunder damage +23% instead."
+204000602,Kadachi Mail I,Chest,Kadachi Set II,5,5,Thunder Resistance,1,New skill,Thunder resistance +6.
+204000602,Kadachi Mail I,Chest,Kadachi Set II,5,5,Stamina Conversion,1,New skill,"When this skill activates, the triggering attack's damage +5%."
+204000602,Kadachi Mail I,Chest,Kadachi Set II,5,7,Stamina Conversion,2,Level up (Lv1 > Lv2),"When this skill activates, the triggering attack's damage +9%."
+204000602,Kadachi Mail I,Chest,Kadachi Set II,5,9,Stamina Conversion,3,Level up (Lv2 > Lv3),"When this skill activates, the triggering attack's damage +14%."
+204000603,Kadachi Vambraces I,Arms,Kadachi Set II,5,5,Thunder Resistance,1,New skill,Thunder resistance +6.
+204000603,Kadachi Vambraces I,Arms,Kadachi Set II,5,5,Blessing,1,New skill,"When taking damage, has a 25% chance to reduce that damage by 15%."
+204000603,Kadachi Vambraces I,Arms,Kadachi Set II,5,7,Blessing,2,Level up (Lv1 > Lv2),"When taking damage, has a 25% chance to reduce that damage by 30%."
+204000604,Kadachi Coil I,Waist,Kadachi Set II,5,5,Thunder Damage Up,1,New skill,"Thunder damage +3%; against Radiant monsters, thunder damage +8% instead."
+204000604,Kadachi Coil I,Waist,Kadachi Set II,5,5,Critical Element,1,New skill,Increases elemental damage by 5% when landing critical hits.
+204000604,Kadachi Coil I,Waist,Kadachi Set II,5,7,Deterrence,1,New skill,Discourages monsters from engaging after being spotted.
+204000605,Kadachi Greaves I,Legs,Kadachi Set II,5,5,Stamina Conversion,1,New skill,"When this skill activates, the triggering attack's damage +5%."
+204000605,Kadachi Greaves I,Legs,Kadachi Set II,5,5,Unleashed,1,New skill,"90s after a hunt begins, or after taking 100 total damage, increases affinity by 3% for 180s."
+204000605,Kadachi Greaves I,Legs,Kadachi Set II,5,7,Master Climber,1,New skill,Reduces stamina depletion by 25%.
+204010601,Radiant Kadachi Helm II,Head,Radiant Kadachi Set III,7,7,Counter Boost,1,New skill,"Upon activation, increases damage by 4% for 20s."
+204010601,Radiant Kadachi Helm II,Head,Radiant Kadachi Set III,7,7,Battle Spirit,1,New skill,"While active, affinity +3%."
+204010601,Radiant Kadachi Helm II,Head,Radiant Kadachi Set III,7,7,Thunder Resistance,1,New skill,Thunder resistance +6.
+204010601,Radiant Kadachi Helm II,Head,Radiant Kadachi Set III,7,10,Counter Boost,2,Level up (Lv1 > Lv2),"Upon activation, increases damage by 8% for 20s."
+204010602,Radiant Kadachi Mail II,Chest,Radiant Kadachi Set III,7,7,Deterrence,2,New skill,Highly discourages monsters from engaging after being spotted.
+204010602,Radiant Kadachi Mail II,Chest,Radiant Kadachi Set III,7,7,Adversity,1,New skill,Each faint increases damage by x1.1 and defense by +10.
+204010603,Radiant Kadachi Vambraces II,Arms,Radiant Kadachi Set III,7,7,Bow Skill Boost,1,New skill,Skill damage +4%.
+204010603,Radiant Kadachi Vambraces II,Arms,Radiant Kadachi Set III,7,7,Thunder Resistance,1,New skill,Thunder resistance +6.
+204010603,Radiant Kadachi Vambraces II,Arms,Radiant Kadachi Set III,7,7,Unleashed,1,New skill,"90s after a hunt begins, or after taking 100 total damage, increases affinity by 3% for 180s."
+204010603,Radiant Kadachi Vambraces II,Arms,Radiant Kadachi Set III,7,10,Bow Skill Boost,2,Level up (Lv1 > Lv2),Skill damage +8%.
+204010604,Radiant Kadachi Coil II,Waist,Radiant Kadachi Set III,7,7,Thunder Resistance,1,New skill,Thunder resistance +6.
+204010604,Radiant Kadachi Coil II,Waist,Radiant Kadachi Set III,7,7,Bow Skill Boost,2,New skill,Skill damage +8%.
+204010604,Radiant Kadachi Coil II,Waist,Radiant Kadachi Set III,7,10,Unleashed,1,New skill,"90s after a hunt begins, or after taking 100 total damage, increases affinity by 3% for 180s."
+204010605,Radiant Kadachi Greaves II,Legs,Radiant Kadachi Set III,7,7,Counter Boost,2,New skill,"Upon activation, increases damage by 8% for 20s."
+204010605,Radiant Kadachi Greaves II,Legs,Radiant Kadachi Set III,7,7,Deterrence,1,New skill,Discourages monsters from engaging after being spotted.
+204010605,Radiant Kadachi Greaves II,Legs,Radiant Kadachi Set III,7,10,Counter Boost,3,Level up (Lv2 > Lv3),"Upon activation, increases damage by 12% for 20s."
+204010701,Radiant Anja Helm I,Head,Radiant Anjanath Set II,5,5,Flash Draw,1,New skill,"While active, damage +4% for 30s."
+204010701,Radiant Anja Helm I,Head,Radiant Anjanath Set II,5,5,Quick-Bite,1,New skill,Slightly increases the speed of meat-eating and consumption speed of items like potions and antidotes.
+204010701,Radiant Anja Helm I,Head,Radiant Anjanath Set II,5,8,Adversity,1,New skill,Each faint increases damage by x1.1 and defense by +10.
+204010702,Radiant Anja Mail I,Chest,Radiant Anjanath Set II,5,5,Fire Resistance,1,New skill,Fire resistance +6.
+204010702,Radiant Anja Mail I,Chest,Radiant Anjanath Set II,5,5,Health Cycle,1,New skill,Recovers 2 health. Can only trigger once every 8s.
+204010702,Radiant Anja Mail I,Chest,Radiant Anjanath Set II,5,8,Health Cycle,2,Level up (Lv1 > Lv2),Recovers 3 health. Can only trigger once every 8s.
+204010703,Radiant Anja Vambraces I,Arms,Radiant Anjanath Set II,5,5,Wrecker,1,New skill,"While active, damage +3% for 60s."
+204010703,Radiant Anja Vambraces I,Arms,Radiant Anjanath Set II,5,5,Fire Resistance,1,New skill,Fire resistance +6.
+204010703,Radiant Anja Vambraces I,Arms,Radiant Anjanath Set II,5,8,Wrecker,2,Level up (Lv1 > Lv2),"While active, damage +7% for 60s."
+204010703,Radiant Anja Vambraces I,Arms,Radiant Anjanath Set II,5,10,Breaker,1,New skill,Part damage x1.1.
+204010704,Radiant Anja Coil I,Waist,Radiant Anjanath Set II,5,5,Charge Enhancement,1,New skill,"Upon activation, damage +4% for 15s."
+204010704,Radiant Anja Coil I,Waist,Radiant Anjanath Set II,5,5,Breaker,1,New skill,Part damage x1.1.
+204010704,Radiant Anja Coil I,Waist,Radiant Anjanath Set II,5,8,Quick-Bite,1,New skill,Slightly increases the speed of meat-eating and consumption speed of items like potions and antidotes.
+204010705,Radiant Anja Greaves I,Legs,Radiant Anjanath Set II,5,5,Charge Enhancement,1,New skill,"Upon activation, damage +4% for 15s."
+204010705,Radiant Anja Greaves I,Legs,Radiant Anjanath Set II,5,5,Fire Resistance,1,New skill,Fire resistance +6.
+204010705,Radiant Anja Greaves I,Legs,Radiant Anjanath Set II,5,8,Charge Enhancement,2,Level up (Lv1 > Lv2),"Upon activation, damage +8% for 15s."
+204010705,Radiant Anja Greaves I,Legs,Radiant Anjanath Set II,5,10,Hunting Instinct,1,New skill,"While active, increases damage by 4% for 120s."
+204081001,King Beetle Vertex I,Head,King Beetle Set I,4,4,Stamina Conversion,1,New skill,"When this skill activates, the triggering attack's damage +5%."
+204081001,King Beetle Vertex I,Head,King Beetle Set I,4,6,Honey Harvester,1,New skill,Honey gathered +1.
+204081001,King Beetle Vertex I,Head,King Beetle Set I,4,8,Sleep Resistance,1,New skill,Shortens the duration of sleep by 30%.
+204081002,King Beetle Thorax I,Chest,King Beetle Set I,4,4,Blessing,1,New skill,"When taking damage, has a 25% chance to reduce that damage by 15%."
+204081002,King Beetle Thorax I,Chest,King Beetle Set I,4,6,Capacity Boost,1,New skill,"After reloading, damage +4% for 30s."
+204081002,King Beetle Thorax I,Chest,King Beetle Set I,4,8,Capacity Boost,2,Level up (Lv1 > Lv2),"After reloading, damage +8% for 30s."
+204081002,King Beetle Thorax I,Chest,King Beetle Set I,4,10,Capacity Boost,3,Level up (Lv2 > Lv3),"After reloading, damage +12% for 30s."
+204081003,King Beetle Brachia I,Arms,King Beetle Set I,4,4,Flawless,1,New skill,"While active, damage +3%."
+204081003,King Beetle Brachia I,Arms,King Beetle Set I,4,6,Ammo Enhancement,1,New skill,"Damage +3% for Normal Ammo, Spread Ammo, and Pierce Ammo."
+204081003,King Beetle Brachia I,Arms,King Beetle Set I,4,8,Blessing,1,New skill,"When taking damage, has a 25% chance to reduce that damage by 15%."
+204081003,King Beetle Brachia I,Arms,King Beetle Set I,4,10,Ammo Enhancement,2,Level up (Lv1 > Lv2),"Damage +7% for Normal Ammo, Spread Ammo, and Pierce Ammo."
+204081004,King Beetle Elytra I,Waist,King Beetle Set I,4,4,Geo Expert,1,New skill,Allows you to gather 1 extra time from bonepiles.
+204081004,King Beetle Elytra I,Waist,King Beetle Set I,4,6,Sleep Resistance,1,New skill,Shortens the duration of sleep by 30%.
+204081005,King Beetle Crura I,Legs,King Beetle Set I,4,4,Capacity Boost,1,New skill,"After reloading, damage +4% for 30s."
+204081005,King Beetle Crura I,Legs,King Beetle Set I,4,6,Geo Expert,1,New skill,Allows you to gather 1 extra time from bonepiles.
+204081005,King Beetle Crura I,Legs,King Beetle Set I,4,8,Blessing,1,New skill,"When taking damage, has a 25% chance to reduce that damage by 15%."
+204081401,Ingot Helm I,Head,Ingot Set II,5,5,Intimidation,2,New skill,"While active, damage +7% for 15s."
+204081401,Ingot Helm I,Head,Ingot Set II,5,7,Windproof,1,New skill,Reduces the effects of minor wind pressure.
+204081401,Ingot Helm I,Head,Ingot Set II,5,9,Fearless,1,New skill,"While active, damage +3%."
+204081402,Ingot Mail I,Chest,Ingot Set II,5,5,Blast Resistance,1,New skill,Delays blastblight and reduces blast damage.
+204081402,Ingot Mail I,Chest,Ingot Set II,5,5,Defense Up,1,New skill,Defense +5
+204081402,Ingot Mail I,Chest,Ingot Set II,5,7,Defense Up,2,Level up (Lv1 > Lv2),Defense +10
+204081403,Ingot Vambraces I,Arms,Ingot Set II,5,5,Offensive Defense,1,New skill,"After activation, damage +4% for 30s."
+204081403,Ingot Vambraces I,Arms,Ingot Set II,5,5,Grace Under Pressure,1,New skill,"While active, increases defense by 20."
+204081403,Ingot Vambraces I,Arms,Ingot Set II,5,7,Blast Resistance,1,New skill,Delays blastblight and reduces blast damage.
+204081404,Ingot Coil I,Waist,Ingot Set II,5,5,Offensive Defense,1,New skill,"After activation, damage +4% for 30s."
+204081404,Ingot Coil I,Waist,Ingot Set II,5,5,Windproof,1,New skill,Reduces the effects of minor wind pressure.
+204081404,Ingot Coil I,Waist,Ingot Set II,5,7,Offensive Defense,2,Level up (Lv1 > Lv2),"After activation, damage +8% for 30s."
+204081404,Ingot Coil I,Waist,Ingot Set II,5,9,Fearless,1,New skill,"While active, damage +3%."
+204081405,Ingot Greaves I,Legs,Ingot Set II,5,5,Defense Up,1,New skill,Defense +5
+204081405,Ingot Greaves I,Legs,Ingot Set II,5,5,Thunder Damage Up,1,New skill,"Thunder damage +3%; against Radiant monsters, thunder damage +8% instead."
+204081405,Ingot Greaves I,Legs,Ingot Set II,5,7,Fearless,1,New skill,"While active, damage +3%."
+204081405,Ingot Greaves I,Legs,Ingot Set II,5,9,Thunder Damage Up,2,Level up (Lv1 > Lv2),"Thunder damage +6%; against Radiant monsters, thunder damage +15% instead."
+205010201,Radiant Kulu Headpiece II,Head,Radiant Kulu-Ya-Ku Set II,5,5,Demonic Strength,2,New skill,"While active, damage +8%."
+205010201,Radiant Kulu Headpiece II,Head,Radiant Kulu-Ya-Ku Set II,5,7,Item Master,1,New skill,Increases effect duration by 1.1x.
+205010201,Radiant Kulu Headpiece II,Head,Radiant Kulu-Ya-Ku Set II,5,9,Weakspot Exploit,1,New skill,"When attacking weak points, affinity +4%."
+205010202,Radiant Kulu Mail II,Chest,Radiant Kulu-Ya-Ku Set II,5,5,Combo Enhancement,1,New skill,Landing 5 hits within 3s increases damage by 4% for 12s.
+205010202,Radiant Kulu Mail II,Chest,Radiant Kulu-Ya-Ku Set II,5,5,Insight,1,New skill,Affinity +2%.
+205010202,Radiant Kulu Mail II,Chest,Radiant Kulu-Ya-Ku Set II,5,7,Grace Under Pressure,1,New skill,"While active, increases defense by 20."
+205010203,Radiant Kulu Vambraces II,Arms,Radiant Kulu-Ya-Ku Set II,5,5,Item Master,1,New skill,Increases effect duration by 1.1x.
+205010203,Radiant Kulu Vambraces II,Arms,Radiant Kulu-Ya-Ku Set II,5,5,Fire Resistance,1,New skill,Fire resistance +6.
+205010203,Radiant Kulu Vambraces II,Arms,Radiant Kulu-Ya-Ku Set II,5,7,Item Master,2,Level up (Lv1 > Lv2),Increases effect duration by 1.25x.
+205010204,Radiant Kulu Coil II,Waist,Radiant Kulu-Ya-Ku Set II,5,5,Counter Boost,1,New skill,"Upon activation, increases damage by 4% for 20s."
+205010204,Radiant Kulu Coil II,Waist,Radiant Kulu-Ya-Ku Set II,5,5,Grace Under Pressure,1,New skill,"While active, increases defense by 20."
+205010204,Radiant Kulu Coil II,Waist,Radiant Kulu-Ya-Ku Set II,5,7,Counter Boost,2,Level up (Lv1 > Lv2),"Upon activation, increases damage by 8% for 20s."
+205010204,Radiant Kulu Coil II,Waist,Radiant Kulu-Ya-Ku Set II,5,9,Insight,1,New skill,Affinity +2%.
+205010205,Radiant Kulu Greaves II,Legs,Radiant Kulu-Ya-Ku Set II,5,5,Combo Enhancement,1,New skill,Landing 5 hits within 3s increases damage by 4% for 12s.
+205010205,Radiant Kulu Greaves II,Legs,Radiant Kulu-Ya-Ku Set II,5,5,Fire Resistance,1,New skill,Fire resistance +6.
+205010205,Radiant Kulu Greaves II,Legs,Radiant Kulu-Ya-Ku Set II,5,7,Combo Enhancement,2,Level up (Lv1 > Lv2),Landing 5 hits within 3s increases damage by 8% for 12s.
+205010205,Radiant Kulu Greaves II,Legs,Radiant Kulu-Ya-Ku Set II,5,9,Weakspot Exploit,1,New skill,"When attacking weak points, affinity +4%."
+206010401,Radiant Barroth Helm II,Head,Radiant Barroth Set II,5,5,Capacity Boost,1,New skill,"After reloading, damage +4% for 30s."
+206010401,Radiant Barroth Helm II,Head,Radiant Barroth Set II,5,5,Guard Technique,1,New skill,Very slightly decreases the impact of attacks.
+206010401,Radiant Barroth Helm II,Head,Radiant Barroth Set II,5,8,Capacity Boost,2,Level up (Lv1 > Lv2),"After reloading, damage +8% for 30s."
+206010401,Radiant Barroth Helm II,Head,Radiant Barroth Set II,5,10,Radiant Sense,1,New skill,"While active, damage +4%."
+206010402,Radiant Barroth Mail II,Chest,Radiant Barroth Set II,5,5,Guard Technique,2,New skill,Slightly decreases the impact of attacks and reduces stamina depletion by 15%.
+206010402,Radiant Barroth Mail II,Chest,Radiant Barroth Set II,5,8,Stun Resistance,1,New skill,Shortens the duration of stun by 60%.
+206010403,Radiant Barroth Vambraces II,Arms,Radiant Barroth Set II,5,5,Immovable Stance,1,New skill,"After triggering ferocity, damage +4% for 30s."
+206010403,Radiant Barroth Vambraces II,Arms,Radiant Barroth Set II,5,5,Stun Resistance,1,New skill,Shortens the duration of stun by 60%.
+206010403,Radiant Barroth Vambraces II,Arms,Radiant Barroth Set II,5,8,Immovable Stance,2,Level up (Lv1 > Lv2),"After triggering ferocity, damage +8% for 30s."
+206010403,Radiant Barroth Vambraces II,Arms,Radiant Barroth Set II,5,10,Battle Spirit,1,New skill,"While active, affinity +3%."
+206010404,Radiant Barroth Coil II,Waist,Radiant Barroth Set II,5,5,Capacity Boost,1,New skill,"After reloading, damage +4% for 30s."
+206010404,Radiant Barroth Coil II,Waist,Radiant Barroth Set II,5,5,Battle Spirit,1,New skill,"While active, affinity +3%."
+206010404,Radiant Barroth Coil II,Waist,Radiant Barroth Set II,5,8,Defense Up,1,New skill,Defense +5
+206010405,Radiant Barroth Greaves II,Legs,Radiant Barroth Set II,5,5,Pierce,2,New skill,"After hitting the same part 3 times within 8s, damage +7% for 30s."
+206010405,Radiant Barroth Greaves II,Legs,Radiant Barroth Set II,5,8,Guard Technique,1,New skill,Very slightly decreases the impact of attacks.
+206010405,Radiant Barroth Greaves II,Legs,Radiant Barroth Set II,5,10,Weakspot Follow-Up,1,New skill,"75% chance to activate, dealing additional damage equal to 4%."
+206010501,Radiant Jyura Helm II,Head,Radiant Jyuratodus Set II,6,6,Flinching-Free,1,New skill,Prevents knockbacks from minor damage.
+206010501,Radiant Jyura Helm II,Head,Radiant Jyuratodus Set II,6,6,Water Resistance,1,New skill,Water resistance +6.
+206010501,Radiant Jyura Helm II,Head,Radiant Jyuratodus Set II,6,8,Flinching-Free,2,Level up (Lv1 > Lv2),Prevents knockbacks from minor damage. Tripping is reduced to a knockback.
+206010502,Radiant Jyura Mail II,Chest,Radiant Jyuratodus Set II,6,6,Piercing Strike,1,New skill,"While active, damage +5%."
+206010502,Radiant Jyura Mail II,Chest,Radiant Jyuratodus Set II,6,6,Health Recovery,1,New skill,Increases the recovery speed of gray health by 2x.
+206010502,Radiant Jyura Mail II,Chest,Radiant Jyuratodus Set II,6,8,Piercing Strike,2,Level up (Lv1 > Lv2),"While active, damage +9%."
+206010502,Radiant Jyura Mail II,Chest,Radiant Jyuratodus Set II,6,10,Radiant Sense,1,New skill,"While active, damage +4%."
+206010503,Radiant Jyura Vambraces II,Arms,Radiant Jyuratodus Set II,6,6,Water Damage Up,1,New skill,"Water damage +3%; against Radiant monsters, water damage +8% instead."
+206010503,Radiant Jyura Vambraces II,Arms,Radiant Jyuratodus Set II,6,6,Health Recovery,1,New skill,Increases the recovery speed of gray health by 2x.
+206010503,Radiant Jyura Vambraces II,Arms,Radiant Jyuratodus Set II,6,8,Water Damage Up,2,Level up (Lv1 > Lv2),"Water damage +6%; against Radiant monsters, water damage +15% instead."
+206010503,Radiant Jyura Vambraces II,Arms,Radiant Jyuratodus Set II,6,10,Hunting Instinct,1,New skill,"While active, increases damage by 4% for 120s."
+206010504,Radiant Jyura Coil II,Waist,Radiant Jyuratodus Set II,6,6,Piercing Strike,1,New skill,"While active, damage +5%."
+206010504,Radiant Jyura Coil II,Waist,Radiant Jyuratodus Set II,6,6,Hunting Instinct,1,New skill,"While active, increases damage by 4% for 120s."
+206010504,Radiant Jyura Coil II,Waist,Radiant Jyuratodus Set II,6,8,Water Resistance,1,New skill,Water resistance +6.
+206010505,Radiant Jyura Greaves II,Legs,Radiant Jyuratodus Set II,6,6,Water Damage Up,1,New skill,"Water damage +3%; against Radiant monsters, water damage +8% instead."
+206010505,Radiant Jyura Greaves II,Legs,Radiant Jyuratodus Set II,6,6,Radiant Sense,1,New skill,"While active, damage +4%."
+206010505,Radiant Jyura Greaves II,Legs,Radiant Jyuratodus Set II,6,8,Health Recovery,1,New skill,Increases the recovery speed of gray health by 2x.
+207000801,Rathian Helm II,Head,Rathian Set II,6,6,Spirit Bind Blade,1,New skill,"Upon activation, damage +3% for 30s."
+207000801,Rathian Helm II,Head,Rathian Set II,6,6,Hunting Instinct,1,New skill,"While active, increases damage by 4% for 120s."
+207000801,Rathian Helm II,Head,Rathian Set II,6,8,Spirit Bind Blade,2,Level up (Lv1 > Lv2),"Upon activation, damage +7% for 30s."
+207000801,Rathian Helm II,Head,Rathian Set II,6,10,Botanical Expert,1,New skill,+1 consumable herb item per gather.
+207000802,Rathian Mail II,Chest,Rathian Set II,6,6,Airborne,1,New skill,Airborne attack damage +5%.
+207000802,Rathian Mail II,Chest,Rathian Set II,6,6,Poison Resistance,1,New skill,Shortens the duration of poison by 30%.
+207000802,Rathian Mail II,Chest,Rathian Set II,6,8,Airborne,2,Level up (Lv1 > Lv2),Airborne attack damage +9%.
+207000802,Rathian Mail II,Chest,Rathian Set II,6,10,Relentless Pursuit,1,New skill,"While active, damage +4% for 15s."
+207000803,Rathian Vambraces II,Arms,Rathian Set II,6,6,Flash Draw,1,New skill,"While active, damage +4% for 30s."
+207000803,Rathian Vambraces II,Arms,Rathian Set II,6,6,Botanical Expert,1,New skill,+1 consumable herb item per gather.
+207000803,Rathian Vambraces II,Arms,Rathian Set II,6,8,Flash Draw,2,Level up (Lv1 > Lv2),"While active, damage +8% for 30s."
+207000803,Rathian Vambraces II,Arms,Rathian Set II,6,10,Relentless Pursuit,1,New skill,"While active, damage +4% for 15s."
+207000804,Rathian Coil II,Waist,Rathian Set II,6,6,Flawless,1,New skill,"While active, damage +3%."
+207000804,Rathian Coil II,Waist,Rathian Set II,6,6,Roar Resistance,1,New skill,Reduces the effects of weak monster roars.
+207000804,Rathian Coil II,Waist,Rathian Set II,6,8,Spirit Bind Blade,1,New skill,"Upon activation, damage +3% for 30s."
+207000804,Rathian Coil II,Waist,Rathian Set II,6,10,Spirit Bind Blade,2,Level up (Lv1 > Lv2),"Upon activation, damage +7% for 30s."
+207000805,Rathian Greaves II,Legs,Rathian Set II,6,6,Health Boost,1,New skill,Health +10.
+207000805,Rathian Greaves II,Legs,Rathian Set II,6,6,Roar Resistance,1,New skill,Reduces the effects of weak monster roars.
+207000805,Rathian Greaves II,Legs,Rathian Set II,6,8,Health Boost,2,Level up (Lv1 > Lv2),Health +20.
+208001501,Rathalos Helm II,Head,Rathalos Set II,6,6,Fire Damage Up,1,New skill,"Fire damage +3%; against Radiant monsters, fire damage +8% instead."
+208001501,Rathalos Helm II,Head,Rathalos Set II,6,6,Breaker,1,New skill,Part damage x1.1.
+208001501,Rathalos Helm II,Head,Rathalos Set II,6,8,Deterrence,1,New skill,Discourages monsters from engaging after being spotted.
+208001502,Rathalos Mail II,Chest,Rathalos Set II,6,6,Fire Damage Up,2,New skill,"Fire damage +6%; against Radiant monsters, fire damage +15% instead."
+208001502,Rathalos Mail II,Chest,Rathalos Set II,6,8,Health Cycle,1,New skill,Recovers 2 health. Can only trigger once every 8s.
+208001502,Rathalos Mail II,Chest,Rathalos Set II,6,10,Fire Damage Up,3,Level up (Lv2 > Lv3),"Fire damage +9%; against Radiant monsters, fire damage +23% instead."
+208001503,Rathalos Vambraces II,Arms,Rathalos Set II,6,6,Deterrence,1,New skill,Discourages monsters from engaging after being spotted.
+208001503,Rathalos Vambraces II,Arms,Rathalos Set II,6,6,Fire Resistance,1,New skill,Fire resistance +6.
+208001503,Rathalos Vambraces II,Arms,Rathalos Set II,6,8,Deterrence,2,Level up (Lv1 > Lv2),Highly discourages monsters from engaging after being spotted.
+208001504,Rathalos Coil II,Waist,Rathalos Set II,6,6,Wrecker,1,New skill,"While active, damage +3% for 60s."
+208001504,Rathalos Coil II,Waist,Rathalos Set II,6,6,Weakspot Exploit,1,New skill,"When attacking weak points, affinity +4%."
+208001504,Rathalos Coil II,Waist,Rathalos Set II,6,8,Fire Resistance,1,New skill,Fire resistance +6.
+208001504,Rathalos Coil II,Waist,Rathalos Set II,6,10,Wrecker,2,Level up (Lv1 > Lv2),"While active, damage +7% for 60s."
+208001505,Rathalos Greaves II,Legs,Rathalos Set II,6,6,Fire Resistance,1,New skill,Fire resistance +6.
+208001505,Rathalos Greaves II,Legs,Rathalos Set II,6,6,Wrecker,1,New skill,"While active, damage +3% for 60s."
+208001505,Rathalos Greaves II,Legs,Rathalos Set II,6,8,Wrecker,2,Level up (Lv1 > Lv2),"While active, damage +7% for 60s."
+208001505,Rathalos Greaves II,Legs,Rathalos Set II,6,10,Breaker,1,New skill,Part damage x1.1.
+208001601,Diablos Helm II,Head,Diablos Set III,7,7,Tremor Resistance,2,New skill,Nullifies minor ground tremors and reduces the effects of major ground tremors.
+208001601,Diablos Helm II,Head,Diablos Set III,7,7,Defense Up,1,New skill,Defense +5
+208001602,Diablos Mail II,Chest,Diablos Set III,7,7,Dragon Damage Up,2,New skill,"Dragon damage +6%; against Radiant monsters, dragon damage +15% instead."
+208001602,Diablos Mail II,Chest,Diablos Set III,7,7,Defense Up,1,New skill,Defense +5
+208001602,Diablos Mail II,Chest,Diablos Set III,7,10,Dragon Damage Up,3,Level up (Lv2 > Lv3),"Dragon damage +9%; against Radiant monsters, dragon damage +23% instead."
+208001603,Diablos Vambraces II,Arms,Diablos Set III,7,7,Bento Lover,1,New skill,"While active, damage +4% for 30s."
+208001603,Diablos Vambraces II,Arms,Diablos Set III,7,7,Weakspot Follow-Up,1,New skill,"75% chance to activate, dealing additional damage equal to 4%."
+208001603,Diablos Vambraces II,Arms,Diablos Set III,7,7,Guard Technique,1,New skill,Very slightly decreases the impact of attacks.
+208001603,Diablos Vambraces II,Arms,Diablos Set III,7,10,Bento Lover,2,Level up (Lv1 > Lv2),"While active, damage +8% for 30s."
+208001604,Diablos Coil II,Waist,Diablos Set III,7,7,Pierce,1,New skill,"After hitting the same part 3 times within 8s, damage +3% for 30s."
+208001604,Diablos Coil II,Waist,Diablos Set III,7,7,Guard Technique,1,New skill,Very slightly decreases the impact of attacks.
+208001604,Diablos Coil II,Waist,Diablos Set III,7,7,Weakspot Follow-Up,1,New skill,"75% chance to activate, dealing additional damage equal to 4%."
+208001604,Diablos Coil II,Waist,Diablos Set III,7,10,Pierce,2,Level up (Lv1 > Lv2),"After hitting the same part 3 times within 8s, damage +7% for 30s."
+208001605,Diablos Greaves II,Legs,Diablos Set III,7,7,Bento Lover,2,New skill,"While active, damage +8% for 30s."
+208001605,Diablos Greaves II,Legs,Diablos Set III,7,7,Defense Up,1,New skill,Defense +5
+208001605,Diablos Greaves II,Legs,Diablos Set III,7,10,Bento Lover,3,Level up (Lv2 > Lv3),"While active, damage +12% for 30s."
+209000901,Tzitzi Headgear III,Head,Tzitzi-Ya-Ku Set III,8,8,Piercing Strike,1,New skill,"While active, damage +5%."
+209000901,Tzitzi Headgear III,Head,Tzitzi-Ya-Ku Set III,8,8,Relentless Pursuit,1,New skill,"While active, damage +4% for 15s."
+209000901,Tzitzi Headgear III,Head,Tzitzi-Ya-Ku Set III,8,8,Blessing,1,New skill,"When taking damage, has a 25% chance to reduce that damage by 15%."
+209000901,Tzitzi Headgear III,Head,Tzitzi-Ya-Ku Set III,8,9,Piercing Strike,2,Level up (Lv1 > Lv2),"While active, damage +9%."
+209000902,Tzitzi Mail III,Chest,Tzitzi-Ya-Ku Set III,8,8,Water Damage Up,2,New skill,"Water damage +6%; against Radiant monsters, water damage +15% instead."
+209000902,Tzitzi Mail III,Chest,Tzitzi-Ya-Ku Set III,8,8,Blessing,1,New skill,"When taking damage, has a 25% chance to reduce that damage by 15%."
+209000902,Tzitzi Mail III,Chest,Tzitzi-Ya-Ku Set III,8,9,Water Damage Up,3,Level up (Lv2 > Lv3),"Water damage +9%; against Radiant monsters, water damage +23% instead."
+209000903,Tzitzi Vambraces III,Arms,Tzitzi-Ya-Ku Set III,8,8,Piercing Strike,2,New skill,"While active, damage +9%."
+209000903,Tzitzi Vambraces III,Arms,Tzitzi-Ya-Ku Set III,8,8,Sleep Resistance,1,New skill,Shortens the duration of sleep by 30%.
+209000903,Tzitzi Vambraces III,Arms,Tzitzi-Ya-Ku Set III,8,9,Piercing Strike,3,Level up (Lv2 > Lv3),"While active, damage +14%."
+209000904,Tzitzi Coil III,Waist,Tzitzi-Ya-Ku Set III,8,8,Water Damage Up,1,New skill,"Water damage +3%; against Radiant monsters, water damage +8% instead."
+209000904,Tzitzi Coil III,Waist,Tzitzi-Ya-Ku Set III,8,8,Relentless Pursuit,1,New skill,"While active, damage +4% for 15s."
+209000904,Tzitzi Coil III,Waist,Tzitzi-Ya-Ku Set III,8,8,Stun Resistance,1,New skill,Shortens the duration of stun by 60%.
+209000904,Tzitzi Coil III,Waist,Tzitzi-Ya-Ku Set III,8,9,Water Damage Up,2,Level up (Lv1 > Lv2),"Water damage +6%; against Radiant monsters, water damage +15% instead."
+209000905,Tzitzi Greaves III,Legs,Tzitzi-Ya-Ku Set III,8,8,Capturing Expert,1,New skill,High chance of increased capture rewards. (No effect when joining mid-quest.)
+209000905,Tzitzi Greaves III,Legs,Tzitzi-Ya-Ku Set III,8,8,Stun Resistance,1,New skill,Shortens the duration of stun by 60%.
+209000905,Tzitzi Greaves III,Legs,Tzitzi-Ya-Ku Set III,8,8,Blessing,1,New skill,"When taking damage, has a 25% chance to reduce that damage by 15%."
+209001001,Lumu Hat III,Head,Paolumu Set III,8,8,Ammo Enhancement,1,New skill,"Damage +3% for Normal Ammo, Spread Ammo, and Pierce Ammo."
+209001001,Lumu Hat III,Head,Paolumu Set III,8,8,Windproof,1,New skill,Reduces the effects of minor wind pressure.
+209001001,Lumu Hat III,Head,Paolumu Set III,8,8,Flawless,1,New skill,"While active, damage +3%."
+209001001,Lumu Hat III,Head,Paolumu Set III,8,10,Ammo Enhancement,2,Level up (Lv1 > Lv2),"Damage +7% for Normal Ammo, Spread Ammo, and Pierce Ammo."
+209001002,Lumu Mail III,Chest,Paolumu Set III,8,8,Offensive Defense,2,New skill,"After activation, damage +8% for 30s."
+209001002,Lumu Mail III,Chest,Paolumu Set III,8,8,Blessing,1,New skill,"When taking damage, has a 25% chance to reduce that damage by 15%."
+209001002,Lumu Mail III,Chest,Paolumu Set III,8,10,Offensive Defense,3,Level up (Lv2 > Lv3),"After activation, damage +12% for 30s."
+209001003,Lumu Vambraces III,Arms,Paolumu Set III,8,8,Airborne,2,New skill,Airborne attack damage +9%.
+209001003,Lumu Vambraces III,Arms,Paolumu Set III,8,8,Windproof,1,New skill,Reduces the effects of minor wind pressure.
+209001003,Lumu Vambraces III,Arms,Paolumu Set III,8,10,Airborne,3,Level up (Lv2 > Lv3),Airborne attack damage +14%.
+209001004,Lumu Coil III,Waist,Paolumu Set III,8,8,Health Recovery,2,New skill,Increases the recovery speed of gray health by 3x.
+209001004,Lumu Coil III,Waist,Paolumu Set III,8,8,Blessing,1,New skill,"When taking damage, has a 25% chance to reduce that damage by 15%."
+209001005,Lumu Greaves III,Legs,Paolumu Set III,8,8,Offensive Defense,1,New skill,"After activation, damage +4% for 30s."
+209001005,Lumu Greaves III,Legs,Paolumu Set III,8,8,Flawless,1,New skill,"While active, damage +3%."
+209001005,Lumu Greaves III,Legs,Paolumu Set III,8,8,Windproof,1,New skill,Reduces the effects of minor wind pressure.
+209001005,Lumu Greaves III,Legs,Paolumu Set III,8,10,Offensive Defense,2,Level up (Lv1 > Lv2),"After activation, damage +8% for 30s."
+209010901,Radiant Tzitzi Headgear III,Head,Radiant Tzitzi-Ya-Ku Set IV,10,10,Water Damage Up,1,New skill,"Water damage +3%; against Radiant monsters, water damage +8% instead."
+209010901,Radiant Tzitzi Headgear III,Head,Radiant Tzitzi-Ya-Ku Set IV,10,10,Health Recovery,1,New skill,Increases the recovery speed of gray health by 2x.
+209010901,Radiant Tzitzi Headgear III,Head,Radiant Tzitzi-Ya-Ku Set IV,10,10,Item Master,1,New skill,Increases effect duration by 1.1x.
+209010902,Radiant Tzitzi Mail III,Chest,Radiant Tzitzi-Ya-Ku Set IV,10,10,Item Master,2,New skill,Increases effect duration by 1.25x.
+209010902,Radiant Tzitzi Mail III,Chest,Radiant Tzitzi-Ya-Ku Set IV,10,10,Piercing Strike,1,New skill,"While active, damage +5%."
+209010903,Radiant Tzitzi Vambraces III,Arms,Radiant Tzitzi-Ya-Ku Set IV,10,10,Health Recovery,1,New skill,Increases the recovery speed of gray health by 2x.
+209010903,Radiant Tzitzi Vambraces III,Arms,Radiant Tzitzi-Ya-Ku Set IV,10,10,Sleep Resistance,2,New skill,Shortens the duration of sleep by 60%.
+209010904,Radiant Tzitzi Coil III,Waist,Radiant Tzitzi-Ya-Ku Set IV,10,10,Health Recovery,1,New skill,Increases the recovery speed of gray health by 2x.
+209010904,Radiant Tzitzi Coil III,Waist,Radiant Tzitzi-Ya-Ku Set IV,10,10,Piercing Strike,3,New skill,"While active, damage +14%."
+209010905,Radiant Tzitzi Greaves III,Legs,Radiant Tzitzi-Ya-Ku Set IV,10,10,Sleep Resistance,1,New skill,Shortens the duration of sleep by 30%.
+209010905,Radiant Tzitzi Greaves III,Legs,Radiant Tzitzi-Ya-Ku Set IV,10,10,Water Damage Up,3,New skill,"Water damage +9%; against Radiant monsters, water damage +23% instead."
+209082401,High Metal Helm III,Head,High Metal Set I,4,4,Roar Resistance,1,New skill,Reduces the effects of weak monster roars.
+209082401,High Metal Helm III,Head,High Metal Set I,4,6,Gathering Master,1,New skill,Speeds up gathering and prevents stagger while gathering.
+209082402,High Metal Mail III,Chest,High Metal Set I,4,4,Ice Damage Up,1,New skill,"Ice damage +3%; against Radiant monsters, ice damage +8% instead."
+209082402,High Metal Mail III,Chest,High Metal Set I,4,6,Defense Up,1,New skill,Defense +5
+209082402,High Metal Mail III,Chest,High Metal Set I,4,8,Ice Damage Up,2,Level up (Lv1 > Lv2),"Ice damage +6%; against Radiant monsters, ice damage +15% instead."
+209082402,High Metal Mail III,Chest,High Metal Set I,4,10,Ice Damage Up,3,Level up (Lv2 > Lv3),"Ice damage +9%; against Radiant monsters, ice damage +23% instead."
+209082403,High Metal Braces III,Arms,High Metal Set I,4,4,Ice Resistance,1,New skill,Ice resistance +6.
+209082403,High Metal Braces III,Arms,High Metal Set I,4,6,Morph Boost,1,New skill,"Upon activation, damage +3% for 60s."
+209082403,High Metal Braces III,Arms,High Metal Set I,4,8,Morph Boost,2,Level up (Lv1 > Lv2),"Upon activation, damage +7% for 60s."
+209082403,High Metal Braces III,Arms,High Metal Set I,4,10,Relentless Pursuit,1,New skill,"While active, damage +4% for 15s."
+209082404,High Metal Coil III,Waist,High Metal Set I,4,4,Morph Boost,1,New skill,"Upon activation, damage +3% for 60s."
+209082404,High Metal Coil III,Waist,High Metal Set I,4,6,Relentless Pursuit,1,New skill,"While active, damage +4% for 15s."
+209082404,High Metal Coil III,Waist,High Metal Set I,4,8,Defense Up,1,New skill,Defense +5
+209082404,High Metal Coil III,Waist,High Metal Set I,4,10,Morph Boost,2,Level up (Lv1 > Lv2),"Upon activation, damage +7% for 60s."
+209082405,High Metal Greaves III,Legs,High Metal Set I,4,4,Roar Resistance,1,New skill,Reduces the effects of weak monster roars.
+209082405,High Metal Greaves III,Legs,High Metal Set I,4,6,Ice Damage Up,1,New skill,"Ice damage +3%; against Radiant monsters, ice damage +8% instead."
+209082405,High Metal Greaves III,Legs,High Metal Set I,4,8,Relentless Pursuit,1,New skill,"While active, damage +4% for 15s."
+209082405,High Metal Greaves III,Legs,High Metal Set I,4,10,Ice Damage Up,2,Level up (Lv1 > Lv2),"Ice damage +6%; against Radiant monsters, ice damage +15% instead."
+210001201,Baan Helm III,Head,Baan Set III,7,7,Charge Enhancement,1,New skill,"Upon activation, damage +4% for 15s."
+210001201,Baan Helm III,Head,Baan Set III,7,7,Fearless,1,New skill,"While active, damage +3%."
+210001201,Baan Helm III,Head,Baan Set III,7,7,Bleeding Resistance,1,New skill,Reduces damage while bleeding.
+210001201,Baan Helm III,Head,Baan Set III,7,10,Charge Enhancement,2,Level up (Lv1 > Lv2),"Upon activation, damage +8% for 15s."
+210001202,Baan Mail III,Chest,Baan Set III,7,7,Intimidation,1,New skill,"While active, damage +3% for 15s."
+210001202,Baan Mail III,Chest,Baan Set III,7,7,Fearless,1,New skill,"While active, damage +3%."
+210001202,Baan Mail III,Chest,Baan Set III,7,7,Bleeding Resistance,1,New skill,Reduces damage while bleeding.
+210001202,Baan Mail III,Chest,Baan Set III,7,10,Intimidation,2,Level up (Lv1 > Lv2),"While active, damage +7% for 15s."
+210001203,Baan Vambraces III,Arms,Baan Set III,7,7,Charge Enhancement,3,New skill,"Upon activation, damage +12% for 15s."
+210001203,Baan Vambraces III,Arms,Baan Set III,7,10,Sleep Resistance,1,New skill,Shortens the duration of sleep by 30%.
+210001204,Baan Coil III,Waist,Baan Set III,7,7,Sleep Resistance,1,New skill,Shortens the duration of sleep by 30%.
+210001204,Baan Coil III,Waist,Baan Set III,7,7,Immovable Stance,2,New skill,"After triggering ferocity, damage +8% for 30s."
+210001204,Baan Coil III,Waist,Baan Set III,7,10,Immovable Stance,3,Level up (Lv2 > Lv3),"After triggering ferocity, damage +12% for 30s."
+210001205,Baan Greaves III,Legs,Baan Set III,7,7,Iron Skin,2,New skill,Shortens the duration of Defense Down by 75%.
+210001205,Baan Greaves III,Legs,Baan Set III,7,7,Bleeding Resistance,1,New skill,Reduces damage while bleeding.
+210001301,Legiana Helm III,Head,Legiana Set IV,9,9,Ice Resistance,2,New skill,Ice resistance +12.
+210001301,Legiana Helm III,Head,Legiana Set IV,9,9,Blessing,1,New skill,"When taking damage, has a 25% chance to reduce that damage by 15%."
+210001302,Legiana Mail III,Chest,Legiana Set IV,9,9,Flash Draw,2,New skill,"While active, damage +8% for 30s."
+210001302,Legiana Mail III,Chest,Legiana Set IV,9,9,Weakspot Exploit,1,New skill,"When attacking weak points, affinity +4%."
+210001302,Legiana Mail III,Chest,Legiana Set IV,9,9,Windproof,1,New skill,Reduces the effects of minor wind pressure.
+210001303,Legiana Vambraces III,Arms,Legiana Set IV,9,9,Ice Damage Up,2,New skill,"Ice damage +6%; against Radiant monsters, ice damage +15% instead."
+210001303,Legiana Vambraces III,Arms,Legiana Set IV,9,9,Weakspot Exploit,1,New skill,"When attacking weak points, affinity +4%."
+210001303,Legiana Vambraces III,Arms,Legiana Set IV,9,9,Blessing,1,New skill,"When taking damage, has a 25% chance to reduce that damage by 15%."
+210001304,Legiana Coil III,Waist,Legiana Set IV,9,9,Blessing,2,New skill,"When taking damage, has a 25% chance to reduce that damage by 30%."
+210001304,Legiana Coil III,Waist,Legiana Set IV,9,9,Ice Damage Up,1,New skill,"Ice damage +3%; against Radiant monsters, ice damage +8% instead."
+210001305,Legiana Greaves III,Legs,Legiana Set IV,9,9,Ammo Enhancement,2,New skill,"Damage +7% for Normal Ammo, Spread Ammo, and Pierce Ammo."
+210001305,Legiana Greaves III,Legs,Legiana Set IV,9,9,Suppression Recovery,1,New skill,"While active, recovers 5 health, with a minimum interval of 3s."
+210001305,Legiana Greaves III,Legs,Legiana Set IV,9,9,Critical Element,1,New skill,Increases elemental damage by 5% when landing critical hits.
+210011201,Radiant Baan Helm IV,Head,Radiant Baan Set V,12,12,Tremor Resistance,1,New skill,Nullifies minor ground tremors.
+210011201,Radiant Baan Helm IV,Head,Radiant Baan Set V,12,12,Grace Under Pressure,2,New skill,"While active, increases defense by 40."
+210011202,Radiant Baan Mail IV,Chest,Radiant Baan Set V,12,12,Immovable Stance,3,New skill,"After triggering ferocity, damage +12% for 30s."
+210011202,Radiant Baan Mail IV,Chest,Radiant Baan Set V,12,12,Tremor Resistance,1,New skill,Nullifies minor ground tremors.
+210011203,Radiant Baan Vambraces IV,Arms,Radiant Baan Set V,12,12,Intimidation,2,New skill,"While active, damage +7% for 15s."
+210011203,Radiant Baan Vambraces IV,Arms,Radiant Baan Set V,12,12,Tremor Resistance,1,New skill,Nullifies minor ground tremors.
+210011203,Radiant Baan Vambraces IV,Arms,Radiant Baan Set V,12,12,Fearless,1,New skill,"While active, damage +3%."
+210011204,Radiant Baan Coil IV,Waist,Radiant Baan Set V,12,12,Intimidation,2,New skill,"While active, damage +7% for 15s."
+210011204,Radiant Baan Coil IV,Waist,Radiant Baan Set V,12,12,Breaker,1,New skill,Part damage x1.1.
+210011204,Radiant Baan Coil IV,Waist,Radiant Baan Set V,12,12,Sleep Resistance,1,New skill,Shortens the duration of sleep by 30%.
+210011205,Radiant Baan Greaves IV,Legs,Radiant Baan Set V,12,12,Immovable Stance,2,New skill,"After triggering ferocity, damage +8% for 30s."
+210011205,Radiant Baan Greaves IV,Legs,Radiant Baan Set V,12,12,Fearless,1,New skill,"While active, damage +3%."
+210011205,Radiant Baan Greaves IV,Legs,Radiant Baan Set V,12,12,Sleep Resistance,1,New skill,Shortens the duration of sleep by 30%.
+210011301,Radiant Legiana Helm III,Head,Radiant Legiana Set V,11,11,Ice Damage Up,3,New skill,"Ice damage +9%; against Radiant monsters, ice damage +23% instead."
+210011301,Radiant Legiana Helm III,Head,Radiant Legiana Set V,11,11,Blessing,1,New skill,"When taking damage, has a 25% chance to reduce that damage by 15%."
+210011302,Radiant Legiana Mail III,Chest,Radiant Legiana Set V,11,11,Charged Power Shot,3,New skill,"While active, damage +14%."
+210011302,Radiant Legiana Mail III,Chest,Radiant Legiana Set V,11,11,Ice Resistance,1,New skill,Ice resistance +6.
+210011303,Radiant Legiana Vambraces III,Arms,Radiant Legiana Set V,11,11,Ice Damage Up,1,New skill,"Ice damage +3%; against Radiant monsters, ice damage +8% instead."
+210011303,Radiant Legiana Vambraces III,Arms,Radiant Legiana Set V,11,11,Ice Resistance,1,New skill,Ice resistance +6.
+210011303,Radiant Legiana Vambraces III,Arms,Radiant Legiana Set V,11,11,Windproof,1,New skill,Reduces the effects of minor wind pressure.
+210011304,Radiant Legiana Coil III,Waist,Radiant Legiana Set V,11,11,Blessing,2,New skill,"When taking damage, has a 25% chance to reduce that damage by 30%."
+210011304,Radiant Legiana Coil III,Waist,Radiant Legiana Set V,11,11,Ice Resistance,1,New skill,Ice resistance +6.
+210011305,Radiant Legiana Greaves III,Legs,Radiant Legiana Set V,11,11,Blessing,1,New skill,"When taking damage, has a 25% chance to reduce that damage by 15%."
+210011305,Radiant Legiana Greaves III,Legs,Radiant Legiana Set V,11,11,Charged Power Shot,2,New skill,"While active, damage +9%."
+210011305,Radiant Legiana Greaves III,Legs,Radiant Legiana Set V,11,11,Insight,1,New skill,Affinity +2%.
+211001401,Odogaron Helm III,Head,Odogaron Set III,7,7,Stamina Conversion,1,New skill,"When this skill activates, the triggering attack's damage +5%."
+211001401,Odogaron Helm III,Head,Odogaron Set III,7,7,Hunting Instinct,1,New skill,"While active, increases damage by 4% for 120s."
+211001401,Odogaron Helm III,Head,Odogaron Set III,7,7,Recovery Booster,1,New skill,Increases Health recovery by 1.1x when healing.
+211001401,Odogaron Helm III,Head,Odogaron Set III,7,10,Stamina Conversion,2,Level up (Lv1 > Lv2),"When this skill activates, the triggering attack's damage +9%."
+211001402,Odogaron Mail III,Chest,Odogaron Set III,7,7,Recovery Booster,1,New skill,Increases Health recovery by 1.1x when healing.
+211001402,Odogaron Mail III,Chest,Odogaron Set III,7,7,Demonic Strength,2,New skill,"While active, damage +8%."
+211001402,Odogaron Mail III,Chest,Odogaron Set III,7,10,Hunting Instinct,1,New skill,"While active, increases damage by 4% for 120s."
+211001403,Odogaron Vambraces III,Arms,Odogaron Set III,7,7,Bleeding Resistance,2,New skill,Greatly reduces damage while bleeding.
+211001403,Odogaron Vambraces III,Arms,Odogaron Set III,7,7,Rejuvenation,1,New skill,Health will automatically recover until it reaches 75.
+211001404,Odogaron Coil III,Waist,Odogaron Set III,7,7,Charge Up,2,New skill,Damage +8% when stamina gauge is full for 5s.
+211001404,Odogaron Coil III,Waist,Odogaron Set III,7,7,Rejuvenation,1,New skill,Health will automatically recover until it reaches 75.
+211001404,Odogaron Coil III,Waist,Odogaron Set III,7,10,Charge Up,3,Level up (Lv2 > Lv3),Damage +12% when stamina gauge is full for 5s.
+211001405,Odogaron Greaves III,Legs,Odogaron Set III,7,7,Charge Up,1,New skill,Damage +4% when stamina gauge is full for 5s.
+211001405,Odogaron Greaves III,Legs,Odogaron Set III,7,7,Weakspot Exploit,1,New skill,"When attacking weak points, affinity +4%."
+211001405,Odogaron Greaves III,Legs,Odogaron Set III,7,7,Recovery Booster,1,New skill,Increases Health recovery by 1.1x when healing.
+211001405,Odogaron Greaves III,Legs,Odogaron Set III,7,10,Charge Up,2,Level up (Lv1 > Lv2),Damage +8% when stamina gauge is full for 5s.
+211001901,Rath Heart Helm III,Head,Pink Rathian Set IV,9,9,Fire Damage Up,2,New skill,"Fire damage +6%; against Radiant monsters, fire damage +15% instead."
+211001901,Rath Heart Helm III,Head,Pink Rathian Set IV,9,9,Hunting Instinct,1,New skill,"While active, increases damage by 4% for 120s."
+211001901,Rath Heart Helm III,Head,Pink Rathian Set IV,9,9,Health Boost,1,New skill,Health +10.
+211001902,Rath Heart Mail III,Chest,Pink Rathian Set IV,9,9,Poison Resistance,2,New skill,Shortens the duration of poison by 60%.
+211001902,Rath Heart Mail III,Chest,Pink Rathian Set IV,9,9,Recovery Booster,1,New skill,Increases Health recovery by 1.1x when healing.
+211001903,Rath Heart Braces III,Arms,Pink Rathian Set IV,9,9,Capacity Boost,2,New skill,"After reloading, damage +8% for 30s."
+211001903,Rath Heart Braces III,Arms,Pink Rathian Set IV,9,9,Hunting Instinct,1,New skill,"While active, increases damage by 4% for 120s."
+211001903,Rath Heart Braces III,Arms,Pink Rathian Set IV,9,9,Recovery Booster,1,New skill,Increases Health recovery by 1.1x when healing.
+211001904,Rath Heart Coil III,Waist,Pink Rathian Set IV,9,9,Capacity Boost,2,New skill,"After reloading, damage +8% for 30s."
+211001904,Rath Heart Coil III,Waist,Pink Rathian Set IV,9,9,Insight,1,New skill,Affinity +2%.
+211001904,Rath Heart Coil III,Waist,Pink Rathian Set IV,9,9,Health Boost,1,New skill,Health +10.
+211001905,Rath Heart Greaves III,Legs,Pink Rathian Set IV,9,9,Instinct,1,New skill,Prevents attacks from being deflected.
+211001905,Rath Heart Greaves III,Legs,Pink Rathian Set IV,9,9,Spirit Bind Blade,2,New skill,"Upon activation, damage +7% for 30s."
+211001905,Rath Heart Greaves III,Legs,Pink Rathian Set IV,9,9,Recovery Booster,1,New skill,Increases Health recovery by 1.1x when healing.
+211011001,Radiant Lumu Hat III,Head,Radiant Paolumu Set IV,9,9,Charged Power Shot,1,New skill,"While active, damage +5%."
+211011001,Radiant Lumu Hat III,Head,Radiant Paolumu Set IV,9,9,Item Master,1,New skill,Increases effect duration by 1.1x.
+211011001,Radiant Lumu Hat III,Head,Radiant Paolumu Set IV,9,9,Blessing,1,New skill,"When taking damage, has a 25% chance to reduce that damage by 15%."
+211011002,Radiant Lumu Mail III,Chest,Radiant Paolumu Set IV,9,9,Grace Under Pressure,2,New skill,"While active, increases defense by 40."
+211011002,Radiant Lumu Mail III,Chest,Radiant Paolumu Set IV,9,9,Item Master,1,New skill,Increases effect duration by 1.1x.
+211011003,Radiant Lumu Vambraces III,Arms,Radiant Paolumu Set IV,9,9,Charged Power Shot,2,New skill,"While active, damage +9%."
+211011003,Radiant Lumu Vambraces III,Arms,Radiant Paolumu Set IV,9,9,Ballistics,1,New skill,Shortens the distance before ammo and arrows reach maximum power.
+211011003,Radiant Lumu Vambraces III,Arms,Radiant Paolumu Set IV,9,9,Gathering Master,1,New skill,Speeds up gathering and prevents stagger while gathering.
+211011004,Radiant Lumu Coil III,Waist,Radiant Paolumu Set IV,9,9,Airborne,3,New skill,Airborne attack damage +14%.
+211011004,Radiant Lumu Coil III,Waist,Radiant Paolumu Set IV,9,9,Item Master,1,New skill,Increases effect duration by 1.1x.
+211011005,Radiant Lumu Greaves III,Legs,Radiant Paolumu Set IV,9,9,Airborne,2,New skill,Airborne attack damage +9%.
+211011005,Radiant Lumu Greaves III,Legs,Radiant Paolumu Set IV,9,9,Radiant Sense,1,New skill,"While active, damage +4%."
+211011005,Radiant Lumu Greaves III,Legs,Radiant Paolumu Set IV,9,9,Blessing,1,New skill,"When taking damage, has a 25% chance to reduce that damage by 15%."
+211011401,Radiant Odogaron Helm III,Head,Radiant Odogaron Set IV,10,10,Charge Up,3,New skill,Damage +12% when stamina gauge is full for 5s.
+211011401,Radiant Odogaron Helm III,Head,Radiant Odogaron Set IV,10,10,Rejuvenation,1,New skill,Health will automatically recover until it reaches 75.
+211011402,Radiant Odogaron Mail III,Chest,Radiant Odogaron Set IV,10,10,Combo Enhancement,3,New skill,Landing 5 hits within 3s increases damage by 12% for 12s.
+211011402,Radiant Odogaron Mail III,Chest,Radiant Odogaron Set IV,10,10,Rejuvenation,1,New skill,Health will automatically recover until it reaches 75.
+211011403,Radiant Odogaron Vambraces III,Arms,Radiant Odogaron Set IV,10,10,Demonic Strength,2,New skill,"While active, damage +8%."
+211011403,Radiant Odogaron Vambraces III,Arms,Radiant Odogaron Set IV,10,10,Health Cycle,1,New skill,Recovers 2 health. Can only trigger once every 8s.
+211011403,Radiant Odogaron Vambraces III,Arms,Radiant Odogaron Set IV,10,10,Instinct,1,New skill,Prevents attacks from being deflected.
+211011404,Radiant Odogaron Coil III,Waist,Radiant Odogaron Set IV,10,10,Demonic Strength,2,New skill,"While active, damage +8%."
+211011404,Radiant Odogaron Coil III,Waist,Radiant Odogaron Set IV,10,10,Health Cycle,1,New skill,Recovers 2 health. Can only trigger once every 8s.
+211011404,Radiant Odogaron Coil III,Waist,Radiant Odogaron Set IV,10,10,Relentless Pursuit,1,New skill,"While active, damage +4% for 15s."
+211011405,Radiant Odogaron Greaves III,Legs,Radiant Odogaron Set IV,10,10,Rejuvenation,1,New skill,Health will automatically recover until it reaches 75.
+211011405,Radiant Odogaron Greaves III,Legs,Radiant Odogaron Set IV,10,10,Health Boost,2,New skill,Health +20.
+211011901,Radiant Rath Heart Helm IV,Head,Radiant Pink Rathian Set V,12,12,Unshaken Resolve,1,New skill,"While active, damage +3%. Reduces the duration of Radiant Frenzy's negative effect by 20%."
+211011901,Radiant Rath Heart Helm IV,Head,Radiant Pink Rathian Set V,12,12,Critical Element,2,New skill,Increases elemental damage by 10% when landing critical hits.
+211011901,Radiant Rath Heart Helm IV,Head,Radiant Pink Rathian Set V,12,12,Grace Under Pressure,1,New skill,"While active, increases defense by 20."
+211011902,Radiant Rath Heart Mail IV,Chest,Radiant Pink Rathian Set V,12,12,Unshaken Resolve,2,New skill,"While active, damage +6%. Reduces the duration of Radiant Frenzy's negative effect by 50%."
+211011902,Radiant Rath Heart Mail IV,Chest,Radiant Pink Rathian Set V,12,12,Grace Under Pressure,1,New skill,"While active, increases defense by 20."
+211011902,Radiant Rath Heart Mail IV,Chest,Radiant Pink Rathian Set V,12,12,Critical Element,1,New skill,Increases elemental damage by 5% when landing critical hits.
+211011903,Radiant Rath Heart Braces IV,Arms,Radiant Pink Rathian Set V,12,12,Insight,2,New skill,Affinity +4%.
+211011903,Radiant Rath Heart Braces IV,Arms,Radiant Pink Rathian Set V,12,12,Unshaken Resolve,1,New skill,"While active, damage +3%. Reduces the duration of Radiant Frenzy's negative effect by 20%."
+211011903,Radiant Rath Heart Braces IV,Arms,Radiant Pink Rathian Set V,12,12,Grace Under Pressure,1,New skill,"While active, increases defense by 20."
+211011904,Radiant Rath Heart Coil IV,Waist,Radiant Pink Rathian Set V,12,12,Recovery Booster,1,New skill,Increases Health recovery by 1.1x when healing.
+211011904,Radiant Rath Heart Coil IV,Waist,Radiant Pink Rathian Set V,12,12,Poison Resistance,2,New skill,Shortens the duration of poison by 60%.
+211011905,Radiant Rath Heart Greaves IV,Legs,Radiant Pink Rathian Set V,12,12,Recovery Booster,1,New skill,Increases Health recovery by 1.1x when healing.
+211011905,Radiant Rath Heart Greaves IV,Legs,Radiant Pink Rathian Set V,12,12,Capacity Boost,3,New skill,"After reloading, damage +12% for 30s."
+211081501,Hunter's Headgear III,Head,Hunter Set I,2,2,Insight,1,New skill,Affinity +2%.
+211081501,Hunter's Headgear III,Head,Hunter Set I,2,5,Geo Expert,1,New skill,Allows you to gather 1 extra time from bonepiles.
+211081501,Hunter's Headgear III,Head,Hunter Set I,2,7,Health Recovery,1,New skill,Increases the recovery speed of gray health by 2x.
+211081502,Hunter's Mail III,Chest,Hunter Set I,2,2,Improviser,1,New skill,Interactables restore an additional 50 health.
+211081502,Hunter's Mail III,Chest,Hunter Set I,2,5,Ammo Enhancement,1,New skill,"Damage +3% for Normal Ammo, Spread Ammo, and Pierce Ammo."
+211081502,Hunter's Mail III,Chest,Hunter Set I,2,7,Ammo Enhancement,2,Level up (Lv1 > Lv2),"Damage +7% for Normal Ammo, Spread Ammo, and Pierce Ammo."
+211081502,Hunter's Mail III,Chest,Hunter Set I,2,9,Weakspot Exploit,1,New skill,"When attacking weak points, affinity +4%."
+211081503,Hunter's Vambraces III,Arms,Hunter Set I,2,2,Specimen Expert,1,New skill,Increases the chance of a corpse being left behind.
+211081503,Hunter's Vambraces III,Arms,Hunter Set I,2,5,Health Recovery,1,New skill,Increases the recovery speed of gray health by 2x.
+211081504,Hunter's Coil III,Waist,Hunter Set I,2,2,Ammo Enhancement,1,New skill,"Damage +3% for Normal Ammo, Spread Ammo, and Pierce Ammo."
+211081504,Hunter's Coil III,Waist,Hunter Set I,2,5,Geo Expert,1,New skill,Allows you to gather 1 extra time from bonepiles.
+211081504,Hunter's Coil III,Waist,Hunter Set I,2,7,Ammo Enhancement,2,Level up (Lv1 > Lv2),"Damage +7% for Normal Ammo, Spread Ammo, and Pierce Ammo."
+211081504,Hunter's Coil III,Waist,Hunter Set I,2,9,Weakspot Exploit,1,New skill,"When attacking weak points, affinity +4%."
+211081505,Hunter's Greaves III,Legs,Hunter Set I,2,2,Insight,1,New skill,Affinity +2%.
+211081505,Hunter's Greaves III,Legs,Hunter Set I,2,5,Master Climber,1,New skill,Reduces stamina depletion by 25%.
+212001801,Diablos Nero Helm IV,Head,Black Diablos Set VI,13,13,Dragon Damage Up,2,New skill,"Dragon damage +6%; against Radiant monsters, dragon damage +15% instead."
+212001801,Diablos Nero Helm IV,Head,Black Diablos Set VI,13,13,Fearless,1,New skill,"While active, damage +3%."
+212001801,Diablos Nero Helm IV,Head,Black Diablos Set VI,13,13,Guard Technique,1,New skill,Very slightly decreases the impact of attacks.
+212001802,Diablos Nero Mail IV,Chest,Black Diablos Set VI,13,13,Morph Boost,2,New skill,"Upon activation, damage +7% for 60s."
+212001802,Diablos Nero Mail IV,Chest,Black Diablos Set VI,13,13,Fearless,1,New skill,"While active, damage +3%."
+212001802,Diablos Nero Mail IV,Chest,Black Diablos Set VI,13,13,Guard Technique,1,New skill,Very slightly decreases the impact of attacks.
+212001803,Diablos Nero Vambraces IV,Arms,Black Diablos Set VI,13,13,Stun Resistance,2,New skill,Shortens the duration of stun by 90%.
+212001803,Diablos Nero Vambraces IV,Arms,Black Diablos Set VI,13,13,Tremor Resistance,1,New skill,Nullifies minor ground tremors.
+212001804,Diablos Nero Coil IV,Waist,Black Diablos Set VI,13,13,Dragon Damage Up,3,New skill,"Dragon damage +9%; against Radiant monsters, dragon damage +23% instead."
+212001804,Diablos Nero Coil IV,Waist,Black Diablos Set VI,13,13,Stun Resistance,1,New skill,Shortens the duration of stun by 60%.
+212001805,Diablos Nero Greaves IV,Legs,Black Diablos Set VI,13,13,Stamina Conversion,3,New skill,"When this skill activates, the triggering attack's damage +14%."
+212001805,Diablos Nero Greaves IV,Legs,Black Diablos Set VI,13,13,Guard Technique,1,New skill,Very slightly decreases the impact of attacks.
+212011501,Radiant Rathalos Helm III,Head,Radiant Rathalos Set V,11,11,Deterrence,2,New skill,Highly discourages monsters from engaging after being spotted.
+212011501,Radiant Rathalos Helm III,Head,Radiant Rathalos Set V,11,11,Suppression Recovery,1,New skill,"While active, recovers 5 health, with a minimum interval of 3s."
+212011502,Radiant Rathalos Mail III,Chest,Radiant Rathalos Set V,11,11,Wrecker,2,New skill,"While active, damage +7% for 60s."
+212011502,Radiant Rathalos Mail III,Chest,Radiant Rathalos Set V,11,11,Critical Element,1,New skill,Increases elemental damage by 5% when landing critical hits.
+212011502,Radiant Rathalos Mail III,Chest,Radiant Rathalos Set V,11,11,Suppression Recovery,1,New skill,"While active, recovers 5 health, with a minimum interval of 3s."
+212011503,Radiant Rathalos Vambraces III,Arms,Radiant Rathalos Set V,11,11,Fire Damage Up,3,New skill,"Fire damage +9%; against Radiant monsters, fire damage +23% instead."
+212011503,Radiant Rathalos Vambraces III,Arms,Radiant Rathalos Set V,11,11,Suppression Recovery,1,New skill,"While active, recovers 5 health, with a minimum interval of 3s."
+212011504,Radiant Rathalos Coil III,Waist,Radiant Rathalos Set V,11,11,Charge Enhancement,3,New skill,"Upon activation, damage +12% for 15s."
+212011504,Radiant Rathalos Coil III,Waist,Radiant Rathalos Set V,11,11,Deterrence,1,New skill,Discourages monsters from engaging after being spotted.
+212011505,Radiant Rathalos Greaves III,Legs,Radiant Rathalos Set V,11,11,Adversity,1,New skill,Each faint increases damage by x1.1 and defense by +10.
+212011505,Radiant Rathalos Greaves III,Legs,Radiant Rathalos Set V,11,11,Fire Damage Up,2,New skill,"Fire damage +6%; against Radiant monsters, fire damage +15% instead."
+212011505,Radiant Rathalos Greaves III,Legs,Radiant Rathalos Set V,11,11,Critical Element,1,New skill,Increases elemental damage by 5% when landing critical hits.
+212011601,Radiant Diablos Helm III,Head,Radiant Diablos Set V,11,11,Tremor Resistance,1,New skill,Nullifies minor ground tremors.
+212011601,Radiant Diablos Helm III,Head,Radiant Diablos Set V,11,11,Pierce,2,New skill,"After hitting the same part 3 times within 8s, damage +7% for 30s."
+212011601,Radiant Diablos Helm III,Head,Radiant Diablos Set V,11,11,Battle Spirit,1,New skill,"While active, affinity +3%."
+212011602,Radiant Diablos Mail III,Chest,Radiant Diablos Set V,11,11,Defense Up,1,New skill,Defense +5
+212011602,Radiant Diablos Mail III,Chest,Radiant Diablos Set V,11,11,Bento Lover,3,New skill,"While active, damage +12% for 30s."
+212011603,Radiant Diablos Vambraces III,Arms,Radiant Diablos Set V,11,11,Pierce,2,New skill,"After hitting the same part 3 times within 8s, damage +7% for 30s."
+212011603,Radiant Diablos Vambraces III,Arms,Radiant Diablos Set V,11,11,Battle Spirit,1,New skill,"While active, affinity +3%."
+212011603,Radiant Diablos Vambraces III,Arms,Radiant Diablos Set V,11,11,Defense Up,1,New skill,Defense +5
+212011604,Radiant Diablos Coil III,Waist,Radiant Diablos Set V,11,11,Flash Draw,3,New skill,"While active, damage +12% for 30s."
+212011604,Radiant Diablos Coil III,Waist,Radiant Diablos Set V,11,11,Tremor Resistance,1,New skill,Nullifies minor ground tremors.
+212011605,Radiant Diablos Greaves III,Legs,Radiant Diablos Set V,11,11,Tremor Resistance,1,New skill,Nullifies minor ground tremors.
+212011605,Radiant Diablos Greaves III,Legs,Radiant Diablos Set V,11,11,Defense Up,2,New skill,Defense +10
+212011801,Radiant Diablos Nero Helm IV,Head,Radiant Black Diablos Set VI,14,14,Sturdy Guard,1,New skill,Allows you to guard against ordinarily unblockable attacks.
+212011801,Radiant Diablos Nero Helm IV,Head,Radiant Black Diablos Set VI,14,14,Tremor Resistance,2,New skill,Nullifies minor ground tremors and reduces the effects of major ground tremors.
+212011802,Radiant Diablos Nero Mail IV,Chest,Radiant Black Diablos Set VI,14,14,Radiant Power Surge,1,New skill,Reduces max health by 5%. Damage +3%.
+212011802,Radiant Diablos Nero Mail IV,Chest,Radiant Black Diablos Set VI,14,14,Insight,2,New skill,Affinity +4%.
+212011802,Radiant Diablos Nero Mail IV,Chest,Radiant Black Diablos Set VI,14,14,Suppression Recovery,1,New skill,"While active, recovers 5 health, with a minimum interval of 3s."
+212011803,Radiant Diablos Nero Vambraces IV,Arms,Radiant Black Diablos Set VI,14,14,Offensive Defense,3,New skill,"After activation, damage +12% for 30s."
+212011803,Radiant Diablos Nero Vambraces IV,Arms,Radiant Black Diablos Set VI,14,14,Tremor Resistance,1,New skill,Nullifies minor ground tremors.
+212011804,Radiant Diablos Nero Coil IV,Waist,Radiant Black Diablos Set VI,14,14,Radiant Power Surge,2,New skill,Reduces max health by 10%. Damage +6%.
+212011804,Radiant Diablos Nero Coil IV,Waist,Radiant Black Diablos Set VI,14,14,Suppression Recovery,1,New skill,"While active, recovers 5 health, with a minimum interval of 3s."
+212011804,Radiant Diablos Nero Coil IV,Waist,Radiant Black Diablos Set VI,14,14,Insight,1,New skill,Affinity +2%.
+212011805,Radiant Diablos Nero Greaves IV,Legs,Radiant Black Diablos Set VI,14,14,Insight,2,New skill,Affinity +4%.
+212011805,Radiant Diablos Nero Greaves IV,Legs,Radiant Black Diablos Set VI,14,14,Radiant Power Surge,1,New skill,Reduces max health by 5%. Damage +3%.
+212011805,Radiant Diablos Nero Greaves IV,Legs,Radiant Black Diablos Set VI,14,14,Suppression Recovery,1,New skill,"While active, recovers 5 health, with a minimum interval of 3s."

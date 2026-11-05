@@ -1,0 +1,153 @@
+﻿Adventurer,Skill,Type,Description,Icon
+Pyro,Charged Slash,Damage / Basic Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwo_Attack.png
+Pyro,Heat Tackle,Guard / React,,MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwoA01_GuardSystem.png
+Pyro,Reckless Charge Slash,Dash,,MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwoA01_WildRushSlash.png
+Pyro,Fortifying Slash,Damage / Burst,,MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwoA01_UnyieldingFury.png
+Pyro,Peerless V-Slash,Control,,MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwoA01_SupremeVCutter.png
+Pyro,Blazing Fury,Damage / Attack,,MHMobile/Content/UI/Dynamic/RoleHeadIcon/Two/RoleHeadIcon_MTwoA01.png
+Pyro,Evade,Dash,,MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png
+Pyro,Fortifying Follow-Up,Dash,,MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png
+Freya,Evade,Dash,,MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png
+Freya,Charged Slash,Damage / Basic Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwo_Attack.png
+Freya,Guard,Guard / React,,MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_FTwoA03_SheathedStance.png
+Freya,Spiral Sheathe,Damage / Burst,,MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_FTwoA03_SpiralSheath.png
+Freya,Blazing Anchor,Damage / Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_FTwoA03_RebirthUppercut.png
+Freya,Blazing Soul Incineration,Damage / Attack,,MHMobile/Content/UI/Dynamic/RoleHeadIcon/Two/RoleHeadIcon_FTwoA03.png
+Freya,Flameblade Burst,Damage / Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_FTwoA03_Sever.png
+Freya,Flameblade Burst,Damage / Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_FTwoA03_Sever.png
+Freya,Inner Flame Vulnerability,Damage / Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_FTwoA03_Sever.png
+Luxheart,Charged Slash,Damage / Basic Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwo_Attack.png
+Luxheart,Evade,Dash,,MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png
+Luxheart,Guard,Guard / React,,MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwoA02_Guard.png
+Luxheart,Starlight Burst,Guard / Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwoA02_Starburst.png
+Luxheart,Grand Performance,Burst,,MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwoA02_Showtime.png
+Luxheart,Heating Up,Guard / Control,,MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwoA02_Partner.png
+Luxheart,Starlight Devastation,Guard,,MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwoA02_Partner.png
+Luxheart,Perfect Partners,Guard,,MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwoA02_Partner.png
+Luxheart,Perfect Partners,Guard,,MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwoA02_Partner.png
+Midori,Chain Slash,Charge / Basic Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Swo/SkillIcon_MSwo_Attack.png
+Midori,Spirit Slash,Enhance / Attack,"Midori quickly dashes forward, then performs a horizontal slash.
+If the slash lands, tap Basic Attack again at the right moment to unleash Spirit Roundslash, increasing the Spirit Gauge level by 1.",MHMobile/Content/UI/Dynamic/SkillIcon/Swo/SkillIcon_MSwo_AirBlade.png
+Midori,Blade of Truth,Enhance / Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Swo/SkillIcon_FSwoA01_AssaultSlash.png
+Midori,Moment of Insight,Burst,,MHMobile/Content/UI/Dynamic/SkillIcon/Swo/SkillIcon_FSwoA01_OneStringTuning.png
+Midori,Felyne Draw Technique,Control,,MHMobile/Content/UI/Dynamic/SkillIcon/Swo/SkillIcon_FSwoA01_Resonance.png
+Midori,Final Curtain,Burst,,MHMobile/Content/UI/Dynamic/RoleHeadIcon/Swo/RoleHeadIcon_FSwoA01.png
+Midori,Evade,Dash,,MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png
+Midori,Instant Follow-Up,Dash,,MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png
+Ryunosuke,Chain Slash,Damage / Basic Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Swo/SkillIcon_MSwo_Attack.png
+Ryunosuke,Evade,Dash,,MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png
+Ryunosuke,Spirit Slash,Damage / Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Swo/SkillIcon_FSwoA04_Strike.png
+Ryunosuke,Inebriated,Damage / React,,MHMobile/Content/UI/Dynamic/SkillIcon/Swo/SkillIcon_FSwoA04_Drink.png
+Ryunosuke,Piercing Flavors,Damage / Burst,,MHMobile/Content/UI/Dynamic/SkillIcon/Swo/SkillIcon_FSwoA04_Feast.png
+Ryunosuke,Hunger Slash,Damage,,MHMobile/Content/UI/Dynamic/SkillIcon/Swo/SkillIcon_FSwoA04_Bite.png
+Ryunosuke,Hunger Slash,Damage,,MHMobile/Content/UI/Dynamic/SkillIcon/Swo/SkillIcon_FSwoA04_Bite.png
+Ryunosuke,Grand Feast,Recharge,,MHMobile/Content/UI/Dynamic/SkillIcon/Swo/SkillIcon_MSwo_Lunge.png
+Ryunosuke,Myriad Flavors Charge,Recharge,,MHMobile/Content/UI/Dynamic/SkillIcon/Swo/SkillIcon_MSwo_Lunge.png
+Keres,Chain Slash,Damage / Basic Attack,"Keres swings her dual blades, performing up to 4 consecutive attacks on the target.
+While in Fanged Demon Mode, her movement speed and attack are enhanced, she becomes immune to knockback, and her attacks fill her Demon Gauge on hit.",MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_MSou_Attack.png
+Keres,Lupine Demon Mode,Damage / Enhance,,MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_FSouA01_SpectralSlash.png
+Keres,Evasive Fang,Damage / React,,MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_FSouA01_EvadeBite.png
+Keres,Wolf Howl,Burst,,MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_FSouA01_WailingAndHowling1.png
+Keres,Spiral Onslaught,Dash,,MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_MSou_DemonEndTrick.png
+Keres,Spiral Onslaught,Dash,,MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_MSou_DemonEndTrick.png
+Keres,Bone Frenzy,Disruptor / Attack,,MHMobile/Content/UI/Dynamic/RoleHeadIcon/Sou/RoleHeadIcon_FSouA01.png
+Keres,Evade,Dash,,MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png
+Keres,Feral Intimidation,Damage / Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_FSouA01_SpiralSlash.png
+Raya,Chain Slash,Damage / Basic Attack,"Raya swings her dual blades, striking the target up to 4 times in succession.
+While in Predator Demon Mode, Raya's basic attacks have a different attack pattern and increased power.",MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_MSou_Attack.png
+Raya,Demon Mode,Enhance,,MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_FSouA03_DemonPlunderOn.png
+Raya,Whirling Dance,Parry / React,,MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_FSouA03_Incense.png
+Raya,Chain Dance,Damage / Burst,,MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_FSouA03_Excavate.png
+Raya,Returning Dance,Control,,MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_FSouA03_DanceContinuously.png
+Raya,Returning Dance,Control,,MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_FSouA03_DanceContinuously.png
+Raya,Berserker Dance,Control,,MHMobile/Content/UI/Dynamic/RoleHeadIcon/Sou/RoleHeadIcon_FSouA03.png
+Raya,Evade,Dash,,MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png
+Raya,Whirling Intimidation,Control,,MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_FSouA03_CrazyDance.png
+Haze,Chain Slash,Damage / Basic Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_MSou_Attack.png
+Haze,Demon Mode,Enhance,,MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_MSou_Attack.png
+Haze,Circling Chain Slash,Dash,,MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_MSou_Attack.png
+Haze,Waning Moon Slash,Burst,,MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_MSou_Attack.png
+Haze,Evade,Dash,,MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_MSou_Attack.png
+Haze,Scarlet Mark,Enhance,,MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_MSou_Attack.png
+Haze,Windrending Strike,Damage,,MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_MSou_Attack.png
+Haze,Windrending Strike,Damage,,MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_MSou_Attack.png
+Haze,Waning Moon Charge,Damage,,MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_MSou_Attack.png
+Ouyang Varen,Thrust,Damage / Basic Attack,"Perform a triple thrust in the lock-on direction. If the lock-on point is high, the thrusts will automatically aim upward. The final thrust has a longer wind-up, resulting in higher damage and better performance. Can be chained up to 3 times.
+If the third thrust connects and is chained into Charge Thrust, it increases Charge Thrust's charge level by 1.",MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLan_Attack.png
+Ouyang Varen,Piercing Thrust,Burst,"Hold Skill 3 to charge up to level 3, then release to lunge in the chosen direction. Higher charge levels increase both lunge damage and distance.
+If the charge level is 2 or higher, the attack has Unwavering.
+The charge level can be carried over from other skills, but will be reset if idle or guarding for too long.
+After performing Charge Thrust, tap Skill 2 to chain into Powerful Sweep. Powerful Sweep inherits Charge Thrust's charge level, dealing higher damage and restoring more stamina at higher levels.
+
+Rapid Thrust consumes 30–60 stamina.",MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLanA01_RapidSpike.png
+Ouyang Varen,Defensive Maneuver,Parry / React,"Quickly move backward or in the input direction, with a window for negating monster attacks.
+If chained into Skill 3: Charge Thrust, the charge level bonus from other skills will be carried over. If Defensive Maneuver's jump evades a monster attack, Charge Thrust's charge level is further increased by 1.
+After using Defensive Maneuver, tap Skill 2 again to chain into Strong Wide Slash, quickly closing in on the monster and dealing damage.
+Defensive Maneuver consumes 20 stamina.",MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLanA01_TurnbackJumpAttack.png
+Ouyang Varen,Earthshaker,Control,,MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLanA01_SkywardSpike.png
+Ouyang Varen,Defensive Maneuver,Control,,MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLan_ManCarSprint.png
+Ouyang Varen,Earthshaker,Control,,MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLanA01_SkywardSpike.png
+Ouyang Varen,Sentinel Thrust,Burst,Consume 100 Ultimate Energy to charge up and unleash a series of consecutive attacks.,MHMobile/Content/UI/Dynamic/RoleHeadIcon/Lan/RoleHeadIcon_MLanA01.png
+Ouyang Varen,Evade,Dash,,MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLan_GunRolling.png
+Ouyang Varen,Defensive Stance,Guard / React,"Ouyang Varen swiftly moves in front of a squad member and raises his shield, granting squad members within 5 meters invulnerability for 5s.
+After a successful guard, Ouyang Varen will perform guard bash, raising his shield and dashing forward to deal damage. During this time, squad members within 5 meters can tap Basic Attack to perform a Perfect Evade Counter.",MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLanA01_Defense.png
+Ouyang Varen,Breaching Follow-Up,Damage / Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLanA01_RapidSpike.png
+Pepper,Shoot,Damage / Basic Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Hbg/SkillIcon_MHbg_OrdinaryBullet.png
+Pepper,Bouncy Dash,Dash,,MHMobile/Content/UI/Dynamic/SkillIcon/Hbg/SkillIcon_FHbgA02_JumpSprint.png
+Pepper,Pressurized Blast,Damage / Burst,,MHMobile/Content/UI/Dynamic/SkillIcon/Hbg/SkillIcon_FHbgA01_AirBomb.png
+Pepper,"Fluffy, Attack!",Control,,MHMobile/Content/UI/Dynamic/RoleHeadIcon/Hbg/RoleHeadIcon_FHbgA01.png
+Pepper,Evade,Dash,,MHMobile/Content/UI/Dynamic/SkillIcon/Hbg/SkillIcon_MHbg_SpecialRoll.png
+Pepper,Guard,Guard / React,,MHMobile/Content/UI/Dynamic/SkillIcon/Hbg/SkillIcon_MHbg_Counterattack.png
+Pepper,Aerial Waltz,Control,,MHMobile/Content/UI/Dynamic/SkillIcon/Hbg/SkillIcon_MHbg_Teamwork.png
+Pepper,Aerial Waltz,Control,,MHMobile/Content/UI/Dynamic/SkillIcon/Hbg/SkillIcon_MHbg_Teamwork.png
+Pepper,Devastating Pressure,Control,,MHMobile/Content/UI/Dynamic/SkillIcon/Hbg/SkillIcon_MHbg_Teamwork.png
+Madelyn,Rapid Fire,Damage / Basic Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_MBow_Attack.png
+Madelyn,Slide Shot,Damage / Dash,,MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_MBow_SlideShoot.png
+Madelyn,Catalyst Burst,Burst / Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_FBowA02_Activating.png
+Madelyn,Spore Adhesion,Charge / Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_FBowA02_SporeAttachment.png
+Madelyn,Leaping Arrow,Control,,MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_FBowA02_TwoStageJumpShot.png
+Madelyn,Leaping Arrow,Control,,MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_FBowA02_TwoStageJumpShot.png
+Madelyn,Stellar Injection,Heal,,MHMobile/Content/UI/Dynamic/RoleHeadIcon/Bow/RoleHeadIcon_FBowA02.png
+Madelyn,Piercing Shot,Dash,,MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png
+Madelyn,Violet Plume Charge,Damage / Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_FBowA02_TwoStageJumpShot.png
+Luka,Rapid Fire,Basic Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_MBow_Attack.png
+Luka,Thunderous Spin,Dash,,MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_MBowA03_LightningFlash.png
+Luka,Arc Slash,Dash,,MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_MBowA03_ShiftSlide.png
+Luka,Swift Volley,Burst,,MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_MBowA03_Kamaitachi.png
+Luka,Voltic Volley,Burst,,MHMobile/Content/UI/Dynamic/RoleHeadIcon/Bow/RoleHeadIcon_FBowA03.png
+Luka,Evade,,,MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png
+Luka,Felyne Arrow,Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_MBowA03_CatArrow.png
+Luka,Felyne Arrow,Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_MBowA03_CatArrow.png
+Luka,Swift Follow-Up,Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_MBow_Attack.png
+Stylia,Rapid Fire,Basic Attack,"Tap Basic Attack to fire an arrow at a longer range.
+Hold Basic Attack to charge, up to 4 charge levels.
+During the Prelude Phase and Resonance Phase, each shot that hits the monster increases Performance Frequency by 5 and raises the charge level by 1, up to 4 charge levels.
+During the Elegy Phase, each shot that hits the monster raises the charge level by 1, up to 4 charge levels.",MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_FBowA04_Attack.png
+Stylia,Waltz,Dash,,MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_FBowA04_HoarfrostMelody.png
+Stylia,Swan Step,Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_FBowA04_SnowLeapShot.png
+Stylia,Double Lutz,Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_FBowA04_FeatherVolley.png
+Stylia,Princess's Flight,Attack,"Tap Co-op Skill, and Stylia begins to play, striking up a rousing melody. Inspired, the Buddy joins other companions in charging the monster, dealing damage while Stylia enters Resonance Phase.
+If Co-op Skill hits the co-op focus part, co-op phase increases.",MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_FBowA04_SoaringWing.png
+Stylia,Princess's Flight,Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_FBowA04_SoaringWing.png
+Stylia,Royal Salutation,,"Tap Ultimate to have Stylia continuously play a harp concerto. The 1st strum during the performance grants all squad members 1 stack of a buff that increases all elemental damage by 6%. The 2nd strum grants all squad members 2 stacks of a buff that increases all elemental damage by 6%, up to 3 stacks. When the performance begins, Stylia's Resonance Phase window expands by 20%, lasting 15s.",MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_FBowA04_ChordCeremony.png
+Stylia,Evade,,"Tap Roll to evade the monster's attack in the direction indicated by the joystick.
+Successfully performing a Perfect Evade grants 0.5s of invincibility.",MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png
+Stylia,Resonance Charge,,,MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png
+Arkaya,Thrust,Damage / Basic Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLan_Attack.png
+Arkaya,Boulder Stance,Guard / React,,MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLanA02_PikeStance.png
+Arkaya,Driving Assault,Damage / Dash,,MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLanA02_ShieldRush.png
+Arkaya,Relentless Thrust,Burst,,MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLanA02_HundredStabs.png
+Arkaya,Evade,,,MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLan_GunRolling.png
+Arkaya,Indomitable Oath,Shield,,MHMobile/Content/UI/Dynamic/RoleHeadIcon/Lan/RoleHeadIcon_MLanA02.png
+Arkaya,Falcon Thrust,Damage / Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLanA02_ResonanceThrust.png
+Arkaya,Falcon Thrust,Damage / Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLanA02_ResonanceThrust.png
+Arkaya,Battle Spirit Charge,Damage / Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLanA02_ResonanceThrust.png
+Rhodes,Overhead Smash,Basic Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Ham/SkillIcon_MHam_Attack.png
+Rhodes,Charge,Attack,,MHMobile/Content/UI/Dynamic/SkillIcon/Ham/SkillIcon_MHamA01_Charge.png
+Rhodes,Steam Stance,React,,MHMobile/Content/UI/Dynamic/RoleHeadIcon/Swo/RoleHeadIcon_FSwoA01.png
+Rhodes,Steam Skyrender,Burst,,MHMobile/Content/UI/Dynamic/SkillIcon/Ham/SkillIcon_MHamA01_Skill3.png
+Rhodes,Evade,,,MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png
+Rhodes,Mega Hammer,Attack,,MHMobile/Content/UI/Dynamic/RoleHeadIcon/Ham/RoleHeadIcon_MHamA01.png
+Rhodes,Felyne Flywheel Smash!,Control,,MHMobile/Content/UI/Dynamic/RoleHeadIcon/Swo/RoleHeadIcon_FSwoA01.png
+Rhodes,Felyne Flywheel Smash!,Control,,MHMobile/Content/UI/Dynamic/RoleHeadIcon/Swo/RoleHeadIcon_FSwoA01.png
+Rhodes,Steam Follow-Up,,,MHMobile/Content/UI/Dynamic/RoleHeadIcon/Swo/RoleHeadIcon_FSwoA01.png

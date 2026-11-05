@@ -34,6 +34,7 @@ function emptyForm(): ArmourPieceUpsert {
     set_name: null,
     set_variant: 'I',
     rarity: 1,
+    max_rarity: null,
     deco_slots: [1, 1],
     set_bonus: null,
     icon_m: null,

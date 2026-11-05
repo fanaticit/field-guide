@@ -98,9 +98,23 @@ export interface DBBuddy {
   image: string | null;
   is_active: boolean;
   notes: string | null;
+  /** Companion type, e.g. Felyne, Trillan or Rutaco. */
+  species?: string | null;
+  description?: string | null;
+  /** Adventurer this companion starts with. */
+  default_of_adventurer_id?: string | null;
   sort_order: number;
   created_at: string;
   updated_at: string;
+}
+
+export interface BuddySkill {
+  id: string;
+  buddy_id: string;
+  kind: 'skill' | 'passive' | 'other';
+  sort_order: number;
+  name: string;
+  description: string | null;
 }
 
 export type BuddyUpsert = Omit<DBBuddy, 'created_at' | 'updated_at'>;

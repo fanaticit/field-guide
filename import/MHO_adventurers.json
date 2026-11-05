@@ -1,0 +1,1390 @@
+[
+ {
+  "id": 101001,
+  "name": "Pyro",
+  "title": "Sword Inferno",
+  "rarity": "SSR",
+  "gender": "Male",
+  "weapon": "Great Sword",
+  "element": "Dragon",
+  "role": "Assault",
+  "age": "",
+  "height": "",
+  "description": "Pyro was once an untamed warrior obsessed with martial arts, rampaging wherever he pleased with his monstrous strength, desperate to break free from a life he found stifling.",
+  "background": "Pyro was once an untamed warrior obsessed with martial arts, rampaging wherever he pleased with his monstrous strength, desperate to break free from a life he found stifling.\nBut his reckless arrogance eventually came back to bite him: one careless act of hubris drew the attention of a monster, and though he fought it off at the cost of nearly his own life, his comrade's grievous wounds shattered his shallow understanding of \"strength.\" Crushed by helplessness, he sheathed his fangs and began forcing himself to master the very survival principles he once scorned.\nAfter countless trials, the former hothead transformed into an adventurer respected by all. To ensure he'd never repeat his mistake, he severed ties with his past, leaving his old comrades safely behind for good.\nNow, he stands alone before Freya.\n\"An adventurer, huh? That title suits me just fine!\"",
+  "playstyle": "Pyro is an Assault adventurer who wields the great sword, dealing primarily sever damage. His skills are enhanced when he takes damage. Skill 1: Heat Tackle will increase his Fervor Level after parrying an incoming hit. If he is hit while charging Skill 3, the skill is enhanced to deal significant damage.",
+  "default_buddy": "Alon",
+  "traits": [
+   {
+    "name": "Robust Physique",
+    "description": "While Pyro is airborne, damage dealt increases by 20%.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/Two/TraitIcon_MTwoA01_Exclusive.png"
+   },
+   {
+    "name": "Butcher",
+    "description": "Yields 1 additional material when carving large monsters. Takes effect as long as the Adventurer is in the squad.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Soc_Dissecting.png"
+   }
+  ],
+  "skills": [
+   {
+    "name": "Charged Slash",
+    "tags": "Damage / Basic Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwo_Attack.png"
+   },
+   {
+    "name": "Heat Tackle",
+    "tags": "Guard / React",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwoA01_GuardSystem.png"
+   },
+   {
+    "name": "Reckless Charge Slash",
+    "tags": "Dash",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwoA01_WildRushSlash.png"
+   },
+   {
+    "name": "Fortifying Slash",
+    "tags": "Damage / Burst",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwoA01_UnyieldingFury.png"
+   },
+   {
+    "name": "Peerless V-Slash",
+    "tags": "Control",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwoA01_SupremeVCutter.png"
+   },
+   {
+    "name": "Blazing Fury",
+    "tags": "Damage / Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Two/RoleHeadIcon_MTwoA01.png"
+   },
+   {
+    "name": "Evade",
+    "tags": "Dash",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png"
+   },
+   {
+    "name": "Fortifying Follow-Up",
+    "tags": "Dash",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Two/RoleHeadIcon_MTwoA01.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_MTwoA01.png",
+  "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_MTwoA01.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Two/RoleProfileIcon_MTwoA01.png",
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MTwoA01_ElementUnact.png"
+ },
+ {
+  "id": 101003,
+  "name": "Freya",
+  "title": "Blazing Heavens",
+  "rarity": "SSR",
+  "gender": "Female",
+  "weapon": "Great Sword",
+  "element": "Fire",
+  "role": "Disruptor",
+  "age": "",
+  "height": "",
+  "description": "The expansion of civilization is often accompanied by the wrath of the wilds; from childhood, Freya witnessed firsthand how difficult it was for all things to coexist amid endless conflict.",
+  "background": "The expansion of civilization is often accompanied by the wrath of the wilds; from childhood, Freya witnessed firsthand how difficult it was for all things to coexist amid endless conflict.\nFacing what seemed an unsolvable struggle, her mentor's teachings pointed her toward a path forward. She not only forged a blade to protect her homeland, but also etched the fearless fate of an adventurer into her very soul. In pursuit of true coexistence, she reforged the \"Crimson Crest Adventurers.\"\nWith exceptional leadership, she gathered talents from all walks of life under her banner, directing their exploration toward the deepest mysteries of the world.",
+  "playstyle": "Freya is a Disruptor adventurer who wields a great sword, dealing primarily sever damage. She can guard while quickly sheathing, or use the momentum to perform a powerful forward strike. Using Skill 3, Spiral Sheathe, she can quickly sheathe her weapon and leverage Inner Flame to rapidly chain into different slashes to respond to monster actions.",
+  "default_buddy": "Wrench",
+  "traits": [
+   {
+    "name": "Inner Flame",
+    "description": "Increases attack based on Inner Flame level:\nIncreases attack by 10 at Inner Flame Level 1.\nIncreases attack by 20 at Inner Flame Level 2.\nIncreases attack by 40 at Inner Flame Level 3.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/Two/TraitIcon_FTwoA03_Exclusive.png"
+   },
+   {
+    "name": "Carving Expert",
+    "description": "Yields 1 additional material when carving small monsters. Takes effect as long as the Adventurer is in the squad.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Soc_Effortless.png"
+   },
+   {
+    "name": "Fire Damage Up",
+    "description": "Increases fire damage by 10%.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Attribute_Fire.png"
+   }
+  ],
+  "skills": [
+   {
+    "name": "Evade",
+    "tags": "Dash",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png"
+   },
+   {
+    "name": "Charged Slash",
+    "tags": "Damage / Basic Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwo_Attack.png"
+   },
+   {
+    "name": "Guard",
+    "tags": "Guard / React",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_FTwoA03_SheathedStance.png"
+   },
+   {
+    "name": "Spiral Sheathe",
+    "tags": "Damage / Burst",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_FTwoA03_SpiralSheath.png"
+   },
+   {
+    "name": "Blazing Anchor",
+    "tags": "Damage / Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_FTwoA03_RebirthUppercut.png"
+   },
+   {
+    "name": "Blazing Soul Incineration",
+    "tags": "Damage / Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Two/RoleHeadIcon_FTwoA03.png"
+   },
+   {
+    "name": "Flameblade Burst",
+    "tags": "Damage / Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_FTwoA03_Sever.png"
+   },
+   {
+    "name": "Flameblade Burst",
+    "tags": "Damage / Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_FTwoA03_Sever.png"
+   },
+   {
+    "name": "Inner Flame Vulnerability",
+    "tags": "Damage / Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_FTwoA03_Sever.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Two/RoleHeadIcon_FTwoA03.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_FTwoA03.png",
+  "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_FTwoA03.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Two/RoleProfileIcon_FTwoA03.png",
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FTwoA03_ElementUnact.png"
+ },
+ {
+  "id": 101002,
+  "name": "Luxheart",
+  "title": "",
+  "rarity": "SR",
+  "gender": "Male",
+  "weapon": "Great Sword",
+  "element": "Thunder",
+  "role": "Disruptor",
+  "age": "",
+  "height": "",
+  "description": "Adventurer, or pyrotechnician? Why not both?\nAs a man with \"flamboyance\" etched into his very bones, Luxheart always claimed his travels were to \"explore the mysteries of nature.\"",
+  "background": "Adventurer, or pyrotechnician? Why not both?\nAs a man with \"flamboyance\" etched into his very bones, Luxheart's true reason for traveling the world was simply to show off... though publicly, he always claimed it was to \"explore the mysteries of nature.\"\nIt wasn't until one of his performances accidentally provoked a monster and caused chaos that he realized his oft-repeated phrase about \"exploring nature\" couldn't stay just words. If he wanted to coexist with monsters, he needed to truly understand this world.\nJust as he was preparing to embark on a genuine journey of exploration, an invitation from a guild arrived.\n\"No wonder you're the guild leader—you've an eye for talent!\"",
+  "playstyle": "",
+  "default_buddy": "Mac",
+  "traits": [],
+  "skills": [
+   {
+    "name": "Charged Slash",
+    "tags": "Damage / Basic Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwo_Attack.png"
+   },
+   {
+    "name": "Evade",
+    "tags": "Dash",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png"
+   },
+   {
+    "name": "Guard",
+    "tags": "Guard / React",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwoA02_Guard.png"
+   },
+   {
+    "name": "Starlight Burst",
+    "tags": "Guard / Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwoA02_Starburst.png"
+   },
+   {
+    "name": "Grand Performance",
+    "tags": "Burst",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwoA02_Showtime.png"
+   },
+   {
+    "name": "Heating Up",
+    "tags": "Guard / Control",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwoA02_Partner.png"
+   },
+   {
+    "name": "Starlight Devastation",
+    "tags": "Guard",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwoA02_Partner.png"
+   },
+   {
+    "name": "Perfect Partners",
+    "tags": "Guard",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwoA02_Partner.png"
+   },
+   {
+    "name": "Perfect Partners",
+    "tags": "Guard",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwoA02_Partner.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Two/RoleHeadIcon_MTwoA02.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_MTwoA02.png",
+  "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_MTwoA02.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Two/RoleProfileIcon_MTwoA02.png",
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MTwoA02_ElementUnact.png"
+ },
+ {
+  "id": 102002,
+  "name": "Midori",
+  "title": "Gorgeous Dancer",
+  "rarity": "SSR",
+  "gender": "Female",
+  "weapon": "Long Sword",
+  "element": "Fire",
+  "role": "Assault",
+  "age": "",
+  "height": "",
+  "description": "From a young age, Midori trained in both martial arts and music. Blessed with unmatched talent, she quickly distinguished herself on the path of the warrior.",
+  "background": "From a young age, Midori trained in both martial arts and music. Blessed with unmatched talent, she quickly distinguished herself on the path of the warrior.\nOne day, a traveling adventurer's tales of the wider world struck a chord deep within her.\n\"I don't actually know anything about this world.\"\nThe moment that thought took root, she left home without hesitation. She wandered far and wide, learning from many masters to experience the full breadth of martial arts.\nYet true combat never follows a written score. In a clash with a monster, she was gravely wounded and was fortunate to be rescued by a passing guild.\nWithin the guild, she honed her martial skills to even greater heights. Now, the melodies she plays carry a captivating, soul-stirring power.",
+  "playstyle": "Midori is an Assault adventurer who wields a long sword, dealing primarily sever damage. Hold Skill 1 to build up the Spirit Gauge, increasing the Spirit Gauge by 60% each time; landing a hit increases the Spirit Gauge Level by 1.\nTap Skill 1 and Skill 2 to consume the Spirit Gauge and raise the Spirit Gauge Level.",
+  "default_buddy": "Shadow",
+  "traits": [
+   {
+    "name": "Grand Entrance",
+    "description": "When consuming Spirit Gauge level, increases damage by 5% for 5s, up to 3 stacks.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/Swo/TraitIcon_FSwoA01_Exclusive.png"
+   },
+   {
+    "name": "Carving Expert",
+    "description": "Yields 1 additional material when carving small monsters. Takes effect as long as the Adventurer is in the squad.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Soc_Effortless.png"
+   },
+   {
+    "name": "Fire Damage Up",
+    "description": "Increases fire damage by 10%.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Attribute_Fire.png"
+   }
+  ],
+  "skills": [
+   {
+    "name": "Chain Slash",
+    "tags": "Charge / Basic Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Swo/SkillIcon_MSwo_Attack.png"
+   },
+   {
+    "name": "Spirit Slash",
+    "tags": "Enhance / Attack",
+    "description": "Midori quickly dashes forward, then performs a horizontal slash.\nIf the slash lands, tap Basic Attack again at the right moment to unleash Spirit Roundslash, increasing the Spirit Gauge level by 1.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Swo/SkillIcon_MSwo_AirBlade.png"
+   },
+   {
+    "name": "Blade of Truth",
+    "tags": "Enhance / Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Swo/SkillIcon_FSwoA01_AssaultSlash.png"
+   },
+   {
+    "name": "Moment of Insight",
+    "tags": "Burst",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Swo/SkillIcon_FSwoA01_OneStringTuning.png"
+   },
+   {
+    "name": "Felyne Draw Technique",
+    "tags": "Control",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Swo/SkillIcon_FSwoA01_Resonance.png"
+   },
+   {
+    "name": "Final Curtain",
+    "tags": "Burst",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Swo/RoleHeadIcon_FSwoA01.png"
+   },
+   {
+    "name": "Evade",
+    "tags": "Dash",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png"
+   },
+   {
+    "name": "Instant Follow-Up",
+    "tags": "Dash",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Swo/RoleHeadIcon_FSwoA01.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_FSwoA01.png",
+  "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_FSwoA01.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Swo/RoleProfileIcon_FSwoA01.png",
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FSwoA01_ElementUnact.png"
+ },
+ {
+  "id": 102004,
+  "name": "Ryunosuke",
+  "title": "Gluttonous Wanderer",
+  "rarity": "SR",
+  "gender": "Male",
+  "weapon": "Long Sword",
+  "element": "Fire",
+  "role": "Support",
+  "age": "",
+  "height": "",
+  "description": "Ryunosuke has always treated \"trouble\" as his sworn enemy, and only the finest delicacies could stir any hint of interest in him—but beneath that indolent exterior always lay the courage to draw his blade for his comrades.",
+  "background": "Ryunosuke has always treated \"trouble\" as his sworn enemy, content to live as a lazy drifter steeped in the comforts of everyday life. To most, only the finest delicacies could stir any hint of interest in him—but beneath that indolent exterior always lay the courage to draw his blade for his comrades.\nThat peaceful idleness was shattered the day news arrived that a close friend was in danger. Feigning annoyance, Ryunosuke stretched lazily and tossed out a flimsy excuse:\n\"Great, I was getting tired of the same old scenery anyway.\"\nBut the moment those seeing him off disappeared from sight, all traces of laziness vanished. As the clear ring of his long sword left its sheath, a slumbering beast within him finally opened its eyes.",
+  "playstyle": "Ryunosuke is a Support adventurer who wields a long sword, dealing primarily sever damage. He can enter the Feasting status via Skill 1 and Skill 2. During Feasting, he can move freely, and when his Spirit Gauge is full, he can unleash different powerful follow-ups depending on which skill he uses.",
+  "default_buddy": "Bladey",
+  "traits": [
+   {
+    "name": "Exclusive Trait",
+    "description": "For every 1 Spirit Gauge level consumed, increases attack by 5% for 5s, up to 3 stacks.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/Swo/TraitIcon_FSwoA01_Exclusive.png"
+   },
+   {
+    "name": "Botanist",
+    "description": "25% chance to yield 1 additional plant per gather. Takes effect as long as the Adventurer is in the squad.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Soc_Grass.png"
+   },
+   {
+    "name": "Water Damage Up",
+    "description": "Increases water damage by 5.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Attribute_Water.png"
+   },
+   {
+    "name": "Physical Damage Reduction",
+    "description": "Reduces fixed damage by 17%.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Attribute_RegularReduction.png"
+   }
+  ],
+  "skills": [
+   {
+    "name": "Chain Slash",
+    "tags": "Damage / Basic Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Swo/SkillIcon_MSwo_Attack.png"
+   },
+   {
+    "name": "Evade",
+    "tags": "Dash",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png"
+   },
+   {
+    "name": "Spirit Slash",
+    "tags": "Damage / Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Swo/SkillIcon_FSwoA04_Strike.png"
+   },
+   {
+    "name": "Inebriated",
+    "tags": "Damage / React",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Swo/SkillIcon_FSwoA04_Drink.png"
+   },
+   {
+    "name": "Piercing Flavors",
+    "tags": "Damage / Burst",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Swo/SkillIcon_FSwoA04_Feast.png"
+   },
+   {
+    "name": "Hunger Slash",
+    "tags": "Damage",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Swo/SkillIcon_FSwoA04_Bite.png"
+   },
+   {
+    "name": "Hunger Slash",
+    "tags": "Damage",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Swo/SkillIcon_FSwoA04_Bite.png"
+   },
+   {
+    "name": "Grand Feast",
+    "tags": "Recharge",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Swo/SkillIcon_MSwo_Lunge.png"
+   },
+   {
+    "name": "Myriad Flavors Charge",
+    "tags": "Recharge",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Swo/SkillIcon_MSwo_Lunge.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Swo/RoleHeadIcon_MSwoA04.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_MSwoA04.png",
+  "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_MSwoA04.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Swo/RoleProfileIcon_MSwoA04.png",
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MSwoA04_ElementUnact.png"
+ },
+ {
+  "id": 104001,
+  "name": "Keres",
+  "title": "Silent Frenzy",
+  "rarity": "SSR",
+  "gender": "Female",
+  "weapon": "Dual Blades",
+  "element": "Dragon",
+  "role": "Disruptor",
+  "age": "",
+  "height": "",
+  "description": "From childhood, Keres drifted like a rootless leaf through the perilous wilderness. Through nature's harsh trials, she honed a beast-like sharp instinct and unmatched survival skills.",
+  "background": "From childhood, Keres drifted like a rootless leaf through the perilous wilderness. She forgot her homeland, and even the faces of her family faded from memory—but through nature's harsh trials, she honed a beast-like sharp instinct and unmatched survival skills.\nDuring one chance escape from a storm, she stumbled into an ancient cave, not realizing it was a monster's lair. Yet thanks to the instincts and skills she'd relied on for survival all her life, she managed to avoid danger and crossed paths with a guild investigating the area. The guild leader recognized her exceptional skill and potential as an adventurer, and extended an invitation.\nKeres may still not fully grasp the weighty duty behind the title \"adventurer,\" but to her, one truth remains simple and unshakable: complete the hunt, and she earns her sweet reward—the \"cookie.\" That, more than anything, is the purest and strongest bond she shares with this world and her companions.",
+  "playstyle": "Keres is a Disruptor adventurer who wields dual blades, dealing primarily sever damage. She deals damage to fill the Demon Gauge, then spends the Demon Gauge to enter Demon Mode, unleashing Enhanced Chain Slash: Bone Piercer through skill follow-ups or successful parries for massive damage.",
+  "default_buddy": "Wolfe",
+  "traits": [
+   {
+    "name": "Awareness",
+    "description": "Dragon damage dealt to weak points is increased by 40%.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/Sou/TraitIcon_FSouA01_Exclusive.png"
+   },
+   {
+    "name": "Scavenger",
+    "description": "25% chance to yield 1 additional bone per gather. Takes effect as long as the Adventurer is in the squad.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Soc_Scavenger.png"
+   },
+   {
+    "name": "Fortitude Damage Up",
+    "description": "Increases fortitude depletion by 10%.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Attribute_Concentrate.png"
+   }
+  ],
+  "skills": [
+   {
+    "name": "Chain Slash",
+    "tags": "Damage / Basic Attack",
+    "description": "Keres swings her dual blades, performing up to 4 consecutive attacks on the target.\nWhile in Fanged Demon Mode, her movement speed and attack are enhanced, she becomes immune to knockback, and her attacks fill her Demon Gauge on hit.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_MSou_Attack.png"
+   },
+   {
+    "name": "Lupine Demon Mode",
+    "tags": "Damage / Enhance",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_FSouA01_SpectralSlash.png"
+   },
+   {
+    "name": "Evasive Fang",
+    "tags": "Damage / React",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_FSouA01_EvadeBite.png"
+   },
+   {
+    "name": "Wolf Howl",
+    "tags": "Burst",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_FSouA01_WailingAndHowling1.png"
+   },
+   {
+    "name": "Spiral Onslaught",
+    "tags": "Dash",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_MSou_DemonEndTrick.png"
+   },
+   {
+    "name": "Spiral Onslaught",
+    "tags": "Dash",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_MSou_DemonEndTrick.png"
+   },
+   {
+    "name": "Bone Frenzy",
+    "tags": "Disruptor / Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Sou/RoleHeadIcon_FSouA01.png"
+   },
+   {
+    "name": "Evade",
+    "tags": "Dash",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png"
+   },
+   {
+    "name": "Feral Intimidation",
+    "tags": "Damage / Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_FSouA01_SpiralSlash.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Sou/RoleHeadIcon_FSouA01.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_FSouA01.png",
+  "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_FSouA01.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Sou/RoleProfileIcon_FSouA01.png",
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FSouA01_ElementUnact.png"
+ },
+ {
+  "id": 104002,
+  "name": "Raya",
+  "title": "Boundless Spirit",
+  "rarity": "SR",
+  "gender": "Female",
+  "weapon": "Dual Blades",
+  "element": "Fire",
+  "role": "Disruptor",
+  "age": "",
+  "height": "",
+  "description": "From a young age, she traveled with a touring dance troupe, and thanks to her naturally graceful figure, she mastered a mesmerizing dance style that captivated all who saw it—quickly becoming the troupe's brightest star.",
+  "background": "Raya was born in a fragrant city renowned for its spices. From a young age, she traveled with a touring dance troupe, and thanks to her naturally graceful figure, she mastered a mesmerizing dance style that captivated all who saw it—quickly becoming the troupe's brightest star.\nHer long journeys let her witness the world's beauty, but also its hardships. Along the way, she saw countless innocent travelers hurt by monster attacks. \"If only everyone could travel safely...\" That compassion stirred something in her; she no longer wanted to be an admired performer, but yearned to become an \"adventurer.\" It was around that time that the troupe set out on a trading journey across a vast desert.\nAmid that endless sea of sand, she met a young man, and together, she set off on her own path of adventure.",
+  "playstyle": "Raya is a Disruptor adventurer who wields dual blades, dealing primarily sever damage. Landing skill hits on monsters builds the Demon Gauge. Once full, tap Skill 1 to enter Demon Mode.",
+  "default_buddy": "Pupo",
+  "traits": [
+   {
+    "name": "Trump Card",
+    "description": "Triggering combo increases Demon Gauge by an additional 5.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/Sou/TraitIcon_FSouA03_Exclusive.png"
+   },
+   {
+    "name": "Butcher",
+    "description": "Yields 1 additional material when carving large monsters. Takes effect as long as the Adventurer is in the squad.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Soc_Dissecting.png"
+   },
+   {
+    "name": "Fire Damage Up",
+    "description": "Increases fire damage by 10%.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Attribute_Fire.png"
+   }
+  ],
+  "skills": [
+   {
+    "name": "Chain Slash",
+    "tags": "Damage / Basic Attack",
+    "description": "Raya swings her dual blades, striking the target up to 4 times in succession.\nWhile in Predator Demon Mode, Raya's basic attacks have a different attack pattern and increased power.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_MSou_Attack.png"
+   },
+   {
+    "name": "Demon Mode",
+    "tags": "Enhance",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_FSouA03_DemonPlunderOn.png"
+   },
+   {
+    "name": "Whirling Dance",
+    "tags": "Parry / React",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_FSouA03_Incense.png"
+   },
+   {
+    "name": "Chain Dance",
+    "tags": "Damage / Burst",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_FSouA03_Excavate.png"
+   },
+   {
+    "name": "Returning Dance",
+    "tags": "Control",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_FSouA03_DanceContinuously.png"
+   },
+   {
+    "name": "Returning Dance",
+    "tags": "Control",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_FSouA03_DanceContinuously.png"
+   },
+   {
+    "name": "Berserker Dance",
+    "tags": "Control",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Sou/RoleHeadIcon_FSouA03.png"
+   },
+   {
+    "name": "Evade",
+    "tags": "Dash",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png"
+   },
+   {
+    "name": "Whirling Intimidation",
+    "tags": "Control",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_FSouA03_CrazyDance.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Sou/RoleHeadIcon_FSouA03.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_FSouA03.png",
+  "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_FSouA03.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Sou/RoleProfileIcon_FSouA03.png",
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FSouA03_ElementUnact.png"
+ },
+ {
+  "id": 104004,
+  "name": "Haze",
+  "title": "",
+  "rarity": "SSR",
+  "gender": "Female",
+  "weapon": "Dual Blades",
+  "element": "Thunder",
+  "role": "Support",
+  "age": "",
+  "height": "",
+  "description": "An eternal mist that never lifted was once Haze's most comforting shield. She and her people lived in seclusion within a deep valley for generations, finding a unique peace within the darkness.",
+  "background": "An eternal mist that never lifted was once Haze's most comforting shield. She and her people lived in seclusion within a deep valley for generations, finding a unique peace within the darkness. But a sudden monster attack tore through that mist—her homeland was lost, her companions perished, and deep scars were carved into this cold woman's heart: the more precious the happiness, the more certain it is to shatter.\nDrifting through foreign lands, she wrapped herself in distance and icy elegance. That is, until during one commission, Freya saw straight through the deadly edge hidden within her mist.\nNow, faced with the unreserved warmth of her new companions, Haze still maintains her composed, distant front. Inside, she remains tense, fearing loss once again, clumsily guarding her awkward, cold pride.",
+  "playstyle": "Haze is a Support Adventurer who wields dual blades, dealing primarily severing damage. After entering Demon Mode, landing attacks builds up the Demon Gauge; once the Demon Gauge is full, she can enter Archdemon Mode, sustaining damage output through Crimson Fang Slash and maintaining Deflect to keep her Chain Slash going.",
+  "default_buddy": "Mith",
+  "traits": [
+   {
+    "name": "Exclusive Trait",
+    "description": "In Normal Mode, each basic attack grants 1 stamina on hit.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/Sou/TraitIcon_FSouA03_Exclusive.png"
+   },
+   {
+    "name": "Butcher",
+    "description": "Yields 1 additional material when carving large monsters. Takes effect as long as the Adventurer is in the squad.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Soc_Dissecting.png"
+   },
+   {
+    "name": "Thunder Crit Damage Up",
+    "description": "Increases thunder critical damage by 10%.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Attribute_ThunderExplosive.png"
+   },
+   {
+    "name": "Non-elemental Damage Up",
+    "description": "Increases fixed damage by 10%.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Attribute_Regular.png"
+   }
+  ],
+  "skills": [
+   {
+    "name": "Chain Slash",
+    "tags": "Damage / Basic Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_MSou_Attack.png"
+   },
+   {
+    "name": "Demon Mode",
+    "tags": "Enhance",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_MSou_Attack.png"
+   },
+   {
+    "name": "Circling Chain Slash",
+    "tags": "Dash",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_MSou_Attack.png"
+   },
+   {
+    "name": "Waning Moon Slash",
+    "tags": "Burst",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_MSou_Attack.png"
+   },
+   {
+    "name": "Evade",
+    "tags": "Dash",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_MSou_Attack.png"
+   },
+   {
+    "name": "Scarlet Mark",
+    "tags": "Enhance",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_MSou_Attack.png"
+   },
+   {
+    "name": "Windrending Strike",
+    "tags": "Damage",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_MSou_Attack.png"
+   },
+   {
+    "name": "Windrending Strike",
+    "tags": "Damage",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_MSou_Attack.png"
+   },
+   {
+    "name": "Waning Moon Charge",
+    "tags": "Damage",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_MSou_Attack.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Sou/RoleHeadIcon_FSouA04.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_FSouA04.png",
+  "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_FSouA04.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Sou/RoleProfileIcon_FSouA04.png",
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FSouA04_ElementUnact.png"
+ },
+ {
+  "id": 107001,
+  "name": "Ouyang Varen",
+  "title": "Righteous Guardian",
+  "rarity": "SR",
+  "gender": "Male",
+  "weapon": "Lance",
+  "element": "Water",
+  "role": "Assault",
+  "age": "",
+  "height": "185 cm",
+  "description": "Ouyang Varen was once a soldier stationed in the desert, guarding passing caravans day after day amid the shifting sands, single-handedly sustaining the lifeline of an entire trade route.",
+  "background": "Ouyang Varen was once a soldier stationed in the desert, guarding passing caravans day after day amid the shifting sands, single-handedly sustaining the lifeline of an entire trade route.\nThen an unprecedented anomaly shattered that peace—the surrounding sands twisted into an eerie black mire, swallowing countless caravans whole. While repeatedly rescuing those trapped, he crossed paths with a novice adventurer. Though young, she possessed experience far beyond his own. Watching her walk forward without hesitation, Ouyang Varen realized...\nStaying trapped in the sands would never bring him the truth.\n\"Only by setting out on a journey can the mystery of the black mire be uncovered.\"\nWith the resolve to uncover the secrets of his homeland, he set aside his guard's insignia and stepped into the vast unknown as an adventurer.",
+  "playstyle": "Ouyang Varen is an Assault adventurer who wields a lance, dealing primarily sever damage. Hold Skill 3 to charge and gain Sharpness stacks, then spend them to perform a long-range thrust for massive damage. After releasing Skill 3, chain into Skill 2 to follow up.",
+  "default_buddy": "Aloo",
+  "traits": [
+   {
+    "name": "Heart of Justice",
+    "description": "Each Basic Attack increases Attack by 5% for 10s, stacking up to 3 times.\nOuyang Varen gains Sharpness from skills. Sharpness increases certain skill damage but resets when attacks stop.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/Lan/TraitIcon_MLanA01_Exclusive.png"
+   },
+   {
+    "name": "Geologist",
+    "description": "25% chance to yield 1 additional ore per gather. Takes effect as long as the Adventurer is in the squad.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Soc_MiningExperts.png"
+   },
+   {
+    "name": "Skill Damage Up",
+    "description": "Increases skill damage by 5%.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Attribute_Thunder.png"
+   }
+  ],
+  "skills": [
+   {
+    "name": "Thrust",
+    "tags": "Damage / Basic Attack",
+    "description": "Perform a triple thrust in the lock-on direction. If the lock-on point is high, the thrusts will automatically aim upward. The final thrust has a longer wind-up, resulting in higher damage and better performance. Can be chained up to 3 times.\nIf the third thrust connects and is chained into Charge Thrust, it increases Charge Thrust's charge level by 1.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLan_Attack.png"
+   },
+   {
+    "name": "Piercing Thrust",
+    "tags": "Burst",
+    "description": "Hold Skill 3 to charge up to level 3, then release to lunge in the chosen direction. Higher charge levels increase both lunge damage and distance.\nIf the charge level is 2 or higher, the attack has Unwavering.\nThe charge level can be carried over from other skills, but will be reset if idle or guarding for too long.\nAfter performing Charge Thrust, tap Skill 2 to chain into Powerful Sweep. Powerful Sweep inherits Charge Thrust's charge level, dealing higher damage and restoring more stamina at higher levels.\n\nRapid Thrust consumes 30–60 stamina.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLanA01_RapidSpike.png"
+   },
+   {
+    "name": "Defensive Maneuver",
+    "tags": "Parry / React",
+    "description": "Quickly move backward or in the input direction, with a window for negating monster attacks.\nIf chained into Skill 3: Charge Thrust, the charge level bonus from other skills will be carried over. If Defensive Maneuver's jump evades a monster attack, Charge Thrust's charge level is further increased by 1.\nAfter using Defensive Maneuver, tap Skill 2 again to chain into Strong Wide Slash, quickly closing in on the monster and dealing damage.\nDefensive Maneuver consumes 20 stamina.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLanA01_TurnbackJumpAttack.png"
+   },
+   {
+    "name": "Earthshaker",
+    "tags": "Control",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLanA01_SkywardSpike.png"
+   },
+   {
+    "name": "Defensive Maneuver",
+    "tags": "Control",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLan_ManCarSprint.png"
+   },
+   {
+    "name": "Earthshaker",
+    "tags": "Control",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLanA01_SkywardSpike.png"
+   },
+   {
+    "name": "Sentinel Thrust",
+    "tags": "Burst",
+    "description": "Consume 100 Ultimate Energy to charge up and unleash a series of consecutive attacks.",
+    "icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Lan/RoleHeadIcon_MLanA01.png"
+   },
+   {
+    "name": "Evade",
+    "tags": "Dash",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLan_GunRolling.png"
+   },
+   {
+    "name": "Defensive Stance",
+    "tags": "Guard / React",
+    "description": "Ouyang Varen swiftly moves in front of a squad member and raises his shield, granting squad members within 5 meters invulnerability for 5s.\nAfter a successful guard, Ouyang Varen will perform guard bash, raising his shield and dashing forward to deal damage. During this time, squad members within 5 meters can tap Basic Attack to perform a Perfect Evade Counter.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLanA01_Defense.png"
+   },
+   {
+    "name": "Breaching Follow-Up",
+    "tags": "Damage / Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLanA01_RapidSpike.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Lan/RoleHeadIcon_MLanA01.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_MLanA01.png",
+  "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_MLanA01.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Lan/RoleProfileIcon_MLanA01.png",
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MLanA01_ElementUnact.png"
+ },
+ {
+  "id": 113001,
+  "name": "Pepper",
+  "title": "Bubbly Spark",
+  "rarity": "SSR",
+  "gender": "Female",
+  "weapon": "Heavy Bowgun",
+  "element": "Water",
+  "role": "Disruptor",
+  "age": "",
+  "height": "",
+  "description": "Born in a land of eternal frost, Pepper spent countless days trapped indoors by unending blizzards. The only comfort she found was in adventure books depicting the vast world beyond her window.",
+  "background": "Born in a land of eternal frost, Pepper spent countless days trapped indoors by unending blizzards. The only comfort she found was in adventure books depicting the vast world beyond her window.\nThen one day, a startled cry outside shattered the silence. Pepper threw open the door to find a rampaging monster and her fellow villagers working together to drive it away.\nOnce the crisis passed, that thrilling scene left a lasting impression on her. Pepper understood true adventure wasn't just found in the pages of a book; it demanded the courage to face danger, and the trust to guard a companion's back.\n\"I can only write my own chapter of adventure by closing the book and stepping outside.\"\nWith the resolve to turn knowledge into strength, she bid farewell to her hometown and joined the guild.",
+  "playstyle": "",
+  "default_buddy": "Boomie",
+  "traits": [
+   {
+    "name": "Aerial Fighter",
+    "description": "Pepper excels at leveraging the powerful firepower of Spread Ammo. Regardless of the ammo type loaded, Spread Ammo will be used, with greater range and tighter spread.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/Hbg/TraitIcon_FHbgA01_Exclusive.png"
+   },
+   {
+    "name": "Geologist",
+    "description": "25% chance to yield 1 additional ore per gather. Takes effect as long as the Adventurer is in the squad.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Soc_Geologist.png"
+   }
+  ],
+  "skills": [
+   {
+    "name": "Shoot",
+    "tags": "Damage / Basic Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Hbg/SkillIcon_MHbg_OrdinaryBullet.png"
+   },
+   {
+    "name": "Bouncy Dash",
+    "tags": "Dash",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Hbg/SkillIcon_FHbgA02_JumpSprint.png"
+   },
+   {
+    "name": "Pressurized Blast",
+    "tags": "Damage / Burst",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Hbg/SkillIcon_FHbgA01_AirBomb.png"
+   },
+   {
+    "name": "Fluffy, Attack!",
+    "tags": "Control",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Hbg/RoleHeadIcon_FHbgA01.png"
+   },
+   {
+    "name": "Evade",
+    "tags": "Dash",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Hbg/SkillIcon_MHbg_SpecialRoll.png"
+   },
+   {
+    "name": "Guard",
+    "tags": "Guard / React",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Hbg/SkillIcon_MHbg_Counterattack.png"
+   },
+   {
+    "name": "Aerial Waltz",
+    "tags": "Control",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Hbg/SkillIcon_MHbg_Teamwork.png"
+   },
+   {
+    "name": "Aerial Waltz",
+    "tags": "Control",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Hbg/SkillIcon_MHbg_Teamwork.png"
+   },
+   {
+    "name": "Devastating Pressure",
+    "tags": "Control",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Hbg/SkillIcon_MHbg_Teamwork.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Hbg/RoleHeadIcon_FHbgA01.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_FHbgA01.png",
+  "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_FHbgA01.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Hbg/RoleProfileIcon_FHbgA01.png",
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FHbgA01_ElementUnact.png"
+ },
+ {
+  "id": 114002,
+  "name": "Madelyn",
+  "title": "Fatal Cure",
+  "rarity": "SR",
+  "gender": "Female",
+  "weapon": "Bow",
+  "element": "Water",
+  "role": "Support",
+  "age": "",
+  "height": "",
+  "description": "Madelyn was born in a remote land perpetually shrouded in rain and mist. To solve the constant scarcity of crops, she buried herself in books, determined to protect her homeland through knowledge.",
+  "background": "Madelyn was born in a remote land perpetually shrouded in rain and mist. To solve the constant scarcity of crops, she buried herself in books, determined to protect her homeland through knowledge.\nBefore she could discover a way to bring prosperity, an unknown, highly toxic plant began silently poisoning her home. It was a mysterious adventurer who saved the day with the audacious strategy of \"fighting poison with poison.\" This not only saved the land, but revealed to her the captivating depths of toxicology, driving her to set out on a journey to uncover the pharmacology of all things.\nBut monsters roaming the wilds quickly became an obstacle to her research.\n\"Theory on paper alone will never reach the truth.\" It was this realization that led the once-frail scholar to shed her timidity and pick up a longbow. Now, she treads through the harshest of terrains as an adventurer, her weathered notebook—ever at her side—still filling with new hypotheses.",
+  "playstyle": "Madelyn is a Support adventurer who wields the bow, dealing primarily ammo damage. Her Basic Attack generates Catalyst Coatings, and her Skill 1 consumes stamina to perform a dash attack that also generates Catalyst Coatings.",
+  "default_buddy": "Viper",
+  "traits": [
+   {
+    "name": "Regenerative Factor",
+    "description": "When Ultimate charge efficiency is 10% or higher, Skill 2 and Skill 3 damage increases by 5% for every 1% additional Ultimate charge efficiency.\nWhen Ultimate charge efficiency is 20% or higher, Skill 2 and Skill 3 damage increases by 5%, and the Ultimate's recovery effect increases by 20%, for every 1% additional Ultimate charge efficiency.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/Bow/TraitIcon_FBowA02_Exclusive.png"
+   },
+   {
+    "name": "Botanist",
+    "description": "25% chance to yield 1 additional plant per gather. Takes effect as long as the Adventurer is in the squad.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Soc_Grass.png"
+   },
+   {
+    "name": "Physical Specialization",
+    "description": "When equipped with a non-elemental or ailment weapon (paralysis, poison, sleep, blast), this Adventurer deals 30% more damage.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Attribute_Skill.png"
+   }
+  ],
+  "skills": [
+   {
+    "name": "Rapid Fire",
+    "tags": "Damage / Basic Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_MBow_Attack.png"
+   },
+   {
+    "name": "Slide Shot",
+    "tags": "Damage / Dash",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_MBow_SlideShoot.png"
+   },
+   {
+    "name": "Catalyst Burst",
+    "tags": "Burst / Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_FBowA02_Activating.png"
+   },
+   {
+    "name": "Spore Adhesion",
+    "tags": "Charge / Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_FBowA02_SporeAttachment.png"
+   },
+   {
+    "name": "Leaping Arrow",
+    "tags": "Control",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_FBowA02_TwoStageJumpShot.png"
+   },
+   {
+    "name": "Leaping Arrow",
+    "tags": "Control",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_FBowA02_TwoStageJumpShot.png"
+   },
+   {
+    "name": "Stellar Injection",
+    "tags": "Heal",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Bow/RoleHeadIcon_FBowA02.png"
+   },
+   {
+    "name": "Piercing Shot",
+    "tags": "Dash",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png"
+   },
+   {
+    "name": "Violet Plume Charge",
+    "tags": "Damage / Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_FBowA02_TwoStageJumpShot.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Bow/RoleHeadIcon_FBowA02.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_FBowA02.png",
+  "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_FBowA02.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Bow/RoleProfileIcon_FBowA02.png",
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FBowA02_ElementUnact.png"
+ },
+ {
+  "id": 114003,
+  "name": "Luka",
+  "title": "Surging Lightning",
+  "rarity": "SSR",
+  "gender": "Male",
+  "weapon": "Bow",
+  "element": "Thunder",
+  "role": "Assault",
+  "age": "",
+  "height": "",
+  "description": "Luka was born amid the mountains, as free and untamed as the wind. The harsh trials of the wilderness never dulled his edge. Instead, they gave him a bird-like agility and an unmatched gift for marksmanship.",
+  "background": "Luka was born amid the mountains, as free and untamed as the wind. The harsh trials of the wilderness never dulled his edge. Instead, they gave him a bird-like agility and an unmatched gift for marksmanship. Yet this talent never made him aloof; he always became the most reliable support whenever danger struck.\nDuring one life-or-death crisis, in his desperate effort to save someone, he pushed his senses to their absolute limit and unexpectedly entered a state of \"absolute focus\"—a place stripped of all distraction, where time itself seemed to stand still. In that moment, he could see the very trajectory of the wind, and the openings within all things. That extraordinary experience became an obsession he couldn't shake. To touch that ultimate state once more, he left behind his comfortable life and ventured alone into depths and peaks no one else dared to tread.\n\"One can truly see the shape of all things by constantly pushing past the world's limits.\"\nFor him, that simple, pure reason was more than enough to set him on the path of adventure into the unknown.",
+  "playstyle": "Luka is an Assault adventurer who wields the bow, dealing primarily ammo damage. All arrows shot become Piercing Arrows. Accumulate Thunder Coating energy through movement skills, then expend Thunder Coating energy to unleash Skill 3 for massive damage. Precisely tapping Skill 1 while shooting can trigger Thunderous Spin.",
+  "default_buddy": "Zira",
+  "traits": [
+   {
+    "name": "Piercing Transformation",
+    "description": "Luka's arrows deal piercing damage, hitting multiple times depending on the monster's size.\nThe max number of piercing hits increases with the charge level, reaching 3/4/5/6 hits respectively. The 3rd, 4th, 5th, and 6th piercing hits deal reduced damage by 10%, 30%, 50%, 70% respectively.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/Bow/TraitIcon_FBowA03_Exclusive.png"
+   },
+   {
+    "name": "Botanist",
+    "description": "25% chance to yield 1 additional plant per gather. Takes effect as long as the Adventurer is in the squad.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Soc_Grass.png"
+   },
+   {
+    "name": "Thunder Damage Up",
+    "description": "Increases thunder damage by 10%.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Attribute_Thunder.png"
+   },
+   {
+    "name": "Defense Up",
+    "description": "Increases defense by 30%.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Attribute_Defense.png"
+   }
+  ],
+  "skills": [
+   {
+    "name": "Rapid Fire",
+    "tags": "Basic Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_MBow_Attack.png"
+   },
+   {
+    "name": "Thunderous Spin",
+    "tags": "Dash",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_MBowA03_LightningFlash.png"
+   },
+   {
+    "name": "Arc Slash",
+    "tags": "Dash",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_MBowA03_ShiftSlide.png"
+   },
+   {
+    "name": "Swift Volley",
+    "tags": "Burst",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_MBowA03_Kamaitachi.png"
+   },
+   {
+    "name": "Voltic Volley",
+    "tags": "Burst",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Bow/RoleHeadIcon_FBowA03.png"
+   },
+   {
+    "name": "Evade",
+    "tags": "",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png"
+   },
+   {
+    "name": "Felyne Arrow",
+    "tags": "Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_MBowA03_CatArrow.png"
+   },
+   {
+    "name": "Felyne Arrow",
+    "tags": "Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_MBowA03_CatArrow.png"
+   },
+   {
+    "name": "Swift Follow-Up",
+    "tags": "Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_MBow_Attack.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Bow/RoleHeadIcon_FBowA03.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_FBowA03.png",
+  "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_FBowA03.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Bow/RoleProfileIcon_FBowA03.png",
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MBowA03_ElementUnact.png"
+ },
+ {
+  "id": 114004,
+  "name": "Stylia",
+  "title": "Heart of the Thaw",
+  "rarity": "SSR",
+  "gender": "Female",
+  "weapon": "Bow",
+  "element": "Ice",
+  "role": "Support",
+  "age": "",
+  "height": "",
+  "description": "As a cherished young lady from a prestigious house in the northern lands, Stylia moves with effortless elegance in every gesture. Her only worry is the traditional dance she has long struggled to complete.",
+  "background": "As a cherished young lady from a prestigious house in the northern lands, Stylia moved with effortless elegance in every gesture. Her only worry was the traditional dance she had long struggled to complete. Hoping to broaden her experience in the wider world, she stepped outside her home with a lighthearted heart.\nBut the wilderness offers no grand stage. Faced with monsters, the dance steps she once took such pride in proved utterly powerless. While fleeing from a monster unlike anything she had ever seen, fate led her to cross paths with a guild.\nThis journey through the wilds—so different from the sheltered world she knew—left her deeply shaken, yet also awakened a resilience she never knew she had. Rather than retreating amid the hardships of the road, she quickly mastered countless survival skills.\n\"Father, it seems this dance still needs a bit more time to complete!\"\nEven now, she calls out those words toward home, her voice filled with bright hope for the unknown journey ahead.",
+  "playstyle": "Stylia is a Support adventurer who wields the bow, dealing primarily ammo damage. Her Basic Attacks and skills can shift the Performance Frequency. When the Performance Frequency is in the Resonance Phase, all skills are enhanced; when the Performance Frequency is in the Elegy Phase, some skills are locked.",
+  "default_buddy": "Lynn",
+  "traits": [
+   {
+    "name": "Regenerative Factor",
+    "description": "When Ultimate charge efficiency is 10% or higher, Skill 2 and Skill 3 damage increases by 5% for every 1% additional Ultimate charge efficiency.\nWhen Ultimate charge efficiency is 20% or higher, Skill 2 and Skill 3 damage increases by 5%, and the Ultimate's recovery effect increases by 20%, for every 1% additional Ultimate charge efficiency.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/Bow/TraitIcon_FBowA02_Exclusive.png"
+   },
+   {
+    "name": "Botanist",
+    "description": "25% chance to yield 1 additional plant per gather. Takes effect as long as the Adventurer is in the squad.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Soc_Grass.png"
+   },
+   {
+    "name": "Physical Specialization",
+    "description": "When equipped with a non-elemental or ailment weapon (paralysis, poison, sleep, blast), this Adventurer deals 30% more damage.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Attribute_Skill.png"
+   }
+  ],
+  "skills": [
+   {
+    "name": "Rapid Fire",
+    "tags": "Basic Attack",
+    "description": "Tap Basic Attack to fire an arrow at a longer range.\nHold Basic Attack to charge, up to 4 charge levels.\nDuring the Prelude Phase and Resonance Phase, each shot that hits the monster increases Performance Frequency by 5 and raises the charge level by 1, up to 4 charge levels.\nDuring the Elegy Phase, each shot that hits the monster raises the charge level by 1, up to 4 charge levels.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_FBowA04_Attack.png"
+   },
+   {
+    "name": "Waltz",
+    "tags": "Dash",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_FBowA04_HoarfrostMelody.png"
+   },
+   {
+    "name": "Swan Step",
+    "tags": "Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_FBowA04_SnowLeapShot.png"
+   },
+   {
+    "name": "Double Lutz",
+    "tags": "Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_FBowA04_FeatherVolley.png"
+   },
+   {
+    "name": "Princess's Flight",
+    "tags": "Attack",
+    "description": "Tap Co-op Skill, and Stylia begins to play, striking up a rousing melody. Inspired, the Buddy joins other companions in charging the monster, dealing damage while Stylia enters Resonance Phase.\nIf Co-op Skill hits the co-op focus part, co-op phase increases.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_FBowA04_SoaringWing.png"
+   },
+   {
+    "name": "Princess's Flight",
+    "tags": "Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_FBowA04_SoaringWing.png"
+   },
+   {
+    "name": "Royal Salutation",
+    "tags": "",
+    "description": "Tap Ultimate to have Stylia continuously play a harp concerto. The 1st strum during the performance grants all squad members 1 stack of a buff that increases all elemental damage by 6%. The 2nd strum grants all squad members 2 stacks of a buff that increases all elemental damage by 6%, up to 3 stacks. When the performance begins, Stylia's Resonance Phase window expands by 20%, lasting 15s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_FBowA04_ChordCeremony.png"
+   },
+   {
+    "name": "Evade",
+    "tags": "",
+    "description": "Tap Roll to evade the monster's attack in the direction indicated by the joystick.\nSuccessfully performing a Perfect Evade grants 0.5s of invincibility.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png"
+   },
+   {
+    "name": "Resonance Charge",
+    "tags": "",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Bow/RoleHeadIcon_FBowA04.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_FBowA04.png",
+  "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_FBowA04.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Bow/RoleProfileIcon_FBowA04.png",
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FBowA04_ElementUnact.png"
+ },
+ {
+  "id": 107002,
+  "name": "Arkaya",
+  "title": "Pillar of the Desert",
+  "rarity": "SSR",
+  "gender": "Male",
+  "weapon": "Lance",
+  "element": "Dragon",
+  "role": "Support",
+  "age": "",
+  "height": "185 cm",
+  "description": "Arkaya was born in a canyon settlement surrounded by towering stone. Despite possessing a physique powerful enough to shake rock itself, he was gentle by nature, quietly using his strength to protect his people.",
+  "background": "Arkaya was born in a canyon settlement surrounded by towering stone.\nDespite possessing a physique powerful enough to shake rock itself, he was gentle by nature, quietly using his strength to protect his people. That was until a rare earthquake destroyed the settlement's water source. To ensure their survival, he ventured alone into dangerous territory to carve out a new supply route. Along the way, he was attacked by a monster. Though he successfully fended it off and earned praise, his heart found no peace.\nHe knew that relying on brute strength to transport water was no lasting solution—only by mastering the technique of drilling new wells through solid rock could clean water flow once more.\nAnd so, in search of the skill to pierce through the very earth, he came before Freya.",
+  "playstyle": "Arkaya is a Support adventurer who wields the lance, dealing primarily sever damage. His Ultimate, Indomitable Oath, grants shields to the entire squad, absorbing significant damage. He can also use Earthrend Finisher to gain a shield himself while dealing heavy damage.",
+  "default_buddy": "Horn",
+  "traits": [
+   {
+    "name": "Heart of Justice",
+    "description": "Each Basic Attack increases Attack by 5% for 10s, stacking up to 3 times.\nOuyang Varen gains Sharpness from skills. Sharpness increases certain skill damage but resets when attacks stop.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/Lan/TraitIcon_MLanA01_Exclusive.png"
+   },
+   {
+    "name": "Geologist",
+    "description": "25% chance to yield 1 additional ore per gather. Takes effect as long as the Adventurer is in the squad.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Soc_MiningExperts.png"
+   },
+   {
+    "name": "Skill Damage Up",
+    "description": "Increases skill damage by 5%.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Attribute_Thunder.png"
+   }
+  ],
+  "skills": [
+   {
+    "name": "Thrust",
+    "tags": "Damage / Basic Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLan_Attack.png"
+   },
+   {
+    "name": "Boulder Stance",
+    "tags": "Guard / React",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLanA02_PikeStance.png"
+   },
+   {
+    "name": "Driving Assault",
+    "tags": "Damage / Dash",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLanA02_ShieldRush.png"
+   },
+   {
+    "name": "Relentless Thrust",
+    "tags": "Burst",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLanA02_HundredStabs.png"
+   },
+   {
+    "name": "Evade",
+    "tags": "",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLan_GunRolling.png"
+   },
+   {
+    "name": "Indomitable Oath",
+    "tags": "Shield",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Lan/RoleHeadIcon_MLanA02.png"
+   },
+   {
+    "name": "Falcon Thrust",
+    "tags": "Damage / Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLanA02_ResonanceThrust.png"
+   },
+   {
+    "name": "Falcon Thrust",
+    "tags": "Damage / Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLanA02_ResonanceThrust.png"
+   },
+   {
+    "name": "Battle Spirit Charge",
+    "tags": "Damage / Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLanA02_ResonanceThrust.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Lan/RoleHeadIcon_MLanA02.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_MLanA02.png",
+  "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_MLanA02.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Lan/RoleProfileIcon_MLanA02.png",
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MLanA02_ElementUnact.png"
+ },
+ {
+  "id": 105001,
+  "name": "Rhodes",
+  "title": "Thunder Smith",
+  "rarity": "SSR",
+  "gender": "Male",
+  "weapon": "Hammer",
+  "element": "Ice",
+  "role": "Assault",
+  "age": "",
+  "height": "",
+  "description": "Rhodes grew up to the roar of the forge, captivated from childhood by the mechanics of steam-powered machinery, pouring his talent into every creation with unwavering confidence that his inventions could help him explore the world.",
+  "background": "Rhodes grew up to the roar of the forge, captivated from childhood by the mechanics of steam-powered machinery, pouring his talent into every creation with unwavering confidence that his inventions could help him explore the world.\nBut on the path of pushing mechanical limits, he hit an unexpected wall—the wild beasts of the frontier revealed to him the Creator's most intricate blueprint: a body combining destructive power with perfect flexibility. To incorporate such design into his own creations, he had to venture into the wilds himself, splitting his obsessive focus on gears between machine and self-training.\nEventually, this inventor forged himself a body of steel, and knocked on the guild's door with his proudest new \"masterpiece\" in hand.\n\"Allow me to show you the most perfect invention!\"",
+  "playstyle": "Rhodes is an Assault adventurer who wields the hammer, dealing primarily blunt damage. His Skill 1 switches between different Charge stances, building up Steam Energy and converting it into the Core Energy. Spend the Core Energy to unleash an attack of overwhelming force.",
+  "default_buddy": "Ron",
+  "traits": [
+   {
+    "name": "Aerial Fighter",
+    "description": "Pepper excels at leveraging the powerful firepower of Spread Ammo. Regardless of the ammo type loaded, Spread Ammo will be used, with greater range and tighter spread.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/Hbg/TraitIcon_FHbgA01_Exclusive.png"
+   },
+   {
+    "name": "Geologist",
+    "description": "25% chance to yield 1 additional ore per gather. Takes effect as long as the Adventurer is in the squad.",
+    "icon": "MHMobile/Content/UI/Dynamic/TraitIcon/MCO/TraitIcon_MCO_Soc_Geologist.png"
+   }
+  ],
+  "skills": [
+   {
+    "name": "Overhead Smash",
+    "tags": "Basic Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Ham/SkillIcon_MHam_Attack.png"
+   },
+   {
+    "name": "Charge",
+    "tags": "Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Ham/SkillIcon_MHamA01_Charge.png"
+   },
+   {
+    "name": "Steam Stance",
+    "tags": "React",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Swo/RoleHeadIcon_FSwoA01.png"
+   },
+   {
+    "name": "Steam Skyrender",
+    "tags": "Burst",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Ham/SkillIcon_MHamA01_Skill3.png"
+   },
+   {
+    "name": "Evade",
+    "tags": "",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/MCO/SkillIcon_MCO_Roll.png"
+   },
+   {
+    "name": "Mega Hammer",
+    "tags": "Attack",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Ham/RoleHeadIcon_MHamA01.png"
+   },
+   {
+    "name": "Felyne Flywheel Smash!",
+    "tags": "Control",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Swo/RoleHeadIcon_FSwoA01.png"
+   },
+   {
+    "name": "Felyne Flywheel Smash!",
+    "tags": "Control",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Swo/RoleHeadIcon_FSwoA01.png"
+   },
+   {
+    "name": "Steam Follow-Up",
+    "tags": "",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Swo/RoleHeadIcon_FSwoA01.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/RoleHeadIcon/Ham/RoleHeadIcon_MHamA01.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_MHamA01.png",
+  "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_MHamA01.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Ham/RoleProfileIcon_MHamA01.png",
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MHamA03_ElementUnact.png"
+ }
+]

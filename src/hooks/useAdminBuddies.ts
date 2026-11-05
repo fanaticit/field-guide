@@ -3,13 +3,31 @@
 // ─────────────────────────────────────────────────────────────
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '../lib/supabase';
-import type { DBBuddy, BuddyUpsert, BuddyTier, BuddyRole } from '../data/schemas/buddy';
+import type { DBBuddy, BuddyUpsert, BuddyTier, BuddyRole, BuddySkill } from '../data/schemas/buddy';
 
 export interface BuddyFilters {
   search?: string;
   tier?: string;
   role?: string;
   isActive?: boolean | null;
+}
+
+/** Skills of one companion (basic skills, passive skills and unique skills), in game order. */
+export function useBuddySkills(buddyId: string | null | undefined) {
+  return useQuery({
+    queryKey: ['buddy-skills', buddyId],
+    enabled: Boolean(buddyId),
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('buddy_skills')
+        .select('*')
+        .eq('buddy_id', buddyId!)
+        .order('sort_order', { ascending: true });
+      if (error) throw error;
+      return (data ?? []) as BuddySkill[];
+    },
+    staleTime: 1000 * 60 * 10,
+  });
 }
 
 export const BUDDIES_KEY = 'admin-buddies';

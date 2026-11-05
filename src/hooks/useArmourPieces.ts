@@ -24,7 +24,10 @@ export interface ArmourPiece {
   skills: string[];
   set_name: string | null;
   set_variant: string;
+  /** Rarity the piece starts at */
   rarity: number;
+  /** Highest rarity the piece can be upgraded to */
+  max_rarity: number | null;
   deco_slots: number[];
   set_bonus: ArmourSetBonus | null;
   icon_m: string | null;
@@ -34,6 +37,23 @@ export interface ArmourPiece {
   notes: string | null;
   created_at: string;
   updated_at: string;
+}
+
+/** One rarity step of an armour piece (armour_piece_upgrades table) */
+export interface ArmourPieceUpgrade {
+  armour_piece_id: string;
+  rarity: number;
+  defence: number | null;
+  defence_gain: number | null;
+  required_level: number | null;
+  growth_points: number | null;
+  money: number | null;
+  progression_level: number | null;
+  materials: { item_id: number; item: string; count: number }[];
+  other_gains: Record<string, unknown>;
+  /** Skill ids the piece has at this rarity */
+  skills: string[];
+  skill_changes: { type: 'new_skill' | 'level_up'; skill_id: string }[];
 }
 
 export type ArmourPieceUpsert = Omit<ArmourPiece, 'created_at' | 'updated_at'>;
@@ -60,6 +80,75 @@ export function useArmourPieces() {
     staleTime: 1000 * 60 * 2,
     refetchOnWindowFocus: false,
     retry: 1,
+  });
+}
+
+export function useArmourPieceUpgrades(armourPieceId: string | null) {
+  return useQuery({
+    queryKey: [ARMOUR_PIECES_KEY, 'upgrades', armourPieceId],
+    enabled: !!armourPieceId,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('armour_piece_upgrades')
+        .select('*')
+        .eq('armour_piece_id', armourPieceId!)
+        .order('rarity', { ascending: true });
+      if (error) throw error;
+      return (data ?? []) as ArmourPieceUpgrade[];
+    },
+    staleTime: 1000 * 60 * 10,
+    refetchOnWindowFocus: false,
+  });
+}
+
+/** The slim columns of every upgrade step — enough to know which skills a piece has at each rarity */
+export type ArmourUpgradeTier = Pick<
+  ArmourPieceUpgrade,
+  'armour_piece_id' | 'rarity' | 'defence' | 'skills' | 'skill_changes'
+>;
+
+/** All upgrade steps of all armour pieces (paged, because the API returns at most 1000 rows per request) */
+export function useAllArmourUpgradeTiers() {
+  return useQuery({
+    queryKey: [ARMOUR_PIECES_KEY, 'all-tiers'],
+    queryFn: async () => {
+      const PAGE = 1000;
+      const rows: ArmourUpgradeTier[] = [];
+      for (let from = 0; ; from += PAGE) {
+        const { data, error } = await supabase
+          .from('armour_piece_upgrades')
+          .select('armour_piece_id, rarity, defence, skills, skill_changes')
+          .order('armour_piece_id', { ascending: true })
+          .order('rarity', { ascending: true })
+          .range(from, from + PAGE - 1);
+        if (error) throw error;
+        rows.push(...((data ?? []) as ArmourUpgradeTier[]));
+        if (!data || data.length < PAGE) break;
+      }
+      return rows;
+    },
+    staleTime: 1000 * 60 * 10,
+    refetchOnWindowFocus: false,
+  });
+}
+
+/** Upgrade steps of several armour pieces at once (e.g. all pieces of a set) */
+export function useArmourSetUpgrades(armourPieceIds: string[]) {
+  const key = [...armourPieceIds].sort().join(',');
+  return useQuery({
+    queryKey: [ARMOUR_PIECES_KEY, 'set-upgrades', key],
+    enabled: armourPieceIds.length > 0,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('armour_piece_upgrades')
+        .select('*')
+        .in('armour_piece_id', armourPieceIds)
+        .order('rarity', { ascending: true });
+      if (error) throw error;
+      return (data ?? []) as ArmourPieceUpgrade[];
+    },
+    staleTime: 1000 * 60 * 10,
+    refetchOnWindowFocus: false,
   });
 }
 

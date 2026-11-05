@@ -3,7 +3,7 @@
 // Left-aligned layout, combined skill levels, highlighted set effects, and clean reference format.
 // ─────────────────────────────────────────────────────────────
 import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Shield,
   Search,
@@ -19,6 +19,8 @@ import {
   X,
   User,
   Crosshair,
+  ChevronDown,
+  ChevronUp,
   HeartPulse,
   Skull,
   Sliders,
@@ -29,7 +31,12 @@ import {
   type ArmourSkill,
   getRarityBadgeStyle,
 } from '../../data/schemas/armour';
-import { useAdminArmourPieces, type DBArmourPiece } from '../../hooks/useAdminArmour';
+import {
+  useArmourPieces,
+  useAllArmourUpgradeTiers,
+  useArmourSetUpgrades,
+  type ArmourSetBonus,
+} from '../../hooks/useArmourPieces';
 import { useAdminMonsters } from '../../hooks/useAdminMonsters';
 import { useAdminSkills, type DBSkill } from '../../hooks/useAdminSkills';
 import { cn } from '../../lib/utils';
@@ -49,6 +56,39 @@ import {
 import LoginModal from '../../components/auth/LoginModal';
 
 const INTRO_HIDDEN_KEY = 'armour-intro-hidden';
+const BUILD_COLLAPSED_KEY = 'armour-build-collapsed';
+
+/** Slot names of the game data -> the slot ids used on this page and in the build planner */
+const SLOT_FROM_GAME: Record<string, ArmourSlot> = {
+  Head: 'helm',
+  Chest: 'chest',
+  Arms: 'gloves',
+  Waist: 'waist',
+  Legs: 'greaves',
+};
+
+/**
+ * An armour piece shaped for this page. `skills` is expanded from the upgrade steps into
+ * unlock tiers: one entry per skill level gained, with the rarity it is unlocked at.
+ */
+export interface DBArmourPiece {
+  id: string;
+  monster_id: string;
+  set_variant: string;
+  set_name: string | null;
+  set_icon: string | null;
+  /** Rarity the piece starts at */
+  rarity: number;
+  max_rarity: number;
+  slot: ArmourSlot;
+  /** Male or female icon, following the equipment setting of the profile */
+  image: string | null;
+  skills: ArmourSkill[];
+  deco_slots: number[];
+  set_bonus: ArmourSetBonus | null;
+  notes: string | null;
+  is_active: boolean;
+}
 
 // Canonical 5 Armour Slots in order
 export const SLOTS_ORDER: Array<{
@@ -200,6 +240,20 @@ export const SKILL_CATEGORY_THEMES: Record<
   },
 };
 
+// The game's own skill categories reuse the colours of the closest legacy theme
+const GAME_CATEGORY_THEMES: Record<string, string> = {
+  'Hunt (General)': 'attack',
+  'Hunt (Ranged)': 'critical',
+  'Weapon-specific': 'utility',
+  Attributes: 'defense',
+  Resistance: 'status',
+  Survival: 'survival',
+  Exploration: 'general',
+};
+for (const [category, legacy] of Object.entries(GAME_CATEGORY_THEMES)) {
+  SKILL_CATEGORY_THEMES[category] = { ...SKILL_CATEGORY_THEMES[legacy], label: category };
+}
+
 export const SKILL_CATEGORY_FULL_PIP_CLASSES: Record<string, string> = {
   attack: 'bg-red-400 shadow-[0_0_3px_rgba(248,113,113,0.7)]',
   critical: 'bg-pink-400 shadow-[0_0_3px_rgba(244,114,182,0.7)]',
@@ -211,6 +265,9 @@ export const SKILL_CATEGORY_FULL_PIP_CLASSES: Record<string, string> = {
   general: 'bg-purple-400 shadow-[0_0_3px_rgba(192,132,252,0.7)]',
   set_bonus: 'bg-orange-400 shadow-[0_0_3px_rgba(251,146,60,0.7)]',
 };
+for (const [category, legacy] of Object.entries(GAME_CATEGORY_THEMES)) {
+  SKILL_CATEGORY_FULL_PIP_CLASSES[category] = SKILL_CATEGORY_FULL_PIP_CLASSES[legacy];
+}
 
 export interface GroupedArmourSet {
   id: string; // e.g. "rathalos:I"
@@ -226,6 +283,7 @@ export interface GroupedArmourSet {
   allSkills: ArmourSkill[];
   distinctUnlockRarities: number[];
   maxRarity: number;
+  setBonus: ArmourSetBonus | null;
 }
 
 export interface ExampleBuildItem {
@@ -256,6 +314,16 @@ export default function ArmourGuide() {
 
   // Example Build (5 slots)
   const [exampleBuild, setExampleBuild] = useState<ExampleBuild>({});
+  // Starts hidden on short (landscape phone) screens, where the box would fill the viewport
+  const [buildCollapsed, setBuildCollapsed] = useState(() => {
+    const saved = localStorage.getItem(BUILD_COLLAPSED_KEY);
+    return saved === null ? window.innerHeight < 500 : saved === '1';
+  });
+  const toggleBuildCollapsed = () => {
+    const next = !buildCollapsed;
+    setBuildCollapsed(next);
+    localStorage.setItem(BUILD_COLLAPSED_KEY, next ? '1' : '0');
+  };
   const [buildAddedSlot, setBuildAddedSlot] = useState<ArmourSlot | null>(null);
 
   // Selected Set & Slot state
@@ -270,9 +338,11 @@ export default function ArmourGuide() {
   const [isMobileDetailOpen, setIsMobileDetailOpen] = useState(false);
 
   // Queries
-  const { data: pieces = [], isLoading: isLoadingPieces } = useAdminArmourPieces(game);
+  const { data: rawPieces = [], isLoading: isLoadingRaw } = useArmourPieces();
+  const { data: upgradeTiers = [], isLoading: isLoadingTiers } = useAllArmourUpgradeTiers();
+  const isLoadingPieces = isLoadingRaw || isLoadingTiers;
   const { data: monsters = [] } = useAdminMonsters({ game, isActive: true });
-  const { data: dbSkills = [] } = useAdminSkills({ isActive: true });
+  const { data: dbSkills = [] } = useAdminSkills({ isActive: true, isSetBonus: false });
 
   // ── Challenge tracking & Auth ─────────────────────────────────
   const { user, profile } = useAuthStore();
@@ -286,6 +356,93 @@ export default function ArmourGuide() {
 
   const monstersMap = useMemo(() => new Map(monsters.map((m) => [m.id, m])), [monsters]);
   const skillsMap = useMemo(() => new Map(dbSkills.map((s) => [s.id, s])), [dbSkills]);
+
+  // Every skill level has its own id in the game data; the page works with one id per skill
+  // (its level 1 row) plus a level, so the rows of one skill are grouped here.
+  const { baseIdOf, levelRows } = useMemo(() => {
+    const firstRow = new Map<string, DBSkill>();
+    const groupKey = (sk: DBSkill) => `${sk.name}|${sk.category}|${sk.max_levels}`;
+    for (const sk of dbSkills) {
+      const cur = firstRow.get(groupKey(sk));
+      if (!cur || sk.level < cur.level) firstRow.set(groupKey(sk), sk);
+    }
+    const baseIdOf = new Map<string, string>();
+    const levelRows = new Map<string, Map<number, DBSkill>>();
+    for (const sk of dbSkills) {
+      const baseId = firstRow.get(groupKey(sk))!.id;
+      baseIdOf.set(sk.id, baseId);
+      if (!levelRows.has(baseId)) levelRows.set(baseId, new Map());
+      levelRows.get(baseId)!.set(sk.level, sk);
+    }
+    return { baseIdOf, levelRows };
+  }, [dbSkills]);
+
+  const levelDescription = useCallback(
+    (baseId: string, level: number) =>
+      levelRows.get(baseId)?.get(level)?.description ?? skillsMap.get(baseId)?.description ?? null,
+    [levelRows, skillsMap],
+  );
+
+  // The skill filter works on skill names: a skill matches whichever level (id) the piece has
+  const selectedSkillNames = useMemo(
+    () => new Set(selectedSkillIds.map((id) => skillsMap.get(id)?.name)),
+    [selectedSkillIds, skillsMap],
+  );
+  const matchesSelectedSkill = useCallback(
+    (id: string) => selectedSkillNames.has(skillsMap.get(id)?.name),
+    [selectedSkillNames, skillsMap],
+  );
+
+  const gender = profile?.equipment_gender ?? 'male';
+
+  const pieces = useMemo<DBArmourPiece[]>(() => {
+    const tiersByPiece = new Map<string, typeof upgradeTiers>();
+    for (const t of upgradeTiers) {
+      if (!tiersByPiece.has(t.armour_piece_id)) tiersByPiece.set(t.armour_piece_id, []);
+      tiersByPiece.get(t.armour_piece_id)!.push(t);
+    }
+
+    return rawPieces
+      .filter((p) => SLOT_FROM_GAME[p.slot])
+      .map((p) => {
+        const skills: ArmourSkill[] = [];
+        const reached = new Map<string, number>();
+        for (const step of tiersByPiece.get(p.id) ?? []) {
+          for (const change of step.skill_changes) {
+            const row = skillsMap.get(change.skill_id);
+            const baseId = baseIdOf.get(change.skill_id);
+            if (!row || !baseId) continue;
+            const gained = row.level - (reached.get(baseId) ?? 0);
+            reached.set(baseId, row.level);
+            if (gained > 0) {
+              skills.push({
+                id: baseId,
+                level: gained,
+                unlock_rarity: step.rarity > p.rarity ? step.rarity : null,
+              });
+            }
+          }
+        }
+        // Male armour is the default; female only when chosen in the profile
+        const image = (gender === 'female' ? p.icon_f : p.icon_m) ?? p.icon_m ?? p.icon_f;
+        return {
+          id: p.id,
+          monster_id: p.monster_id,
+          set_variant: p.set_variant,
+          set_name: p.set_name,
+          set_icon: p.set_icon,
+          rarity: p.rarity,
+          max_rarity: p.max_rarity ?? p.rarity,
+          slot: SLOT_FROM_GAME[p.slot],
+          image,
+          skills,
+          deco_slots: p.deco_slots,
+          set_bonus: p.set_bonus,
+          notes: p.notes,
+          is_active: p.is_active,
+        };
+      });
+  }, [rawPieces, upgradeTiers, skillsMap, baseIdOf, gender]);
 
   const handleAddChallenge = useCallback(async (piece: DBArmourPiece, set: GroupedArmourSet) => {
     if (!user) {
@@ -301,7 +458,8 @@ export default function ArmourGuide() {
         userId:        user.id,
         game,
         armourPieceId: piece.id,
-        monsterId:     set.monsterId,
+        // Sets without a linked monster (Alloy, Bone …) have no monsters row to reference
+        monsterId:     monstersMap.has(set.monsterId) ? set.monsterId : null,
         armourSlot:    piece.slot,
         setVariant:    piece.set_variant || 'I',
         setName:       set.displayName,
@@ -309,7 +467,7 @@ export default function ArmourGuide() {
         setIcon:       set.setIcon ?? null,
         monsterName:   monster?.name ?? set.monsterName,
         craftRarity:   set.rarity || 1,
-        maxRarity:     set.maxRarity || 16,
+        maxRarity:     set.maxRarity,
       });
 
       if (!result.wasAlreadyTracked) {
@@ -378,6 +536,8 @@ export default function ArmourGuide() {
       setName: string | null;
       setIcon: string | null;
       rarity: number;
+      maxRarity: number;
+      setBonus: ArmourSetBonus | null;
       pieces: Partial<Record<ArmourSlot, DBArmourPiece>>;
     }>();
 
@@ -385,7 +545,7 @@ export default function ArmourGuide() {
       if (!p.is_active) continue;
       const monsterId = p.monster_id;
       const setVariant = p.set_variant || 'I';
-      const key = `${monsterId}:${setVariant}`;
+      const key = `${p.set_name ?? monsterId}:${setVariant}`;
 
       if (!groupMap.has(key)) {
         groupMap.set(key, {
@@ -394,6 +554,8 @@ export default function ArmourGuide() {
           setName: p.set_name,
           setIcon: p.set_icon || null,
           rarity: p.rarity ?? 1,
+          maxRarity: p.max_rarity,
+          setBonus: p.set_bonus,
           pieces: {},
         });
       }
@@ -403,6 +565,8 @@ export default function ArmourGuide() {
       if (p.set_name && !grp.setName) grp.setName = p.set_name;
       if (p.set_icon && !grp.setIcon) grp.setIcon = p.set_icon;
       if (p.rarity && p.rarity > grp.rarity) grp.rarity = p.rarity;
+      if (p.max_rarity > grp.maxRarity) grp.maxRarity = p.max_rarity;
+      if (p.set_bonus && !grp.setBonus) grp.setBonus = p.set_bonus;
     }
 
     const result: GroupedArmourSet[] = [];
@@ -416,8 +580,8 @@ export default function ArmourGuide() {
         .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
         .join(' ');
 
-      const rawSetName = grp.setName || (grp.setVariant ? `Set ${grp.setVariant}` : 'Set I');
-      const displayName = `${monsterName} — ${rawSetName}`;
+      const rawSetName = `${grp.setName ?? monsterName} ${grp.setVariant}`.trim();
+      const displayName = rawSetName;
       const setIcon = grp.setIcon || monster?.icon || null;
 
       // Extract all skills and distinct unlock rarities
@@ -440,7 +604,7 @@ export default function ArmourGuide() {
       }
 
       const distinctUnlockRarities = Array.from(raritiesSet).sort((a, b) => a - b);
-      const maxRarity = Math.max(16, ...distinctUnlockRarities);
+      const maxRarity = Math.max(grp.maxRarity, ...distinctUnlockRarities);
 
       result.push({
         id: key,
@@ -456,6 +620,7 @@ export default function ArmourGuide() {
         allSkills,
         distinctUnlockRarities,
         maxRarity,
+        setBonus: grp.setBonus,
       });
     }
 
@@ -490,13 +655,19 @@ export default function ArmourGuide() {
 
   // Sorted unselected skills available for the skill picker
   const sortedAvailableSkills = useMemo(() => {
-    let list = dbSkills.filter((s) => !selectedSkillIds.includes(s.id));
+    // One entry per skill name, whatever the number of levels (ids) it has
+    const byName = new Map<string, DBSkill>();
+    for (const sk of dbSkills) {
+      const cur = byName.get(sk.name);
+      if (!cur || sk.level < cur.level) byName.set(sk.name, sk);
+    }
+    let list = [...byName.values()].filter((s) => !selectedSkillNames.has(s.name));
     if (skillSearchQuery.trim()) {
       const q = skillSearchQuery.toLowerCase().trim();
       list = list.filter((s) => s.name.toLowerCase().includes(q) || s.id.toLowerCase().includes(q));
     }
     return list.sort((a, b) => a.name.localeCompare(b.name));
-  }, [dbSkills, selectedSkillIds, skillSearchQuery]);
+  }, [dbSkills, selectedSkillNames, skillSearchQuery]);
 
   // Count equipped pieces in example build
   const equippedBuildCount = Object.values(exampleBuild).filter(Boolean).length;
@@ -617,6 +788,25 @@ export default function ArmourGuide() {
       }
     }
 
+    // A set bonus grants its skill once enough pieces of the set are equipped
+    const seenBonusSets = new Set<string>();
+    for (const slotDef of SLOTS_ORDER) {
+      const item = exampleBuild[slotDef.id];
+      const bonus = item?.set.setBonus;
+      if (!item || !bonus || seenBonusSets.has(item.set.id)) continue;
+      seenBonusSets.add(item.set.id);
+      const baseId = baseIdOf.get(bonus.skill_id);
+      const row = skillsMap.get(bonus.skill_id);
+      if (baseId && row && (setCountMap.get(item.set.id) || 0) >= bonus.pieces) {
+        pendingSetBonusesToGrant.push({
+          setName: item.set.displayName,
+          grantedSkillId: baseId,
+          grantedLevel: row.level,
+          tierPieces: bonus.pieces,
+        });
+      }
+    }
+
     // Apply granted skills from active set bonuses
     for (const grant of pendingSetBonusesToGrant) {
       const existing = map.get(grant.grantedSkillId);
@@ -658,7 +848,7 @@ export default function ArmourGuide() {
       if (a.isSetBonus !== b.isSetBonus) return a.isSetBonus ? -1 : 1;
       return b.totalLevel - a.totalLevel || a.name.localeCompare(b.name);
     });
-  }, [exampleBuild, sliderRarity, selectedSetId, skillsMap]);
+  }, [exampleBuild, sliderRarity, selectedSetId, skillsMap, baseIdOf]);
 
   // Filtered sets based on search and multi-skill filter
   const filteredSets = useMemo(() => {
@@ -688,25 +878,25 @@ export default function ArmourGuide() {
 
       // Multi-skill filter: set must have at least one piece with any of the selected skills
       if (selectedSkillIds.length > 0) {
-        const hasMatchingSkill = set.allSkills.some((s) => selectedSkillIds.includes(s.id));
+        const hasMatchingSkill = set.allSkills.some((s) => matchesSelectedSkill(s.id));
         if (!hasMatchingSkill) return false;
       }
 
       return true;
     });
-  }, [allSets, search, selectedSkillIds, monstersMap, skillsMap]);
+  }, [allSets, search, selectedSkillIds, matchesSelectedSkill, monstersMap, skillsMap]);
 
   // Helper to find matching skill theme for a piece
   const getPieceMatchingTheme = useCallback(
     (piece: DBArmourPiece | undefined) => {
       if (!piece || !piece.skills || selectedSkillIds.length === 0) return null;
-      const match = piece.skills.find((s) => selectedSkillIds.includes(s.id));
+      const match = piece.skills.find((s) => matchesSelectedSkill(s.id));
       if (!match) return null;
       const meta = skillsMap.get(match.id);
       const cat = meta?.category || (meta?.is_set_bonus ? 'set_bonus' : 'general');
       return SKILL_CATEGORY_THEMES[cat] || SKILL_CATEGORY_THEMES.general;
     },
-    [selectedSkillIds, skillsMap],
+    [selectedSkillIds, matchesSelectedSkill, skillsMap],
   );
 
   // Ensure an active set is selected
@@ -714,11 +904,11 @@ export default function ArmourGuide() {
     if (!selectedSetId && filteredSets.length > 0) {
       setSelectedSetId(filteredSets[0].id);
       setSelectedSlot(null);
-      setSliderRarity(filteredSets[0].maxRarity || 16);
+      setSliderRarity(filteredSets[0].maxRarity);
     } else if (selectedSetId && !allSets.some((s) => s.id === selectedSetId) && filteredSets.length > 0) {
       setSelectedSetId(filteredSets[0].id);
       setSelectedSlot(null);
-      setSliderRarity(filteredSets[0].maxRarity || 16);
+      setSliderRarity(filteredSets[0].maxRarity);
     }
   }, [filteredSets, selectedSetId, allSets]);
 
@@ -733,7 +923,7 @@ export default function ArmourGuide() {
     setSelectedSlot(slot);
     const targetSet = allSets.find((s) => s.id === setId);
     if (targetSet) {
-      setSliderRarity(targetSet.maxRarity || 16);
+      setSliderRarity(targetSet.maxRarity);
     }
     if (openMobileModal) {
       setIsMobileDetailOpen(true);
@@ -745,6 +935,16 @@ export default function ArmourGuide() {
     if (!currentSet || !selectedSlot) return null;
     return currentSet.pieces[selectedSlot] || null;
   }, [currentSet, selectedSlot]);
+
+  // Full upgrade steps (materials, required level) of the inspected piece
+  const { data: currentPieceSteps = [] } = useArmourSetUpgrades(currentPiece ? [currentPiece.id] : []);
+
+  // Defence at the simulated rarity, from the slim tiers of every piece
+  const defenceAtSlider = useCallback(
+    (pieceId: string) =>
+      upgradeTiers.find((t) => t.armour_piece_id === pieceId && t.rarity === sliderRarity)?.defence ?? null,
+    [upgradeTiers, sliderRarity],
+  );
 
   // ── Combined Skills Aggregation for Full Set View ─────────────
   const { combinedActiveSkills, setBonusSummaries, lockedSkillTiers } = useMemo(() => {
@@ -773,8 +973,6 @@ export default function ArmourGuide() {
       unlockRarity: number;
     }> = [];
 
-    const setBonusSkillsFound = new Set<string>();
-
     // Scan all 5 pieces
     for (const slotDef of SLOTS_ORDER) {
       const piece = currentSet.pieces[slotDef.id];
@@ -785,10 +983,6 @@ export default function ArmourGuide() {
         const isActiveAtSlider = ur === null || ur <= sliderRarity;
         const meta = skillsMap.get(skill.id);
         const maxLvl = meta?.max_levels ?? 5;
-
-        if (meta?.is_set_bonus) {
-          setBonusSkillsFound.add(skill.id);
-        }
 
         if (isActiveAtSlider) {
           if (!activeMap.has(skill.id)) {
@@ -827,40 +1021,54 @@ export default function ArmourGuide() {
     });
 
     // Process set bonuses (clean reference format with full description)
-    const setBonusSummaries = Array.from(setBonusSkillsFound).map((skillId) => {
-      const meta = skillsMap.get(skillId);
-      return {
-        skillId,
-        skillName: meta?.name ?? skillId,
-        description: meta?.description,
-        meta,
-      };
-    });
+    const bonus = currentSet.setBonus;
+    const bonusRow = bonus ? skillsMap.get(bonus.skill_id) : undefined;
+    const bonusBaseId = bonus ? baseIdOf.get(bonus.skill_id) : undefined;
+    const setBonusSummaries =
+      bonus && bonusRow && bonusBaseId
+        ? [
+            {
+              skillId: bonusBaseId,
+              skillName: bonusRow.name,
+              description: bonusRow.description,
+              level: bonusRow.level,
+              pieces: bonus.pieces,
+            },
+          ]
+        : [];
 
     // Sort locked tiers by unlock rarity ascending
     lockedList.sort((a, b) => a.unlockRarity - b.unlockRarity);
 
     return { combinedActiveSkills, setBonusSummaries, lockedSkillTiers: lockedList };
-  }, [currentSet, sliderRarity, skillsMap]);
+  }, [currentSet, sliderRarity, skillsMap, baseIdOf]);
 
   // ── Combined Skills Aggregation for Single Piece View ─────────
   const { pieceSetBonuses, pieceActiveSkills, pieceLockedSkills } = useMemo(() => {
     if (!currentPiece) return { pieceSetBonuses: [], pieceActiveSkills: [], pieceLockedSkills: [] };
 
-    const setBonuses: Array<{ skill: ArmourSkill; meta: DBSkill | undefined }> = [];
+    const setBonuses: Array<{ skill: ArmourSkill; meta: DBSkill | undefined; pieces: number; level: number }> = [];
     const activeSkillMap = new Map<string, { skillId: string; meta: DBSkill | undefined; totalLevel: number; maxLevel: number }>();
     const lockedSkillMap = new Map<string, { skillId: string; meta: DBSkill | undefined; additionalLevel: number; maxLevel: number; unlockRarity: number }>();
+
+    const bonus = currentPiece.set_bonus;
+    const bonusBaseId = bonus ? baseIdOf.get(bonus.skill_id) : undefined;
+    const bonusRow = bonus ? skillsMap.get(bonus.skill_id) : undefined;
+    if (bonus && bonusBaseId && bonusRow) {
+      setBonuses.push({
+        skill: { id: bonusBaseId, level: bonusRow.level },
+        meta: bonusRow,
+        pieces: bonus.pieces,
+        level: bonusRow.level,
+      });
+    }
 
     for (const s of currentPiece.skills) {
       const ur = s.unlockRarity ?? s.unlock_rarity ?? null;
       const meta = skillsMap.get(s.id);
-      const isSetBonus = meta?.is_set_bonus ?? false;
       const maxLvl = meta?.max_levels ?? 5;
 
-      if (isSetBonus) {
-        // Set Bonus goes to separate prominent highlight
-        setBonuses.push({ skill: s, meta });
-      } else {
+      {
         // Regular skill
         if (ur === null || ur <= sliderRarity) {
           // Active at slider level -> combine duplicates
@@ -898,7 +1106,7 @@ export default function ArmourGuide() {
     const pieceLockedSkills = Array.from(lockedSkillMap.values()).sort((a, b) => a.unlockRarity - b.unlockRarity);
 
     return { pieceSetBonuses: setBonuses, pieceActiveSkills, pieceLockedSkills };
-  }, [currentPiece, sliderRarity, skillsMap]);
+  }, [currentPiece, sliderRarity, skillsMap, baseIdOf]);
 
   // ── Render Detail Card Content (Shared between Desktop Right Pane & Mobile Mini-Window) ──
   const renderDetailCard = (isModal = false) => {
@@ -1092,19 +1300,39 @@ export default function ArmourGuide() {
               <span>Simulate Upgrade Rarity</span>
             </span>
             <span className="font-mono text-mh-gold-400 font-bold">
-              Rarity {sliderRarity} (Max: R{currentSet.maxRarity || 16})
+              Rarity {sliderRarity} (Max: R{currentSet.maxRarity})
             </span>
           </div>
 
           <input
             type="range"
-            min={1}
-            max={currentSet.maxRarity || 16}
+            min={currentSet.rarity}
+            max={currentSet.maxRarity}
             value={sliderRarity}
             onChange={(e) => setSliderRarity(Number(e.target.value))}
             className="w-full h-1.5 bg-mh-slate-800 rounded-lg appearance-none cursor-pointer accent-mh-gold-400"
           />
         </div>
+
+        {/* ── Defence at the simulated rarity ── */}
+        {(() => {
+          const slotPieces = SLOTS_ORDER.map((d) => currentSet.pieces[d.id]).filter((p): p is DBArmourPiece => Boolean(p));
+          const defence = selectedSlot === null
+            ? slotPieces.reduce((sum, p) => sum + (defenceAtSlider(p.id) ?? 0), 0)
+            : currentPiece ? defenceAtSlider(currentPiece.id) : null;
+          return (
+            <div className="flex items-center justify-between rounded-2xl border border-mh-slate-800 bg-mh-slate-950/60 px-3.5 py-2.5 text-xs">
+              <span className="flex items-center gap-1.5 font-semibold text-mh-slate-300">
+                <Shield size={13} className="text-mh-gold-400" />
+                {selectedSlot === null ? 'Total Defence' : 'Defence'} at R{sliderRarity}
+              </span>
+              <span className="font-mono text-sm font-bold text-mh-slate-100">{defence ?? '—'}</span>
+              {selectedSlot !== null && currentPiece && currentPiece.deco_slots.length > 0 && (
+                <span className="text-mh-slate-400">Deco slots: {currentPiece.deco_slots.join(' · ')}</span>
+              )}
+            </div>
+          );
+        })()}
 
         {/* ── FULL SET VIEW (All 5 Pieces Combined) ── */}
         {selectedSlot === null && (
@@ -1119,7 +1347,7 @@ export default function ArmourGuide() {
 
                 <div className="space-y-2">
                   {setBonusSummaries.map((sb) => {
-                    const isMatch = selectedSkillIds.includes(sb.skillId);
+                    const isMatch = matchesSelectedSkill(sb.skillId);
                     const theme = SKILL_CATEGORY_THEMES.set_bonus;
 
                     return (
@@ -1145,28 +1373,14 @@ export default function ArmourGuide() {
                           </div>
                         </div>
 
-                        {sb.meta?.description && (
-                          <p className="text-xs text-mh-slate-300 leading-relaxed">
-                            {sb.meta.description}
-                          </p>
-                        )}
-
-                        {/* Tier requirements list */}
-                        {sb.meta?.set_thresholds && sb.meta.set_thresholds.length > 0 && (
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 pt-1">
-                            {sb.meta.set_thresholds.map((tier, tIdx) => (
-                              <div
-                                key={tIdx}
-                                className="rounded-lg border border-amber-500/20 bg-mh-slate-950/40 p-2 text-[11px]"
-                              >
-                                <span className="font-bold text-amber-400 font-mono">
-                                  {tier.pieces}-Piece Effect:
-                                </span>
-                                <p className="text-mh-slate-300 mt-0.5">{tier.description}</p>
-                              </div>
-                            ))}
-                          </div>
-                        )}
+                        <div className="rounded-lg border border-amber-500/20 bg-mh-slate-950/40 p-2 text-[11px]">
+                          <span className="font-bold text-amber-400 font-mono">
+                            {sb.pieces}-Piece Effect: +{sb.level} {sb.skillName}
+                          </span>
+                          {sb.description && (
+                            <p className="text-mh-slate-300 mt-0.5">{sb.description}</p>
+                          )}
+                        </div>
                       </div>
                     );
                   })}
@@ -1188,7 +1402,7 @@ export default function ArmourGuide() {
               ) : (
                 <div className="space-y-2">
                   {combinedActiveSkills.map((entry) => {
-                    const isMatch = selectedSkillIds.includes(entry.id);
+                    const isMatch = matchesSelectedSkill(entry.id);
                     const cat = entry.meta?.category || 'general';
                     const theme = SKILL_CATEGORY_THEMES[cat] || SKILL_CATEGORY_THEMES.general;
 
@@ -1361,7 +1575,7 @@ export default function ArmourGuide() {
 
                 <div className="space-y-2">
                   {pieceSetBonuses.map((sb) => {
-                    const isMatch = selectedSkillIds.includes(sb.skill.id);
+                    const isMatch = matchesSelectedSkill(sb.skill.id);
                     const theme = SKILL_CATEGORY_THEMES.set_bonus;
 
                     return (
@@ -1385,6 +1599,9 @@ export default function ArmourGuide() {
                           )}
                         </div>
 
+                        <p className="text-[11px] font-bold font-mono text-amber-400">
+                          {sb.pieces}-Piece Effect: +{sb.level} {sb.meta?.name}
+                        </p>
                         {sb.meta?.description && (
                           <p className="text-xs text-mh-slate-300 leading-relaxed">
                             {sb.meta.description}
@@ -1411,7 +1628,7 @@ export default function ArmourGuide() {
               ) : (
                 <div className="space-y-2">
                   {pieceActiveSkills.map(({ skillId, meta, totalLevel, maxLevel }) => {
-                    const isMatch = selectedSkillIds.includes(skillId);
+                    const isMatch = matchesSelectedSkill(skillId);
                     const cat = meta?.category || 'general';
                     const theme = SKILL_CATEGORY_THEMES[cat] || SKILL_CATEGORY_THEMES.general;
 
@@ -1485,9 +1702,9 @@ export default function ArmourGuide() {
                           })()}
                         </div>
 
-                        {meta?.description && (
+                        {levelDescription(skillId, totalLevel) && (
                           <p className="text-xs text-mh-slate-400 leading-relaxed">
-                            {meta.description}
+                            {levelDescription(skillId, totalLevel)}
                           </p>
                         )}
                       </div>
@@ -1551,6 +1768,47 @@ export default function ArmourGuide() {
             )}
 
             {/* Notes */}
+            {currentPieceSteps.length > 0 && (
+              <div className="space-y-2 pt-2 border-t border-mh-slate-800">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-mh-slate-300 flex items-center gap-1.5">
+                  <Layers size={13} />
+                  <span>Upgrade Path</span>
+                </h4>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-[11px]">
+                    <thead className="text-[10px] uppercase tracking-wider text-mh-slate-500">
+                      <tr>
+                        <th className="py-1 pr-2">Rarity</th>
+                        <th className="py-1 pr-2">Defence</th>
+                        <th className="py-1 pr-2">Lv</th>
+                        <th className="py-1">Materials</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-mh-slate-800">
+                      {currentPieceSteps.map((u) => {
+                        const rs = getRarityBadgeStyle(u.rarity);
+                        return (
+                          <tr key={u.rarity} className={cn(u.rarity === sliderRarity && 'bg-mh-gold-500/10')}>
+                            <td className="py-1.5 pr-2">
+                              <span className={cn('rounded border px-1.5 py-0.5 text-[10px] font-bold font-mono', rs.bg, rs.text, rs.border)}>{rs.label}</span>
+                            </td>
+                            <td className="py-1.5 pr-2 text-mh-slate-100">
+                              {u.defence}
+                              {u.defence_gain ? <span className="ml-1 text-[10px] text-emerald-400">+{u.defence_gain}</span> : null}
+                            </td>
+                            <td className="py-1.5 pr-2 text-mh-slate-300">{u.required_level ?? '—'}</td>
+                            <td className="py-1.5 text-mh-slate-300">
+                              {u.materials.length ? u.materials.map((m) => `${m.item} ×${m.count}`).join(', ') : '—'}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
             {currentPiece?.notes && (
               <div className="rounded-xl border border-mh-slate-800 bg-mh-slate-950/40 p-3 space-y-1">
                 <span className="text-[11px] font-bold text-mh-slate-400 uppercase tracking-wider">
@@ -1591,11 +1849,15 @@ export default function ArmourGuide() {
         onToggleHidden={toggleIntro}
         description={
           <>
-            Browse every armour set by monster, with each piece's defence, resistances, skills and set bonuses at
+            Browse every armour set by monster, with each piece's defence, skills and set bonuses at
             any upgrade rank. Search for a monster or skill, filter by the skills you want, and pin pieces into an
             example build to see how the skills add up. Add a piece to your Hunter's Challenges and the monsters you
             need to hunt for it appear in your
-            <span className="text-mh-slate-200 font-semibold"> Hunting Targets</span>.
+            <span className="text-mh-slate-200 font-semibold"> Hunting Targets</span>. Armour is shown as{' '}
+            <span className="text-mh-slate-200 font-semibold">{gender}</span> equipment — change the equipment setting
+            in your{' '}
+            <Link to="/settings" className="text-mh-gold-400 underline hover:text-mh-gold-300">profile settings</Link>{' '}
+            to see the {gender === 'female' ? 'male' : 'female'} armour instead.
           </>
         }
       />
@@ -1754,9 +2016,16 @@ export default function ArmourGuide() {
                   <h4 className="font-display text-xs font-bold uppercase tracking-wider text-amber-300">
                     Example Build
                   </h4>
-                  <span className="rounded bg-amber-500/20 px-2 py-0.2 text-[10px] font-bold text-amber-300 border border-amber-500/40 font-mono">
-                    {equippedBuildCount}/5 Slots
-                  </span>
+                  <button
+                    type="button"
+                    onClick={toggleBuildCollapsed}
+                    className="flex items-center gap-0.5 rounded-md border border-amber-500/40 bg-amber-500/10 px-1.5 py-0.5 text-[10px] font-bold text-amber-300 hover:bg-amber-500/20 transition-colors"
+                    title={buildCollapsed ? 'Show the example build' : 'Hide the example build'}
+                    aria-expanded={!buildCollapsed}
+                  >
+                    {buildCollapsed ? <ChevronDown size={11} /> : <ChevronUp size={11} />}
+                    <span>{buildCollapsed ? 'Show' : 'Hide'}</span>
+                  </button>
                 </div>
 
                 {equippedBuildCount > 0 && (
@@ -1783,6 +2052,7 @@ export default function ArmourGuide() {
                 )}
               </div>
 
+              {!buildCollapsed && (<>
               {/* The 6 Blocks: Profile Avatar + 5 Armour Slots */}
               <div className="grid grid-cols-6 gap-1.5">
                 {/* Block 1: Profile Icon (Hunter) */}
@@ -2004,12 +2274,15 @@ export default function ArmourGuide() {
                   )}
                 </div>
               )}
+              </>)}
             </div>
 
             {/* ── Scrollable Armour Sets List ── */}
             <div className={cn(
               "space-y-3 overflow-y-auto pr-1",
-              equippedBuildCount > 0 ? "max-h-[calc(100vh-380px)]" : "max-h-[calc(100vh-270px)]"
+              buildCollapsed
+                ? "max-h-[calc(100vh-150px)]"
+                : equippedBuildCount > 0 ? "max-h-[calc(100vh-380px)]" : "max-h-[calc(100vh-270px)]"
             )}>
               {filteredSets.map((set) => {
                 const isSetSelected = currentSet?.id === set.id;

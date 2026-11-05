@@ -1,0 +1,2401 @@
+[
+ {
+  "id": 320001,
+  "name": "Icarus",
+  "species": "Felyne (cat)",
+  "type": "Assault",
+  "rarity": "SR",
+  "description": "These Felynes accompanied adventurers to this land. Full of energy and curiosity, they possess powerful Assault hunting abilities.",
+  "skills": [
+   {
+    "name": "Felyne's Swift Swipe",
+    "description": "The Felyne rapidly slashes at the monster with its weapon, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Giant Boomerang",
+    "description": "The Felyne hurls a giant boomerang at the monster, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Leaping Strike",
+    "description": "The Felyne leaps at the monster and strikes, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Felyne Wheel Rush",
+    "description": "Felyne leaps airborne and unleashes a Spinning Bludgeon, dealing damage equal to 16.2% attack. Cooldown: 45s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_WheelThrust.png"
+   },
+   {
+    "name": "Felyne's Transformation",
+    "description": "The Felyne enters Radiant Rage, increasing its own attack by 40% for 10s. Cooldown: 60s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Magical.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Felyne's Claw Frenzy",
+    "description": "Felyne enters a Flurry, continuously tracking and clawing at the monster, dealing damage equal to 8.6% attack, with the final hit dealing damage equal to 17.1% attack.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_ClawDance.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PCat/PetHeadIcon_PCat01.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PCat01.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PCat01.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PCat/PetProfileIcon_PCat01.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat01.png"
+ },
+ {
+  "id": 320002,
+  "name": "Lido",
+  "species": "Trillan (owl)",
+  "type": "Support",
+  "rarity": "R",
+  "description": "They possess the ability to fly that others can only dream of. They can also restore Adventurers' health and provide buffs, making them indispensable during hunts.",
+  "skills": [
+   {
+    "name": "Trillan's Dart",
+    "description": "The Trillan hurls a dart at the monster, dealing damage equal to 0.6% attack. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Ranged Basic Attack: Dart Volley",
+    "description": "The Trillan unleashes a volley of darts at the monster, dealing damage equal to 0.6% attack in total. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Trillan's Tempest Assault",
+    "description": "Trillan flies to the monster and pecks it, dealing a total of 0.5% attack damage. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   },
+   {
+    "name": "Trillan's Gale Strike",
+    "description": "Trillan flaps its wings to create wind blades that strike the monster, dealing 0.2% attack damage. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Trillan's Resonant Aid",
+    "description": "The Trillan continuously heals the adventurer, providing health recovery 3 per second for 10s. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Cure.png"
+   },
+   {
+    "name": "Trillan's Encouraging Dust",
+    "description": "Trillan flies to the adventurer and scatters Demon Powder around them, increasing surrounding adventurers' attack by 3% for 20s. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_MightPowder.png"
+   },
+   {
+    "name": "Trillan's Theatrical Tumble",
+    "description": "",
+    "icon": ""
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Trillan's Soothing Song",
+    "description": "The Trillan provides health recovery 2 to surrounding adventurers each second for 10s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Soothe.png"
+   },
+   {
+    "name": "Trillan's Dart (Transformation)",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/POwl/PetHeadIcon_POwl01.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_POwl01.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_POwl01.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/POwl/PetProfileIcon_POwl01.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl01.png"
+ },
+ {
+  "id": 320003,
+  "name": "Aku",
+  "species": "Rutaco (monkey)",
+  "type": "Disruptor",
+  "rarity": "R",
+  "description": "These Rutacoes lived on this island long before the arrival of adventurers. They've witnessed vast history and possess unique Disruptor hunting abilities.",
+  "skills": [
+   {
+    "name": "Strike",
+    "description": "The Rutaco leaps into the air and strikes the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Rutaco's Pot Bomb",
+    "description": "The Rutaco tosses a pot bomb at the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Firework Bomb",
+    "description": "The Rutaco ignites a Firework Bomb to scorch the monster over time, dealing damage equal to 0.9% attack in total. Cooldown: 15s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_Firework.png"
+   },
+   {
+    "name": "Rutaco's Handheld Cannon",
+    "description": "Rutaco fires its handheld cannon at the monster, dealing 1% attack damage. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_HandCannon.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Rutaco's Poison Mine",
+    "description": "Rutaco sets up a poison gas mine that explodes when a monster passes by, causing the monster to build up poison value. Once fully built up, the monster is inflicted with the poisoned status. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_PoisonGasMine.png"
+   },
+   {
+    "name": "Rutaco's Turret",
+    "description": "Rutaco builds a large turret that lasts for 10s, which adventurers can operate to fire up to 3 balloon shells, each dealing damage equal to 9.9% attack, with the final shell dealing damage equal to 19.8% attack. On hit, it causes the monster to stagger, and the monster will enter an enraged state after the stagger ends. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_LaunchPad.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Rutaco's Barrage Cannon",
+    "description": "The Rutaco builds an auto-firing turret. After every 2 common shots, it fires 1 additional enhanced shot. Common shots deal damage equal to 1.7% attack, while enhanced shots deal damage equal to 5.1% attack. Landing a shot extends the monster's suppress duration by up to 1.2s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_ComboCannon.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PMky/PetHeadIcon_PMky01.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PMky01.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PMky01.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PMky/PetProfileIcon_PMky01.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky01.png"
+ },
+ {
+  "id": 320004,
+  "name": "Aloo",
+  "species": "Felyne (cat)",
+  "type": "Assault",
+  "rarity": "R",
+  "description": "",
+  "skills": [
+   {
+    "name": "Felyne's Swift Swipe",
+    "description": "The Felyne rapidly slashes at the monster with its weapon, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Giant Boomerang",
+    "description": "The Felyne hurls a giant boomerang at the monster, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Leaping Strike",
+    "description": "The Felyne leaps at the monster and strikes, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Felyne Wheel Rush",
+    "description": "Felyne leaps airborne and unleashes a Spinning Bludgeon, dealing damage equal to 16.2% attack. Cooldown: 45s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_WheelThrust.png"
+   },
+   {
+    "name": "Felyne Rush Frenzy",
+    "description": "Felyne unleashes a Thrust attack followed by a Spinning Flurry against the monster, dealing multiple hits of damage. Each hit deals damage equal to 5.4% attack. Cooldown: 45s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_JumpAndDancing.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Felyne's Whirlwind Claw",
+    "description": "Felyne curves toward the monster while attacking, dealing multiple hits of damage.\nDeals damage equal to 1.8% attack per hit for 4s, with the final hit dealing damage equal to 3.5% attack.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_WhirlwindHammer.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PCat/PetHeadIcon_PCat18.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PCat18.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PCat18.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PCat/PetProfileIcon_PCat18.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat18.png",
+  "default_buddy_of": [
+   "Ouyang Varen"
+  ]
+ },
+ {
+  "id": 320005,
+  "name": "Shadow",
+  "species": "Felyne (cat)",
+  "type": "Assault",
+  "rarity": "R",
+  "description": "As precious as peridot, as robust as an olive.",
+  "skills": [
+   {
+    "name": "Felyne's Swift Swipe",
+    "description": "The Felyne rapidly slashes at the monster with its weapon, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Giant Boomerang",
+    "description": "The Felyne hurls a giant boomerang at the monster, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Leaping Strike",
+    "description": "The Felyne leaps at the monster and strikes, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Felyne Wheel Rush",
+    "description": "Felyne leaps airborne and unleashes a Spinning Bludgeon, dealing damage equal to 16.2% attack. Cooldown: 45s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_WheelThrust.png"
+   },
+   {
+    "name": "Felyne's Transformation",
+    "description": "The Felyne enters Radiant Rage, increasing its own attack by 40% for 10s. Cooldown: 60s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Magical.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Felyne's Whirlwind Claw",
+    "description": "Felyne curves toward the monster while attacking, dealing multiple hits of damage.\nDeals damage equal to 1.8% attack per hit for 4s, with the final hit dealing damage equal to 3.5% attack.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_WhirlwindHammer.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PCat/PetHeadIcon_PCat22.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PCat22.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PCat22.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PCat/PetProfileIcon_PCat22.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat22.png",
+  "default_buddy_of": [
+   "Midori"
+  ]
+ },
+ {
+  "id": 320006,
+  "name": "Wolfe",
+  "species": "Rutaco (monkey)",
+  "type": "Disruptor",
+  "rarity": "R",
+  "description": "You are my only friend...\nDon't you betray me.",
+  "skills": [
+   {
+    "name": "Strike",
+    "description": "The Rutaco leaps into the air and strikes the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Rutaco's Pot Bomb",
+    "description": "The Rutaco tosses a pot bomb at the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Firework Bomb",
+    "description": "The Rutaco ignites a Firework Bomb to scorch the monster over time, dealing damage equal to 0.9% attack in total. Cooldown: 15s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_Firework.png"
+   },
+   {
+    "name": "Rutaco's Handheld Cannon",
+    "description": "Rutaco fires its handheld cannon at the monster, dealing 1% attack damage. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_HandCannon.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Rutaco's Binding Net",
+    "description": "Rutaco builds a net launcher that can be operated by the adventurer. When the fired net hits the monster, it puts the monster into a bind state for 4s. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_BindNet.png"
+   },
+   {
+    "name": "Rutaco's Recoil Wall",
+    "description": "Rutaco builds a large barricade that obstructs monster movement. When a monster attacks the barricade, it shatters and suppresses the monster. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_BlastbackWall.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Rutaco's Rocket Plan",
+    "description": "Rutaco mounts a rocket and flies toward the monster, circling before exploding to inflict dazed status on the monster.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_Project.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PMky/PetHeadIcon_PMky18.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PMky18.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PMky18.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PMky/PetProfileIcon_PMky18.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky18.png",
+  "default_buddy_of": [
+   "Keres"
+  ]
+ },
+ {
+  "id": 320007,
+  "name": "Viper",
+  "species": "Trillan (owl)",
+  "type": "Support",
+  "rarity": "R",
+  "description": "With the right approach, even the most harmful-looking things can become an adventurer's best friend.",
+  "skills": [
+   {
+    "name": "Trillan's Dart",
+    "description": "The Trillan hurls a dart at the monster, dealing damage equal to 0.6% attack. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Ranged Basic Attack: Dart Volley",
+    "description": "The Trillan unleashes a volley of darts at the monster, dealing damage equal to 0.6% attack in total. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Trillan's Tempest Assault",
+    "description": "Trillan flies to the monster and pecks it, dealing a total of 0.5% attack damage. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   },
+   {
+    "name": "Trillan's Gale Strike",
+    "description": "Trillan flaps its wings to create wind blades that strike the monster, dealing 0.2% attack damage. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Trillan's Healing Bug",
+    "description": "Trillan grabs a Vigorwasp and flies to the player, then provides recovery of 30 health to surrounding players. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Healbug.png"
+   },
+   {
+    "name": "Trillan's Resonant Aid",
+    "description": "The Trillan continuously heals the adventurer, providing health recovery 3 per second for 10s. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Cure.png"
+   },
+   {
+    "name": "Trillan's Theatrical Tumble",
+    "description": "",
+    "icon": ""
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Trillan's Inspiring Song",
+    "description": "Trillan increases surrounding adventurers' elemental damage by 8% and affinity by 2.8% for 10s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Chirp.png"
+   },
+   {
+    "name": "Trillan's Dart (Transformation)",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/POwl/PetHeadIcon_POwl19.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_POwl19.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_POwl19.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/POwl/PetProfileIcon_POwl19.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl19.png",
+  "default_buddy_of": [
+   "Madelyn"
+  ]
+ },
+ {
+  "id": 320008,
+  "name": "Pupo",
+  "species": "Rutaco (monkey)",
+  "type": "Disruptor",
+  "rarity": "R",
+  "description": "They agreed to use the similar sound in both their names as its name.",
+  "skills": [
+   {
+    "name": "Strike",
+    "description": "The Rutaco leaps into the air and strikes the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Rutaco's Pot Bomb",
+    "description": "The Rutaco tosses a pot bomb at the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Firework Bomb",
+    "description": "The Rutaco ignites a Firework Bomb to scorch the monster over time, dealing damage equal to 0.9% attack in total. Cooldown: 15s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_Firework.png"
+   },
+   {
+    "name": "Rutaco's Handheld Cannon",
+    "description": "Rutaco fires its handheld cannon at the monster, dealing 1% attack damage. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_HandCannon.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Rutaco's Binding Net",
+    "description": "Rutaco builds a net launcher that can be operated by the adventurer. When the fired net hits the monster, it puts the monster into a bind state for 4s. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_BindNet.png"
+   },
+   {
+    "name": "Rutaco's Poison Mine",
+    "description": "Rutaco sets up a poison gas mine that explodes when a monster passes by, causing the monster to build up poison value. Once fully built up, the monster is inflicted with the poisoned status. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_PoisonGasMine.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Rutaco's Barrage Cannon",
+    "description": "The Rutaco builds an auto-firing turret. After every 2 common shots, it fires 1 additional enhanced shot. Common shots deal damage equal to 1.7% attack, while enhanced shots deal damage equal to 5.1% attack. Landing a shot extends the monster's suppress duration by up to 1.2s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_ComboCannon.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PMky/PetHeadIcon_PMky17.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PMky17.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PMky17.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PMky/PetProfileIcon_PMky17.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky17.png",
+  "default_buddy_of": [
+   "Raya"
+  ]
+ },
+ {
+  "id": 320009,
+  "name": "Boomie",
+  "species": "Rutaco (monkey)",
+  "type": "Disruptor",
+  "rarity": "R",
+  "description": "An adorable little treasure, gifted by her father on her birthday—a token of everlasting love.",
+  "skills": [
+   {
+    "name": "Strike",
+    "description": "The Rutaco leaps into the air and strikes the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Rutaco's Pot Bomb",
+    "description": "The Rutaco tosses a pot bomb at the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Firework Bomb",
+    "description": "The Rutaco ignites a Firework Bomb to scorch the monster over time, dealing damage equal to 0.9% attack in total. Cooldown: 15s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_Firework.png"
+   },
+   {
+    "name": "Rutaco's Handheld Cannon",
+    "description": "Rutaco fires its handheld cannon at the monster, dealing 1% attack damage. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_HandCannon.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Rutaco's Binding Net",
+    "description": "Rutaco builds a net launcher that can be operated by the adventurer. When the fired net hits the monster, it puts the monster into a bind state for 4s. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_BindNet.png"
+   },
+   {
+    "name": "Rutaco's Recoil Wall",
+    "description": "Rutaco builds a large barricade that obstructs monster movement. When a monster attacks the barricade, it shatters and suppresses the monster. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_BlastbackWall.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Rutaco's Shackling Turret",
+    "description": "The Rutaco builds an auto-turret that automatically aims and fires a paralyzing shot to attack the monster. It deals damage equal to 25.7% attack and applies paralysis.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_Dragonlance.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PMky/PetHeadIcon_PMky19.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PMky19.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PMky19.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PMky/PetProfileIcon_PMky19.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky19.png",
+  "default_buddy_of": [
+   "Pepper"
+  ]
+ },
+ {
+  "id": 320011,
+  "name": "Zira",
+  "species": "Felyne (cat)",
+  "type": "Assault",
+  "rarity": "R",
+  "description": "Skilled at finding berries in the wild. Whether they're actually tasty is another question.",
+  "skills": [
+   {
+    "name": "Felyne's Swift Swipe",
+    "description": "The Felyne rapidly slashes at the monster with its weapon, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Giant Boomerang",
+    "description": "The Felyne hurls a giant boomerang at the monster, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Leaping Strike",
+    "description": "The Felyne leaps at the monster and strikes, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Felyne's All-Out Throw",
+    "description": "The Felyne tosses a heavy object at the monster, dealing damage equal to 14.9% attack. Cooldown: 45s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Concentric.png"
+   },
+   {
+    "name": "Felyne's Transformation",
+    "description": "The Felyne enters Radiant Rage, increasing its own attack by 40% for 10s. Cooldown: 60s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Magical.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Felyne's Claw Frenzy",
+    "description": "Felyne enters a Flurry, continuously tracking and clawing at the monster, dealing damage equal to 8.6% attack, with the final hit dealing damage equal to 17.1% attack.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_ClawDance.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PCat/PetHeadIcon_PCat19.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PCat19.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PCat19.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PCat/PetProfileIcon_PCat19.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat19.png",
+  "default_buddy_of": [
+   "Luka"
+  ]
+ },
+ {
+  "id": 320012,
+  "name": "Alon",
+  "species": "Felyne (cat)",
+  "type": "Assault",
+  "rarity": "R",
+  "description": "Overwhelmingly graceful with its every paw and claw.",
+  "skills": [
+   {
+    "name": "Felyne's Swift Swipe",
+    "description": "The Felyne rapidly slashes at the monster with its weapon, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Giant Boomerang",
+    "description": "The Felyne hurls a giant boomerang at the monster, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Leaping Strike",
+    "description": "The Felyne leaps at the monster and strikes, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Felyne Rush Frenzy",
+    "description": "Felyne unleashes a Thrust attack followed by a Spinning Flurry against the monster, dealing multiple hits of damage. Each hit deals damage equal to 5.4% attack. Cooldown: 45s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_JumpAndDancing.png"
+   },
+   {
+    "name": "Felyne Wheel Rush",
+    "description": "Felyne leaps airborne and unleashes a Spinning Bludgeon, dealing damage equal to 16.2% attack. Cooldown: 45s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_WheelThrust.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Felyne Prospecting",
+    "description": "Felyne burrows underground, digging up debris to throw in a multi-hit attack. Each hit deals damage equal to 9.6% attack, with the final hit dealing damage equal to 19.3% attack.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Exploration.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PCat/PetHeadIcon_PCat21.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PCat21.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PCat21.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PCat/PetProfileIcon_PCat21.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat21.png",
+  "default_buddy_of": [
+   "Pyro"
+  ]
+ },
+ {
+  "id": 320013,
+  "name": "Horn",
+  "species": "Trillan (owl)",
+  "type": "Support",
+  "rarity": "R",
+  "description": "You are my only friend...\nDon't you betray me.",
+  "skills": [
+   {
+    "name": "Trillan's Dart",
+    "description": "The Trillan hurls a dart at the monster, dealing damage equal to 0.6% attack. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Ranged Basic Attack: Dart Volley",
+    "description": "The Trillan unleashes a volley of darts at the monster, dealing damage equal to 0.6% attack in total. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Trillan's Tempest Assault",
+    "description": "Trillan flies to the monster and pecks it, dealing a total of 0.5% attack damage. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   },
+   {
+    "name": "Trillan's Gale Strike",
+    "description": "Trillan flaps its wings to create wind blades that strike the monster, dealing 0.2% attack damage. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Trillan's Healing Bug",
+    "description": "Trillan grabs a Vigorwasp and flies to the player, then provides recovery of 30 health to surrounding players. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Healbug.png"
+   },
+   {
+    "name": "Trillan's Encouraging Dust",
+    "description": "Trillan flies to the adventurer and scatters Demon Powder around them, increasing surrounding adventurers' attack by 3% for 20s. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_MightPowder.png"
+   },
+   {
+    "name": "Trillan's Theatrical Tumble",
+    "description": "",
+    "icon": ""
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Trillan's Baptismal Hymn",
+    "description": "Trillan continuously clears the current ailment for adventurers within range and reduces damage taken by adventurers by 8% for 10s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_BaptismalMusic.png"
+   },
+   {
+    "name": "Trillan's Dart (Transformation)",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/POwl/PetHeadIcon_POwl20.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_POwl20.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_POwl20.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/POwl/PetProfileIcon_POwl20.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl20.png",
+  "default_buddy_of": [
+   "Arkaya"
+  ]
+ },
+ {
+  "id": 320014,
+  "name": "Wrench",
+  "species": "Rutaco (monkey)",
+  "type": "Disruptor",
+  "rarity": "R",
+  "description": "Its favorite color is actually gray—something it's never shared with others.",
+  "skills": [
+   {
+    "name": "Strike",
+    "description": "The Rutaco leaps into the air and strikes the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Rutaco's Pot Bomb",
+    "description": "The Rutaco tosses a pot bomb at the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Firework Bomb",
+    "description": "The Rutaco ignites a Firework Bomb to scorch the monster over time, dealing damage equal to 0.9% attack in total. Cooldown: 15s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_Firework.png"
+   },
+   {
+    "name": "Rutaco's Handheld Cannon",
+    "description": "Rutaco fires its handheld cannon at the monster, dealing 1% attack damage. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_HandCannon.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Rutaco's Recoil Wall",
+    "description": "Rutaco builds a large barricade that obstructs monster movement. When a monster attacks the barricade, it shatters and suppresses the monster. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_BlastbackWall.png"
+   },
+   {
+    "name": "Rutaco's Turret",
+    "description": "Rutaco builds a large turret that lasts for 10s, which adventurers can operate to fire up to 3 balloon shells, each dealing damage equal to 9.9% attack, with the final shell dealing damage equal to 19.8% attack. On hit, it causes the monster to stagger, and the monster will enter an enraged state after the stagger ends. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_LaunchPad.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Rutaco's Rocket Plan",
+    "description": "Rutaco mounts a rocket and flies toward the monster, circling before exploding to inflict dazed status on the monster.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_Project.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PMky/PetHeadIcon_PMky21.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PMky21.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PMky21.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PMky/PetProfileIcon_PMky21.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky21.png",
+  "default_buddy_of": [
+   "Freya"
+  ]
+ },
+ {
+  "id": 320116,
+  "name": "Ron",
+  "species": "Felyne (cat)",
+  "type": "Assault",
+  "rarity": "R",
+  "description": "Overwhelmingly graceful with its every paw and claw.",
+  "skills": [
+   {
+    "name": "Felyne's Swift Swipe",
+    "description": "The Felyne rapidly slashes at the monster with its weapon, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Giant Boomerang",
+    "description": "The Felyne hurls a giant boomerang at the monster, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Leaping Strike",
+    "description": "The Felyne leaps at the monster and strikes, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Felyne Wheel Rush",
+    "description": "Felyne leaps airborne and unleashes a Spinning Bludgeon, dealing damage equal to 16.2% attack. Cooldown: 45s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_WheelThrust.png"
+   },
+   {
+    "name": "Felyne's All-Out Throw",
+    "description": "The Felyne tosses a heavy object at the monster, dealing damage equal to 14.9% attack. Cooldown: 45s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Concentric.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Felyne Prospecting",
+    "description": "Felyne burrows underground, digging up debris to throw in a multi-hit attack. Each hit deals damage equal to 9.6% attack, with the final hit dealing damage equal to 19.3% attack.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Exploration.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PCat/PetHeadIcon_PCat20.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PCat20.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PCat20.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PCat/PetProfileIcon_PCat20.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat20.png",
+  "default_buddy_of": [
+   "Rhodes"
+  ]
+ },
+ {
+  "id": 320117,
+  "name": "Mac",
+  "species": "Rutaco (monkey)",
+  "type": "Disruptor",
+  "rarity": "R",
+  "description": "They possess the ability to fly that others can only dream of. They can also restore Adventurers' health and provide buffs, making them indispensable during hunts.",
+  "skills": [
+   {
+    "name": "Strike",
+    "description": "The Rutaco leaps into the air and strikes the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Rutaco's Pot Bomb",
+    "description": "The Rutaco tosses a pot bomb at the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Firework Bomb",
+    "description": "The Rutaco ignites a Firework Bomb to scorch the monster over time, dealing damage equal to 0.9% attack in total. Cooldown: 15s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_Firework.png"
+   },
+   {
+    "name": "Rutaco's Handheld Cannon",
+    "description": "Rutaco fires its handheld cannon at the monster, dealing 1% attack damage. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_HandCannon.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Rutaco's Poison Mine",
+    "description": "Rutaco sets up a poison gas mine that explodes when a monster passes by, causing the monster to build up poison value. Once fully built up, the monster is inflicted with the poisoned status. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_PoisonGasMine.png"
+   },
+   {
+    "name": "Rutaco's Turret",
+    "description": "Rutaco builds a large turret that lasts for 10s, which adventurers can operate to fire up to 3 balloon shells, each dealing damage equal to 9.9% attack, with the final shell dealing damage equal to 19.8% attack. On hit, it causes the monster to stagger, and the monster will enter an enraged state after the stagger ends. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_LaunchPad.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Rutaco's Rocket Plan",
+    "description": "Rutaco mounts a rocket and flies toward the monster, circling before exploding to inflict dazed status on the monster.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_Project.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PMky/PetHeadIcon_PMky20.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PMky20.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PMky20.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PMky/PetProfileIcon_PMky20.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky20.png",
+  "default_buddy_of": [
+   "Luxheart"
+  ]
+ },
+ {
+  "id": 320126,
+  "name": "Bladey",
+  "species": "Trillan (owl)",
+  "type": "Support",
+  "rarity": "R",
+  "description": "You are my only friend...\nDon't you betray me.",
+  "skills": [
+   {
+    "name": "Trillan's Dart",
+    "description": "The Trillan hurls a dart at the monster, dealing damage equal to 0.6% attack. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Ranged Basic Attack: Dart Volley",
+    "description": "The Trillan unleashes a volley of darts at the monster, dealing damage equal to 0.6% attack in total. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Trillan's Tempest Assault",
+    "description": "Trillan flies to the monster and pecks it, dealing a total of 0.5% attack damage. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   },
+   {
+    "name": "Trillan's Gale Strike",
+    "description": "Trillan flaps its wings to create wind blades that strike the monster, dealing 0.2% attack damage. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Trillan's Healing Bug",
+    "description": "Trillan grabs a Vigorwasp and flies to the player, then provides recovery of 30 health to surrounding players. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Healbug.png"
+   },
+   {
+    "name": "Trillan's Encouraging Dust",
+    "description": "Trillan flies to the adventurer and scatters Demon Powder around them, increasing surrounding adventurers' attack by 3% for 20s. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_MightPowder.png"
+   },
+   {
+    "name": "Trillan's Theatrical Tumble",
+    "description": "",
+    "icon": ""
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Trillan's Soothing Song",
+    "description": "The Trillan provides health recovery 2 to surrounding adventurers each second for 10s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Soothe.png"
+   },
+   {
+    "name": "Trillan's Dart (Transformation)",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/POwl/PetHeadIcon_POwl22.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_POwl22.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_POwl22.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/POwl/PetProfileIcon_POwl22.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl22.png",
+  "default_buddy_of": [
+   "Ryunosuke"
+  ]
+ },
+ {
+  "id": 320127,
+  "name": "Mith",
+  "species": "Trillan (owl)",
+  "type": "Support",
+  "rarity": "R",
+  "description": "You are my only friend...\nDon't you betray me.",
+  "skills": [
+   {
+    "name": "Trillan's Dart",
+    "description": "The Trillan hurls a dart at the monster, dealing damage equal to 0.6% attack. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Ranged Basic Attack: Dart Volley",
+    "description": "The Trillan unleashes a volley of darts at the monster, dealing damage equal to 0.6% attack in total. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Trillan's Tempest Assault",
+    "description": "Trillan flies to the monster and pecks it, dealing a total of 0.5% attack damage. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   },
+   {
+    "name": "Trillan's Gale Strike",
+    "description": "Trillan flaps its wings to create wind blades that strike the monster, dealing 0.2% attack damage. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Trillan's Resonant Aid",
+    "description": "The Trillan continuously heals the adventurer, providing health recovery 3 per second for 10s. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Cure.png"
+   },
+   {
+    "name": "Trillan's Encouraging Dust",
+    "description": "Trillan flies to the adventurer and scatters Demon Powder around them, increasing surrounding adventurers' attack by 3% for 20s. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_MightPowder.png"
+   },
+   {
+    "name": "Trillan's Theatrical Tumble",
+    "description": "",
+    "icon": ""
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Trillan's Inspiring Song",
+    "description": "Trillan increases surrounding adventurers' elemental damage by 8% and affinity by 2.8% for 10s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Chirp.png"
+   },
+   {
+    "name": "Trillan's Dart (Transformation)",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/POwl/PetHeadIcon_POwl21.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_POwl21.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_POwl21.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/POwl/PetProfileIcon_POwl21.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl21.png",
+  "default_buddy_of": [
+   "Haze"
+  ]
+ },
+ {
+  "id": 320128,
+  "name": "Lynn",
+  "species": "Trillan (owl)",
+  "type": "Support",
+  "rarity": "R",
+  "description": "You are my only friend...\nDon't you betray me.",
+  "skills": [
+   {
+    "name": "Trillan's Dart",
+    "description": "The Trillan hurls a dart at the monster, dealing damage equal to 0.6% attack. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Ranged Basic Attack: Dart Volley",
+    "description": "The Trillan unleashes a volley of darts at the monster, dealing damage equal to 0.6% attack in total. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Trillan's Tempest Assault",
+    "description": "Trillan flies to the monster and pecks it, dealing a total of 0.5% attack damage. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   },
+   {
+    "name": "Trillan's Gale Strike",
+    "description": "Trillan flaps its wings to create wind blades that strike the monster, dealing 0.2% attack damage. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Trillan's Healing Bug",
+    "description": "Trillan grabs a Vigorwasp and flies to the player, then provides recovery of 30 health to surrounding players. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Healbug.png"
+   },
+   {
+    "name": "Trillan's Encouraging Dust",
+    "description": "Trillan flies to the adventurer and scatters Demon Powder around them, increasing surrounding adventurers' attack by 3% for 20s. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_MightPowder.png"
+   },
+   {
+    "name": "Trillan's Theatrical Tumble",
+    "description": "",
+    "icon": ""
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Trillan's Soothing Song",
+    "description": "The Trillan provides health recovery 2 to surrounding adventurers each second for 10s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Soothe.png"
+   },
+   {
+    "name": "Trillan's Dart (Transformation)",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/POwl/PetHeadIcon_POwl23.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_POwl23.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_POwl23.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/POwl/PetProfileIcon_POwl23.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl23.png",
+  "default_buddy_of": [
+   "Stylia"
+  ]
+ },
+ {
+  "id": 320027,
+  "name": "Falee Hendsom",
+  "species": "Rutaco (monkey)",
+  "type": "Disruptor",
+  "rarity": "SR",
+  "description": "They possess the ability to fly that others can only dream of. They can also restore Adventurers' health and provide buffs, making them indispensable during hunts.",
+  "skills": [
+   {
+    "name": "Strike",
+    "description": "The Rutaco leaps into the air and strikes the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Rutaco's Pot Bomb",
+    "description": "The Rutaco tosses a pot bomb at the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Firework Bomb",
+    "description": "The Rutaco ignites a Firework Bomb to scorch the monster over time, dealing damage equal to 0.9% attack in total. Cooldown: 15s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_Firework.png"
+   },
+   {
+    "name": "Rutaco's Handheld Cannon",
+    "description": "Rutaco fires its handheld cannon at the monster, dealing 1% attack damage. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_HandCannon.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Rutaco's Poison Mine",
+    "description": "Rutaco sets up a poison gas mine that explodes when a monster passes by, causing the monster to build up poison value. Once fully built up, the monster is inflicted with the poisoned status. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_PoisonGasMine.png"
+   },
+   {
+    "name": "Rutaco's Turret",
+    "description": "Rutaco builds a large turret that lasts for 10s, which adventurers can operate to fire up to 3 balloon shells, each dealing damage equal to 9.9% attack, with the final shell dealing damage equal to 19.8% attack. On hit, it causes the monster to stagger, and the monster will enter an enraged state after the stagger ends. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_LaunchPad.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Rutaco's Rocket Plan",
+    "description": "Rutaco mounts a rocket and flies toward the monster, circling before exploding to inflict dazed status on the monster.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_Project.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PMky/PetHeadIcon_PMky13.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PMky13.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PMky13.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PMky/PetProfileIcon_PMky13.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky13.png"
+ },
+ {
+  "id": 320023,
+  "name": "Fortie",
+  "species": "Felyne (cat)",
+  "type": "Assault",
+  "rarity": "SR",
+  "description": "",
+  "skills": [
+   {
+    "name": "Felyne's Swift Swipe",
+    "description": "The Felyne rapidly slashes at the monster with its weapon, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Giant Boomerang",
+    "description": "The Felyne hurls a giant boomerang at the monster, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Leaping Strike",
+    "description": "The Felyne leaps at the monster and strikes, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Felyne Rush Frenzy",
+    "description": "Felyne unleashes a Thrust attack followed by a Spinning Flurry against the monster, dealing multiple hits of damage. Each hit deals damage equal to 5.4% attack. Cooldown: 45s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_JumpAndDancing.png"
+   },
+   {
+    "name": "Felyne Wheel Rush",
+    "description": "Felyne leaps airborne and unleashes a Spinning Bludgeon, dealing damage equal to 16.2% attack. Cooldown: 45s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_WheelThrust.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Felyne's Claw Frenzy",
+    "description": "Felyne enters a Flurry, continuously tracking and clawing at the monster, dealing damage equal to 8.6% attack, with the final hit dealing damage equal to 17.1% attack.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_ClawDance.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PCat/PetHeadIcon_PCat07.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PCat07.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PCat07.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PCat/PetProfileIcon_PCat07.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat07.png"
+ },
+ {
+  "id": 320028,
+  "name": "Barim",
+  "species": "Rutaco (monkey)",
+  "type": "Disruptor",
+  "rarity": "SR",
+  "description": "",
+  "skills": [
+   {
+    "name": "Strike",
+    "description": "The Rutaco leaps into the air and strikes the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Rutaco's Pot Bomb",
+    "description": "The Rutaco tosses a pot bomb at the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Firework Bomb",
+    "description": "The Rutaco ignites a Firework Bomb to scorch the monster over time, dealing damage equal to 0.9% attack in total. Cooldown: 15s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_Firework.png"
+   },
+   {
+    "name": "Rutaco's Handheld Cannon",
+    "description": "Rutaco fires its handheld cannon at the monster, dealing 1% attack damage. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_HandCannon.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Rutaco's Turret",
+    "description": "Rutaco builds a large turret that lasts for 10s, which adventurers can operate to fire up to 3 balloon shells, each dealing damage equal to 9.9% attack, with the final shell dealing damage equal to 19.8% attack. On hit, it causes the monster to stagger, and the monster will enter an enraged state after the stagger ends. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_LaunchPad.png"
+   },
+   {
+    "name": "Rutaco's Recoil Wall",
+    "description": "Rutaco builds a large barricade that obstructs monster movement. When a monster attacks the barricade, it shatters and suppresses the monster. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_BlastbackWall.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Rutaco's Barrage Cannon",
+    "description": "The Rutaco builds an auto-firing turret. After every 2 common shots, it fires 1 additional enhanced shot. Common shots deal damage equal to 1.7% attack, while enhanced shots deal damage equal to 5.1% attack. Landing a shot extends the monster's suppress duration by up to 1.2s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_ComboCannon.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PMky/PetHeadIcon_PMky06.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PMky06.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PMky06.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PMky/PetProfileIcon_PMky06.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky06.png"
+ },
+ {
+  "id": 320033,
+  "name": "Ravinge",
+  "species": "Trillan (owl)",
+  "type": "Support",
+  "rarity": "SR",
+  "description": "",
+  "skills": [
+   {
+    "name": "Trillan's Dart",
+    "description": "The Trillan hurls a dart at the monster, dealing damage equal to 0.6% attack. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Ranged Basic Attack: Dart Volley",
+    "description": "The Trillan unleashes a volley of darts at the monster, dealing damage equal to 0.6% attack in total. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Trillan's Tempest Assault",
+    "description": "Trillan flies to the monster and pecks it, dealing a total of 0.5% attack damage. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   },
+   {
+    "name": "Trillan's Gale Strike",
+    "description": "Trillan flaps its wings to create wind blades that strike the monster, dealing 0.2% attack damage. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Trillan's Resonant Aid",
+    "description": "The Trillan continuously heals the adventurer, providing health recovery 3 per second for 10s. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Cure.png"
+   },
+   {
+    "name": "Trillan's Healing Bug",
+    "description": "Trillan grabs a Vigorwasp and flies to the player, then provides recovery of 30 health to surrounding players. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Healbug.png"
+   },
+   {
+    "name": "Trillan's Theatrical Tumble",
+    "description": "",
+    "icon": ""
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Trillan's Inspiring Song",
+    "description": "Trillan increases surrounding adventurers' elemental damage by 8% and affinity by 2.8% for 10s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Chirp.png"
+   },
+   {
+    "name": "Trillan's Dart (Transformation)",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/POwl/PetHeadIcon_POwl06.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_POwl06.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_POwl06.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/POwl/PetProfileIcon_POwl06.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl06.png"
+ },
+ {
+  "id": 320037,
+  "name": "Kojiro",
+  "species": "Felyne (cat)",
+  "type": "Assault",
+  "rarity": "SSR",
+  "description": "",
+  "skills": [
+   {
+    "name": "Felyne's Swift Swipe",
+    "description": "The Felyne rapidly slashes at the monster with its weapon, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Giant Boomerang",
+    "description": "The Felyne hurls a giant boomerang at the monster, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Leaping Strike",
+    "description": "The Felyne leaps at the monster and strikes, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Felyne Wheel Rush",
+    "description": "Felyne leaps airborne and unleashes a Spinning Bludgeon, dealing damage equal to 16.2% attack. Cooldown: 45s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_WheelThrust.png"
+   },
+   {
+    "name": "Felyne's Transformation",
+    "description": "The Felyne enters Radiant Rage, increasing its own attack by 40% for 10s. Cooldown: 60s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Magical.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Shadow of the Blossom Samurai",
+    "description": "When the skill is cast, Kojiro enters a Stealth state. While in this state, each time the adventurer deals sever damage to the monster, Kojiro triggers a Synergy Strike, dealing damage equal to 6.4% attack.\n\nWhen the adventurer successfully parries, Kojiro triggers a Powerful Strike, dealing damage equal to 25.8% attack.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_ShadowAttack.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PCat/PetHeadIcon_PCat03.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PCat03.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PCat03.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PCat/PetProfileIcon_PCat03.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat03.png"
+ },
+ {
+  "id": 320038,
+  "name": "Pipa",
+  "species": "Felyne (cat)",
+  "type": "Assault",
+  "rarity": "SSR",
+  "description": "",
+  "skills": [
+   {
+    "name": "Felyne's Swift Swipe",
+    "description": "The Felyne rapidly slashes at the monster with its weapon, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Giant Boomerang",
+    "description": "The Felyne hurls a giant boomerang at the monster, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Leaping Strike",
+    "description": "The Felyne leaps at the monster and strikes, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Felyne's All-Out Throw",
+    "description": "The Felyne tosses a heavy object at the monster, dealing damage equal to 14.9% attack. Cooldown: 45s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Concentric.png"
+   },
+   {
+    "name": "Felyne's Transformation",
+    "description": "The Felyne enters Radiant Rage, increasing its own attack by 40% for 10s. Cooldown: 60s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Magical.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Felyne's Thunderclaw",
+    "description": "Pipa focuses and charges, quickly delivering three rising strikes into the air before slamming down with a powerful chop, dealing damage equal to 77.1% attack in total.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_MBowA03_ThunderclapCollapse.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PCat/PetHeadIcon_PCat05.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PCat05.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PCat05.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PCat/PetProfileIcon_PCat05.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat05.png"
+ },
+ {
+  "id": 320039,
+  "name": "Hoppy",
+  "species": "Rutaco (monkey)",
+  "type": "Disruptor",
+  "rarity": "SSR",
+  "description": "",
+  "skills": [
+   {
+    "name": "Strike",
+    "description": "The Rutaco leaps into the air and strikes the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Rutaco's Pot Bomb",
+    "description": "The Rutaco tosses a pot bomb at the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Firework Bomb",
+    "description": "The Rutaco ignites a Firework Bomb to scorch the monster over time, dealing damage equal to 0.9% attack in total. Cooldown: 15s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_Firework.png"
+   },
+   {
+    "name": "Rutaco's Handheld Cannon",
+    "description": "Rutaco fires its handheld cannon at the monster, dealing 1% attack damage. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_HandCannon.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Rutaco's Binding Net",
+    "description": "Rutaco builds a net launcher that can be operated by the adventurer. When the fired net hits the monster, it puts the monster into a bind state for 4s. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_BindNet.png"
+   },
+   {
+    "name": "Rutaco's Recoil Wall",
+    "description": "Rutaco builds a large barricade that obstructs monster movement. When a monster attacks the barricade, it shatters and suppresses the monster. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_BlastbackWall.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Plonk! Mystery Box!",
+    "description": "Hoppy summons a toy box near the target, deploying an inflatable Paolumu decoy to taunt the monster. The decoy explodes after 10s or when damaged, dealing damage equal to 8% attack and causing the monster to stagger. Explosions triggered by damage cause greater stagger and deal double damage.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Hbg/SkillIcon_MHbg_ToyBox.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PMky/PetHeadIcon_PMky04.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PMky04.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PMky04.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PMky/PetProfileIcon_PMky04.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky04.png"
+ },
+ {
+  "id": 320040,
+  "name": "Devu",
+  "species": "Rutaco (monkey)",
+  "type": "Disruptor",
+  "rarity": "SSR",
+  "description": "",
+  "skills": [
+   {
+    "name": "Strike",
+    "description": "The Rutaco leaps into the air and strikes the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Rutaco's Pot Bomb",
+    "description": "The Rutaco tosses a pot bomb at the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Firework Bomb",
+    "description": "The Rutaco ignites a Firework Bomb to scorch the monster over time, dealing damage equal to 0.9% attack in total. Cooldown: 15s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_Firework.png"
+   },
+   {
+    "name": "Rutaco's Handheld Cannon",
+    "description": "Rutaco fires its handheld cannon at the monster, dealing 1% attack damage. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_HandCannon.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Rutaco's Binding Net",
+    "description": "Rutaco builds a net launcher that can be operated by the adventurer. When the fired net hits the monster, it puts the monster into a bind state for 4s. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_BindNet.png"
+   },
+   {
+    "name": "Rutaco's Recoil Wall",
+    "description": "Rutaco builds a large barricade that obstructs monster movement. When a monster attacks the barricade, it shatters and suppresses the monster. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_BlastbackWall.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Push Robot",
+    "description": "Devu summons a launcher that locks onto the monster and fires a spring-loaded palm strike, dealing damage equal to 25.7% attack and causing it to stagger, while increasing the target's damage taken by 15% for 20s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Sou/SkillIcon_FSouA01_PushPalm.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PMky/PetHeadIcon_PMky03.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PMky03.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PMky03.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PMky/PetProfileIcon_PMky03.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky03.png"
+ },
+ {
+  "id": 320041,
+  "name": "Daisho",
+  "species": "Felyne (cat)",
+  "type": "Assault",
+  "rarity": "SSR",
+  "description": "",
+  "skills": [
+   {
+    "name": "Felyne's Swift Swipe",
+    "description": "The Felyne rapidly slashes at the monster with its weapon, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Giant Boomerang",
+    "description": "The Felyne hurls a giant boomerang at the monster, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Leaping Strike",
+    "description": "The Felyne leaps at the monster and strikes, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Felyne Rush Frenzy",
+    "description": "Felyne unleashes a Thrust attack followed by a Spinning Flurry against the monster, dealing multiple hits of damage. Each hit deals damage equal to 5.4% attack. Cooldown: 45s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_JumpAndDancing.png"
+   },
+   {
+    "name": "Felyne Wheel Rush",
+    "description": "Felyne leaps airborne and unleashes a Spinning Bludgeon, dealing damage equal to 16.2% attack. Cooldown: 45s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_WheelThrust.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Piercing Dragon Fist",
+    "description": "Daisho tosses his blade into the air, then charges forward with a piercing punch that skewers the monster before returning to catch the falling blade, delivering multiple hits. The piercing strike deals damage equal to 19.3% attack in total, and the explosion deals damage equal to 3.9% attack in total.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_MTwoA01_DragonPiercingFist.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PCat/PetHeadIcon_PCat04.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PCat04.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PCat04.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PCat/PetProfileIcon_PCat04.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat04.png"
+ },
+ {
+  "id": 320042,
+  "name": "Nailu",
+  "species": "Trillan (owl)",
+  "type": "Support",
+  "rarity": "SSR",
+  "description": "",
+  "skills": [
+   {
+    "name": "Trillan's Dart",
+    "description": "The Trillan hurls a dart at the monster, dealing damage equal to 0.6% attack. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Ranged Basic Attack: Dart Volley",
+    "description": "The Trillan unleashes a volley of darts at the monster, dealing damage equal to 0.6% attack in total. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Trillan's Tempest Assault",
+    "description": "Trillan flies to the monster and pecks it, dealing a total of 0.5% attack damage. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   },
+   {
+    "name": "Trillan's Gale Strike",
+    "description": "Trillan flaps its wings to create wind blades that strike the monster, dealing 0.2% attack damage. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Trillan's Healing Bug",
+    "description": "Trillan grabs a Vigorwasp and flies to the player, then provides recovery of 30 health to surrounding players. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Healbug.png"
+   },
+   {
+    "name": "Trillan's Encouraging Dust",
+    "description": "Trillan flies to the adventurer and scatters Demon Powder around them, increasing surrounding adventurers' attack by 3% for 20s. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_MightPowder.png"
+   },
+   {
+    "name": "Trillan's Theatrical Tumble",
+    "description": "",
+    "icon": ""
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Rousing Crescendo",
+    "description": "Nailu performs a rousing rendition, increasing all allies' affinity by 6% for 10s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLanA02_EpicSolo.png"
+   },
+   {
+    "name": "Trillan's Dart (Transformation)",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/POwl/PetHeadIcon_POwl03.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_POwl03.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_POwl03.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/POwl/PetProfileIcon_POwl03.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl03.png"
+ },
+ {
+  "id": 320043,
+  "name": "Aryo",
+  "species": "Rutaco (monkey)",
+  "type": "Disruptor",
+  "rarity": "SSR",
+  "description": "",
+  "skills": [
+   {
+    "name": "Strike",
+    "description": "The Rutaco leaps into the air and strikes the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Rutaco's Pot Bomb",
+    "description": "The Rutaco tosses a pot bomb at the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Firework Bomb",
+    "description": "The Rutaco ignites a Firework Bomb to scorch the monster over time, dealing damage equal to 0.9% attack in total. Cooldown: 15s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_Firework.png"
+   },
+   {
+    "name": "Rutaco's Handheld Cannon",
+    "description": "Rutaco fires its handheld cannon at the monster, dealing 1% attack damage. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_HandCannon.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Rutaco's Turret",
+    "description": "Rutaco builds a large turret that lasts for 10s, which adventurers can operate to fire up to 3 balloon shells, each dealing damage equal to 9.9% attack, with the final shell dealing damage equal to 19.8% attack. On hit, it causes the monster to stagger, and the monster will enter an enraged state after the stagger ends. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_LaunchPad.png"
+   },
+   {
+    "name": "Rutaco's Recoil Wall",
+    "description": "Rutaco builds a large barricade that obstructs monster movement. When a monster attacks the barricade, it shatters and suppresses the monster. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_BlastbackWall.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Wind Rider",
+    "description": "Aryo leaps onto an aircraft and hurls a custom barrel at the monster. The explosion deals damage equal to 25.7% attack, and the bubbles that follow inflict sleep on the monster for 20s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Two/SkillIcon_FTwoA03_BlazingEdgeBurst.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PMky/PetHeadIcon_PMky05.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PMky05.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PMky05.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PMky/PetProfileIcon_PMky05.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky05.png"
+ },
+ {
+  "id": 320044,
+  "name": "Ro",
+  "species": "Felyne (cat)",
+  "type": "Assault",
+  "rarity": "SSR",
+  "description": "Overwhelmingly graceful with its every paw and claw.",
+  "skills": [
+   {
+    "name": "Felyne's Swift Swipe",
+    "description": "The Felyne rapidly slashes at the monster with its weapon, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Giant Boomerang",
+    "description": "The Felyne hurls a giant boomerang at the monster, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Leaping Strike",
+    "description": "The Felyne leaps at the monster and strikes, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Felyne Rush Frenzy",
+    "description": "Felyne unleashes a Thrust attack followed by a Spinning Flurry against the monster, dealing multiple hits of damage. Each hit deals damage equal to 5.4% attack. Cooldown: 45s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_JumpAndDancing.png"
+   },
+   {
+    "name": "Felyne Wheel Rush",
+    "description": "Felyne leaps airborne and unleashes a Spinning Bludgeon, dealing damage equal to 16.2% attack. Cooldown: 45s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_WheelThrust.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Chariot Charge",
+    "description": "Ro curls into a spherical war machine and unleashes a rolling charge at the monster, dealing 6 hits of blunt damage through high-speed spinning. Each hit deals damage equal to 12.9% attack, with the final hit dealing damage equal to 12.9% attack.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_MBowA03_ThunderclapCollapse.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PCat/PetHeadIcon_PCat06.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PCat06.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PCat06.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PCat/PetProfileIcon_PCat06.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat06.png"
+ },
+ {
+  "id": 320053,
+  "name": "Blademaster",
+  "species": "Trillan (owl)",
+  "type": "Support",
+  "rarity": "SR",
+  "description": "You are my only friend...\nDon't you betray me.",
+  "skills": [
+   {
+    "name": "Trillan's Dart",
+    "description": "The Trillan hurls a dart at the monster, dealing damage equal to 0.6% attack. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Ranged Basic Attack: Dart Volley",
+    "description": "The Trillan unleashes a volley of darts at the monster, dealing damage equal to 0.6% attack in total. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Trillan's Tempest Assault",
+    "description": "Trillan flies to the monster and pecks it, dealing a total of 0.5% attack damage. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   },
+   {
+    "name": "Trillan's Gale Strike",
+    "description": "Trillan flaps its wings to create wind blades that strike the monster, dealing 0.2% attack damage. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Trillan's Healing Bug",
+    "description": "Trillan grabs a Vigorwasp and flies to the player, then provides recovery of 30 health to surrounding players. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Healbug.png"
+   },
+   {
+    "name": "Trillan's Encouraging Dust",
+    "description": "Trillan flies to the adventurer and scatters Demon Powder around them, increasing surrounding adventurers' attack by 3% for 20s. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_MightPowder.png"
+   },
+   {
+    "name": "Trillan's Theatrical Tumble",
+    "description": "",
+    "icon": ""
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Trillan's Soothing Song",
+    "description": "The Trillan provides health recovery 2 to surrounding adventurers each second for 10s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Soothe.png"
+   },
+   {
+    "name": "Trillan's Dart (Transformation)",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/POwl/PetHeadIcon_POwl15.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_POwl15.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_POwl15.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/POwl/PetProfileIcon_POwl15.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl15.png"
+ },
+ {
+  "id": 320054,
+  "name": "Pheasant",
+  "species": "Trillan (owl)",
+  "type": "Support",
+  "rarity": "SSR",
+  "description": "You are my only friend...\nDon't you betray me.",
+  "skills": [
+   {
+    "name": "Trillan's Dart",
+    "description": "The Trillan hurls a dart at the monster, dealing damage equal to 0.6% attack. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Ranged Basic Attack: Dart Volley",
+    "description": "The Trillan unleashes a volley of darts at the monster, dealing damage equal to 0.6% attack in total. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Trillan's Tempest Assault",
+    "description": "Trillan flies to the monster and pecks it, dealing a total of 0.5% attack damage. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   },
+   {
+    "name": "Trillan's Gale Strike",
+    "description": "Trillan flaps its wings to create wind blades that strike the monster, dealing 0.2% attack damage. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Trillan's Resonant Aid",
+    "description": "The Trillan continuously heals the adventurer, providing health recovery 3 per second for 10s. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Cure.png"
+   },
+   {
+    "name": "Trillan's Encouraging Dust",
+    "description": "Trillan flies to the adventurer and scatters Demon Powder around them, increasing surrounding adventurers' attack by 3% for 20s. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_MightPowder.png"
+   },
+   {
+    "name": "Trillan's Theatrical Tumble",
+    "description": "",
+    "icon": ""
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Crimson Fang Resonance",
+    "description": "Pheasant soars into the sky and chants, granting all adventurers Paralytic Edge for 10s. While Paralytic Edge is active, hitting a monster builds up 0.8% extra paralysis value; once the paralysis value is filled, the monster is inflicted with paralysis.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLanA02_EpicSolo.png"
+   },
+   {
+    "name": "Trillan's Dart (Transformation)",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/POwl/PetHeadIcon_POwl12.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_POwl12.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_POwl12.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/POwl/PetProfileIcon_POwl12.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl12.png"
+ },
+ {
+  "id": 320055,
+  "name": "Elwin",
+  "species": "Trillan (owl)",
+  "type": "Support",
+  "rarity": "SSR",
+  "description": "You are my only friend...\nDon't you betray me.",
+  "skills": [
+   {
+    "name": "Trillan's Dart",
+    "description": "The Trillan hurls a dart at the monster, dealing damage equal to 0.6% attack. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Ranged Basic Attack: Dart Volley",
+    "description": "The Trillan unleashes a volley of darts at the monster, dealing damage equal to 0.6% attack in total. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Trillan's Tempest Assault",
+    "description": "Trillan flies to the monster and pecks it, dealing a total of 0.5% attack damage. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   },
+   {
+    "name": "Trillan's Gale Strike",
+    "description": "Trillan flaps its wings to create wind blades that strike the monster, dealing 0.2% attack damage. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Trillan's Resonant Aid",
+    "description": "The Trillan continuously heals the adventurer, providing health recovery 3 per second for 10s. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Cure.png"
+   },
+   {
+    "name": "Trillan's Encouraging Dust",
+    "description": "Trillan flies to the adventurer and scatters Demon Powder around them, increasing surrounding adventurers' attack by 3% for 20s. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_MightPowder.png"
+   },
+   {
+    "name": "Trillan's Theatrical Tumble",
+    "description": "",
+    "icon": ""
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Feather Ballet",
+    "description": "Elwin performs a ballet chant, increasing airborne skill damage for adventurers in range by 8% for 10s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Bow/SkillIcon_FBowA04_FloralPlume.png"
+   },
+   {
+    "name": "Trillan's Dart (Transformation)",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/POwl/PetHeadIcon_POwl04.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_POwl04.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_POwl04.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/POwl/PetProfileIcon_POwl04.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl04.png"
+ },
+ {
+  "id": 320080,
+  "name": "Banako",
+  "species": "Felyne (cat)",
+  "type": "Assault",
+  "rarity": "SR",
+  "description": "As precious as peridot, as robust as an olive.",
+  "skills": [
+   {
+    "name": "Felyne's Swift Swipe",
+    "description": "The Felyne rapidly slashes at the monster with its weapon, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Giant Boomerang",
+    "description": "The Felyne hurls a giant boomerang at the monster, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Leaping Strike",
+    "description": "The Felyne leaps at the monster and strikes, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Felyne Wheel Rush",
+    "description": "Felyne leaps airborne and unleashes a Spinning Bludgeon, dealing damage equal to 16.2% attack. Cooldown: 45s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_WheelThrust.png"
+   },
+   {
+    "name": "Felyne's Transformation",
+    "description": "The Felyne enters Radiant Rage, increasing its own attack by 40% for 10s. Cooldown: 60s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Magical.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Felyne's Claw Frenzy",
+    "description": "Felyne enters a Flurry, continuously tracking and clawing at the monster, dealing damage equal to 8.6% attack, with the final hit dealing damage equal to 17.1% attack.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_ClawDance.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PCat/PetHeadIcon_PCat08.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PCat08.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PCat08.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PCat/PetProfileIcon_PCat08.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat08.png"
+ },
+ {
+  "id": 320081,
+  "name": "Nako",
+  "species": "Rutaco (monkey)",
+  "type": "Disruptor",
+  "rarity": "SR",
+  "description": "They agreed to use the similar sound in both their names as its name.",
+  "skills": [
+   {
+    "name": "Strike",
+    "description": "The Rutaco leaps into the air and strikes the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Rutaco's Pot Bomb",
+    "description": "The Rutaco tosses a pot bomb at the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Firework Bomb",
+    "description": "The Rutaco ignites a Firework Bomb to scorch the monster over time, dealing damage equal to 0.9% attack in total. Cooldown: 15s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_Firework.png"
+   },
+   {
+    "name": "Rutaco's Handheld Cannon",
+    "description": "Rutaco fires its handheld cannon at the monster, dealing 1% attack damage. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_HandCannon.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Rutaco's Turret",
+    "description": "Rutaco builds a large turret that lasts for 10s, which adventurers can operate to fire up to 3 balloon shells, each dealing damage equal to 9.9% attack, with the final shell dealing damage equal to 19.8% attack. On hit, it causes the monster to stagger, and the monster will enter an enraged state after the stagger ends. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_LaunchPad.png"
+   },
+   {
+    "name": "Rutaco's Poison Mine",
+    "description": "Rutaco sets up a poison gas mine that explodes when a monster passes by, causing the monster to build up poison value. Once fully built up, the monster is inflicted with the poisoned status. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_PoisonGasMine.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Rutaco's Shackling Turret",
+    "description": "The Rutaco builds an auto-turret that automatically aims and fires a paralyzing shot to attack the monster. It deals damage equal to 25.7% attack and applies paralysis.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_Dragonlance.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PMky/PetHeadIcon_PMky07.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PMky07.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PMky07.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PMky/PetProfileIcon_PMky07.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky07.png"
+ },
+ {
+  "id": 320082,
+  "name": "Ario",
+  "species": "Trillan (owl)",
+  "type": "Support",
+  "rarity": "SR",
+  "description": "They possess the ability to fly that others can only dream of. They can also restore Adventurers' health and provide buffs, making them indispensable during hunts.",
+  "skills": [
+   {
+    "name": "Trillan's Dart",
+    "description": "The Trillan hurls a dart at the monster, dealing damage equal to 0.6% attack. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Ranged Basic Attack: Dart Volley",
+    "description": "The Trillan unleashes a volley of darts at the monster, dealing damage equal to 0.6% attack in total. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Trillan's Tempest Assault",
+    "description": "Trillan flies to the monster and pecks it, dealing a total of 0.5% attack damage. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   },
+   {
+    "name": "Trillan's Gale Strike",
+    "description": "Trillan flaps its wings to create wind blades that strike the monster, dealing 0.2% attack damage. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Trillan's Healing Bug",
+    "description": "Trillan grabs a Vigorwasp and flies to the player, then provides recovery of 30 health to surrounding players. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Healbug.png"
+   },
+   {
+    "name": "Trillan's Encouraging Dust",
+    "description": "Trillan flies to the adventurer and scatters Demon Powder around them, increasing surrounding adventurers' attack by 3% for 20s. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_MightPowder.png"
+   },
+   {
+    "name": "Trillan's Theatrical Tumble",
+    "description": "",
+    "icon": ""
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Trillan's Soothing Song",
+    "description": "The Trillan provides health recovery 2 to surrounding adventurers each second for 10s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Soothe.png"
+   },
+   {
+    "name": "Trillan's Dart (Transformation)",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/POwl/PetHeadIcon_POwl07.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_POwl07.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_POwl07.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/POwl/PetProfileIcon_POwl07.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl07.png"
+ },
+ {
+  "id": 320087,
+  "name": "Tidal Claw",
+  "species": "Felyne (cat)",
+  "type": "Assault",
+  "rarity": "SR",
+  "description": "",
+  "skills": [
+   {
+    "name": "Felyne's Swift Swipe",
+    "description": "The Felyne rapidly slashes at the monster with its weapon, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Giant Boomerang",
+    "description": "The Felyne hurls a giant boomerang at the monster, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Leaping Strike",
+    "description": "The Felyne leaps at the monster and strikes, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Felyne Wheel Rush",
+    "description": "Felyne leaps airborne and unleashes a Spinning Bludgeon, dealing damage equal to 16.2% attack. Cooldown: 45s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_WheelThrust.png"
+   },
+   {
+    "name": "Felyne's All-Out Throw",
+    "description": "The Felyne tosses a heavy object at the monster, dealing damage equal to 14.9% attack. Cooldown: 45s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Concentric.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Felyne's Whirlwind Claw",
+    "description": "Felyne curves toward the monster while attacking, dealing multiple hits of damage.\nDeals damage equal to 1.8% attack per hit for 4s, with the final hit dealing damage equal to 3.5% attack.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_WhirlwindHammer.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PCat/PetHeadIcon_PCat10.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PCat10.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PCat10.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PCat/PetProfileIcon_PCat10.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat10.png"
+ },
+ {
+  "id": 320088,
+  "name": "Sand Velvet",
+  "species": "Felyne (cat)",
+  "type": "Assault",
+  "rarity": "SR",
+  "description": "",
+  "skills": [
+   {
+    "name": "Felyne's Swift Swipe",
+    "description": "The Felyne rapidly slashes at the monster with its weapon, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Giant Boomerang",
+    "description": "The Felyne hurls a giant boomerang at the monster, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   },
+   {
+    "name": "Felyne's Leaping Strike",
+    "description": "The Felyne leaps at the monster and strikes, dealing damage equal to 1.4% attack. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Felyne Rush Frenzy",
+    "description": "Felyne unleashes a Thrust attack followed by a Spinning Flurry against the monster, dealing multiple hits of damage. Each hit deals damage equal to 5.4% attack. Cooldown: 45s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_JumpAndDancing.png"
+   },
+   {
+    "name": "Felyne Wheel Rush",
+    "description": "Felyne leaps airborne and unleashes a Spinning Bludgeon, dealing damage equal to 16.2% attack. Cooldown: 45s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_WheelThrust.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Felyne Prospecting",
+    "description": "Felyne burrows underground, digging up debris to throw in a multi-hit attack. Each hit deals damage equal to 9.6% attack, with the final hit dealing damage equal to 19.3% attack.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PCat/SkillIcon_PCat_Exploration.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PCat/PetHeadIcon_PCat09.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PCat09.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PCat09.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PCat/PetProfileIcon_PCat09.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat09.png"
+ },
+ {
+  "id": 320089,
+  "name": "Reefcore",
+  "species": "Rutaco (monkey)",
+  "type": "Disruptor",
+  "rarity": "SR",
+  "description": "",
+  "skills": [
+   {
+    "name": "Strike",
+    "description": "The Rutaco leaps into the air and strikes the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Rutaco's Pot Bomb",
+    "description": "The Rutaco tosses a pot bomb at the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Firework Bomb",
+    "description": "The Rutaco ignites a Firework Bomb to scorch the monster over time, dealing damage equal to 0.9% attack in total. Cooldown: 15s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_Firework.png"
+   },
+   {
+    "name": "Rutaco's Handheld Cannon",
+    "description": "Rutaco fires its handheld cannon at the monster, dealing 1% attack damage. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_HandCannon.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Rutaco's Recoil Wall",
+    "description": "Rutaco builds a large barricade that obstructs monster movement. When a monster attacks the barricade, it shatters and suppresses the monster. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_BlastbackWall.png"
+   },
+   {
+    "name": "Rutaco's Poison Mine",
+    "description": "Rutaco sets up a poison gas mine that explodes when a monster passes by, causing the monster to build up poison value. Once fully built up, the monster is inflicted with the poisoned status. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_PoisonGasMine.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Rutaco's Barrage Cannon",
+    "description": "The Rutaco builds an auto-firing turret. After every 2 common shots, it fires 1 additional enhanced shot. Common shots deal damage equal to 1.7% attack, while enhanced shots deal damage equal to 5.1% attack. Landing a shot extends the monster's suppress duration by up to 1.2s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_ComboCannon.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PMky/PetHeadIcon_PMky09.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PMky09.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PMky09.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PMky/PetProfileIcon_PMky09.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky09.png"
+ },
+ {
+  "id": 320090,
+  "name": "Sand Echo",
+  "species": "Rutaco (monkey)",
+  "type": "Disruptor",
+  "rarity": "SR",
+  "description": "",
+  "skills": [
+   {
+    "name": "Strike",
+    "description": "The Rutaco leaps into the air and strikes the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Rutaco's Pot Bomb",
+    "description": "The Rutaco tosses a pot bomb at the monster, dealing damage equal to 1% attack. Cooldown: 4s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_TeapotBomb.png"
+   },
+   {
+    "name": "Firework Bomb",
+    "description": "The Rutaco ignites a Firework Bomb to scorch the monster over time, dealing damage equal to 0.9% attack in total. Cooldown: 15s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_Firework.png"
+   },
+   {
+    "name": "Rutaco's Handheld Cannon",
+    "description": "Rutaco fires its handheld cannon at the monster, dealing 1% attack damage. Cooldown: 8s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_HandCannon.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Rutaco's Binding Net",
+    "description": "Rutaco builds a net launcher that can be operated by the adventurer. When the fired net hits the monster, it puts the monster into a bind state for 4s. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_BindNet.png"
+   },
+   {
+    "name": "Rutaco's Poison Mine",
+    "description": "Rutaco sets up a poison gas mine that explodes when a monster passes by, causing the monster to build up poison value. Once fully built up, the monster is inflicted with the poisoned status. Cooldown: 180s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_PoisonGasMine.png"
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Rutaco's Rocket Plan",
+    "description": "Rutaco mounts a rocket and flies toward the monster, circling before exploding to inflict dazed status on the monster.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/PMky/SkillIcon_PMky_Project.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PMky/PetHeadIcon_PMky08.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PMky08.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PMky08.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PMky/PetProfileIcon_PMky08.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky08.png"
+ },
+ {
+  "id": 320091,
+  "name": "Tidal Sound",
+  "species": "Trillan (owl)",
+  "type": "Support",
+  "rarity": "SR",
+  "description": "",
+  "skills": [
+   {
+    "name": "Trillan's Dart",
+    "description": "The Trillan hurls a dart at the monster, dealing damage equal to 0.6% attack. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Ranged Basic Attack: Dart Volley",
+    "description": "The Trillan unleashes a volley of darts at the monster, dealing damage equal to 0.6% attack in total. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Trillan's Tempest Assault",
+    "description": "Trillan flies to the monster and pecks it, dealing a total of 0.5% attack damage. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   },
+   {
+    "name": "Trillan's Gale Strike",
+    "description": "Trillan flaps its wings to create wind blades that strike the monster, dealing 0.2% attack damage. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Trillan's Resonant Aid",
+    "description": "The Trillan continuously heals the adventurer, providing health recovery 3 per second for 10s. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Cure.png"
+   },
+   {
+    "name": "Trillan's Healing Bug",
+    "description": "Trillan grabs a Vigorwasp and flies to the player, then provides recovery of 30 health to surrounding players. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Healbug.png"
+   },
+   {
+    "name": "Trillan's Theatrical Tumble",
+    "description": "",
+    "icon": ""
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Trillan's Baptismal Hymn",
+    "description": "Trillan continuously clears the current ailment for adventurers within range and reduces damage taken by adventurers by 8% for 10s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_BaptismalMusic.png"
+   },
+   {
+    "name": "Trillan's Dart (Transformation)",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/POwl/PetHeadIcon_POwl09.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_POwl09.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_POwl09.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/POwl/PetProfileIcon_POwl09.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl09.png"
+ },
+ {
+  "id": 320092,
+  "name": "Golden Bell",
+  "species": "Trillan (owl)",
+  "type": "Support",
+  "rarity": "SR",
+  "description": "",
+  "skills": [
+   {
+    "name": "Trillan's Dart",
+    "description": "The Trillan hurls a dart at the monster, dealing damage equal to 0.6% attack. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Ranged Basic Attack: Dart Volley",
+    "description": "The Trillan unleashes a volley of darts at the monster, dealing damage equal to 0.6% attack in total. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   },
+   {
+    "name": "Trillan's Tempest Assault",
+    "description": "Trillan flies to the monster and pecks it, dealing a total of 0.5% attack damage. Cooldown: 6s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   },
+   {
+    "name": "Trillan's Gale Strike",
+    "description": "Trillan flaps its wings to create wind blades that strike the monster, dealing 0.2% attack damage. Cooldown: 3s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Attack.png"
+   }
+  ],
+  "passive_skills": [
+   {
+    "name": "Trillan's Resonant Aid",
+    "description": "The Trillan continuously heals the adventurer, providing health recovery 3 per second for 10s. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Cure.png"
+   },
+   {
+    "name": "Trillan's Encouraging Dust",
+    "description": "Trillan flies to the adventurer and scatters Demon Powder around them, increasing surrounding adventurers' attack by 3% for 20s. Cooldown: 90s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_MightPowder.png"
+   },
+   {
+    "name": "Trillan's Theatrical Tumble",
+    "description": "",
+    "icon": ""
+   }
+  ],
+  "other_skills": [
+   {
+    "name": "Trillan's Inspiring Song",
+    "description": "Trillan increases surrounding adventurers' elemental damage by 8% and affinity by 2.8% for 10s.",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Chirp.png"
+   },
+   {
+    "name": "Trillan's Dart (Transformation)",
+    "description": "",
+    "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/POwl/SkillIcon_POwl_Kunai.png"
+   }
+  ],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/POwl/PetHeadIcon_POwl08.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_POwl08.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_POwl08.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/POwl/PetProfileIcon_POwl08.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl08.png"
+ },
+ {
+  "id": 320998,
+  "name": "Furencio",
+  "species": "Felyne (cat)",
+  "type": "Assault",
+  "rarity": "SR",
+  "description": "As precious as peridot, as robust as an olive.",
+  "skills": [],
+  "passive_skills": [],
+  "other_skills": [],
+  "head_icon": "MHMobile/Content/UI/Dynamic/PetHeadIcon/PCat/PetHeadIcon_PCat02.png",
+  "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PCat02.png",
+  "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PCat02.png",
+  "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PCat/PetProfileIcon_PCat02.png",
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat02.png"
+ }
+]
