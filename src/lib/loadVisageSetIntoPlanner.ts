@@ -15,9 +15,10 @@ export function loadVisageLoadoutIntoPlanner(loadout: VisageLoadout): string {
   for (const slot of VISAGE_BUILD_SLOTS) {
     const key = slot === 'core' ? 'coreVisage' : `visage${slot}`;
     const { visage, ink } = loadout[slot];
-    patch[key] = (visage as unknown as Visage) ?? null;
+    const isAvailable = Boolean(visage && !visage.is_spoiler && visage.status !== 'not_in_game');
+    patch[key] = isAvailable ? ((visage as unknown) as Visage) : null;
 
-    if (visage) {
+    if (isAvailable && visage) {
       // The planner stores the card's own ink name, the set stores a normalised one
       const wanted = normalizeInk(ink);
       const match = visage.ink_types.find((t) => normalizeInk(t) === wanted) ?? visage.ink_types[0];

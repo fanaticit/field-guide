@@ -81,6 +81,16 @@ def build_rows():
 
     records, icons = [], set()
     for r in rows:
+        if (r.get("Debug") or "").strip().lower() == "yes":
+            continue
+
+        status_raw = (r.get("Status") or "In game").strip()
+        in_game = status_raw.lower() == "in game"
+        upcoming = status_raw.lower().startswith("upcoming")
+        status = "in_game" if in_game else "not_in_game"
+        status_reason = None if in_game else status_raw
+        is_spoiler = upcoming
+
         series = r["Series"].strip()
         set_full = r["Set"].strip()
         if not set_full.startswith(series):
@@ -130,6 +140,9 @@ def build_rows():
                 "set_bonus": set_bonus,
                 "icon_m": icon_urls[0],
                 "icon_f": icon_urls[1],
+                "status": status,
+                "status_reason": status_reason,
+                "is_spoiler": is_spoiler,
             }
         )
     ids = [r["id"] for r in records]
@@ -146,7 +159,7 @@ def render(records):
             bonus = sql_str('{"pieces": %d, "skill_id": "%s"}' % (r["set_bonus"]["pieces"], r["set_bonus"]["skill_id"])) + "::JSONB"
         else:
             bonus = "NULL"
-        return "  ({id}, {monster}, {slot}, {skills}, {set_name}, {variant}, {rarity}, {deco}, {bonus}, {icon_m}, {icon_f})".format(
+        return "  ({id}, {monster}, {slot}, {skills}, {set_name}, {variant}, {rarity}, {deco}, {bonus}, {icon_m}, {icon_f}, {status}, {reason}, {spoiler})".format(
             id=sql_str(r["id"]),
             monster=sql_str(r["monster"]),
             slot=sql_str(r["slot"]),
@@ -158,6 +171,9 @@ def render(records):
             bonus=bonus,
             icon_m=sql_str(r["icon_m"]),
             icon_f=sql_str(r["icon_f"]),
+            status=sql_str(r["status"]),
+            reason=sql_str(r["status_reason"]),
+            spoiler="TRUE" if r["is_spoiler"] else "FALSE",
         )
 
     values = ",\n".join(row(r) for r in records)
@@ -191,31 +207,40 @@ ALTER TABLE public.armour_pieces DROP COLUMN IF EXISTS image;
 ALTER TABLE public.armour_pieces DROP COLUMN IF EXISTS driftsmelt_slots;
 ALTER TABLE public.armour_pieces DROP COLUMN IF EXISTS skills;
 
-ALTER TABLE public.armour_pieces ADD COLUMN IF NOT EXISTS skills     TEXT[]  NOT NULL DEFAULT '{{}}';
-ALTER TABLE public.armour_pieces ADD COLUMN IF NOT EXISTS deco_slots INTEGER[] NOT NULL DEFAULT '{{}}';
-ALTER TABLE public.armour_pieces ADD COLUMN IF NOT EXISTS set_bonus  JSONB;
-ALTER TABLE public.armour_pieces ADD COLUMN IF NOT EXISTS icon_m     TEXT;
-ALTER TABLE public.armour_pieces ADD COLUMN IF NOT EXISTS icon_f     TEXT;
+ALTER TABLE public.armour_pieces ADD COLUMN IF NOT EXISTS skills        TEXT[]    NOT NULL DEFAULT '{{}}';
+ALTER TABLE public.armour_pieces ADD COLUMN IF NOT EXISTS deco_slots    INTEGER[] NOT NULL DEFAULT '{{}}';
+ALTER TABLE public.armour_pieces ADD COLUMN IF NOT EXISTS set_bonus     JSONB;
+ALTER TABLE public.armour_pieces ADD COLUMN IF NOT EXISTS icon_m        TEXT;
+ALTER TABLE public.armour_pieces ADD COLUMN IF NOT EXISTS icon_f        TEXT;
+ALTER TABLE public.armour_pieces ADD COLUMN IF NOT EXISTS status        TEXT      NOT NULL DEFAULT 'in_game';
+ALTER TABLE public.armour_pieces ADD COLUMN IF NOT EXISTS status_reason TEXT;
+ALTER TABLE public.armour_pieces ADD COLUMN IF NOT EXISTS is_spoiler    BOOLEAN   NOT NULL DEFAULT FALSE;
+
+ALTER TABLE public.armour_pieces DROP CONSTRAINT IF EXISTS armour_pieces_status_check;
+ALTER TABLE public.armour_pieces ADD CONSTRAINT armour_pieces_status_check CHECK (status IN ('in_game', 'not_in_game'));
 
 CREATE INDEX IF NOT EXISTS idx_armour_pieces_monster     ON public.armour_pieces(monster_id);
 CREATE INDEX IF NOT EXISTS idx_armour_pieces_monster_set ON public.armour_pieces(monster_id, set_variant);
 CREATE INDEX IF NOT EXISTS idx_armour_pieces_skills      ON public.armour_pieces USING GIN(skills);
+CREATE INDEX IF NOT EXISTS idx_armour_pieces_visible    ON public.armour_pieces(is_active, is_spoiler);
 
 -- ── Data ────────────────────────────────────────────────────
 CREATE TEMP TABLE _armour_import (
   id TEXT, monster_name TEXT, slot TEXT, skills TEXT[], set_name TEXT, set_variant TEXT,
-  rarity INTEGER, deco_slots INTEGER[], set_bonus JSONB, icon_m TEXT, icon_f TEXT
+  rarity INTEGER, deco_slots INTEGER[], set_bonus JSONB, icon_m TEXT, icon_f TEXT,
+  status TEXT, status_reason TEXT, is_spoiler BOOLEAN
 ) ON COMMIT DROP;
 
 INSERT INTO _armour_import VALUES
 {values};
 
 INSERT INTO public.armour_pieces
-  (id, monster_id, slot, skills, set_name, set_variant, rarity, deco_slots, set_bonus, icon_m, icon_f)
+  (id, monster_id, slot, skills, set_name, set_variant, rarity, deco_slots, set_bonus, icon_m, icon_f, status, status_reason, is_spoiler)
 SELECT
   a.id,
   COALESCE((SELECT m.id FROM public.monsters m WHERE m.name = a.monster_name ORDER BY m.id LIMIT 1), a.monster_name),
-  a.slot, a.skills, a.set_name, a.set_variant, a.rarity, a.deco_slots, a.set_bonus, a.icon_m, a.icon_f
+  a.slot, a.skills, a.set_name, a.set_variant, a.rarity, a.deco_slots, a.set_bonus, a.icon_m, a.icon_f,
+  a.status, a.status_reason, a.is_spoiler
 FROM _armour_import a;
 
 COMMIT;

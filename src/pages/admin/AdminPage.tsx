@@ -3,12 +3,14 @@
 // Only renders for admins. Shows a sub-navigation and the
 // active admin section.
 // ─────────────────────────────────────────────────────────────
-import { Shield, Bug, Sparkles, Layers, Users, FileText, SquareLibrary, Cat, UserCheck, Sword, SlidersHorizontal } from 'lucide-react';
+import { Shield, Bug, Sparkles, Layers, Users, FileText, SquareLibrary, Cat, UserCheck, Sword, SlidersHorizontal, MessageSquare } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
 import { type AdminSubPage } from '../../store/uiStore';
+import { useAdminFeedbackCount } from '../../hooks/useAdminFeedback';
 import { cn } from '../../lib/utils';
 
+import FeedbackManager from './feedback/FeedbackManager';
 import MonsterManager from './monsters/MonsterManager';
 import SkillManager from './skills/SkillManager';
 import ArmourManager from './armour/ArmourManager';
@@ -27,6 +29,7 @@ interface AdminTab {
 }
 
 const TABS: AdminTab[] = [
+  { id: 'feedback', label: 'Feedback', icon: MessageSquare, description: 'Review player bug reports, feature requests & feedback' },
   { id: 'monsters', label: 'Monsters', icon: Bug, description: 'Manage the monster roster' },
   { id: 'skills', label: 'Skills & Sets', icon: Sparkles, description: 'Manage skills, set bonuses, and game availability' },
   { id: 'weapons', label: 'Weapons', icon: Sword, description: 'Add & manage in-game craftable weapons' },
@@ -41,10 +44,11 @@ const TABS: AdminTab[] = [
 
 export default function AdminPage() {
   const isAdmin = useAuthStore(selectIsAdmin);
+  const { data: unreadCount = 0 } = useAdminFeedbackCount();
   const navigate = useNavigate();
   const { subPage } = useParams<{ subPage: string }>();
-  // Fall back to 'monsters' if param is missing or invalid
-  const adminSubPage: AdminSubPage = (TABS.find(t => t.id === subPage)?.id ?? 'monsters') as AdminSubPage;
+  // Fall back to 'feedback' if param is missing or invalid
+  const adminSubPage: AdminSubPage = (TABS.find(t => t.id === subPage)?.id ?? 'feedback') as AdminSubPage;
 
   if (!isAdmin) {
     return (
@@ -89,7 +93,12 @@ export default function AdminPage() {
                 )}
               >
                 <Icon size={15} className="shrink-0" />
-                {tab.label}
+                <span>{tab.label}</span>
+                {tab.id === 'feedback' && unreadCount > 0 && (
+                  <span className="flex h-4 min-w-[16px] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white leading-none">
+                    {unreadCount > 99 ? '99+' : unreadCount}
+                  </span>
+                )}
               </button>
             );
           })}
@@ -98,6 +107,7 @@ export default function AdminPage() {
 
       {/* ── Tab content ── */}
       <div className="min-h-0 flex-1 overflow-y-auto">
+        {adminSubPage === 'feedback' && <FeedbackManager />}
         {adminSubPage === 'monsters' && <MonsterManager />}
         {adminSubPage === 'skills' && <SkillManager />}
         {adminSubPage === 'weapons' && <WeaponEquipmentManager />}

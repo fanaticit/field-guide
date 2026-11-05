@@ -43,7 +43,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_GreatJagras.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/GreatJagras/Sketch_GreatJagras_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/GreatJagras/Sketch_GreatJagras_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Great Jagras (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10001300,
@@ -305,7 +308,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_GreatJagras.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/GreatJagras/Sketch_GreatJagras_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/GreatJagras/Sketch_GreatJagras_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Great Jagras; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10001400,
@@ -577,7 +583,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_GreatJagras.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/GreatJagras/Sketch_GreatJagras_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/GreatJagras/Sketch_GreatJagras_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Great Jagras; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10001500,
@@ -849,7 +858,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_GreatJagras.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/GreatJagras/Sketch_GreatJagras_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/GreatJagras/Sketch_GreatJagras_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Great Jagras; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10001510,
@@ -1121,7 +1133,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_GreatJagras.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/GreatJagras/Sketch_GreatJagras_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/GreatJagras/Sketch_GreatJagras_C1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10002200,
@@ -1166,7 +1181,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_KuluYaKu.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/KuluYaKu/Sketch_KuluYaKu_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/KuluYaKu/Sketch_KuluYaKu_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Kulu-Ya-Ku (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10002300,
@@ -1428,7 +1446,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_KuluYaKu.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/KuluYaKu/Sketch_KuluYaKu_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/KuluYaKu/Sketch_KuluYaKu_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Kulu-Ya-Ku; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10002400,
@@ -1700,7 +1721,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_KuluYaKu.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/KuluYaKu/Sketch_KuluYaKu_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/KuluYaKu/Sketch_KuluYaKu_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Kulu-Ya-Ku; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10002500,
@@ -1972,7 +1996,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_KuluYaKu.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/KuluYaKu/Sketch_KuluYaKu_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/KuluYaKu/Sketch_KuluYaKu_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Kulu-Ya-Ku; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10002510,
@@ -2244,7 +2271,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_KuluYaKu.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/KuluYaKu/Sketch_KuluYaKu_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/KuluYaKu/Sketch_KuluYaKu_D1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10003200,
@@ -2289,7 +2319,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Pukei.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/PukeiPukei/Sketch_PukeiPukei_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/PukeiPukei/Sketch_PukeiPukei_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Pukei-Pukei (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10003300,
@@ -2551,7 +2584,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Pukei.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/PukeiPukei/Sketch_PukeiPukei_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/PukeiPukei/Sketch_PukeiPukei_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Pukei-Pukei; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10003400,
@@ -2823,7 +2859,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Pukei.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/PukeiPukei/Sketch_PukeiPukei_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/PukeiPukei/Sketch_PukeiPukei_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Pukei-Pukei; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10003500,
@@ -3095,7 +3134,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Pukei.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/PukeiPukei/Sketch_PukeiPukei_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/PukeiPukei/Sketch_PukeiPukei_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Pukei-Pukei; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10003510,
@@ -3367,7 +3409,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Pukei.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/PukeiPukei/Sketch_PukeiPukei_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/PukeiPukei/Sketch_PukeiPukei_D1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10004200,
@@ -3412,7 +3457,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Barroth.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Barroth/Sketch_Barroth_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Barroth/Sketch_Barroth_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Barroth (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10004300,
@@ -3674,7 +3722,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Barroth.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Barroth/Sketch_Barroth_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Barroth/Sketch_Barroth_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Barroth; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10004400,
@@ -3946,7 +3997,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Barroth.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Barroth/Sketch_Barroth_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Barroth/Sketch_Barroth_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Barroth; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10004500,
@@ -4218,7 +4272,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Barroth.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Barroth/Sketch_Barroth_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Barroth/Sketch_Barroth_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Barroth; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10004510,
@@ -4490,7 +4547,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Barroth.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Barroth/Sketch_Barroth_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Barroth/Sketch_Barroth_D1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10005200,
@@ -4535,7 +4595,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Jyuratodus.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Jyuratodus/Sketch_Jyuratodus_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Jyuratodus/Sketch_Jyuratodus_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Jyuratodus (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10005300,
@@ -4797,7 +4860,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Jyuratodus.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Jyuratodus/Sketch_Jyuratodus_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Jyuratodus/Sketch_Jyuratodus_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Jyuratodus; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10005400,
@@ -5069,7 +5135,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Jyuratodus.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Jyuratodus/Sketch_Jyuratodus_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Jyuratodus/Sketch_Jyuratodus_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Jyuratodus; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10005500,
@@ -5341,7 +5410,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Jyuratodus.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Jyuratodus/Sketch_Jyuratodus_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Jyuratodus/Sketch_Jyuratodus_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Jyuratodus; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10005510,
@@ -5613,7 +5685,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Jyuratodus.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Jyuratodus/Sketch_Jyuratodus_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Jyuratodus/Sketch_Jyuratodus_D1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10006200,
@@ -5658,7 +5733,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_FlyingThunderDragon.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/TobiKadachi/Sketch_TobiKadachi_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/TobiKadachi/Sketch_TobiKadachi_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Tobi-Kadachi (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10006300,
@@ -5920,7 +5998,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_FlyingThunderDragon.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/TobiKadachi/Sketch_TobiKadachi_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/TobiKadachi/Sketch_TobiKadachi_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Tobi-Kadachi; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10006400,
@@ -6192,7 +6273,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_FlyingThunderDragon.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/TobiKadachi/Sketch_TobiKadachi_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/TobiKadachi/Sketch_TobiKadachi_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Tobi-Kadachi; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10006500,
@@ -6464,7 +6548,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_FlyingThunderDragon.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/TobiKadachi/Sketch_TobiKadachi_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/TobiKadachi/Sketch_TobiKadachi_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Tobi-Kadachi; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10006510,
@@ -6736,7 +6823,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_FlyingThunderDragon.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/TobiKadachi/Sketch_TobiKadachi_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/TobiKadachi/Sketch_TobiKadachi_C1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10007200,
@@ -6767,7 +6857,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Anjanath.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Anjanath/Sketch_Anjanath_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Anjanath/Sketch_Anjanath_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Anjanath (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10007300,
@@ -7015,7 +7108,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Anjanath.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Anjanath/Sketch_Anjanath_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Anjanath/Sketch_Anjanath_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Anjanath; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10007400,
@@ -7273,7 +7369,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Anjanath.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Anjanath/Sketch_Anjanath_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Anjanath/Sketch_Anjanath_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Anjanath; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10007500,
@@ -7531,7 +7630,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Anjanath.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Anjanath/Sketch_Anjanath_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Anjanath/Sketch_Anjanath_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Anjanath; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10007510,
@@ -7789,7 +7891,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Anjanath.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Anjanath/Sketch_Anjanath_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Anjanath/Sketch_Anjanath_C1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10008200,
@@ -7820,7 +7925,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathian.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathian/Sketch_Rathian_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathian/Sketch_Rathian_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Rathian (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10008300,
@@ -8068,7 +8176,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathian.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathian/Sketch_Rathian_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathian/Sketch_Rathian_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Rathian; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10008400,
@@ -8326,7 +8437,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathian.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathian/Sketch_Rathian_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathian/Sketch_Rathian_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Rathian; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10008500,
@@ -8584,7 +8698,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathian.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathian/Sketch_Rathian_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathian/Sketch_Rathian_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Rathian; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10008510,
@@ -8842,7 +8959,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathian.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathian/Sketch_Rathian_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathian/Sketch_Rathian_D1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10009200,
@@ -8873,7 +8993,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_DizzyBird.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/TzitziYaKu/Sketch_TzitziYaKu_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/TzitziYaKu/Sketch_TzitziYaKu_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Tzitzi-Ya-Ku (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10009300,
@@ -9121,7 +9244,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_DizzyBird.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/TzitziYaKu/Sketch_TzitziYaKu_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/TzitziYaKu/Sketch_TzitziYaKu_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Tzitzi-Ya-Ku; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10009400,
@@ -9379,7 +9505,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_DizzyBird.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/TzitziYaKu/Sketch_TzitziYaKu_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/TzitziYaKu/Sketch_TzitziYaKu_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Tzitzi-Ya-Ku; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10009500,
@@ -9637,7 +9766,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_DizzyBird.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/TzitziYaKu/Sketch_TzitziYaKu_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/TzitziYaKu/Sketch_TzitziYaKu_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Tzitzi-Ya-Ku; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10009510,
@@ -9895,7 +10027,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_DizzyBird.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/TzitziYaKu/Sketch_TzitziYaKu_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/TzitziYaKu/Sketch_TzitziYaKu_D1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10010200,
@@ -9940,7 +10075,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Paolumu.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Paolumu/Sketch_Paolumu_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Paolumu/Sketch_Paolumu_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Paolumu (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10010300,
@@ -10202,7 +10340,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Paolumu.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Paolumu/Sketch_Paolumu_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Paolumu/Sketch_Paolumu_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Paolumu; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10010400,
@@ -10474,7 +10615,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Paolumu.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Paolumu/Sketch_Paolumu_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Paolumu/Sketch_Paolumu_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Paolumu; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10010500,
@@ -10746,7 +10890,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Paolumu.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Paolumu/Sketch_Paolumu_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Paolumu/Sketch_Paolumu_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Paolumu; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10010510,
@@ -11018,7 +11165,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Paolumu.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Paolumu/Sketch_Paolumu_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Paolumu/Sketch_Paolumu_D1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10011200,
@@ -11063,7 +11213,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_DabiThiefDragon.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/GreatGirros/Sketch_GreatGirros_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/GreatGirros/Sketch_GreatGirros_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Great Girros (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10011300,
@@ -11325,7 +11478,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_DabiThiefDragon.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/GreatGirros/Sketch_GreatGirros_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/GreatGirros/Sketch_GreatGirros_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Great Girros; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10011400,
@@ -11597,7 +11753,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_DabiThiefDragon.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/GreatGirros/Sketch_GreatGirros_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/GreatGirros/Sketch_GreatGirros_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Great Girros; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10011500,
@@ -11869,7 +12028,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_DabiThiefDragon.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/GreatGirros/Sketch_GreatGirros_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/GreatGirros/Sketch_GreatGirros_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Great Girros; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10011510,
@@ -12141,7 +12303,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_DabiThiefDragon.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/GreatGirros/Sketch_GreatGirros_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/GreatGirros/Sketch_GreatGirros_D1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10012200,
@@ -12186,7 +12351,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Radobaan.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Radobaan/Sketch_Radobaan_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Radobaan/Sketch_Radobaan_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Radobaan (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10012300,
@@ -12448,7 +12616,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Radobaan.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Radobaan/Sketch_Radobaan_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Radobaan/Sketch_Radobaan_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Radobaan; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10012400,
@@ -12720,7 +12891,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Radobaan.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Radobaan/Sketch_Radobaan_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Radobaan/Sketch_Radobaan_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Radobaan; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10012500,
@@ -12992,7 +13166,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Radobaan.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Radobaan/Sketch_Radobaan_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Radobaan/Sketch_Radobaan_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Radobaan; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10012510,
@@ -13264,7 +13441,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Radobaan.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Radobaan/Sketch_Radobaan_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Radobaan/Sketch_Radobaan_C1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10013200,
@@ -13295,7 +13475,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Legiana.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Legiana/Sketch_Legiana_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Legiana/Sketch_Legiana_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Legiana (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10013300,
@@ -13543,7 +13726,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Legiana.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Legiana/Sketch_Legiana_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Legiana/Sketch_Legiana_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Legiana; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10013400,
@@ -13801,7 +13987,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Legiana.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Legiana/Sketch_Legiana_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Legiana/Sketch_Legiana_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Legiana; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10013500,
@@ -14059,7 +14248,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Legiana.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Legiana/Sketch_Legiana_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Legiana/Sketch_Legiana_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Legiana; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10013510,
@@ -14317,7 +14509,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Legiana.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Legiana/Sketch_Legiana_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Legiana/Sketch_Legiana_D1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10014200,
@@ -14362,7 +14557,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Odogaron.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Odogaron/Sketch_Odogaron_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Odogaron/Sketch_Odogaron_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Odogaron (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10014300,
@@ -14624,7 +14822,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Odogaron.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Odogaron/Sketch_Odogaron_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Odogaron/Sketch_Odogaron_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Odogaron; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10014400,
@@ -14896,7 +15097,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Odogaron.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Odogaron/Sketch_Odogaron_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Odogaron/Sketch_Odogaron_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Odogaron; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10014500,
@@ -15168,7 +15372,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Odogaron.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Odogaron/Sketch_Odogaron_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Odogaron/Sketch_Odogaron_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Odogaron; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10014510,
@@ -15440,7 +15647,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Odogaron.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Odogaron/Sketch_Odogaron_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Odogaron/Sketch_Odogaron_D1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10015200,
@@ -15485,7 +15695,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathalos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathalos/Sketch_Rathalos_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathalos/Sketch_Rathalos_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Rathalos (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10015300,
@@ -15747,7 +15960,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathalos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathalos/Sketch_Rathalos_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathalos/Sketch_Rathalos_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Rathalos; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10015400,
@@ -16019,7 +16235,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathalos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathalos/Sketch_Rathalos_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathalos/Sketch_Rathalos_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Rathalos; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10015500,
@@ -16291,7 +16510,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathalos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathalos/Sketch_Rathalos_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathalos/Sketch_Rathalos_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Rathalos; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10015510,
@@ -16563,7 +16785,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathalos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathalos/Sketch_Rathalos_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathalos/Sketch_Rathalos_D1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10016200,
@@ -16594,7 +16819,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Diablos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Diablos/Sketch_Diablos_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Diablos/Sketch_Diablos_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Diablos (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10016300,
@@ -16842,7 +17070,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Diablos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Diablos/Sketch_Diablos_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Diablos/Sketch_Diablos_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Diablos; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10016400,
@@ -17100,7 +17331,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Diablos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Diablos/Sketch_Diablos_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Diablos/Sketch_Diablos_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Diablos; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10016500,
@@ -17358,7 +17592,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Diablos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Diablos/Sketch_Diablos_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Diablos/Sketch_Diablos_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Diablos; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10016510,
@@ -17616,7 +17853,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Diablos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Diablos/Sketch_Diablos_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Diablos/Sketch_Diablos_D1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10018200,
@@ -17647,7 +17887,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_BlackDiablos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/BlackDiablos/Sketch_BlackDiablos_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/BlackDiablos/Sketch_BlackDiablos_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Black Diablos (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10018300,
@@ -17895,7 +18138,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_BlackDiablos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/BlackDiablos/Sketch_BlackDiablos_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/BlackDiablos/Sketch_BlackDiablos_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Black Diablos; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10018400,
@@ -18153,7 +18399,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_BlackDiablos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/BlackDiablos/Sketch_BlackDiablos_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/BlackDiablos/Sketch_BlackDiablos_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Black Diablos; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10018500,
@@ -18411,7 +18660,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_BlackDiablos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/BlackDiablos/Sketch_BlackDiablos_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/BlackDiablos/Sketch_BlackDiablos_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Black Diablos; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10018510,
@@ -18669,7 +18921,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_BlackDiablos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/BlackDiablos/Sketch_BlackDiablos_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/BlackDiablos/Sketch_BlackDiablos_D1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10019200,
@@ -18700,7 +18955,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_PinkRathian.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/PinkRathian/Sketch_PinkRathian_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/PinkRathian/Sketch_PinkRathian_C1.png",
+   "how_to_obtain": "Illustration: Pink Rathian (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10019300,
@@ -18948,7 +19206,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_PinkRathian.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/PinkRathian/Sketch_PinkRathian_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/PinkRathian/Sketch_PinkRathian_C1.png",
+   "how_to_obtain": "Illustration: Pink Rathian; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10019400,
@@ -19206,7 +19467,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_PinkRathian.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/PinkRathian/Sketch_PinkRathian_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/PinkRathian/Sketch_PinkRathian_C1.png",
+   "how_to_obtain": "Illustration: Pink Rathian; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10019500,
@@ -19464,7 +19728,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_PinkRathian.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/PinkRathian/Sketch_PinkRathian_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/PinkRathian/Sketch_PinkRathian_C1.png",
+   "how_to_obtain": "Illustration: Pink Rathian; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10019510,
@@ -19722,7 +19989,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_PinkRathian.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/PinkRathian/Sketch_PinkRathian_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/PinkRathian/Sketch_PinkRathian_C1.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10101200,
@@ -19753,7 +20023,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_GreatJagras_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZGreatJagras/Sketch_RGZGreatJagras_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZGreatJagras/Sketch_RGZGreatJagras_C1.png",
+   "how_to_obtain": "Illustration: Radiant Great Jagras (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10101300,
@@ -20001,7 +20274,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_GreatJagras_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZGreatJagras/Sketch_RGZGreatJagras_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZGreatJagras/Sketch_RGZGreatJagras_C1.png",
+   "how_to_obtain": "Illustration: Radiant Great Jagras; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10101400,
@@ -20259,7 +20535,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_GreatJagras_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZGreatJagras/Sketch_RGZGreatJagras_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZGreatJagras/Sketch_RGZGreatJagras_C1.png",
+   "how_to_obtain": "Illustration: Radiant Great Jagras; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10101500,
@@ -20517,7 +20796,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_GreatJagras_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZGreatJagras/Sketch_RGZGreatJagras_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZGreatJagras/Sketch_RGZGreatJagras_C1.png",
+   "how_to_obtain": "Illustration: Radiant Great Jagras; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10101510,
@@ -20775,7 +21057,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_GreatJagras_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZGreatJagras/Sketch_RGZGreatJagras_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZGreatJagras/Sketch_RGZGreatJagras_C1.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10102200,
@@ -20820,7 +21105,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_KuluYaKu_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZKuluYaKu/Sketch_RGZKuluYaKu_D1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZKuluYaKu/Sketch_RGZKuluYaKu_D1.png",
+   "how_to_obtain": "Illustration: Radiant Kulu-Ya-Ku (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10102300,
@@ -21082,7 +21370,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_KuluYaKu_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZKuluYaKu/Sketch_RGZKuluYaKu_D1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZKuluYaKu/Sketch_RGZKuluYaKu_D1.png",
+   "how_to_obtain": "Illustration: Radiant Kulu-Ya-Ku; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10102400,
@@ -21354,7 +21645,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_KuluYaKu_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZKuluYaKu/Sketch_RGZKuluYaKu_D1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZKuluYaKu/Sketch_RGZKuluYaKu_D1.png",
+   "how_to_obtain": "Illustration: Radiant Kulu-Ya-Ku; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10102500,
@@ -21626,7 +21920,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_KuluYaKu_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZKuluYaKu/Sketch_RGZKuluYaKu_D1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZKuluYaKu/Sketch_RGZKuluYaKu_D1.png",
+   "how_to_obtain": "Illustration: Radiant Kulu-Ya-Ku; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10102510,
@@ -21898,7 +22195,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_KuluYaKu_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZKuluYaKu/Sketch_RGZKuluYaKu_D1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZKuluYaKu/Sketch_RGZKuluYaKu_D1.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10103200,
@@ -21943,7 +22243,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_PukeiPukei_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPukeiPukei/Sketch_RGZPukeiPukei_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPukeiPukei/Sketch_RGZPukeiPukei_C1.png",
+   "how_to_obtain": "Illustration: Radiant Pukei-Pukei (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10103300,
@@ -22205,7 +22508,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_PukeiPukei_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPukeiPukei/Sketch_RGZPukeiPukei_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPukeiPukei/Sketch_RGZPukeiPukei_C1.png",
+   "how_to_obtain": "Illustration: Radiant Pukei-Pukei; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10103400,
@@ -22477,7 +22783,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_PukeiPukei_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPukeiPukei/Sketch_RGZPukeiPukei_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPukeiPukei/Sketch_RGZPukeiPukei_C1.png",
+   "how_to_obtain": "Illustration: Radiant Pukei-Pukei; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10103500,
@@ -22749,7 +23058,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_PukeiPukei_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPukeiPukei/Sketch_RGZPukeiPukei_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPukeiPukei/Sketch_RGZPukeiPukei_C1.png",
+   "how_to_obtain": "Illustration: Radiant Pukei-Pukei; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10103510,
@@ -23021,7 +23333,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_PukeiPukei_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPukeiPukei/Sketch_RGZPukeiPukei_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPukeiPukei/Sketch_RGZPukeiPukei_C1.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10104200,
@@ -23052,7 +23367,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Barroth_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZBarroth/Sketch_RGZBarroth_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZBarroth/Sketch_RGZBarroth_C1.png",
+   "how_to_obtain": "Illustration: Radiant Barroth (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10104300,
@@ -23300,7 +23618,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Barroth_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZBarroth/Sketch_RGZBarroth_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZBarroth/Sketch_RGZBarroth_C1.png",
+   "how_to_obtain": "Illustration: Radiant Barroth; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10104400,
@@ -23558,7 +23879,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Barroth_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZBarroth/Sketch_RGZBarroth_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZBarroth/Sketch_RGZBarroth_C1.png",
+   "how_to_obtain": "Illustration: Radiant Barroth; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10104500,
@@ -23816,7 +24140,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Barroth_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZBarroth/Sketch_RGZBarroth_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZBarroth/Sketch_RGZBarroth_C1.png",
+   "how_to_obtain": "Illustration: Radiant Barroth; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10104510,
@@ -24074,7 +24401,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Barroth_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZBarroth/Sketch_RGZBarroth_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZBarroth/Sketch_RGZBarroth_C1.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10105200,
@@ -24119,7 +24449,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Jyuratodus_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZJyuratodus/Sketch_RGZJyuratodus_D1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZJyuratodus/Sketch_RGZJyuratodus_D1.png",
+   "how_to_obtain": "Illustration: Radiant Jyuratodus (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10105300,
@@ -24381,7 +24714,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Jyuratodus_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZJyuratodus/Sketch_RGZJyuratodus_D1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZJyuratodus/Sketch_RGZJyuratodus_D1.png",
+   "how_to_obtain": "Illustration: Radiant Jyuratodus; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10105400,
@@ -24653,7 +24989,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Jyuratodus_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZJyuratodus/Sketch_RGZJyuratodus_D1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZJyuratodus/Sketch_RGZJyuratodus_D1.png",
+   "how_to_obtain": "Illustration: Radiant Jyuratodus; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10105500,
@@ -24925,7 +25264,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Jyuratodus_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZJyuratodus/Sketch_RGZJyuratodus_D1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZJyuratodus/Sketch_RGZJyuratodus_D1.png",
+   "how_to_obtain": "Illustration: Radiant Jyuratodus; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10105510,
@@ -25197,7 +25539,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Jyuratodus_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZJyuratodus/Sketch_RGZJyuratodus_D1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZJyuratodus/Sketch_RGZJyuratodus_D1.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10107200,
@@ -25228,7 +25573,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Anjanath_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZAnjanath/Sketch_RGZAnjanath_D1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZAnjanath/Sketch_RGZAnjanath_D1.png",
+   "how_to_obtain": "Illustration: Radiant Anjanath (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10107300,
@@ -25476,7 +25824,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Anjanath_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZAnjanath/Sketch_RGZAnjanath_D1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZAnjanath/Sketch_RGZAnjanath_D1.png",
+   "how_to_obtain": "Illustration: Radiant Anjanath; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10107400,
@@ -25734,7 +26085,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Anjanath_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZAnjanath/Sketch_RGZAnjanath_D1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZAnjanath/Sketch_RGZAnjanath_D1.png",
+   "how_to_obtain": "Illustration: Radiant Anjanath; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10107500,
@@ -25992,7 +26346,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Anjanath_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZAnjanath/Sketch_RGZAnjanath_D1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZAnjanath/Sketch_RGZAnjanath_D1.png",
+   "how_to_obtain": "Illustration: Radiant Anjanath; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10107510,
@@ -26250,7 +26607,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Anjanath_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZAnjanath/Sketch_RGZAnjanath_D1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZAnjanath/Sketch_RGZAnjanath_D1.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10108200,
@@ -26281,7 +26641,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathian_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRathian/Sketch_RGZRathian_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRathian/Sketch_RGZRathian_C1.png",
+   "how_to_obtain": "Illustration: Radiant Rathian (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10108300,
@@ -26529,7 +26892,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathian_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRathian/Sketch_RGZRathian_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRathian/Sketch_RGZRathian_C1.png",
+   "how_to_obtain": "Illustration: Radiant Rathian; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10108400,
@@ -26787,7 +27153,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathian_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRathian/Sketch_RGZRathian_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRathian/Sketch_RGZRathian_C1.png",
+   "how_to_obtain": "Illustration: Radiant Rathian; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10108500,
@@ -27045,7 +27414,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathian_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRathian/Sketch_RGZRathian_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRathian/Sketch_RGZRathian_C1.png",
+   "how_to_obtain": "Illustration: Radiant Rathian; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10108510,
@@ -27303,7 +27675,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathian_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRathian/Sketch_RGZRathian_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRathian/Sketch_RGZRathian_C1.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10110200,
@@ -27334,7 +27709,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Paolumu_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPaolumu/Sketch_RGZPaolumu_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPaolumu/Sketch_RGZPaolumu_C1.png",
+   "how_to_obtain": "Illustration: Radiant Paolumu (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10110300,
@@ -27582,7 +27960,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Paolumu_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPaolumu/Sketch_RGZPaolumu_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPaolumu/Sketch_RGZPaolumu_C1.png",
+   "how_to_obtain": "Illustration: Radiant Paolumu; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10110400,
@@ -27840,7 +28221,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Paolumu_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPaolumu/Sketch_RGZPaolumu_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPaolumu/Sketch_RGZPaolumu_C1.png",
+   "how_to_obtain": "Illustration: Radiant Paolumu; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10110500,
@@ -28098,7 +28482,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Paolumu_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPaolumu/Sketch_RGZPaolumu_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPaolumu/Sketch_RGZPaolumu_C1.png",
+   "how_to_obtain": "Illustration: Radiant Paolumu; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10110510,
@@ -28356,7 +28743,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Paolumu_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPaolumu/Sketch_RGZPaolumu_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPaolumu/Sketch_RGZPaolumu_C1.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10115200,
@@ -28401,7 +28791,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathalos_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRathalos/Sketch_RGZRathalos_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRathalos/Sketch_RGZRathalos_C1.png",
+   "how_to_obtain": "Illustration: Radiant Rathalos (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10115300,
@@ -28663,7 +29056,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathalos_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRathalos/Sketch_RGZRathalos_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRathalos/Sketch_RGZRathalos_C1.png",
+   "how_to_obtain": "Illustration: Radiant Rathalos; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10115400,
@@ -28935,7 +29331,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathalos_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRathalos/Sketch_RGZRathalos_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRathalos/Sketch_RGZRathalos_C1.png",
+   "how_to_obtain": "Illustration: Radiant Rathalos; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10115500,
@@ -29207,7 +29606,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathalos_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRathalos/Sketch_RGZRathalos_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRathalos/Sketch_RGZRathalos_C1.png",
+   "how_to_obtain": "Illustration: Radiant Rathalos; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10115510,
@@ -29479,7 +29881,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathalos_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRathalos/Sketch_RGZRathalos_C1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRathalos/Sketch_RGZRathalos_C1.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10116200,
@@ -29524,7 +29929,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Diablos_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZDiablos/Sketch_RGZDiablos_D1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZDiablos/Sketch_RGZDiablos_D1.png",
+   "how_to_obtain": "Illustration: Radiant Diablos (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10116300,
@@ -29786,7 +30194,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Diablos_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZDiablos/Sketch_RGZDiablos_D1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZDiablos/Sketch_RGZDiablos_D1.png",
+   "how_to_obtain": "Illustration: Radiant Diablos; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10116400,
@@ -30058,7 +30469,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Diablos_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZDiablos/Sketch_RGZDiablos_D1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZDiablos/Sketch_RGZDiablos_D1.png",
+   "how_to_obtain": "Illustration: Radiant Diablos; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10116500,
@@ -30330,7 +30744,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Diablos_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZDiablos/Sketch_RGZDiablos_D1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZDiablos/Sketch_RGZDiablos_D1.png",
+   "how_to_obtain": "Illustration: Radiant Diablos; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10116510,
@@ -30602,7 +31019,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Diablos_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZDiablos/Sketch_RGZDiablos_D1.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZDiablos/Sketch_RGZDiablos_D1.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10117200,
@@ -30647,7 +31067,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_PinkRathian_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPinkRathian/Sketch_RGZPinkRathian_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPinkRathian/Sketch_RGZPinkRathian_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Pink Rathian (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10117300,
@@ -30909,7 +31332,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_PinkRathian_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPinkRathian/Sketch_RGZPinkRathian_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPinkRathian/Sketch_RGZPinkRathian_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Pink Rathian; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10117400,
@@ -31181,7 +31607,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_PinkRathian_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPinkRathian/Sketch_RGZPinkRathian_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPinkRathian/Sketch_RGZPinkRathian_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Pink Rathian; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10117500,
@@ -31453,7 +31882,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_PinkRathian_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPinkRathian/Sketch_RGZPinkRathian_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPinkRathian/Sketch_RGZPinkRathian_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Pink Rathian; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10117510,
@@ -31725,7 +32157,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_PinkRathian_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPinkRathian/Sketch_RGZPinkRathian_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPinkRathian/Sketch_RGZPinkRathian_C1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10118200,
@@ -31756,7 +32191,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_BlackDiablos_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZBlackDiablos/Sketch_RGZBlackDiablos_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZBlackDiablos/Sketch_RGZBlackDiablos_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Black Diablos (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10118300,
@@ -32004,7 +32442,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_BlackDiablos_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZBlackDiablos/Sketch_RGZBlackDiablos_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZBlackDiablos/Sketch_RGZBlackDiablos_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Black Diablos; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10118400,
@@ -32262,7 +32703,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_BlackDiablos_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZBlackDiablos/Sketch_RGZBlackDiablos_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZBlackDiablos/Sketch_RGZBlackDiablos_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Black Diablos; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10118500,
@@ -32520,7 +32964,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_BlackDiablos_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZBlackDiablos/Sketch_RGZBlackDiablos_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZBlackDiablos/Sketch_RGZBlackDiablos_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Black Diablos; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10118510,
@@ -32778,7 +33225,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_BlackDiablos_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZBlackDiablos/Sketch_RGZBlackDiablos_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZBlackDiablos/Sketch_RGZBlackDiablos_D1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10119200,
@@ -32823,7 +33273,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Odogaron_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZOdogaron/Sketch_RGZOdogaron_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZOdogaron/Sketch_RGZOdogaron_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Odogaron (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10119300,
@@ -33085,7 +33538,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Odogaron_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZOdogaron/Sketch_RGZOdogaron_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZOdogaron/Sketch_RGZOdogaron_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Odogaron; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10119400,
@@ -33357,7 +33813,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Odogaron_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZOdogaron/Sketch_RGZOdogaron_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZOdogaron/Sketch_RGZOdogaron_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Odogaron; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10119500,
@@ -33629,7 +34088,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Odogaron_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZOdogaron/Sketch_RGZOdogaron_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZOdogaron/Sketch_RGZOdogaron_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Odogaron; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10119510,
@@ -33901,7 +34363,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Odogaron_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZOdogaron/Sketch_RGZOdogaron_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZOdogaron/Sketch_RGZOdogaron_D1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10121200,
@@ -33932,7 +34397,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_TobiKadachi_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZTobiKadachi/Sketch_RGZTobiKadachi_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZTobiKadachi/Sketch_RGZTobiKadachi_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Tobi-Kadachi (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10121300,
@@ -34180,7 +34648,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_TobiKadachi_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZTobiKadachi/Sketch_RGZTobiKadachi_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZTobiKadachi/Sketch_RGZTobiKadachi_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Tobi-Kadachi; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10121400,
@@ -34438,7 +34909,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_TobiKadachi_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZTobiKadachi/Sketch_RGZTobiKadachi_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZTobiKadachi/Sketch_RGZTobiKadachi_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Tobi-Kadachi; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10121500,
@@ -34696,7 +35170,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_TobiKadachi_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZTobiKadachi/Sketch_RGZTobiKadachi_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZTobiKadachi/Sketch_RGZTobiKadachi_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Tobi-Kadachi; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10121510,
@@ -34954,7 +35431,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_TobiKadachi_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZTobiKadachi/Sketch_RGZTobiKadachi_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZTobiKadachi/Sketch_RGZTobiKadachi_C1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10122200,
@@ -34985,7 +35465,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_TzitziYaKu_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZTzitziYaKu/Sketch_RGZTzitziYaKu_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZTzitziYaKu/Sketch_RGZTzitziYaKu_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Tzitzi-Ya-Ku (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10122300,
@@ -35233,7 +35716,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_TzitziYaKu_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZTzitziYaKu/Sketch_RGZTzitziYaKu_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZTzitziYaKu/Sketch_RGZTzitziYaKu_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Tzitzi-Ya-Ku; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10122400,
@@ -35491,7 +35977,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_TzitziYaKu_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZTzitziYaKu/Sketch_RGZTzitziYaKu_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZTzitziYaKu/Sketch_RGZTzitziYaKu_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Tzitzi-Ya-Ku; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10122500,
@@ -35749,7 +36238,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_TzitziYaKu_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZTzitziYaKu/Sketch_RGZTzitziYaKu_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZTzitziYaKu/Sketch_RGZTzitziYaKu_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Tzitzi-Ya-Ku; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10122510,
@@ -36007,7 +36499,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_TzitziYaKu_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZTzitziYaKu/Sketch_RGZTzitziYaKu_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZTzitziYaKu/Sketch_RGZTzitziYaKu_C1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10123200,
@@ -36052,7 +36547,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_GreatGirros_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZGreatGirros/Sketch_RGZGreatGirros_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZGreatGirros/Sketch_RGZGreatGirros_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Great Girros (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10123300,
@@ -36314,7 +36812,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_GreatGirros_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZGreatGirros/Sketch_RGZGreatGirros_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZGreatGirros/Sketch_RGZGreatGirros_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Great Girros; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10123400,
@@ -36586,7 +37087,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_GreatGirros_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZGreatGirros/Sketch_RGZGreatGirros_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZGreatGirros/Sketch_RGZGreatGirros_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Great Girros; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10123500,
@@ -36858,7 +37362,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_GreatGirros_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZGreatGirros/Sketch_RGZGreatGirros_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZGreatGirros/Sketch_RGZGreatGirros_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Great Girros; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10123510,
@@ -37130,7 +37637,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_GreatGirros_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZGreatGirros/Sketch_RGZGreatGirros_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZGreatGirros/Sketch_RGZGreatGirros_D1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10124200,
@@ -37161,7 +37671,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Radobaan_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRadobaan/Sketch_RGZRadobaan_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRadobaan/Sketch_RGZRadobaan_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Radobaan (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10124300,
@@ -37409,7 +37922,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Radobaan_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRadobaan/Sketch_RGZRadobaan_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRadobaan/Sketch_RGZRadobaan_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Radobaan; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10124400,
@@ -37667,7 +38183,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Radobaan_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRadobaan/Sketch_RGZRadobaan_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRadobaan/Sketch_RGZRadobaan_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Radobaan; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10124500,
@@ -37925,7 +38444,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Radobaan_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRadobaan/Sketch_RGZRadobaan_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRadobaan/Sketch_RGZRadobaan_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Radobaan; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10124510,
@@ -38183,7 +38705,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Radobaan_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRadobaan/Sketch_RGZRadobaan_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRadobaan/Sketch_RGZRadobaan_D1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10125200,
@@ -38214,7 +38739,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Legiana_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZLegiana/Sketch_RGZLegiana_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZLegiana/Sketch_RGZLegiana_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Legiana (Visage drop from hunting it in Free Hunts and the field); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10125300,
@@ -38462,7 +38990,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Legiana_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZLegiana/Sketch_RGZLegiana_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZLegiana/Sketch_RGZLegiana_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Legiana; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10125400,
@@ -38720,7 +39251,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Legiana_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZLegiana/Sketch_RGZLegiana_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZLegiana/Sketch_RGZLegiana_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Legiana; Palico's Secret Treasure: Visage Box (Epic); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10125500,
@@ -38978,7 +39512,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Legiana_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZLegiana/Sketch_RGZLegiana_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZLegiana/Sketch_RGZLegiana_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Radiant Legiana; Palico's Secret Treasure: Visage Box (Superior); Bounty Exchange: Visage Box (Superior); Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10125510,
@@ -39236,7 +39773,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Legiana_LightingStone.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZLegiana/Sketch_RGZLegiana_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZLegiana/Sketch_RGZLegiana_D1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10126200,
@@ -39267,7 +39807,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Nergigante.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Nergigante/Sketch_Nergigante_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Nergigante/Sketch_Nergigante_C1_Coloured.png",
+   "how_to_obtain": "Illustration: Nergigante (Visage drop from hunting it in Free Hunts and the field)",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10126300,
@@ -39525,7 +40068,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Nergigante.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Nergigante/Sketch_Nergigante_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Nergigante/Sketch_Nergigante_C1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10126400,
@@ -39783,7 +40329,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Nergigante.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Nergigante/Sketch_Nergigante_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Nergigante/Sketch_Nergigante_C1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10126500,
@@ -40041,7 +40590,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Nergigante.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Nergigante/Sketch_Nergigante_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Nergigante/Sketch_Nergigante_C1_Coloured.png",
+   "how_to_obtain": "Season Shop",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10126510,
@@ -40299,7 +40851,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Nergigante.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Nergigante/Sketch_Nergigante_C1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Nergigante/Sketch_Nergigante_C1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10127200,
@@ -40330,7 +40885,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_KushalaDaora.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/KushalaDaora/Sketch_KushalaDaora_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/KushalaDaora/Sketch_KushalaDaora_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Kushala Daora (Visage drop from hunting it in Free Hunts and the field)",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10127300,
@@ -40588,7 +41146,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_KushalaDaora.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/KushalaDaora/Sketch_KushalaDaora_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/KushalaDaora/Sketch_KushalaDaora_D1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10127400,
@@ -40846,7 +41407,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_KushalaDaora.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/KushalaDaora/Sketch_KushalaDaora_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/KushalaDaora/Sketch_KushalaDaora_D1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10127500,
@@ -41104,7 +41668,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_KushalaDaora.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/KushalaDaora/Sketch_KushalaDaora_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/KushalaDaora/Sketch_KushalaDaora_D1_Coloured.png",
+   "how_to_obtain": "Season Shop",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10127510,
@@ -41362,7 +41929,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_KushalaDaora.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/KushalaDaora/Sketch_KushalaDaora_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/KushalaDaora/Sketch_KushalaDaora_D1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10128200,
@@ -41393,7 +41963,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_PrismireKnight.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RugerAidal/Sketch_RugerAidal_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RugerAidal/Sketch_RugerAidal_D1_Coloured.png",
+   "how_to_obtain": "Illustration: Ruger Aidal (Visage drop from hunting it in Free Hunts and the field)",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10128300,
@@ -41651,7 +42224,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_PrismireKnight.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RugerAidal/Sketch_RugerAidal_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RugerAidal/Sketch_RugerAidal_D1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10128400,
@@ -41909,7 +42485,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_PrismireKnight.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RugerAidal/Sketch_RugerAidal_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RugerAidal/Sketch_RugerAidal_D1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10128500,
@@ -42167,7 +42746,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_PrismireKnight.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RugerAidal/Sketch_RugerAidal_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RugerAidal/Sketch_RugerAidal_D1_Coloured.png",
+   "how_to_obtain": "Season Shop",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10128510,
@@ -42425,7 +43007,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_PrismireKnight.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RugerAidal/Sketch_RugerAidal_D1_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RugerAidal/Sketch_RugerAidal_D1_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10201200,
@@ -42470,7 +43055,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Jagras.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Jagras/Sketch_Jagras_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Jagras/Sketch_Jagras_Coloured.png",
+   "how_to_obtain": "Illustration: Jagras (Visage drop from hunting it in Free Hunts and the field); Visage selection chest; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10201300,
@@ -42736,7 +43324,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Jagras.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Jagras/Sketch_Jagras_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Jagras/Sketch_Jagras_Coloured.png",
+   "how_to_obtain": "Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10201400,
@@ -43016,7 +43607,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Jagras.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Jagras/Sketch_Jagras_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Jagras/Sketch_Jagras_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Epic); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10201500,
@@ -43296,7 +43890,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Jagras.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Jagras/Sketch_Jagras_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Jagras/Sketch_Jagras_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Superior); Byproduct: Bounty Exchange: Visage Box (Superior); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10201510,
@@ -43576,7 +44173,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Jagras.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Jagras/Sketch_Jagras_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Jagras/Sketch_Jagras_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10202200,
@@ -43621,7 +44221,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Vespoid.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Vespoid/Sketch_Vespoid_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Vespoid/Sketch_Vespoid_Coloured.png",
+   "how_to_obtain": "Illustration: Vespoid (Visage drop from hunting it in Free Hunts and the field); Visage selection chest; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10202300,
@@ -43887,7 +44490,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Vespoid.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Vespoid/Sketch_Vespoid_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Vespoid/Sketch_Vespoid_Coloured.png",
+   "how_to_obtain": "Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10202400,
@@ -44167,7 +44773,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Vespoid.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Vespoid/Sketch_Vespoid_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Vespoid/Sketch_Vespoid_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Epic); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10202500,
@@ -44447,7 +45056,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Vespoid.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Vespoid/Sketch_Vespoid_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Vespoid/Sketch_Vespoid_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Superior); Byproduct: Bounty Exchange: Visage Box (Superior); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10202510,
@@ -44727,7 +45339,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Vespoid.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Vespoid/Sketch_Vespoid_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Vespoid/Sketch_Vespoid_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10203200,
@@ -44758,7 +45373,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Aptonoth.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Aptonoth/Sketch_Aptonoth_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Aptonoth/Sketch_Aptonoth_Coloured.png",
+   "how_to_obtain": "Illustration: Aptonoth (Visage drop from hunting it in Free Hunts and the field); Visage selection chest; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10203300,
@@ -45010,7 +45628,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Aptonoth.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Aptonoth/Sketch_Aptonoth_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Aptonoth/Sketch_Aptonoth_Coloured.png",
+   "how_to_obtain": "Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10203400,
@@ -45276,7 +45897,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Aptonoth.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Aptonoth/Sketch_Aptonoth_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Aptonoth/Sketch_Aptonoth_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Epic); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10203500,
@@ -45542,7 +46166,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Aptonoth.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Aptonoth/Sketch_Aptonoth_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Aptonoth/Sketch_Aptonoth_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Superior); Byproduct: Bounty Exchange: Visage Box (Superior); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10203510,
@@ -45808,7 +46435,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Aptonoth.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Aptonoth/Sketch_Aptonoth_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Aptonoth/Sketch_Aptonoth_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10204200,
@@ -45853,7 +46483,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Corontosaurus_01.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/MaleKestodon/Sketch_MaleKestodon_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/MaleKestodon/Sketch_MaleKestodon_Coloured.png",
+   "how_to_obtain": "Illustration: Kestodon (Visage drop from hunting it in Free Hunts and the field); Visage selection chest; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10204300,
@@ -46119,7 +46752,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Corontosaurus_01.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/MaleKestodon/Sketch_MaleKestodon_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/MaleKestodon/Sketch_MaleKestodon_Coloured.png",
+   "how_to_obtain": "Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10204400,
@@ -46399,7 +47035,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Corontosaurus_01.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/MaleKestodon/Sketch_MaleKestodon_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/MaleKestodon/Sketch_MaleKestodon_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Epic); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10204500,
@@ -46679,7 +47318,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Corontosaurus_01.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/MaleKestodon/Sketch_MaleKestodon_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/MaleKestodon/Sketch_MaleKestodon_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Superior); Byproduct: Bounty Exchange: Visage Box (Superior); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10204510,
@@ -46959,7 +47601,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Corontosaurus_01.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/MaleKestodon/Sketch_MaleKestodon_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/MaleKestodon/Sketch_MaleKestodon_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10206200,
@@ -47004,7 +47649,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Apceros.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Apceros/Sketch_Apceros_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Apceros/Sketch_Apceros_Coloured.png",
+   "how_to_obtain": "Illustration: Apceros (Visage drop from hunting it in Free Hunts and the field); Visage selection chest; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10206300,
@@ -47270,7 +47918,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Apceros.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Apceros/Sketch_Apceros_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Apceros/Sketch_Apceros_Coloured.png",
+   "how_to_obtain": "Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10206400,
@@ -47550,7 +48201,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Apceros.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Apceros/Sketch_Apceros_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Apceros/Sketch_Apceros_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Epic); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10206500,
@@ -47830,7 +48484,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Apceros.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Apceros/Sketch_Apceros_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Apceros/Sketch_Apceros_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Superior); Byproduct: Bounty Exchange: Visage Box (Superior); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10206510,
@@ -48110,7 +48767,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Apceros.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Apceros/Sketch_Apceros_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Apceros/Sketch_Apceros_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10207200,
@@ -48155,7 +48815,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Gajau.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajau/Sketch_Gajau_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajau/Sketch_Gajau_Coloured.png",
+   "how_to_obtain": "Illustration: Gajau (Visage drop from hunting it in Free Hunts and the field); Visage selection chest; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10207300,
@@ -48421,7 +49084,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Gajau.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajau/Sketch_Gajau_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajau/Sketch_Gajau_Coloured.png",
+   "how_to_obtain": "Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10207400,
@@ -48701,7 +49367,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Gajau.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajau/Sketch_Gajau_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajau/Sketch_Gajau_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Epic); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10207500,
@@ -48981,7 +49650,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Gajau.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajau/Sketch_Gajau_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajau/Sketch_Gajau_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Superior); Byproduct: Bounty Exchange: Visage Box (Superior); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10207510,
@@ -49261,7 +49933,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Gajau.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajau/Sketch_Gajau_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajau/Sketch_Gajau_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10209200,
@@ -49306,7 +49981,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Shamos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Shamos/Sketch_Shamos_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Shamos/Sketch_Shamos_Coloured.png",
+   "how_to_obtain": "Illustration: Shamos (Visage drop from hunting it in Free Hunts and the field); Visage selection chest; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10209300,
@@ -49572,7 +50250,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Shamos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Shamos/Sketch_Shamos_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Shamos/Sketch_Shamos_Coloured.png",
+   "how_to_obtain": "Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10209400,
@@ -49852,7 +50533,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Shamos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Shamos/Sketch_Shamos_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Shamos/Sketch_Shamos_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Epic); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10209500,
@@ -50132,7 +50816,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Shamos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Shamos/Sketch_Shamos_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Shamos/Sketch_Shamos_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Superior); Byproduct: Bounty Exchange: Visage Box (Superior); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10209510,
@@ -50412,7 +51099,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Shamos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Shamos/Sketch_Shamos_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Shamos/Sketch_Shamos_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10210200,
@@ -50457,7 +51147,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Girros.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Girros/Sketch_Girros_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Girros/Sketch_Girros_Coloured.png",
+   "how_to_obtain": "Illustration: Girros (Visage drop from hunting it in Free Hunts and the field); Visage selection chest; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10210300,
@@ -50723,7 +51416,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Girros.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Girros/Sketch_Girros_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Girros/Sketch_Girros_Coloured.png",
+   "how_to_obtain": "Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10210400,
@@ -51003,7 +51699,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Girros.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Girros/Sketch_Girros_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Girros/Sketch_Girros_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Epic); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10210500,
@@ -51283,7 +51982,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Girros.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Girros/Sketch_Girros_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Girros/Sketch_Girros_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Superior); Byproduct: Bounty Exchange: Visage Box (Superior); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10210510,
@@ -51563,7 +52265,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Girros.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Girros/Sketch_Girros_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Girros/Sketch_Girros_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10211200,
@@ -51608,7 +52313,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Hornetaur.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Hornetaur/Sketch_Hornetaur_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Hornetaur/Sketch_Hornetaur_Coloured.png",
+   "how_to_obtain": "Illustration: Hornetaur (Visage drop from hunting it in Free Hunts and the field); Visage selection chest; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10211300,
@@ -51874,7 +52582,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Hornetaur.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Hornetaur/Sketch_Hornetaur_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Hornetaur/Sketch_Hornetaur_Coloured.png",
+   "how_to_obtain": "Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10211400,
@@ -52154,7 +52865,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Hornetaur.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Hornetaur/Sketch_Hornetaur_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Hornetaur/Sketch_Hornetaur_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Epic); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10211500,
@@ -52434,7 +53148,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Hornetaur.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Hornetaur/Sketch_Hornetaur_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Hornetaur/Sketch_Hornetaur_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Superior); Byproduct: Bounty Exchange: Visage Box (Superior); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10211510,
@@ -52714,7 +53431,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Hornetaur.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Hornetaur/Sketch_Hornetaur_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Hornetaur/Sketch_Hornetaur_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10212200,
@@ -52759,7 +53479,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Gastodon.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gastodon/Sketch_Gastodon_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gastodon/Sketch_Gastodon_Coloured.png",
+   "how_to_obtain": "Illustration: Gastodon (Visage drop from hunting it in Free Hunts and the field)",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10212300,
@@ -53025,7 +53748,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Gastodon.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gastodon/Sketch_Gastodon_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gastodon/Sketch_Gastodon_Coloured.png",
+   "how_to_obtain": "Byproduct: Illustration",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10212400,
@@ -53305,7 +54031,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Gastodon.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gastodon/Sketch_Gastodon_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gastodon/Sketch_Gastodon_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Epic); Byproduct: Illustration",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10212500,
@@ -53585,7 +54314,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Gastodon.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gastodon/Sketch_Gastodon_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gastodon/Sketch_Gastodon_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Superior); Byproduct: Bounty Exchange: Visage Box (Superior); Byproduct: Illustration",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10212510,
@@ -53865,7 +54597,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Gastodon.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gastodon/Sketch_Gastodon_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gastodon/Sketch_Gastodon_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10213200,
@@ -53910,7 +54645,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Carapaceon.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajalaka/Sketch_Gajalaka_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajalaka/Sketch_Gajalaka_Coloured.png",
+   "how_to_obtain": "Illustration: Warrior Atecoli (Visage drop from hunting it in Free Hunts and the field); Visage selection chest; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10213300,
@@ -54176,7 +54914,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Carapaceon.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajalaka/Sketch_Gajalaka_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajalaka/Sketch_Gajalaka_Coloured.png",
+   "how_to_obtain": "Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10213400,
@@ -54456,7 +55197,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Carapaceon.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajalaka/Sketch_Gajalaka_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajalaka/Sketch_Gajalaka_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Epic); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10213500,
@@ -54736,7 +55480,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Carapaceon.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajalaka/Sketch_Gajalaka_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajalaka/Sketch_Gajalaka_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Superior); Byproduct: Bounty Exchange: Visage Box (Superior); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10213510,
@@ -55016,7 +55763,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Carapaceon.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajalaka/Sketch_Gajalaka_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajalaka/Sketch_Gajalaka_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10214200,
@@ -55061,7 +55811,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Carapaceon.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajalaka/Sketch_Gajalaka_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajalaka/Sketch_Gajalaka_Coloured.png",
+   "how_to_obtain": "Illustration: Pitcher Atecoli (Visage drop from hunting it in Free Hunts and the field); Visage selection chest; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10214300,
@@ -55327,7 +56080,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Carapaceon.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajalaka/Sketch_Gajalaka_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajalaka/Sketch_Gajalaka_Coloured.png",
+   "how_to_obtain": "Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10214400,
@@ -55607,7 +56363,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Carapaceon.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajalaka/Sketch_Gajalaka_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajalaka/Sketch_Gajalaka_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Epic); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10214500,
@@ -55887,7 +56646,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Carapaceon.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajalaka/Sketch_Gajalaka_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajalaka/Sketch_Gajalaka_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Superior); Byproduct: Bounty Exchange: Visage Box (Superior); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10214510,
@@ -56167,7 +56929,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Carapaceon.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajalaka/Sketch_Gajalaka_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajalaka/Sketch_Gajalaka_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10215200,
@@ -56212,7 +56977,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Mernos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Mernos/Sketch_Mernos_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Mernos/Sketch_Mernos_Coloured.png",
+   "how_to_obtain": "Illustration: Mernos (Visage drop from hunting it in Free Hunts and the field); Visage selection chest; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10215300,
@@ -56478,7 +57246,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Mernos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Mernos/Sketch_Mernos_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Mernos/Sketch_Mernos_Coloured.png",
+   "how_to_obtain": "Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10215400,
@@ -56758,7 +57529,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Mernos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Mernos/Sketch_Mernos_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Mernos/Sketch_Mernos_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Epic); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10215500,
@@ -57038,7 +57812,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Mernos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Mernos/Sketch_Mernos_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Mernos/Sketch_Mernos_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Superior); Byproduct: Bounty Exchange: Visage Box (Superior); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10215510,
@@ -57318,7 +58095,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Mernos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Mernos/Sketch_Mernos_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Mernos/Sketch_Mernos_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10216200,
@@ -57363,7 +58143,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Kelbi.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/FemaleKelbi/Sketch_FemaleKelbi_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/FemaleKelbi/Sketch_FemaleKelbi_Coloured.png",
+   "how_to_obtain": "Illustration: Kelbi (Visage drop from hunting it in Free Hunts and the field); Visage selection chest; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10216300,
@@ -57629,7 +58412,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Kelbi.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/FemaleKelbi/Sketch_FemaleKelbi_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/FemaleKelbi/Sketch_FemaleKelbi_Coloured.png",
+   "how_to_obtain": "Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10216400,
@@ -57909,7 +58695,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Kelbi.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/FemaleKelbi/Sketch_FemaleKelbi_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/FemaleKelbi/Sketch_FemaleKelbi_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Epic); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10216500,
@@ -58189,7 +58978,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Kelbi.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/FemaleKelbi/Sketch_FemaleKelbi_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/FemaleKelbi/Sketch_FemaleKelbi_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Superior); Byproduct: Bounty Exchange: Visage Box (Superior); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10216510,
@@ -58469,7 +59261,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Kelbi.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/FemaleKelbi/Sketch_FemaleKelbi_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/FemaleKelbi/Sketch_FemaleKelbi_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10218200,
@@ -58514,7 +59309,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Noios.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Noios/Sketch_Noios_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Noios/Sketch_Noios_Coloured.png",
+   "how_to_obtain": "Illustration: Noios (Visage drop from hunting it in Free Hunts and the field); Visage selection chest; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10218300,
@@ -58780,7 +59578,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Noios.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Noios/Sketch_Noios_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Noios/Sketch_Noios_Coloured.png",
+   "how_to_obtain": "Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10218400,
@@ -59060,7 +59861,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Noios.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Noios/Sketch_Noios_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Noios/Sketch_Noios_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Epic); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10218500,
@@ -59340,7 +60144,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Noios.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Noios/Sketch_Noios_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Noios/Sketch_Noios_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Superior); Byproduct: Bounty Exchange: Visage Box (Superior); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10218510,
@@ -59620,7 +60427,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Noios.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Noios/Sketch_Noios_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Noios/Sketch_Noios_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10219200,
@@ -59665,7 +60475,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Raphinos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Raphinos/Sketch_Raphinos_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Raphinos/Sketch_Raphinos_Coloured.png",
+   "how_to_obtain": "Illustration: Raphinos (Visage drop from hunting it in Free Hunts and the field); Visage selection chest; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10219300,
@@ -59931,7 +60744,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Raphinos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Raphinos/Sketch_Raphinos_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Raphinos/Sketch_Raphinos_Coloured.png",
+   "how_to_obtain": "Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10219400,
@@ -60211,7 +61027,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Raphinos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Raphinos/Sketch_Raphinos_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Raphinos/Sketch_Raphinos_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Epic); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10219500,
@@ -60491,7 +61310,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Raphinos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Raphinos/Sketch_Raphinos_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Raphinos/Sketch_Raphinos_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Superior); Byproduct: Bounty Exchange: Visage Box (Superior); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10219510,
@@ -60771,7 +61593,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Raphinos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Raphinos/Sketch_Raphinos_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Raphinos/Sketch_Raphinos_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   },
   {
    "id": 10220200,
@@ -60816,7 +61641,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Barnos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Barnos/Sketch_Barnos_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Barnos/Sketch_Barnos_Coloured.png",
+   "how_to_obtain": "Illustration: Barnos (Visage drop from hunting it in Free Hunts and the field); Visage selection chest; Random Visage chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10220300,
@@ -61082,7 +61910,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Barnos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Barnos/Sketch_Barnos_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Barnos/Sketch_Barnos_Coloured.png",
+   "how_to_obtain": "Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10220400,
@@ -61362,7 +62193,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Barnos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Barnos/Sketch_Barnos_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Barnos/Sketch_Barnos_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Epic); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10220500,
@@ -61642,7 +62476,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Barnos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Barnos/Sketch_Barnos_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Barnos/Sketch_Barnos_Coloured.png",
+   "how_to_obtain": "Byproduct: Season Shop - Visage Box (Superior); Byproduct: Bounty Exchange: Visage Box (Superior); Byproduct: Illustration; Visage selection chest",
+   "game_status": "In game",
+   "debug": ""
   },
   {
    "id": 10220510,
@@ -61922,7 +62759,10 @@
     }
    ],
    "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Barnos.png",
-   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Barnos/Sketch_Barnos_Coloured.png"
+   "art": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Barnos/Sketch_Barnos_Coloured.png",
+   "how_to_obtain": "",
+   "game_status": "Not released (no source in the game data)",
+   "debug": ""
   }
  ],
  "sets": [

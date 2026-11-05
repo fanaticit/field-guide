@@ -232,6 +232,20 @@ export default function VisageCard({
           </div>
         )}
 
+        {/* Coming Indicator Badge */}
+        {(card.status === 'not_in_game' || card.is_spoiler) && (
+          <div
+            className={cn(
+              'absolute z-10 rounded px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider border shadow-xs',
+              isInBuild ? 'top-6 left-1' : 'top-1 left-1',
+              'border-amber-500/60 bg-amber-500/30 text-amber-300 backdrop-blur-xs',
+            )}
+            title={card.status_reason || 'Coming — Not in game yet'}
+          >
+            Coming
+          </div>
+        )}
+
         {/* ── Build mode overlays ── */}
         {buildMode && (
           <>

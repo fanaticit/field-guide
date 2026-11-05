@@ -80,7 +80,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_MTwoA01.png",
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_MTwoA01.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Two/RoleProfileIcon_MTwoA01.png",
-  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MTwoA01_ElementUnact.png"
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MTwoA01_ElementUnact.png",
+  "item_id": 230018,
+  "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 101003,
@@ -174,7 +178,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_FTwoA03.png",
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_FTwoA03.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Two/RoleProfileIcon_FTwoA03.png",
-  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FTwoA03_ElementUnact.png"
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FTwoA03_ElementUnact.png",
+  "item_id": 230020,
+  "how_to_obtain": "Featured in limited Recruitment: Crimson Authority (2026-05-13 to 2026-06-12); Featured in limited Recruitment: Crimson Authority (2026-11-27 to 2027-01-22)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 101002,
@@ -252,7 +260,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_MTwoA02.png",
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_MTwoA02.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Two/RoleProfileIcon_MTwoA02.png",
-  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MTwoA02_ElementUnact.png"
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MTwoA02_ElementUnact.png",
+  "item_id": 230027,
+  "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 102002,
@@ -340,7 +352,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_FSwoA01.png",
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_FSwoA01.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Swo/RoleProfileIcon_FSwoA01.png",
-  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FSwoA01_ElementUnact.png"
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FSwoA01_ElementUnact.png",
+  "item_id": 230005,
+  "how_to_obtain": "Featured in limited Recruitment: Autumn Refrain (2026-03-26 to 2026-05-29); Featured in limited Recruitment: Autumn Refrain (2026-09-01 to 2026-11-27)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 102004,
@@ -439,7 +455,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_MSwoA04.png",
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_MSwoA04.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Swo/RoleProfileIcon_MSwoA04.png",
-  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MSwoA04_ElementUnact.png"
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MSwoA04_ElementUnact.png",
+  "item_id": 230013,
+  "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 104001,
@@ -533,7 +553,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_FSouA01.png",
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_FSouA01.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Sou/RoleProfileIcon_FSouA01.png",
-  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FSouA01_ElementUnact.png"
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FSouA01_ElementUnact.png",
+  "item_id": 230006,
+  "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 104002,
@@ -627,7 +651,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_FSouA03.png",
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_FSouA03.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Sou/RoleProfileIcon_FSouA03.png",
-  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FSouA03_ElementUnact.png"
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FSouA03_ElementUnact.png",
+  "item_id": 230008,
+  "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 104004,
@@ -726,7 +754,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_FSouA04.png",
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_FSouA04.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Sou/RoleProfileIcon_FSouA04.png",
-  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FSouA04_ElementUnact.png"
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FSouA04_ElementUnact.png",
+  "item_id": 230015,
+  "how_to_obtain": "Guild Shop",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 107001,
@@ -826,7 +858,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_MLanA01.png",
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_MLanA01.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Lan/RoleProfileIcon_MLanA01.png",
-  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MLanA01_ElementUnact.png"
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MLanA01_ElementUnact.png",
+  "item_id": 230016,
+  "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 113001,
@@ -915,7 +951,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_FHbgA01.png",
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_FHbgA01.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Hbg/RoleProfileIcon_FHbgA01.png",
-  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FHbgA01_ElementUnact.png"
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FHbgA01_ElementUnact.png",
+  "item_id": 230009,
+  "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 114002,
@@ -1009,7 +1049,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_FBowA02.png",
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_FBowA02.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Bow/RoleProfileIcon_FBowA02.png",
-  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FBowA02_ElementUnact.png"
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FBowA02_ElementUnact.png",
+  "item_id": 230007,
+  "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 114003,
@@ -1108,7 +1152,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_FBowA03.png",
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_FBowA03.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Bow/RoleProfileIcon_FBowA03.png",
-  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MBowA03_ElementUnact.png"
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MBowA03_ElementUnact.png",
+  "item_id": 230014,
+  "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 114004,
@@ -1202,7 +1250,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_FBowA04.png",
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_FBowA04.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Bow/RoleProfileIcon_FBowA04.png",
-  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FBowA04_ElementUnact.png"
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FBowA04_ElementUnact.png",
+  "item_id": 230021,
+  "how_to_obtain": "Featured in limited Recruitment: Heart of the Thaw (2026-11-27 to 2026-12-24)",
+  "game_status": "Upcoming – Recruitment banner starts 2026-11-27",
+  "debug": ""
  },
  {
   "id": 107002,
@@ -1296,7 +1348,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_MLanA02.png",
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_MLanA02.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Lan/RoleProfileIcon_MLanA02.png",
-  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MLanA02_ElementUnact.png"
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MLanA02_ElementUnact.png",
+  "item_id": 230017,
+  "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 105001,
@@ -1385,6 +1441,10 @@
   "portrait": "MHMobile/Content/UI/Dynamic/RolePortrait/RolePortrait_MHamA01.png",
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_MHamA01.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Ham/RoleProfileIcon_MHamA01.png",
-  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MHamA03_ElementUnact.png"
+  "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MHamA03_ElementUnact.png",
+  "item_id": 230026,
+  "how_to_obtain": "Featured in limited Recruitment: Thunder Smith (2026-09-01 to 2026-11-27); Beginner's Recruitment pool; Standard Recruitment pool",
+  "game_status": "In game",
+  "debug": ""
  }
 ]

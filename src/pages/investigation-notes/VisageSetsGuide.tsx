@@ -69,6 +69,7 @@ export default function VisageSetsGuide() {
     localStorage.setItem(INTRO_HIDDEN_KEY, next ? '1' : '0');
   };
 
+  const { user, profile } = useAuthStore();
   const {
     sets,
     dbVisages,
@@ -78,9 +79,8 @@ export default function VisageSetsGuide() {
     setCardRarity,
     setCardQuantity,
     removeCardFromCollection,
-  } = useVisageSetsData();
+  } = useVisageSetsData({ showSpoilers: Boolean(profile?.show_spoilers) });
   const isAdmin = useAuthStore(selectIsAdmin);
-  const { user } = useAuthStore();
   const navigate = useNavigate();
 
   const [selectedSetId, setSelectedSetId] = useState<string>('');
@@ -165,6 +165,7 @@ export default function VisageSetsGuide() {
     VISAGE_BUILD_SLOTS.filter((s) => loadout[s].visage?.id === cardId && loadout[s].ink === ink).length;
 
   const getBuildBlock = (card: DBVisage, ink: string): string | null => {
+    if (card.status === 'not_in_game' || card.is_spoiler) return 'Not available for builds (unreleased item)';
     if (sourceMode === 'mine' && !ownsCardInk(collectionMap, card.id, ink)) return 'Not in your collection';
     const slot = firstEmptySlot(loadout);
     if (!slot) return 'All slots are full';

@@ -3,7 +3,7 @@
 // ─────────────────────────────────────────────────────────────
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '../lib/supabase';
-import type { DBAdventurer, AdventurerUpsert, AdventurerRole, AdventurerSkill } from '../data/schemas/adventurer';
+import type { DBAdventurer, AdventurerUpsert, AdventurerRole, AdventurerSkill, AdventurerStatus } from '../data/schemas/adventurer';
 
 export interface AdventurerFilters {
   search?: string;
@@ -11,6 +11,7 @@ export interface AdventurerFilters {
   element?: string;
   weaponType?: string;
   isActive?: boolean | null;
+  showSpoilers?: boolean;
 }
 
 export const ADVENTURERS_KEY = 'admin-adventurers';
@@ -44,6 +45,9 @@ export function useAdminAdventurers(filters: AdventurerFilters = {}) {
       if (filters.isActive !== null && filters.isActive !== undefined) {
         q = q.eq('is_active', filters.isActive);
       }
+      if (filters.showSpoilers === false) {
+        q = q.eq('is_spoiler', false);
+      }
 
       const { data, error } = await q;
       if (error) throw error;
@@ -53,6 +57,10 @@ export function useAdminAdventurers(filters: AdventurerFilters = {}) {
         role: (row.role || 'Assault') as AdventurerRole,
         is_default: Boolean(row.is_default),
         is_active: Boolean(row.is_active),
+        is_spoiler: Boolean(row.is_spoiler),
+        is_debug: Boolean(row.is_debug),
+        status: (row.status || 'in_game') as AdventurerStatus,
+        status_reason: (row.status_reason as string | null) ?? null,
         allowed_weapon_types: Array.isArray(row.allowed_weapon_types) ? row.allowed_weapon_types : [],
       })) as DBAdventurer[];
     },
@@ -78,11 +86,11 @@ export function useAdventurerSkills(adventurerId: string | null | undefined) {
   });
 }
 
-export function usePublicAdventurers() {
+export function usePublicAdventurers(options?: { showSpoilers?: boolean }) {
   return useQuery({
-    queryKey: [PUBLIC_ADVENTURERS_KEY],
+    queryKey: [PUBLIC_ADVENTURERS_KEY, options?.showSpoilers],
     queryFn: async () => {
-      const { data, error } = await supabase
+      let q = supabase
         .from('adventurers')
         .select('*')
         .eq('is_active', true)
@@ -90,6 +98,11 @@ export function usePublicAdventurers() {
         .order('sort_order', { ascending: true })
         .order('name', { ascending: true });
 
+      if (!options?.showSpoilers) {
+        q = q.eq('is_spoiler', false);
+      }
+
+      const { data, error } = await q;
       if (error) throw error;
 
       return (data ?? []).map((row: Record<string, unknown>) => ({
@@ -97,6 +110,10 @@ export function usePublicAdventurers() {
         role: (row.role || 'Assault') as AdventurerRole,
         is_default: Boolean(row.is_default),
         is_active: Boolean(row.is_active),
+        is_spoiler: Boolean(row.is_spoiler),
+        is_debug: Boolean(row.is_debug),
+        status: (row.status || 'in_game') as AdventurerStatus,
+        status_reason: (row.status_reason as string | null) ?? null,
         allowed_weapon_types: Array.isArray(row.allowed_weapon_types) ? row.allowed_weapon_types : [],
         traits: Array.isArray(row.traits) ? row.traits : [],
       })) as DBAdventurer[];
@@ -264,6 +281,56 @@ export function useToggleAdventurerActive() {
       qc.setQueriesData<DBAdventurer[]>(
         { queryKey: [ADVENTURERS_KEY], exact: false },
         (old = []) => old.map((a) => (a.id === id ? { ...a, is_active: isActive } : a)),
+      );
+
+      return { snapshot };
+    },
+
+    onError: (_err, _vars, ctx) => {
+      if (ctx?.snapshot) {
+        for (const [key, data] of ctx.snapshot) qc.setQueryData(key, data);
+      }
+    },
+
+    onSettled: () => {
+      qc.invalidateQueries({ queryKey: [ADVENTURERS_KEY] });
+      qc.invalidateQueries({ queryKey: [PUBLIC_ADVENTURERS_KEY] });
+    },
+  });
+}
+
+export function useToggleAdventurerSpoiler() {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, isSpoiler }: { id: string; isSpoiler: boolean }) => {
+      const { data, error } = await supabase
+        .from('adventurers')
+        .update({ is_spoiler: isSpoiler, updated_at: new Date().toISOString() })
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data as DBAdventurer;
+    },
+
+    onMutate: async ({ id, isSpoiler }) => {
+      await qc.cancelQueries({ queryKey: [ADVENTURERS_KEY] });
+      await qc.cancelQueries({ queryKey: [PUBLIC_ADVENTURERS_KEY] });
+
+      const snapshot = qc.getQueriesData<DBAdventurer[]>({
+        queryKey: [ADVENTURERS_KEY],
+        exact: false,
+      });
+
+      qc.setQueriesData<DBAdventurer[]>(
+        { queryKey: [ADVENTURERS_KEY], exact: false },
+        (old = []) => old.map((a) => (a.id === id ? { ...a, is_spoiler: isSpoiler } : a)),
+      );
+      qc.setQueriesData<DBAdventurer[]>(
+        { queryKey: [PUBLIC_ADVENTURERS_KEY], exact: false },
+        (old = []) => old.map((a) => (a.id === id ? { ...a, is_spoiler: isSpoiler } : a)),
       );
 
       return { snapshot };

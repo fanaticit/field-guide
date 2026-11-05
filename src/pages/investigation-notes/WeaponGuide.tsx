@@ -1,7 +1,9 @@
 // ─────────────────────────────────────────────────────────────
 // WeaponGuide — Investigation Notes view for Weapons & Hunter's Challenge Forge Tracking
+// Includes: Max Rarity Filter, Side-by-Side Comparison Modal,
+// Custom Icon Dropdowns for Types & Elements, and User Weapon Crafting Tracking.
 // ─────────────────────────────────────────────────────────────
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import {
   Sword,
   Search,
@@ -17,12 +19,14 @@ import {
   Skull,
   Eye,
   CheckCircle2,
-  
+  ChevronDown,
+  Check,
   LogIn,
+  Hammer,
+  Plus,
 } from 'lucide-react';
 import {
   type DBWeapon,
-  type WeaponSourceType,
   type WeaponElementType,
   WEAPON_SOURCE_CONFIG,
   WEAPON_ELEMENT_CONFIG,
@@ -31,10 +35,10 @@ import {
 import { WEAPON_TYPES } from '../../data/core/weapon-types';
 import { useAdminWeapons } from '../../hooks/useAdminWeapons';
 import { useAdminMonsters } from '../../hooks/useAdminMonsters';
+import { useUserWeaponCollection } from '../../hooks/useUserWeaponCollection';
 import {
   useHunterChallenges,
   useAddWeaponChallenge,
-  
   getWeaponChallenge,
 } from '../../hooks/useHunterChallenges';
 import { useAuthStore } from '../../store/authStore';
@@ -45,10 +49,12 @@ import PageTitlePanel from '../../components/layout/PageTitlePanel';
 import { useNavigate } from 'react-router-dom';
 import WeaponCard from './WeaponCard';
 import WeaponModal from './WeaponModal';
+import WeaponCompareModal from './WeaponCompareModal';
 import LoginModal from '../../components/auth/LoginModal';
 import { cn } from '../../lib/utils';
 
 type ChallengeFilter = 'all' | 'tracked' | 'crafting' | 'upgrading' | 'mastered';
+type OwnershipFilter = 'all' | 'crafted' | 'missing';
 type ViewMode = 'grid' | 'table';
 type SortOrder = 'rarity-desc' | 'rarity-asc' | 'name-asc' | 'default';
 const INTRO_HIDDEN_KEY = 'weapons-intro-hidden';
@@ -78,12 +84,41 @@ export default function WeaponGuide() {
     localStorage.setItem(INTRO_HIDDEN_KEY, next ? '1' : '0');
   };
   const [search, setSearch] = useState('');
+  const [filterOwnership, setFilterOwnership] = useState<OwnershipFilter>('all');
   const [filterChallenge, setFilterChallenge] = useState<ChallengeFilter>('all');
   const [filterWeaponType, setFilterWeaponType] = useState<string>('all');
   const [filterElement, setFilterElement] = useState<WeaponElementType | 'all'>('all');
-  const [filterSource, setFilterSource] = useState<WeaponSourceType | 'all'>('all');
+  const [filterMaxRarity, setFilterMaxRarity] = useState<string>('all');
   const [sortOrder, setSortOrder] = useState<SortOrder>('rarity-desc');
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
+
+  // Custom Dropdown Open States & Refs
+  const [weaponTypeOpen, setWeaponTypeOpen] = useState(false);
+  const [elementOpen, setElementOpen] = useState(false);
+  const weaponTypeRef = useRef<HTMLDivElement>(null);
+  const elementRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleOutside(e: MouseEvent | TouchEvent) {
+      if (weaponTypeRef.current && !weaponTypeRef.current.contains(e.target as Node)) {
+        setWeaponTypeOpen(false);
+      }
+      if (elementRef.current && !elementRef.current.contains(e.target as Node)) {
+        setElementOpen(false);
+      }
+    }
+    window.addEventListener('mousedown', handleOutside);
+    window.addEventListener('touchstart', handleOutside);
+    return () => {
+      window.removeEventListener('mousedown', handleOutside);
+      window.removeEventListener('touchstart', handleOutside);
+    };
+  }, []);
+
+  // Comparison State
+  const [selectedForCompare, setSelectedForCompare] = useState<DBWeapon | null>(null);
+  const [compareTargetWeapon, setCompareTargetWeapon] = useState<DBWeapon | null>(null);
+  const [isCompareOpen, setIsCompareOpen] = useState(false);
 
   // Selected Weapon for Inspection Modal
   const [selectedWeapon, setSelectedWeapon] = useState<DBWeapon | null>(null);
@@ -93,14 +128,63 @@ export default function WeaponGuide() {
   const { data: weapons = [], isLoading } = useAdminWeapons({ isActive: true, showSpoilers: Boolean(profile?.show_spoilers) });
   const { data: monsters = [] } = useAdminMonsters({ isActive: true });
   const { data: challenges = [] } = useHunterChallenges(user?.id);
+  const {
+    collectionMap,
+    craftedCount,
+    getCraftedRarity,
+    isCrafted,
+    setWeaponCrafted,
+    removeWeaponCrafted,
+  } = useUserWeaponCollection();
 
   const addChallenge = useAddWeaponChallenge();
   const navigate = useNavigate();
-  
-  
 
   const monstersMap = useMemo(() => new Map(monsters.map((m) => [m.id, m])), [monsters]);
   const weaponTypesMap = useMemo(() => new Map(WEAPON_TYPES.map((w) => [w.id, w])), []);
+
+  const selectedWeaponTypeObj = filterWeaponType !== 'all' ? weaponTypesMap.get(filterWeaponType) : null;
+  const selectedElementConfig = filterElement !== 'all' ? WEAPON_ELEMENT_CONFIG[filterElement] : null;
+
+  // Available starting rarities for filter
+  const availableRarities = useMemo(() => {
+    const set = new Set<number>();
+    weapons.forEach((w) => {
+      if (w.rarity) set.add(w.rarity);
+    });
+    const arr = Array.from(set).sort((a, b) => a - b);
+    return arr.length > 0 ? arr : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+  }, [weapons]);
+
+  // Comparison Handlers
+  const handleToggleCompare = useCallback(
+    (weapon: DBWeapon) => {
+      if (!selectedForCompare) {
+        // Select first weapon and pin to top
+        setSelectedForCompare(weapon);
+      } else if (selectedForCompare.id === weapon.id) {
+        // De-select first weapon
+        setSelectedForCompare(null);
+      } else {
+        // Second weapon clicked -> open compare panel
+        setCompareTargetWeapon(weapon);
+        setIsCompareOpen(true);
+      }
+    },
+    [selectedForCompare],
+  );
+
+  const handleCloseCompare = useCallback(() => {
+    setIsCompareOpen(false);
+    setCompareTargetWeapon(null);
+    // As requested: "When you exit the panel leave the first weapon selected and at the top."
+  }, []);
+
+  const handleClearCompareAll = useCallback(() => {
+    setIsCompareOpen(false);
+    setCompareTargetWeapon(null);
+    setSelectedForCompare(null);
+  }, []);
 
   // Quick challenge add handler
   const handleAddChallenge = useCallback(
@@ -149,6 +233,12 @@ export default function WeaponGuide() {
       });
     }
 
+    if (filterOwnership === 'crafted') {
+      list = list.filter((w) => isCrafted(w.id));
+    } else if (filterOwnership === 'missing') {
+      list = list.filter((w) => !isCrafted(w.id));
+    }
+
     if (filterWeaponType !== 'all') {
       list = list.filter((w) => w.weapon_type_id === filterWeaponType);
     }
@@ -157,8 +247,9 @@ export default function WeaponGuide() {
       list = list.filter((w) => w.element_type === filterElement);
     }
 
-    if (filterSource !== 'all') {
-      list = list.filter((w) => w.source_type === filterSource);
+    if (filterMaxRarity !== 'all') {
+      const maxR = Number(filterMaxRarity);
+      list = list.filter((w) => (w.rarity || 1) <= maxR);
     }
 
     if (filterChallenge !== 'all') {
@@ -173,8 +264,19 @@ export default function WeaponGuide() {
       });
     }
 
+    // If a weapon is selected for compare, ensure it remains in the list even if filters exclude it
+    if (selectedForCompare && !list.some((w) => w.id === selectedForCompare.id)) {
+      list.unshift(selectedForCompare);
+    }
+
     // Sort order
     list.sort((a, b) => {
+      // Pinned weapon selected for comparison always sorts to the top regardless of sort!
+      if (selectedForCompare) {
+        if (a.id === selectedForCompare.id) return -1;
+        if (b.id === selectedForCompare.id) return 1;
+      }
+
       if (sortOrder === 'rarity-desc') {
         const diff = (b.rarity || 1) - (a.rarity || 1);
         if (diff !== 0) return diff;
@@ -193,7 +295,21 @@ export default function WeaponGuide() {
     });
 
     return list;
-  }, [weapons, search, filterWeaponType, filterElement, filterSource, filterChallenge, sortOrder, challenges, monstersMap]);
+  }, [
+    weapons,
+    search,
+    filterOwnership,
+    filterWeaponType,
+    filterElement,
+    filterMaxRarity,
+    filterChallenge,
+    sortOrder,
+    challenges,
+    monstersMap,
+    selectedForCompare,
+    isCrafted,
+    collectionMap,
+  ]);
 
   // Collection status (a weapon counts as collected once its challenge is mastered at its max rarity)
   const stats = useMemo(() => {
@@ -229,6 +345,21 @@ export default function WeaponGuide() {
       >
         {/* Collection status */}
         <div className="flex flex-wrap items-center gap-1.5 bg-black/30 rounded-xl p-1 border border-[var(--border-subtle)]">
+          {/* Crafted metric */}
+          <div className="px-2.5 py-0.5 text-center border-r border-[var(--border-subtle)]">
+            <div className="flex items-center justify-center gap-1 text-[9px] uppercase font-bold text-amber-400">
+              <Hammer size={10} />
+              <span>Crafted</span>
+            </div>
+            <div className="flex items-baseline justify-center gap-1">
+              <span className="font-display text-sm font-black text-white">{craftedCount}</span>
+              <span className="text-[10px] text-mh-slate-500">/ {weapons.length}</span>
+              <span className="text-[9px] font-bold text-amber-400 ml-0.5">
+                ({weapons.length > 0 ? Math.round((craftedCount / weapons.length) * 100) : 0}%)
+              </span>
+            </div>
+          </div>
+
           <div className="px-2.5 py-0.5 text-center border-r border-[var(--border-subtle)]">
             <div className="flex items-center justify-center gap-1 text-[9px] uppercase font-bold text-[var(--theme-accent)]">
               <Bookmark size={10} />
@@ -279,6 +410,31 @@ export default function WeaponGuide() {
             />
           </div>
 
+          {/* Ownership Filter */}
+          <div className="flex items-center rounded-xl border border-mh-slate-750 bg-mh-slate-900 p-0.5">
+            {(
+              [
+                { id: 'all', label: 'All' },
+                { id: 'crafted', label: `Crafted (${craftedCount})` },
+                { id: 'missing', label: 'Uncrafted' },
+              ] as const
+            ).map((opt) => (
+              <button
+                key={opt.id}
+                type="button"
+                onClick={() => setFilterOwnership(opt.id)}
+                className={cn(
+                  'rounded-lg px-2.5 py-1 text-xs font-semibold transition-all',
+                  filterOwnership === opt.id
+                    ? 'bg-amber-500 text-slate-950 font-bold shadow-sm'
+                    : 'text-mh-slate-400 hover:text-white',
+                )}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+
           {/* Challenge Filter */}
           <div className="flex items-center rounded-xl border border-mh-slate-750 bg-mh-slate-900 p-0.5">
             {(
@@ -306,77 +462,225 @@ export default function WeaponGuide() {
             ))}
           </div>
 
-          {/* Weapon Type Filter */}
-          <select
-            value={filterWeaponType}
-            onChange={(e) => setFilterWeaponType(e.target.value)}
-            className="rounded-xl border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-300 focus:border-mh-gold-500/50 focus:outline-none"
-          >
-            <option value="all">All Weapon Types</option>
-            {WEAPON_TYPES.filter((wt) => weapons.some((w) => w.weapon_type_id === wt.id)).map((wt) => (
-              <option key={wt.id} value={wt.id}>
-                {wt.name}
-              </option>
-            ))}
-          </select>
+          {/* Weapon Type Filter Custom Dropdown */}
+          <div ref={weaponTypeRef} className="relative">
+            <button
+              type="button"
+              onClick={() => {
+                setWeaponTypeOpen((prev) => !prev);
+                setElementOpen(false);
+              }}
+              className={cn(
+                'flex items-center gap-2 rounded-xl border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-200 transition-all hover:bg-mh-slate-750 focus:outline-none focus:border-mh-gold-500/50 shadow-sm',
+                filterWeaponType !== 'all' && 'border-mh-gold-500/50 bg-mh-slate-800/90 text-mh-gold-300 font-semibold',
+              )}
+            >
+              {selectedWeaponTypeObj ? (
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center">
+                  <img
+                    src={`/images/weapons/${selectedWeaponTypeObj.id}.svg`}
+                    alt={selectedWeaponTypeObj.name}
+                    className="h-4 w-4 object-contain filter brightness-110 drop-shadow"
+                    onError={(e) => {
+                      (e.target as HTMLElement).style.display = 'none';
+                    }}
+                  />
+                </div>
+              ) : (
+                <Sword size={13} className="text-mh-gold-400 shrink-0" />
+              )}
+              <span>{selectedWeaponTypeObj ? selectedWeaponTypeObj.name : 'All Weapon Types'}</span>
+              <ChevronDown size={13} className={cn('text-mh-slate-400 transition-transform duration-200 shrink-0', weaponTypeOpen && 'rotate-180')} />
+            </button>
 
-          {/* Element Filter */}
-          <select
-            value={filterElement}
-            onChange={(e) => setFilterElement(e.target.value as WeaponElementType | 'all')}
-            className="rounded-xl border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-300 focus:border-mh-gold-500/50 focus:outline-none"
-          >
-            <option value="all">All Elements &amp; Statuses</option>
-            {Object.entries(WEAPON_ELEMENT_CONFIG).map(([k, v]) => (
-              <option key={k} value={k}>
-                {v.label}
-              </option>
-            ))}
-          </select>
+            {weaponTypeOpen && (
+              <div className="absolute left-0 top-full mt-1.5 z-50 min-w-[210px] rounded-2xl border border-mh-slate-700 bg-mh-slate-900/98 p-1.5 shadow-2xl backdrop-blur-md max-h-72 overflow-y-auto animate-fade-in divide-y divide-mh-slate-800/60">
+                <div className="pb-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFilterWeaponType('all');
+                      setWeaponTypeOpen(false);
+                    }}
+                    className={cn(
+                      'w-full flex items-center justify-between rounded-xl px-2.5 py-1.5 text-xs transition-colors',
+                      filterWeaponType === 'all'
+                        ? 'bg-mh-gold-500/15 text-mh-gold-300 font-bold'
+                        : 'text-mh-slate-300 hover:bg-mh-slate-800 hover:text-white',
+                    )}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Sword size={14} className="text-mh-gold-400" />
+                      <span>All Weapon Types</span>
+                    </div>
+                    {filterWeaponType === 'all' && <Check size={13} className="text-mh-gold-400" />}
+                  </button>
+                </div>
 
-          {/* Source Filter */}
-          <select
-            value={filterSource}
-            onChange={(e) => setFilterSource(e.target.value as WeaponSourceType | 'all')}
-            className="rounded-xl border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-300 focus:border-mh-gold-500/50 focus:outline-none"
-          >
-            <option value="all">All Sources</option>
-            {(Object.keys(WEAPON_SOURCE_CONFIG) as WeaponSourceType[]).map((k) => (
-              <option key={k} value={k}>
-                {WEAPON_SOURCE_CONFIG[k].label}
-              </option>
-            ))}
-          </select>
-
-          {/* Sort By Controls */}
-          <div className="flex items-center rounded-xl border border-mh-slate-700 bg-mh-slate-850 p-0.5 text-xs">
-            <span className="px-2 text-mh-slate-500 font-bold uppercase tracking-wider text-[10px] hidden sm:inline">Sort:</span>
-            {(
-              [
-                { id: 'rarity-desc', label: 'Rarity ↓' },
-                { id: 'rarity-asc', label: 'Rarity ↑' },
-                { id: 'name-asc', label: 'A-Z' },
-                { id: 'default', label: 'Default' },
-              ] as const
-            ).map((opt) => (
-              <button
-                key={opt.id}
-                type="button"
-                onClick={() => setSortOrder(opt.id)}
-                className={cn(
-                  'rounded-lg px-2.5 py-1 transition-colors font-medium',
-                  sortOrder === opt.id
-                    ? 'bg-mh-gold-500 text-slate-950 font-bold'
-                    : 'text-mh-slate-400 hover:text-white',
-                )}
-              >
-                {opt.label}
-              </button>
-            ))}
+                <div className="pt-1 space-y-0.5">
+                  {WEAPON_TYPES.filter((wt) => weapons.some((w) => w.weapon_type_id === wt.id)).map((wt) => {
+                    const isSelected = filterWeaponType === wt.id;
+                    return (
+                      <button
+                        key={wt.id}
+                        type="button"
+                        onClick={() => {
+                          setFilterWeaponType(wt.id);
+                          setWeaponTypeOpen(false);
+                        }}
+                        className={cn(
+                          'w-full flex items-center justify-between rounded-xl px-2.5 py-1.5 text-xs transition-colors',
+                          isSelected
+                            ? 'bg-mh-gold-500/15 text-mh-gold-300 font-bold'
+                            : 'text-mh-slate-300 hover:bg-mh-slate-800 hover:text-white',
+                        )}
+                      >
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-lg bg-mh-slate-800 border border-mh-slate-755 p-0.5">
+                            <img
+                              src={`/images/weapons/${wt.id}.svg`}
+                              alt={wt.name}
+                              className="h-full w-full object-contain filter brightness-110"
+                              onError={(e) => {
+                                (e.target as HTMLElement).style.display = 'none';
+                              }}
+                            />
+                          </div>
+                          <span className="truncate">{wt.name}</span>
+                        </div>
+                        {isSelected && <Check size={13} className="text-mh-gold-400 shrink-0" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
 
-          {/* View Mode Switcher */}
-          <div className="flex items-center rounded-xl border border-mh-slate-700 bg-mh-slate-850 p-0.5">
+          {/* Element Filter Custom Dropdown */}
+          <div ref={elementRef} className="relative">
+            <button
+              type="button"
+              onClick={() => {
+                setElementOpen((prev) => !prev);
+                setWeaponTypeOpen(false);
+              }}
+              className={cn(
+                'flex items-center gap-2 rounded-xl border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-200 transition-all hover:bg-mh-slate-750 focus:outline-none focus:border-mh-gold-500/50 shadow-sm',
+                filterElement !== 'all' && 'border-mh-gold-500/50 bg-mh-slate-800/90 text-mh-gold-300 font-semibold',
+              )}
+            >
+              {selectedElementConfig ? (
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center">
+                  <img
+                    src={selectedElementConfig.icon}
+                    alt={selectedElementConfig.label}
+                    className="h-4 w-4 object-contain filter drop-shadow"
+                    onError={(e) => {
+                      (e.target as HTMLElement).style.display = 'none';
+                    }}
+                  />
+                </div>
+              ) : (
+                <Shield size={13} className="text-mh-slate-400 shrink-0" />
+              )}
+              <span>{selectedElementConfig ? selectedElementConfig.label : 'All Elements & Statuses'}</span>
+              <ChevronDown size={13} className={cn('text-mh-slate-400 transition-transform duration-200 shrink-0', elementOpen && 'rotate-180')} />
+            </button>
+
+            {elementOpen && (
+              <div className="absolute left-0 top-full mt-1.5 z-50 min-w-[210px] rounded-2xl border border-mh-slate-700 bg-mh-slate-900/98 p-1.5 shadow-2xl backdrop-blur-md max-h-72 overflow-y-auto animate-fade-in divide-y divide-mh-slate-800/60">
+                <div className="pb-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFilterElement('all');
+                      setElementOpen(false);
+                    }}
+                    className={cn(
+                      'w-full flex items-center justify-between rounded-xl px-2.5 py-1.5 text-xs transition-colors',
+                      filterElement === 'all'
+                        ? 'bg-mh-gold-500/15 text-mh-gold-300 font-bold'
+                        : 'text-mh-slate-300 hover:bg-mh-slate-800 hover:text-white',
+                    )}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Shield size={14} className="text-mh-slate-400" />
+                      <span>All Elements &amp; Statuses</span>
+                    </div>
+                    {filterElement === 'all' && <Check size={13} className="text-mh-gold-400" />}
+                  </button>
+                </div>
+
+                <div className="pt-1 space-y-0.5">
+                  {(Object.entries(WEAPON_ELEMENT_CONFIG) as [WeaponElementType, typeof WEAPON_ELEMENT_CONFIG[WeaponElementType]][]).map(([k, cfg]) => {
+                    const isSelected = filterElement === k;
+                    return (
+                      <button
+                        key={k}
+                        type="button"
+                        onClick={() => {
+                          setFilterElement(k);
+                          setElementOpen(false);
+                        }}
+                        className={cn(
+                          'w-full flex items-center justify-between rounded-xl px-2.5 py-1.5 text-xs transition-colors',
+                          isSelected
+                            ? 'bg-mh-gold-500/15 text-mh-gold-300 font-bold'
+                            : 'text-mh-slate-300 hover:bg-mh-slate-800 hover:text-white',
+                        )}
+                      >
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-lg bg-mh-slate-800 border border-mh-slate-750 p-0.5">
+                            <img
+                              src={cfg.icon}
+                              alt={cfg.label}
+                              className="h-full w-full object-contain"
+                              onError={(e) => {
+                                (e.target as HTMLElement).style.display = 'none';
+                              }}
+                            />
+                          </div>
+                          <span className={cn('truncate', isSelected ? 'text-mh-gold-300 font-bold' : cfg.text)}>{cfg.label}</span>
+                        </div>
+                        {isSelected && <Check size={13} className="text-mh-gold-400 shrink-0" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Rarity Filter */}
+          <select
+            value={filterMaxRarity}
+            onChange={(e) => setFilterMaxRarity(e.target.value)}
+            className="rounded-xl border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-300 focus:border-mh-gold-500/50 focus:outline-none"
+            title="Filter weapons up to a maximum rarity"
+          >
+            <option value="all">All Rarities</option>
+            {availableRarities.map((r) => (
+              <option key={r} value={r}>
+                Rarity &le; R{r}
+              </option>
+            ))}
+          </select>
+
+          {/* Sort Order */}
+          <select
+            value={sortOrder}
+            onChange={(e) => setSortOrder(e.target.value as SortOrder)}
+            className="rounded-xl border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-300 focus:border-mh-gold-500/50 focus:outline-none"
+          >
+            <option value="rarity-desc">Rarity: High to Low</option>
+            <option value="rarity-asc">Rarity: Low to High</option>
+            <option value="name-asc">Name: A to Z</option>
+            <option value="default">Game Order</option>
+          </select>
+
+          {/* View Mode Toggle */}
+          <div className="flex items-center rounded-xl border border-mh-slate-750 bg-mh-slate-900 p-0.5">
             <button
               type="button"
               onClick={() => setViewMode('grid')}
@@ -434,6 +738,12 @@ export default function WeaponGuide() {
                 onOpenLogin={() => setLoginModalOpen(true)}
                 onInspect={() => setSelectedWeapon(weapon)}
                 isAddingChallenge={addChallenge.isPending}
+                isSelectedForCompare={selectedForCompare?.id === weapon.id}
+                onToggleCompare={handleToggleCompare}
+                isCrafted={isCrafted(weapon.id)}
+                craftedRarity={getCraftedRarity(weapon.id)}
+                onSetCraftedRarity={setWeaponCrafted}
+                onRemoveCrafted={removeWeaponCrafted}
               />
             );
           })}
@@ -447,6 +757,7 @@ export default function WeaponGuide() {
                 <th className="py-3.5 pl-5 pr-3">Weapon</th>
                 <th className="px-3 py-3.5">Type</th>
                 <th className="px-3 py-3.5 text-center">Rarity</th>
+                <th className="px-3 py-3.5 text-center">Crafted</th>
                 <th className="px-3 py-3.5">Origin</th>
                 <th className="px-3 py-3.5">Element / Status</th>
                 <th className="px-3 py-3.5 text-center">Attack</th>
@@ -465,12 +776,18 @@ export default function WeaponGuide() {
                 const challenge = getWeaponChallenge(challenges, weapon.id);
                 const isTracked = Boolean(challenge && challenge.status !== 'abandoned');
                 const rarityCfg = getRarityBadgeStyle(weapon.rarity || 1);
+                const isSelected = selectedForCompare?.id === weapon.id;
+                const weaponCraftedRarity = getCraftedRarity(weapon.id);
+                const isWeaponCrafted = isCrafted(weapon.id) && Boolean(weaponCraftedRarity);
 
                 return (
                   <tr
                     key={weapon.id}
                     onClick={() => setSelectedWeapon(weapon)}
-                    className="hover:bg-mh-slate-800/50 transition-colors cursor-pointer"
+                    className={cn(
+                      'hover:bg-mh-slate-800/50 transition-colors cursor-pointer',
+                      isSelected && 'bg-amber-500/10 border-l-2 border-l-amber-400',
+                    )}
                   >
                     {/* Weapon Info with Wrapped Name */}
                     <td className="py-3.5 pl-5 pr-3">
@@ -510,6 +827,50 @@ export default function WeaponGuide() {
                       </span>
                     </td>
 
+                    {/* Crafted Status & Quick Level Selector */}
+                    <td className="px-3 py-3.5 text-center" onClick={(e) => e.stopPropagation()}>
+                      {isWeaponCrafted && weaponCraftedRarity ? (
+                        <select
+                          value={weaponCraftedRarity}
+                          onChange={(e) => {
+                            const val = Number(e.target.value);
+                            if (val === 0) {
+                              removeWeaponCrafted(weapon.id);
+                            } else {
+                              setWeaponCrafted(weapon.id, val);
+                            }
+                          }}
+                          className={cn(
+                            'rounded px-2 py-0.5 text-[10px] font-bold border font-mono cursor-pointer transition-all focus:outline-none',
+                            getRarityBadgeStyle(weaponCraftedRarity).badge,
+                          )}
+                          title="Click to change crafted rarity or uncraft"
+                        >
+                          {Array.from(
+                            { length: Math.max(1, (weapon.max_rarity || 14) - (weapon.rarity || 1) + 1) },
+                            (_, i) => (weapon.rarity || 1) + i,
+                          ).map((r) => (
+                            <option key={r} value={r} className="bg-mh-slate-900 text-white font-sans">
+                              ✓ R{r} Crafted
+                            </option>
+                          ))}
+                          <option value={0} className="bg-mh-slate-900 text-rose-400 font-sans">
+                            ✕ Uncraft
+                          </option>
+                        </select>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => setWeaponCrafted(weapon.id, weapon.rarity || 1)}
+                          className="inline-flex items-center gap-1 rounded border border-dashed border-mh-slate-600 bg-mh-slate-800/80 px-2 py-0.5 text-[10px] font-bold text-mh-slate-400 hover:border-mh-gold-400 hover:text-white transition-all shadow-xs"
+                          title="Click to mark as crafted"
+                        >
+                          <Plus size={10} />
+                          <span>Craft</span>
+                        </button>
+                      )}
+                    </td>
+
                     {/* Origin */}
                     <td className="px-3 py-3.5">
                       {monster ? (
@@ -543,9 +904,14 @@ export default function WeaponGuide() {
                       </span>
                     </td>
 
-                    {/* Attack */}
+                    {/* Attack & Affinity */}
                     <td className="px-3 py-3.5 text-center font-mono font-bold text-mh-slate-100">
-                      {weapon.attack ?? '—'}
+                      <div>{weapon.attack ?? '—'}</div>
+                      {weapon.affinity !== null && weapon.affinity !== 0 && (
+                        <div className="text-[10px] text-mh-slate-400 font-mono">
+                          {weapon.affinity > 0 ? `+${weapon.affinity / 100}%` : `${weapon.affinity / 100}%`}
+                        </div>
+                      )}
                     </td>
 
                     {/* Apex effect */}
@@ -562,7 +928,7 @@ export default function WeaponGuide() {
                             e.stopPropagation();
                             setLoginModalOpen(true);
                           }}
-                          className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold border bg-mh-slate-800 border-mh-slate-700 text-mh-slate-400 hover:text-white transition-all"
+                          className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold border bg-mh-slate-800 border-mh-slate-750 text-mh-slate-400 hover:text-white transition-all"
                         >
                           <LogIn size={11} />
                           <span>Track</span>
@@ -613,6 +979,54 @@ export default function WeaponGuide() {
         </div>
       )}
 
+      {/* ── Floating Compare Banner (When 1st Weapon is Selected) ── */}
+      {selectedForCompare && !isCompareOpen && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-3 rounded-2xl border border-amber-500/60 bg-mh-slate-900/95 px-4 py-2.5 shadow-2xl backdrop-blur-md animate-fade-in">
+          <div className="flex items-center gap-2.5">
+            <div className="h-9 w-9 rounded-xl bg-mh-slate-800 border border-mh-slate-750 p-1 flex items-center justify-center shrink-0">
+              {selectedForCompare.image ? (
+                <img
+                  src={selectedForCompare.image}
+                  alt={selectedForCompare.name}
+                  className="h-full w-full object-contain filter drop-shadow"
+                />
+              ) : (
+                <Sword size={16} className="text-mh-gold-400" />
+              )}
+            </div>
+            <div className="min-w-0">
+              <p className="text-xs font-bold text-white flex items-center gap-1.5 truncate">
+                <span className="truncate">{selectedForCompare.name}</span>
+                <span className="font-mono text-[10px] text-amber-400">
+                  ({getRarityBadgeStyle(selectedForCompare.rarity || 1).label})
+                </span>
+              </p>
+              <p className="text-[10px] text-mh-slate-400">
+                Select a 2nd weapon to compare side-by-side
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setSelectedForCompare(null)}
+            className="ml-2 rounded-xl border border-mh-slate-700 bg-mh-slate-800 hover:bg-mh-slate-750 px-3 py-1 text-xs font-semibold text-mh-slate-300 hover:text-white transition-colors"
+          >
+            Cancel
+          </button>
+        </div>
+      )}
+
+      {/* ── Weapon Comparison Modal ── */}
+      {selectedForCompare && compareTargetWeapon && (
+        <WeaponCompareModal
+          weapon1={selectedForCompare}
+          weapon2={compareTargetWeapon}
+          open={isCompareOpen}
+          onClose={handleCloseCompare}
+          onClearBoth={handleClearCompareAll}
+        />
+      )}
+
       {/* ── Inspection & Challenge Modal ── */}
       {selectedWeapon && (
         <WeaponModal
@@ -621,6 +1035,10 @@ export default function WeaponGuide() {
           onClose={() => setSelectedWeapon(null)}
           challenge={getWeaponChallenge(challenges, selectedWeapon.id)}
           onOpenLogin={() => setLoginModalOpen(true)}
+          isCrafted={Boolean(selectedWeapon && isCrafted(selectedWeapon.id))}
+          craftedRarity={selectedWeapon ? getCraftedRarity(selectedWeapon.id) : null}
+          onSetCraftedRarity={setWeaponCrafted}
+          onRemoveCrafted={removeWeaponCrafted}
         />
       )}
 

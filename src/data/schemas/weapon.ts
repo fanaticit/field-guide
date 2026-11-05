@@ -73,15 +73,16 @@ export const WEAPON_SHARPNESS_ICONS: Record<string, string> = {
 
 export const WEAPON_ELEMENT_CONFIG: Record<
   WeaponElementType,
-  { label: string; color: string; border: string; bg: string; text: string; dot: string }
+  { label: string; color: string; border: string; bg: string; text: string; dot: string; icon: string }
 > = {
   raw: {
-    label: 'Raw / None',
+    label: 'Non-Element',
     color: 'text-mh-slate-300',
     border: 'border-mh-slate-600',
     bg: 'bg-mh-slate-800',
     text: 'text-mh-slate-300',
     dot: 'bg-mh-slate-400',
+    icon: '/images/ui/elements/Non-Elemental.png',
   },
   fire: {
     label: 'Fire',
@@ -90,6 +91,7 @@ export const WEAPON_ELEMENT_CONFIG: Record<
     bg: 'bg-orange-500/15',
     text: 'text-orange-300',
     dot: 'bg-orange-500',
+    icon: '/images/ui/elements/fire.png',
   },
   water: {
     label: 'Water',
@@ -98,6 +100,7 @@ export const WEAPON_ELEMENT_CONFIG: Record<
     bg: 'bg-blue-500/15',
     text: 'text-blue-300',
     dot: 'bg-blue-500',
+    icon: '/images/ui/elements/water.png',
   },
   thunder: {
     label: 'Thunder',
@@ -106,6 +109,7 @@ export const WEAPON_ELEMENT_CONFIG: Record<
     bg: 'bg-yellow-500/15',
     text: 'text-yellow-300',
     dot: 'bg-yellow-400',
+    icon: '/images/ui/elements/thunder.png',
   },
   ice: {
     label: 'Ice',
@@ -114,6 +118,7 @@ export const WEAPON_ELEMENT_CONFIG: Record<
     bg: 'bg-cyan-500/15',
     text: 'text-cyan-300',
     dot: 'bg-cyan-400',
+    icon: '/images/ui/elements/ice.png',
   },
   dragon: {
     label: 'Dragon',
@@ -122,6 +127,7 @@ export const WEAPON_ELEMENT_CONFIG: Record<
     bg: 'bg-red-500/15',
     text: 'text-red-300',
     dot: 'bg-red-500',
+    icon: '/images/ui/elements/dragon.png',
   },
   poison: {
     label: 'Poison',
@@ -130,6 +136,7 @@ export const WEAPON_ELEMENT_CONFIG: Record<
     bg: 'bg-purple-500/15',
     text: 'text-purple-300',
     dot: 'bg-purple-400',
+    icon: '/images/ui/elements/poison.png',
   },
   paralysis: {
     label: 'Paralysis',
@@ -138,6 +145,7 @@ export const WEAPON_ELEMENT_CONFIG: Record<
     bg: 'bg-amber-500/15',
     text: 'text-amber-300',
     dot: 'bg-amber-400',
+    icon: '/images/ui/elements/paralysis.png',
   },
   blast: {
     label: 'Blast',
@@ -146,6 +154,7 @@ export const WEAPON_ELEMENT_CONFIG: Record<
     bg: 'bg-rose-500/15',
     text: 'text-rose-300',
     dot: 'bg-rose-500',
+    icon: '/images/ui/elements/blast.png',
   },
   sleep: {
     label: 'Sleep',
@@ -154,6 +163,7 @@ export const WEAPON_ELEMENT_CONFIG: Record<
     bg: 'bg-indigo-500/15',
     text: 'text-indigo-300',
     dot: 'bg-indigo-400',
+    icon: '/images/ui/elements/sleep.png',
   },
   stun: {
     label: 'Stun',
@@ -162,8 +172,16 @@ export const WEAPON_ELEMENT_CONFIG: Record<
     bg: 'bg-yellow-400/15',
     text: 'text-yellow-200',
     dot: 'bg-yellow-300',
+    icon: '/images/ui/elements/thunder.png',
   },
 };
+
+/** Helper to format raw affinity values (divided by 100 with %) */
+export function formatAffinity(rawAffinity: number | null | undefined): string | null {
+  if (rawAffinity === null || rawAffinity === undefined) return null;
+  const pct = rawAffinity / 100;
+  return pct > 0 ? `+${pct}%` : `${pct}%`;
+}
 
 /**
  * One of the 14 core weapon types in the Monster Hunter franchise.

@@ -26,6 +26,7 @@ import {
 import {
   useAdminBuddies,
   useToggleBuddyActive,
+  useToggleBuddySpoiler,
   useDeleteBuddy,
 } from '../../../hooks/useAdminBuddies';
 import BuddyEditModal from './BuddyEditModal';
@@ -71,12 +72,36 @@ function ActiveToggle({ buddy }: { buddy: DBBuddy }) {
   );
 }
 
+function SpoilerToggle({ buddy }: { buddy: DBBuddy }) {
+  const toggle = useToggleBuddySpoiler();
+
+  return (
+    <button
+      type="button"
+      onClick={() => toggle.mutate({ id: buddy.id, isSpoiler: !buddy.is_spoiler })}
+      disabled={toggle.isPending}
+      title={buddy.is_spoiler ? 'Marked as spoiler — click to unmark' : 'Not a spoiler — click to mark as spoiler'}
+      className={cn(
+        'relative inline-flex h-4 w-7 shrink-0 rounded-full transition-colors duration-200',
+        buddy.is_spoiler ? 'bg-amber-500' : 'bg-mh-slate-700',
+      )}
+    >
+      <span
+        className={cn(
+          'absolute top-0.5 h-3 w-3 rounded-full bg-white shadow transition-transform duration-200',
+          buddy.is_spoiler ? 'translate-x-3.5' : 'translate-x-0.5',
+        )}
+      />
+    </button>
+  );
+}
+
 export default function BuddyManager() {
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [search, setSearch] = useState('');
   const [filterTier, setFilterTier] = useState<string>('');
   const [filterRole, setFilterRole] = useState<string>('');
-  const [filterActive, setFilterActive] = useState<'' | 'active' | 'inactive'>('');
+  const [filterVisibility, setFilterVisibility] = useState<'' | 'active' | 'inactive' | 'spoiler'>('');
   const [sortKey, setSortKey] = useState<SortKey>('tier');
   const [sortDir, setSortDir] = useState<SortDir>('desc');
 
@@ -108,8 +133,9 @@ export default function BuddyManager() {
       list = list.filter((b) => b.role === filterRole);
     }
 
-    if (filterActive === 'active') list = list.filter((b) => b.is_active);
-    if (filterActive === 'inactive') list = list.filter((b) => !b.is_active);
+    if (filterVisibility === 'active') list = list.filter((b) => b.is_active);
+    if (filterVisibility === 'inactive') list = list.filter((b) => !b.is_active);
+    if (filterVisibility === 'spoiler') list = list.filter((b) => b.is_spoiler);
 
     list.sort((a, b) => {
       if (sortKey === 'tier') {
@@ -129,7 +155,7 @@ export default function BuddyManager() {
     });
 
     return list;
-  }, [buddies, search, filterTier, filterRole, filterActive, sortKey, sortDir]);
+  }, [buddies, search, filterTier, filterRole, filterVisibility, sortKey, sortDir]);
 
   const activeCount = buddies.filter((b) => b.is_active).length;
   const inactiveCount = buddies.length - activeCount;
@@ -234,13 +260,14 @@ export default function BuddyManager() {
           </select>
 
           <select
-            value={filterActive}
-            onChange={(e) => setFilterActive(e.target.value as '' | 'active' | 'inactive')}
+            value={filterVisibility}
+            onChange={(e) => setFilterVisibility(e.target.value as '' | 'active' | 'inactive' | 'spoiler')}
             className="rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-300 outline-none"
           >
-            <option value="">All Status</option>
+            <option value="">All Visibility</option>
             <option value="active">Active only</option>
             <option value="inactive">Inactive only</option>
+            <option value="spoiler">Spoilers only</option>
           </select>
 
           <select
@@ -329,8 +356,14 @@ export default function BuddyManager() {
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-1.5">
-                      <ActiveToggle buddy={buddy} />
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1" title={buddy.is_active ? 'Active in Field Guide' : 'Inactive in Field Guide'}>
+                        <ActiveToggle buddy={buddy} />
+                      </div>
+                      <div className="flex items-center gap-1" title={buddy.is_spoiler ? 'Marked as spoiler' : 'Not a spoiler'}>
+                        <span className="text-[10px] text-amber-400 font-bold">Spoiler</span>
+                        <SpoilerToggle buddy={buddy} />
+                      </div>
                       <button
                         onClick={() => setEditBuddy(buddy)}
                         title="Edit Buddy"
@@ -390,6 +423,24 @@ export default function BuddyManager() {
                       </div>
                     )}
                   </div>
+
+                  {/* Game Status & Reason */}
+                  <div className="mt-2.5 rounded-lg border border-mh-slate-750 bg-mh-slate-900/60 p-2 text-[11px]">
+                    <div className="flex items-center justify-between">
+                      <span className="text-mh-slate-400 font-medium">Game Status:</span>
+                      {buddy.status === 'in_game' ? (
+                        <span className="text-emerald-400 font-semibold">In game</span>
+                      ) : (
+                        <span className="text-amber-400 font-semibold">Not in game</span>
+                      )}
+                    </div>
+                    {buddy.status_reason && (
+                      <p className="mt-1 text-[10px] text-amber-300/90 leading-tight">
+                        <span className="text-mh-slate-400 font-medium">Reason: </span>
+                        {buddy.status_reason}
+                      </p>
+                    )}
+                  </div>
                 </div>
               );
             })}
@@ -400,11 +451,13 @@ export default function BuddyManager() {
             <table className="w-full border-collapse text-left">
               <thead className="border-b border-mh-slate-700 bg-mh-slate-850 text-[11px] font-semibold uppercase tracking-wider text-mh-slate-400">
                 <tr>
-                  <th className="px-4 py-3 w-10">Active</th>
+                  <th className="px-4 py-3 w-10 text-center">Active</th>
+                  <th className="px-4 py-3 w-14 text-center">Spoiler</th>
                   <th className="px-4 py-3 min-w-[200px]">Buddy</th>
                   <th className="px-4 py-3 w-24">Tier</th>
                   <th className="px-4 py-3 w-28">Role</th>
-                  <th className="px-4 py-3 min-w-[260px]">Core Passive</th>
+                  <th className="px-4 py-3 w-40">Game Status</th>
+                  <th className="px-4 py-3 min-w-[240px]">Core Passive</th>
                   <th className="px-4 py-3 w-20 text-right">Actions</th>
                 </tr>
               </thead>
@@ -422,8 +475,12 @@ export default function BuddyManager() {
                         !buddy.is_active && 'opacity-60 bg-mh-slate-900/20',
                       )}
                     >
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 text-center">
                         <ActiveToggle buddy={buddy} />
+                      </td>
+
+                      <td className="px-4 py-3 text-center">
+                        <SpoilerToggle buddy={buddy} />
                       </td>
 
                       <td className="px-4 py-3">
@@ -483,6 +540,21 @@ export default function BuddyManager() {
                           <RoleIcon size={11} />
                           <span>{buddy.role}</span>
                         </span>
+                      </td>
+
+                      <td className="px-4 py-3 text-[11px]">
+                        {buddy.status === 'in_game' ? (
+                          <span className="text-emerald-400 font-medium">In game</span>
+                        ) : (
+                          <div>
+                            <span className="text-amber-400 font-medium">Not in game</span>
+                            {buddy.status_reason && (
+                              <p className="text-[10px] text-amber-300/80 line-clamp-1" title={buddy.status_reason}>
+                                {buddy.status_reason}
+                              </p>
+                            )}
+                          </div>
+                        )}
                       </td>
 
                       <td className="px-4 py-3">

@@ -17,6 +17,7 @@ import {
 import {
   type DBBuddy,
   type BuddyUpsert,
+  type BuddyStatus,
   TIER_CONFIG,
   ROLE_CONFIG,
   BUDDY_TIERS,
@@ -215,6 +216,10 @@ function emptyForm(): BuddyUpsert {
     core_passive: null,
     image: null,
     is_active: true,
+    is_spoiler: false,
+    status: 'in_game',
+    status_reason: null,
+    is_debug: false,
     notes: null,
     sort_order: 0,
   };
@@ -254,6 +259,10 @@ export default function BuddyEditModal({ buddy, open, onClose }: Props) {
           core_passive: buddy.core_passive ?? null,
           image: buddy.image ?? null,
           is_active: buddy.is_active,
+          is_spoiler: buddy.is_spoiler ?? false,
+          status: buddy.status ?? 'in_game',
+          status_reason: buddy.status_reason ?? null,
+          is_debug: buddy.is_debug ?? false,
           notes: buddy.notes ?? null,
           sort_order: buddy.sort_order ?? 0,
         });
@@ -289,7 +298,11 @@ export default function BuddyEditModal({ buddy, open, onClose }: Props) {
 
     try {
       setErrorMsg(null);
-      await upsert.mutateAsync(form);
+      const payload: BuddyUpsert = {
+        ...form,
+        status_reason: form.status === 'in_game' ? null : (form.status_reason?.trim() || null),
+      };
+      await upsert.mutateAsync(payload);
       onClose();
     } catch (err) {
       setErrorMsg((err as Error).message || 'Failed to save Buddy.');
@@ -480,29 +493,87 @@ export default function BuddyEditModal({ buddy, open, onClose }: Props) {
             slug={form.id}
           />
 
-          {/* Row 6: Active Toggle */}
-          <div className="flex items-center justify-between rounded-xl border border-mh-slate-750 bg-mh-slate-800/40 p-4">
-            <div>
-              <p className="text-xs font-bold text-mh-slate-200">Active in Field Guide</p>
-              <p className="text-[11px] text-mh-slate-500">
-                Inactive buddies are hidden from public views.
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={() => setForm((p) => ({ ...p, is_active: !p.is_active }))}
-              className={cn(
-                'relative inline-flex h-5 w-9 shrink-0 rounded-full transition-colors duration-200',
-                form.is_active ? 'bg-green-500' : 'bg-mh-slate-700',
-              )}
-            >
-              <span
+          {/* Row 6: Active & Spoiler Toggles */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="flex items-center justify-between rounded-xl border border-mh-slate-750 bg-mh-slate-800/40 p-3.5">
+              <div>
+                <p className="text-xs font-bold text-mh-slate-200">Active in Field Guide</p>
+                <p className="text-[11px] text-mh-slate-500">
+                  Visible to users in field guide
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setForm((p) => ({ ...p, is_active: !p.is_active }))}
                 className={cn(
-                  'absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform duration-200',
-                  form.is_active ? 'translate-x-[18px]' : 'translate-x-0.5',
+                  'relative inline-flex h-5 w-9 shrink-0 rounded-full transition-colors duration-200',
+                  form.is_active ? 'bg-green-500' : 'bg-mh-slate-700',
                 )}
-              />
-            </button>
+              >
+                <span
+                  className={cn(
+                    'absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform duration-200',
+                    form.is_active ? 'translate-x-[18px]' : 'translate-x-0.5',
+                  )}
+                />
+              </button>
+            </div>
+
+            <div className="flex items-center justify-between rounded-xl border border-mh-slate-750 bg-mh-slate-800/40 p-3.5">
+              <div>
+                <p className="text-xs font-bold text-amber-300">Mark as spoiler</p>
+                <p className="text-[11px] text-mh-slate-500">
+                  Only shown to users with "Show Spoilers"
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setForm((p) => ({ ...p, is_spoiler: !p.is_spoiler }))}
+                className={cn(
+                  'relative inline-flex h-5 w-9 shrink-0 rounded-full transition-colors duration-200',
+                  form.is_spoiler ? 'bg-amber-500' : 'bg-mh-slate-700',
+                )}
+              >
+                <span
+                  className={cn(
+                    'absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform duration-200',
+                    form.is_spoiler ? 'translate-x-[18px]' : 'translate-x-0.5',
+                  )}
+                />
+              </button>
+            </div>
+          </div>
+
+          {/* Row 7: Game Release Status & Reason */}
+          <div className="rounded-xl border border-mh-slate-750 bg-mh-slate-800/40 p-3.5 space-y-3">
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-mh-slate-300 mb-1">
+                Game Release Status
+              </label>
+              <select
+                value={form.status}
+                onChange={(e) => setForm((p) => ({ ...p, status: e.target.value as BuddyStatus }))}
+                className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-xs text-mh-slate-100 outline-none focus:border-mh-gold-500/50"
+              >
+                <option value="in_game">In Game (Currently Available)</option>
+                <option value="not_in_game">Not In Game (Unreleased / Upcoming / Debug)</option>
+              </select>
+            </div>
+
+            {form.status === 'not_in_game' && (
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-amber-400 mb-1">
+                  Status Reason (Admin notes / unreleased reason)
+                </label>
+                <input
+                  type="text"
+                  value={form.status_reason ?? ''}
+                  onChange={(e) => setForm((p) => ({ ...p, status_reason: e.target.value }))}
+                  placeholder="e.g. Upcoming – Recruitment banner starts 2026-11-27"
+                  className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-xs text-mh-slate-100 placeholder-mh-slate-500 outline-none focus:border-mh-gold-500/50"
+                />
+              </div>
+            )}
           </div>
         </div>
 

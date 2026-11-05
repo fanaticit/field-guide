@@ -26,6 +26,7 @@ import { WEAPON_TYPES } from '../../data/core/weapon-types';
 import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
 import { useAdventurerSkills } from '../../hooks/useAdminAdventurers';
+import { useAuthStore, selectIsAdmin } from '../../store/authStore';
 import AdventurerRarityBadge from './AdventurerRarityBadge';
 import { ChallengeGoalMenu, InsightPill, InsightRow } from './AdventurerInsight';
 
@@ -63,6 +64,7 @@ export default function AdventurerModal({
   onSelectWeapon,
 }: AdventurerModalProps) {
   const navigate = useNavigate();
+  const isAdmin = useAuthStore(selectIsAdmin);
   const [imageError, setImageError] = useState(false);
   const [backgroundError, setBackgroundError] = useState(false);
   const { data: skills = [] } = useAdventurerSkills(open ? adventurer?.id : null);
@@ -150,6 +152,15 @@ export default function AdventurerModal({
             </span>
 
             <AdventurerRarityBadge rarity={adventurer.rarity} className="py-1 text-[11px]" />
+
+            {(adventurer.status === 'not_in_game' || adventurer.is_spoiler) && (
+              <span
+                className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-bold border border-amber-500/50 bg-amber-500/20 text-amber-300 shadow-sm"
+                title={isAdmin && adventurer.status_reason ? `Spoiler — ${adventurer.status_reason}` : '***Spoiler***'}
+              >
+                <span>Coming</span>
+              </span>
+            )}
           </div>
 
           <button
@@ -207,6 +218,23 @@ export default function AdventurerModal({
                     .filter(Boolean)
                     .join(' • ')}
                 </p>
+              )}
+
+              {(adventurer.status === 'not_in_game' || adventurer.is_spoiler) && (
+                <div className="mt-2.5 rounded-xl border border-amber-500/40 bg-amber-500/10 p-2.5 text-xs text-amber-200">
+                  <div className="flex items-center gap-1.5 font-bold text-amber-400">
+                    <span className="rounded bg-amber-500/20 px-1.5 py-0.5 text-[10px] uppercase tracking-wider border border-amber-500/40">Coming</span>
+                    <span>Upcoming Adventurer</span>
+                  </div>
+                  <p className="mt-1 text-[11px] text-amber-300 font-bold tracking-wider">
+                    ***Spoiler***
+                  </p>
+                  {isAdmin && adventurer.status_reason && (
+                    <p className="mt-1 text-[10px] text-mh-slate-400">
+                      <span className="font-semibold text-mh-slate-300">Admin note:</span> {adventurer.status_reason}
+                    </p>
+                  )}
+                </div>
               )}
             </div>
           </div>

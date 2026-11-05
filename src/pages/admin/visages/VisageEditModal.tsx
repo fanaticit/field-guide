@@ -31,6 +31,9 @@ function emptyForm(): VisageUpsert {
     max_levels: [1, 2, 3, 4, 4],
     ink_types: [],
     core_effect: null,
+    status: 'in_game',
+    status_reason: null,
+    is_spoiler: false,
     is_active: true,
     notes: null,
     sort_order: 0,
@@ -113,6 +116,9 @@ export default function VisageEditModal({ visage, open, onClose }: Props) {
           max_levels: visage.max_levels?.length ? visage.max_levels : [1, 2, 3, 4, 4],
           ink_types: visage.ink_types ?? [],
           core_effect: visage.core_effect ?? null,
+          status: visage.status ?? 'in_game',
+          status_reason: visage.status_reason ?? null,
+          is_spoiler: Boolean(visage.is_spoiler),
           is_active: visage.is_active,
           notes: visage.notes ?? null,
           sort_order: visage.sort_order ?? 0,
@@ -451,7 +457,7 @@ export default function VisageEditModal({ visage, open, onClose }: Props) {
             />
           </div>
 
-          {/* Row 5: Notes & Active Toggle */}
+          {/* Active in Field Guide */}
           <div className="flex items-center justify-between rounded-xl border border-mh-slate-750 bg-mh-slate-800/40 p-4">
             <div>
               <p className="text-xs font-bold text-mh-slate-200">Active in Field Guide</p>
@@ -474,6 +480,66 @@ export default function VisageEditModal({ visage, open, onClose }: Props) {
                 )}
               />
             </button>
+          </div>
+
+          {/* Spoiler Status */}
+          <div className="flex items-center justify-between rounded-xl border border-mh-slate-750 bg-mh-slate-800/40 p-4">
+            <div>
+              <p className="text-xs font-bold text-mh-slate-200">Mark as spoiler</p>
+              <p className="text-[11px] text-mh-slate-500">
+                Only shown to hunters who turned on “Show spoilers” in their profile.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setForm((p) => ({ ...p, is_spoiler: !p.is_spoiler }))}
+              className={cn(
+                'relative inline-flex h-5 w-9 shrink-0 rounded-full transition-colors duration-200',
+                form.is_spoiler ? 'bg-amber-500' : 'bg-mh-slate-700',
+              )}
+            >
+              <span
+                className={cn(
+                  'absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform duration-200',
+                  form.is_spoiler ? 'translate-x-[18px]' : 'translate-x-0.5',
+                )}
+              />
+            </button>
+          </div>
+
+          {/* Game Release Status & Reason */}
+          <div className="space-y-3 rounded-xl border border-mh-slate-750 bg-mh-slate-800/40 p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs font-bold text-mh-slate-200">Game Release Status</p>
+                <p className="text-[11px] text-mh-slate-500">
+                  Whether this visage card is currently released in game or upcoming.
+                </p>
+              </div>
+              <select
+                value={form.status}
+                onChange={(e) => setForm((p) => ({ ...p, status: e.target.value as 'in_game' | 'not_in_game' }))}
+                className="rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-200 focus:border-mh-gold-500/50 focus:outline-none"
+              >
+                <option value="in_game">In game</option>
+                <option value="not_in_game">Not in game</option>
+              </select>
+            </div>
+
+            {form.status === 'not_in_game' && (
+              <div className="pt-2 border-t border-mh-slate-700/60">
+                <label className="block text-xs font-bold uppercase tracking-wider text-mh-slate-300">
+                  Status Reason
+                </label>
+                <input
+                  type="text"
+                  value={form.status_reason ?? ''}
+                  onChange={(e) => setForm((p) => ({ ...p, status_reason: e.target.value || null }))}
+                  placeholder="e.g. Unreleased (no source in the game data) or Season 1 upcoming"
+                  className="mt-1.5 w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-xs text-mh-slate-100 placeholder-mh-slate-500 focus:border-mh-gold-500/50 focus:outline-none"
+                />
+              </div>
+            )}
           </div>
         </div>
 

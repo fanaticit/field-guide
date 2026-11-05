@@ -58,7 +58,7 @@ export const router = createBrowserRouter([
 
       // ── User & Admin ──
       { path: 'settings', element: <SettingsPage /> },
-      { path: 'admin', element: <Navigate to="/admin/monsters" replace /> },
+      { path: 'admin', element: <Navigate to="/admin/feedback" replace /> },
       { path: 'admin/:subPage', element: <AdminPage /> },
 
       // ── Legal / Footer ──

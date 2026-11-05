@@ -34,6 +34,8 @@ import { useUIStore } from '../../store/uiStore';
 import { DEFAULT_SECTION_THEMES, themeToNavAccent } from '../../config/themes';
 import { cn } from '../../lib/utils';
 import LoginModal from '../auth/LoginModal';
+import FeedbackModal from '../feedback/FeedbackModal';
+import { useAdminFeedbackCount } from '../../hooks/useAdminFeedback';
 
 interface SubNavItem {
   id: string;
@@ -43,6 +45,7 @@ interface SubNavItem {
   iconSrc?: string;
   active: boolean;
   onSelect: () => void;
+  badge?: number;
 }
 
 interface NavSection {
@@ -70,6 +73,8 @@ export default function MainNav() {
   const galleryTheme = useUIStore((s) => s.sectionThemes['/gallery'] ?? DEFAULT_SECTION_THEMES['/gallery']);
 
   const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
+  const { data: unreadCount = 0 } = useAdminFeedbackCount();
   const [openId, setOpenId] = useState<string | null>(null);
   const [anchorY, setAnchorY] = useState(0);
   const [hoverSubId, setHoverSubId] = useState<string | null>(null);
@@ -98,7 +103,14 @@ export default function MainNav() {
           ? [{ id: 'home-settings', label: 'Profile & Settings', icon: Settings, active: pathname === '/settings', onSelect: go('/settings') }]
           : [{ id: 'home-login', label: 'Login', icon: LogIn, active: false, onSelect: () => setLoginModalOpen(true) }]),
         ...(isAdmin
-          ? [{ id: 'home-admin', label: 'Admin Panel', icon: ShieldAlert, active: pathname.startsWith('/admin'), onSelect: go('/admin/monsters') }]
+          ? [{
+              id: 'home-admin',
+              label: 'Admin Panel',
+              icon: ShieldAlert,
+              active: pathname.startsWith('/admin'),
+              onSelect: go('/admin/feedback'),
+              badge: unreadCount > 0 ? unreadCount : undefined,
+            }]
           : []),
         ...(isLoggedIn
           ? [{ id: 'home-logout', label: 'Logout', icon: LogOut, active: false, onSelect: () => signOut() }]
@@ -293,6 +305,14 @@ export default function MainNav() {
                       style={{ transform: `scale(${section.iconZoom})` }}
                     />
                   </span>
+                  {section.id === 'home' && isAdmin && unreadCount > 0 && (
+                    <span
+                      className="absolute -top-1 -right-1 z-20 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-red-500 px-1 text-[9px] font-bold text-white shadow-md ring-2 ring-[#232328] animate-pulse"
+                      title={`${unreadCount} new feedback message${unreadCount > 1 ? 's' : ''}`}
+                    >
+                      {unreadCount > 99 ? '99+' : unreadCount}
+                    </span>
+                  )}
                   {section.active && (
                     <ChevronUp
                       size={10}
@@ -309,6 +329,34 @@ export default function MainNav() {
             </li>
           ))}
         </ul>
+
+        {/* Footer / Utility action: Bottom on desktop rail, far right on mobile bottom bar */}
+        <div className="main-nav__footer">
+          <div className="main-nav__footer-divider" aria-hidden="true" />
+          <button
+            type="button"
+            id="nav-feedback"
+            className="main-nav__btn"
+            data-active={feedbackModalOpen}
+            data-accent="rare"
+            aria-label="Send Feedback & Bug Reports"
+            onClick={() => setFeedbackModalOpen(true)}
+          >
+            <span className="main-nav__bubble">
+              <span className="main-nav__icon">
+                <img
+                  src="/img/ui/BtnIcon_Chat.png"
+                  alt="Feedback"
+                  draggable={false}
+                  style={{ transform: 'scale(0.85)' }}
+                />
+              </span>
+            </span>
+            <span className="main-nav__tip" role="tooltip">
+              Feedback & Bugs
+            </span>
+          </button>
+        </div>
       </nav>
 
       {openSection && (
@@ -354,6 +402,11 @@ export default function MainNav() {
                     <SubIcon size={16} className="shrink-0" />
                   )}
                   <span className="truncate">{sub.label}</span>
+                  {sub.badge !== undefined && sub.badge > 0 && (
+                    <span className="ml-auto rounded-full bg-red-500/20 px-1.5 py-0.5 text-[10px] font-bold text-red-400 ring-1 ring-red-500/40">
+                      {sub.badge > 99 ? '99+' : sub.badge}
+                    </span>
+                  )}
                 </button>
               );
             })}
@@ -362,6 +415,7 @@ export default function MainNav() {
       )}
 
       <LoginModal open={loginModalOpen} onClose={() => setLoginModalOpen(false)} />
+      <FeedbackModal open={feedbackModalOpen} onClose={() => setFeedbackModalOpen(false)} />
     </>
   );
 }

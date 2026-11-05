@@ -25,7 +25,7 @@ import {
   ROLE_CONFIG,
 } from '../../data/schemas/buddy';
 import { ADVENTURER_RARITY_CONFIG } from '../../data/schemas/adventurer';
-import { useAdminBuddies } from '../../hooks/useAdminBuddies';
+import { usePublicBuddies } from '../../hooks/useAdminBuddies';
 import { useUserBuddyCollection } from '../../hooks/useUserBuddyCollection';
 import {
   useHunterChallenges,
@@ -66,7 +66,7 @@ export default function BuddyGuide() {
   const [inspectedBuddy, setInspectedBuddy] = useState<DBBuddy | null>(null);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
 
-  const { user } = useAuthStore();
+  const { user, profile } = useAuthStore();
   const theme = useUIStore((s) => s.sectionThemes['/challenges'] ?? DEFAULT_SECTION_THEMES['/challenges']);
   const [introHidden, setIntroHidden] = useState(() => localStorage.getItem(INTRO_HIDDEN_KEY) === '1');
 
@@ -76,12 +76,13 @@ export default function BuddyGuide() {
     localStorage.setItem(INTRO_HIDDEN_KEY, next ? '1' : '0');
   };
 
-  const { data: buddies = [], isLoading } = useAdminBuddies({ isActive: true });
+  const { data: buddies = [], isLoading } = usePublicBuddies({
+    showSpoilers: Boolean(profile?.show_spoilers),
+  });
   const {
     collectionMap,
     setBuddyQuantity,
     removeBuddyFromCollection,
-    totalCollected,
   } = useUserBuddyCollection();
 
   const { data: challenges = [] } = useHunterChallenges(user?.id);
@@ -143,18 +144,31 @@ export default function BuddyGuide() {
   }, [buddies, search, selectedTier, selectedRole, ownershipFilter, collectionMap]);
 
   // Statistics
+  // Excludes debug and unreleased/not-in-game items from collected metrics
   const stats = useMemo(() => {
-    const total = buddies.length;
+    const eligibleBuddies = buddies.filter((b) => {
+      if (b.status !== 'in_game') return false;
+      if (b.is_spoiler) return false;
+      if (b.is_debug) return false;
+      const reason = b.status_reason?.toLowerCase() ?? '';
+      if (reason.includes('debug') || reason.includes('upcoming') || reason.includes('not in game')) return false;
+      const name = b.name?.toLowerCase() ?? '';
+      if (name.includes('debug')) return false;
+      return true;
+    });
+
+    const total = eligibleBuddies.length;
+    const eligibleCollected = eligibleBuddies.filter((b) => Boolean(collectionMap[b.id])).length;
+    const progressPct = total > 0 ? Math.round((eligibleCollected / total) * 100) : 0;
+
     const tiers = {} as Record<BuddyTier, { total: number; owned: number }>;
     for (const tier of BUDDY_TIERS) {
-      const inTier = buddies.filter((b) => b.tier === tier);
+      const inTier = eligibleBuddies.filter((b) => b.tier === tier);
       tiers[tier] = { total: inTier.length, owned: inTier.filter((b) => collectionMap[b.id]).length };
     }
 
-    const progressPct = total > 0 ? Math.round((totalCollected / total) * 100) : 0;
-
-    return { total, totalCollected, progressPct, tiers };
-  }, [buddies, collectionMap, totalCollected]);
+    return { total, totalCollected: eligibleCollected, progressPct, tiers };
+  }, [buddies, collectionMap]);
 
   return (
     <div data-rarity-theme={theme} className="challenges-theme flex flex-col gap-6 px-6 pb-6 pt-2 lg:px-8 lg:pb-8 lg:pt-3 text-white">
@@ -433,12 +447,22 @@ export default function BuddyGuide() {
                           </div>
                         )}
                         <div>
-                          <span className="font-bold text-mh-slate-100">
-                            {buddy.name}
-                          </span>
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="font-bold text-mh-slate-100">
+                              {buddy.name}
+                            </span>
+                            {(buddy.status === 'not_in_game' || buddy.is_spoiler) && (
+                              <span
+                                className="inline-flex items-center gap-1 rounded bg-amber-500/20 border border-amber-500/40 px-1.5 py-0.2 text-[9px] font-bold text-amber-300 uppercase"
+                                title="***Spoiler***"
+                              >
+                                Coming
+                              </span>
+                            )}
+                          </div>
                           {buddy.name_ja && (
-                            <span className="ml-1 text-[11px] text-mh-slate-500">
-                              ({buddy.name_ja})
+                            <span className="text-[11px] text-mh-slate-500">
+                              {buddy.name_ja}
                             </span>
                           )}
                           <p className="font-mono text-[10px] text-mh-slate-500">

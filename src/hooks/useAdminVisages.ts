@@ -11,6 +11,7 @@ export interface VisageFilters {
   inkType?: string;
   monsterType?: string;
   isActive?: boolean | null;
+  showSpoilers?: boolean;
 }
 
 export const VISAGES_KEY = 'admin-visages';
@@ -38,6 +39,9 @@ export function useAdminVisages(filters: VisageFilters = {}) {
       }
       if (filters.isActive !== null && filters.isActive !== undefined) {
         q = q.eq('is_active', filters.isActive);
+      }
+      if (filters.showSpoilers === false) {
+        q = q.eq('is_spoiler', false);
       }
 
       const { data, error } = await q;
@@ -195,6 +199,49 @@ export function useToggleVisageActive() {
       qc.setQueriesData<DBVisage[]>(
         { queryKey: [VISAGES_KEY], exact: false },
         (old = []) => old.map((v) => (v.id === id ? { ...v, is_active: isActive } : v)),
+      );
+
+      return { snapshot };
+    },
+
+    onError: (_err, _vars, ctx) => {
+      if (ctx?.snapshot) {
+        for (const [key, data] of ctx.snapshot) qc.setQueryData(key, data);
+      }
+    },
+
+    onSettled: () => {
+      qc.invalidateQueries({ queryKey: [VISAGES_KEY] });
+    },
+  });
+}
+
+export function useToggleVisageSpoiler() {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, isSpoiler }: { id: string; isSpoiler: boolean }) => {
+      const { data, error } = await supabase
+        .from('visages')
+        .update({ is_spoiler: isSpoiler })
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data as DBVisage;
+    },
+
+    onMutate: async ({ id, isSpoiler }) => {
+      await qc.cancelQueries({ queryKey: [VISAGES_KEY] });
+      const snapshot = qc.getQueriesData<DBVisage[]>({
+        queryKey: [VISAGES_KEY],
+        exact: false,
+      });
+
+      qc.setQueriesData<DBVisage[]>(
+        { queryKey: [VISAGES_KEY], exact: false },
+        (old = []) => old.map((v) => (v.id === id ? { ...v, is_spoiler: isSpoiler } : v)),
       );
 
       return { snapshot };

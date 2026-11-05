@@ -46,7 +46,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PCat01.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PCat01.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PCat/PetProfileIcon_PCat01.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat01.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat01.png",
+  "item_id": 320001,
+  "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool; Advanced",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320002,
@@ -110,7 +114,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_POwl01.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_POwl01.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/POwl/PetProfileIcon_POwl01.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl01.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl01.png",
+  "item_id": 320002,
+  "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320003,
@@ -164,7 +172,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PMky01.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PMky01.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PMky/PetProfileIcon_PMky01.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky01.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky01.png",
+  "item_id": 320003,
+  "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320004,
@@ -216,7 +228,11 @@
   "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat18.png",
   "default_buddy_of": [
    "Ouyang Varen"
-  ]
+  ],
+  "item_id": 320004,
+  "how_to_obtain": "Comes with Ouyang Varen (default buddy); Beginner's Recruitment pool; Standard Recruitment pool",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320005,
@@ -268,7 +284,11 @@
   "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat22.png",
   "default_buddy_of": [
    "Midori"
-  ]
+  ],
+  "item_id": 320005,
+  "how_to_obtain": "Comes with Midori (default buddy); Recruitment – Autumn Refrain banner (2026-09-01 to 2026-11-27)",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320006,
@@ -325,7 +345,11 @@
   "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky18.png",
   "default_buddy_of": [
    "Keres"
-  ]
+  ],
+  "item_id": 320006,
+  "how_to_obtain": "Comes with Keres (default buddy); Beginner's Recruitment pool; Standard Recruitment pool",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320007,
@@ -392,7 +416,11 @@
   "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl19.png",
   "default_buddy_of": [
    "Madelyn"
-  ]
+  ],
+  "item_id": 320007,
+  "how_to_obtain": "Comes with Madelyn (default buddy); Beginner's Recruitment pool; Standard Recruitment pool",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320008,
@@ -449,7 +477,11 @@
   "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky17.png",
   "default_buddy_of": [
    "Raya"
-  ]
+  ],
+  "item_id": 320008,
+  "how_to_obtain": "Comes with Raya (default buddy); Beginner's Recruitment pool; Standard Recruitment pool",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320009,
@@ -506,7 +538,11 @@
   "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky19.png",
   "default_buddy_of": [
    "Pepper"
-  ]
+  ],
+  "item_id": 320009,
+  "how_to_obtain": "Comes with Pepper (default buddy); Beginner's Recruitment pool; Standard Recruitment pool",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320011,
@@ -558,7 +594,11 @@
   "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat19.png",
   "default_buddy_of": [
    "Luka"
-  ]
+  ],
+  "item_id": 320011,
+  "how_to_obtain": "Comes with Luka (default buddy); Beginner's Recruitment pool; Standard Recruitment pool",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320012,
@@ -610,7 +650,11 @@
   "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat21.png",
   "default_buddy_of": [
    "Pyro"
-  ]
+  ],
+  "item_id": 320012,
+  "how_to_obtain": "Comes with Pyro (default buddy); Beginner's Recruitment pool; Standard Recruitment pool",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320013,
@@ -677,7 +721,11 @@
   "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl20.png",
   "default_buddy_of": [
    "Arkaya"
-  ]
+  ],
+  "item_id": 320013,
+  "how_to_obtain": "Comes with Arkaya (default buddy); Beginner's Recruitment pool; Standard Recruitment pool",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320014,
@@ -734,7 +782,11 @@
   "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky21.png",
   "default_buddy_of": [
    "Freya"
-  ]
+  ],
+  "item_id": 320014,
+  "how_to_obtain": "Comes with Freya (default buddy); Recruitment – Crimson Authority banner (2026-11-27 to 2027-01-22)",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320116,
@@ -786,7 +838,11 @@
   "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat20.png",
   "default_buddy_of": [
    "Rhodes"
-  ]
+  ],
+  "item_id": 320116,
+  "how_to_obtain": "Comes with Rhodes (default buddy); Beginner's Recruitment pool; Standard Recruitment pool",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320117,
@@ -843,7 +899,11 @@
   "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky20.png",
   "default_buddy_of": [
    "Luxheart"
-  ]
+  ],
+  "item_id": 320117,
+  "how_to_obtain": "Comes with Luxheart (default buddy); Beginner's Recruitment pool; Standard Recruitment pool",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320126,
@@ -910,7 +970,11 @@
   "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl22.png",
   "default_buddy_of": [
    "Ryunosuke"
-  ]
+  ],
+  "item_id": 320126,
+  "how_to_obtain": "Comes with Ryunosuke (default buddy); Beginner's Recruitment pool; Standard Recruitment pool",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320127,
@@ -977,7 +1041,11 @@
   "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl21.png",
   "default_buddy_of": [
    "Haze"
-  ]
+  ],
+  "item_id": 320127,
+  "how_to_obtain": "Comes with Haze (default buddy); Beginner's Recruitment pool; Standard Recruitment pool",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320128,
@@ -1044,7 +1112,11 @@
   "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl23.png",
   "default_buddy_of": [
    "Stylia"
-  ]
+  ],
+  "item_id": 320128,
+  "how_to_obtain": "Comes with Stylia (default buddy); Recruitment",
+  "debug": "",
+  "game_status": "Upcoming – Recruitment banner starts 2026-11-27"
  },
  {
   "id": 320027,
@@ -1098,7 +1170,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PMky13.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PMky13.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PMky/PetProfileIcon_PMky13.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky13.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky13.png",
+  "item_id": 320027,
+  "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool; Advanced",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320023,
@@ -1147,7 +1223,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PCat07.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PCat07.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PCat/PetProfileIcon_PCat07.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat07.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat07.png",
+  "item_id": 320023,
+  "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool; Advanced",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320028,
@@ -1201,7 +1281,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PMky06.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PMky06.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PMky/PetProfileIcon_PMky06.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky06.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky06.png",
+  "item_id": 320028,
+  "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool; Advanced",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320033,
@@ -1265,7 +1349,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_POwl06.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_POwl06.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/POwl/PetProfileIcon_POwl06.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl06.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl06.png",
+  "item_id": 320033,
+  "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool; Advanced",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320037,
@@ -1314,7 +1402,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PCat03.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PCat03.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PCat/PetProfileIcon_PCat03.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat03.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat03.png",
+  "item_id": 320037,
+  "how_to_obtain": "Featured in limited Recruitment: Sakura Samurai (2026-03-26 to 2026-05-29); Rutaco's Rumbling Furnace; Rumbling Furnace Exchange; Advanced",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320038,
@@ -1363,7 +1455,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PCat05.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PCat05.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PCat/PetProfileIcon_PCat05.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat05.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat05.png",
+  "item_id": 320038,
+  "how_to_obtain": "Standard Recruitment pool; Rumbling Furnace Exchange; Advanced",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320039,
@@ -1417,7 +1513,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PMky04.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PMky04.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PMky/PetProfileIcon_PMky04.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky04.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky04.png",
+  "item_id": 320039,
+  "how_to_obtain": "Standard Recruitment pool; Rumbling Furnace Exchange; Advanced",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320040,
@@ -1471,7 +1571,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PMky03.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PMky03.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PMky/PetProfileIcon_PMky03.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky03.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky03.png",
+  "item_id": 320040,
+  "how_to_obtain": "Standard Recruitment pool; Rumbling Furnace Exchange; Advanced",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320041,
@@ -1520,7 +1624,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PCat04.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PCat04.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PCat/PetProfileIcon_PCat04.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat04.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat04.png",
+  "item_id": 320041,
+  "how_to_obtain": "Standard Recruitment pool; Rumbling Furnace Exchange; Advanced",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320042,
@@ -1584,7 +1692,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_POwl03.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_POwl03.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/POwl/PetProfileIcon_POwl03.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl03.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl03.png",
+  "item_id": 320042,
+  "how_to_obtain": "Standard Recruitment pool; Rumbling Furnace Exchange; Advanced",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320043,
@@ -1638,7 +1750,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PMky05.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PMky05.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PMky/PetProfileIcon_PMky05.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky05.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky05.png",
+  "item_id": 320043,
+  "how_to_obtain": "Featured in limited Recruitment: Ember Artifice (2026-05-13 to 2026-06-12); Limited-Time Events; Rumbling Furnace Exchange",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320044,
@@ -1687,7 +1803,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PCat06.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PCat06.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PCat/PetProfileIcon_PCat06.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat06.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat06.png",
+  "item_id": 320044,
+  "how_to_obtain": "Standard Recruitment pool; Rumbling Furnace Exchange; Advanced",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320053,
@@ -1751,7 +1871,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_POwl15.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_POwl15.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/POwl/PetProfileIcon_POwl15.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl15.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl15.png",
+  "item_id": 320053,
+  "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool; Advanced",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320054,
@@ -1815,7 +1939,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_POwl12.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_POwl12.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/POwl/PetProfileIcon_POwl12.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl12.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl12.png",
+  "item_id": 320054,
+  "how_to_obtain": "Adventurers' Guild Shop",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320055,
@@ -1879,7 +2007,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_POwl04.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_POwl04.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/POwl/PetProfileIcon_POwl04.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl04.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl04.png",
+  "item_id": 320055,
+  "how_to_obtain": "Rutaco's Rumbling Furnace; Rumbling Furnace Exchange",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320080,
@@ -1928,7 +2060,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PCat08.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PCat08.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PCat/PetProfileIcon_PCat08.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat08.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat08.png",
+  "item_id": 320080,
+  "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool; Advanced",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320081,
@@ -1982,7 +2118,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PMky07.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PMky07.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PMky/PetProfileIcon_PMky07.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky07.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky07.png",
+  "item_id": 320081,
+  "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool; Advanced",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320082,
@@ -2046,7 +2186,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_POwl07.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_POwl07.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/POwl/PetProfileIcon_POwl07.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl07.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl07.png",
+  "item_id": 320082,
+  "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool; Advanced",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320087,
@@ -2095,7 +2239,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PCat10.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PCat10.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PCat/PetProfileIcon_PCat10.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat10.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat10.png",
+  "item_id": 320087,
+  "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool; Advanced",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320088,
@@ -2144,7 +2292,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PCat09.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PCat09.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PCat/PetProfileIcon_PCat09.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat09.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat09.png",
+  "item_id": 320088,
+  "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool; Advanced",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320089,
@@ -2198,7 +2350,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PMky09.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PMky09.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PMky/PetProfileIcon_PMky09.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky09.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky09.png",
+  "item_id": 320089,
+  "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool; Advanced",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320090,
@@ -2252,7 +2408,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PMky08.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PMky08.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PMky/PetProfileIcon_PMky08.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky08.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PMky/PetSideIcon_PMky08.png",
+  "item_id": 320090,
+  "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool; Advanced",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320091,
@@ -2316,7 +2476,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_POwl09.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_POwl09.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/POwl/PetProfileIcon_POwl09.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl09.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl09.png",
+  "item_id": 320091,
+  "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool; Advanced",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320092,
@@ -2380,7 +2544,11 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_POwl08.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_POwl08.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/POwl/PetProfileIcon_POwl08.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl08.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/POwl/PetSideIcon_POwl08.png",
+  "item_id": 320092,
+  "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool; Advanced",
+  "debug": "",
+  "game_status": "In game"
  },
  {
   "id": 320998,
@@ -2396,6 +2564,10 @@
   "portrait": "MHMobile/Content/UI/Dynamic/PetPortrait/PetPortrait_PCat02.png",
   "bust": "MHMobile/Content/UI/Dynamic/PetBust/PetBust_PCat02.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PCat/PetProfileIcon_PCat02.png",
-  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat02.png"
+  "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat02.png",
+  "item_id": 320998,
+  "how_to_obtain": "Recruitment",
+  "debug": "yes",
+  "game_status": "Debug – not active in game (character-creation screen display cat)"
  }
 ]

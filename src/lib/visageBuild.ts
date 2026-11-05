@@ -72,6 +72,7 @@ export function getDuplicateIds(loadout: VisageLoadout): string[] {
 
 /** Would putting `card` into `slot` stay within the point cap? */
 export function canPlaceCard(loadout: VisageLoadout, card: DBVisage, slot: VisageBuildSlot): boolean {
+  if (card.is_spoiler || card.status === 'not_in_game') return false;
   const current = loadout[slot].visage?.points ?? 0;
   return getTotalPoints(loadout) - current + card.points <= VISAGE_POINT_CAP;
 }

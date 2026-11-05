@@ -43,7 +43,13 @@ export function VisageSelector() {
   const { data: visages, isLoading: isVisageLoading } = useQuery({
     queryKey: ['visages'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('visages').select(VISAGE_SELECT).eq('is_active', true).order('sort_order', { ascending: true });
+      const { data, error } = await supabase
+        .from('visages')
+        .select(VISAGE_SELECT)
+        .eq('is_active', true)
+        .eq('is_spoiler', false)
+        .eq('status', 'in_game')
+        .order('sort_order', { ascending: true });
       if (error) throw error;
       return (data ?? []).map((row) => normalizeVisageRow(row as Record<string, unknown>)) as Visage[];
     }
@@ -69,6 +75,10 @@ export function VisageSelector() {
   const handleVisageChange = (slot: VisageSlot, id: string | null) => {
     const selected = visages?.find(v => v.id === id) || null;
     if (!selected) { setVisage(slot, null); return; }
+    if (selected.is_spoiler || selected.status === 'not_in_game') {
+      alert(`Cannot equip ${selected.name}. It is not released in game yet.`);
+      return;
+    }
 
     let currentPointsForSlot = 0;
     if (slot === 'core') currentPointsForSlot = coreVisage?.points || 0;

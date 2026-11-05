@@ -10,6 +10,7 @@ import {
   useUpsertArmourPiece,
   type ArmourPiece,
   type ArmourPieceUpsert,
+  type ArmourStatus,
 } from '../../../hooks/useArmourPieces';
 import type { DBMonster } from '../../../hooks/useAdminMonsters';
 import type { DBSkill } from '../../../hooks/useAdminSkills';
@@ -19,6 +20,26 @@ import { cn } from '../../../lib/utils';
 const inputCls =
   'w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-100 placeholder-mh-slate-600 outline-none focus:border-mh-gold-500/50';
 const labelCls = 'block text-xs font-medium text-mh-slate-400 mb-1.5';
+
+function Toggle({ checked, onChange, activeColor = 'bg-green-500' }: { checked: boolean; onChange: (v: boolean) => void; activeColor?: string }) {
+  return (
+    <button
+      type="button"
+      onClick={() => onChange(!checked)}
+      className={cn(
+        'relative inline-flex h-5 w-9 shrink-0 rounded-full transition-colors duration-200',
+        checked ? activeColor : 'bg-mh-slate-700',
+      )}
+    >
+      <span
+        className={cn(
+          'absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform duration-200',
+          checked ? 'translate-x-[18px]' : 'translate-x-0.5',
+        )}
+      />
+    </button>
+  );
+}
 
 export function skillLabel(skill: DBSkill | undefined, id: string) {
   if (!skill) return `Unknown skill (${id})`;
@@ -41,6 +62,9 @@ function emptyForm(): ArmourPieceUpsert {
     icon_f: null,
     set_icon: null,
     is_active: true,
+    status: 'in_game',
+    status_reason: null,
+    is_spoiler: false,
     notes: null,
   };
 }
@@ -432,12 +456,53 @@ export default function ArmourEditModal({ piece, open, onClose, monsters, skills
             />
           </div>
 
-          <div className="flex items-center justify-between rounded-lg border border-mh-slate-700/60 bg-mh-slate-800/40 px-4 py-3">
-            <div>
-              <p className="text-xs font-semibold text-mh-slate-200">Active in Field Guide</p>
-              <p className="text-[11px] text-mh-slate-500">Inactive pieces are hidden from the public pages.</p>
+          {/* Visibility & Game Status */}
+          <div className="space-y-2 rounded-xl border border-mh-slate-700/80 bg-mh-slate-800/30 p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs font-semibold text-mh-slate-200">Active in Field Guide</p>
+                <p className="text-[11px] text-mh-slate-500">Inactive pieces are hidden from the public pages.</p>
+              </div>
+              <Toggle checked={form.is_active} onChange={(v) => patch({ is_active: v })} />
             </div>
-            <input type="checkbox" checked={form.is_active} onChange={(e) => patch({ is_active: e.target.checked })} />
+            <div className="flex items-center justify-between border-t border-mh-slate-800 pt-2">
+              <div>
+                <p className="text-xs font-semibold text-mh-slate-200">Mark as spoiler</p>
+                <p className="text-[11px] text-mh-slate-500">Only shown to hunters who turned on “Show spoilers” in their profile.</p>
+              </div>
+              <Toggle checked={form.is_spoiler} onChange={(v) => patch({ is_spoiler: v })} activeColor="bg-amber-500" />
+            </div>
+            <div className="grid grid-cols-1 gap-3 border-t border-mh-slate-800 pt-2 sm:grid-cols-3">
+              <div>
+                <label className={labelCls}>Game status</label>
+                <select
+                  value={form.status}
+                  onChange={(e) => {
+                    const status = e.target.value as ArmourStatus;
+                    patch({
+                      status,
+                      status_reason: status === 'in_game' ? null : form.status_reason,
+                    });
+                  }}
+                  className={inputCls}
+                >
+                  <option value="in_game">In game</option>
+                  <option value="not_in_game">Not in game</option>
+                </select>
+              </div>
+              {form.status === 'not_in_game' && (
+                <div className="sm:col-span-2">
+                  <label className={labelCls}>Reason *</label>
+                  <input
+                    type="text"
+                    value={form.status_reason ?? ''}
+                    onChange={(e) => patch({ status_reason: e.target.value || null })}
+                    placeholder="e.g. Upcoming – season opens 2026-12-25"
+                    className={inputCls}
+                  />
+                </div>
+              )}
+            </div>
           </div>
 
           {!isNew && (

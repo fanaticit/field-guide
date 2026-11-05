@@ -15,6 +15,8 @@ export interface ArmourSetBonus {
   skill_id: string;
 }
 
+export type ArmourStatus = 'in_game' | 'not_in_game';
+
 export interface ArmourPiece {
   id: string;
   /** monsters.id, or the name of the monster that could not be matched */
@@ -34,6 +36,9 @@ export interface ArmourPiece {
   icon_f: string | null;
   set_icon: string | null;
   is_active: boolean;
+  status: ArmourStatus;
+  status_reason: string | null;
+  is_spoiler: boolean;
   notes: string | null;
   created_at: string;
   updated_at: string;
@@ -60,14 +65,26 @@ export type ArmourPieceUpsert = Omit<ArmourPiece, 'created_at' | 'updated_at'>;
 
 export const ARMOUR_PIECES_KEY = 'armour-pieces';
 
-export function useArmourPieces() {
+export interface ArmourPieceFilters {
+  showSpoilers?: boolean;
+  isActive?: boolean | null;
+}
+
+export function useArmourPieces(filters: ArmourPieceFilters = {}) {
   return useQuery({
-    queryKey: [ARMOUR_PIECES_KEY],
+    queryKey: [ARMOUR_PIECES_KEY, filters],
     queryFn: async () => {
-      const { data, error } = await supabase
+      let q = supabase
         .from('armour_pieces')
         .select('*')
         .order('id', { ascending: true });
+      if (filters.isActive !== undefined && filters.isActive !== null) {
+        q = q.eq('is_active', filters.isActive);
+      }
+      if (filters.showSpoilers === false) {
+        q = q.eq('is_spoiler', false);
+      }
+      const { data, error } = await q;
       if (error) throw error;
       return ((data ?? []) as Record<string, unknown>[]).map((p) => ({
         ...p,
@@ -75,6 +92,9 @@ export function useArmourPieces() {
         deco_slots: (p.deco_slots as number[]) ?? [],
         set_bonus: (p.set_bonus as ArmourSetBonus | null) ?? null,
         rarity: (p.rarity as number) ?? 1,
+        status: (p.status as ArmourStatus) ?? 'in_game',
+        status_reason: (p.status_reason as string | null) ?? null,
+        is_spoiler: Boolean(p.is_spoiler),
       })) as ArmourPiece[];
     },
     staleTime: 1000 * 60 * 2,
@@ -195,5 +215,73 @@ export function useDeleteArmourPieceById() {
       if (error) throw error;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: [ARMOUR_PIECES_KEY] }),
+  });
+}
+
+export function useToggleArmourActive() {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, isActive }: { id: string; isActive: boolean }) => {
+      const { error } = await supabase
+        .from('armour_pieces')
+        .update({ is_active: isActive, updated_at: new Date().toISOString() })
+        .eq('id', id);
+      if (error) throw error;
+    },
+
+    onMutate: async ({ id, isActive }) => {
+      await qc.cancelQueries({ queryKey: [ARMOUR_PIECES_KEY] });
+      const snapshot = qc.getQueriesData<ArmourPiece[]>({ queryKey: [ARMOUR_PIECES_KEY], exact: false });
+      qc.setQueriesData<ArmourPiece[]>(
+        { queryKey: [ARMOUR_PIECES_KEY], exact: false },
+        (old) => (Array.isArray(old) ? old.map((p) => (p.id === id ? { ...p, is_active: isActive } : p)) : old),
+      );
+      return { snapshot };
+    },
+
+    onError: (_err, _vars, ctx) => {
+      if (ctx?.snapshot) {
+        for (const [key, data] of ctx.snapshot) qc.setQueryData(key, data);
+      }
+    },
+
+    onSettled: () => {
+      qc.invalidateQueries({ queryKey: [ARMOUR_PIECES_KEY] });
+    },
+  });
+}
+
+export function useToggleArmourSpoiler() {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, isSpoiler }: { id: string; isSpoiler: boolean }) => {
+      const { error } = await supabase
+        .from('armour_pieces')
+        .update({ is_spoiler: isSpoiler, updated_at: new Date().toISOString() })
+        .eq('id', id);
+      if (error) throw error;
+    },
+
+    onMutate: async ({ id, isSpoiler }) => {
+      await qc.cancelQueries({ queryKey: [ARMOUR_PIECES_KEY] });
+      const snapshot = qc.getQueriesData<ArmourPiece[]>({ queryKey: [ARMOUR_PIECES_KEY], exact: false });
+      qc.setQueriesData<ArmourPiece[]>(
+        { queryKey: [ARMOUR_PIECES_KEY], exact: false },
+        (old) => (Array.isArray(old) ? old.map((p) => (p.id === id ? { ...p, is_spoiler: isSpoiler } : p)) : old),
+      );
+      return { snapshot };
+    },
+
+    onError: (_err, _vars, ctx) => {
+      if (ctx?.snapshot) {
+        for (const [key, data] of ctx.snapshot) qc.setQueryData(key, data);
+      }
+    },
+
+    onSettled: () => {
+      qc.invalidateQueries({ queryKey: [ARMOUR_PIECES_KEY] });
+    },
   });
 }

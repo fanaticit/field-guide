@@ -17,6 +17,7 @@ import { cn } from '../../lib/utils';
 import ArtBackdrop from '../../components/ArtBackdrop';
 import { useBuddySkills } from '../../hooks/useAdminBuddies';
 import { usePublicAdventurers } from '../../hooks/useAdminAdventurers';
+import { useAuthStore } from '../../store/authStore';
 
 const ROLE_ICONS: Record<BuddyRole, React.ComponentType<{ size?: number; className?: string }>> = {
   Assault: Swords,
@@ -55,6 +56,8 @@ export default function BuddyModal({
 }: BuddyModalProps) {
   const [imageError, setImageError] = useState(false);
   const navigate = useNavigate();
+  const profile = useAuthStore((s) => s.profile);
+  const isAdmin = profile?.role === 'admin';
   const { data: skills = [] } = useBuddySkills(open ? buddy?.id : null);
   const { data: adventurers = [] } = usePublicAdventurers();
 
@@ -131,6 +134,15 @@ export default function BuddyModal({
               <RoleIcon size={13} />
               <span>{buddy.role} Role</span>
             </span>
+
+            {(buddy.status === 'not_in_game' || buddy.is_spoiler) && (
+              <span
+                className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-bold border border-amber-500/50 bg-amber-500/20 text-amber-300 shadow-sm"
+                title="***Spoiler***"
+              >
+                Coming
+              </span>
+            )}
           </div>
 
           <button
@@ -168,6 +180,14 @@ export default function BuddyModal({
                     ({buddy.name_ja})
                   </span>
                 )}
+                {(buddy.status === 'not_in_game' || buddy.is_spoiler) && (
+                  <span
+                    className="rounded bg-amber-500/20 border border-amber-500/40 px-2 py-0.5 text-xs font-bold text-amber-300 uppercase tracking-wider"
+                    title="***Spoiler***"
+                  >
+                    Coming
+                  </span>
+                )}
               </div>
               <p className="font-mono text-xs text-mh-slate-500 mt-1">
                 Identifier: <span className="text-mh-slate-400">{buddy.id}</span>
@@ -177,6 +197,23 @@ export default function BuddyModal({
               </p>
               {defaultOf && (
                 <p className="text-xs text-mh-slate-400 mt-1">Default buddy of {defaultOf.name}</p>
+              )}
+
+              {(buddy.status === 'not_in_game' || buddy.is_spoiler) && (
+                <div className="mt-2.5 rounded-xl border border-amber-500/40 bg-amber-500/10 p-2.5 text-xs text-amber-200">
+                  <div className="flex items-center gap-1.5 font-bold text-amber-400">
+                    <span className="rounded bg-amber-500/20 px-1.5 py-0.5 text-[10px] uppercase tracking-wider border border-amber-500/40">Coming</span>
+                    <span>Upcoming Companion</span>
+                  </div>
+                  <p className="mt-1 text-[11px] text-amber-300 font-bold tracking-wider">
+                    ***Spoiler***
+                  </p>
+                  {isAdmin && buddy.status_reason && (
+                    <p className="mt-1 text-[10px] text-mh-slate-400">
+                      <span className="font-semibold text-mh-slate-300">Admin note:</span> {buddy.status_reason}
+                    </p>
+                  )}
+                </div>
               )}
             </div>
           </div>

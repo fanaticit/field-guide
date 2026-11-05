@@ -18,6 +18,8 @@ import {
   Trash2,
   ChevronRight,
   Crosshair,
+  Hammer,
+  Check,
 } from 'lucide-react';
 import {
   type DBWeapon,
@@ -75,6 +77,10 @@ interface Props {
   onClose: () => void;
   challenge?: HunterChallenge;
   onOpenLogin: () => void;
+  isCrafted?: boolean;
+  craftedRarity?: number | null;
+  onSetCraftedRarity?: (weaponId: string, rarity: number) => void;
+  onRemoveCrafted?: (weaponId: string) => void;
 }
 
 export default function WeaponModal({
@@ -83,6 +89,10 @@ export default function WeaponModal({
   onClose,
   challenge,
   onOpenLogin,
+  isCrafted: isCraftedProp,
+  craftedRarity,
+  onSetCraftedRarity,
+  onRemoveCrafted,
 }: Props) {
   const { user } = useAuthStore();
   const { data: monsters = [] } = useAdminMonsters({ isActive: true });
@@ -118,6 +128,8 @@ export default function WeaponModal({
   const isCompleted = challenge?.status === 'completed';
   const isCrafted = (challenge?.current_rarity ?? 0) > 0;
   const currentRarity = challenge?.current_rarity ?? 0;
+  const isUserCrafted = Boolean(craftedRarity || isCraftedProp);
+  const activeCraftedRarity = craftedRarity ?? (challenge && challenge.current_rarity > 0 ? challenge.current_rarity : null);
   const maxR = challenge?.max_rarity ?? weapon.max_rarity;
   // Every rarity the weapon can have, from the one it starts at to its max
   const rarityRange = Array.from({ length: Math.max(1, weapon.max_rarity - weapon.rarity + 1) }, (_, i) => weapon.rarity + i);
@@ -218,10 +230,10 @@ export default function WeaponModal({
             <span
               className={cn(
                 'rounded-lg px-2.5 py-1 text-xs font-bold border font-mono shadow-sm',
-                getRarityBadgeStyle(weapon.rarity || 1).badge,
+                getRarityBadgeStyle(activeCraftedRarity ?? weapon.rarity ?? 1).badge,
               )}
             >
-              {getRarityBadgeStyle(weapon.rarity || 1).label}
+              {activeCraftedRarity ? `✓ R${activeCraftedRarity} Crafted` : getRarityBadgeStyle(weapon.rarity || 1).label}
             </span>
 
             <span className="rounded-lg bg-mh-slate-900/90 border border-mh-slate-700/80 px-2.5 py-1 text-xs font-bold text-mh-slate-200 shadow-sm">
@@ -328,6 +340,61 @@ export default function WeaponModal({
 
           {/* Scrollable Content Body */}
           <div className="flex-1 overflow-y-auto p-6 space-y-5">
+            {/* ── User Weapon Crafting Status & Level Tracker ── */}
+            <div className="rounded-2xl border border-mh-slate-700 bg-mh-slate-950/80 p-5 space-y-3 shadow-md">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Hammer size={18} className="text-mh-gold-400" />
+                  <h3 className="font-display text-sm font-bold text-mh-slate-100 uppercase tracking-wider">
+                    Crafting Status &amp; Level
+                  </h3>
+                </div>
+                {isUserCrafted && activeCraftedRarity && (
+                  <div className="flex items-center gap-2">
+                    <span className={cn('rounded px-2.5 py-0.5 text-xs font-bold border font-mono', getRarityBadgeStyle(activeCraftedRarity).badge)}>
+                      ✓ Crafted R{activeCraftedRarity}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => onRemoveCrafted?.(weapon.id)}
+                      title="Mark as uncrafted"
+                      className="p-1.5 rounded-lg text-mh-slate-400 hover:text-rose-400 hover:bg-mh-slate-800 transition-colors"
+                    >
+                      <Trash2 size={15} />
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-xs text-mh-slate-400">
+                  Track whether you have crafted this weapon and select your current upgrade rarity:
+                </p>
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {rarityRange.map((r) => {
+                    const rStyle = getRarityBadgeStyle(r);
+                    const isSelected = activeCraftedRarity === r;
+                    return (
+                      <button
+                        key={r}
+                        type="button"
+                        onClick={() => onSetCraftedRarity?.(weapon.id, r)}
+                        className={cn(
+                          'flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold transition-all border shadow-sm',
+                          isSelected
+                            ? cn(rStyle.badge, 'ring-2 ring-white/60 shadow-md scale-105')
+                            : 'border-mh-slate-750 bg-mh-slate-900 text-mh-slate-300 hover:border-mh-gold-400 hover:text-white',
+                        )}
+                      >
+                        <span className="font-mono">{rStyle.label}</span>
+                        {isSelected && <Check size={13} className="stroke-[3]" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
             {/* ── Personal Hunter's Challenge Card ── */}
             <div className="rounded-2xl border border-yellow-500/30 bg-gradient-to-br from-yellow-500/10 via-mh-slate-900 to-mh-slate-950 p-5 space-y-4 shadow-lg">
               <div className="flex items-center justify-between">
@@ -587,7 +654,13 @@ export default function WeaponModal({
                 </div>
                 <div className="rounded-lg border border-mh-slate-750 bg-mh-slate-900 p-2">
                   <div className="text-[10px] uppercase text-mh-slate-500">Affinity</div>
-                  <div className="font-mono text-sm font-bold text-mh-slate-100">{weapon.affinity ?? '—'}</div>
+                  <div className="font-mono text-sm font-bold text-mh-slate-100">
+                    {weapon.affinity !== null && weapon.affinity !== undefined
+                      ? weapon.affinity === 0
+                        ? '0%'
+                        : `${weapon.affinity > 0 ? '+' : ''}${weapon.affinity / 100}%`
+                      : '—'}
+                  </div>
                 </div>
                 <div className="rounded-lg border border-mh-slate-750 bg-mh-slate-900 p-2">
                   <div className="text-[10px] uppercase text-mh-slate-500">{elemCfg.label}</div>
@@ -692,20 +765,6 @@ export default function WeaponModal({
                 </p>
               </div>
             )}
-          </div>
-
-          {/* Footer */}
-          <div className="border-t border-mh-slate-750 bg-mh-slate-950/90 px-6 py-4 flex items-center justify-between">
-            <p className="font-mono text-[11px] text-mh-slate-500">
-              ID: {weapon.id}
-            </p>
-            <button
-              type="button"
-              onClick={onClose}
-              className="rounded-xl bg-mh-slate-800 px-4 py-2 text-xs font-bold text-mh-slate-200 hover:bg-mh-slate-750 hover:text-white transition-colors"
-            >
-              Close
-            </button>
           </div>
         </div>
       </div>

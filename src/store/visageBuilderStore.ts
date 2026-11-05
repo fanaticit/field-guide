@@ -57,7 +57,8 @@ export const useVisageBuilderStore = create<VisageBuilderState>((set, get) => ({
   sourceMode: 'mine',
   dirty: false,
 
-  setSlot: (slot, visage, ink) =>
+  setSlot: (slot, visage, ink) => {
+    if (visage && (visage.is_spoiler || visage.status === 'not_in_game')) return;
     set((s) => ({
       dirty: true,
       loadout: {
@@ -67,7 +68,8 @@ export const useVisageBuilderStore = create<VisageBuilderState>((set, get) => ({
           ink: visage ? normalizeInk(ink ?? visage.ink_types?.[0]) : null,
         },
       },
-    })),
+    }));
+  },
 
   setSlotInk: (slot, ink) =>
     set((s) => ({
@@ -76,6 +78,7 @@ export const useVisageBuilderStore = create<VisageBuilderState>((set, get) => ({
     })),
 
   addCard: (visage, ink) => {
+    if (visage.is_spoiler || visage.status === 'not_in_game') return null;
     const slot = firstEmptySlot(get().loadout);
     if (!slot) return null;
     get().setSlot(slot, visage, ink);

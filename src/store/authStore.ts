@@ -21,7 +21,7 @@ const pageToPath: Record<string, string> = {
   'adventurers': '/challenges/adventurers',
   'buddies': '/challenges/buddies',
   'weapons': '/challenges/weapons',
-  'admin': '/admin/monsters',
+  'admin': '/admin/feedback',
   'settings': '/settings',
   'profile': '/settings',
   'community-hub': '/armory',

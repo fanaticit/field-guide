@@ -88,6 +88,8 @@ export const buddyTierBorder = (tier: BuddyTier, strong = true) =>
   adventurerRarityBorder(BUDDY_TIER_RARITY[tier], strong);
 export const BUDDY_ROLES: BuddyRole[] = ['Assault', 'Disruptor', 'Support'];
 
+export type BuddyStatus = 'in_game' | 'not_in_game';
+
 export interface DBBuddy {
   id: string;
   name: string;
@@ -97,6 +99,14 @@ export interface DBBuddy {
   core_passive: string | null;
   image: string | null;
   is_active: boolean;
+  /** Only shown to users who turned on "Show spoilers" */
+  is_spoiler: boolean;
+  /** Whether the companion is currently available in the game */
+  status: BuddyStatus;
+  /** Why the buddy is not in the game (only set when status is 'not_in_game') */
+  status_reason?: string | null;
+  /** Debug or test item */
+  is_debug?: boolean;
   notes: string | null;
   /** Companion type, e.g. Felyne, Trillan or Rutaco. */
   species?: string | null;

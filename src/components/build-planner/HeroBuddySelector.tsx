@@ -14,7 +14,12 @@ export function HeroBuddySelector() {
   const { data: adventurers } = useQuery({
     queryKey: ['adventurers'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('adventurers').select('*').eq('is_active', true).order('sort_order');
+      const { data, error } = await supabase
+        .from('adventurers')
+        .select('*')
+        .eq('is_active', true)
+        .eq('is_spoiler', false)
+        .order('sort_order');
       if (error) throw error;
       return data as Adventurer[];
     }
@@ -32,7 +37,11 @@ export function HeroBuddySelector() {
   const { data: buddies } = useQuery({
     queryKey: ['buddies'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('buddies').select('*').eq('is_active', true);
+      const { data, error } = await supabase
+        .from('buddies')
+        .select('*')
+        .eq('is_active', true)
+        .eq('is_spoiler', false);
       if (error) throw error;
       return data as Buddy[];
     }

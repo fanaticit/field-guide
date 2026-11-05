@@ -86,6 +86,9 @@ export interface DBArmourPiece {
   skills: ArmourSkill[];
   deco_slots: number[];
   set_bonus: ArmourSetBonus | null;
+  status: 'in_game' | 'not_in_game';
+  status_reason: string | null;
+  is_spoiler: boolean;
   notes: string | null;
   is_active: boolean;
 }
@@ -284,6 +287,9 @@ export interface GroupedArmourSet {
   distinctUnlockRarities: number[];
   maxRarity: number;
   setBonus: ArmourSetBonus | null;
+  status: 'in_game' | 'not_in_game';
+  statusReason: string | null;
+  isSpoiler: boolean;
 }
 
 export interface ExampleBuildItem {
@@ -337,15 +343,19 @@ export default function ArmourGuide() {
   // Mobile detail popup modal state
   const [isMobileDetailOpen, setIsMobileDetailOpen] = useState(false);
 
+  // ── Challenge tracking & Auth ─────────────────────────────────
+  const { user, profile } = useAuthStore();
+  const showSpoilers = Boolean(profile?.show_spoilers);
+
   // Queries
-  const { data: rawPieces = [], isLoading: isLoadingRaw } = useArmourPieces();
+  const { data: rawPieces = [], isLoading: isLoadingRaw } = useArmourPieces({
+    isActive: true,
+    showSpoilers,
+  });
   const { data: upgradeTiers = [], isLoading: isLoadingTiers } = useAllArmourUpgradeTiers();
   const isLoadingPieces = isLoadingRaw || isLoadingTiers;
   const { data: monsters = [] } = useAdminMonsters({ game, isActive: true });
   const { data: dbSkills = [] } = useAdminSkills({ isActive: true, isSetBonus: false });
-
-  // ── Challenge tracking & Auth ─────────────────────────────────
-  const { user, profile } = useAuthStore();
   const { data: challenges = [] } = useHunterChallenges(user?.id);
   const addChallenge = useAddArmourChallenge();
   const navigate = useNavigate();
@@ -438,6 +448,9 @@ export default function ArmourGuide() {
           skills,
           deco_slots: p.deco_slots,
           set_bonus: p.set_bonus,
+          status: p.status,
+          status_reason: p.status_reason,
+          is_spoiler: p.is_spoiler,
           notes: p.notes,
           is_active: p.is_active,
         };
@@ -534,10 +547,14 @@ export default function ArmourGuide() {
       maxRarity: number;
       setBonus: ArmourSetBonus | null;
       pieces: Partial<Record<ArmourSlot, DBArmourPiece>>;
+      isSpoiler: boolean;
+      status: 'in_game' | 'not_in_game';
+      statusReason: string | null;
     }>();
 
     for (const p of pieces) {
       if (!p.is_active) continue;
+      if (p.is_spoiler && !showSpoilers) continue;
       const monsterId = p.monster_id;
       const setVariant = p.set_variant || 'I';
       const key = `${p.set_name ?? monsterId}:${setVariant}`;
@@ -552,6 +569,9 @@ export default function ArmourGuide() {
           maxRarity: p.max_rarity,
           setBonus: p.set_bonus,
           pieces: {},
+          isSpoiler: p.is_spoiler,
+          status: p.status,
+          statusReason: p.status_reason,
         });
       }
 
@@ -562,6 +582,9 @@ export default function ArmourGuide() {
       if (p.rarity && p.rarity > grp.rarity) grp.rarity = p.rarity;
       if (p.max_rarity > grp.maxRarity) grp.maxRarity = p.max_rarity;
       if (p.set_bonus && !grp.setBonus) grp.setBonus = p.set_bonus;
+      if (p.is_spoiler) grp.isSpoiler = true;
+      if (p.status === 'not_in_game') grp.status = 'not_in_game';
+      if (p.status_reason && !grp.statusReason) grp.statusReason = p.status_reason;
     }
 
     const result: GroupedArmourSet[] = [];
@@ -616,6 +639,9 @@ export default function ArmourGuide() {
         distinctUnlockRarities,
         maxRarity,
         setBonus: grp.setBonus,
+        status: grp.status,
+        statusReason: grp.statusReason,
+        isSpoiler: grp.isSpoiler,
       });
     }
 
@@ -628,7 +654,7 @@ export default function ArmourGuide() {
     });
 
     return result;
-  }, [pieces, monstersMap]);
+  }, [pieces, monstersMap, showSpoilers]);
 
   // Pre-fill the example build with whatever armour the hunter already has in the Build Planner
   const seededFromPlannerRef = useRef(false);
@@ -1153,6 +1179,21 @@ export default function ArmourGuide() {
                       )}
                     >
                       {rStyle.label}
+                    </span>
+                  );
+                })()}
+                {(() => {
+                  const isComing = selectedSlot === null
+                    ? (currentSet.status !== 'in_game' || currentSet.isSpoiler)
+                    : (currentPiece?.status !== 'in_game' || currentPiece?.is_spoiler);
+                  const reason = selectedSlot === null ? currentSet.statusReason : currentPiece?.status_reason;
+                  if (!isComing) return null;
+                  return (
+                    <span
+                      className="rounded border border-amber-500/40 bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold uppercase text-amber-300"
+                      title={reason ?? 'Coming'}
+                    >
+                      Coming{reason ? ` — ${reason}` : ''}
                     </span>
                   );
                 })()}
@@ -2313,6 +2354,14 @@ export default function ArmourGuide() {
                             </span>
                           );
                         })()}
+                        {(set.status !== 'in_game' || set.isSpoiler) && (
+                          <span
+                            className="rounded border border-amber-500/40 bg-amber-500/15 px-1.5 py-0.2 text-[9px] font-bold uppercase text-amber-300 shrink-0 font-mono"
+                            title={set.statusReason ?? 'Coming'}
+                          >
+                            Coming
+                          </span>
+                        )}
                       </div>
 
                       <span className="text-[11px] font-medium text-mh-slate-400 truncate">
@@ -2372,7 +2421,15 @@ export default function ArmourGuide() {
                               type="button"
                               disabled={!hasPiece}
                               onClick={() => handleSelectSet(set.id, slotDef.id, true)}
-                              title={piece ? `${set.displayName} ${slotDef.label} (Click to inspect)` : `No ${slotDef.label}`}
+                              title={
+                                piece
+                                  ? `${set.displayName} ${slotDef.label}${
+                                      piece.status !== 'in_game' || piece.is_spoiler
+                                        ? ` [Coming${piece.status_reason ? `: ${piece.status_reason}` : ''}]`
+                                        : ''
+                                    } (Click to inspect)`
+                                  : `No ${slotDef.label}`
+                              }
                               className={cn(
                                 'group relative h-full w-full flex flex-col items-center justify-center rounded-xl border p-1 transition-all',
                                 !hasPiece && 'opacity-30 border-mh-slate-800 bg-mh-slate-950/30 cursor-not-allowed',
@@ -2384,7 +2441,7 @@ export default function ArmourGuide() {
                                   matchTheme.ring,
                                   'shadow-sm',
                                   matchTheme.hoverBg,
-                                ),
+                                  ),
                                 isPieceActive && 'border-mh-gold-400 bg-mh-gold-500/20 ring-2 ring-mh-gold-400/50 shadow-sm',
                               )}
                             >
@@ -2424,6 +2481,16 @@ export default function ArmourGuide() {
                                   className={cn('absolute -top-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full text-white shadow', matchTheme.badge)}
                                 >
                                   <Sparkles size={8} />
+                                </span>
+                              )}
+
+                              {/* Coming Indicator */}
+                              {piece && (piece.status !== 'in_game' || piece.is_spoiler) && !isSkillMatch && (
+                                <span
+                                  title={piece.status_reason ?? 'Coming'}
+                                  className="absolute -top-1 -right-1 rounded border border-amber-500/50 bg-amber-500 px-1 py-0.2 text-[8px] font-bold uppercase text-slate-950 shadow"
+                                >
+                                  Coming
                                 </span>
                               )}
 

@@ -25,6 +25,7 @@ import { WEAPON_TYPES } from '../../../data/core/weapon-types';
 import {
   useAdminAdventurers,
   useToggleAdventurerActive,
+  useToggleAdventurerSpoiler,
 } from '../../../hooks/useAdminAdventurers';
 import AdventurerEditModal from './AdventurerEditModal';
 import AdventurerRarityBadge from '../../investigation-notes/AdventurerRarityBadge';
@@ -65,12 +66,36 @@ function ActiveToggle({ adventurer }: { adventurer: DBAdventurer }) {
   );
 }
 
+function SpoilerToggle({ adventurer }: { adventurer: DBAdventurer }) {
+  const toggle = useToggleAdventurerSpoiler();
+
+  return (
+    <button
+      type="button"
+      onClick={() => toggle.mutate({ id: adventurer.id, isSpoiler: !adventurer.is_spoiler })}
+      disabled={toggle.isPending}
+      title={adventurer.is_spoiler ? 'Marked as spoiler — click to unmark' : 'Not a spoiler — click to mark as spoiler'}
+      className={cn(
+        'relative inline-flex h-4 w-7 shrink-0 rounded-full transition-colors duration-200',
+        adventurer.is_spoiler ? 'bg-amber-500' : 'bg-mh-slate-700',
+      )}
+    >
+      <span
+        className={cn(
+          'absolute top-0.5 h-3 w-3 rounded-full bg-white shadow transition-transform duration-200',
+          adventurer.is_spoiler ? 'translate-x-3.5' : 'translate-x-0.5',
+        )}
+      />
+    </button>
+  );
+}
+
 export default function AdventurerManager() {
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [search, setSearch] = useState('');
   const [filterRole, setFilterRole] = useState<string>('');
   const [filterElement, setFilterElement] = useState<string>('');
-  const [filterActive, setFilterActive] = useState<'' | 'active' | 'inactive'>('');
+  const [filterVisibility, setFilterVisibility] = useState<'' | 'active' | 'inactive' | 'spoiler'>('');
   const [sortKey, setSortKey] = useState<SortKey>('order');
   const [sortDir, setSortDir] = useState<SortDir>('asc');
 
@@ -106,10 +131,12 @@ export default function AdventurerManager() {
       list = list.filter((a) => a.element_specialization === filterElement);
     }
 
-    if (filterActive === 'active') {
+    if (filterVisibility === 'active') {
       list = list.filter((a) => a.is_active);
-    } else if (filterActive === 'inactive') {
+    } else if (filterVisibility === 'inactive') {
       list = list.filter((a) => !a.is_active);
+    } else if (filterVisibility === 'spoiler') {
+      list = list.filter((a) => a.is_spoiler);
     }
 
     list.sort((a, b) => {
@@ -132,7 +159,7 @@ export default function AdventurerManager() {
     });
 
     return list;
-  }, [adventurers, search, filterRole, filterElement, filterActive, sortKey, sortDir]);
+  }, [adventurers, search, filterRole, filterElement, filterVisibility, sortKey, sortDir]);
 
   function handleSort(key: SortKey) {
     if (sortKey === key) {
@@ -248,15 +275,16 @@ export default function AdventurerManager() {
             ))}
           </select>
 
-          {/* Active Filter */}
+          {/* Visibility / Status Filter */}
           <select
-            value={filterActive}
-            onChange={(e) => setFilterActive(e.target.value as '' | 'active' | 'inactive')}
+            value={filterVisibility}
+            onChange={(e) => setFilterVisibility(e.target.value as '' | 'active' | 'inactive' | 'spoiler')}
             className="rounded-xl border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-xs text-mh-slate-300 focus:border-mh-gold-500/50 focus:outline-none"
           >
-            <option value="">All Status</option>
+            <option value="">All Visibility</option>
             <option value="active">Active only</option>
             <option value="inactive">Inactive only</option>
+            <option value="spoiler">Spoilers only</option>
           </select>
         </div>
 
@@ -348,7 +376,13 @@ export default function AdventurerManager() {
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <ActiveToggle adventurer={adventurer} />
+                      <div className="flex items-center gap-1" title={adventurer.is_active ? 'Active in Field Guide' : 'Inactive in Field Guide'}>
+                        <ActiveToggle adventurer={adventurer} />
+                      </div>
+                      <div className="flex items-center gap-1" title={adventurer.is_spoiler ? 'Marked as spoiler' : 'Not a spoiler'}>
+                        <span className="text-[10px] text-amber-400 font-bold">Spoiler</span>
+                        <SpoilerToggle adventurer={adventurer} />
+                      </div>
                       <button
                         type="button"
                         onClick={() => setEditAdventurer(adventurer)}
@@ -407,6 +441,24 @@ export default function AdventurerManager() {
                       {adventurer.description}
                     </p>
                   )}
+
+                  {/* Game Status & Reason */}
+                  <div className="mt-2.5 rounded-lg border border-mh-slate-750 bg-mh-slate-900/60 p-2 text-[11px]">
+                    <div className="flex items-center justify-between">
+                      <span className="text-mh-slate-400 font-medium">Game Status:</span>
+                      {adventurer.status === 'in_game' ? (
+                        <span className="text-emerald-400 font-semibold">In game</span>
+                      ) : (
+                        <span className="text-amber-400 font-semibold">Not in game</span>
+                      )}
+                    </div>
+                    {adventurer.status_reason && (
+                      <p className="mt-1 text-[10px] text-amber-300/90 leading-tight">
+                        <span className="text-mh-slate-400 font-medium">Reason: </span>
+                        {adventurer.status_reason}
+                      </p>
+                    )}
+                  </div>
                 </div>
 
                 <div className="mt-3 pt-2.5 border-t border-mh-slate-800 flex items-center justify-between text-[11px] text-mh-slate-500">
@@ -441,6 +493,8 @@ export default function AdventurerManager() {
                 </th>
                 <th className="px-4 py-3 text-center">Default</th>
                 <th className="px-4 py-3 text-center">Active</th>
+                <th className="px-4 py-3 text-center">Spoiler</th>
+                <th className="px-4 py-3">Game Status</th>
                 <th className="px-4 py-3 text-right">Actions</th>
               </tr>
             </thead>
@@ -497,6 +551,18 @@ export default function AdventurerManager() {
                     </td>
                     <td className="px-4 py-3 text-center">
                       <ActiveToggle adventurer={adventurer} />
+                    </td>
+                    <td className="px-4 py-3 text-center">
+                      <SpoilerToggle adventurer={adventurer} />
+                    </td>
+                    <td className="px-4 py-3 text-[11px]">
+                      {adventurer.status === 'in_game' ? (
+                        <span className="text-emerald-400 font-medium">In game</span>
+                      ) : (
+                        <span className="text-amber-400 font-medium" title={adventurer.status_reason ?? undefined}>
+                          Not in game{adventurer.status_reason ? ` — ${adventurer.status_reason}` : ''}
+                        </span>
+                      )}
                     </td>
                     <td className="px-4 py-3 text-right">
                       <button

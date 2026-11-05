@@ -207,7 +207,6 @@ export function EquipmentSelector() {
   const profile = useAuthStore((st) => st.profile);
   const catalog = useBuildPlannerStore((st) => st.skillCatalog);
   const gender = profile?.equipment_gender ?? 'male';
-  const showSpoilers = Boolean(profile?.show_spoilers);
 
   const navigate = useNavigate();
   const isReady = !!adventurer;
@@ -217,16 +216,15 @@ export function EquipmentSelector() {
     : adventurer?.allowed_weapon_types?.[0];
 
   const { data: weapons, isLoading: isWepLoading } = useQuery({
-    queryKey: ['weapons', activeWeaponTypeId, showSpoilers],
+    queryKey: ['weapons', activeWeaponTypeId],
     queryFn: async () => {
       let q = supabase
         .from('weapons')
         .select('*')
         .eq('weapon_type_id', activeWeaponTypeId)
         .eq('is_active', true)
+        .eq('is_spoiler', false)
         .limit(1000);
-      // Spoiler weapons only for hunters who turned on "Show spoilers"
-      if (!showSpoilers) q = q.eq('is_spoiler', false);
       const { data, error } = await q;
       if (error) throw error;
       return data as Weapon[];
@@ -238,11 +236,12 @@ export function EquipmentSelector() {
   const { data: armours, isLoading: isArmourLoading } = useQuery({
     queryKey: ['armours_mho'],
     queryFn: async () => {
-      // 1. Fetch the armour pieces
+      // 1. Fetch the armour pieces (never show spoiler items in planner)
       const { data: armourData, error: armourError } = await supabase
         .from('armour_pieces')
         .select('*')
         .eq('is_active', true)
+        .eq('is_spoiler', false)
         .limit(1000);
       if (armourError) throw armourError;
 

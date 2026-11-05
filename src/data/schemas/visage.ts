@@ -324,6 +324,8 @@ export function chooseBestInk(inkTypes?: string[] | null, weaponElement?: string
   return inkTypes[0];
 }
 
+export type VisageStatus = 'in_game' | 'not_in_game';
+
 export interface DBVisage {
   id: string;
   name: string;
@@ -339,6 +341,9 @@ export interface DBVisage {
   monster_icon?: string | null;
   /** Inherent / Core Effect of this Visage card */
   core_effect: string | null;
+  status: VisageStatus;
+  status_reason: string | null;
+  is_spoiler: boolean;
   is_active: boolean;
   notes: string | null;
   sort_order: number;
@@ -359,6 +364,9 @@ export function normalizeVisageRow(row: Record<string, unknown>): DBVisage {
     points: typeof rest.points === 'number' ? rest.points : 1,
     max_levels: Array.isArray(rest.max_levels) ? (rest.max_levels as number[]) : [],
     ink_types: (Array.isArray(rest.ink_types) ? rest.ink_types : []) as InkType[],
+    status: ((rest.status as string) || 'in_game') as VisageStatus,
+    status_reason: (rest.status_reason as string) || null,
+    is_spoiler: Boolean(rest.is_spoiler),
     is_active: Boolean(rest.is_active),
     monster_icon: monster?.icon ?? null,
   } as DBVisage;

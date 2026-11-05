@@ -121,12 +121,22 @@ export default function BuddyCard({
         <div className="min-w-0 flex-1 flex flex-col gap-2">
           {/* Name & Japanese Subtitle */}
           <div>
-            <h3 className={cn(
-              'font-display text-base font-bold leading-tight transition-colors line-clamp-1',
-              isOwned ? 'text-mh-slate-100 group-hover:text-mh-gold-300' : 'text-mh-slate-200 group-hover:text-mh-gold-300',
-            )}>
-              {buddy.name}
-            </h3>
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <h3 className={cn(
+                'font-display text-base font-bold leading-tight transition-colors line-clamp-1',
+                isOwned ? 'text-mh-slate-100 group-hover:text-mh-gold-300' : 'text-mh-slate-200 group-hover:text-mh-gold-300',
+              )}>
+                {buddy.name}
+              </h3>
+              {(buddy.status === 'not_in_game' || buddy.is_spoiler) && (
+                <span
+                  className="rounded bg-amber-500/20 border border-amber-500/40 px-1.5 py-0.2 text-[9px] font-bold text-amber-300 uppercase tracking-wider"
+                  title="***Spoiler***"
+                >
+                  Coming
+                </span>
+              )}
+            </div>
             {buddy.name_ja && (
               <p className="text-[11px] text-mh-slate-500 font-medium truncate">
                 {buddy.name_ja}
@@ -158,6 +168,15 @@ export default function BuddyCard({
               <RoleIcon size={12} />
               <span>{buddy.role}</span>
             </span>
+
+            {(buddy.status === 'not_in_game' || buddy.is_spoiler) && (
+              <span
+                className="inline-flex items-center gap-1 rounded-lg px-2 py-0.5 text-xs font-bold border border-amber-500/50 bg-amber-500/20 text-amber-300 shadow-xs"
+                title="***Spoiler***"
+              >
+                <span>Coming</span>
+              </span>
+            )}
           </div>
 
           {/* Action Buttons Row */}

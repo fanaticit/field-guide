@@ -22,6 +22,7 @@ import {
 import {
   useAdminVisages,
   useToggleVisageActive,
+  useToggleVisageSpoiler,
   useDeleteVisage,
 } from '../../../hooks/useAdminVisages';
 import { useAdminSkills } from '../../../hooks/useAdminSkills';
@@ -39,7 +40,7 @@ function ActiveToggle({ visage }: { visage: DBVisage }) {
     <button
       onClick={() => toggle.mutate({ id: visage.id, isActive: !visage.is_active })}
       disabled={toggle.isPending}
-      title={visage.is_active ? 'Deactivate' : 'Activate'}
+      title={visage.is_active ? 'Active — click to deactivate' : 'Inactive — click to activate'}
       className={cn(
         'relative inline-flex h-5 w-9 shrink-0 rounded-full transition-colors duration-200',
         visage.is_active ? 'bg-green-500' : 'bg-mh-slate-700',
@@ -56,12 +57,36 @@ function ActiveToggle({ visage }: { visage: DBVisage }) {
   );
 }
 
+function SpoilerToggle({ visage }: { visage: DBVisage }) {
+  const toggle = useToggleVisageSpoiler();
+  return (
+    <button
+      onClick={() => toggle.mutate({ id: visage.id, isSpoiler: !visage.is_spoiler })}
+      disabled={toggle.isPending}
+      title={visage.is_spoiler ? 'Marked as spoiler — click to unmark' : 'Not a spoiler — click to mark as spoiler'}
+      className={cn(
+        'relative inline-flex h-5 w-9 shrink-0 rounded-full transition-colors duration-200',
+        visage.is_spoiler ? 'bg-amber-500' : 'bg-mh-slate-700',
+        toggle.isPending && 'opacity-50',
+      )}
+    >
+      <span
+        className={cn(
+          'absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform duration-200',
+          visage.is_spoiler ? 'translate-x-[18px]' : 'translate-x-0.5',
+        )}
+      />
+    </button>
+  );
+}
+
 export default function VisageManager() {
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [search, setSearch] = useState('');
   const [filterInk, setFilterInk] = useState('');
   const [filterMonsterType, setFilterMonsterType] = useState('');
-  const [filterActive, setFilterActive] = useState<'' | 'active' | 'inactive'>('');
+  const [filterVisibility, setFilterVisibility] = useState<'' | 'visible' | 'hidden' | 'spoiler'>('');
+  const [filterStatus, setFilterStatus] = useState<string>('');
   const [sortKey, setSortKey] = useState<SortKey>('name');
   const [sortDir, setSortDir] = useState<SortDir>('asc');
   const [editVisage, setEditVisage] = useState<DBVisage | null | 'new'>(null);
@@ -129,8 +154,13 @@ export default function VisageManager() {
       list = list.filter((v) => v.monster_type === filterMonsterType);
     }
 
-    if (filterActive === 'active') list = list.filter((v) => v.is_active);
-    if (filterActive === 'inactive') list = list.filter((v) => !v.is_active);
+    if (filterVisibility === 'visible') list = list.filter((v) => v.is_active && !v.is_spoiler);
+    if (filterVisibility === 'hidden') list = list.filter((v) => !v.is_active);
+    if (filterVisibility === 'spoiler') list = list.filter((v) => v.is_spoiler);
+
+    if (filterStatus) {
+      list = list.filter((v) => v.status === filterStatus);
+    }
 
     list.sort((a, b) => {
       let av: string | number = '';
@@ -153,10 +183,11 @@ export default function VisageManager() {
     });
 
     return list;
-  }, [visages, search, filterInk, filterMonsterType, filterActive, sortKey, sortDir]);
+  }, [visages, search, filterInk, filterMonsterType, filterVisibility, filterStatus, sortKey, sortDir]);
 
   const activeCount = visages.filter((v) => v.is_active).length;
   const inactiveCount = visages.length - activeCount;
+  const spoilerCount = visages.filter((v) => v.is_spoiler).length;
 
   return (
     <div className="flex h-full flex-col">
@@ -173,6 +204,11 @@ export default function VisageManager() {
             {inactiveCount > 0 && (
               <span className="text-mh-slate-600">
                 <span className="font-semibold">{inactiveCount}</span> inactive
+              </span>
+            )}
+            {spoilerCount > 0 && (
+              <span className="text-amber-400">
+                <span className="font-semibold">{spoilerCount}</span> spoilers
               </span>
             )}
             {filtered.length !== visages.length && (
@@ -255,13 +291,24 @@ export default function VisageManager() {
           </select>
 
           <select
-            value={filterActive}
-            onChange={(e) => setFilterActive(e.target.value as '' | 'active' | 'inactive')}
+            value={filterVisibility}
+            onChange={(e) => setFilterVisibility(e.target.value as '' | 'visible' | 'hidden' | 'spoiler')}
             className="rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-300 outline-none"
           >
-            <option value="">All Status</option>
-            <option value="active">Active only</option>
-            <option value="inactive">Inactive only</option>
+            <option value="">All Visibility</option>
+            <option value="visible">Visible only</option>
+            <option value="hidden">Hidden only</option>
+            <option value="spoiler">Spoilers only</option>
+          </select>
+
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+            className="rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-300 outline-none"
+          >
+            <option value="">All Game Status</option>
+            <option value="in_game">In Game</option>
+            <option value="not_in_game">Not In Game</option>
           </select>
 
           <select
@@ -338,6 +385,7 @@ export default function VisageManager() {
 
                     <div className="flex items-center gap-1.5">
                       <ActiveToggle visage={visage} />
+                      <SpoilerToggle visage={visage} />
                       <button
                         onClick={() => setEditVisage(visage)}
                         title="Edit Visage"
@@ -353,7 +401,7 @@ export default function VisageManager() {
                     <VisageIcon visage={visage} rarity={DEFAULT_VISAGE_RARITY} className="h-16 w-16 shrink-0" />
 
                     <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-1.5">
+                      <div className="flex items-center gap-1.5 flex-wrap">
                         <h3 className="font-display text-sm font-bold text-mh-slate-100 group-hover:text-mh-gold-400 transition-colors truncate">
                           {visage.name}
                         </h3>
@@ -362,10 +410,23 @@ export default function VisageManager() {
                             ({visage.name_ja})
                           </span>
                         )}
+                        {(visage.status === 'not_in_game' || visage.is_spoiler) && (
+                          <span
+                            className="rounded px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider border border-amber-500/40 bg-amber-500/15 text-amber-300"
+                            title={visage.status_reason || 'Spoiler / Upcoming'}
+                          >
+                            Coming
+                          </span>
+                        )}
                       </div>
                       <p className="font-mono text-[10px] text-mh-slate-500 truncate">
                         {visage.id}
                       </p>
+                      {visage.status === 'not_in_game' && (
+                        <p className="mt-1 text-[10px] text-amber-400/90 truncate" title={visage.status_reason || undefined}>
+                          {visage.status_reason ? `Not in game: ${visage.status_reason}` : 'Not in game'}
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -416,11 +477,13 @@ export default function VisageManager() {
               <thead className="border-b border-mh-slate-700 bg-mh-slate-850 text-[11px] font-semibold uppercase tracking-wider text-mh-slate-400">
                 <tr>
                   <th className="px-4 py-3 w-10">Active</th>
+                  <th className="px-4 py-3 w-10">Spoiler</th>
                   <th className="px-4 py-3 min-w-[200px]">Visage Card</th>
                   <th className="px-4 py-3 w-28">Type</th>
                   <th className="px-4 py-3 w-20">Points</th>
                   <th className="px-4 py-3 min-w-[180px]">Possible Inks</th>
                   <th className="px-4 py-3 min-w-[200px]">Core Effect</th>
+                  <th className="px-4 py-3 min-w-[140px]">Release Status</th>
                   <th className="px-4 py-3 w-20 text-right">Actions</th>
                 </tr>
               </thead>
@@ -438,17 +501,31 @@ export default function VisageManager() {
                     </td>
 
                     <td className="px-4 py-3">
+                      <SpoilerToggle visage={visage} />
+                    </td>
+
+                    <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
                         <VisageIcon visage={visage} rarity={DEFAULT_VISAGE_RARITY} className="h-10 w-10 shrink-0" />
                         <div>
-                          <span className="font-semibold text-mh-slate-100">
-                            {visage.name}
-                          </span>
-                          {visage.name_ja && (
-                            <span className="ml-1 text-[11px] text-mh-slate-500">
-                              ({visage.name_ja})
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="font-semibold text-mh-slate-100">
+                              {visage.name}
                             </span>
-                          )}
+                            {visage.name_ja && (
+                              <span className="text-[11px] text-mh-slate-500">
+                                ({visage.name_ja})
+                              </span>
+                            )}
+                            {(visage.status === 'not_in_game' || visage.is_spoiler) && (
+                              <span
+                                className="rounded px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider border border-amber-500/40 bg-amber-500/15 text-amber-300"
+                                title={visage.status_reason || 'Spoiler / Upcoming'}
+                              >
+                                Coming
+                              </span>
+                            )}
+                          </div>
                           <p className="font-mono text-[10px] text-mh-slate-500">
                             {visage.id}
                           </p>
@@ -503,6 +580,16 @@ export default function VisageManager() {
                         </span>
                       ) : (
                         <span className="text-mh-slate-600 text-xs">—</span>
+                      )}
+                    </td>
+
+                    <td className="px-4 py-3 text-[11px]">
+                      {visage.status === 'in_game' ? (
+                        <span className="text-emerald-400 font-semibold">In game</span>
+                      ) : (
+                        <span className="text-amber-400" title={visage.status_reason ?? undefined}>
+                          Not in game{visage.status_reason ? ` — ${visage.status_reason}` : ''}
+                        </span>
                       )}
                     </td>
 

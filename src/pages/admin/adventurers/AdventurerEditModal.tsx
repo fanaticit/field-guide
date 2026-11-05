@@ -17,6 +17,7 @@ import {
   type AdventurerUpsert,
   type AdventurerRole,
   type AdventurerRarity,
+  type AdventurerStatus,
   ADVENTURER_ROLE_CONFIG,
   ADVENTURER_ROLES,
   ADVENTURER_RARITIES,
@@ -262,6 +263,9 @@ export default function AdventurerEditModal({
   const [notes, setNotes] = useState(adventurer?.notes ?? '');
   const [sortOrder, setSortOrder] = useState(adventurer?.sort_order ?? nextSortOrder);
   const [isActive, setIsActive] = useState(adventurer?.is_active ?? true);
+  const [isSpoiler, setIsSpoiler] = useState(adventurer?.is_spoiler ?? false);
+  const [status, setStatus] = useState<AdventurerStatus>(adventurer?.status ?? 'in_game');
+  const [statusReason, setStatusReason] = useState(adventurer?.status_reason ?? '');
 
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -286,6 +290,9 @@ export default function AdventurerEditModal({
       setNotes(adventurer.notes ?? '');
       setSortOrder(adventurer.sort_order);
       setIsActive(adventurer.is_active);
+      setIsSpoiler(adventurer.is_spoiler ?? false);
+      setStatus(adventurer.status ?? 'in_game');
+      setStatusReason(adventurer.status_reason ?? '');
     } else {
       setId('');
       setIdManual(false);
@@ -302,6 +309,9 @@ export default function AdventurerEditModal({
       setNotes('');
       setSortOrder(nextSortOrder);
       setIsActive(true);
+      setIsSpoiler(false);
+      setStatus('in_game');
+      setStatusReason('');
     }
     setConfirmDelete(false);
     setErrorMsg(null);
@@ -347,6 +357,10 @@ export default function AdventurerEditModal({
       notes: notes.trim() || null,
       sort_order: Number(sortOrder) || 0,
       is_active: isActive,
+      is_spoiler: isSpoiler,
+      is_debug: adventurer?.is_debug ?? false,
+      status,
+      status_reason: status === 'in_game' ? null : (statusReason.trim() || null),
       // Only sent when changed, so other edits keep working if the rarity column isn't migrated yet
       ...(rarity !== (adventurer?.rarity ?? null) ? { rarity } : {}),
       // Same for the background image (column added in 20261101000001)
@@ -677,6 +691,59 @@ export default function AdventurerEditModal({
               />
               <div className="h-5 w-9 rounded-full bg-mh-slate-700 after:absolute after:left-[2px] after:top-[2px] after:h-4 after:w-4 after:rounded-full after:bg-white after:transition-all peer-checked:bg-emerald-500 peer-checked:after:translate-x-full peer-checked:after:border-white"></div>
             </label>
+          </div>
+
+          {/* Spoiler Status */}
+          <div className="flex items-center justify-between rounded-xl border border-mh-slate-750 bg-mh-slate-900/60 p-3">
+            <div>
+              <p className="text-xs font-bold text-mh-slate-300">Mark as spoiler</p>
+              <p className="text-[11px] text-mh-slate-500">
+                Only shown to hunters who turned on “Show spoilers” in their profile
+              </p>
+            </div>
+            <label className="relative inline-flex cursor-pointer items-center">
+              <input
+                type="checkbox"
+                checked={isSpoiler}
+                onChange={(e) => setIsSpoiler(e.target.checked)}
+                className="peer sr-only"
+              />
+              <div className="h-5 w-9 rounded-full bg-mh-slate-700 after:absolute after:left-[2px] after:top-[2px] after:h-4 after:w-4 after:rounded-full after:bg-white after:transition-all peer-checked:bg-amber-500 peer-checked:after:translate-x-full peer-checked:after:border-white"></div>
+            </label>
+          </div>
+
+          {/* Game Release Status & Reason */}
+          <div className="space-y-3 rounded-xl border border-mh-slate-750 bg-mh-slate-900/60 p-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs font-bold text-mh-slate-300">Game Release Status</p>
+                <p className="text-[11px] text-mh-slate-500">
+                  Whether this adventurer is currently in the game or upcoming
+                </p>
+              </div>
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value as AdventurerStatus)}
+                className="rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-200 focus:border-mh-gold-500/50 focus:outline-none"
+              >
+                <option value="in_game">In game</option>
+                <option value="not_in_game">Not in game</option>
+              </select>
+            </div>
+            {status === 'not_in_game' && (
+              <div>
+                <label className="block text-[11px] font-bold uppercase tracking-wider text-mh-slate-400 mb-1">
+                  Status Reason (e.g. Upcoming banner date)
+                </label>
+                <input
+                  type="text"
+                  value={statusReason}
+                  onChange={(e) => setStatusReason(e.target.value)}
+                  placeholder="Upcoming – Recruitment banner starts 2026-11-27"
+                  className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-200 placeholder:text-mh-slate-500 focus:border-mh-gold-500/50 focus:outline-none"
+                />
+              </div>
+            )}
           </div>
 
           {/* Actions */}

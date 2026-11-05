@@ -113,8 +113,8 @@ export default function AdventurerCard({
       )}
 
       {/* Top Badges & Recruitment / Challenge Status */}
-      <div className="relative flex items-center justify-between gap-2 mb-3">
-        <div className="flex items-center gap-1.5 flex-wrap">
+      <div className="relative flex flex-wrap items-center justify-between gap-y-2 gap-x-1.5 mb-3">
+        <div className="flex items-center gap-1.5 flex-wrap min-w-0">
           {isPlayerCharacter ? (
             <span className="flex items-center gap-1 rounded-lg bg-mh-gold-500 px-2.5 py-0.5 text-xs font-black text-mh-slate-950 shadow-sm">
               <Sparkles size={12} />
@@ -147,14 +147,23 @@ export default function AdventurerCard({
           </span>
 
           <AdventurerRarityBadge rarity={adventurer.rarity} />
+
+          {(adventurer.status === 'not_in_game' || adventurer.is_spoiler) && (
+            <span
+              className="flex items-center gap-1 rounded-lg px-2 py-0.5 text-xs font-bold border border-amber-500/50 bg-amber-500/20 text-amber-300 shadow-xs"
+              title="***Spoiler***"
+            >
+              <span>Coming</span>
+            </span>
+          )}
         </div>
 
         {/* Recruitment & Challenge Buttons */}
-        <div className="relative z-20 flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
+        <div className="relative z-20 flex items-center gap-1.5 shrink-0 ml-auto" onClick={(e) => e.stopPropagation()}>
           {isPlayerCharacter ? (
             <span
               title="Your primary player character is always available."
-              className="flex h-6 items-center justify-center rounded-full bg-mh-gold-500/20 border border-mh-gold-500/40 px-2 text-[10px] font-black text-mh-gold-300"
+              className="flex h-6 items-center justify-center rounded-full bg-mh-gold-500/20 border border-mh-gold-500/40 px-2 text-[10px] font-black text-mh-gold-300 shrink-0"
             >
               Default
             </span>
@@ -168,17 +177,17 @@ export default function AdventurerCard({
                     e.stopPropagation();
                     navigate('/challenges');
                   }}
-                  className="flex h-6 items-center gap-1 rounded-full border border-emerald-500/50 bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25 px-2 text-[10px] font-bold shadow-xs transition-all"
+                  className="flex h-6 items-center gap-1 rounded-full border border-emerald-500/50 bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25 px-2 text-[10px] font-bold shadow-xs transition-all shrink-0 whitespace-nowrap"
                 >
                   <Check size={11} className="text-emerald-400" />
-                  <span>Go to Challenge ➔</span>
+                  <span>Challenge ➔</span>
                 </button>
               ) : (
                 currentInsight < ADVENTURER_MAX_INSIGHT && (
                   <ChallengeGoalMenu
                     currentLevel={currentInsight}
                     onSelect={(target) => onAddChallenge?.(adventurer, target)}
-                    className="h-6 rounded-full px-2 text-[10px] hover:scale-105"
+                    className="h-6 rounded-full px-2 text-[10px] hover:scale-105 shrink-0"
                   />
                 )
               )}
@@ -192,7 +201,7 @@ export default function AdventurerCard({
                     onToggleRecruit?.();
                   }}
                   title="Recruited to your roster. Click to toggle."
-                  className="flex h-6 min-w-[24px] px-2 items-center justify-center gap-1 rounded-full text-[10px] font-black leading-none bg-emerald-500 text-slate-950 border border-emerald-300 shadow-md shadow-emerald-500/30 ring-1 ring-emerald-400/50 hover:scale-105 active:scale-95 transition-transform"
+                  className="flex h-6 min-w-[24px] px-2 items-center justify-center gap-1 rounded-full text-[10px] font-black leading-none bg-emerald-500 text-slate-950 border border-emerald-300 shadow-md shadow-emerald-500/30 ring-1 ring-emerald-400/50 hover:scale-105 active:scale-95 transition-transform shrink-0 whitespace-nowrap"
                 >
                   <Check size={11} strokeWidth={3} />
                   <span>Recruited</span>
@@ -205,7 +214,7 @@ export default function AdventurerCard({
                     onToggleRecruit?.();
                   }}
                   title="Click to mark as recruited in your personal field guide"
-                  className="flex h-6 items-center justify-center gap-1 rounded-full px-2 text-[10px] font-bold border border-mh-slate-700 bg-mh-slate-900/90 text-mh-slate-300 shadow-sm transition-all hover:scale-105 hover:border-mh-gold-500 hover:bg-mh-gold-500/20 hover:text-mh-gold-300"
+                  className="flex h-6 items-center justify-center gap-1 rounded-full px-2 text-[10px] font-bold border border-mh-slate-700 bg-mh-slate-900/90 text-mh-slate-300 shadow-sm transition-all hover:scale-105 hover:border-mh-gold-500 hover:bg-mh-gold-500/20 hover:text-mh-gold-300 shrink-0 whitespace-nowrap"
                 >
                   <Plus size={11} />
                   <span>Recruit</span>
@@ -249,6 +258,26 @@ export default function AdventurerCard({
               <span className="text-xs text-mh-slate-500 truncate font-medium">({adventurer.name_ja})</span>
             )}
           </div>
+
+          {(adventurer.status === 'not_in_game' || adventurer.is_spoiler) ? (
+            <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
+              <span
+                className="rounded border border-amber-500/40 bg-amber-500/20 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-300 shadow-xs"
+                title="***Spoiler***"
+              >
+                Coming
+              </span>
+              {adventurer.title && (
+                <span className="text-xs font-semibold italic text-mh-gold-300 truncate">
+                  {adventurer.title}
+                </span>
+              )}
+            </div>
+          ) : adventurer.title ? (
+            <p className="text-xs font-semibold italic text-mh-gold-300 truncate mt-0.5">
+              {adventurer.title}
+            </p>
+          ) : null}
 
           <p className="text-[11px] text-mh-slate-400 mt-1 line-clamp-2 leading-relaxed">
             {adventurer.description || roleCfg.description}

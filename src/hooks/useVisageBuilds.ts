@@ -53,6 +53,14 @@ export function useSaveVisageBuild() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (input: SaveVisageBuildInput) => {
+      // Validate that no equipped card is a spoiler or not in game
+      for (const slot of ['core', 2, 3, 4, 5] as const) {
+        const v = input.loadout[slot]?.visage;
+        if (v && (v.is_spoiler || v.status === 'not_in_game')) {
+          throw new Error(`Cannot save build: "${v.name}" is not released in game.`);
+        }
+      }
+
       const payload = {
         author_id: input.authorId,
         title: input.title.trim(),

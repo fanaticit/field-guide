@@ -75,6 +75,9 @@ export interface Visage {
   core_effect: string;
   ink_types: string[];
   monster_icon?: string | null;
+  status?: 'in_game' | 'not_in_game';
+  status_reason?: string | null;
+  is_spoiler?: boolean;
 }
 
 // Which ink type a given slot has selected (only relevant when card has 2+ ink types)
@@ -198,6 +201,7 @@ export const useBuildPlannerStore = create<BuildPlannerState>((set, get) => ({
   setArmour: (slot, piece) => set({ [slot]: piece }),
   setBuddy: (b) => set({ buddy: b }),
   setVisage: (slot, v) => {
+    if (v && (v.is_spoiler || v.status === 'not_in_game')) return;
     const { weapon, selectedInkTypes } = get();
     const key = String(slot);
     const newInkTypes = { ...selectedInkTypes };

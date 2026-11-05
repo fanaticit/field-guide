@@ -69,7 +69,7 @@ export default function AdventurerGuide() {
   const [inspectedAdventurer, setInspectedAdventurer] = useState<DBAdventurer | null>(null);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
 
-  const { user } = useAuthStore();
+  const { user, profile } = useAuthStore();
   const theme = useUIStore((s) => s.sectionThemes['/challenges'] ?? DEFAULT_SECTION_THEMES['/challenges']);
   const [introHidden, setIntroHidden] = useState(() => localStorage.getItem(INTRO_HIDDEN_KEY) === '1');
 
@@ -79,7 +79,9 @@ export default function AdventurerGuide() {
     localStorage.setItem(INTRO_HIDDEN_KEY, next ? '1' : '0');
   };
 
-  const { data: adventurers = [], isLoading } = usePublicAdventurers();
+  const { data: adventurers = [], isLoading } = usePublicAdventurers({
+    showSpoilers: Boolean(profile?.show_spoilers),
+  });
   const updateWeaponMutation = useUpdateAdventurerWeapon();
   const { isRecruited, toggleRecruited, getInsightLevel, setInsightLevel } = useUserAdventurerCollection();
 
@@ -134,18 +136,30 @@ export default function AdventurerGuide() {
   );
 
   // Collection & Statistics Metrics
+  // Excludes debug and unreleased/not-in-game items
   const metrics = useMemo(() => {
-    const total = adventurers.length;
-    const recruitedCount = adventurers.filter((a) => isRecruited(a)).length;
+    const eligibleAdventurers = adventurers.filter((a) => {
+      if (a.status !== 'in_game') return false;
+      if (a.is_spoiler) return false;
+      if (a.is_debug) return false;
+      const reason = a.status_reason?.toLowerCase() ?? '';
+      if (reason.includes('debug') || reason.includes('upcoming') || reason.includes('not in game')) return false;
+      const name = a.name?.toLowerCase() ?? '';
+      if (name.includes('debug')) return false;
+      return true;
+    });
+
+    const total = eligibleAdventurers.length;
+    const recruitedCount = eligibleAdventurers.filter((a) => isRecruited(a)).length;
     const percent = total > 0 ? Math.round((recruitedCount / total) * 100) : 0;
 
     const rarity = {} as Record<AdventurerRarity, { total: number; recruited: number }>;
     for (const r of ADVENTURER_RARITIES) {
-      const inTier = adventurers.filter((a) => a.rarity === r);
+      const inTier = eligibleAdventurers.filter((a) => a.rarity === r);
       rarity[r] = { total: inTier.length, recruited: inTier.filter((a) => isRecruited(a)).length };
     }
 
-    const maxInsightCount = adventurers.filter((a) => getInsightLevel(a) >= ADVENTURER_MAX_INSIGHT).length;
+    const maxInsightCount = eligibleAdventurers.filter((a) => getInsightLevel(a) >= ADVENTURER_MAX_INSIGHT).length;
 
     return { total, recruitedCount, percent, rarity, maxInsightCount };
   }, [adventurers, isRecruited, getInsightLevel]);
@@ -508,12 +522,20 @@ export default function AdventurerGuide() {
                             )}
                           </div>
                           <div>
-                            <div className="flex items-center gap-1.5">
+                            <div className="flex items-center gap-1.5 flex-wrap">
                               <p className="font-bold text-mh-slate-100">{adv.name}</p>
                               <AdventurerRarityBadge rarity={adv.rarity} className="!rounded !px-1.5 !py-0 !text-[9px]" />
                               {adv.is_default && (
                                 <span className="rounded bg-mh-gold-500/20 border border-mh-gold-500/40 px-1.5 py-0.2 text-[9px] font-bold text-mh-gold-300 uppercase">
                                   You
+                                </span>
+                              )}
+                              {(adv.status === 'not_in_game' || adv.is_spoiler) && (
+                                <span
+                                  className="rounded bg-amber-500/25 border border-amber-500/50 px-1.5 py-0.2 text-[9px] font-bold text-amber-300 uppercase tracking-wider"
+                                  title="***Spoiler***"
+                                >
+                                  Coming
                                 </span>
                               )}
                             </div>

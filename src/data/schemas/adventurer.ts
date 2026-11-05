@@ -108,6 +108,8 @@ export const ELEMENT_OPTIONS: Record<string, ElementOption> = {
   raw: { id: 'raw', label: 'Raw / Physical', color: 'text-mh-slate-300', border: 'border-mh-slate-600', bg: 'bg-mh-slate-800', text: 'text-mh-slate-300' },
 };
 
+export type AdventurerStatus = 'in_game' | 'not_in_game';
+
 export interface DBAdventurer {
   id: string;
   name: string;
@@ -133,7 +135,15 @@ export interface DBAdventurer {
   traits?: AdventurerTrait[];
   playstyle?: string | null;
   height?: string | null;
+  status: AdventurerStatus;
+  /** Why the adventurer is not in the game (only set when status is 'not_in_game') */
+  status_reason?: string | null;
+  /** Visible in the Field Guide */
   is_active: boolean;
+  /** Only shown to users who turned on "Show spoilers" */
+  is_spoiler: boolean;
+  /** Debug or test item */
+  is_debug?: boolean;
   sort_order: number;
   created_at: string;
   updated_at: string;

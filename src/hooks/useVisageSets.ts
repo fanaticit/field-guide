@@ -268,8 +268,13 @@ export function useUserVisageCollection() {
   };
 }
 
-export function useVisageSetsData() {
-  const { data: dbVisages = [], isLoading: isLoadingVisages, refetch: refetchVisages } = useAdminVisages({ isActive: true });
+export function useVisageSetsData(options?: { showSpoilers?: boolean }) {
+  const profile = useAuthStore((s) => s.profile);
+  const showSpoilers = options?.showSpoilers ?? Boolean(profile?.show_spoilers);
+  const { data: dbVisages = [], isLoading: isLoadingVisages, refetch: refetchVisages } = useAdminVisages({
+    isActive: true,
+    showSpoilers,
+  });
   const { data: dbSkills = [], isLoading: isLoadingSkills, refetch: refetchSkills } = useAdminSkills({ isSetBonus: true, isActive: true });
   const collection = useUserVisageCollection();
 

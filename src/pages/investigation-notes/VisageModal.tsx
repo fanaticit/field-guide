@@ -94,12 +94,20 @@ export default function VisageModal({
               <InkIconComponent iconName={inkCfg.iconName} size={18} />
             </div>
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <h3 className="font-display text-base font-bold text-mh-slate-100">
                   Visage: {card.name}
                 </h3>
                 {card.name_ja && (
                   <span className="text-xs text-mh-slate-400">({card.name_ja})</span>
+                )}
+                {(card.status === 'not_in_game' || card.is_spoiler) && (
+                  <span
+                    className="rounded-lg px-2 py-0.5 text-[10px] font-bold border border-amber-500/50 bg-amber-500/20 text-amber-300"
+                    title={card.status_reason ?? 'Coming — Not in game yet'}
+                  >
+                    Coming{card.status_reason ? ` — ${card.status_reason}` : ''}
+                  </span>
                 )}
               </div>
               <p className="font-mono text-[11px] text-mh-slate-500">ID: {card.id}</p>
