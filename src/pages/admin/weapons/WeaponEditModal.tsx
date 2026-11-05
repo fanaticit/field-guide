@@ -1,1062 +1,484 @@
 // ─────────────────────────────────────────────────────────────
-// WeaponEditModal — Modal for creating & editing craftable equipment weapons
+// WeaponEditModal — create / edit one weapon
 // ─────────────────────────────────────────────────────────────
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
+import { X, Loader2, Trash2, AlertTriangle, Plus } from 'lucide-react';
 import {
-  X,
-  Sword,
-  Search,
-  Upload,
-  Sparkles,
-  Loader2,
-  Plus,
-  Check,
-  Flame,
-  Droplets,
-  Zap,
-  Snowflake,
-  Skull,
-  Shield,
-  Link as LinkIcon,
-} from 'lucide-react';
-import {
-  type DBWeapon,
-  type WeaponUpsert,
-  type WeaponSourceType,
-  type WeaponElementType,
-  type WeaponSkill,
-  WEAPON_ELEMENT_CONFIG,
-  getRarityBadgeStyle,
-} from '../../../data/schemas/weapon';
-import { WEAPON_TYPES } from '../../../data/core/weapon-types';
-import { useAdminMonsters } from '../../../hooks/useAdminMonsters';
-import { useAdminSkills } from '../../../hooks/useAdminSkills';
-import {
+  useDeleteWeapon,
   useUpsertWeapon,
-  uploadWeaponImage,
+  useWeaponUpgrades,
 } from '../../../hooks/useAdminWeapons';
+import type { DBMonster } from '../../../hooks/useAdminMonsters';
+import {
+  WEAPON_ELEMENT_CONFIG,
+  WEAPON_SHARPNESS_ICONS,
+  WEAPON_SOURCE_CONFIG,
+  getRarityBadgeStyle,
+  type DBWeapon,
+  type DBWeaponType,
+  type WeaponElementType,
+  type WeaponSourceType,
+  type WeaponStatus,
+  type WeaponUpsert,
+} from '../../../data/schemas/weapon';
 import { cn } from '../../../lib/utils';
 
-const ELEMENT_ICONS: Record<WeaponElementType, React.ComponentType<{ size?: number; className?: string }>> = {
-  raw: Shield,
-  fire: Flame,
-  water: Droplets,
-  thunder: Zap,
-  ice: Snowflake,
-  dragon: Sparkles,
-  poison: Skull,
-  paralysis: Zap,
-  blast: Flame,
-  sleep: Snowflake,
-};
+const inputCls =
+  'w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-100 placeholder-mh-slate-600 outline-none focus:border-mh-gold-500/50';
+const labelCls = 'block text-xs font-medium text-mh-slate-400 mb-1.5';
 
-interface Props {
-  game: string;
-  weapon: DBWeapon | null | 'new';
-  open: boolean;
-  onClose: () => void;
+const SHARPNESS_OPTIONS = ['Yellow', 'Green', 'Blue', 'White'];
+
+function emptyForm(): WeaponUpsert {
+  return {
+    id: '',
+    name: '',
+    name_ja: null,
+    weapon_type_id: 'great_sword',
+    monster_id: null,
+    series: null,
+    source_type: 'forge',
+    source_detail: null,
+    element_type: 'raw',
+    element_damage: null,
+    attack: null,
+    affinity: 0,
+    sharpness: null,
+    deco_slots: [1, 1],
+    rarity: 1,
+    max_rarity: 14,
+    craftable: true,
+    is_apex: false,
+    apex_season: null,
+    apex_effect: null,
+    awakening_slots: null,
+    image: null,
+    description: null,
+    notes: null,
+    status: 'in_game',
+    status_reason: null,
+    is_active: true,
+    is_spoiler: false,
+    sort_order: 0,
+  };
 }
 
-export default function WeaponEditModal({
-  game: defaultGame,
-  weapon,
-  open,
-  onClose,
-}: Props) {
-  const isNew = weapon === 'new';
-  const initialData = isNew ? null : weapon;
+function Toggle({ checked, onChange }: { checked: boolean; onChange: (v: boolean) => void }) {
+  return (
+    <button
+      type="button"
+      onClick={() => onChange(!checked)}
+      className={cn(
+        'relative inline-flex h-5 w-9 shrink-0 rounded-full transition-colors duration-200',
+        checked ? 'bg-green-500' : 'bg-mh-slate-700',
+      )}
+    >
+      <span
+        className={cn(
+          'absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform duration-200',
+          checked ? 'translate-x-[18px]' : 'translate-x-0.5',
+        )}
+      />
+    </button>
+  );
+}
 
-  const [game, setGame] = useState<string>(initialData?.game || defaultGame);
-  const [name, setName] = useState<string>(initialData?.name || '');
-  const [nameJa, setNameJa] = useState<string>(initialData?.name_ja || '');
-  const [upgradedName, setUpgradedName] = useState<string>(initialData?.upgraded_name || '');
-  const [upgradedNameJa, setUpgradedNameJa] = useState<string>(initialData?.upgraded_name_ja || '');
-  const [upgradeLevel, setUpgradeLevel] = useState<number | null>(initialData?.upgrade_level || null);
-  const [customId, setCustomId] = useState<string>(initialData?.id || '');
-  const [rarity, setRarity] = useState<number>(initialData?.rarity ?? initialData?.grade ?? 1);
-  const [weaponTypeId, setWeaponTypeId] = useState<string>(initialData?.weapon_type_id || 'great_sword');
-  const [sourceType, setSourceType] = useState<WeaponSourceType>(initialData?.source_type || 'monster');
-  const [monsterId, setMonsterId] = useState<string>(initialData?.monster_id || '');
-  const [elementType, setElementType] = useState<WeaponElementType>(initialData?.element_type || 'raw');
-  const [specialSkill, setSpecialSkill] = useState<string>(initialData?.special_skill || '');
-  const [image, setImage] = useState<string | null>(initialData?.image || null);
-  const [description, setDescription] = useState<string>(initialData?.description || '');
-  const [notes, setNotes] = useState<string>(initialData?.notes || '');
-  const [sortOrder, setSortOrder] = useState<number>(initialData?.sort_order || 0);
-  const [isActive, setIsActive] = useState<boolean>(initialData?.is_active ?? true);
+interface Props {
+  weapon: DBWeapon | null;
+  open: boolean;
+  onClose: () => void;
+  monsters: DBMonster[];
+  weaponTypes: DBWeaponType[];
+}
 
-  // Attached Skills state
-  const [skills, setSkills] = useState<WeaponSkill[]>(initialData?.skills || []);
-  const [showSkillPicker, setShowSkillPicker] = useState(false);
-  const [skillSearch, setSkillSearch] = useState('');
-  const [newSkillId, setNewSkillId] = useState('');
-  const [newSkillLevel, setNewSkillLevel] = useState(1);
-  const [newSkillUnlockRarity, setNewSkillUnlockRarity] = useState<number | null>(null);
+export default function WeaponEditModal({ weapon, open, onClose, monsters, weaponTypes }: Props) {
+  const isNew = weapon === null;
+  const [form, setForm] = useState<WeaponUpsert>(emptyForm());
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // Image Upload state with Drag & Drop
-  const [isUploading, setIsUploading] = useState(false);
-  const [uploadError, setUploadError] = useState<string | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [useManualUrl, setUseManualUrl] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const upsert = useUpsertWeapon();
+  const remove = useDeleteWeapon();
+  const { data: upgrades = [] } = useWeaponUpgrades(open && weapon ? weapon.id : null);
 
-  // Queries
-  const { data: monsters = [] } = useAdminMonsters({ game, isActive: true });
-  const { data: dbSkills = [] } = useAdminSkills({ isActive: true });
-  const upsertMutation = useUpsertWeapon();
-
-  // Auto-generate ID slug for new weapons
   useEffect(() => {
-    if (isNew && name.trim()) {
-      const slug = name
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '_')
-        .replace(/^_+|_+$/g, '');
-      setCustomId(`${weaponTypeId}_${slug}`);
+    if (!open) return;
+    if (weapon) {
+      const { created_at: _c, updated_at: _u, ...rest } = weapon;
+      void _c;
+      void _u;
+      setForm(rest);
+    } else {
+      setForm(emptyForm());
     }
-  }, [isNew, name, weaponTypeId]);
-
-  // Set default special skill from weapon type if not specified
-  useEffect(() => {
-    if (isNew && !specialSkill) {
-      const wt = WEAPON_TYPES.find((w) => w.id === weaponTypeId);
-      if (wt?.specialSkill) {
-        setSpecialSkill(wt.specialSkill);
-      }
-    }
-  }, [isNew, weaponTypeId, specialSkill]);
+    setConfirmDelete(false);
+    setErrorMsg(null);
+  }, [open, weapon]);
 
   if (!open) return null;
 
-  async function handleFileUpload(file: File) {
-    if (!file.type.startsWith('image/')) {
-      setUploadError('Please select a valid image file (PNG, JPG, WEBP, SVG)');
-      return;
-    }
+  const patch = (p: Partial<WeaponUpsert>) => setForm((prev) => ({ ...prev, ...p }));
+  const numberOrNull = (v: string) => (v === '' ? null : Number(v));
+  const rStyle = getRarityBadgeStyle(form.rarity);
 
+  async function handleSave() {
+    if (!form.id.trim()) return setErrorMsg('ID is required.');
+    if (!form.name.trim()) return setErrorMsg('Name is required.');
+    if (form.max_rarity < form.rarity) return setErrorMsg('Max rarity cannot be lower than the starting rarity.');
+    if (form.status === 'not_in_game' && !form.status_reason?.trim()) {
+      return setErrorMsg('Give a reason why the weapon is not in the game.');
+    }
     try {
-      setIsUploading(true);
-      setUploadError(null);
-      const weaponSlug = customId || 'weapon';
-      const publicUrl = await uploadWeaponImage(file, weaponSlug);
-      setImage(publicUrl);
+      setErrorMsg(null);
+      await upsert.mutateAsync({ ...form, id: form.id.trim(), name: form.name.trim() });
+      onClose();
     } catch (err: unknown) {
-      console.error('Failed to upload weapon image:', err);
-      setUploadError(err instanceof Error ? err.message : 'Image upload failed');
-    } finally {
-      setIsUploading(false);
+      setErrorMsg((err as { message?: string })?.message ?? 'Failed to save weapon.');
     }
   }
 
-  function handleAddSkill() {
-    if (!newSkillId) return;
-    const cleanUR = newSkillUnlockRarity && newSkillUnlockRarity > 1 ? Number(newSkillUnlockRarity) : null;
-    const existingIdx = skills.findIndex(
-      (s) => s.id === newSkillId && (s.unlock_rarity ?? s.unlockRarity ?? null) === cleanUR,
-    );
-
-    if (existingIdx >= 0) {
-      setSkills((prev) =>
-        prev.map((s, idx) =>
-          idx === existingIdx ? { ...s, level: newSkillLevel, unlock_rarity: cleanUR, unlockRarity: cleanUR } : s,
-        ),
-      );
-    } else {
-      setSkills((prev) => [
-        ...prev,
-        { id: newSkillId, level: newSkillLevel, unlock_rarity: cleanUR, unlockRarity: cleanUR },
-      ]);
+  async function handleDelete() {
+    try {
+      setErrorMsg(null);
+      await remove.mutateAsync(form.id);
+      onClose();
+    } catch (err: unknown) {
+      setErrorMsg((err as { message?: string })?.message ?? 'Failed to delete weapon.');
     }
-
-    setNewSkillId('');
-    setNewSkillLevel(1);
-    setNewSkillUnlockRarity(null);
-    setShowSkillPicker(false);
   }
-
-  function handleRemoveSkill(index: number) {
-    setSkills((prev) => prev.filter((_, idx) => idx !== index));
-  }
-
-  function handleSkillLevelChange(index: number, lvl: number) {
-    setSkills((prev) => prev.map((s, idx) => (idx === index ? { ...s, level: lvl } : s)));
-  }
-
-  function handleSkillUnlockRarityChange(index: number, ur: number | null) {
-    const cleanUR = ur && ur > 1 ? Number(ur) : null;
-    setSkills((prev) =>
-      prev.map((s, idx) => (idx === index ? { ...s, unlock_rarity: cleanUR, unlockRarity: cleanUR } : s)),
-    );
-  }
-
-  async function handleSave(e: React.FormEvent) {
-    e.preventDefault();
-    if (!name.trim() || !customId.trim()) return;
-
-    const payload: WeaponUpsert = {
-      id: customId.trim(),
-      game,
-      name: name.trim(),
-      name_ja: nameJa.trim() || null,
-      upgraded_name: upgradedName.trim() || null,
-      upgraded_name_ja: upgradedNameJa.trim() || null,
-      upgrade_level: upgradeLevel ? Number(upgradeLevel) : null,
-      weapon_type_id: weaponTypeId,
-      monster_id: sourceType === 'monster' && monsterId ? monsterId : null,
-      source_type: sourceType,
-      element_type: elementType,
-      skills,
-      special_skill: specialSkill.trim() || null,
-      image: image ? image.trim() : null,
-      description: description.trim() || null,
-      notes: notes.trim() || null,
-      rarity: Number(rarity) || 1,
-      is_active: isActive,
-      sort_order: Number(sortOrder) || 0,
-    };
-
-    await upsertMutation.mutateAsync(payload);
-    onClose();
-  }
-
-  const selectedTypeObj = WEAPON_TYPES.find((w) => w.id === weaponTypeId);
-  const selectedMonsterObj = monsters.find((m) => m.id === monsterId);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-150">
-      <div
-        role="dialog"
-        aria-modal="true"
-        className="relative w-full max-w-3xl rounded-2xl border border-mh-slate-700 bg-mh-slate-900 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between border-b border-mh-slate-750 bg-mh-slate-950/80 px-6 py-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
+      <div className="relative flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-xl border border-mh-slate-700 bg-mh-slate-900 shadow-2xl">
+        <div className="flex shrink-0 items-center justify-between border-b border-mh-slate-700/80 bg-mh-slate-900/60 px-6 py-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-mh-gold-500/10 text-mh-gold-400 ring-1 ring-mh-gold-500/30">
-              <Sword size={18} />
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg border border-mh-slate-700 bg-mh-slate-800">
+              {form.image ? (
+                <img src={form.image} alt="" className="h-10 w-10 object-contain" />
+              ) : (
+                <span className="text-xs text-mh-slate-600">No icon</span>
+              )}
             </div>
             <div>
-              <h2 className="font-display text-lg font-bold text-mh-slate-100">
-                {isNew ? 'Create New Weapon' : `Edit Weapon: ${initialData?.name}`}
+              <h2 className="font-display text-base font-bold text-mh-slate-100">
+                {isNew ? 'Add Weapon' : form.name}
               </h2>
-              <p className="text-xs text-mh-slate-500">
-                Configure equipment weapon, element/status affinity, special skill, crafting source, and attached skills.
-              </p>
+              <p className="font-mono text-xs text-mh-slate-500">{form.id ? `ID: ${form.id}` : 'Enter weapon details'}</p>
             </div>
           </div>
-
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-lg p-1.5 text-mh-slate-400 hover:bg-mh-slate-800 hover:text-white transition-colors"
-          >
+          <button onClick={onClose} className="rounded-lg p-1.5 text-mh-slate-400 hover:bg-mh-slate-800 hover:text-mh-slate-200">
             <X size={18} />
           </button>
         </div>
 
-        {/* Scrollable Form Body */}
-        <form onSubmit={handleSave} className="flex-1 overflow-y-auto p-6 space-y-6">
-          {/* Game & Core Identification */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* Target Game */}
+        <div className="min-h-0 flex-1 space-y-5 overflow-y-auto p-6">
+          {errorMsg && (
+            <div className="flex items-center gap-2.5 rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-xs text-red-300">
+              <AlertTriangle size={15} className="shrink-0 text-red-400" />
+              <span>{errorMsg}</span>
+            </div>
+          )}
+
+          {/* Visibility */}
+          <div className="space-y-2 rounded-xl border border-mh-slate-700/80 bg-mh-slate-800/30 p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs font-semibold text-mh-slate-200">Active in Field Guide</p>
+                <p className="text-[11px] text-mh-slate-500">Inactive weapons are hidden from every public page.</p>
+              </div>
+              <Toggle checked={form.is_active} onChange={(v) => patch({ is_active: v })} />
+            </div>
+            <div className="flex items-center justify-between border-t border-mh-slate-800 pt-2">
+              <div>
+                <p className="text-xs font-semibold text-mh-slate-200">Mark as spoiler</p>
+                <p className="text-[11px] text-mh-slate-500">Only shown to hunters who turned on “Show spoilers” in their profile.</p>
+              </div>
+              <Toggle checked={form.is_spoiler} onChange={(v) => patch({ is_spoiler: v })} />
+            </div>
+            <div className="grid grid-cols-1 gap-3 border-t border-mh-slate-800 pt-2 sm:grid-cols-3">
+              <div>
+                <label className={labelCls}>Game status</label>
+                <select
+                  value={form.status}
+                  onChange={(e) => patch({ status: e.target.value as WeaponStatus })}
+                  className={inputCls}
+                >
+                  <option value="in_game">In game</option>
+                  <option value="not_in_game">Not in game</option>
+                </select>
+              </div>
+              {form.status === 'not_in_game' && (
+                <div className="sm:col-span-2">
+                  <label className={labelCls}>Reason *</label>
+                  <input
+                    type="text"
+                    value={form.status_reason ?? ''}
+                    onChange={(e) => patch({ status_reason: e.target.value || null })}
+                    placeholder="e.g. Upcoming – season opens 2026-12-25"
+                    className={inputCls}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-mh-slate-400 mb-1.5">
-                Target Game
-              </label>
-              <select
-                value={game}
-                onChange={(e) => setGame(e.target.value)}
-                className="w-full rounded-xl border border-mh-slate-750 bg-mh-slate-800 px-3 py-2 text-xs font-semibold text-mh-slate-200 focus:border-mh-gold-500/50 focus:outline-none"
-              >
-                <option value="mho">Monster Hunter Outlanders (MHO)</option>
+              <label className={labelCls}>ID *</label>
+              <input
+                type="text"
+                value={form.id}
+                readOnly={!isNew}
+                onChange={(e) => patch({ id: e.target.value })}
+                className={cn(inputCls, 'font-mono', !isNew && 'cursor-not-allowed opacity-60')}
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <label className={labelCls}>Name *</label>
+              <input type="text" value={form.name} onChange={(e) => patch({ name: e.target.value })} className={inputCls} />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div>
+              <label className={labelCls}>Weapon type</label>
+              <select value={form.weapon_type_id} onChange={(e) => patch({ weapon_type_id: e.target.value })} className={inputCls}>
+                {weaponTypes.map((t) => (
+                  <option key={t.id} value={t.id}>{t.name}</option>
+                ))}
               </select>
             </div>
+            <div>
+              <label className={labelCls}>Monster</label>
+              <select value={form.monster_id ?? ''} onChange={(e) => patch({ monster_id: e.target.value || null })} className={inputCls}>
+                <option value="">— None —</option>
+                {monsters.map((m) => (
+                  <option key={m.id} value={m.id}>{m.name}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className={labelCls}>Series</label>
+              <input type="text" value={form.series ?? ''} onChange={(e) => patch({ series: e.target.value || null })} className={inputCls} />
+            </div>
+          </div>
 
-            {/* Weapon Type */}
-            <div className="md:col-span-2">
-              <label className="block text-xs font-bold uppercase tracking-wider text-mh-slate-400 mb-1.5">
-                Weapon Type (Franchise Category)
-              </label>
-              <select
-                value={weaponTypeId}
-                onChange={(e) => setWeaponTypeId(e.target.value)}
-                className="w-full rounded-xl border border-mh-slate-750 bg-mh-slate-800 px-3 py-2 text-xs font-bold text-mh-gold-400 focus:border-mh-gold-500/50 focus:outline-none"
-              >
-                {WEAPON_TYPES.map((wt) => (
-                  <option key={wt.id} value={wt.id}>
-                    {wt.name} ({wt.category.toUpperCase()})
-                  </option>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            <div>
+              <label className={labelCls}>Start rarity</label>
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  min={1}
+                  max={16}
+                  value={form.rarity}
+                  onChange={(e) => patch({ rarity: Math.max(1, Number(e.target.value) || 1) })}
+                  className={inputCls}
+                />
+                <span className={cn('rounded border px-1.5 py-0.5 text-[10px] font-bold', rStyle.bg, rStyle.text, rStyle.border)}>{rStyle.label}</span>
+              </div>
+            </div>
+            <div>
+              <label className={labelCls}>Max rarity</label>
+              <input
+                type="number"
+                min={1}
+                max={16}
+                value={form.max_rarity}
+                onChange={(e) => patch({ max_rarity: Math.max(1, Number(e.target.value) || 1) })}
+                className={inputCls}
+              />
+            </div>
+            <div>
+              <label className={labelCls}>Attack</label>
+              <input type="number" value={form.attack ?? ''} onChange={(e) => patch({ attack: numberOrNull(e.target.value) })} className={inputCls} />
+            </div>
+            <div>
+              <label className={labelCls}>Affinity</label>
+              <input type="number" value={form.affinity ?? ''} onChange={(e) => patch({ affinity: numberOrNull(e.target.value) })} className={inputCls} />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            <div>
+              <label className={labelCls}>Element / status</label>
+              <select value={form.element_type} onChange={(e) => patch({ element_type: e.target.value as WeaponElementType })} className={inputCls}>
+                {(Object.keys(WEAPON_ELEMENT_CONFIG) as WeaponElementType[]).map((el) => (
+                  <option key={el} value={el}>{WEAPON_ELEMENT_CONFIG[el].label}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className={labelCls}>Element damage</label>
+              <input
+                type="number"
+                disabled={form.element_type === 'raw'}
+                value={form.element_damage ?? ''}
+                onChange={(e) => patch({ element_damage: numberOrNull(e.target.value) })}
+                className={cn(inputCls, form.element_type === 'raw' && 'opacity-40')}
+              />
+            </div>
+            <div>
+              <label className={labelCls}>Sharpness</label>
+              <div className="flex items-center gap-2">
+                <select value={form.sharpness ?? ''} onChange={(e) => patch({ sharpness: e.target.value || null })} className={inputCls}>
+                  <option value="">—</option>
+                  {SHARPNESS_OPTIONS.map((s) => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
+                {form.sharpness && WEAPON_SHARPNESS_ICONS[form.sharpness] && (
+                  <img src={WEAPON_SHARPNESS_ICONS[form.sharpness]} alt="" className="h-5 w-auto" />
+                )}
+              </div>
+            </div>
+            <div>
+              <label className={labelCls}>Source</label>
+              <select value={form.source_type} onChange={(e) => patch({ source_type: e.target.value as WeaponSourceType })} className={inputCls}>
+                {(Object.keys(WEAPON_SOURCE_CONFIG) as WeaponSourceType[]).map((s) => (
+                  <option key={s} value={s}>{WEAPON_SOURCE_CONFIG[s].label}</option>
                 ))}
               </select>
             </div>
           </div>
 
-          {/* Name, JP Name & ID */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-mh-slate-400 mb-1.5">
-                Crafted Name *
-              </label>
-              <input
-                type="text"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="e.g. Buster Sword"
-                className="w-full rounded-xl border border-mh-slate-750 bg-mh-slate-800 px-3 py-2 text-xs text-mh-slate-200 placeholder:text-mh-slate-500 focus:border-mh-gold-500/50 focus:outline-none"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-mh-slate-400 mb-1.5">
-                Japanese Name
-              </label>
-              <input
-                type="text"
-                value={nameJa}
-                onChange={(e) => setNameJa(e.target.value)}
-                placeholder="e.g. バスターソード"
-                className="w-full rounded-xl border border-mh-slate-750 bg-mh-slate-800 px-3 py-2 text-xs text-mh-slate-200 placeholder:text-mh-slate-500 focus:border-mh-gold-500/50 focus:outline-none"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-mh-slate-400 mb-1.5">
-                Unique Identifier (ID) *
-              </label>
-              <input
-                type="text"
-                required
-                value={customId}
-                onChange={(e) => setCustomId(e.target.value)}
-                placeholder="great_sword_buster_sword"
-                className="w-full rounded-xl border border-mh-slate-750 bg-mh-slate-800 px-3 py-2 text-xs font-mono text-mh-gold-400 placeholder:text-mh-slate-500 focus:border-mh-gold-500/50 focus:outline-none"
-              />
-            </div>
+          <div>
+            <label className={labelCls}>How to obtain</label>
+            <input type="text" value={form.source_detail ?? ''} onChange={(e) => patch({ source_detail: e.target.value || null })} className={inputCls} />
           </div>
 
-          {/* Upgraded Form Progression (Optional) */}
-          <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-3.5 space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-                <span className="h-2 w-2 rounded-full bg-amber-400" />
-                Upgraded Form Progression (Optional)
-              </span>
-              <span className="text-[10px] text-mh-slate-400">
-                Shown when the weapon is upgraded to a higher level
-              </span>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <div>
-                <label className="block text-xs font-bold text-mh-slate-300 mb-1">
-                  Upgraded Form Name
-                </label>
-                <input
-                  type="text"
-                  value={upgradedName}
-                  onChange={(e) => setUpgradedName(e.target.value)}
-                  placeholder="e.g. Buster Blade"
-                  className="w-full rounded-xl border border-mh-slate-700 bg-mh-slate-850 px-3 py-2 text-xs text-mh-slate-100 placeholder:text-mh-slate-500 focus:border-amber-400 focus:outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-mh-slate-400 mb-1">
-                  Upgraded Japanese Name
-                </label>
-                <input
-                  type="text"
-                  value={upgradedNameJa}
-                  onChange={(e) => setUpgradedNameJa(e.target.value)}
-                  placeholder="e.g. バスターブレイド"
-                  className="w-full rounded-xl border border-mh-slate-700 bg-mh-slate-850 px-3 py-2 text-xs text-mh-slate-300 placeholder:text-mh-slate-500 focus:border-amber-400 focus:outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-mh-slate-300 mb-1">
-                  Upgrade Level / Grade
-                </label>
-                <div className="flex items-center gap-2">
+          <div>
+            <label className={labelCls}>Deco slots (size of each slot)</label>
+            <div className="flex flex-wrap items-center gap-2">
+              {form.deco_slots.map((size, i) => (
+                <span key={i} className="inline-flex items-center gap-1">
                   <input
                     type="number"
                     min={1}
-                    max={50}
-                    value={upgradeLevel ?? ''}
-                    onChange={(e) => {
-                      const val = parseInt(e.target.value, 10);
-                      setUpgradeLevel(isNaN(val) ? null : val);
-                    }}
-                    placeholder="e.g. 5"
-                    className="w-20 rounded-xl border border-mh-slate-700 bg-mh-slate-850 px-3 py-2 text-xs font-mono font-bold text-amber-300 placeholder:text-mh-slate-500 focus:border-amber-400 focus:outline-none"
+                    max={10}
+                    value={size}
+                    onChange={(e) => patch({ deco_slots: form.deco_slots.map((v, j) => (j === i ? Math.max(1, Number(e.target.value) || 1) : v)) })}
+                    className="w-14 rounded border border-mh-slate-700 bg-mh-slate-800 px-2 py-1 text-center text-xs font-bold text-mh-slate-100 outline-none"
                   />
-                  <div className="flex items-center gap-1">
-                    {[5, 6, 8, 10].map((lvl) => (
-                      <button
-                        key={lvl}
-                        type="button"
-                        onClick={() => setUpgradeLevel(lvl)}
-                        className={cn(
-                          'rounded px-2 py-1 text-[10px] font-bold transition-colors',
-                          upgradeLevel === lvl
-                            ? 'bg-amber-500 text-slate-950'
-                            : 'bg-mh-slate-800 text-mh-slate-400 hover:text-white',
-                        )}
-                      >
-                        Lv{lvl}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Drag & Drop Weapon Image Upload */}
-          <div className="rounded-xl border border-mh-slate-800 bg-mh-slate-950/60 p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <label className="block text-xs font-bold uppercase tracking-wider text-mh-slate-300">
-                Weapon Image Artwork
-              </label>
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => setUseManualUrl((prev) => !prev)}
-                  className="flex items-center gap-1 text-[11px] text-mh-slate-400 hover:text-mh-gold-400 transition-colors"
-                >
-                  <LinkIcon size={12} />
-                  <span>{useManualUrl ? 'Use Drag & Drop Upload' : 'Enter URL instead'}</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setImage(`/images/weapons/${weaponTypeId}.svg`)}
-                  className="text-[11px] text-mh-gold-400 hover:underline"
-                >
-                  Use {selectedTypeObj?.name || 'Type'} Icon
-                </button>
-              </div>
-            </div>
-
-            {useManualUrl ? (
-              <div className="space-y-2">
-                <input
-                  type="text"
-                  value={image ?? ''}
-                  onChange={(e) => setImage(e.target.value || null)}
-                  placeholder="https://... or /images/weapons/great_sword.svg"
-                  className="w-full rounded-xl border border-mh-slate-750 bg-mh-slate-800 px-3 py-2 text-xs text-mh-slate-200 placeholder:text-mh-slate-500 focus:border-mh-gold-500/50 focus:outline-none"
-                />
-                {image && (
-                  <div className="flex items-center gap-3 rounded-lg border border-mh-slate-800 bg-mh-slate-900/60 p-2">
-                    <img
-                      src={image}
-                      alt="Weapon Preview"
-                      className="h-12 w-12 rounded-lg object-contain bg-mh-slate-800 p-1"
-                      onError={(e) => {
-                        (e.target as HTMLElement).style.display = 'none';
-                      }}
-                    />
-                    <div className="min-w-0 flex-1">
-                      <p className="text-[11px] text-emerald-400 font-semibold">Image URL Set</p>
-                      <p className="text-[10px] text-mh-slate-500 truncate">{image}</p>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div
-                onDragOver={(e) => {
-                  e.preventDefault();
-                  setIsDragging(true);
-                }}
-                onDragLeave={() => setIsDragging(false)}
-                onDrop={(e) => {
-                  e.preventDefault();
-                  setIsDragging(false);
-                  const file = e.dataTransfer.files?.[0];
-                  if (file) handleFileUpload(file);
-                }}
-                onClick={() => fileInputRef.current?.click()}
-                className={cn(
-                  'group relative flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-4 transition-all duration-150',
-                  isDragging
-                    ? 'border-mh-gold-400 bg-mh-gold-500/10'
-                    : image
-                    ? 'border-mh-gold-500/40 bg-mh-gold-500/5 hover:border-mh-gold-500/60'
-                    : 'border-mh-slate-750 bg-mh-slate-900/40 hover:border-mh-slate-600 hover:bg-mh-slate-900/60',
-                )}
-              >
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) handleFileUpload(file);
-                  }}
-                />
-
-                {isUploading ? (
-                  <div className="flex flex-col items-center gap-2 py-4">
-                    <Loader2 size={24} className="animate-spin text-mh-gold-400" />
-                    <p className="text-xs text-mh-slate-400">Uploading weapon artwork to Storage...</p>
-                  </div>
-                ) : image ? (
-                  <div className="flex w-full items-center gap-4">
-                    <img
-                      src={image}
-                      alt="Uploaded weapon"
-                      className="h-16 w-16 shrink-0 rounded-xl object-contain bg-mh-slate-800 border border-mh-gold-500/30 p-1.5 shadow-md"
-                      onError={(e) => {
-                        (e.target as HTMLElement).style.display = 'none';
-                      }}
-                    />
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-1.5 text-xs font-bold text-mh-gold-300">
-                        <Check size={14} className="text-mh-gold-400" />
-                        <span>Artwork Attached</span>
-                      </div>
-                      <p className="mt-0.5 truncate text-[11px] text-mh-slate-400">{image}</p>
-                      <div className="mt-2 flex items-center gap-3">
-                        <span className="text-[11px] text-mh-slate-400 group-hover:text-mh-gold-400 transition-colors">
-                          Click or drop new image to replace
-                        </span>
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setImage(null);
-                          }}
-                          className="text-[11px] font-medium text-red-400 hover:text-red-300"
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center gap-2 py-3 text-center">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-mh-slate-800 text-mh-slate-400 group-hover:bg-mh-gold-500/10 group-hover:text-mh-gold-400 transition-colors">
-                      <Upload size={18} />
-                    </div>
-                    <div>
-                      <p className="text-xs font-semibold text-mh-slate-300 group-hover:text-mh-gold-400 transition-colors">
-                        Upload weapon image
-                      </p>
-                      <p className="mt-0.5 text-[11px] text-mh-slate-500">
-                        Drag &amp; drop image here, or click to browse
-                      </p>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {uploadError && <p className="text-xs text-red-400">{uploadError}</p>}
-          </div>
-
-          {/* Crafting Origin / Source Type & Associated Monster */}
-          <div className="rounded-xl border border-mh-slate-800 bg-mh-slate-950/60 p-4 space-y-4">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-mh-slate-300">
-              Crafting Source &amp; Monster Origin
-            </h4>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Source Type */}
-              <div>
-                <label className="block text-xs font-semibold text-mh-slate-400 mb-1.5">
-                  Source Category
-                </label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
-                  {(
-                    [
-                      { id: 'monster', label: 'Monster Craft' },
-                      { id: 'ore', label: 'Ore / Iron' },
-                      { id: 'bone', label: 'Bone' },
-                      { id: 'event', label: 'Event / Special' },
-                      { id: 'general', label: 'General / Other' },
-                    ] as const
-                  ).map((s) => {
-                    const isSelected = sourceType === s.id;
-                    return (
-                      <button
-                        key={s.id}
-                        type="button"
-                        onClick={() => setSourceType(s.id)}
-                        className={cn(
-                          'rounded-lg border px-2.5 py-1.5 text-xs font-semibold text-left transition-all',
-                          isSelected
-                            ? 'border-mh-gold-500 bg-mh-gold-500/20 text-mh-gold-300 shadow-sm'
-                            : 'border-mh-slate-750 bg-mh-slate-850 text-mh-slate-400 hover:border-mh-slate-600 hover:text-white',
-                        )}
-                      >
-                        {s.label}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Associated Monster */}
-              <div>
-                <label className="block text-xs font-semibold text-mh-slate-400 mb-1.5">
-                  Associated Monster {sourceType !== 'monster' && '(Optional)'}
-                </label>
-                <select
-                  value={monsterId}
-                  onChange={(e) => setMonsterId(e.target.value)}
-                  className="w-full rounded-xl border border-mh-slate-750 bg-mh-slate-800 px-3 py-2 text-xs text-mh-slate-200 focus:border-mh-gold-500/50 focus:outline-none"
-                >
-                  <option value="">No Monster (Ore / Bone / Event / General)</option>
-                  {monsters.map((m) => (
-                    <option key={m.id} value={m.id}>
-                      {m.name} {m.name_ja ? `(${m.name_ja})` : ''}
-                    </option>
-                  ))}
-                </select>
-                {selectedMonsterObj && (
-                  <p className="text-[11px] text-orange-400 mt-1">
-                    Monster: {selectedMonsterObj.name} ({selectedMonsterObj.species || 'Large Monster'})
-                  </p>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Starting Equipment Rarity */}
-          <div className="rounded-xl border border-mh-slate-800 bg-mh-slate-950/60 p-4 space-y-2.5">
-            <div className="flex items-center justify-between">
-              <label className="block text-xs font-bold uppercase tracking-wider text-mh-slate-300">
-                Starting Equipment Rarity
-              </label>
-              <span className={cn(
-                'rounded px-2.5 py-0.5 text-xs font-bold border shadow-xs',
-                getRarityBadgeStyle(rarity).bg,
-                getRarityBadgeStyle(rarity).text,
-                getRarityBadgeStyle(rarity).border,
-              )}>
-                Rarity {rarity} ({getRarityBadgeStyle(rarity).label})
-              </span>
-            </div>
-            <p className="text-[11px] text-mh-slate-400">
-              The starting equipment grade or rarity value (used for sorting and upgrade scaling).
-            </p>
-            <div className="grid grid-cols-6 sm:grid-cols-12 gap-1.5 pt-1">
-              {Array.from({ length: 12 }, (_, i) => i + 1).map((r) => {
-                const isSelected = rarity === r;
-                const rStyle = getRarityBadgeStyle(r);
-                return (
-                  <button
-                    key={r}
-                    type="button"
-                    onClick={() => setRarity(r)}
-                    className={cn(
-                      'flex items-center justify-center rounded-lg border py-1.5 text-xs font-bold transition-all',
-                      isSelected
-                        ? `${rStyle.bg} ${rStyle.text} ${rStyle.border} ring-1 ring-current/40 shadow-xs scale-105`
-                        : 'border-mh-slate-750 bg-mh-slate-850 text-mh-slate-400 hover:border-mh-slate-600 hover:text-white',
-                    )}
-                  >
-                    R{r}
+                  <button type="button" onClick={() => patch({ deco_slots: form.deco_slots.filter((_, j) => j !== i) })} className="text-mh-slate-500 hover:text-red-400">
+                    <X size={12} />
                   </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Elemental & Special Skill */}
-          <div className="rounded-xl border border-mh-slate-800 bg-mh-slate-950/60 p-4 space-y-4">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-mh-slate-300">
-              Elemental Affinity &amp; Special Skill
-            </h4>
-
-            {/* Element / Status Selector */}
-            <div>
-              <label className="block text-xs font-semibold text-mh-slate-400 mb-1.5">
-                Element / Status Affinity
-              </label>
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5">
-                {(Object.entries(WEAPON_ELEMENT_CONFIG) as [WeaponElementType, (typeof WEAPON_ELEMENT_CONFIG)[WeaponElementType]][]).map(
-                  ([elKey, elVal]) => {
-                    const isSelected = elementType === elKey;
-                    const ElIcon = ELEMENT_ICONS[elKey] || Shield;
-                    return (
-                      <button
-                        key={elKey}
-                        type="button"
-                        onClick={() => setElementType(elKey)}
-                        className={cn(
-                          'flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-bold transition-all',
-                          isSelected
-                            ? cn(elVal.bg, elVal.text, 'border-mh-gold-400 ring-1 ring-mh-gold-400/50 shadow-sm')
-                            : 'border-mh-slate-750 bg-mh-slate-850 text-mh-slate-400 hover:border-mh-slate-600 hover:text-white',
-                        )}
-                      >
-                        <ElIcon size={12} className={elVal.color} />
-                        <span className="truncate">{elVal.label}</span>
-                      </button>
-                    );
-                  },
-                )}
-              </div>
-            </div>
-
-            {/* Special Skill */}
-            <div>
-              <label className="block text-xs font-semibold text-mh-slate-400 mb-1">
-                Special Skill
-              </label>
-              <input
-                type="text"
-                value={specialSkill}
-                onChange={(e) => setSpecialSkill(e.target.value)}
-                placeholder="e.g. True Charged Slash, Spirit Helm Breaker"
-                className="w-full rounded-xl border border-mh-slate-750 bg-mh-slate-800 px-3 py-2 text-xs text-mh-slate-200 placeholder:text-mh-slate-500 focus:border-mh-gold-500/50 focus:outline-none"
-              />
-            </div>
-          </div>
-
-          {/* Attached Weapon Skills with Unlock Rarity Levels */}
-          <div className="rounded-xl border border-mh-slate-800 bg-mh-slate-950/60 p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-mh-slate-300">
-                  Weapon Skills &amp; Rarity Unlock Requirements
-                </h4>
-                <p className="text-[11px] text-mh-slate-500">
-                  Attached passive skills with optional upgrade unlock rarity levels (e.g. Base, R6, R8, R9, R12).
-                </p>
-              </div>
-
+                </span>
+              ))}
               <button
                 type="button"
-                onClick={() => setShowSkillPicker(true)}
-                className="flex items-center gap-1 rounded-lg border border-mh-gold-500/40 bg-mh-gold-500/10 px-2.5 py-1 text-xs font-bold text-mh-gold-400 hover:bg-mh-gold-500/20 transition-all"
+                onClick={() => patch({ deco_slots: [...form.deco_slots, 1] })}
+                className="flex items-center gap-1 rounded border border-mh-slate-700 px-2 py-1 text-xs text-mh-slate-400 hover:text-mh-slate-200"
               >
-                <Plus size={13} />
-                <span>Add Skill</span>
+                <Plus size={12} /> Slot
               </button>
             </div>
+          </div>
 
-            {/* Inline Skill Adder */}
-            {showSkillPicker && (
-              <div className="rounded-xl border border-mh-gold-500/30 bg-mh-slate-900 p-3 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-mh-gold-400">Attach Skill to Weapon</span>
-                  <button
-                    type="button"
-                    onClick={() => setShowSkillPicker(false)}
-                    className="text-mh-slate-400 hover:text-white"
-                  >
-                    <X size={14} />
-                  </button>
-                </div>
+          <div>
+            <label className={labelCls}>Icon</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                value={form.image ?? ''}
+                onChange={(e) => patch({ image: e.target.value || null })}
+                placeholder="/images/weapons/WeaponIcon/…"
+                className={cn(inputCls, 'font-mono text-xs')}
+              />
+              {form.image && <img src={form.image} alt="" className="h-9 w-9 shrink-0 object-contain" />}
+            </div>
+          </div>
 
-                <div className="relative">
-                  <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-mh-slate-500" />
-                  <input
-                    type="text"
-                    value={skillSearch}
-                    onChange={(e) => setSkillSearch(e.target.value)}
-                    placeholder="Search skills…"
-                    className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 py-1.5 pl-8 pr-2.5 text-xs text-mh-slate-200 placeholder:text-mh-slate-500 focus:outline-none focus:border-mh-gold-500/50"
-                  />
-                </div>
+          <div>
+            <label className={labelCls}>Description</label>
+            <textarea rows={2} value={form.description ?? ''} onChange={(e) => patch({ description: e.target.value || null })} className={inputCls} />
+          </div>
+          <div>
+            <label className={labelCls}>Notes</label>
+            <textarea rows={2} value={form.notes ?? ''} onChange={(e) => patch({ notes: e.target.value || null })} className={inputCls} />
+          </div>
 
-                {/* Skill List Dropdown */}
-                <div className="max-h-36 overflow-y-auto space-y-1 rounded border border-mh-slate-750 bg-mh-slate-950/50 p-1">
-                  {dbSkills
-                    .filter(
-                      (s) =>
-                        s.name.toLowerCase().includes(skillSearch.toLowerCase()) ||
-                        s.id.toLowerCase().includes(skillSearch.toLowerCase()),
-                    )
-                    .map((s) => (
-                      <button
-                        key={s.id}
-                        type="button"
-                        onClick={() => {
-                          setNewSkillId(s.id);
-                          setNewSkillLevel(1);
-                        }}
-                        className={cn(
-                          'flex w-full items-center justify-between rounded px-2 py-1 text-left text-xs transition-colors',
-                          newSkillId === s.id
-                            ? 'bg-mh-gold-500/20 text-mh-gold-300 font-bold'
-                            : 'text-mh-slate-300 hover:bg-mh-slate-800',
-                        )}
-                      >
-                        <span>{s.name}</span>
-                        <span className="text-[10px] text-mh-slate-500 font-mono">
-                          Lv Max {s.max_levels}
-                        </span>
-                      </button>
+          {form.apex_effect && (
+            <div className="rounded-xl border border-mh-gold-500/30 bg-mh-gold-500/5 p-4 text-xs">
+              <p className="font-bold text-mh-gold-300">{form.apex_effect.name}</p>
+              <p className="mt-1 text-mh-slate-300">{form.apex_effect.description}</p>
+              {form.apex_season && <p className="mt-1 text-[11px] text-mh-slate-500">{form.apex_season}</p>}
+            </div>
+          )}
+
+          {upgrades.length > 0 && (
+            <div className="space-y-2">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-mh-slate-400">Upgrade path (read-only, from the game data)</label>
+              <div className="overflow-x-auto rounded-lg border border-mh-slate-800">
+                <table className="w-full text-left text-[11px]">
+                  <thead className="bg-mh-slate-800/60 text-[10px] uppercase tracking-wider text-mh-slate-500">
+                    <tr>
+                      <th className="px-2 py-1">Rarity</th>
+                      <th className="px-2 py-1">Attack</th>
+                      <th className="px-2 py-1">Element</th>
+                      <th className="px-2 py-1">Affinity</th>
+                      <th className="px-2 py-1">Lv</th>
+                      <th className="px-2 py-1">Materials</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-mh-slate-800 text-mh-slate-300">
+                    {upgrades.map((u) => (
+                      <tr key={u.rarity}>
+                        <td className="px-2 py-1 font-bold">R{u.rarity}</td>
+                        <td className="px-2 py-1">{u.attack ?? '—'}</td>
+                        <td className="px-2 py-1">{u.element_damage ? `${u.element_type} ${u.element_damage}` : '—'}</td>
+                        <td className="px-2 py-1">{u.affinity ?? '—'}</td>
+                        <td className="px-2 py-1">{u.required_level ?? '—'}</td>
+                        <td className="px-2 py-1">{u.materials.map((m) => `${m.item} ×${m.count}`).join(', ') || '—'}</td>
+                      </tr>
                     ))}
-                </div>
-
-                {/* Level and Unlock Rarity Configuration */}
-                {newSkillId && (
-                  <div className="space-y-2 pt-2 border-t border-mh-slate-800">
-                    <div className="flex items-center justify-between gap-2 text-xs">
-                      <span className="text-mh-slate-400">Skill Level:</span>
-                      <div className="flex items-center gap-1">
-                        {[1, 2, 3, 4, 5].map((lvl) => (
-                          <button
-                            key={lvl}
-                            type="button"
-                            onClick={() => setNewSkillLevel(lvl)}
-                            className={cn(
-                              'h-6 w-6 rounded text-xs font-bold transition-all',
-                              newSkillLevel === lvl
-                                ? 'bg-mh-gold-500 text-mh-slate-950 font-black'
-                                : 'bg-mh-slate-800 text-mh-slate-400 hover:bg-mh-slate-700 hover:text-white',
-                            )}
-                          >
-                            {lvl}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between gap-2 text-xs">
-                      <span className="text-mh-slate-400">Unlock Level/Rarity:</span>
-                      <div className="flex items-center gap-1 flex-wrap">
-                        {[
-                          { label: 'Base', val: null },
-                          { label: 'Lv5', val: 5 },
-                          { label: 'Lv6', val: 6 },
-                          { label: 'Lv8', val: 8 },
-                          { label: 'Lv10', val: 10 },
-                          { label: 'Lv12', val: 12 },
-                          { label: 'Lv13', val: 13 },
-                          { label: 'Lv14', val: 14 },
-                          { label: 'Lv15', val: 15 },
-                          { label: 'Lv16', val: 16 },
-                        ].map((r) => (
-                          <button
-                            key={r.label}
-                            type="button"
-                            onClick={() => setNewSkillUnlockRarity(r.val)}
-                            className={cn(
-                              'rounded px-1.5 py-0.5 text-[10px] font-bold transition-colors',
-                              newSkillUnlockRarity === r.val
-                                ? 'bg-amber-500 text-slate-950 font-black shadow-sm'
-                                : 'bg-mh-slate-800 text-mh-slate-300 hover:bg-mh-slate-700',
-                            )}
-                          >
-                            {r.label}
-                          </button>
-                        ))}
-                        <input
-                          type="number"
-                          min={1}
-                          max={50}
-                          placeholder="Lv..."
-                          value={newSkillUnlockRarity && ![5, 6, 8, 10, 12, 13, 14, 15, 16].includes(newSkillUnlockRarity) ? newSkillUnlockRarity : ''}
-                          onChange={(e) => {
-                            const val = parseInt(e.target.value, 10);
-                            setNewSkillUnlockRarity(isNaN(val) || val <= 1 ? null : val);
-                          }}
-                          className="w-12 rounded border border-mh-slate-700 bg-mh-slate-900 px-1 py-0.5 text-[10px] text-mh-slate-200 text-center font-bold"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="flex justify-end pt-2">
-                      <button
-                        type="button"
-                        onClick={handleAddSkill}
-                        className="rounded-lg bg-mh-gold-500 px-3.5 py-1.5 text-xs font-bold text-mh-slate-950 hover:bg-mh-gold-400 transition-all shadow-sm"
-                      >
-                        Confirm Attach
-                      </button>
-                    </div>
-                  </div>
-                )}
+                  </tbody>
+                </table>
               </div>
-            )}
+            </div>
+          )}
 
-            {/* Skills List */}
-            {skills.length === 0 ? (
-              <p className="text-xs text-mh-slate-500 italic py-2">
-                No skills currently attached to this weapon.
-              </p>
-            ) : (
-              <div className="space-y-2">
-                {skills.map((s, idx) => {
-                  const meta = dbSkills.find((d) => d.id === s.id);
-                  const skillName = meta?.name ?? s.id;
-                  const ur = s.unlockLevel ?? s.unlock_level ?? s.unlockRarity ?? s.unlock_rarity ?? null;
-                  const isLocked = Boolean(ur && ur > 1);
-
-                  return (
-                    <div
-                      key={`${s.id}-${ur}-${idx}`}
-                      className="flex items-center justify-between rounded-xl border border-mh-slate-750 bg-mh-slate-900/80 px-3.5 py-2 text-xs"
+          {!isNew && (
+            <div className="border-t border-mh-slate-800 pt-2">
+              {!confirmDelete ? (
+                <button type="button" onClick={() => setConfirmDelete(true)} className="flex items-center gap-1.5 text-xs text-red-400 hover:text-red-300">
+                  <Trash2 size={13} /> Delete this weapon permanently
+                </button>
+              ) : (
+                <div className="flex items-center justify-between rounded-lg border border-red-500/40 bg-red-500/10 p-3">
+                  <span className="text-xs text-red-300">Are you sure? Hunter challenges and collections for it are removed too.</span>
+                  <div className="flex items-center gap-2">
+                    <button type="button" onClick={() => setConfirmDelete(false)} className="rounded px-2.5 py-1 text-xs text-mh-slate-400 hover:bg-mh-slate-800">
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      disabled={remove.isPending}
+                      onClick={handleDelete}
+                      className="flex items-center gap-1 rounded bg-red-600 px-2.5 py-1 text-xs font-semibold text-white hover:bg-red-500 disabled:opacity-50"
                     >
-                      <div className="flex items-center gap-2 min-w-0">
-                        <Sparkles size={13} className="text-mh-gold-400 shrink-0" />
-                        <div className="truncate">
-                          <span className="font-bold text-mh-slate-200">{skillName}</span>
-                          <span className="ml-1 text-[10px] font-mono text-mh-slate-500">
-                            ({s.id})
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-2 shrink-0">
-                        {/* Unlock Level Selector */}
-                        <select
-                          value={ur ?? ''}
-                          onChange={(e) => {
-                            const val = parseInt(e.target.value, 10);
-                            handleSkillUnlockRarityChange(idx, isNaN(val) || val <= 1 ? null : val);
-                          }}
-                          className={cn(
-                            'rounded border px-1.5 py-0.5 text-[10px] font-bold outline-none',
-                            isLocked
-                              ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
-                              : 'bg-mh-slate-950 text-mh-slate-400 border-mh-slate-700',
-                          )}
-                        >
-                          <option value="">Base</option>
-                          <option value="5">Lv 5</option>
-                          <option value="6">Lv 6</option>
-                          <option value="8">Lv 8</option>
-                          <option value="10">Lv 10</option>
-                          <option value="12">Lv 12</option>
-                          <option value="13">Lv 13</option>
-                          <option value="14">Lv 14</option>
-                          <option value="15">Lv 15</option>
-                          <option value="16">Lv 16</option>
-                          {ur && ![5, 6, 8, 10, 12, 13, 14, 15, 16].includes(ur) && (
-                            <option value={ur}>Lv {ur}</option>
-                          )}
-                        </select>
-
-                        {/* Level selector */}
-                        <div className="flex items-center gap-0.5 rounded bg-mh-slate-950 p-0.5 border border-mh-slate-750">
-                          {[1, 2, 3, 4, 5].map((lvl) => (
-                            <button
-                              key={lvl}
-                              type="button"
-                              onClick={() => handleSkillLevelChange(idx, lvl)}
-                              className={cn(
-                                'h-5 w-5 rounded text-[10px] font-bold transition-all',
-                                s.level === lvl
-                                  ? 'bg-mh-gold-500 text-mh-slate-950 font-black'
-                                  : 'text-mh-slate-400 hover:text-white',
-                              )}
-                            >
-                              {lvl}
-                            </button>
-                          ))}
-                        </div>
-
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveSkill(idx)}
-                          className="rounded p-1 text-mh-slate-500 hover:bg-red-500/20 hover:text-red-400 transition-colors"
-                        >
-                          <X size={13} />
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-
-          {/* Description & Field Notes */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-mh-slate-400 mb-1">
-                Description &amp; Lore
-              </label>
-              <textarea
-                rows={2}
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Weapon description or flavor lore…"
-                className="w-full rounded-xl border border-mh-slate-750 bg-mh-slate-800 px-3 py-2 text-xs text-mh-slate-200 placeholder:text-mh-slate-500 focus:border-mh-gold-500/50 focus:outline-none"
-              />
+                      {remove.isPending && <Loader2 size={12} className="animate-spin" />}
+                      Confirm Delete
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
+          )}
+        </div>
 
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-mh-slate-400 mb-1">
-                Field Guide Notes
-              </label>
-              <textarea
-                rows={2}
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                placeholder="Extra crafting notes or upgrade details…"
-                className="w-full rounded-xl border border-mh-slate-750 bg-mh-slate-800 px-3 py-2 text-xs text-mh-slate-200 placeholder:text-mh-slate-500 focus:border-mh-gold-500/50 focus:outline-none"
-              />
-            </div>
-          </div>
-
-          {/* Sorting & Active Status */}
-          <div className="flex items-center justify-between border-t border-mh-slate-800 pt-4">
-            <div className="flex items-center gap-4">
-              <div>
-                <label className="block text-[11px] font-bold text-mh-slate-400 mb-0.5">
-                  Sort Order
-                </label>
-                <input
-                  type="number"
-                  value={sortOrder}
-                  onChange={(e) => setSortOrder(parseInt(e.target.value, 10) || 0)}
-                  className="w-20 rounded-lg border border-mh-slate-750 bg-mh-slate-800 px-2 py-1 text-xs font-mono text-mh-slate-200"
-                />
-              </div>
-
-              <div className="flex items-center gap-2 pt-3">
-                <input
-                  type="checkbox"
-                  id="weaponActive"
-                  checked={isActive}
-                  onChange={(e) => setIsActive(e.target.checked)}
-                  className="h-4 w-4 rounded border-mh-slate-700 bg-mh-slate-800 text-mh-gold-500 focus:ring-0"
-                />
-                <label htmlFor="weaponActive" className="text-xs font-bold text-mh-slate-300 cursor-pointer">
-                  Active in Field Guide
-                </label>
-              </div>
-            </div>
-          </div>
-        </form>
-
-        {/* Footer Actions */}
-        <div className="border-t border-mh-slate-750 bg-mh-slate-950/90 px-6 py-4 flex items-center justify-between">
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-lg px-4 py-2 text-xs font-semibold text-mh-slate-400 hover:bg-mh-slate-800 hover:text-white transition-colors"
-          >
+        <div className="flex shrink-0 items-center justify-end gap-3 border-t border-mh-slate-700/80 bg-mh-slate-900/80 px-6 py-4">
+          <button type="button" onClick={onClose} className="rounded-lg px-4 py-2 text-xs font-semibold text-mh-slate-400 hover:bg-mh-slate-800 hover:text-mh-slate-200">
             Cancel
           </button>
-
           <button
             type="button"
+            disabled={upsert.isPending}
             onClick={handleSave}
-            disabled={upsertMutation.isPending || !name.trim() || !customId.trim()}
-            className="flex items-center gap-2 rounded-xl bg-mh-gold-500 px-5 py-2 text-xs font-bold text-mh-slate-950 hover:bg-mh-gold-400 disabled:opacity-50 transition-all shadow-sm"
+            className="flex items-center gap-2 rounded-lg bg-mh-gold-500 px-5 py-2 text-xs font-bold text-mh-slate-950 hover:bg-mh-gold-400 disabled:opacity-50"
           >
-            {upsertMutation.isPending ? (
-              <>
-                <Loader2 size={14} className="animate-spin" />
-                <span>Saving Weapon…</span>
-              </>
-            ) : (
-              <>
-                <Check size={14} />
-                <span>{isNew ? 'Create Weapon' : 'Save Changes'}</span>
-              </>
-            )}
+            {upsert.isPending && <Loader2 size={14} className="animate-spin" />}
+            {isNew ? 'Add Weapon' : 'Save Changes'}
           </button>
         </div>
       </div>

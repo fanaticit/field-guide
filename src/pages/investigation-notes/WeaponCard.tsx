@@ -21,11 +21,11 @@ import {
   type WeaponElementType,
   WEAPON_SOURCE_CONFIG,
   WEAPON_ELEMENT_CONFIG,
+  WEAPON_SHARPNESS_ICONS,
   getRarityBadgeStyle,
 } from '../../data/schemas/weapon';
 import { WEAPON_TYPES } from '../../data/core/weapon-types';
 import { useAdminMonsters } from '../../hooks/useAdminMonsters';
-import { useAdminSkills } from '../../hooks/useAdminSkills';
 import {
   type HunterChallenge,
   
@@ -44,6 +44,7 @@ const ELEMENT_ICONS: Record<WeaponElementType, React.ComponentType<{ size?: numb
   paralysis: Zap,
   blast: Flame,
   sleep: Snowflake,
+  stun: Zap,
 };
 
 const ELEMENT_GLOWS: Record<WeaponElementType, string> = {
@@ -57,6 +58,7 @@ const ELEMENT_GLOWS: Record<WeaponElementType, string> = {
   paralysis: 'from-yellow-500/15 via-amber-950/20 to-mh-slate-950',
   blast: 'from-rose-600/15 via-orange-950/20 to-mh-slate-950',
   sleep: 'from-indigo-500/15 via-blue-950/20 to-mh-slate-950',
+  stun: 'from-yellow-400/15 via-amber-950/20 to-mh-slate-950',
 };
 
 interface Props {
@@ -80,12 +82,11 @@ export default function WeaponCard({
 }: Props) {
   const navigate = useNavigate();
   const { data: monsters = [] } = useAdminMonsters({ isActive: true });
-  const { data: dbSkills = [] } = useAdminSkills({ isActive: true });
   
 
   const weaponTypeObj = WEAPON_TYPES.find((w) => w.id === weapon.weapon_type_id);
   const monsterObj = weapon.monster_id ? monsters.find((m) => m.id === weapon.monster_id) : null;
-  const srcCfg = WEAPON_SOURCE_CONFIG[weapon.source_type] || WEAPON_SOURCE_CONFIG.general;
+  const srcCfg = WEAPON_SOURCE_CONFIG[weapon.source_type] || WEAPON_SOURCE_CONFIG.unknown;
   const elemCfg = WEAPON_ELEMENT_CONFIG[weapon.element_type] || WEAPON_ELEMENT_CONFIG.raw;
   const ElIcon = ELEMENT_ICONS[weapon.element_type] || Shield;
   const glowTheme = ELEMENT_GLOWS[weapon.element_type] || ELEMENT_GLOWS.raw;
@@ -192,19 +193,16 @@ export default function WeaponCard({
               {weapon.name}
             </h3>
 
-            {weapon.upgraded_name && (
-              <div className="flex flex-wrap items-center gap-1.5 text-xs text-amber-300 font-medium break-words mt-1">
-                <span className="text-mh-slate-500 text-[10px]">▲ Upgrades:</span>
-                <span className="font-bold text-amber-200">{weapon.upgraded_name}</span>
-                {weapon.upgrade_level && (
-                  <span className="rounded bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[9px] px-1 py-0.2 font-mono">
-                    Lv {weapon.upgrade_level}
-                  </span>
-                )}
-              </div>
+            {weapon.series && (
+              <p className="text-[11px] text-mh-slate-500 font-medium break-words mt-0.5">{weapon.series}</p>
+            )}
+            {weapon.is_spoiler && (
+              <span className="mt-1 inline-block rounded border border-amber-500/40 bg-amber-500/15 px-1.5 py-0.5 text-[9px] font-bold uppercase text-amber-300">
+                Spoiler
+              </span>
             )}
 
-            {weapon.name_ja && !weapon.upgraded_name && (
+            {weapon.name_ja && (
               <p className="text-[11px] text-mh-slate-500 font-medium break-words mt-0.5">
                 {weapon.name_ja}
               </p>
@@ -232,35 +230,29 @@ export default function WeaponCard({
             </div>
           )}
 
-          {/* Special Skill Tag */}
-          {weapon.special_skill && (
+          {/* Core stats at the starting rarity */}
+          <div className="flex flex-wrap items-center gap-1.5 text-[11px]">
+            {weapon.attack !== null && (
+              <span className="rounded bg-mh-slate-900 border border-mh-slate-750 px-1.5 py-0.5 font-mono text-mh-slate-200">
+                ATK <span className="font-bold text-mh-gold-400">{weapon.attack}</span>
+              </span>
+            )}
+            {weapon.element_type !== 'raw' && (
+              <span className={cn('inline-flex items-center gap-1 rounded border px-1.5 py-0.5 font-mono', elemCfg.bg, elemCfg.text, elemCfg.border)}>
+                <ElIcon size={10} />
+                {elemCfg.label}{weapon.element_damage ? ` ${weapon.element_damage}` : ''}
+              </span>
+            )}
+            {weapon.sharpness && WEAPON_SHARPNESS_ICONS[weapon.sharpness] && (
+              <img src={WEAPON_SHARPNESS_ICONS[weapon.sharpness]} alt={weapon.sharpness} title={`${weapon.sharpness} sharpness`} className="h-3 w-auto" />
+            )}
+          </div>
+
+          {/* Apex effect tag */}
+          {weapon.apex_effect && (
             <div className="flex items-center gap-1.5 rounded-lg bg-mh-gold-500/10 border border-mh-gold-500/20 px-2 py-1 text-xs font-semibold text-mh-gold-400">
               <Sparkles size={12} className="shrink-0" />
-              <span className="break-words leading-snug text-[11px]">{weapon.special_skill}</span>
-            </div>
-          )}
-
-          {/* Attached Passive Skills */}
-          {weapon.skills && weapon.skills.length > 0 && (
-            <div className="flex flex-wrap gap-1 pt-0.5">
-              {weapon.skills.map((s, idx) => {
-                const meta = dbSkills.find((d) => d.id === s.id);
-                const ur = s.unlockLevel ?? s.unlock_level ?? s.unlockRarity ?? s.unlock_rarity ?? null;
-                return (
-                  <span
-                    key={idx}
-                    className="inline-flex items-center gap-1 rounded bg-mh-slate-900 border border-mh-slate-750 px-1.5 py-0.5 text-[10px] text-mh-slate-300"
-                  >
-                    <span>{meta?.name ?? s.id}</span>
-                    <span className="font-bold text-mh-gold-400 font-mono">Lv{s.level}</span>
-                    {ur && ur > 1 && (
-                      <span className="rounded bg-amber-500/20 text-amber-300 px-1 py-0.2 text-[9px] font-bold border border-amber-500/40 font-mono">
-                        Lv{ur}
-                      </span>
-                    )}
-                  </span>
-                );
-              })}
+              <span className="break-words leading-snug text-[11px]">{weapon.apex_effect.name}</span>
             </div>
           )}
         </div>

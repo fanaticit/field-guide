@@ -3,7 +3,11 @@ import type { ArmourSkill } from './armour.js';
 
 export type WeaponCategory = 'melee' | 'ranged';
 
-export type WeaponSourceType = 'monster' | 'ore' | 'bone' | 'event' | 'general';
+/** How a weapon is obtained, from the "How to obtain" text of the game data */
+export type WeaponSourceType = 'forge' | 'apex_forge' | 'apex_variant' | 'starter' | 'unknown';
+
+/** Whether the weapon exists in the game yet; status_reason explains the 'not_in_game' ones */
+export type WeaponStatus = 'in_game' | 'not_in_game';
 
 export type WeaponElementType =
   | 'raw'
@@ -15,7 +19,8 @@ export type WeaponElementType =
   | 'poison'
   | 'paralysis'
   | 'blast'
-  | 'sleep';
+  | 'sleep'
+  | 'stun';
 
 export interface WeaponSkill extends ArmourSkill {
   unlock_level?: number | null;
@@ -26,36 +31,44 @@ export const WEAPON_SOURCE_CONFIG: Record<
   WeaponSourceType,
   { label: string; bg: string; text: string; border: string }
 > = {
-  monster: {
-    label: 'Monster Craft',
+  forge: {
+    label: 'Forge',
     bg: 'bg-orange-500/15',
     text: 'text-orange-400',
     border: 'border-orange-500/30',
   },
-  ore: {
-    label: 'Ore / Iron',
-    bg: 'bg-cyan-500/15',
-    text: 'text-cyan-400',
-    border: 'border-cyan-500/30',
-  },
-  bone: {
-    label: 'Bone',
+  apex_forge: {
+    label: 'Apex Weapon',
     bg: 'bg-amber-500/15',
     text: 'text-amber-400',
     border: 'border-amber-500/30',
   },
-  event: {
-    label: 'Event / Special',
+  apex_variant: {
+    label: 'Apex Variant',
     bg: 'bg-purple-500/15',
     text: 'text-purple-400',
     border: 'border-purple-500/30',
   },
-  general: {
-    label: 'General',
+  starter: {
+    label: 'Starter',
+    bg: 'bg-cyan-500/15',
+    text: 'text-cyan-400',
+    border: 'border-cyan-500/30',
+  },
+  unknown: {
+    label: 'No source',
     bg: 'bg-mh-slate-800',
     text: 'text-mh-slate-300',
     border: 'border-mh-slate-700',
   },
+};
+
+/** Sharpness colour name (from the game data) -> icon in /public */
+export const WEAPON_SHARPNESS_ICONS: Record<string, string> = {
+  Yellow: '/images/weapons/SharpnessIcon/SharpnessIcon_03.png',
+  Green: '/images/weapons/SharpnessIcon/SharpnessIcon_04.png',
+  Blue: '/images/weapons/SharpnessIcon/SharpnessIcon_05.png',
+  White: '/images/weapons/SharpnessIcon/SharpnessIcon_06.png',
 };
 
 export const WEAPON_ELEMENT_CONFIG: Record<
@@ -142,6 +155,14 @@ export const WEAPON_ELEMENT_CONFIG: Record<
     text: 'text-indigo-300',
     dot: 'bg-indigo-400',
   },
+  stun: {
+    label: 'Stun',
+    color: 'text-yellow-300',
+    border: 'border-yellow-400/40',
+    bg: 'bg-yellow-400/15',
+    text: 'text-yellow-200',
+    dot: 'bg-yellow-300',
+  },
 };
 
 /**
@@ -177,32 +198,79 @@ export interface DBWeaponType {
   updated_at: string;
 }
 
+/** An Apex weapon's own effect and its awakening slots */
+export interface WeaponApexEffect {
+  name: string;
+  description: string;
+  icon: string | null;
+}
+
+export interface WeaponAwakeningSlots {
+  /** Rarity each awakening slot unlocks at */
+  unlock_rarities: number[];
+  /** Skill names that can be chosen for each slot */
+  options: string[][];
+}
+
 /**
- * A specific craftable/equippable weapon in public.weapons
+ * A specific weapon in public.weapons (imported from the game data).
+ * The upgrade steps of a weapon live in public.weapon_upgrades.
  */
 export interface DBWeapon {
   id: string;
-  game: string;
   name: string;
   name_ja: string | null;
-  upgraded_name: string | null;
-  upgraded_name_ja: string | null;
-  upgrade_level: number | null;
   weapon_type_id: string;
+  /** monsters.id of the monster the weapon is made from, if any */
   monster_id: string | null;
+  series: string | null;
   source_type: WeaponSourceType;
+  /** The full "How to obtain" text */
+  source_detail: string | null;
   element_type: WeaponElementType;
-  skills: WeaponSkill[];
-  special_skill: string | null;
+  element_damage: number | null;
+  attack: number | null;
+  /** Raw affinity value as stored by the game */
+  affinity: number | null;
+  sharpness: string | null;
+  deco_slots: number[];
+  /** Rarity the weapon starts at */
+  rarity: number;
+  max_rarity: number;
+  craftable: boolean;
+  is_apex: boolean;
+  apex_season: string | null;
+  apex_effect: WeaponApexEffect | null;
+  awakening_slots: WeaponAwakeningSlots | null;
   image: string | null;
   description: string | null;
   notes: string | null;
-  rarity: number; // Starting equipment rarity / grade (e.g. 1 to 12)
-  grade?: number; // legacy alias
+  status: WeaponStatus;
+  /** Why the weapon is not in the game (only set when status is 'not_in_game') */
+  status_reason: string | null;
+  /** Visible in the Field Guide */
   is_active: boolean;
+  /** Only shown to users who turned on "Show spoilers" */
+  is_spoiler: boolean;
   sort_order: number;
   created_at: string;
   updated_at: string;
+}
+
+/** One rarity step of a weapon (public.weapon_upgrades) */
+export interface DBWeaponUpgrade {
+  weapon_id: string;
+  rarity: number;
+  attack: number | null;
+  affinity: number | null;
+  element_type: WeaponElementType;
+  element_damage: number | null;
+  stats: Record<string, number>;
+  sharpness: string | null;
+  gains: Record<string, number>;
+  materials: { item_id: number; item: string; count: number }[];
+  money: number | null;
+  required_level: number | null;
 }
 
 export type WeaponUpsert = Omit<DBWeapon, 'created_at' | 'updated_at'>;

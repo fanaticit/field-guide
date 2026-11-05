@@ -3,7 +3,7 @@ import { getInkConfig } from '../../data/schemas/visage';
 import { InkIconComponent } from '../../pages/investigation-notes/VisageCard';
 import { Sparkles, Sword } from 'lucide-react';
 import {
-  FALLBACK_MONSTER_ICONS,
+  fallbackMonster,
   getHighestLevelInk,
   type ArmoryBuild,
   type MonsterLookup,
@@ -25,7 +25,7 @@ export function ArmoryBuildRow({ build, monsterMap }: ArmoryBuildRowProps) {
     if (!monsterId) return null;
     const fromMap = monsterMap.get(monsterId);
     if (fromMap && fromMap.icon) return fromMap;
-    const fallback = FALLBACK_MONSTER_ICONS[monsterId];
+    const fallback = fallbackMonster(monsterId);
     if (fallback) return fallback;
     return { name: fromMap?.name || monsterId, icon: null };
   };

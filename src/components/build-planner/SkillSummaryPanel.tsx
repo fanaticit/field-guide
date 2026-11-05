@@ -1,5 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '../../lib/supabase';
+import { useMemo } from 'react';
+import { useAdminSkills } from '../../hooks/useAdminSkills';
+import { buildSkillIndex } from '../../lib/skillIndex';
 import { useBuildPlannerStore } from '../../store/buildPlannerStore';
 import { Sword, Shield, Heart, Star, Skull, Wrench, Crosshair } from 'lucide-react';
 
@@ -14,19 +15,24 @@ const CATEGORY_CONFIG: Record<string, { color: string, bg: string, border: strin
   health: { color: 'text-green-400', bg: 'bg-green-500/10', border: 'border-green-500/20', ring: 'ring-green-500/50', icon: Heart },
 };
 
+// The game's skill categories use the colours of the closest legacy category
+const CATEGORY_ALIASES: Record<string, string> = {
+  'Hunt (General)': 'attack',
+  'Hunt (Ranged)': 'critical',
+  'Weapon-specific': 'utility',
+  Attributes: 'defense',
+  Resistance: 'status',
+  Survival: 'survival',
+  Exploration: 'general',
+};
+
 export function SkillSummaryPanel() {
   const { getActiveSkills, hoveredSkillId, setHoveredSkillId, buddy, coreVisage } = useBuildPlannerStore();
   const activeSkills = getActiveSkills();
 
-  // Fetch full skill definitions to display names and max levels
-  const { data: skillsData, isLoading } = useQuery({
-    queryKey: ['skills'],
-    queryFn: async () => {
-      const { data, error } = await supabase.from('skills').select('*');
-      if (error) throw error;
-      return data;
-    }
-  });
+  // Full skill definitions to display names, descriptions and max levels
+  const { data: skillsData = [], isLoading } = useAdminSkills({ isActive: true, isSetBonus: false });
+  const { byId, levelRows } = useMemo(() => buildSkillIndex(skillsData), [skillsData]);
 
   return (
     <div className="mho-panel p-4 flex flex-col gap-4">
@@ -54,9 +60,13 @@ export function SkillSummaryPanel() {
       ) : activeSkills.length > 0 ? (
         <div className="flex flex-col gap-2">
           {activeSkills.sort((a, b) => b.level - a.level).map(skill => {
-            const skillDef = skillsData?.find((s: any) => s.id === skill.id);
+            // skill.id is the level 1 id of the skill; the description belongs to the level reached
+            const skillDef = byId.get(skill.id);
+            const maxLevel = skillDef?.max_levels ?? skill.level;
+            const level = Math.min(skill.level, maxLevel);
+            const levelDescription = levelRows.get(skill.id)?.get(level)?.description ?? skillDef?.description;
             const cat = skillDef?.category || 'general';
-            const cfg = CATEGORY_CONFIG[cat] || CATEGORY_CONFIG.general;
+            const cfg = CATEGORY_CONFIG[CATEGORY_ALIASES[cat] ?? cat] || CATEGORY_CONFIG.general;
             const Icon = cfg.icon;
 
             return (
@@ -71,7 +81,7 @@ export function SkillSummaryPanel() {
                   <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 p-3 bg-mh-slate-900 border border-mh-slate-700 rounded-lg shadow-xl z-50 pointer-events-none flex flex-col gap-1">
                     
                     <span className="text-xs text-mh-slate-200 leading-snug">
-                      {skillDef?.description || 'No description available for this skill.'}
+                      {levelDescription || 'No description available for this skill.'}
                     </span>
                   </div>
                 )}
@@ -84,7 +94,7 @@ export function SkillSummaryPanel() {
                   </div>
                 </div>
                 <div className={`font-display font-black text-sm px-2 ${cfg.color}`}>
-                  Lv. {skill.level}
+                  Lv. {level}{maxLevel > 1 ? '/' + maxLevel : ''}
                 </div>
               </div>
             );

@@ -11,7 +11,6 @@ import {
   Shield,
   ShieldAlert,
   ShieldCheck,
-  Gamepad2,
   Compass,
   Globe,
   Save,
@@ -29,6 +28,8 @@ import {
   Image as ImageIcon,
   LogIn,
   Palette,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 import { useAuthStore, selectIsAdmin, selectCanModerate, type EquipmentGender } from '../store/authStore';
 import EquipmentGenderPicker from '../components/auth/EquipmentGenderPicker';
@@ -40,18 +41,6 @@ import { cn } from '../lib/utils';
 // ── Preset Avatars ───────────────────────────────────────────
 const PRESET_AVATARS: { id: string; label: string; url: string }[] = [
   // MHO avatars will be added here
-];
-
-// ── Supported Games ──────────────────────────────────────────
-const SUPPORTED_GAMES = [
-  {
-    id: 'mho',
-    name: 'Monster Hunter Outlanders',
-    short: 'MHO',
-    desc: 'Open-world survival action adventure by TiMi & Capcom.',
-    color: 'orange',
-    tag: 'Upcoming Game',
-  },
 ];
 
 // ── Available Landing Pages ──────────────────────────────────
@@ -113,6 +102,7 @@ export default function ProfilePage() {
   const [locale, setLocale] = useState('en');
   const [gameIds, setGameIds] = useState<string[]>(['mho']);
   const [equipmentGender, setEquipmentGender] = useState<EquipmentGender>('male');
+  const [showSpoilers, setShowSpoilers] = useState(false);
   const [showAvatarPicker, setShowAvatarPicker] = useState(false);
 
   // Sync state from profile or store
@@ -125,6 +115,7 @@ export default function ProfilePage() {
       setLocale(profile.locale || 'en');
       setGameIds(profile.game_ids || ['mho']);
       setEquipmentGender(profile.equipment_gender ?? 'male');
+      setShowSpoilers(profile.show_spoilers ?? false);
     }
   }, [profile]);
 
@@ -144,6 +135,7 @@ export default function ProfilePage() {
       locale,
       game_ids: gameIds,
       equipment_gender: equipmentGender,
+      show_spoilers: showSpoilers,
     });
 
     if (success) {
@@ -161,19 +153,10 @@ export default function ProfilePage() {
       setLocale(profile.locale || 'en');
       setGameIds(profile.game_ids || ['mho']);
       setEquipmentGender(profile.equipment_gender ?? 'male');
+      setShowSpoilers(profile.show_spoilers ?? false);
     }
     clearAuthError();
     setSuccessMessage(null);
-  };
-
-  const toggleGameId = (gid: string) => {
-    if (gameIds.includes(gid)) {
-      if (gameIds.length > 1) {
-        setGameIds(gameIds.filter((g) => g !== gid));
-      }
-    } else {
-      setGameIds([...gameIds, gid]);
-    }
   };
 
   const availablePages = LANDING_PAGE_OPTIONS.filter((p) => !p.adminOnly || isAdmin);
@@ -361,6 +344,55 @@ export default function ProfilePage() {
                   <span className="font-semibold text-mh-slate-200 font-mono">{user.email}</span>
                 </div>
               )}
+
+              {/* Character preferences */}
+              <div className="sm:col-span-2 pt-3 border-t border-mh-slate-700/60 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Equipment image preference */}
+                <div>
+                  <label className="block text-xs font-semibold text-mh-slate-300 mb-1.5">
+                    Equipment Images
+                  </label>
+                  <EquipmentGenderPicker value={equipmentGender} onChange={setEquipmentGender} className="max-w-xs" />
+                  <p className="text-[11px] text-mh-slate-500 mt-1.5">
+                    Choose whether armour pieces are shown with male or female equipment images.
+                  </p>
+                </div>
+
+                {/* Show Spoilers toggle */}
+                <div>
+                  <label className="block text-xs font-semibold text-mh-slate-300 mb-1.5">
+                    Spoiler Content
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setShowSpoilers(!showSpoilers)}
+                    className={cn(
+                      'flex items-center justify-between w-full max-w-xs rounded-lg border px-3 py-2 text-xs font-semibold transition-colors',
+                      showSpoilers
+                        ? 'border-mh-gold-500/60 bg-mh-gold-500/10 text-mh-gold-300'
+                        : 'border-mh-slate-700 bg-mh-slate-800 text-mh-slate-400 hover:text-mh-slate-200',
+                    )}
+                  >
+                    <span className="flex items-center gap-2">
+                      {showSpoilers ? <Eye size={15} className="text-mh-gold-400" /> : <EyeOff size={15} className="text-mh-slate-500" />}
+                      <span>Show Spoilers</span>
+                    </span>
+                    <span
+                      className={cn(
+                        'text-[10px] uppercase font-bold px-2 py-0.5 rounded-full border',
+                        showSpoilers
+                          ? 'border-mh-gold-500/40 bg-mh-gold-500/20 text-mh-gold-300'
+                          : 'border-mh-slate-700 bg-mh-slate-900 text-mh-slate-500',
+                      )}
+                    >
+                      {showSpoilers ? 'On' : 'Off'}
+                    </span>
+                  </button>
+                  <p className="text-[11px] text-mh-slate-500 mt-1.5">
+                    Reveal unreleased or spoiler monster data, gear, and story details.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -407,69 +439,7 @@ export default function ProfilePage() {
           )}
         </div>
 
-        {/* ── Section 2: Default Application Settings ── */}
-        <div className="mh-card flex flex-col gap-6">
-          <div className="flex items-center gap-2.5 border-b border-mh-slate-700/80 pb-4">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-mh-gold-500/10 text-mh-gold-400">
-              <Gamepad2 size={18} />
-            </div>
-            <div>
-              <h2 className="text-base font-bold text-mh-slate-100">Games You Play</h2>
-              <p className="text-xs text-mh-slate-500">
-                Choose which Monster Hunter titles you play and track
-              </p>
-            </div>
-          </div>
-
-          {/* Active Games Played Multi-Select */}
-          <div>
-            <label className="block text-xs font-semibold text-mh-slate-300 mb-2">
-              Games You Play & Track
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {SUPPORTED_GAMES.map((game) => {
-                const active = gameIds.includes(game.id);
-                return (
-                  <button
-                    key={game.id}
-                    type="button"
-                    onClick={() => toggleGameId(game.id)}
-                    className={cn(
-                      'flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold transition-colors',
-                      active
-                        ? 'border-mh-gold-500/60 bg-mh-gold-500/10 text-mh-gold-300'
-                        : 'border-mh-slate-700 bg-mh-slate-800 text-mh-slate-500 hover:text-mh-slate-300',
-                    )}
-                  >
-                    <span
-                      className={cn(
-                        'h-2 w-2 rounded-full',
-                        active ? 'bg-mh-gold-400' : 'bg-mh-slate-600',
-                      )}
-                    />
-                    {game.name}
-                  </button>
-                );
-              })}
-            </div>
-            <p className="text-[11px] text-mh-slate-500 mt-1.5">
-              Select which games appear in your quick filters and tabs across the app.
-            </p>
-          </div>
-
-          {/* Equipment image preference */}
-          <div>
-            <label className="block text-xs font-semibold text-mh-slate-300 mb-2">
-              Equipment Images
-            </label>
-            <EquipmentGenderPicker value={equipmentGender} onChange={setEquipmentGender} className="max-w-xs" />
-            <p className="text-[11px] text-mh-slate-500 mt-1.5">
-              Choose whether armour pieces are shown with male or female equipment images.
-            </p>
-          </div>
-        </div>
-
-        {/* ── Section 3: Default Landing Page ── */}
+        {/* ── Section 2: Default Landing Page ── */}
         <div className="mh-card flex flex-col gap-6">
           <div className="flex items-center gap-2.5 border-b border-mh-slate-700/80 pb-4">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-mh-gold-500/10 text-mh-gold-400">
@@ -629,7 +599,7 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* ── Section 4: Localization & Preferences ── */}
+        {/* ── Section 3: Localization & Preferences ── */}
         <div className="mh-card flex flex-col gap-6">
           <div className="flex items-center gap-2.5 border-b border-mh-slate-700/80 pb-4">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-mh-gold-500/10 text-mh-gold-400">

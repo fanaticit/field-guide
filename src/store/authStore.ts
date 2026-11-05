@@ -43,6 +43,7 @@ export interface UserProfile {
   default_game?: string;
   default_page?: string;
   equipment_gender?: EquipmentGender;
+  show_spoilers?: boolean;
 }
 
 /** Convenience selector — true if the signed-in user is admin */
@@ -186,7 +187,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   fetchProfile: async (userId: string) => {
     const { data, error } = await supabase
       .from('profiles')
-      .select('id, username, display_name, avatar_url, game_ids, locale, role, default_game, default_page, equipment_gender')
+      .select('id, username, display_name, avatar_url, game_ids, locale, role, default_game, default_page, equipment_gender, show_spoilers')
       .eq('id', userId)
       .single();
 

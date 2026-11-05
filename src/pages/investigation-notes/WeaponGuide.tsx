@@ -31,7 +31,6 @@ import {
 import { WEAPON_TYPES } from '../../data/core/weapon-types';
 import { useAdminWeapons } from '../../hooks/useAdminWeapons';
 import { useAdminMonsters } from '../../hooks/useAdminMonsters';
-import { useAdminSkills } from '../../hooks/useAdminSkills';
 import {
   useHunterChallenges,
   useAddWeaponChallenge,
@@ -65,10 +64,11 @@ const ELEMENT_ICONS: Record<WeaponElementType, React.ComponentType<{ size?: numb
   paralysis: Zap,
   blast: Flame,
   sleep: Snowflake,
+  stun: Zap,
 };
 
 export default function WeaponGuide() {
-  const { user } = useAuthStore();
+  const { user, profile } = useAuthStore();
   const theme = useUIStore((s) => s.sectionThemes['/challenges'] ?? DEFAULT_SECTION_THEMES['/challenges']);
   const [introHidden, setIntroHidden] = useState(() => localStorage.getItem(INTRO_HIDDEN_KEY) === '1');
 
@@ -90,9 +90,8 @@ export default function WeaponGuide() {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
 
   // Queries & Hooks
-  const { data: weapons = [], isLoading } = useAdminWeapons({ game: 'mho', isActive: true });
+  const { data: weapons = [], isLoading } = useAdminWeapons({ isActive: true, showSpoilers: Boolean(profile?.show_spoilers) });
   const { data: monsters = [] } = useAdminMonsters({ isActive: true });
-  const { data: skills = [] } = useAdminSkills({ isActive: true });
   const { data: challenges = [] } = useHunterChallenges(user?.id);
 
   const addChallenge = useAddWeaponChallenge();
@@ -101,7 +100,6 @@ export default function WeaponGuide() {
   
 
   const monstersMap = useMemo(() => new Map(monsters.map((m) => [m.id, m])), [monsters]);
-  const skillsMap = useMemo(() => new Map(skills.map((s) => [s.id, s])), [skills]);
   const weaponTypesMap = useMemo(() => new Map(WEAPON_TYPES.map((w) => [w.id, w])), []);
 
   // Quick challenge add handler
@@ -115,18 +113,18 @@ export default function WeaponGuide() {
       const monster = weapon.monster_id ? monstersMap.get(weapon.monster_id) : null;
       await addChallenge.mutateAsync({
         userId: user.id,
-        game: weapon.game || 'mho',
+        game: 'mho',
         weaponId: weapon.id,
         weaponName: weapon.name,
         weaponTypeId: weapon.weapon_type_id,
         monsterId: weapon.monster_id ?? null,
         monsterName: monster?.name ?? null,
         elementType: weapon.element_type,
-        specialSkill: weapon.special_skill ?? null,
+        specialSkill: weapon.apex_effect?.name ?? null,
         pieceImage: weapon.image ?? null,
         setIcon: weapon.image ?? null,
         craftRarity: weapon.rarity || 1,
-        maxRarity: 16,
+        maxRarity: weapon.max_rarity,
       });
     },
     [user, monstersMap, addChallenge],
@@ -142,12 +140,11 @@ export default function WeaponGuide() {
         const monster = w.monster_id ? monstersMap.get(w.monster_id) : null;
         return (
           w.name.toLowerCase().includes(q) ||
-          (w.upgraded_name ?? '').toLowerCase().includes(q) ||
+          (w.series ?? '').toLowerCase().includes(q) ||
           w.id.toLowerCase().includes(q) ||
           (w.name_ja ?? '').toLowerCase().includes(q) ||
           (monster?.name ?? '').toLowerCase().includes(q) ||
-          (w.special_skill ?? '').toLowerCase().includes(q) ||
-          w.skills.some((s) => s.id.toLowerCase().includes(q) || (skillsMap.get(s.id)?.name ?? '').toLowerCase().includes(q))
+          (w.apex_effect?.name ?? '').toLowerCase().includes(q)
         );
       });
     }
@@ -171,7 +168,7 @@ export default function WeaponGuide() {
         if (filterChallenge === 'tracked') return c.status !== 'abandoned';
         if (filterChallenge === 'crafting') return c.status === 'crafting' || c.current_rarity === 0;
         if (filterChallenge === 'upgrading') return c.status === 'upgrading' && c.current_rarity > 0;
-        if (filterChallenge === 'mastered') return c.status === 'completed' || c.current_rarity >= (c.max_rarity || 16);
+        if (filterChallenge === 'mastered') return c.status === 'completed' || c.current_rarity >= (c.max_rarity || 14);
         return true;
       });
     }
@@ -196,9 +193,9 @@ export default function WeaponGuide() {
     });
 
     return list;
-  }, [weapons, search, filterWeaponType, filterElement, filterSource, filterChallenge, sortOrder, challenges, monstersMap, skillsMap]);
+  }, [weapons, search, filterWeaponType, filterElement, filterSource, filterChallenge, sortOrder, challenges, monstersMap]);
 
-  // Collection status (a weapon counts as collected once its challenge is mastered at R16)
+  // Collection status (a weapon counts as collected once its challenge is mastered at its max rarity)
   const stats = useMemo(() => {
     const weaponChallenges = challenges.filter((c) => c.challenge_type === 'weapon' && c.status !== 'abandoned');
     const mastered = weaponChallenges.filter((c) => c.status === 'completed').length;
@@ -222,9 +219,9 @@ export default function WeaponGuide() {
         onToggleHidden={toggleIntro}
         description={
           <>
-            Browse weapons across all 14 Monster Hunter weapon types, with their special skills, elemental
-            affinities and attached skills. Add a weapon to your Hunter's Challenges to start tracking it from the
-            rarity you craft it at up to Rarity 16. The monsters you need to hunt for it then appear in your
+            Browse every weapon in the game with its attack, element, sharpness and the materials needed for each
+            upgrade. Add a weapon to your Hunter's Challenges to start tracking it from the rarity you craft it at
+            up to its max rarity. The monsters you need to hunt for it then appear in your
             <span className="text-mh-slate-200 font-semibold"> Hunting Targets</span>, and the Mastered count
             fills in as you finish each weapon.
           </>
@@ -235,7 +232,7 @@ export default function WeaponGuide() {
           <div className="px-2.5 py-0.5 text-center border-r border-[var(--border-subtle)]">
             <div className="flex items-center justify-center gap-1 text-[9px] uppercase font-bold text-[var(--theme-accent)]">
               <Bookmark size={10} />
-              <span>Mastered (R16)</span>
+              <span>Mastered</span>
             </div>
             <div className="flex items-baseline justify-center gap-1">
               <span className="font-display text-sm font-black text-white">{stats.mastered}</span>
@@ -315,8 +312,8 @@ export default function WeaponGuide() {
             onChange={(e) => setFilterWeaponType(e.target.value)}
             className="rounded-xl border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-300 focus:border-mh-gold-500/50 focus:outline-none"
           >
-            <option value="all">All 14 Weapon Types</option>
-            {WEAPON_TYPES.map((wt) => (
+            <option value="all">All Weapon Types</option>
+            {WEAPON_TYPES.filter((wt) => weapons.some((w) => w.weapon_type_id === wt.id)).map((wt) => (
               <option key={wt.id} value={wt.id}>
                 {wt.name}
               </option>
@@ -343,12 +340,12 @@ export default function WeaponGuide() {
             onChange={(e) => setFilterSource(e.target.value as WeaponSourceType | 'all')}
             className="rounded-xl border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-300 focus:border-mh-gold-500/50 focus:outline-none"
           >
-            <option value="all">All Crafting Sources</option>
-            <option value="monster">Monster Craft</option>
-            <option value="ore">Ore / Iron</option>
-            <option value="bone">Bone</option>
-            <option value="event">Event / Special</option>
-            <option value="general">General</option>
+            <option value="all">All Sources</option>
+            {(Object.keys(WEAPON_SOURCE_CONFIG) as WeaponSourceType[]).map((k) => (
+              <option key={k} value={k}>
+                {WEAPON_SOURCE_CONFIG[k].label}
+              </option>
+            ))}
           </select>
 
           {/* Sort By Controls */}
@@ -452,8 +449,8 @@ export default function WeaponGuide() {
                 <th className="px-3 py-3.5 text-center">Rarity</th>
                 <th className="px-3 py-3.5">Origin</th>
                 <th className="px-3 py-3.5">Element / Status</th>
-                <th className="px-3 py-3.5">Special Skill</th>
-                <th className="px-3 py-3.5">Attached Skills</th>
+                <th className="px-3 py-3.5 text-center">Attack</th>
+                <th className="px-3 py-3.5">Apex Effect</th>
                 <th className="px-3 py-3.5 text-center">Hunter Challenge</th>
                 <th className="py-3.5 pl-3 pr-5 text-right">Action</th>
               </tr>
@@ -462,7 +459,7 @@ export default function WeaponGuide() {
               {filteredWeapons.map((weapon) => {
                 const wt = weaponTypesMap.get(weapon.weapon_type_id);
                 const monster = weapon.monster_id ? monstersMap.get(weapon.monster_id) : null;
-                const srcCfg = WEAPON_SOURCE_CONFIG[weapon.source_type] || WEAPON_SOURCE_CONFIG.general;
+                const srcCfg = WEAPON_SOURCE_CONFIG[weapon.source_type] || WEAPON_SOURCE_CONFIG.unknown;
                 const elemCfg = WEAPON_ELEMENT_CONFIG[weapon.element_type] || WEAPON_ELEMENT_CONFIG.raw;
                 const ElIcon = ELEMENT_ICONS[weapon.element_type] || Shield;
                 const challenge = getWeaponChallenge(challenges, weapon.id);
@@ -491,12 +488,10 @@ export default function WeaponGuide() {
                         </div>
                         <div className="min-w-0 max-w-[200px]">
                           <p className="font-bold text-mh-slate-100 break-words leading-tight">{weapon.name}</p>
-                          {weapon.upgraded_name && (
-                            <p className="text-[10px] text-amber-300 font-medium break-words mt-0.5">
-                              ▲ {weapon.upgraded_name} {weapon.upgrade_level ? `(Lv ${weapon.upgrade_level})` : ''}
-                            </p>
+                          {weapon.series && (
+                            <p className="text-[10px] text-mh-slate-500 break-words">{weapon.series}</p>
                           )}
-                          {weapon.name_ja && !weapon.upgraded_name && (
+                          {weapon.name_ja && (
                             <p className="text-[10px] text-mh-slate-500 break-words">{weapon.name_ja}</p>
                           )}
                         </div>
@@ -548,27 +543,14 @@ export default function WeaponGuide() {
                       </span>
                     </td>
 
-                    {/* Special Skill */}
-                    <td className="px-3 py-3.5 font-semibold text-mh-gold-400 max-w-[140px] break-words">
-                      {weapon.special_skill || '—'}
+                    {/* Attack */}
+                    <td className="px-3 py-3.5 text-center font-mono font-bold text-mh-slate-100">
+                      {weapon.attack ?? '—'}
                     </td>
 
-                    {/* Skills */}
-                    <td className="px-3 py-3.5">
-                      {weapon.skills && weapon.skills.length > 0 ? (
-                        <div className="flex flex-wrap gap-1 max-w-[180px]">
-                          {weapon.skills.map((s, idx) => (
-                            <span
-                              key={idx}
-                              className="rounded bg-mh-slate-800 border border-mh-slate-750 px-1.5 py-0.2 text-[10px] text-mh-slate-300"
-                            >
-                              {skillsMap.get(s.id)?.name ?? s.id} Lv{s.level}
-                            </span>
-                          ))}
-                        </div>
-                      ) : (
-                        <span className="text-mh-slate-600">—</span>
-                      )}
+                    {/* Apex effect */}
+                    <td className="px-3 py-3.5 font-semibold text-mh-gold-400 max-w-[160px] break-words">
+                      {weapon.apex_effect?.name || '—'}
                     </td>
 
                     {/* Hunter Challenge Action / Status */}

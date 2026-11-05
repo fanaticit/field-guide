@@ -12,6 +12,7 @@ import { VisageSelector } from '../components/build-planner/VisageSelector';
 import { SkillSummaryPanel } from '../components/build-planner/SkillSummaryPanel';
 import { clearBuildDraft } from '../store/buildDraftCookie';
 import { supabase } from '../lib/supabase';
+import { useSkillCatalogLoader } from '../hooks/useSkillCatalog';
 
 export default function BuildPlanner() {
   const { user } = useAuthStore();
@@ -21,6 +22,7 @@ export default function BuildPlanner() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const titleInputRef = useRef<HTMLInputElement>(null);
+  useSkillCatalogLoader();
 
   const [isLoading, setIsLoading] = useState(!!buildId);
   const [hasUpvoted, setHasUpvoted] = useState(false);

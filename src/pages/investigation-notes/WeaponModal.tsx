@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────
 // WeaponModal — Detailed Inspection Dialog with Full Left-Side Weapon Showcase
 // ─────────────────────────────────────────────────────────────
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   X,
   Sword,
@@ -24,11 +24,12 @@ import {
   type WeaponElementType,
   WEAPON_SOURCE_CONFIG,
   WEAPON_ELEMENT_CONFIG,
+  WEAPON_SHARPNESS_ICONS,
   getRarityBadgeStyle,
 } from '../../data/schemas/weapon';
 import { WEAPON_TYPES } from '../../data/core/weapon-types';
 import { useAdminMonsters } from '../../hooks/useAdminMonsters';
-import { useAdminSkills } from '../../hooks/useAdminSkills';
+import { useWeaponUpgrades } from '../../hooks/useAdminWeapons';
 import {
   type HunterChallenge,
   useAddWeaponChallenge,
@@ -51,6 +52,7 @@ const ELEMENT_ICONS: Record<WeaponElementType, React.ComponentType<{ size?: numb
   paralysis: Zap,
   blast: Flame,
   sleep: Snowflake,
+  stun: Zap,
 };
 
 const ELEMENT_GLOWS: Record<WeaponElementType, string> = {
@@ -64,9 +66,8 @@ const ELEMENT_GLOWS: Record<WeaponElementType, string> = {
   paralysis: 'from-yellow-500/15 via-amber-950/20 to-mh-slate-950',
   blast: 'from-rose-600/15 via-orange-950/20 to-mh-slate-950',
   sleep: 'from-indigo-500/15 via-blue-950/20 to-mh-slate-950',
+  stun: 'from-yellow-400/15 via-amber-950/20 to-mh-slate-950',
 };
-
-const RARITY_PRESETS = [1, 2, 4, 6, 8, 10, 12, 16];
 
 interface Props {
   weapon: DBWeapon | null;
@@ -85,15 +86,22 @@ export default function WeaponModal({
 }: Props) {
   const { user } = useAuthStore();
   const { data: monsters = [] } = useAdminMonsters({ isActive: true });
-  const { data: dbSkills = [] } = useAdminSkills({ isActive: true });
+  const { data: upgrades = [] } = useWeaponUpgrades(open && weapon ? weapon.id : null);
 
   const addChallenge = useAddWeaponChallenge();
   const incrementChallenge = useIncrementChallenge();
   const updateChallengeStatus = useUpdateChallengeStatus();
   const deleteChallenge = useDeleteChallenge();
 
-  const [selectedCraftRarity, setSelectedCraftRarity] = useState<number>(weapon?.rarity || 1);
-  const [selectedMaxRarity, setSelectedMaxRarity] = useState<number>(16);
+  // Picked rarities; null = the weapon's own starting / max rarity
+  const [craftPick, setSelectedCraftRarity] = useState<number | null>(null);
+  const [maxPick, setSelectedMaxRarity] = useState<number | null>(null);
+  const selectedCraftRarity = craftPick ?? weapon?.rarity ?? 1;
+  const selectedMaxRarity = maxPick ?? weapon?.max_rarity ?? 14;
+  useEffect(() => {
+    setSelectedCraftRarity(null);
+    setSelectedMaxRarity(null);
+  }, [weapon?.id]);
   const [feedbackMsg, setFeedbackMsg] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -101,7 +109,7 @@ export default function WeaponModal({
 
   const weaponTypeObj = WEAPON_TYPES.find((w) => w.id === weapon.weapon_type_id);
   const monsterObj = weapon.monster_id ? monsters.find((m) => m.id === weapon.monster_id) : null;
-  const srcCfg = WEAPON_SOURCE_CONFIG[weapon.source_type] || WEAPON_SOURCE_CONFIG.general;
+  const srcCfg = WEAPON_SOURCE_CONFIG[weapon.source_type] || WEAPON_SOURCE_CONFIG.unknown;
   const elemCfg = WEAPON_ELEMENT_CONFIG[weapon.element_type] || WEAPON_ELEMENT_CONFIG.raw;
   const ElIcon = ELEMENT_ICONS[weapon.element_type] || Shield;
   const glowTheme = ELEMENT_GLOWS[weapon.element_type] || ELEMENT_GLOWS.raw;
@@ -110,7 +118,9 @@ export default function WeaponModal({
   const isCompleted = challenge?.status === 'completed';
   const isCrafted = (challenge?.current_rarity ?? 0) > 0;
   const currentRarity = challenge?.current_rarity ?? 0;
-  const maxR = challenge?.max_rarity ?? 16;
+  const maxR = challenge?.max_rarity ?? weapon.max_rarity;
+  // Every rarity the weapon can have, from the one it starts at to its max
+  const rarityRange = Array.from({ length: Math.max(1, weapon.max_rarity - weapon.rarity + 1) }, (_, i) => weapon.rarity + i);
   const craftR = challenge?.craft_rarity ?? (weapon.rarity || 1);
 
   const handleAddChallenge = async () => {
@@ -123,14 +133,14 @@ export default function WeaponModal({
     try {
       await addChallenge.mutateAsync({
         userId: user.id,
-        game: weapon.game,
+        game: 'mho',
         weaponId: weapon.id,
         weaponName: weapon.name,
         weaponTypeId: weapon.weapon_type_id,
         monsterId: weapon.monster_id ?? null,
         monsterName: monsterObj?.name ?? null,
         elementType: weapon.element_type,
-        specialSkill: weapon.special_skill ?? null,
+        specialSkill: weapon.apex_effect?.name ?? null,
         pieceImage: weapon.image ?? null,
         setIcon: weapon.image ?? null,
         craftRarity: selectedCraftRarity,
@@ -218,9 +228,11 @@ export default function WeaponModal({
               {weaponTypeObj?.name || weapon.weapon_type_id}
             </span>
 
-            <span className="rounded-lg bg-mh-slate-900/90 border border-mh-slate-700/80 px-2.5 py-1 text-[11px] font-mono font-bold text-mh-gold-400 uppercase shadow-sm">
-              {weapon.game}
-            </span>
+            {weapon.is_spoiler && (
+              <span className="rounded-lg bg-amber-500/15 border border-amber-500/40 px-2.5 py-1 text-[11px] font-bold text-amber-300 uppercase shadow-sm">
+                Spoiler
+              </span>
+            )}
           </div>
 
           {/* Full Hero Weapon Image Stage */}
@@ -300,20 +312,9 @@ export default function WeaponModal({
                 )}
               </div>
 
-              {weapon.upgraded_name && (
-                <div className="flex flex-wrap items-center gap-1.5 text-xs text-amber-300 font-medium mt-1 break-words">
-                  <span className="text-mh-slate-400 text-[11px]">▲ Upgrades to:</span>
-                  <span className="font-bold text-amber-200">{weapon.upgraded_name}</span>
-                  {weapon.upgraded_name_ja && (
-                    <span className="text-mh-slate-500 text-[10px]">({weapon.upgraded_name_ja})</span>
-                  )}
-                  {weapon.upgrade_level && (
-                    <span className="rounded bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[10px] px-1.5 py-0.2 font-mono font-bold">
-                      Lv {weapon.upgrade_level}
-                    </span>
-                  )}
-                </div>
-              )}
+              <p className="mt-1 text-xs text-mh-slate-400">
+                {[weapon.series, weapon.status === 'not_in_game' ? weapon.status_reason : null].filter(Boolean).join(' · ')}
+              </p>
             </div>
 
             <button
@@ -425,7 +426,7 @@ export default function WeaponModal({
                       Select Starting Forged Rarity Tier:
                     </label>
                     <div className="flex flex-wrap gap-1.5">
-                      {RARITY_PRESETS.map((r) => {
+                      {rarityRange.map((r) => {
                         const badge = getRarityBadgeStyle(r);
                         const isSelected = selectedCraftRarity === r;
                         return (
@@ -453,7 +454,7 @@ export default function WeaponModal({
                       Target Max Rarity:
                     </label>
                     <div className="flex flex-wrap gap-1.5">
-                      {[10, 12, 14, 16].map((r) => {
+                      {rarityRange.filter((r) => r >= selectedCraftRarity).map((r) => {
                         const badge = getRarityBadgeStyle(r);
                         const isSelected = selectedMaxRarity === r;
                         return (
@@ -519,7 +520,7 @@ export default function WeaponModal({
 
                     {/* Quick Rarity Direct Selectors */}
                     <div className="flex flex-wrap gap-1">
-                      {[0, 1, 2, 4, 6, 8, 10, 12, 16].map((r) => {
+                      {[0, ...rarityRange].map((r) => {
                         const isActive = currentRarity === r;
                         const isReached = currentRarity >= r && r > 0;
                         return (
@@ -574,90 +575,110 @@ export default function WeaponModal({
               )}
             </div>
 
-            {/* Special Skill Highlight */}
-            {weapon.special_skill && (
-              <div className="rounded-2xl border border-mh-gold-500/30 bg-gradient-to-r from-mh-gold-500/10 via-mh-slate-900 to-mh-slate-900 p-4">
-                <div className="flex items-center gap-2 mb-1">
-                  <Sparkles size={16} className="text-mh-gold-400" />
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-mh-gold-400">
-                    Special Skill Finish
-                  </h4>
+            {/* Starting stats */}
+            <div className="rounded-2xl border border-mh-slate-750 bg-mh-slate-950/60 p-5 space-y-3">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-mh-slate-200">
+                Stats at R{weapon.rarity}
+              </h4>
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 text-xs">
+                <div className="rounded-lg border border-mh-slate-750 bg-mh-slate-900 p-2">
+                  <div className="text-[10px] uppercase text-mh-slate-500">Attack</div>
+                  <div className="font-mono text-sm font-bold text-mh-slate-100">{weapon.attack ?? '—'}</div>
                 </div>
-                <p className="font-display text-sm font-bold text-mh-slate-100 break-words leading-tight">
-                  {weapon.special_skill}
-                </p>
-                {weaponTypeObj?.description && (
-                  <p className="text-xs text-mh-slate-400 mt-1 leading-relaxed">
-                    {weaponTypeObj.description}
-                  </p>
+                <div className="rounded-lg border border-mh-slate-750 bg-mh-slate-900 p-2">
+                  <div className="text-[10px] uppercase text-mh-slate-500">Affinity</div>
+                  <div className="font-mono text-sm font-bold text-mh-slate-100">{weapon.affinity ?? '—'}</div>
+                </div>
+                <div className="rounded-lg border border-mh-slate-750 bg-mh-slate-900 p-2">
+                  <div className="text-[10px] uppercase text-mh-slate-500">{elemCfg.label}</div>
+                  <div className="font-mono text-sm font-bold text-mh-slate-100">{weapon.element_damage ?? '—'}</div>
+                </div>
+                <div className="rounded-lg border border-mh-slate-750 bg-mh-slate-900 p-2">
+                  <div className="text-[10px] uppercase text-mh-slate-500">Sharpness</div>
+                  <div className="flex h-5 items-center">
+                    {weapon.sharpness && WEAPON_SHARPNESS_ICONS[weapon.sharpness] ? (
+                      <img src={WEAPON_SHARPNESS_ICONS[weapon.sharpness]} alt={weapon.sharpness} className="h-3.5 w-auto" />
+                    ) : (
+                      <span className="font-mono text-sm font-bold text-mh-slate-100">—</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+              {weapon.deco_slots.length > 0 && (
+                <p className="text-[11px] text-mh-slate-500">Deco slots: {weapon.deco_slots.join(' · ')}</p>
+              )}
+              {weapon.source_detail && <p className="text-[11px] text-mh-slate-400">{weapon.source_detail}</p>}
+            </div>
+
+            {/* Apex effect */}
+            {weapon.apex_effect && (
+              <div className="rounded-2xl border border-mh-gold-500/30 bg-gradient-to-r from-mh-gold-500/10 via-mh-slate-900 to-mh-slate-900 p-4 space-y-2">
+                <div className="flex items-center gap-2">
+                  {weapon.apex_effect.icon ? (
+                    <img src={weapon.apex_effect.icon} alt="" className="h-7 w-7 object-contain" />
+                  ) : (
+                    <Sparkles size={16} className="text-mh-gold-400" />
+                  )}
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-mh-gold-400">Apex Effect</h4>
+                </div>
+                <p className="font-display text-sm font-bold text-mh-slate-100 break-words leading-tight">{weapon.apex_effect.name}</p>
+                <p className="text-xs text-mh-slate-300 leading-relaxed">{weapon.apex_effect.description}</p>
+                {weapon.awakening_slots && (
+                  <div className="space-y-1 border-t border-mh-gold-500/20 pt-2">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-mh-slate-400">Awakening slots</p>
+                    {weapon.awakening_slots.unlock_rarities.map((r, i) => (
+                      <p key={r} className="text-[11px] text-mh-slate-300">
+                        <span className="font-mono font-bold text-mh-gold-300">R{r}</span>
+                        {' — '}
+                        {(weapon.awakening_slots?.options[i] ?? []).join(' / ')}
+                      </p>
+                    ))}
+                  </div>
                 )}
+                {weapon.apex_season && <p className="text-[11px] text-mh-slate-500">{weapon.apex_season}</p>}
               </div>
             )}
 
-            {/* Attached Weapon Skills */}
-            <div className="rounded-2xl border border-mh-slate-750 bg-mh-slate-950/60 p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Sparkles size={15} className="text-mh-gold-400" />
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-mh-slate-200">
-                    Attached Passive Skills
-                  </h4>
+            {/* Upgrade path */}
+            {upgrades.length > 1 && (
+              <div className="rounded-2xl border border-mh-slate-750 bg-mh-slate-950/60 p-5 space-y-3">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-mh-slate-200">Upgrade Path</h4>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-[11px]">
+                    <thead className="text-[10px] uppercase tracking-wider text-mh-slate-500">
+                      <tr>
+                        <th className="py-1 pr-2">Rarity</th>
+                        <th className="py-1 pr-2">Attack</th>
+                        <th className="py-1 pr-2">{elemCfg.label}</th>
+                        <th className="py-1 pr-2">Lv</th>
+                        <th className="py-1">Materials</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-mh-slate-800">
+                      {upgrades.map((u) => {
+                        const rs = getRarityBadgeStyle(u.rarity);
+                        return (
+                          <tr key={u.rarity} className={cn(isCrafted && u.rarity === currentRarity && 'bg-yellow-500/10')}>
+                            <td className="py-1.5 pr-2">
+                              <span className={cn('rounded border px-1.5 py-0.5 text-[10px] font-bold font-mono', rs.badge)}>{rs.label}</span>
+                            </td>
+                            <td className="py-1.5 pr-2 text-mh-slate-100">
+                              {u.attack ?? '—'}
+                              {u.gains?.Attack ? <span className="ml-1 text-[10px] text-emerald-400">+{u.gains.Attack}</span> : null}
+                            </td>
+                            <td className="py-1.5 pr-2 text-mh-slate-300">{u.element_damage ?? '—'}</td>
+                            <td className="py-1.5 pr-2 text-mh-slate-300">{u.required_level ?? '—'}</td>
+                            <td className="py-1.5 text-mh-slate-300">
+                              {u.materials.length ? u.materials.map((m) => `${m.item} ×${m.count}`).join(', ') : '—'}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
                 </div>
-                <span className="text-[11px] text-mh-slate-500">
-                  {weapon.skills?.length ?? 0} Skill{(weapon.skills?.length ?? 0) === 1 ? '' : 's'}
-                </span>
               </div>
-
-              {(!weapon.skills || weapon.skills.length === 0) ? (
-                <p className="text-xs text-mh-slate-500 italic py-2">
-                  No inherent passive skills attached to this weapon.
-                </p>
-              ) : (
-                <div className="grid grid-cols-1 gap-2.5">
-                  {weapon.skills.map((s, idx) => {
-                    const meta = dbSkills.find((d) => d.id === s.id);
-                    const skillName = meta?.name ?? s.id;
-                    const ur = s.unlockLevel ?? s.unlock_level ?? s.unlockRarity ?? s.unlock_rarity ?? null;
-                    const isLocked = Boolean(ur && ur > 1);
-
-                    return (
-                      <div
-                        key={idx}
-                        className="rounded-xl border border-mh-slate-750 bg-mh-slate-900 p-3 space-y-1.5"
-                      >
-                        <div className="flex items-center justify-between gap-2">
-                          <div className="flex items-center gap-2">
-                            <span className="font-bold text-sm text-mh-slate-100 break-words">
-                              {skillName}
-                            </span>
-                            <span className="rounded bg-mh-gold-500/20 text-mh-gold-300 font-mono text-xs font-bold px-2 py-0.5 border border-mh-gold-500/30">
-                              Level {s.level}
-                            </span>
-                          </div>
-
-                          {/* Unlock Rarity / Level */}
-                          {isLocked ? (
-                            <span className="rounded bg-amber-500/20 text-amber-300 font-mono text-xs font-bold px-2 py-0.5 border border-amber-500/40">
-                              Unlocks at Lv {ur}
-                            </span>
-                          ) : (
-                            <span className="rounded bg-emerald-500/15 text-emerald-300 font-mono text-xs font-bold px-2 py-0.5 border border-emerald-500/30">
-                              Base Level
-                            </span>
-                          )}
-                        </div>
-
-                        {meta?.description && (
-                          <p className="text-xs text-mh-slate-400 leading-relaxed">
-                            {meta.description}
-                          </p>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
+            )}
 
             {/* Field Notes & Weapon Styles */}
             {weapon.notes && (

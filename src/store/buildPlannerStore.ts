@@ -16,27 +16,49 @@ export interface WeaponType {
   icon?: string;
 }
 
+/** A row of public.weapons (weapons carry no skills in the game data) */
 export interface Weapon {
   id: string;
   name: string;
   weapon_type_id: string;
   element_type?: string; // e.g. 'fire', 'thunder', 'water', 'raw'
-  skills: { id: string; level: number }[];
-  image?: string;
+  element_damage?: number | null;
+  attack?: number | null;
+  image?: string | null;
   rarity?: number;
-  grade?: number;
-  upgraded_name?: string | null;
-  upgrade_level?: number | null;
+  max_rarity?: number;
+  series?: string | null;
+  monster_id?: string | null;
 }
 
+/** A row of public.armour_pieces */
 export interface ArmourPiece {
   id: string;
-  slot: 'helm' | 'chest' | 'gloves' | 'waist' | 'greaves';
-  set_name?: string;
+  /** Slot name of the game data: Head, Chest, Arms, Waist or Legs */
+  slot: string;
+  set_name?: string | null;
+  set_variant?: string;
+  rarity?: number;
+  /** monsters.id, or the name of a monster that is not linked yet */
   monster_id: string;
   monster_name?: string; // joined from monsters table
-  image?: string;
-  skills: { id: string; level: number }[];
+  /** Skill ids at the highest rarity — every skill level has its own id */
+  skills: string[];
+  set_bonus?: { pieces: number; skill_id: string } | null;
+  icon_m?: string | null;
+  icon_f?: string | null;
+}
+
+/** The male or female icon of a piece; male is the default */
+export function armourPieceIcon(piece: ArmourPiece | null | undefined, gender: 'male' | 'female' = 'male'): string | undefined {
+  if (!piece) return undefined;
+  return ((gender === 'female' ? piece.icon_f : piece.icon_m) ?? piece.icon_m ?? piece.icon_f) ?? undefined;
+}
+
+/** How a skills-table id maps to the skill it belongs to: the level 1 id of the skill and the level it grants */
+export interface SkillCatalogEntry {
+  baseId: string;
+  level: number;
 }
 
 export interface Buddy {
@@ -68,6 +90,8 @@ interface BuildPlannerState {
   upvotes: number;
   hoveredSkillId: string | null;
   hoveredSkillCategory: string | null;
+  /** skills.id -> skill + level; loaded by the planner so equipment skill ids can be added up */
+  skillCatalog: Map<string, SkillCatalogEntry>;
   // Selections
   adventurer: Adventurer | null;
   weaponType: WeaponType | null;
@@ -104,6 +128,7 @@ interface BuildPlannerState {
   setSelectedInkTypes: (inks: Record<string, string>) => void;
   resetBuild: () => void;
   setHoveredSkillId: (id: string | null, category?: string | null) => void;
+  setSkillCatalog: (catalog: Map<string, SkillCatalogEntry>) => void;
 
   // Computed
   getTotalVisagePoints: () => number;
@@ -120,6 +145,7 @@ export const useBuildPlannerStore = create<BuildPlannerState>((set, get) => ({
   upvotes: 0,
   hoveredSkillId: null,
   hoveredSkillCategory: null,
+  skillCatalog: new Map(),
   adventurer: null,
   weaponType: null,
   weapon: null,
@@ -225,25 +251,32 @@ export const useBuildPlannerStore = create<BuildPlannerState>((set, get) => ({
   },
 
   setHoveredSkillId: (id, category = null) => set({ hoveredSkillId: id, hoveredSkillCategory: category }),
+  setSkillCatalog: (catalog) => set({ skillCatalog: catalog }),
 
+  // Skills of the equipped armour at its highest rarity, plus the skill granted by each complete set bonus
   getActiveSkills: () => {
-    const { weapon, helm, chest, gloves, waist, greaves } = get();
+    const { helm, chest, gloves, waist, greaves, skillCatalog } = get();
     const skillMap = new Map<string, number>();
-
-    const addSkills = (skills?: { id: string; level: number }[]) => {
-      if (!skills) return;
-      skills.forEach(s => {
-        const current = skillMap.get(s.id) || 0;
-        skillMap.set(s.id, current + s.level);
-      });
+    const add = (skillId: string) => {
+      const entry = skillCatalog.get(skillId);
+      if (!entry) return;
+      skillMap.set(entry.baseId, (skillMap.get(entry.baseId) || 0) + entry.level);
     };
 
-    if (weapon) addSkills(weapon.skills);
-    if (helm) addSkills(helm.skills);
-    if (chest) addSkills(chest.skills);
-    if (gloves) addSkills(gloves.skills);
-    if (waist) addSkills(waist.skills);
-    if (greaves) addSkills(greaves.skills);
+    const equipped = [helm, chest, gloves, waist, greaves].filter((p): p is ArmourPiece => Boolean(p));
+    equipped.forEach((piece) => piece.skills?.forEach(add));
+
+    const piecesPerSet = new Map<string, { count: number; bonus: ArmourPiece['set_bonus'] }>();
+    equipped.forEach((piece) => {
+      const key = (piece.set_name ?? piece.monster_id) + '|' + (piece.set_variant ?? '');
+      const cur = piecesPerSet.get(key) ?? { count: 0, bonus: null };
+      cur.count += 1;
+      cur.bonus = cur.bonus ?? piece.set_bonus ?? null;
+      piecesPerSet.set(key, cur);
+    });
+    piecesPerSet.forEach(({ count, bonus }) => {
+      if (bonus && count >= bonus.pieces) add(bonus.skill_id);
+    });
 
     return Array.from(skillMap.entries()).map(([id, level]) => ({ id, level }));
   }

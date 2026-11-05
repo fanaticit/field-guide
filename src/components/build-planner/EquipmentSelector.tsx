@@ -2,7 +2,35 @@ import { useState, useRef, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
-import { useBuildPlannerStore, type Weapon, type ArmourPiece } from '../../store/buildPlannerStore';
+import { useBuildPlannerStore, armourPieceIcon, type Weapon, type ArmourPiece } from '../../store/buildPlannerStore';
+import { useAuthStore } from '../../store/authStore';
+
+type PlannerSlot = 'helm' | 'chest' | 'gloves' | 'waist' | 'greaves';
+// Slot names of the game data
+const GAME_SLOT: Record<PlannerSlot, string> = {
+  helm: 'Head',
+  chest: 'Chest',
+  gloves: 'Arms',
+  waist: 'Waist',
+  greaves: 'Legs',
+};
+const SLOT_LABEL: Record<PlannerSlot, string> = {
+  helm: 'Helm',
+  chest: 'Chest',
+  gloves: 'Arms',
+  waist: 'Coil',
+  greaves: 'Greaves',
+};
+// The game's skill categories use the colours of the closest legacy category
+const CATEGORY_ALIASES: Record<string, string> = {
+  'Hunt (General)': 'attack',
+  'Hunt (Ranged)': 'critical',
+  'Weapon-specific': 'utility',
+  Attributes: 'defense',
+  Resistance: 'status',
+  Survival: 'survival',
+  Exploration: 'general',
+};
 
 // ─── Shared Searchable Dropdown ──────────────────────────────────────────────
 
@@ -161,7 +189,7 @@ function SearchableDropdown({
 
 const getHighlightClasses = (cat: string | null) => {
   if (!cat) return '';
-  switch (cat) {
+  switch (CATEGORY_ALIASES[cat] ?? cat) {
     case 'attack': return 'border-red-500 ring-1 ring-red-500/50 bg-red-500/10 shadow-lg shadow-red-500/20';
     case 'critical': return 'border-purple-500 ring-1 ring-purple-500/50 bg-purple-500/10 shadow-lg shadow-purple-500/20';
     case 'defense': return 'border-blue-500 ring-1 ring-blue-500/50 bg-blue-500/10 shadow-lg shadow-blue-500/20';
@@ -176,6 +204,10 @@ const getHighlightClasses = (cat: string | null) => {
 
 export function EquipmentSelector() {
   const { adventurer, weaponType, weapon, setWeapon, helm, chest, gloves, waist, greaves, setArmour, hoveredSkillId, hoveredSkillCategory } = useBuildPlannerStore();
+  const profile = useAuthStore((st) => st.profile);
+  const catalog = useBuildPlannerStore((st) => st.skillCatalog);
+  const gender = profile?.equipment_gender ?? 'male';
+  const showSpoilers = Boolean(profile?.show_spoilers);
 
   const navigate = useNavigate();
   const isReady = !!adventurer;
@@ -185,13 +217,17 @@ export function EquipmentSelector() {
     : adventurer?.allowed_weapon_types?.[0];
 
   const { data: weapons, isLoading: isWepLoading } = useQuery({
-    queryKey: ['weapons', activeWeaponTypeId],
+    queryKey: ['weapons', activeWeaponTypeId, showSpoilers],
     queryFn: async () => {
-      const { data, error } = await supabase
+      let q = supabase
         .from('weapons')
         .select('*')
         .eq('weapon_type_id', activeWeaponTypeId)
-        .eq('is_active', true);
+        .eq('is_active', true)
+        .limit(1000);
+      // Spoiler weapons only for hunters who turned on "Show spoilers"
+      if (!showSpoilers) q = q.eq('is_spoiler', false);
+      const { data, error } = await q;
       if (error) throw error;
       return data as Weapon[];
     },
@@ -202,12 +238,12 @@ export function EquipmentSelector() {
   const { data: armours, isLoading: isArmourLoading } = useQuery({
     queryKey: ['armours_mho'],
     queryFn: async () => {
-      // 1. Fetch MHO armour pieces
+      // 1. Fetch the armour pieces
       const { data: armourData, error: armourError } = await supabase
         .from('armour_pieces')
         .select('*')
-        .eq('game', 'mho')
-        .eq('is_active', true);
+        .eq('is_active', true)
+        .limit(1000);
       if (armourError) throw armourError;
 
       // 2. Fetch all active monsters
@@ -226,7 +262,7 @@ export function EquipmentSelector() {
         const monster = monsterMap.get(piece.monster_id);
         return {
           ...piece,
-          monster_name: monster?.name ?? piece.monster_id, // fallback to id if not a real monster
+          monster_name: monster?.name ?? piece.monster_id, // not linked to a monster yet: the stored name
           monster_icon: monster?.icon ?? null,
         };
       }) as (ArmourPiece & { monster_name: string; monster_icon?: string })[];
@@ -237,27 +273,41 @@ export function EquipmentSelector() {
 
   // Convert weapons to dropdown items (sorted by rarity descending, then name)
   const weaponItems: DropdownItem[] = [...(weapons || [])]
-    .sort((a, b) => (b.rarity ?? b.grade ?? 1) - (a.rarity ?? a.grade ?? 1) || a.name.localeCompare(b.name))
+    .sort((a, b) => (b.rarity ?? 1) - (a.rarity ?? 1) || a.name.localeCompare(b.name))
     .map(w => ({
       id: w.id,
       primaryLabel: w.name,
-      secondaryLabel: w.upgraded_name
-        ? `Upgrades: ${w.upgraded_name} · Rarity ${w.rarity ?? w.grade ?? 1}`
-        : `Rarity ${w.rarity ?? w.grade ?? 1}`,
-      icon: w.image,
+      secondaryLabel: [
+        'R' + (w.rarity ?? 1) + (w.max_rarity && w.max_rarity > (w.rarity ?? 1) ? '→R' + w.max_rarity : ''),
+        w.attack ? 'ATK ' + w.attack : null,
+        w.element_type && w.element_type !== 'raw'
+          ? w.element_type[0].toUpperCase() + w.element_type.slice(1) + (w.element_damage ? ' ' + w.element_damage : '')
+          : null,
+      ].filter(Boolean).join(' · '),
+      icon: w.image ?? undefined,
     }));
 
-  // Convert armour pieces to dropdown items per slot
-  const armourItems = (slot: ArmourPiece['slot']): DropdownItem[] =>
+  // Convert armour pieces to dropdown items per slot (highest rarity first)
+  const armourItems = (slot: PlannerSlot): DropdownItem[] =>
     (armours || [])
-      .filter(a => a.slot === slot)
+      .filter(a => a.slot === GAME_SLOT[slot])
+      .sort((a, b) => (b.rarity ?? 1) - (a.rarity ?? 1) || String(a.set_name).localeCompare(String(b.set_name)))
       .map((a: ArmourPiece & { monster_name: string; monster_icon?: string }) => ({
         id: a.id,
-        primaryLabel: (a as any).monster_name || a.monster_id,
-        secondaryLabel: a.set_name ? `${a.set_name} ${slot.charAt(0).toUpperCase() + slot.slice(1)}` : undefined,
-        icon: (a as any).monster_icon,
-        image: a.image,
+        primaryLabel: ((a.set_name ?? a.monster_name) + ' ' + (a.set_variant ?? '')).trim(),
+        secondaryLabel: SLOT_LABEL[slot] + ' · R' + (a.rarity ?? 1),
+        icon: armourPieceIcon(a, gender) ?? a.monster_icon,
       }));
+
+  // Pieces whose skills (or set bonus) include the skill hovered in the summary
+  const highlightSlots = new Set<PlannerSlot>();
+  if (hoveredSkillId) {
+    (['helm', 'chest', 'gloves', 'waist', 'greaves'] as const).forEach((slot) => {
+      const piece = { helm, chest, gloves, waist, greaves }[slot];
+      const ids = [...(piece?.skills ?? []), ...(piece?.set_bonus ? [piece.set_bonus.skill_id] : [])];
+      if (ids.some((id) => catalog.get(id)?.baseId === hoveredSkillId)) highlightSlots.add(slot);
+    });
+  }
 
   return (
     // Lift the whole panel above its siblings while a dropdown is open
@@ -278,16 +328,15 @@ export function EquipmentSelector() {
         <SearchableDropdown
           label="Weapon"
           placeholderIcon="/images/weapons/great_sword.png"
-          highlightClasses={hoveredSkillId && weapon?.skills?.some(s => s.id === hoveredSkillId) ? getHighlightClasses(hoveredSkillCategory) : undefined}
           items={weaponItems}
           selectedId={weapon?.id}
-          selectedImage={weapon?.image} // Weapons can keep their image or icon
+          selectedImage={weapon?.image ?? undefined}
           isLoading={isWepLoading}
           onChange={id => setWeapon(weapons?.find(w => w.id === id) || null)}
         />
         {(['helm', 'chest', 'gloves', 'waist', 'greaves'] as const).map(slot => {
           const current = { helm, chest, gloves, waist, greaves }[slot];
-          const slotLabel = slot.charAt(0).toUpperCase() + slot.slice(1);
+          const slotLabel = SLOT_LABEL[slot];
           // find the monster_icon for the current piece
           const currentPieceWithMonster = (armours || []).find(a => a.id === current?.id) as (ArmourPiece & { monster_icon?: string }) | undefined;
           
@@ -296,11 +345,11 @@ export function EquipmentSelector() {
               <SearchableDropdown
                 key={slot}
                 label={slotLabel}
-                highlightClasses={hoveredSkillId && current?.skills?.some(s => s.id === hoveredSkillId) ? getHighlightClasses(hoveredSkillCategory) : undefined}
+                highlightClasses={hoveredSkillId && highlightSlots.has(slot) ? getHighlightClasses(hoveredSkillCategory) : undefined}
                 placeholderIcon={slotIconPath}
               items={armourItems(slot)}
               selectedId={current?.id}
-              selectedImage={current?.image || currentPieceWithMonster?.monster_icon} // Use armour image
+              selectedImage={armourPieceIcon(current, gender) || currentPieceWithMonster?.monster_icon || undefined}
               isLoading={isArmourLoading}
               onChange={id => {
                 const piece = armours?.find(a => a.id === id) || null;

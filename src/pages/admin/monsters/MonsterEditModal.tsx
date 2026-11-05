@@ -679,7 +679,6 @@ export default function MonsterEditModal({ monster, open, onClose }: Props) {
                               key={w.id}
                               className="inline-flex items-center gap-1.5 rounded bg-mh-slate-900/90 border border-amber-500/30 px-2 py-0.5 text-[11px] text-amber-100"
                             >
-                              <span className="text-[9px] uppercase font-bold text-amber-400">{w.game}</span>
                               <span>{w.name}</span>
                             </span>
                           ))}
@@ -699,7 +698,6 @@ export default function MonsterEditModal({ monster, open, onClose }: Props) {
                               key={p.id}
                               className="inline-flex items-center gap-1.5 rounded bg-mh-slate-900/90 border border-amber-500/30 px-2 py-0.5 text-[11px] text-amber-100"
                             >
-                              <span className="text-[9px] uppercase font-bold text-amber-400">{p.game}</span>
                               <span className="capitalize">{p.slot}</span>
                               <span className="text-amber-300/70 font-mono text-[10px]">
                                 ({p.set_name || p.set_variant || 'Set I'})

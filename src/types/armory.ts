@@ -9,6 +9,11 @@ export const FALLBACK_MONSTER_ICONS: Record<string, { name: string; icon: string
   pink_rathian: { name: 'Pink Rathian', icon: '/images/monsters/MHNow-Pink_Rathian_Icon.png' },
 };
 
+/** Fallback icon of a set that is not linked to a monster: its stored name ("Bone", "High Metal" …) or an old slug */
+export function fallbackMonster(id: string): { name: string; icon: string } | undefined {
+  return FALLBACK_MONSTER_ICONS[id.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '')];
+}
+
 export interface MonsterLookup {
   name: string;
   icon: string | null;

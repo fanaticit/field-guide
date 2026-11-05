@@ -5,9 +5,9 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '../lib/supabase';
 import type {
   DBWeapon,
+  DBWeaponUpgrade,
   DBWeaponType,
   WeaponUpsert,
-  WeaponSkill,
   WeaponCategory,
   WeaponSourceType,
   WeaponElementType,
@@ -201,13 +201,18 @@ export function useToggleWeaponTypeActive() {
 // ═════════════════════════════════════════════════════════════
 
 export interface EquipmentWeaponFilters {
-  game?: string;
   weaponType?: string;
   monsterId?: string;
   sourceType?: WeaponSourceType | 'all';
   elementType?: WeaponElementType | 'all';
   search?: string;
+  /** true = visible weapons only, false = hidden only, null/undefined = all */
   isActive?: boolean | null;
+  /**
+   * Public pages: spoiler weapons are only included when the hunter turned on "Show spoilers".
+   * Leave undefined (admin) to include them.
+   */
+  showSpoilers?: boolean;
 }
 
 export function useAdminWeapons(filters: EquipmentWeaponFilters = {}) {
@@ -218,11 +223,9 @@ export function useAdminWeapons(filters: EquipmentWeaponFilters = {}) {
         .from('weapons')
         .select('*')
         .order('sort_order', { ascending: true })
-        .order('name', { ascending: true });
+        .order('name', { ascending: true })
+        .limit(1000);
 
-      if (filters.game && filters.game !== 'all') {
-        q = q.eq('game', filters.game);
-      }
       if (filters.weaponType && filters.weaponType !== 'all') {
         q = q.eq('weapon_type_id', filters.weaponType);
       }
@@ -241,44 +244,52 @@ export function useAdminWeapons(filters: EquipmentWeaponFilters = {}) {
       }
       if (filters.search) {
         q = q.or(
-          `name.ilike.%${filters.search}%,upgraded_name.ilike.%${filters.search}%,id.ilike.%${filters.search}%,description.ilike.%${filters.search}%,notes.ilike.%${filters.search}%`,
+          `name.ilike.%${filters.search}%,id.ilike.%${filters.search}%,series.ilike.%${filters.search}%,description.ilike.%${filters.search}%,notes.ilike.%${filters.search}%`,
         );
       }
       if (filters.isActive !== null && filters.isActive !== undefined) {
         q = q.eq('is_active', filters.isActive);
       }
+      if (filters.showSpoilers === false) {
+        q = q.eq('is_spoiler', false);
+      }
 
       const { data, error } = await q;
       if (error) {
-        console.warn('Failed to query craftable weapons:', error);
+        console.warn('Failed to query weapons:', error);
         return [];
       }
 
       return (data ?? []).map((row: Record<string, unknown>) => ({
         ...row,
-        game: (row.game as string) || 'mho',
-        upgraded_name: (row.upgraded_name as string) || null,
-        upgraded_name_ja: (row.upgraded_name_ja as string) || null,
-        upgrade_level: row.upgrade_level !== null && row.upgrade_level !== undefined ? Number(row.upgrade_level) : null,
-        rarity: Number(row.rarity ?? row.grade ?? 1),
-        grade: Number(row.rarity ?? row.grade ?? 1),
-        skills: Array.isArray(row.skills)
-          ? row.skills.map((s: Record<string, unknown>) => {
-              const ur = s.unlock_rarity !== undefined ? (s.unlock_rarity as number | null) : (s.unlock_level as number | null) ?? null;
-              return {
-                ...s,
-                unlock_rarity: ur,
-                unlockRarity: ur,
-                unlock_level: ur,
-                unlockLevel: ur,
-              };
-            })
-          : [],
+        deco_slots: (row.deco_slots as number[]) ?? [],
+        rarity: Number(row.rarity ?? 1),
+        max_rarity: Number(row.max_rarity ?? row.rarity ?? 1),
         is_active: Boolean(row.is_active),
+        is_spoiler: Boolean(row.is_spoiler),
         sort_order: Number(row.sort_order || 0),
       })) as DBWeapon[];
     },
     staleTime: 1000 * 30,
+  });
+}
+
+/** The upgrade steps (one per rarity) of a weapon */
+export function useWeaponUpgrades(weaponId: string | null) {
+  return useQuery({
+    queryKey: [WEAPONS_KEY, 'upgrades', weaponId],
+    enabled: !!weaponId,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('weapon_upgrades')
+        .select('*')
+        .eq('weapon_id', weaponId!)
+        .order('rarity', { ascending: true });
+      if (error) throw error;
+      return (data ?? []) as DBWeaponUpgrade[];
+    },
+    staleTime: 1000 * 60 * 10,
+    refetchOnWindowFocus: false,
   });
 }
 
@@ -287,20 +298,9 @@ export function useUpsertWeapon() {
 
   return useMutation({
     mutationFn: async (weapon: WeaponUpsert) => {
-      const weaponRarity = weapon.rarity ?? weapon.grade ?? 1;
       const payload = {
         ...weapon,
-        rarity: weaponRarity,
-        grade: weaponRarity,
-        upgraded_name: weapon.upgraded_name?.trim() || null,
-        upgraded_name_ja: weapon.upgraded_name_ja?.trim() || null,
-        upgrade_level: weapon.upgrade_level ? Number(weapon.upgrade_level) : null,
-        skills: weapon.skills.map((s) => ({
-          id: s.id,
-          level: s.level,
-          unlock_rarity: s.unlockLevel ?? s.unlock_level ?? s.unlockRarity ?? s.unlock_rarity ?? null,
-          unlock_level: s.unlockLevel ?? s.unlock_level ?? s.unlockRarity ?? s.unlock_rarity ?? null,
-        })),
+        status_reason: weapon.status === 'in_game' ? null : weapon.status_reason?.trim() || null,
         updated_at: new Date().toISOString(),
       };
 
@@ -383,133 +383,37 @@ export function useToggleWeaponActive() {
   });
 }
 
-export interface MergeWeaponsPayload {
-  baseWeaponId: string;       // Weapon to keep (younger/base)
-  upgradedWeaponId: string;   // Weapon to merge from and remove (older/upgraded)
-  upgradedName: string;       // New upgraded name to set on base weapon
-  upgradedNameJa?: string | null;
-  upgradeLevel: number | null; // Level or rarity at which it upgrades
-  mergedSkills: WeaponSkill[]; // Consolidated skills
-  keepImageFrom: 'base' | 'upgraded';
-  keepDescriptionFrom: 'base' | 'upgraded';
-}
-
-export function useMergeWeapons() {
+export function useToggleWeaponSpoiler() {
   const qc = useQueryClient();
 
   return useMutation({
-    mutationFn: async (payload: MergeWeaponsPayload) => {
-      const {
-        baseWeaponId,
-        upgradedWeaponId,
-        upgradedName,
-        upgradedNameJa,
-        upgradeLevel,
-        mergedSkills,
-        keepImageFrom,
-        keepDescriptionFrom,
-      } = payload;
-
-      // 1. Fetch both weapons
-      const { data: weapons, error: fetchErr } = await supabase
+    mutationFn: async ({ id, isSpoiler }: { id: string; isSpoiler: boolean }) => {
+      const { error } = await supabase
         .from('weapons')
-        .select('*')
-        .in('id', [baseWeaponId, upgradedWeaponId]);
-
-      if (fetchErr) throw fetchErr;
-      const baseWeapon = weapons?.find((w) => w.id === baseWeaponId);
-      const upgradedWeapon = weapons?.find((w) => w.id === upgradedWeaponId);
-
-      if (!baseWeapon || !upgradedWeapon) {
-        throw new Error('Could not find both weapons to perform merge.');
-      }
-
-      const finalImage =
-        keepImageFrom === 'upgraded'
-          ? upgradedWeapon.image || baseWeapon.image
-          : baseWeapon.image || upgradedWeapon.image;
-      const finalDesc =
-        keepDescriptionFrom === 'upgraded'
-          ? upgradedWeapon.description || baseWeapon.description
-          : baseWeapon.description || upgradedWeapon.description;
-
-      // 2. Update base weapon with upgraded name, level, merged skills, and chosen assets
-      const updatePayload = {
-        upgraded_name: upgradedName.trim() || null,
-        upgraded_name_ja: upgradedNameJa?.trim() || null,
-        upgrade_level: upgradeLevel ? Number(upgradeLevel) : null,
-        skills: mergedSkills.map((s) => ({
-          id: s.id,
-          level: s.level,
-          unlock_rarity: s.unlockLevel ?? s.unlock_level ?? s.unlockRarity ?? s.unlock_rarity ?? null,
-          unlock_level: s.unlockLevel ?? s.unlock_level ?? s.unlockRarity ?? s.unlock_rarity ?? null,
-        })),
-        image: finalImage,
-        description: finalDesc,
-        updated_at: new Date().toISOString(),
-      };
-
-      const { error: updateErr } = await supabase
-        .from('weapons')
-        .update(updatePayload)
-        .eq('id', baseWeaponId);
-
-      if (updateErr) throw updateErr;
-
-      // 3. Migrate user collection references
-      const { data: collRows } = await supabase
-        .from('user_weapon_collection')
-        .select('id, user_id')
-        .eq('weapon_id', upgradedWeaponId);
-
-      if (collRows && collRows.length > 0) {
-        for (const row of collRows) {
-          const { data: existingBase } = await supabase
-            .from('user_weapon_collection')
-            .select('id')
-            .eq('user_id', row.user_id)
-            .eq('weapon_id', baseWeaponId)
-            .maybeSingle();
-
-          if (existingBase) {
-            await supabase.from('user_weapon_collection').delete().eq('id', row.id);
-          } else {
-            await supabase
-              .from('user_weapon_collection')
-              .update({ weapon_id: baseWeaponId })
-              .eq('id', row.id);
-          }
-        }
-      }
-
-      // 4. Migrate mho_builds references
-      await supabase
-        .from('mho_builds')
-        .update({ weapon_id: baseWeaponId })
-        .eq('weapon_id', upgradedWeaponId);
-
-      // 5. Delete the upgraded weapon record
-      const { error: delErr } = await supabase
-        .from('weapons')
-        .delete()
-        .eq('id', upgradedWeaponId);
-
-      if (delErr) {
-        console.warn('Could not delete merged weapon record, deactivating instead:', delErr);
-        await supabase
-          .from('weapons')
-          .update({ is_active: false, notes: `Merged into ${baseWeaponId}` })
-          .eq('id', upgradedWeaponId);
-      }
-
-      return { baseWeaponId, upgradedWeaponId };
+        .update({ is_spoiler: isSpoiler, updated_at: new Date().toISOString() })
+        .eq('id', id);
+      if (error) throw error;
     },
 
-    onSuccess: () => {
+    onMutate: async ({ id, isSpoiler }) => {
+      await qc.cancelQueries({ queryKey: [WEAPONS_KEY] });
+      const snapshot = qc.getQueriesData<DBWeapon[]>({ queryKey: [WEAPONS_KEY], exact: false });
+      qc.setQueriesData<DBWeapon[]>(
+        { queryKey: [WEAPONS_KEY], exact: false },
+        (old) => (Array.isArray(old) ? old.map((w) => (w.id === id ? { ...w, is_spoiler: isSpoiler } : w)) : old),
+      );
+      return { snapshot };
+    },
+
+    onError: (_err, _vars, ctx) => {
+      if (ctx?.snapshot) {
+        for (const [key, data] of ctx.snapshot) qc.setQueryData(key, data);
+      }
+    },
+
+    onSettled: () => {
       qc.invalidateQueries({ queryKey: [WEAPONS_KEY] });
       qc.invalidateQueries({ queryKey: [PUBLIC_WEAPONS_KEY] });
-      qc.invalidateQueries({ queryKey: ['weapons'] });
-      qc.invalidateQueries({ queryKey: ['user_weapon_collection'] });
     },
   });
 }

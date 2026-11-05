@@ -512,21 +512,16 @@ export default function ArmourGuide() {
         store.setArmour(slotDef.id, null);
         continue;
       }
-      store.setArmour(slotDef.id, {
-        id: equipped.piece.id,
-        slot: slotDef.id,
-        set_name: equipped.set.displayName || equipped.set.setName,
-        monster_id: equipped.set.monsterId,
-        monster_name: equipped.set.monsterName,
-        image: equipped.piece.image ?? undefined,
-        skills: equipped.piece.skills?.map((s) => ({ id: s.id, level: s.level })) ?? [],
-      });
+      // The planner works with the armour_pieces row itself (skills at the highest rarity)
+      const raw = rawPieces.find((p) => p.id === equipped.piece.id);
+      if (!raw) continue;
+      store.setArmour(slotDef.id, { ...raw, monster_name: equipped.set.monsterName });
     }
 
     // Keep editing the same build (saved or draft) the hunter left behind
     const { buildId } = useBuildPlannerStore.getState();
     navigate(buildId ? `/armory/planner/${buildId}` : '/armory/planner');
-  }, [exampleBuild, navigate]);
+  }, [exampleBuild, navigate, rawPieces]);
 
   // Group pieces into complete Armour Sets
   const allSets = useMemo(() => {

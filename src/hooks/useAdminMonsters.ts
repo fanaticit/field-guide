@@ -287,13 +287,11 @@ export function useDeleteMonster() {
 export interface MonsterDependencyWeapon {
   id: string;
   name: string;
-  game: string;
   weapon_type_id: string;
 }
 
 export interface MonsterDependencyArmourPiece {
   id: string;
-  game: string;
   slot: string;
   set_name: string | null;
   set_variant: string | null;
@@ -314,11 +312,11 @@ export function useMonsterDependencies(monsterId: string | null) {
       const [weaponsRes, armourRes] = await Promise.all([
         supabase
           .from('weapons')
-          .select('id, name, game, weapon_type_id')
+          .select('id, name, weapon_type_id')
           .eq('monster_id', monsterId),
         supabase
           .from('armour_pieces')
-          .select('id, game, slot, set_name, set_variant')
+          .select('id, slot, set_name, set_variant')
           .eq('monster_id', monsterId),
       ]);
 
