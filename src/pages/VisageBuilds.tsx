@@ -464,7 +464,8 @@ export default function VisageBuilds() {
               return (
                 <div
                   key={row.id}
-                  className="mho-panel mho-panel-interactive flex flex-col justify-between p-4 space-y-3.5 group"
+                  onClick={() => handleOpenInBuilder(row)}
+                  className="mho-panel mho-panel-interactive flex flex-col justify-between p-4 space-y-3.5 group cursor-pointer"
                 >
                   {/* Card Header: Title & Meta */}
                   <div className="space-y-1.5">
@@ -626,7 +627,10 @@ export default function VisageBuilds() {
                     {/* Actions */}
                     <div className="ml-auto flex items-center gap-1.5">
                       <button
-                        onClick={() => handleLoadToPlanner(row)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleLoadToPlanner(row);
+                        }}
                         title="Send this set to the Build Planner"
                         className="flex h-7 items-center gap-1.5 whitespace-nowrap rounded-lg bg-amber-500/20 border border-amber-500/40 px-2.5 text-xs font-bold text-amber-300 hover:bg-amber-500/30 hover:border-amber-400 hover:text-amber-200 transition-all shadow-sm"
                       >
@@ -634,10 +638,12 @@ export default function VisageBuilds() {
                         <span>Send to Planner</span>
                       </button>
 
-
                       {isAuthor && (
                         <button
-                          onClick={() => handleDelete(row)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDelete(row);
+                          }}
                           title="Delete build"
                           className="flex h-7 w-7 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-black/30 text-rose-400 hover:text-rose-300 hover:border-rose-500/40 transition-colors"
                         >
@@ -646,7 +652,10 @@ export default function VisageBuilds() {
                       )}
 
                       <button
-                        onClick={() => handleOpenInBuilder(row)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleOpenInBuilder(row);
+                        }}
                         className="btn-mho-panel !h-7 !gap-1.5 !px-2.5 !py-0 !text-xs whitespace-nowrap"
                       >
                         <span>{isAuthor ? 'Edit' : 'Open'}</span>

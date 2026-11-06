@@ -1,9 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+import { Globe, Package } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useBuildPlannerStore, armourPieceIcon, type Weapon, type ArmourPiece } from '../../store/buildPlannerStore';
 import { useAuthStore } from '../../store/authStore';
+import { useUserWeaponCollection } from '../../hooks/useUserWeaponCollection';
 
 type PlannerSlot = 'helm' | 'chest' | 'gloves' | 'waist' | 'greaves';
 // Slot names of the game data
@@ -40,6 +42,7 @@ interface DropdownItem {
   secondaryLabel?: string; // Set name — shown smaller
   icon?: string;
   image?: string;
+  badge?: string;
 }
 
 interface SearchableDropdownProps {
@@ -51,11 +54,17 @@ interface SearchableDropdownProps {
   placeholder?: string;
   isLoading?: boolean;
   highlightClasses?: string;
+  emptyMessage?: string;
+  footerButton?: {
+    label: string;
+    onClick: () => void;
+    icon?: React.ReactNode;
+  };
   onChange: (id: string | null) => void;
 }
 
 function SearchableDropdown({
-  label, items, selectedId, selectedImage, placeholderIcon, placeholder, isLoading, highlightClasses, onChange,
+  label, items, selectedId, selectedImage, placeholderIcon, placeholder, isLoading, highlightClasses, emptyMessage, footerButton, onChange,
 }: SearchableDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -143,7 +152,11 @@ function SearchableDropdown({
                 <span className="text-mh-slate-600">✕</span> None
               </button>
               {filtered.length === 0 ? (
-                <p className="px-3 py-3 text-xs text-mh-slate-600 italic">No results for "{query}"</p>
+                <div className="p-3 text-center">
+                  <p className="text-xs text-mh-slate-400 italic">
+                    {query ? `No results for "${query}"` : emptyMessage || 'No items found'}
+                  </p>
+                </div>
               ) : (
                 filtered.map(item => (
                   <button
@@ -158,8 +171,15 @@ function SearchableDropdown({
                         <div className="w-4 h-4 rounded-full bg-mh-slate-700" />
                       )}
                     </div>
-                    <div className="flex flex-col min-w-0">
-                      <span className="text-xs font-bold text-white leading-tight truncate">{item.primaryLabel}</span>
+                    <div className="flex flex-col min-w-0 flex-1">
+                      <div className="flex items-center justify-between gap-1.5">
+                        <span className="text-xs font-bold text-white leading-tight truncate">{item.primaryLabel}</span>
+                        {item.badge && (
+                          <span className="text-[9px] px-1.5 py-0.2 rounded font-semibold shrink-0 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                            {item.badge}
+                          </span>
+                        )}
+                      </div>
                       {item.secondaryLabel && (
                         <span className="text-[10px] text-mh-slate-400 leading-tight truncate">{item.secondaryLabel}</span>
                       )}
@@ -168,6 +188,16 @@ function SearchableDropdown({
                 ))
               )}
             </div>
+            {footerButton && (
+              <button
+                type="button"
+                onClick={() => footerButton.onClick()}
+                className="w-full py-2 px-3 text-xs font-bold text-amber-400 hover:text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 border-t border-mh-slate-750 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+              >
+                {footerButton.icon}
+                <span>{footerButton.label}</span>
+              </button>
+            )}
           </div>
         )}
       </div>
@@ -203,10 +233,20 @@ const getHighlightClasses = (cat: string | null) => {
 };
 
 export function EquipmentSelector() {
-  const { adventurer, weaponType, weapon, setWeapon, helm, chest, gloves, waist, greaves, setArmour, hoveredSkillId, hoveredSkillCategory } = useBuildPlannerStore();
+  const {
+    adventurer, weaponType, weapon, setWeapon, helm, chest, gloves, waist, greaves, setArmour,
+    hoveredSkillId, hoveredSkillCategory, useMine,
+  } = useBuildPlannerStore();
   const profile = useAuthStore((st) => st.profile);
   const catalog = useBuildPlannerStore((st) => st.skillCatalog);
   const gender = profile?.equipment_gender ?? 'male';
+  const { isCrafted } = useUserWeaponCollection();
+  const [showAllWeapons, setShowAllWeapons] = useState(false);
+
+  // When useMine toggle changes, reset the local showAllWeapons override
+  useEffect(() => {
+    setShowAllWeapons(false);
+  }, [useMine]);
 
   const navigate = useNavigate();
   const isReady = !!adventurer;
@@ -270,12 +310,21 @@ export function EquipmentSelector() {
 
   if (!isReady) return null;
 
+  const isOnlyCrafted = useMine && !showAllWeapons;
+  const filteredWeapons = isOnlyCrafted
+    ? (weapons || []).filter(w => isCrafted(w.id) || w.id === weapon?.id)
+    : (weapons || []);
+
+  const totalWeaponsCount = weapons?.length || 0;
+  const craftedWeaponsCount = (weapons || []).filter(w => isCrafted(w.id)).length;
+
   // Convert weapons to dropdown items (sorted by rarity descending, then name)
-  const weaponItems: DropdownItem[] = [...(weapons || [])]
+  const weaponItems: DropdownItem[] = [...filteredWeapons]
     .sort((a, b) => (b.rarity ?? 1) - (a.rarity ?? 1) || a.name.localeCompare(b.name))
     .map(w => ({
       id: w.id,
       primaryLabel: w.name,
+      badge: isCrafted(w.id) ? '✓ Crafted' : undefined,
       secondaryLabel: [
         'R' + (w.rarity ?? 1) + (w.max_rarity && w.max_rarity > (w.rarity ?? 1) ? '→R' + w.max_rarity : ''),
         w.attack ? 'ATK ' + w.attack : null,
@@ -331,6 +380,22 @@ export function EquipmentSelector() {
           selectedId={weapon?.id}
           selectedImage={weapon?.image ?? undefined}
           isLoading={isWepLoading}
+          emptyMessage={isOnlyCrafted ? 'No crafted weapons found for this type.' : undefined}
+          footerButton={
+            isOnlyCrafted
+              ? {
+                  label: `Load All Weapons (${totalWeaponsCount})`,
+                  onClick: () => setShowAllWeapons(true),
+                  icon: <Globe size={13} />,
+                }
+              : useMine
+              ? {
+                  label: `Show Only Crafted (${craftedWeaponsCount})`,
+                  onClick: () => setShowAllWeapons(false),
+                  icon: <Package size={13} />,
+                }
+              : undefined
+          }
           onChange={id => setWeapon(weapons?.find(w => w.id === id) || null)}
         />
         {(['helm', 'chest', 'gloves', 'waist', 'greaves'] as const).map(slot => {

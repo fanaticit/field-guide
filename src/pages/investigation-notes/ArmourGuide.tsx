@@ -734,7 +734,8 @@ export default function ArmourGuide() {
       if (!item?.piece?.skills) continue;
 
       // Check unlock threshold against piece/set max rarity or slider
-      const pieceUnlockLimit = item.set.id === selectedSetId ? sliderRarity : (item.set.maxRarity || 16);
+      const pieceMaxRarity = item.piece.max_rarity ?? item.set.maxRarity ?? 16;
+      const pieceUnlockLimit = Math.min(sliderRarity, pieceMaxRarity);
 
       for (const s of item.piece.skills) {
         const ur = s.unlockRarity ?? s.unlock_rarity ?? 1;
@@ -869,7 +870,7 @@ export default function ArmourGuide() {
       if (a.isSetBonus !== b.isSetBonus) return a.isSetBonus ? -1 : 1;
       return b.totalLevel - a.totalLevel || a.name.localeCompare(b.name);
     });
-  }, [exampleBuild, sliderRarity, selectedSetId, skillsMap, baseIdOf]);
+  }, [exampleBuild, sliderRarity, skillsMap, baseIdOf]);
 
   // Filtered sets based on search and multi-skill filter
   const filteredSets = useMemo(() => {
@@ -925,11 +926,9 @@ export default function ArmourGuide() {
     if (!selectedSetId && filteredSets.length > 0) {
       setSelectedSetId(filteredSets[0].id);
       setSelectedSlot(null);
-      setSliderRarity(filteredSets[0].maxRarity);
     } else if (selectedSetId && !allSets.some((s) => s.id === selectedSetId) && filteredSets.length > 0) {
       setSelectedSetId(filteredSets[0].id);
       setSelectedSlot(null);
-      setSliderRarity(filteredSets[0].maxRarity);
     }
   }, [filteredSets, selectedSetId, allSets]);
 
@@ -938,14 +937,10 @@ export default function ArmourGuide() {
     return allSets.find((s) => s.id === selectedSetId) || null;
   }, [allSets, selectedSetId]);
 
-  // Reset slider when set changes
+  // Set selection handler — preserves slider rarity level across set and piece selection
   const handleSelectSet = (setId: string, slot: ArmourSlot | null = null, openMobileModal = true) => {
     setSelectedSetId(setId);
     setSelectedSlot(slot);
-    const targetSet = allSets.find((s) => s.id === setId);
-    if (targetSet) {
-      setSliderRarity(targetSet.maxRarity);
-    }
     if (openMobileModal) {
       setIsMobileDetailOpen(true);
     }
@@ -960,12 +955,67 @@ export default function ArmourGuide() {
   // Full upgrade steps (materials, required level) of the inspected piece
   const { data: currentPieceSteps = [] } = useArmourSetUpgrades(currentPiece ? [currentPiece.id] : []);
 
+  // Pre-index upgrade tiers by piece id for fast lookup
+  const tiersByPieceId = useMemo(() => {
+    const map = new Map<string, typeof upgradeTiers>();
+    for (const t of upgradeTiers) {
+      let list = map.get(t.armour_piece_id);
+      if (!list) {
+        list = [];
+        map.set(t.armour_piece_id, list);
+      }
+      list.push(t);
+    }
+    for (const list of map.values()) {
+      list.sort((a, b) => a.rarity - b.rarity);
+    }
+    return map;
+  }, [upgradeTiers]);
+
+  // Clamped rarity for the currently inspected set
+  const effectiveCurrentRarity = useMemo(() => {
+    if (!currentSet) return sliderRarity;
+    return Math.min(Math.max(sliderRarity, currentSet.rarity), currentSet.maxRarity);
+  }, [currentSet, sliderRarity]);
+
   // Defence at the simulated rarity, from the slim tiers of every piece
   const defenceAtSlider = useCallback(
-    (pieceId: string) =>
-      upgradeTiers.find((t) => t.armour_piece_id === pieceId && t.rarity === sliderRarity)?.defence ?? null,
-    [upgradeTiers, sliderRarity],
+    (pieceId: string) => {
+      const pieceTiers = tiersByPieceId.get(pieceId);
+      if (!pieceTiers || pieceTiers.length === 0) return null;
+
+      const exact = pieceTiers.find((t) => t.rarity === sliderRarity);
+      if (exact) return exact.defence;
+
+      if (sliderRarity > pieceTiers[pieceTiers.length - 1].rarity) {
+        return pieceTiers[pieceTiers.length - 1].defence;
+      }
+      if (sliderRarity < pieceTiers[0].rarity) {
+        return pieceTiers[0].defence;
+      }
+
+      const closest = [...pieceTiers].reverse().find((t) => t.rarity <= sliderRarity);
+      return closest?.defence ?? pieceTiers[0].defence;
+    },
+    [tiersByPieceId, sliderRarity],
   );
+
+  // Total defence of the example build at simulated rarity
+  const exampleBuildDefence = useMemo(() => {
+    let total = 0;
+    let hasAny = false;
+    for (const slotDef of SLOTS_ORDER) {
+      const equipped = exampleBuild[slotDef.id];
+      if (equipped?.piece) {
+        const def = defenceAtSlider(equipped.piece.id);
+        if (def !== null) {
+          total += def;
+          hasAny = true;
+        }
+      }
+    }
+    return hasAny ? total : null;
+  }, [exampleBuild, defenceAtSlider]);
 
   // ── Combined Skills Aggregation for Full Set View ─────────────
   const { combinedActiveSkills, setBonusSummaries, lockedSkillTiers } = useMemo(() => {
@@ -1001,7 +1051,7 @@ export default function ArmourGuide() {
 
       for (const skill of piece.skills) {
         const ur = skill.unlockRarity ?? skill.unlock_rarity ?? null;
-        const isActiveAtSlider = ur === null || ur <= sliderRarity;
+        const isActiveAtSlider = ur === null || ur <= effectiveCurrentRarity;
         const meta = skillsMap.get(skill.id);
         const maxLvl = meta?.max_levels ?? 5;
 
@@ -1019,7 +1069,7 @@ export default function ArmourGuide() {
           const entry = activeMap.get(skill.id)!;
           entry.totalLevel += skill.level;
           entry.sources.push({ slot: slotDef.id, level: skill.level, unlockRarity: ur });
-        } else if (ur !== null && ur > sliderRarity) {
+        } else if (ur !== null && ur > effectiveCurrentRarity) {
           lockedList.push({
             skillId: skill.id,
             skillName: meta?.name ?? skill.id,
@@ -1062,7 +1112,7 @@ export default function ArmourGuide() {
     lockedList.sort((a, b) => a.unlockRarity - b.unlockRarity);
 
     return { combinedActiveSkills, setBonusSummaries, lockedSkillTiers: lockedList };
-  }, [currentSet, sliderRarity, skillsMap, baseIdOf]);
+  }, [currentSet, effectiveCurrentRarity, skillsMap, baseIdOf]);
 
   // ── Combined Skills Aggregation for Single Piece View ─────────
   const { pieceSetBonuses, pieceActiveSkills, pieceLockedSkills } = useMemo(() => {
@@ -1091,7 +1141,7 @@ export default function ArmourGuide() {
 
       {
         // Regular skill
-        if (ur === null || ur <= sliderRarity) {
+        if (ur === null || ur <= effectiveCurrentRarity) {
           // Active at slider level -> combine duplicates
           const current = activeSkillMap.get(s.id);
           if (current) {
@@ -1127,7 +1177,7 @@ export default function ArmourGuide() {
     const pieceLockedSkills = Array.from(lockedSkillMap.values()).sort((a, b) => a.unlockRarity - b.unlockRarity);
 
     return { pieceSetBonuses: setBonuses, pieceActiveSkills, pieceLockedSkills };
-  }, [currentPiece, sliderRarity, skillsMap, baseIdOf]);
+  }, [currentPiece, effectiveCurrentRarity, skillsMap, baseIdOf]);
 
   // ── Render Detail Card Content (Shared between Desktop Right Pane & Mobile Mini-Window) ──
   const renderDetailCard = (isModal = false) => {
@@ -1336,7 +1386,7 @@ export default function ArmourGuide() {
               <span>Simulate Upgrade Rarity</span>
             </span>
             <span className="font-mono text-mh-gold-400 font-bold">
-              Rarity {sliderRarity} (Max: R{currentSet.maxRarity})
+              Rarity {effectiveCurrentRarity} (Max: R{currentSet.maxRarity})
             </span>
           </div>
 
@@ -1344,7 +1394,7 @@ export default function ArmourGuide() {
             type="range"
             min={currentSet.rarity}
             max={currentSet.maxRarity}
-            value={sliderRarity}
+            value={effectiveCurrentRarity}
             onChange={(e) => setSliderRarity(Number(e.target.value))}
             className="w-full h-1.5 bg-mh-slate-800 rounded-lg appearance-none cursor-pointer accent-mh-gold-400"
           />
@@ -1360,7 +1410,7 @@ export default function ArmourGuide() {
             <div className="flex items-center justify-between rounded-2xl border border-mh-slate-800 bg-mh-slate-950/60 px-3.5 py-2.5 text-xs">
               <span className="flex items-center gap-1.5 font-semibold text-mh-slate-300">
                 <Shield size={13} className="text-mh-gold-400" />
-                {selectedSlot === null ? 'Total Defence' : 'Defence'} at R{sliderRarity}
+                {selectedSlot === null ? 'Total Defence' : 'Defence'} at R{effectiveCurrentRarity}
               </span>
               <span className="font-mono text-sm font-bold text-mh-slate-100">{defence ?? '—'}</span>
               {selectedSlot !== null && currentPiece && currentPiece.deco_slots.length > 0 && (
@@ -1433,7 +1483,7 @@ export default function ArmourGuide() {
 
               {combinedActiveSkills.length === 0 ? (
                 <p className="text-xs text-mh-slate-500 italic py-2">
-                  No active skills available at Rarity {sliderRarity}. Use the slider above to increase upgrade level.
+                  No active skills available at Rarity {effectiveCurrentRarity}. Use the slider above to increase upgrade level.
                 </p>
               ) : (
                 <div className="space-y-2">
@@ -1659,7 +1709,7 @@ export default function ArmourGuide() {
 
               {pieceActiveSkills.length === 0 ? (
                 <p className="text-xs text-mh-slate-500 italic py-2">
-                  No active skills at Rarity {sliderRarity}.
+                  No active skills at Rarity {effectiveCurrentRarity}.
                 </p>
               ) : (
                 <div className="space-y-2">
@@ -1824,7 +1874,7 @@ export default function ArmourGuide() {
                       {currentPieceSteps.map((u) => {
                         const rs = getRarityBadgeStyle(u.rarity);
                         return (
-                          <tr key={u.rarity} className={cn(u.rarity === sliderRarity && 'bg-mh-gold-500/10')}>
+                          <tr key={u.rarity} className={cn(u.rarity === effectiveCurrentRarity && 'bg-mh-gold-500/10')}>
                             <td className="py-1.5 pr-2">
                               <span className={cn('rounded border px-1.5 py-0.5 text-[10px] font-bold font-mono', rs.bg, rs.text, rs.border)}>{rs.label}</span>
                             </td>
@@ -2120,7 +2170,14 @@ export default function ArmourGuide() {
                   const hasEquipped = Boolean(equipped);
                   const piece = equipped?.piece;
                   const set = equipped?.set;
-                  const rarityStyle = piece ? getRarityBadgeStyle(piece.rarity ?? set?.rarity ?? 1) : null;
+                  const effectivePieceRarity = piece
+                    ? Math.min(
+                        Math.max(sliderRarity, piece.rarity ?? set?.rarity ?? 1),
+                        piece.max_rarity ?? set?.maxRarity ?? 16,
+                      )
+                    : null;
+                  const rarityStyle = effectivePieceRarity ? getRarityBadgeStyle(effectivePieceRarity) : null;
+                  const pieceDef = piece ? defenceAtSlider(piece.id) : null;
 
                   return (
                     <div
@@ -2139,7 +2196,11 @@ export default function ArmourGuide() {
                             handleSelectSet(set.id, piece.slot, true);
                           }
                         }}
-                        title={hasEquipped ? `${set?.displayName} ${slotDef.label} (Click to inspect)` : `Empty ${slotDef.label} slot`}
+                        title={
+                          hasEquipped
+                            ? `${set?.displayName} ${slotDef.label} (R${effectivePieceRarity}${pieceDef !== null ? ` · Def ${pieceDef}` : ''}) — Click to inspect`
+                            : `Empty ${slotDef.label} slot`
+                        }
                         className="h-full w-full flex flex-col items-center justify-center min-w-0"
                       >
                         <div className="relative w-full flex-1 min-h-0 flex items-center justify-center p-0.5">
@@ -2210,9 +2271,17 @@ export default function ArmourGuide() {
                     <span className="font-display text-[11px] font-bold uppercase tracking-wider text-amber-300">
                       Skills Summary
                     </span>
-                    <span className="text-[10px] font-mono font-bold text-amber-400/80">
-                      {exampleBuildSkills.length} {exampleBuildSkills.length === 1 ? 'Skill' : 'Skills'}
-                    </span>
+                    <div className="flex items-center gap-2.5">
+                      {exampleBuildDefence !== null && (
+                        <span className="text-[10px] font-mono text-mh-slate-300 flex items-center gap-1">
+                          <Shield size={11} className="text-mh-gold-400" />
+                          <span>Def: <strong className="text-amber-300 font-bold">{exampleBuildDefence}</strong></span>
+                        </span>
+                      )}
+                      <span className="text-[10px] font-mono font-bold text-amber-400/80">
+                        {exampleBuildSkills.length} {exampleBuildSkills.length === 1 ? 'Skill' : 'Skills'}
+                      </span>
+                    </div>
                   </div>
 
                   {exampleBuildSkills.length === 0 ? (

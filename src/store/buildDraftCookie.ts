@@ -1,5 +1,6 @@
 import { supabase } from '../lib/supabase';
 import { useBuildPlannerStore, type ArmourPiece } from './buildPlannerStore';
+import { VISAGE_SELECT, normalizeVisageRow } from '../data/schemas/visage';
 
 const COOKIE_NAME = 'mho_build_draft';
 const MAX_AGE_SECONDS = 60 * 60 * 24 * 30;
@@ -86,9 +87,13 @@ async function fetchByIds<T>(table: string, ids: (string | undefined)[]): Promis
   const unique = Array.from(new Set(ids.filter((id): id is string => !!id)));
   const map = new Map<string, T>();
   if (unique.length === 0) return map;
-  const { data, error } = await supabase.from(table).select('*').in('id', unique);
+  const selectQuery = table === 'visages' ? VISAGE_SELECT : '*';
+  const { data, error } = await supabase.from(table).select(selectQuery).in('id', unique);
   if (error) throw error;
-  (data ?? []).forEach((row: any) => map.set(row.id, row as T));
+  (data ?? []).forEach((row: any) => {
+    const item = table === 'visages' ? normalizeVisageRow(row) : row;
+    map.set(row.id, item as T);
+  });
   return map;
 }
 

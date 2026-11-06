@@ -22,6 +22,8 @@ Usage (after updating the CSV when the game changes):
 """
 import argparse
 import csv
+import json
+import re
 import sys
 from pathlib import Path
 
@@ -66,7 +68,64 @@ def group_skills(rows):
     return groups
 
 
-def build_records(groups):
+def load_active_skill_names(all_skills):
+    """Identifies skills that appear on armour pieces & upgrades or weapons."""
+    active_names = set()
+
+    # 1. Weapon skills from MHO_weapons.json
+    weapons_json = ROOT / "import" / "MHO_weapons.json"
+    if weapons_json.exists():
+        with open(weapons_json, encoding="utf-8") as f:
+            for w in json.load(f):
+                if w.get("legendary_intrinsic_effect"):
+                    active_names.add(w["legendary_intrinsic_effect"]["name"])
+                for slot in w.get("legendary_awakening_slots", []):
+                    for opt in slot:
+                        active_names.add(opt)
+
+    # 2. Armour skills from MHO_armour.json, MHO_armour_upgrades.json, MHO_armour.csv
+    direct_ids = set()
+    armour_json = ROOT / "import" / "MHO_armour.json"
+    if armour_json.exists():
+        with open(armour_json, encoding="utf-8") as f:
+            for a in json.load(f):
+                for r in a.get("skills_by_rarity", []):
+                    for s in r.get("skills", []):
+                        direct_ids.add(str(s["id"]))
+
+    armour_upgrades_json = ROOT / "import" / "MHO_armour_upgrades.json"
+    if armour_upgrades_json.exists():
+        with open(armour_upgrades_json, encoding="utf-8") as f:
+            for a in json.load(f):
+                for u in a.get("skill_unlocks", []):
+                    for c in u.get("changes", []):
+                        direct_ids.add(str(c["id"]))
+                for r in a.get("rarities", []):
+                    for s in r.get("skills", []):
+                        direct_ids.add(str(s["id"]))
+
+    armour_csv = ROOT / "import" / "MHO_armour.csv"
+    if armour_csv.exists():
+        with open(armour_csv, encoding="utf-8-sig") as f:
+            for row in csv.DictReader(f):
+                sb = row.get("Set bonus", "").strip()
+                if sb:
+                    m = re.fullmatch(r"(\d+)pc: (.+?) \+(\d+)", sb)
+                    if m:
+                        sname, slevel = m.group(2), int(m.group(3))
+                        for sk in all_skills:
+                            if sk["Skill"] == sname and int(sk["Level"]) == slevel:
+                                direct_ids.add(sk["Entry ID"].strip())
+                                break
+
+    for sk in all_skills:
+        if sk["Entry ID"].strip() in direct_ids:
+            active_names.add(sk["Skill"].strip())
+
+    return active_names
+
+
+def build_records(groups, active_names):
     records = []
     for group in groups:
         first = group[0]
@@ -85,6 +144,7 @@ def build_records(groups):
                     "category": category or "general",
                     "icon": ICON_URL_PREFIX + icon_file,
                     "description": r["Description"].strip(),
+                    "is_active": r["Skill"].strip() in active_names,
                 }
             )
     return records
@@ -92,12 +152,13 @@ def build_records(groups):
 
 def render(records):
     values = ",\n".join(
-        "  ({id}, {name}, {category}, {level}, {max_levels}, TRUE, {icon}, {description})".format(
+        "  ({id}, {name}, {category}, {level}, {max_levels}, {is_active}, {icon}, {description})".format(
             id=sql_str(r["id"]),
             name=sql_str(r["name"]),
             category=sql_str(r["category"]),
             level=r["level"],
             max_levels=r["max_levels"],
+            is_active="TRUE" if r["is_active"] else "FALSE",
             icon=sql_str(r["icon"]),
             description=sql_str(r["description"]),
         )
@@ -144,13 +205,15 @@ def main():
         levels = [int(r["Level"]) for r in group]
         if levels != list(range(1, len(levels) + 1)):
             sys.exit(f"Non-contiguous levels for {group[0]['Skill']}: {levels}")
-    records = build_records(groups)
+    active_names = load_active_skill_names(rows)
+    records = build_records(groups, active_names)
     ids = [r["id"] for r in records]
     if len(ids) != len(set(ids)):
         sys.exit("Duplicate Entry IDs in CSV")
 
     Path(args.out).write_text(render(records), encoding="utf-8")
-    print(f"{len(records)} skill rows ({len(groups)} skills) -> {args.out}")
+    active_count = sum(1 for r in records if r["is_active"])
+    print(f"{len(records)} skill rows ({len(groups)} skills, {active_count} active) -> {args.out}")
 
 
 if __name__ == "__main__":

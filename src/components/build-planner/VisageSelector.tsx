@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, Search } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
@@ -9,6 +9,7 @@ import type { Visage, VisageSlot } from '../../store/buildPlannerStore';
 import { getInkConfig, DEFAULT_VISAGE_RARITY, VISAGE_SELECT, normalizeVisageRow } from '../../data/schemas/visage';
 import VisageIcon from '../visage/VisageIcon';
 import { InkIconComponent } from '../../pages/investigation-notes/VisageCard';
+import { useUserVisageCollection } from '../../hooks/useVisageSets';
 
 
 const INK_SET_BONUSES: Record<string, { pieces: number; description: string }[]> = {
@@ -33,12 +34,13 @@ export function VisageSelector() {
   const {
     buddy, coreVisage, visage2, visage3, visage4, visage5,
     setVisage, setSlotInkType, selectedInkTypes, getTotalVisagePoints,
+    useMine, setUseMine,
   } = useBuildPlannerStore();
   const [openSlot, setOpenSlot] = useState<VisageSlot | null>(null);
   const [inkPickSlot, setInkPickSlot] = useState<VisageSlot | null>(null);
-  const [useCollectionOnly, setUseCollectionOnly] = useState(false);
   const [filterInk, setFilterInk] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const { isCollected } = useUserVisageCollection();
 
   const { data: visages, isLoading: isVisageLoading } = useQuery({
     queryKey: ['visages'],
@@ -69,6 +71,13 @@ export function VisageSelector() {
     },
     enabled: !!user,
   });
+
+  const isCardOwned = (v: Visage) => {
+    if (user && ownedCollection) {
+      return v.ink_types.some(ink => ownedCollection.has(`${v.id}::${ink}`));
+    }
+    return v.ink_types.some(ink => isCollected(v.id, ink));
+  };
 
   const totalPoints = getTotalVisagePoints();
 
@@ -118,13 +127,43 @@ export function VisageSelector() {
   });
   const activeInks = Object.entries(inkCounts).filter(([, count]) => count > 0);
 
+  // Auto-enrich any slotted cards missing monster_icon when the visages query loads
+  useEffect(() => {
+    if (!visages || visages.length === 0) return;
+    const currentSlots: { slot: VisageSlot; card: Visage | null }[] = [
+      { slot: 'core', card: coreVisage },
+      { slot: 2, card: visage2 },
+      { slot: 3, card: visage3 },
+      { slot: 4, card: visage4 },
+      { slot: 5, card: visage5 },
+    ];
+    const patch: Partial<Record<string, Visage>> = {};
+    let shouldUpdate = false;
+
+    currentSlots.forEach(({ slot, card }) => {
+      if (card && !card.monster_icon) {
+        const full = visages.find(v => v.id === card.id);
+        if (full?.monster_icon) {
+          const key = slot === 'core' ? 'coreVisage' : `visage${slot}`;
+          patch[key] = full;
+          shouldUpdate = true;
+        }
+      }
+    });
+
+    if (shouldUpdate) {
+      useBuildPlannerStore.setState(patch);
+    }
+  }, [visages, coreVisage, visage2, visage3, visage4, visage5]);
+
   if (!buddy) return null;
 
   const renderCard = (slot: VisageSlot, label: string, selected: Visage | null, core: boolean) => {
+    const card = (selected && visages ? visages.find(v => v.id === selected.id) : null) || selected;
     const slotKey = String(slot);
     const chosenInk = selectedInkTypes[slotKey];
     const inkCfg = getInkConfig(chosenInk);
-    const hasMultipleInks = (selected?.ink_types?.length ?? 0) > 1;
+    const hasMultipleInks = (card?.ink_types?.length ?? 0) > 1;
     const isInkPickOpen = inkPickSlot === slot;
 
     return (
@@ -139,11 +178,11 @@ export function VisageSelector() {
                           setFilterInk(null); setSearchQuery(''); }}
           className={`relative w-full aspect-[4/5] bg-mh-slate-800 border-2 rounded-lg overflow-hidden flex items-center justify-center transition-colors group shrink-0 ${core ? 'border-rarity-5 hover:border-rarity-4 shadow-[0_0_10px_rgba(255,215,0,0.15)]' : 'border-mh-slate-700 hover:border-mh-slate-500'}`}
         >
-          {selected ? (
+          {card ? (
             <>
-              <VisageIcon visage={selected} rarity={DEFAULT_VISAGE_RARITY} />
+              <VisageIcon visage={card} rarity={DEFAULT_VISAGE_RARITY} />
               <div className="absolute top-0.5 right-0.5 bg-black/80 px-1 rounded text-[10px] font-bold text-white leading-tight">
-                {selected.points}
+                {card.points}
               </div>
               <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                 <span className="text-white text-[12px] font-bold">✎</span>
@@ -155,7 +194,7 @@ export function VisageSelector() {
         </button>
 
         {/* Ink type indicator circle — shown below the portrait */}
-        {selected && selected.ink_types && selected.ink_types.length > 0 && (
+        {card && card.ink_types && card.ink_types.length > 0 && (
           <div className="relative mt-1">
             <button
               onClick={(e) => {
@@ -166,15 +205,17 @@ export function VisageSelector() {
                 }
               }}
               title={chosenInk ? inkCfg.name : 'No ink'}
-              className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center ring-1 ring-black/40 transition-all ${chosenInk ? inkCfg.dotColor : 'bg-mh-slate-700'} text-white shadow-sm ${hasMultipleInks ? 'cursor-pointer hover:scale-110 hover:ring-2' : 'cursor-default'}`}
+              className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center transition-all ${
+                !chosenInk ? 'bg-mh-slate-700 ring-1 ring-black/40 text-white' : ''
+              } ${hasMultipleInks ? 'cursor-pointer hover:scale-110' : 'cursor-default'}`}
             >
-              {chosenInk ? <InkIconComponent iconName={inkCfg.iconName} size={14} className="opacity-90 drop-shadow-md" /> : '?'}
+              {chosenInk ? <InkIconComponent iconName={inkCfg.iconName} size={15} className="drop-shadow-md" /> : '?'}
             </button>
 
             {/* Ink picker popover */}
             {isInkPickOpen && hasMultipleInks && (
               <div data-dropdown-open="true" className="absolute top-full left-1/2 -translate-x-1/2 mt-1 flex flex-col gap-1 p-1.5 bg-mh-slate-900 border border-mh-slate-700 rounded-lg shadow-xl z-40">
-                {selected.ink_types.map(ink => {
+                {card.ink_types.map(ink => {
                   const c = getInkConfig(ink);
                   const isActive = chosenInk === ink;
                   return (
@@ -209,7 +250,7 @@ export function VisageSelector() {
                     </div>
                   )}
                 </div>
-                {selected && (
+                {card && (
                   <button
                     onClick={() => { setVisage(slot, null); setOpenSlot(null); }}
                     className="text-[10px] text-red-400 hover:text-red-300"
@@ -238,55 +279,72 @@ export function VisageSelector() {
               const filtered = visages?.filter(v => {
                 if (filterInk && !v.ink_types.includes(filterInk)) return false;
                 if (searchQuery && !v.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
-                if (!useCollectionOnly || !user) return true;
+                if (!useMine) return true;
                 // If collection only, user must own AT LEAST ONE ink version of this card
-                return v.ink_types.some(ink => ownedCollection?.has(`${v.id}::${ink}`));
+                return isCardOwned(v);
               }) || [];
 
               return (
                 <div className="grid grid-cols-4 gap-1.5 overflow-y-auto pr-1 pb-1">
-                  {filtered.map(v => {
-                    const isEquippedHere = selected?.id === v.id;
-                    // Count if owned *at all* (for any ink)
-                    const owned = user ? v.ink_types.some(ink => ownedCollection?.has(`${v.id}::${ink}`)) : true;
-                    // Just for display in the grid, grab the first ink's color
-                    const ink = v.ink_types[0];
-                    const inkC = getInkConfig(ink);
+                  {filtered.length === 0 ? (
+                    <div className="col-span-4 py-8 text-center flex flex-col items-center gap-2">
+                      <p className="text-xs text-mh-slate-400">
+                        {useMine ? 'No cards in your collection match.' : 'No cards found.'}
+                      </p>
+                      {useMine && (
+                        <button
+                          type="button"
+                          onClick={() => setUseMine(false)}
+                          className="text-[11px] font-bold text-amber-400 hover:text-amber-300 underline cursor-pointer"
+                        >
+                          Show all cards
+                        </button>
+                      )}
+                    </div>
+                  ) : (
+                    filtered.map(v => {
+                      const isEquippedHere = card?.id === v.id;
+                      // Count if owned *at all* (for any ink)
+                      const owned = isCardOwned(v);
+                      // Just for display in the grid, grab the first ink's color
+                      const ink = v.ink_types[0];
+                      const inkC = getInkConfig(ink);
 
-                    return (
-                      <button
-                        key={v.id}
-                        title={v.name}
-                        disabled={!owned}
-                        onClick={() => { handleVisageChange(slot, v.id); if (filterInk && v.ink_types.includes(filterInk)) setSlotInkType(slot, filterInk); setOpenSlot(null); setFilterInk(null); }}
-                        className={`relative aspect-[3/4] rounded bg-mh-slate-800 border overflow-hidden group transition-all ${
-                          isEquippedHere
-                            ? 'border-rarity-5 ring-1 ring-rarity-5'
-                            : owned
-                              ? 'border-mh-slate-600 hover:border-mh-slate-400'
-                              : 'border-mh-slate-800 opacity-40 hover:opacity-70 hover:border-mh-slate-700'
-                        }`}
-                      >
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <VisageIcon visage={v} rarity={DEFAULT_VISAGE_RARITY} />
-                        </div>
-                        {/* Ink dot in top-left */}
-                        {ink && (
-                          <div className={`absolute top-0.5 left-0.5 w-3 h-3 rounded-full flex items-center justify-center ${inkC.dotColor} text-white shadow-sm ring-1 ring-black/30`}>
-                            <InkIconComponent iconName={inkC.iconName} size={8} />
+                      return (
+                        <button
+                          key={v.id}
+                          title={v.name}
+                          disabled={!owned}
+                          onClick={() => { handleVisageChange(slot, v.id); if (filterInk && v.ink_types.includes(filterInk)) setSlotInkType(slot, filterInk); setOpenSlot(null); setFilterInk(null); }}
+                          className={`relative aspect-[3/4] rounded bg-mh-slate-800 border overflow-hidden group transition-all ${
+                            isEquippedHere
+                              ? 'border-rarity-5 ring-1 ring-rarity-5'
+                              : owned
+                                ? 'border-mh-slate-600 hover:border-mh-slate-400'
+                                : 'border-mh-slate-800 opacity-40 hover:opacity-70 hover:border-mh-slate-700'
+                          }`}
+                        >
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <VisageIcon visage={v} rarity={DEFAULT_VISAGE_RARITY} />
                           </div>
-                        )}
-                        {/* Point cost in bottom-right */}
-                        <div className="absolute bottom-0 right-0 bg-black/80 px-0.5 text-[8px] font-bold text-white">{v.points}</div>
-                        {/* Not-owned lock icon */}
-                        {!owned && user && (
-                          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/60 transition-opacity">
-                            <span className="text-[12px]">🔒</span>
-                          </div>
-                        )}
-                      </button>
-                    );
-                  })}
+                          {/* Ink dot in top-left */}
+                          {ink && (
+                            <div className={`absolute top-0.5 left-0.5 w-3 h-3 rounded-full flex items-center justify-center ${inkC.dotColor} text-white shadow-sm ring-1 ring-black/30`}>
+                              <InkIconComponent iconName={inkC.iconName} size={8} />
+                            </div>
+                          )}
+                          {/* Point cost in bottom-right */}
+                          <div className="absolute bottom-0 right-0 bg-black/80 px-0.5 text-[8px] font-bold text-white">{v.points}</div>
+                          {/* Not-owned lock icon */}
+                          {!owned && (
+                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/60 transition-opacity">
+                              <span className="text-[12px]">🔒</span>
+                            </div>
+                          )}
+                        </button>
+                      );
+                    })
+                  )}
                 </div>
               );
             })()}
@@ -309,21 +367,20 @@ export function VisageSelector() {
         >
           Load a Visage Set
         </button>
-        {/* Collection toggle — only shown to logged-in users */}
-        {user && (
-          <button
-            onClick={() => setUseCollectionOnly(prev => !prev)}
-            title={useCollectionOnly ? 'Showing only your collection — click to show all cards' : 'Click to filter to your collection only'}
-            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold border transition-all ${
-              useCollectionOnly
-                ? 'bg-rarity-5/20 border-rarity-5/60 text-rarity-5'
-                : 'bg-mh-slate-800 border-mh-slate-700 text-mh-slate-400 hover:text-mh-slate-300'
-            }`}
-          >
-            <span>{useCollectionOnly ? '📦' : '🌐'}</span>
-            {useCollectionOnly ? 'My Collection' : 'All Cards'}
-          </button>
-        )}
+        {/* Collection toggle */}
+        <button
+          type="button"
+          onClick={() => setUseMine(!useMine)}
+          title={useMine ? 'Showing only your collection — click to show all cards' : 'Click to filter to your collection only'}
+          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold border transition-all cursor-pointer ${
+            useMine
+              ? 'bg-rarity-5/20 border-rarity-5/60 text-rarity-5'
+              : 'bg-mh-slate-800 border-mh-slate-700 text-mh-slate-400 hover:text-mh-slate-300'
+          }`}
+        >
+          <span>{useMine ? '📦' : '🌐'}</span>
+          {useMine ? 'My Collection' : 'All Cards'}
+        </button>
         <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${totalPoints > 12 ? 'bg-red-500/20 text-red-400' : 'bg-mh-slate-800 text-mh-slate-300'}`}>
           {totalPoints} / 12 pts
         </span>

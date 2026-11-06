@@ -133,6 +133,10 @@ interface BuildPlannerState {
   setHoveredSkillId: (id: string | null, category?: string | null) => void;
   setSkillCatalog: (catalog: Map<string, SkillCatalogEntry>) => void;
 
+  useMine: boolean;
+  setUseMine: (useMine: boolean) => void;
+  toggleUseMine: () => void;
+
   // Computed
   getTotalVisagePoints: () => number;
   getActiveSkills: () => { id: string; level: number }[];
@@ -164,7 +168,10 @@ export const useBuildPlannerStore = create<BuildPlannerState>((set, get) => ({
   visage4: null,
   visage5: null,
   selectedInkTypes: {},
+  useMine: true,
 
+  setUseMine: (useMine) => set({ useMine }),
+  toggleUseMine: () => set((state) => ({ useMine: !state.useMine })),
   setBuildId: (id) => set({ buildId: id }),
   setTitle: (title) => set({ title }),
   setDescription: (description) => set({ description }),
@@ -241,6 +248,7 @@ export const useBuildPlannerStore = create<BuildPlannerState>((set, get) => ({
     visage4: null,
     visage5: null,
     selectedInkTypes: {},
+    useMine: true,
   }),
 
   getTotalVisagePoints: () => {

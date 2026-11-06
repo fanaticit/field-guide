@@ -41,7 +41,8 @@ export function HeroBuddySelector() {
         .from('buddies')
         .select('*')
         .eq('is_active', true)
-        .eq('is_spoiler', false);
+        .eq('is_spoiler', false)
+        .order('sort_order', { ascending: true });
       if (error) throw error;
       return data as Buddy[];
     }
@@ -319,44 +320,42 @@ export function HeroBuddySelector() {
 
         {/* Buddy Dropdown Popover */}
         {showBuddyList && (
-          <div data-dropdown-open="true" className="absolute top-full right-0 mt-1.5 z-50 w-72 sm:w-84 bg-mh-slate-900 border border-mh-slate-700 rounded-xl shadow-2xl p-3 backdrop-blur-md animate-in fade-in zoom-in-95 duration-150">
+          <div data-dropdown-open="true" className="absolute top-full right-0 mt-1.5 z-50 w-72 sm:w-80 bg-mh-slate-900 border border-mh-slate-700 rounded-xl shadow-2xl p-3 backdrop-blur-md animate-in fade-in zoom-in-95 duration-150">
             <div className="flex items-center justify-between pb-2 mb-2 border-b border-mh-slate-800 text-xs font-bold text-mh-slate-300">
               <span>Select Companion</span>
               <span className="text-[10px] font-normal text-mh-slate-500">{buddies?.length || 0} available</span>
             </div>
 
-            <div className="flex flex-col gap-1.5 max-h-64 overflow-y-auto pr-1">
+            <div className="grid grid-cols-4 gap-2 max-h-60 overflow-y-auto pr-1">
               {buddies?.map(b => {
                 const isSelected = buddy?.id === b.id;
                 return (
                   <button
                     key={b.id}
                     type="button"
+                    title={b.core_passive ? `${b.name} (${b.core_passive})` : b.name}
                     onClick={() => handleSelectBuddy(b)}
-                    className={`flex items-start gap-2.5 p-2 rounded-lg border text-left transition-all ${
+                    className={`relative flex flex-col items-center p-1.5 rounded-lg border transition-all ${
                       isSelected
-                        ? 'border-rarity-5 bg-rarity-5/15 ring-1 ring-rarity-5/40'
+                        ? 'border-rarity-5 bg-rarity-5/15 ring-2 ring-rarity-5/40'
                         : 'border-mh-slate-800 bg-mh-slate-850 hover:bg-mh-slate-800 hover:border-mh-slate-650'
                     }`}
                   >
-                    <div className="w-9 h-9 rounded-md overflow-hidden bg-mh-slate-900 border border-mh-slate-750 flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="w-11 h-11 rounded-md overflow-hidden bg-mh-slate-900 border border-mh-slate-700/80 flex items-center justify-center">
                       {b.image ? (
                         <img src={b.image} alt={b.name} className="w-full h-full object-cover" />
                       ) : (
-                        <PawPrint size={14} className="text-mh-slate-400" />
+                        <PawPrint size={18} className="text-mh-slate-400" />
                       )}
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-white truncate">{b.name}</span>
-                        {isSelected && <Check size={12} className="text-rarity-5 shrink-0 ml-1" />}
-                      </div>
-                      {b.core_passive && (
-                        <p className="text-[10px] text-mh-slate-400 line-clamp-2 leading-tight mt-0.5">
-                          {b.core_passive}
-                        </p>
-                      )}
-                    </div>
+                    <span className="text-[10px] text-mh-slate-300 truncate w-full text-center mt-1">
+                      {b.name}
+                    </span>
+                    {isSelected && (
+                      <span className="absolute top-1 right-1 w-3.5 h-3.5 rounded-full bg-rarity-5 flex items-center justify-center text-white">
+                        <Check size={9} strokeWidth={3} />
+                      </span>
+                    )}
                   </button>
                 );
               })}

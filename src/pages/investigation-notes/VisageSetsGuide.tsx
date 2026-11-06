@@ -8,10 +8,11 @@ import {
   BookOpen,
   Hammer,
   ChevronDown,
+  ArrowLeft,
 } from 'lucide-react';
 import { useVisageSetsData } from '../../hooks/useVisageSets';
 import { type DBVisage, type VisageRarity, getInkConfig } from '../../data/schemas/visage';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
 import {
   useHunterChallenges,
@@ -46,11 +47,8 @@ import {
   type VisageBuildRow,
 } from '../../lib/visageBuild';
 import { cn } from '../../lib/utils';
-import PageTitlePanel from '../../components/layout/PageTitlePanel';
 import { useUIStore } from '../../store/uiStore';
 import { DEFAULT_SECTION_THEMES } from '../../config/themes';
-
-const INTRO_HIDDEN_KEY = 'visage-collection-intro-hidden';
 
 // Shared pill styles that mirror the home page's gold button / panel look
 const ACTIVE_PILL =
@@ -61,14 +59,6 @@ const FIELD_INPUT =
 
 export default function VisageSetsGuide() {
   const theme = useUIStore((s) => s.sectionThemes['/gallery'] ?? DEFAULT_SECTION_THEMES['/gallery']);
-  const [introHidden, setIntroHidden] = useState(() => localStorage.getItem(INTRO_HIDDEN_KEY) === '1');
-
-  const toggleIntro = () => {
-    const next = !introHidden;
-    setIntroHidden(next);
-    localStorage.setItem(INTRO_HIDDEN_KEY, next ? '1' : '0');
-  };
-
   const { user, profile } = useAuthStore();
   const {
     sets,
@@ -393,146 +383,182 @@ export default function VisageSetsGuide() {
 
   return (
     <div data-rarity-theme={theme} className="section-theme flex flex-col flex-1 min-h-0 h-full gap-3 p-2 sm:p-3 text-white overflow-hidden">
-      {/* ── Title panel ── */}
+      {/* ── Top Bar: Back to Gallery (Left), Centered Title (Center), Controls (Right) ── */}
       <div className="relative z-20 shrink-0">
-        <PageTitlePanel
-          icon="/img/ui/Visage%20Icon.png"
-          title={isBuilder ? 'Building Visage Set' : 'Visage Collection'}
-          hidden={introHidden}
-          onToggleHidden={toggleIntro}
-          description={
-            isBuilder ? (
-              <>
-                Pick {VISAGE_BUILD_SLOTS.length} cards from your album to assemble a Visage set within the
-                {' '}{VISAGE_POINT_CAP}-point cap. Click a card to add or remove it, choose which card is the core,
-                and keep an eye on the point total and the set bonuses that activate as you build. Save it to share it with the community, or send it straight to
-                the Build Planner.
-              </>
-            ) : (
-              <>
-                Your Visage card album. Browse every set and card, click a card to inspect its stats and effect, and
-                mark the ones you own so the Gallery can tell you which community builds you can assemble. The
-                collection status shows your progress by rarity. Switch to
-                <span className="text-mh-slate-200 font-semibold"> Build Set</span> to start putting a set together.
-              </>
-            )
-          }
-        >
-          {isLoading && <Loader2 size={14} className="animate-spin text-[var(--theme-accent)]" />}
+        <div className="mho-panel mho-card-rarity flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 sm:gap-4 px-3 sm:px-5 py-2.5 shadow-xl">
+          {/* Left: Back to Gallery */}
+          <div className="order-1 flex items-center shrink-0">
+            <Link
+              to="/gallery"
+              className="btn-mho-panel group !px-2.5 sm:!px-3 !py-1.5 !text-xs shrink-0"
+              title="Back to Gallery"
+            >
+              <ArrowLeft size={14} className="text-[var(--text-secondary)] group-hover:text-white transition-colors" />
+              <span className="hidden sm:inline">Back to Gallery</span>
+              <span className="sm:hidden">Gallery</span>
+            </Link>
+          </div>
 
-          {/* Collected Info */}
-          <div className="relative shrink-0">
-            {/* Desktop breakdown (md+) */}
-            <div className="hidden md:flex flex-wrap items-center gap-2 bg-black/30 rounded-xl p-1.5 sm:p-2 border border-[var(--border-subtle)]">
-              {/* Total Collected */}
-              <div className="px-2.5 py-0.5 text-center border-r border-[var(--border-subtle)]">
-                <div className="flex items-center justify-center gap-1 text-[9px] uppercase font-bold text-[#FFD700]">
-                  <Bookmark size={10} />
-                  <span>Collected</span>
+          {/* Center: Visage Collection Title with Icon */}
+          <div className="order-2 flex-1 flex items-center justify-center min-w-0">
+            <h1 className="inline-flex items-center gap-2 font-display text-sm sm:text-base md:text-lg font-bold tracking-wide text-white uppercase whitespace-nowrap">
+              <img
+                src="/img/ui/Visage%20Icon.png"
+                alt=""
+                draggable={false}
+                className="h-7 w-7 sm:h-8 sm:w-8 shrink-0 object-contain"
+              />
+              <span>{isBuilder ? 'Building Visage Set' : 'Visage Collection'}</span>
+            </h1>
+          </div>
+
+          {/* Right: Collected Info & Toggle (Desktop) */}
+          <div className="order-3 flex items-center gap-2 sm:gap-3 justify-end shrink-0 ml-auto sm:ml-0">
+            {isLoading && <Loader2 size={14} className="animate-spin text-[var(--theme-accent)] shrink-0" />}
+
+            {/* Collected Info */}
+            <div className="relative shrink-0">
+              {/* Desktop breakdown (md+) */}
+              <div className="hidden md:flex flex-wrap items-center gap-2 bg-black/30 rounded-xl p-1.5 sm:p-2 border border-[var(--border-subtle)]">
+                {/* Total Collected */}
+                <div className="px-2.5 py-0.5 text-center border-r border-[var(--border-subtle)]">
+                  <div className="flex items-center justify-center gap-1 text-[9px] uppercase font-bold text-[#FFD700]">
+                    <Bookmark size={10} />
+                    <span>Collected</span>
+                  </div>
+                  <div className="flex items-baseline justify-center gap-1">
+                    <span className="font-display text-sm sm:text-base font-black text-white">{collectionStats.totalCollected}</span>
+                    <span className="text-[10px] text-mh-slate-500">/ {collectionStats.totalSlots}</span>
+                    <span className="text-[9px] font-bold text-emerald-400 ml-0.5">({collectionStats.progressPct}%)</span>
+                  </div>
                 </div>
-                <div className="flex items-baseline justify-center gap-1">
-                  <span className="font-display text-sm sm:text-base font-black text-white">{collectionStats.totalCollected}</span>
-                  <span className="text-[10px] text-mh-slate-500">/ {collectionStats.totalSlots}</span>
-                  <span className="text-[9px] font-bold text-emerald-400 ml-0.5">({collectionStats.progressPct}%)</span>
+
+                {/* SSR (Gold) */}
+                <div className="px-2 py-0.5 text-center">
+                  <span className="block text-[9px] font-bold text-amber-400">SSR (Gold)</span>
+                  <div className="flex items-baseline justify-center gap-1">
+                    <span className="font-display text-xs sm:text-sm font-bold text-amber-300">{collectionStats.ssrCount}</span>
+                    <span className="text-[9px] text-amber-400/80 font-bold">({collectionStats.ssrPct}%)</span>
+                  </div>
+                </div>
+
+                {/* SR (Purple) */}
+                <div className="px-2 py-0.5 text-center">
+                  <span className="block text-[9px] font-bold text-purple-400">SR (Purple)</span>
+                  <div className="flex items-baseline justify-center gap-1">
+                    <span className="font-display text-xs sm:text-sm font-bold text-purple-300">{collectionStats.srCount}</span>
+                    <span className="text-[9px] text-purple-400/80 font-bold">({collectionStats.srPct}%)</span>
+                  </div>
+                </div>
+
+                {/* Rare (Blue) */}
+                <div className="px-2 py-0.5 text-center">
+                  <span className="block text-[9px] font-bold text-sky-400">Rare (Blue)</span>
+                  <div className="flex items-baseline justify-center gap-1">
+                    <span className="font-display text-xs sm:text-sm font-bold text-sky-300">{collectionStats.rCount}</span>
+                    <span className="text-[9px] text-sky-400/80 font-bold">({collectionStats.rPct}%)</span>
+                  </div>
                 </div>
               </div>
 
-              {/* SSR (Gold) */}
-              <div className="px-2 py-0.5 text-center">
-                <span className="block text-[9px] font-bold text-amber-400">SSR (Gold)</span>
-                <div className="flex items-baseline justify-center gap-1">
-                  <span className="font-display text-xs sm:text-sm font-bold text-amber-300">{collectionStats.ssrCount}</span>
-                  <span className="text-[9px] text-amber-400/80 font-bold">({collectionStats.ssrPct}%)</span>
-                </div>
-              </div>
+              {/* Mobile compact badge (< md) */}
+              <div className="md:hidden relative" ref={collectedMenuRef}>
+                <button
+                  type="button"
+                  onClick={() => setShowCollectedModal((prev) => !prev)}
+                  className="flex items-center gap-1.5 bg-black/30 hover:bg-black/50 border border-[var(--border-subtle)] hover:border-[#FFD700] rounded-lg px-2.5 py-1 text-xs transition-all shadow-sm active:scale-95"
+                  title="Click to view full collection breakdown"
+                >
+                  <Bookmark size={12} className="text-mh-gold-400" />
+                  <span className="font-display font-bold text-emerald-400 text-xs">{collectionStats.progressPct}%</span>
+                  <span className="text-[10px] text-mh-slate-400 font-mono">({collectionStats.totalCollected}/{collectionStats.totalSlots})</span>
+                  <ChevronDown size={11} className={cn("text-mh-slate-400 transition-transform duration-150", showCollectedModal && "rotate-180")} />
+                </button>
 
-              {/* SR (Purple) */}
-              <div className="px-2 py-0.5 text-center">
-                <span className="block text-[9px] font-bold text-purple-400">SR (Purple)</span>
-                <div className="flex items-baseline justify-center gap-1">
-                  <span className="font-display text-xs sm:text-sm font-bold text-purple-300">{collectionStats.srCount}</span>
-                  <span className="text-[9px] text-purple-400/80 font-bold">({collectionStats.srPct}%)</span>
-                </div>
-              </div>
+                {showCollectedModal && (
+                  <div
+                    className="mho-panel-deep absolute right-0 top-full mt-1.5 z-50 w-60 max-w-[calc(100vw-24px)] border-[var(--border-active)] p-2.5 shadow-2xl animate-in zoom-in-95 duration-100"
+                    style={{
+                      boxShadow: '0 10px 25px rgba(0,0,0,0.8), 0 0 15px var(--accent-gold-glow)',
+                    }}
+                  >
+                    <div className="flex items-center justify-between pb-1.5 mb-1.5 border-b border-[var(--border-subtle)]">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#FFD700] flex items-center gap-1">
+                        <Bookmark size={11} />
+                        <span>Collection Status</span>
+                      </span>
+                      <span className="font-mono text-xs font-bold text-emerald-400">
+                        {collectionStats.progressPct}%
+                      </span>
+                    </div>
 
-              {/* Rare (Blue) */}
-              <div className="px-2 py-0.5 text-center">
-                <span className="block text-[9px] font-bold text-sky-400">Rare (Blue)</span>
-                <div className="flex items-baseline justify-center gap-1">
-                  <span className="font-display text-xs sm:text-sm font-bold text-sky-300">{collectionStats.rCount}</span>
-                  <span className="text-[9px] text-sky-400/80 font-bold">({collectionStats.rPct}%)</span>
-                </div>
+                    <div className="flex items-center justify-between text-xs py-1 border-b border-white/10">
+                      <span className="text-mh-slate-300 font-medium text-[11px]">Total Collected</span>
+                      <span className="font-mono font-bold text-white text-xs">
+                        {collectionStats.totalCollected} / {collectionStats.totalSlots}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-between text-xs py-1">
+                      <span className="text-amber-400 font-bold text-[11px]">SSR (Gold)</span>
+                      <div className="flex items-center gap-1">
+                        <span className="font-mono font-bold text-amber-300 text-xs">{collectionStats.ssrCount}</span>
+                        <span className="text-[10px] text-amber-400/80 font-mono">({collectionStats.ssrPct}%)</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between text-xs py-1">
+                      <span className="text-purple-400 font-bold text-[11px]">SR (Purple)</span>
+                      <div className="flex items-center gap-1">
+                        <span className="font-mono font-bold text-purple-300 text-xs">{collectionStats.srCount}</span>
+                        <span className="text-[10px] text-purple-400/80 font-mono">({collectionStats.srPct}%)</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between text-xs py-1">
+                      <span className="text-sky-400 font-bold text-[11px]">Rare (Blue)</span>
+                      <div className="flex items-center gap-1">
+                        <span className="font-mono font-bold text-sky-300 text-xs">{collectionStats.rCount}</span>
+                        <span className="text-[10px] text-sky-400/80 font-mono">({collectionStats.rPct}%)</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Mobile compact badge (< md) */}
-            <div className="md:hidden relative" ref={collectedMenuRef}>
-              <button
-                type="button"
-                onClick={() => setShowCollectedModal((prev) => !prev)}
-                className="flex items-center gap-1.5 bg-black/30 hover:bg-black/50 border border-[var(--border-subtle)] hover:border-[#FFD700] rounded-lg px-2.5 py-1 text-xs transition-all shadow-sm active:scale-95"
-                title="Click to view full collection breakdown"
-              >
-                <Bookmark size={12} className="text-mh-gold-400" />
-                <span className="font-display font-bold text-emerald-400 text-xs">{collectionStats.progressPct}%</span>
-                <span className="text-[10px] text-mh-slate-400 font-mono">({collectionStats.totalCollected}/{collectionStats.totalSlots})</span>
-                <ChevronDown size={11} className={cn("text-mh-slate-400 transition-transform duration-150", showCollectedModal && "rotate-180")} />
-              </button>
-
-              {showCollectedModal && (
-                <div
-                  className="mho-panel-deep absolute right-0 top-full mt-1.5 z-50 w-60 max-w-[calc(100vw-24px)] border-[var(--border-active)] p-2.5 shadow-2xl animate-in zoom-in-95 duration-100"
-                  style={{
-                    boxShadow: '0 10px 25px rgba(0,0,0,0.8), 0 0 15px var(--accent-gold-glow)',
-                  }}
+            {/* Album / Build Set toggle (desktop) */}
+            <div className="hidden sm:block shrink-0">
+              <div className="inline-flex rounded-lg border border-[var(--border-subtle)] bg-black/30 p-0.5 text-xs">
+                <button
+                  type="button"
+                  onClick={() => setMode('album')}
+                  className={cn(
+                    'flex items-center gap-1.5 rounded-md px-2.5 sm:px-3 py-1 font-bold transition-all text-xs',
+                    !isBuilder ? ACTIVE_PILL : INACTIVE_PILL,
+                  )}
                 >
-                  <div className="flex items-center justify-between pb-1.5 mb-1.5 border-b border-[var(--border-subtle)]">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#FFD700] flex items-center gap-1">
-                      <Bookmark size={11} />
-                      <span>Collection Status</span>
-                    </span>
-                    <span className="font-mono text-xs font-bold text-emerald-400">
-                      {collectionStats.progressPct}%
-                    </span>
-                  </div>
-
-                  <div className="flex items-center justify-between text-xs py-1 border-b border-white/10">
-                    <span className="text-mh-slate-300 font-medium text-[11px]">Total Collected</span>
-                    <span className="font-mono font-bold text-white text-xs">
-                      {collectionStats.totalCollected} / {collectionStats.totalSlots}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center justify-between text-xs py-1">
-                    <span className="text-amber-400 font-bold text-[11px]">SSR (Gold)</span>
-                    <div className="flex items-center gap-1">
-                      <span className="font-mono font-bold text-amber-300 text-xs">{collectionStats.ssrCount}</span>
-                      <span className="text-[10px] text-amber-400/80 font-mono">({collectionStats.ssrPct}%)</span>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between text-xs py-1">
-                    <span className="text-purple-400 font-bold text-[11px]">SR (Purple)</span>
-                    <div className="flex items-center gap-1">
-                      <span className="font-mono font-bold text-purple-300 text-xs">{collectionStats.srCount}</span>
-                      <span className="text-[10px] text-purple-400/80 font-mono">({collectionStats.srPct}%)</span>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between text-xs py-1">
-                    <span className="text-sky-400 font-bold text-[11px]">Rare (Blue)</span>
-                    <div className="flex items-center gap-1">
-                      <span className="font-mono font-bold text-sky-300 text-xs">{collectionStats.rCount}</span>
-                      <span className="text-[10px] text-sky-400/80 font-mono">({collectionStats.rPct}%)</span>
-                    </div>
-                  </div>
-                </div>
-              )}
+                  <BookOpen size={13} />
+                  <span>Album</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMode('builder')}
+                  className={cn(
+                    'flex items-center gap-1.5 rounded-md px-2.5 sm:px-3 py-1 font-bold transition-all text-xs',
+                    isBuilder ? ACTIVE_PILL : INACTIVE_PILL,
+                  )}
+                >
+                  <Hammer size={13} />
+                  <span>Build Set</span>
+                  {builder.dirty && <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />}
+                </button>
+              </div>
             </div>
           </div>
 
-          {/* Album / Build Set toggle */}
-          <div className="shrink-0">
+          {/* Row 2 (Mobile only): Album / Build Set toggle centered */}
+          <div className="order-4 sm:hidden w-full flex justify-center pt-1 border-t border-white/5">
             <div className="inline-flex rounded-lg border border-[var(--border-subtle)] bg-black/30 p-0.5 text-xs">
               <button
                 type="button"
@@ -559,7 +585,7 @@ export default function VisageSetsGuide() {
               </button>
             </div>
           </div>
-        </PageTitlePanel>
+        </div>
       </div>
 
       {/* ── Main Book Container ── */}
@@ -771,7 +797,12 @@ export default function VisageSetsGuide() {
 
         {/* ── Right Content: Active Set View ── */}
         <div className="flex-1 min-h-0 overflow-y-auto p-2.5 sm:p-4 lg:p-6">
-          {activeSet ? (
+          {isLoading ? (
+            <div className="flex flex-col items-center justify-center h-full min-h-[300px] text-center">
+              <Loader2 size={32} className="animate-spin text-[#FFD700] mb-3" />
+              <p className="text-sm font-bold text-mh-slate-300">Loading Visage Sets…</p>
+            </div>
+          ) : activeSet ? (
             <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6">
               {/* Set Header Bar */}
               <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3 border-b border-white/10 pb-2 sm:pb-3">

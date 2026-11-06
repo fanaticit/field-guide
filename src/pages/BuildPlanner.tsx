@@ -1,4 +1,4 @@
-import { Save, Copy, ArrowLeft, ThumbsUp, RotateCcw, CheckCircle2 } from 'lucide-react';
+import { Save, Copy, ArrowLeft, ThumbsUp, RotateCcw, CheckCircle2, Package, Globe } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
@@ -13,6 +13,7 @@ import { SkillSummaryPanel } from '../components/build-planner/SkillSummaryPanel
 import { clearBuildDraft } from '../store/buildDraftCookie';
 import { supabase } from '../lib/supabase';
 import { useSkillCatalogLoader } from '../hooks/useSkillCatalog';
+import { normalizeVisageRow } from '../data/schemas/visage';
 
 export default function BuildPlanner() {
   const { user } = useAuthStore();
@@ -135,11 +136,11 @@ export default function BuildPlanner() {
             waist:armour_pieces!mho_builds_waist_piece_id_fkey(*),
             greaves:armour_pieces!mho_builds_greaves_piece_id_fkey(*),
             buddy:buddies(*),
-            coreVisage:visages!mho_builds_core_visage_id_fkey(*),
-            visage2:visages!mho_builds_visage_2_id_fkey(*),
-            visage3:visages!mho_builds_visage_3_id_fkey(*),
-            visage4:visages!mho_builds_visage_4_id_fkey(*),
-            visage5:visages!mho_builds_visage_5_id_fkey(*)
+            coreVisage:visages!mho_builds_core_visage_id_fkey(*, monster:monsters(icon)),
+            visage2:visages!mho_builds_visage_2_id_fkey(*, monster:monsters(icon)),
+            visage3:visages!mho_builds_visage_3_id_fkey(*, monster:monsters(icon)),
+            visage4:visages!mho_builds_visage_4_id_fkey(*, monster:monsters(icon)),
+            visage5:visages!mho_builds_visage_5_id_fkey(*, monster:monsters(icon))
           `)
           .eq('id', buildId)
           .single();
@@ -185,11 +186,11 @@ export default function BuildPlanner() {
           
           if (data.buddy) store.setBuddy(data.buddy as any);
           
-          if (data.coreVisage) store.setVisage('core', data.coreVisage as any);
-          if (data.visage2) store.setVisage(2, data.visage2 as any);
-          if (data.visage3) store.setVisage(3, data.visage3 as any);
-          if (data.visage4) store.setVisage(4, data.visage4 as any);
-          if (data.visage5) store.setVisage(5, data.visage5 as any);
+          if (data.coreVisage) store.setVisage('core', normalizeVisageRow(data.coreVisage as any) as any);
+          if (data.visage2) store.setVisage(2, normalizeVisageRow(data.visage2 as any) as any);
+          if (data.visage3) store.setVisage(3, normalizeVisageRow(data.visage3 as any) as any);
+          if (data.visage4) store.setVisage(4, normalizeVisageRow(data.visage4 as any) as any);
+          if (data.visage5) store.setVisage(5, normalizeVisageRow(data.visage5 as any) as any);
           
           if (Object.keys(savedInks).length > 0) {
             // Because setVisage overrides the inks with auto-selection, we must apply saved inks after
@@ -520,6 +521,25 @@ export default function BuildPlanner() {
                 Support
               </button>
             </div>
+
+            {/* Use Mine / Use All Toggle */}
+            <button
+              type="button"
+              onClick={() => {
+                const next = !store.useMine;
+                store.setUseMine(next);
+                triggerFeedback(next ? 'Using your cards & crafted weapons' : 'Using all cards & weapons');
+              }}
+              className={`rounded-md px-2.5 py-1.5 text-[10px] font-bold uppercase transition-all flex items-center gap-1.5 shrink-0 border shadow-sm cursor-pointer ${
+                store.useMine
+                  ? 'bg-rarity-5/20 text-rarity-5 border-rarity-5/40 hover:bg-rarity-5/30'
+                  : 'bg-black/30 text-mh-slate-300 border-[var(--border-subtle)] hover:text-white hover:border-white/30'
+              }`}
+              title={store.useMine ? 'Currently using your cards & weapons. Click to switch to Use All' : 'Currently using all cards & weapons. Click to switch to Use Mine'}
+            >
+              {store.useMine ? <Package size={12} className="text-rarity-5" /> : <Globe size={12} className="text-mh-slate-400" />}
+              <span>{store.useMine ? 'Use Mine' : 'Use All'}</span>
+            </button>
           </div>
 
           {/* Compact Notes field */}

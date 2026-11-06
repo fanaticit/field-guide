@@ -72,7 +72,10 @@ export default function VisageBuildRow({
   });
 
   return (
-    <div className="mho-panel mho-panel-interactive flex flex-col md:flex-row md:items-center justify-between gap-3 p-3 sm:px-4 sm:py-3 group">
+    <div
+      onClick={onOpenInBuilder}
+      className="mho-panel mho-panel-interactive flex flex-col md:flex-row md:items-center justify-between gap-3 p-3 sm:px-4 sm:py-3 group cursor-pointer"
+    >
       {/* ── Left: Favorite Star, Title, Author & Description ── */}
       <div className="flex items-start gap-2.5 min-w-0 md:w-1/3">
         {/* Favorite Star Button */}
@@ -254,7 +257,10 @@ export default function VisageBuildRow({
         {/* Action Buttons */}
         <div className="flex items-center gap-1.5">
           <button
-            onClick={onLoadToPlanner}
+            onClick={(e) => {
+              e.stopPropagation();
+              onLoadToPlanner();
+            }}
             title="Send this set to the Build Planner"
             className="flex h-7 items-center gap-1.5 whitespace-nowrap rounded-lg bg-amber-500/20 border border-amber-500/40 px-2.5 text-xs font-bold text-amber-300 hover:bg-amber-500/30 hover:border-amber-400 hover:text-amber-200 transition-all shadow-sm"
           >
@@ -262,10 +268,12 @@ export default function VisageBuildRow({
             <span>Send to Planner</span>
           </button>
 
-
           {isAuthor && (
             <button
-              onClick={onDelete}
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete();
+              }}
               title="Delete build"
               className="flex h-7 w-7 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-black/30 text-rose-400 hover:text-rose-300 hover:border-rose-500/40 transition-colors"
             >
@@ -274,7 +282,10 @@ export default function VisageBuildRow({
           )}
 
           <button
-            onClick={onOpenInBuilder}
+            onClick={(e) => {
+              e.stopPropagation();
+              onOpenInBuilder();
+            }}
             className="btn-mho-panel !px-2.5 !py-1 !text-xs"
           >
             <span>{isAuthor ? 'Edit' : 'Open'}</span>

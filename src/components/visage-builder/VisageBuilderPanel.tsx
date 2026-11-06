@@ -470,7 +470,7 @@ export default function VisageBuilderPanel({ sets, visages, collectionMap, isOwn
           New
         </button>
         <Link
-          to="/armory/visages"
+          to="/gallery"
           className="ml-auto flex items-center gap-1.5 text-[11px] font-semibold text-[#FFD700] hover:text-white"
         >
           <Library size={13} />

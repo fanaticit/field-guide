@@ -45,7 +45,26 @@ export function useAdminVisages(filters: VisageFilters = {}) {
       }
 
       const { data, error } = await q;
-      if (error) throw error;
+      if (error) {
+        // Fallback: if query failed due to is_spoiler column missing in database schema
+        if (filters.showSpoilers === false) {
+          console.warn('visages query with is_spoiler failed, retrying without spoiler filter:', error);
+          let fallbackQ = supabase
+            .from('visages')
+            .select(VISAGE_SELECT)
+            .order('sort_order', { ascending: true })
+            .order('name', { ascending: true });
+          if (filters.search) fallbackQ = fallbackQ.or(`name.ilike.%${filters.search}%,id.ilike.%${filters.search}%`);
+          if (filters.inkType) fallbackQ = fallbackQ.contains('ink_types', [filters.inkType]);
+          if (filters.monsterType) fallbackQ = fallbackQ.eq('monster_type', filters.monsterType);
+          if (filters.isActive !== null && filters.isActive !== undefined) fallbackQ = fallbackQ.eq('is_active', filters.isActive);
+          const fallbackRes = await fallbackQ;
+          if (!fallbackRes.error && fallbackRes.data) {
+            return fallbackRes.data.map((row) => normalizeVisageRow(row as Record<string, unknown>));
+          }
+        }
+        throw error;
+      }
 
       return (data ?? []).map((row) => normalizeVisageRow(row as Record<string, unknown>));
     },
