@@ -1,14 +1,65 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { ChevronDown, Lock, User, Swords, PawPrint, Check } from 'lucide-react';
+import { ChevronDown, Lock, User, Swords, PawPrint, Check, Search } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useBuildPlannerStore, type Adventurer, type WeaponType, type Buddy } from '../../store/buildPlannerStore';
+import { useUserBuddyCollection } from '../../hooks/useUserBuddyCollection';
+
+const BUDDY_TIER_THEMES: Record<string, {
+  border: string;
+  borderHover: string;
+  nameText: string;
+  nameHover: string;
+  selectedRing: string;
+  selectedBg: string;
+  badgeBg: string;
+  tagBorder: string;
+  tagBg: string;
+}> = {
+  SSR: {
+    border: 'border-amber-500/50',
+    borderHover: 'hover:border-amber-400',
+    nameText: 'text-amber-300',
+    nameHover: 'group-hover:text-amber-200',
+    selectedRing: 'border-amber-400 ring-2 ring-amber-400/60 shadow-amber-500/20',
+    selectedBg: 'bg-amber-500/20',
+    badgeBg: 'bg-amber-400 text-black',
+    tagBorder: 'border-amber-500/60',
+    tagBg: 'bg-amber-500/20 text-amber-300',
+  },
+  SR: {
+    border: 'border-purple-500/45',
+    borderHover: 'hover:border-purple-400',
+    nameText: 'text-purple-300',
+    nameHover: 'group-hover:text-purple-200',
+    selectedRing: 'border-purple-400 ring-2 ring-purple-400/60 shadow-purple-500/20',
+    selectedBg: 'bg-purple-500/20',
+    badgeBg: 'bg-purple-500 text-white',
+    tagBorder: 'border-purple-500/60',
+    tagBg: 'bg-purple-500/20 text-purple-300',
+  },
+  R: {
+    border: 'border-blue-500/40',
+    borderHover: 'hover:border-blue-400',
+    nameText: 'text-blue-300',
+    nameHover: 'group-hover:text-blue-200',
+    selectedRing: 'border-blue-400 ring-2 ring-blue-400/60 shadow-blue-500/20',
+    selectedBg: 'bg-blue-500/20',
+    badgeBg: 'bg-blue-500 text-white',
+    tagBorder: 'border-blue-500/50',
+    tagBg: 'bg-blue-500/20 text-blue-300',
+  },
+};
+
+const getBuddyTheme = (tier?: string) => BUDDY_TIER_THEMES[tier || 'R'] || BUDDY_TIER_THEMES.R;
 
 export function HeroBuddySelector() {
   const { adventurer, setAdventurer, weaponType, setWeaponType, buddy, setBuddy } = useBuildPlannerStore();
+  const { isOwned } = useUserBuddyCollection();
   const [showAdvList, setShowAdvList] = useState(false);
   const [showBuddyList, setShowBuddyList] = useState(false);
   const [showWtList, setShowWtList] = useState(false);
+  const [buddySearch, setBuddySearch] = useState('');
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { data: adventurers } = useQuery({
@@ -55,6 +106,7 @@ export function HeroBuddySelector() {
         setShowAdvList(false);
         setShowBuddyList(false);
         setShowWtList(false);
+        setBuddySearch('');
       }
     };
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -62,6 +114,7 @@ export function HeroBuddySelector() {
         setShowAdvList(false);
         setShowBuddyList(false);
         setShowWtList(false);
+        setBuddySearch('');
       }
     };
     document.addEventListener('mousedown', handleMouseDown);
@@ -95,7 +148,30 @@ export function HeroBuddySelector() {
   const handleSelectBuddy = (b: Buddy) => {
     setBuddy(b);
     setShowBuddyList(false);
+    setBuddySearch('');
   };
+
+  const recruitedCount = useMemo(() => buddies?.filter(b => isOwned(b.id)).length || 0, [buddies, isOwned]);
+  const hasAnyRecruited = recruitedCount > 0;
+
+  const filteredBuddies = useMemo(() => {
+    if (!buddies) return [];
+    let list = buddies;
+    if (buddySearch.trim()) {
+      const query = buddySearch.toLowerCase().trim();
+      list = list.filter(
+        b => b.name?.toLowerCase().includes(query) || b.core_passive?.toLowerCase().includes(query)
+      );
+    }
+    return [...list].sort((a, b) => {
+      const aOwned = isOwned(a.id);
+      const bOwned = isOwned(b.id);
+      if (aOwned !== bOwned) {
+        return aOwned ? -1 : 1;
+      }
+      return a.name.localeCompare(b.name);
+    });
+  }, [buddies, buddySearch, isOwned]);
 
   return (
     <div ref={containerRef} className="flex items-center gap-2.5 w-full">
@@ -290,7 +366,9 @@ export function HeroBuddySelector() {
           title={buddy?.core_passive ? `Buddy: ${buddy.name} (${buddy.core_passive})` : 'Click to select Buddy'}
         >
           {/* Avatar */}
-          <div className="w-9 h-9 rounded-lg overflow-hidden bg-mh-slate-900 border border-mh-slate-700/80 flex items-center justify-center shrink-0 group-hover:border-rarity-5/60 transition-colors">
+          <div className={`w-9 h-9 rounded-lg overflow-hidden bg-mh-slate-900 border flex items-center justify-center shrink-0 transition-colors ${
+            buddy?.tier ? `${getBuddyTheme(buddy.tier).border} group-hover:border-rarity-5/60` : 'border-mh-slate-700/80 group-hover:border-rarity-5/60'
+          }`}>
             {buddy?.image ? (
               <img src={buddy.image} alt={buddy.name} className="w-full h-full object-cover" />
             ) : (
@@ -301,12 +379,18 @@ export function HeroBuddySelector() {
           {/* Details */}
           <div className="flex-1 min-w-0 flex flex-col justify-center">
             <div className="flex items-center justify-between gap-1">
-              <span className="text-[9px] font-bold uppercase tracking-wider text-rarity-5">Buddy</span>
+              <span className={`text-[9px] font-bold uppercase tracking-wider ${
+                buddy?.tier ? getBuddyTheme(buddy.tier).nameText : 'text-rarity-5'
+              }`}>
+                Buddy {buddy?.tier ? `(${buddy.tier})` : ''}
+              </span>
               <span className="text-[10px] text-mh-slate-400 group-hover:text-mh-slate-200 flex items-center transition-colors">
                 Change <ChevronDown size={11} className={`ml-0.5 transition-transform ${showBuddyList ? 'rotate-180' : ''}`} />
               </span>
             </div>
-            <div className="text-xs sm:text-sm font-bold text-white truncate leading-tight mt-0.5">
+            <div className={`text-xs sm:text-sm font-bold truncate leading-tight mt-0.5 ${
+              buddy?.tier ? getBuddyTheme(buddy.tier).nameText : 'text-white'
+            }`}>
               {buddy ? buddy.name : 'Select Buddy'}
             </div>
             <div
@@ -320,45 +404,106 @@ export function HeroBuddySelector() {
 
         {/* Buddy Dropdown Popover */}
         {showBuddyList && (
-          <div data-dropdown-open="true" className="absolute top-full right-0 mt-1.5 z-50 w-72 sm:w-80 bg-mh-slate-900 border border-mh-slate-700 rounded-xl shadow-2xl p-3 backdrop-blur-md animate-in fade-in zoom-in-95 duration-150">
+          <div
+            data-dropdown-open="true"
+            className="absolute top-full right-0 mt-1.5 z-50 w-[320px] sm:w-[420px] max-w-[calc(100vw-2rem)] bg-mh-slate-900 border border-mh-slate-700 rounded-xl shadow-2xl p-3 backdrop-blur-md animate-in fade-in zoom-in-95 duration-150"
+          >
             <div className="flex items-center justify-between pb-2 mb-2 border-b border-mh-slate-800 text-xs font-bold text-mh-slate-300">
-              <span>Select Companion</span>
-              <span className="text-[10px] font-normal text-mh-slate-500">{buddies?.length || 0} available</span>
+              <div className="flex items-center gap-2">
+                <span>Select Companion</span>
+                <span className="text-[10px] font-normal text-mh-slate-500">
+                  {recruitedCount > 0 ? `${recruitedCount} recruited · ` : ''}{filteredBuddies.length} available
+                </span>
+              </div>
+              {buddy && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setBuddy(null);
+                    setShowBuddyList(false);
+                    setBuddySearch('');
+                  }}
+                  className="text-[10px] text-red-400 hover:text-red-300 cursor-pointer font-normal transition-colors"
+                >
+                  Clear
+                </button>
+              )}
             </div>
 
-            <div className="grid grid-cols-4 gap-2 max-h-60 overflow-y-auto pr-1">
-              {buddies?.map(b => {
+            {/* Quick Search */}
+            <div className="relative mb-2.5">
+              <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-mh-slate-500 pointer-events-none" />
+              <input
+                type="text"
+                autoFocus
+                placeholder="Search companions or passives..."
+                value={buddySearch}
+                onChange={(e) => setBuddySearch(e.target.value)}
+                className="w-full bg-mh-slate-800/90 border border-mh-slate-700 rounded-lg text-xs px-2.5 pl-8 py-1.5 text-mh-slate-200 placeholder:text-mh-slate-500 focus:outline-none focus:border-rarity-5 focus:ring-1 focus:ring-rarity-5/40 transition-all"
+              />
+            </div>
+
+            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5 max-h-72 sm:max-h-84 overflow-y-auto pr-1">
+              {filteredBuddies.map(b => {
                 const isSelected = buddy?.id === b.id;
+                const isRecruited = isOwned(b.id);
+                const theme = getBuddyTheme(b.tier);
                 return (
                   <button
                     key={b.id}
                     type="button"
-                    title={b.core_passive ? `${b.name} (${b.core_passive})` : b.name}
+                    title={
+                      b.core_passive
+                        ? `${b.name} [${b.tier || 'R'}]${isRecruited ? ' (Recruited)' : ''} (${b.core_passive})`
+                        : `${b.name} [${b.tier || 'R'}]${isRecruited ? ' (Recruited)' : ''}`
+                    }
                     onClick={() => handleSelectBuddy(b)}
-                    className={`relative flex flex-col items-center p-1.5 rounded-lg border transition-all ${
+                    className={`group relative flex flex-col rounded-xl border overflow-hidden transition-all text-left cursor-pointer ${
                       isSelected
-                        ? 'border-rarity-5 bg-rarity-5/15 ring-2 ring-rarity-5/40'
-                        : 'border-mh-slate-800 bg-mh-slate-850 hover:bg-mh-slate-800 hover:border-mh-slate-650'
-                    }`}
+                        ? `${theme.selectedRing} ${theme.selectedBg} shadow-md`
+                        : `${theme.border} ${theme.borderHover} bg-mh-slate-850 hover:bg-mh-slate-800`
+                    } ${hasAnyRecruited && !isRecruited ? 'opacity-70 hover:opacity-100' : ''}`}
                   >
-                    <div className="w-11 h-11 rounded-md overflow-hidden bg-mh-slate-900 border border-mh-slate-700/80 flex items-center justify-center">
+                    <div className="relative w-full aspect-square bg-mh-slate-950 flex items-center justify-center overflow-hidden">
                       {b.image ? (
-                        <img src={b.image} alt={b.name} className="w-full h-full object-cover" />
+                        <img
+                          src={b.image}
+                          alt={b.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                        />
                       ) : (
-                        <PawPrint size={18} className="text-mh-slate-400" />
+                        <PawPrint size={28} className="text-mh-slate-400" />
                       )}
-                    </div>
-                    <span className="text-[10px] text-mh-slate-300 truncate w-full text-center mt-1">
-                      {b.name}
-                    </span>
-                    {isSelected && (
-                      <span className="absolute top-1 right-1 w-3.5 h-3.5 rounded-full bg-rarity-5 flex items-center justify-center text-white">
-                        <Check size={9} strokeWidth={3} />
+
+                      {/* Tier badge in top-left */}
+                      <span className={`absolute top-1 left-1 px-1 py-0.2 rounded text-[9px] font-black uppercase tracking-wider backdrop-blur-sm border shadow-sm ${theme.tagBg} ${theme.tagBorder}`}>
+                        {b.tier || 'R'}
                       </span>
-                    )}
+
+                      {isSelected ? (
+                        <span className={`absolute top-1 right-1 w-4 h-4 rounded-full ${theme.badgeBg} flex items-center justify-center shadow-md ring-1 ring-black/40`}>
+                          <Check size={10} strokeWidth={3} />
+                        </span>
+                      ) : isRecruited ? (
+                        <span
+                          className="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-black/60 shadow-sm"
+                          title="Recruited companion"
+                        />
+                      ) : null}
+                    </div>
+                    <div className={`py-1 px-1 w-full bg-mh-slate-900/90 border-t ${theme.border} text-center transition-colors`}>
+                      <span className={`text-[11px] font-semibold ${theme.nameText} ${theme.nameHover} truncate block w-full leading-tight`}>
+                        {b.name}
+                      </span>
+                    </div>
                   </button>
                 );
               })}
+              {filteredBuddies.length === 0 && (
+                <div className="col-span-3 sm:col-span-4 py-8 text-center text-xs text-mh-slate-500">
+                  No companions matched "{buddySearch}"
+                </div>
+              )}
             </div>
           </div>
         )}

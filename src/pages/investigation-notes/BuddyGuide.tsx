@@ -25,7 +25,7 @@ import {
   ROLE_CONFIG,
 } from '../../data/schemas/buddy';
 import { ADVENTURER_RARITY_CONFIG } from '../../data/schemas/adventurer';
-import { usePublicBuddies } from '../../hooks/useAdminBuddies';
+import { usePublicBuddies, useAllBuddySkills } from '../../hooks/useAdminBuddies';
 import { useUserBuddyCollection } from '../../hooks/useUserBuddyCollection';
 import {
   useHunterChallenges,
@@ -79,6 +79,20 @@ export default function BuddyGuide() {
   const { data: buddies = [], isLoading } = usePublicBuddies({
     showSpoilers: Boolean(profile?.show_spoilers),
   });
+  const { data: allSkills = [] } = useAllBuddySkills();
+
+  // Group skills by buddy_id for quick search lookup
+  const skillsByBuddyId = useMemo(() => {
+    const map = new Map<string, string[]>();
+    for (const skill of allSkills) {
+      const existing = map.get(skill.buddy_id) || [];
+      if (skill.name) existing.push(skill.name.toLowerCase());
+      if (skill.description) existing.push(skill.description.toLowerCase());
+      map.set(skill.buddy_id, existing);
+    }
+    return map;
+  }, [allSkills]);
+
   const {
     collectionMap,
     setBuddyQuantity,
@@ -109,13 +123,24 @@ export default function BuddyGuide() {
 
     if (search.trim()) {
       const q = search.toLowerCase();
-      list = list.filter(
-        (b) =>
+      list = list.filter((b) => {
+        const matchesBasic =
           b.name.toLowerCase().includes(q) ||
           b.id.toLowerCase().includes(q) ||
           (b.name_ja ?? '').toLowerCase().includes(q) ||
-          (b.core_passive ?? '').toLowerCase().includes(q),
-      );
+          (b.core_passive ?? '').toLowerCase().includes(q) ||
+          (b.description ?? '').toLowerCase().includes(q);
+
+        if (matchesBasic) return true;
+
+        // Also check companion's active, passive, and unique skills
+        const companionSkills = skillsByBuddyId.get(b.id);
+        if (companionSkills && companionSkills.some((text) => text.includes(q))) {
+          return true;
+        }
+
+        return false;
+      });
     }
 
     if (selectedTier !== 'all') {
@@ -141,7 +166,7 @@ export default function BuddyGuide() {
     });
 
     return list;
-  }, [buddies, search, selectedTier, selectedRole, ownershipFilter, collectionMap]);
+  }, [buddies, search, selectedTier, selectedRole, ownershipFilter, collectionMap, skillsByBuddyId]);
 
   // Statistics
   // Excludes debug and unreleased/not-in-game items from collected metrics
@@ -180,10 +205,10 @@ export default function BuddyGuide() {
         description={
           <>
             Collect the Aesoland companions that fight alongside you. Each buddy has a rarity, a combat role
-            (Assault, Disruptor or Support) and a core passive, and you can own several copies of the same one.
-            Tap a card to inspect passives and update how many you own, or add the ones you're missing to your
-            Hunter's Challenges <span className="text-mh-slate-200 font-semibold">recruitment list</span> so you
-            know who to aim for.
+            (Assault, Disruptor or Support), a core passive, and unique abilities. Search companions by name,
+            combat role, or keywords in their core passive and combat skills. Tap a card to inspect abilities
+            and update how many you own, or add the ones you're missing to your Hunter's Challenges{' '}
+            <span className="text-mh-slate-200 font-semibold">recruitment list</span> so you know who to aim for.
           </>
         }
       >
@@ -226,7 +251,7 @@ export default function BuddyGuide() {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search buddies by name, Japanese name, or passive skill..."
+            placeholder="Search buddies by name, core passive, or ability keywords..."
             className="w-full rounded-xl border border-mh-slate-750 bg-mh-slate-900/90 pl-10 pr-4 py-2.5 text-xs text-mh-slate-100 placeholder-mh-slate-500 outline-none focus:border-mh-gold-500/50 shadow-inner"
           />
         </div>

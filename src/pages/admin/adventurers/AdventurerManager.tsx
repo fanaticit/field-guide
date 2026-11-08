@@ -14,6 +14,7 @@ import {
   Swords,
   Zap,
   Heart,
+  Video,
 } from 'lucide-react';
 import {
   type DBAdventurer,
@@ -27,7 +28,9 @@ import {
   useToggleAdventurerActive,
   useToggleAdventurerSpoiler,
 } from '../../../hooks/useAdminAdventurers';
+import { usePageGuide } from '../../../hooks/usePageGuide';
 import AdventurerEditModal from './AdventurerEditModal';
+import AdventurerVideoModal from './AdventurerVideoModal';
 import AdventurerRarityBadge from '../../investigation-notes/AdventurerRarityBadge';
 import { cn } from '../../../lib/utils';
 
@@ -101,8 +104,10 @@ export default function AdventurerManager() {
 
   // Edit Modal state
   const [editAdventurer, setEditAdventurer] = useState<DBAdventurer | null | 'new'>(null);
+  const [videoModalOpen, setVideoModalOpen] = useState(false);
 
   const { data: adventurers = [], isLoading, refetch } = useAdminAdventurers();
+  const { data: pageGuide } = usePageGuide('adventurers');
 
   const weaponTypeMap = useMemo(
     () => new Map(WEAPON_TYPES.map((w) => [w.id, w.name])),
@@ -188,10 +193,41 @@ export default function AdventurerManager() {
             <p className="text-xs text-mh-slate-400 mt-0.5">
               Manage playable Outlanders adventurers, roles (Assault, Disrupter, Support), element affinities, and player avatar defaults.
             </p>
+            {pageGuide?.youtube_url && (
+              <div className="mt-2 inline-flex items-center gap-1.5 rounded-lg border border-red-500/30 bg-red-500/10 px-2.5 py-1 text-[11px] text-red-300">
+                <Video size={12} className="text-red-400" />
+                <span>Page Guide Video Active</span>
+                <span className="text-mh-slate-500">·</span>
+                <button
+                  type="button"
+                  onClick={() => setVideoModalOpen(true)}
+                  className="font-medium underline hover:text-white"
+                >
+                  Edit link
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
         <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => setVideoModalOpen(true)}
+            className={cn(
+              'flex items-center gap-1.5 rounded-xl border px-3.5 py-2 text-xs font-semibold transition-all shadow-sm',
+              pageGuide?.youtube_url
+                ? 'border-red-500/40 bg-red-500/10 text-red-300 hover:bg-red-500/20 hover:border-red-500/60'
+                : 'border-mh-slate-700 bg-mh-slate-800 text-mh-slate-300 hover:border-mh-slate-600 hover:text-white',
+            )}
+            title="Configure YouTube guide video for /challenges/adventurers"
+          >
+            <Video size={13} className={pageGuide?.youtube_url ? 'text-red-400' : ''} />
+            <span>Guide Video</span>
+            {pageGuide?.youtube_url && (
+              <span className="h-1.5 w-1.5 rounded-full bg-red-400 animate-pulse" />
+            )}
+          </button>
           <button
             type="button"
             onClick={() => refetch()}
@@ -591,6 +627,12 @@ export default function AdventurerManager() {
           onClose={() => setEditAdventurer(null)}
         />
       )}
+
+      {/* ── Page Guide Video Modal (YouTube) ── */}
+      <AdventurerVideoModal
+        open={videoModalOpen}
+        onClose={() => setVideoModalOpen(false)}
+      />
     </div>
   );
 }

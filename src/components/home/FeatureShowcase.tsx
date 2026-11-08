@@ -115,6 +115,15 @@ const SECTIONS: Section[] = [
         to: '/challenges/buddies',
         linkLabel: 'View buddies',
       },
+      {
+        title: 'Compare Weapons',
+        description:
+          'Select and compare two weapons to see what damage and skills they have in later upgrade of rarity.',
+        image: 'compare-weapons',
+        imageAlt: 'Weapon comparison modal showing stats across all available rarity tiers',
+        to: '/challenges/weapons',
+        linkLabel: 'View Weapons',
+      },
     ],
   },
 ];

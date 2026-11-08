@@ -66,6 +66,7 @@ export interface Buddy {
   name: string;
   core_passive: string;
   image?: string;
+  tier?: 'R' | 'SR' | 'SSR';
 }
 
 export interface Visage {

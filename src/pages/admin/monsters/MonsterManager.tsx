@@ -6,7 +6,6 @@
 import { useState, useMemo } from 'react';
 import {
   Search, Plus, RefreshCw, ChevronUp, ChevronDown,
-  Flame, Droplets, Zap, Snowflake, Wind,
   MoreVertical, AlertTriangle,
 } from 'lucide-react';
 import {
@@ -15,28 +14,7 @@ import {
 } from '../../../hooks/useAdminMonsters';
 import MonsterEditModal from './MonsterEditModal';
 import { cn } from '../../../lib/utils';
-
-// ── Element display ──────────────────────────────────────────
-const ELEMENT_ICONS: Record<string, React.ReactNode> = {
-  fire:      <Flame     size={11} className="text-orange-400" />,
-  water:     <Droplets  size={11} className="text-blue-400"   />,
-  thunder:   <Zap       size={11} className="text-yellow-400" />,
-  ice:       <Snowflake size={11} className="text-cyan-400"   />,
-  dragon:    <Wind      size={11} className="text-purple-400" />,
-};
-
-const ELEMENT_DOT_COLORS: Record<string, string> = {
-  fire:      'bg-orange-400',
-  water:     'bg-blue-400',
-  thunder:   'bg-yellow-400',
-  ice:       'bg-cyan-400',
-  dragon:    'bg-purple-400',
-  poison:    'bg-green-400',
-  sleep:     'bg-indigo-400',
-  paralysis: 'bg-yellow-300',
-  blast:     'bg-red-400',
-  stun:      'bg-amber-300',
-};
+import ElementIcon from '../../../components/ElementIcon';
 
 const TIER_STYLES: Record<string, string> = {
   low:    'bg-blue-500/15 text-blue-400',
@@ -72,10 +50,8 @@ function ElementPills({ elements }: { elements: string[] }) {
   return (
     <div className="flex flex-wrap gap-1">
       {elements.map((el) => (
-        <span key={el} className="flex items-center gap-1 rounded-md bg-mh-slate-800 px-1.5 py-0.5 text-[10px] font-medium capitalize">
-          {ELEMENT_ICONS[el] ?? (
-            <span className={cn('h-2 w-2 rounded-full', ELEMENT_DOT_COLORS[el] ?? 'bg-mh-slate-500')} />
-          )}
+        <span key={el} className="flex items-center gap-1.5 rounded-md bg-mh-slate-800 border border-mh-slate-750 px-1.5 py-0.5 text-[10px] font-medium capitalize text-mh-slate-200">
+          <ElementIcon element={el} size={12} />
           {el}
         </span>
       ))}

@@ -7,16 +7,10 @@ import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import {
   Sword,
   Search,
-  Sparkles,
   LayoutGrid,
   List,
   Shield,
   Bookmark,
-  Flame,
-  Droplets,
-  Zap,
-  Snowflake,
-  Skull,
   Eye,
   CheckCircle2,
   ChevronDown,
@@ -24,6 +18,7 @@ import {
   LogIn,
   Hammer,
   Plus,
+  ArrowLeftRight,
 } from 'lucide-react';
 import {
   type DBWeapon,
@@ -52,26 +47,13 @@ import WeaponModal from './WeaponModal';
 import WeaponCompareModal from './WeaponCompareModal';
 import LoginModal from '../../components/auth/LoginModal';
 import { cn } from '../../lib/utils';
+import ElementIcon from '../../components/ElementIcon';
 
 type ChallengeFilter = 'all' | 'tracked' | 'crafting' | 'upgrading' | 'mastered';
 type OwnershipFilter = 'all' | 'crafted' | 'missing';
 type ViewMode = 'grid' | 'table';
 type SortOrder = 'rarity-desc' | 'rarity-asc' | 'name-asc' | 'default';
 const INTRO_HIDDEN_KEY = 'weapons-intro-hidden';
-
-const ELEMENT_ICONS: Record<WeaponElementType, React.ComponentType<{ size?: number; className?: string }>> = {
-  raw: Shield,
-  fire: Flame,
-  water: Droplets,
-  thunder: Zap,
-  ice: Snowflake,
-  dragon: Sparkles,
-  poison: Skull,
-  paralysis: Zap,
-  blast: Flame,
-  sleep: Snowflake,
-  stun: Zap,
-};
 
 export default function WeaponGuide() {
   const { user, profile } = useAuthStore();
@@ -327,7 +309,7 @@ export default function WeaponGuide() {
   }, [challenges, weapons]);
 
   return (
-    <div data-rarity-theme={theme} className="challenges-theme px-6 pb-6 pt-2 lg:px-8 lg:pb-8 lg:pt-3 space-y-6 max-w-7xl mx-auto text-white">
+    <div data-rarity-theme={theme} className="challenges-theme px-1 sm:px-4 lg:px-8 pb-6 pt-2 space-y-4 sm:space-y-6 max-w-7xl mx-auto text-white">
       <PageTitlePanel
         icon="/img/ui/Weapons%20Icon.png"
         title="Weapons Collection"
@@ -750,20 +732,30 @@ export default function WeaponGuide() {
         </div>
       ) : (
         /* ── Table View ── */
-        <div className="overflow-hidden rounded-2xl border border-mh-slate-750 bg-mh-slate-900/80 shadow-xl">
+        <div className="overflow-x-auto rounded-xl sm:rounded-2xl border border-mh-slate-750 bg-mh-slate-900/80 shadow-xl">
           <table className="w-full text-left text-xs text-mh-slate-300">
             <thead className="border-b border-mh-slate-750 bg-mh-slate-950/80 text-[11px] font-bold uppercase tracking-wider text-mh-slate-400">
               <tr>
-                <th className="py-3.5 pl-5 pr-3">Weapon</th>
-                <th className="px-3 py-3.5">Type</th>
-                <th className="px-3 py-3.5 text-center">Rarity</th>
-                <th className="px-3 py-3.5 text-center">Crafted</th>
-                <th className="px-3 py-3.5">Origin</th>
-                <th className="px-3 py-3.5">Element / Status</th>
-                <th className="px-3 py-3.5 text-center">Attack</th>
-                <th className="px-3 py-3.5">Apex Effect</th>
-                <th className="px-3 py-3.5 text-center">Hunter Challenge</th>
-                <th className="py-3.5 pl-3 pr-5 text-right">Action</th>
+                {/* 1. Weapon (Icon + Name) - Required */}
+                <th className="py-2.5 sm:py-3.5 pl-3 sm:pl-5 pr-2 sm:pr-3">Weapon</th>
+                {/* 2. Type (just the icon on mobile) - Required */}
+                <th className="px-2 sm:px-3 py-2.5 sm:py-3.5 text-center sm:text-left">Type</th>
+                {/* 3. Attack - Required */}
+                <th className="px-2 sm:px-3 py-2.5 sm:py-3.5 text-center">Attack</th>
+                {/* 5. Element / Status (can be just icon) - Preference 1 */}
+                <th className="hidden min-[480px]:table-cell px-2 sm:px-3 py-2.5 sm:py-3.5 text-center sm:text-left">Element</th>
+                {/* 6. Rarity - Preference 2 */}
+                <th className="hidden sm:table-cell px-2 sm:px-3 py-2.5 sm:py-3.5 text-center">Rarity</th>
+                {/* 7. Hunter Challenge (just icon on md) - Preference 3 */}
+                <th className="hidden md:table-cell px-2 sm:px-3 py-2.5 sm:py-3.5 text-center">Challenge</th>
+                {/* Extra: Crafted */}
+                <th className="hidden lg:table-cell px-3 py-3.5 text-center">Crafted</th>
+                {/* Extra: Origin */}
+                <th className="hidden xl:table-cell px-3 py-3.5">Origin</th>
+                {/* Extra: Apex Effect */}
+                <th className="hidden 2xl:table-cell px-3 py-3.5">Apex Effect</th>
+                {/* 4. Select to Compare & Action - Required */}
+                <th className="py-2.5 sm:py-3.5 pl-2 sm:pl-3 pr-3 sm:pr-5 text-right">Compare</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-mh-slate-800/80">
@@ -772,7 +764,6 @@ export default function WeaponGuide() {
                 const monster = weapon.monster_id ? monstersMap.get(weapon.monster_id) : null;
                 const srcCfg = WEAPON_SOURCE_CONFIG[weapon.source_type] || WEAPON_SOURCE_CONFIG.unknown;
                 const elemCfg = WEAPON_ELEMENT_CONFIG[weapon.element_type] || WEAPON_ELEMENT_CONFIG.raw;
-                const ElIcon = ELEMENT_ICONS[weapon.element_type] || Shield;
                 const challenge = getWeaponChallenge(challenges, weapon.id);
                 const isTracked = Boolean(challenge && challenge.status !== 'abandoned');
                 const rarityCfg = getRarityBadgeStyle(weapon.rarity || 1);
@@ -789,10 +780,10 @@ export default function WeaponGuide() {
                       isSelected && 'bg-amber-500/10 border-l-2 border-l-amber-400',
                     )}
                   >
-                    {/* Weapon Info with Wrapped Name */}
-                    <td className="py-3.5 pl-5 pr-3">
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-mh-slate-800 border border-mh-slate-750 p-1">
+                    {/* 1. Weapon Info (Icon + Name) */}
+                    <td className="py-2.5 sm:py-3.5 pl-3 sm:pl-5 pr-2 sm:pr-3">
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-lg sm:rounded-xl bg-mh-slate-800 border border-mh-slate-750 p-1">
                           {weapon.image ? (
                             <img
                               src={weapon.image}
@@ -800,35 +791,121 @@ export default function WeaponGuide() {
                               className="h-full w-full object-contain"
                             />
                           ) : (
-                            <Sword size={16} className="text-mh-slate-500" />
+                            <Sword size={15} className="text-mh-slate-500" />
                           )}
                         </div>
-                        <div className="min-w-0 max-w-[200px]">
-                          <p className="font-bold text-mh-slate-100 break-words leading-tight">{weapon.name}</p>
+                        <div className="min-w-0 max-w-[120px] xs:max-w-[150px] sm:max-w-[200px]">
+                          <p className="font-bold text-mh-slate-100 break-words leading-tight text-xs">{weapon.name}</p>
                           {weapon.series && (
-                            <p className="text-[10px] text-mh-slate-500 break-words">{weapon.series}</p>
+                            <p className="hidden sm:block text-[10px] text-mh-slate-500 break-words">{weapon.series}</p>
                           )}
                           {weapon.name_ja && (
-                            <p className="text-[10px] text-mh-slate-500 break-words">{weapon.name_ja}</p>
+                            <p className="hidden sm:block text-[10px] text-mh-slate-500 break-words">{weapon.name_ja}</p>
                           )}
                         </div>
                       </div>
                     </td>
 
-                    {/* Type */}
-                    <td className="px-3 py-3.5 font-semibold text-mh-slate-300">
-                      {wt?.name || weapon.weapon_type_id}
+                    {/* 2. Type (just the icon on mobile) */}
+                    <td className="px-2 sm:px-3 py-2.5 sm:py-3.5 text-center sm:text-left">
+                      <div className="flex items-center justify-center sm:justify-start gap-1.5" title={wt?.name || weapon.weapon_type_id}>
+                        {wt ? (
+                          <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-mh-slate-800/80 border border-mh-slate-700/60 p-0.5">
+                            <img
+                              src={`/images/weapons/${wt.id}.svg`}
+                              alt={wt.name}
+                              className="h-full w-full object-contain filter brightness-110"
+                              onError={(e) => {
+                                (e.target as HTMLElement).style.display = 'none';
+                              }}
+                            />
+                          </div>
+                        ) : null}
+                        <span className="hidden md:inline font-semibold text-mh-slate-300">
+                          {wt?.name || weapon.weapon_type_id}
+                        </span>
+                      </div>
                     </td>
 
-                    {/* Rarity */}
-                    <td className="px-3 py-3.5 text-center">
+                    {/* 3. Attack & Affinity */}
+                    <td className="px-2 sm:px-3 py-2.5 sm:py-3.5 text-center font-mono font-bold text-mh-slate-100 whitespace-nowrap">
+                      <div>{weapon.attack ?? '—'}</div>
+                      {weapon.affinity !== null && weapon.affinity !== 0 && (
+                        <div className="hidden sm:block text-[10px] text-mh-slate-400 font-mono">
+                          {weapon.affinity > 0 ? `+${weapon.affinity / 100}%` : `${weapon.affinity / 100}%`}
+                        </div>
+                      )}
+                    </td>
+
+                    {/* 5. Element / Status (can be just the icon) */}
+                    <td className="hidden min-[480px]:table-cell px-2 sm:px-3 py-2.5 sm:py-3.5 text-center sm:text-left whitespace-nowrap">
+                      <span
+                        className={cn(
+                          'inline-flex items-center gap-1.5 rounded-md px-1.5 sm:px-2 py-0.5 text-[11px] font-bold border',
+                          elemCfg.bg,
+                          elemCfg.text,
+                          elemCfg.border,
+                        )}
+                        title={elemCfg.label}
+                      >
+                        <ElementIcon element={weapon.element_type} size={13} />
+                        <span className="hidden md:inline">{elemCfg.label}</span>
+                      </span>
+                    </td>
+
+                    {/* 6. Rarity */}
+                    <td className="hidden sm:table-cell px-2 sm:px-3 py-2.5 sm:py-3.5 text-center whitespace-nowrap">
                       <span className={cn('inline-block rounded px-2 py-0.5 text-[10px] font-bold border font-mono', rarityCfg.badge)}>
                         {rarityCfg.label}
                       </span>
                     </td>
 
-                    {/* Crafted Status & Quick Level Selector */}
-                    <td className="px-3 py-3.5 text-center" onClick={(e) => e.stopPropagation()}>
+                    {/* 7. Hunter Challenge Action / Status */}
+                    <td className="hidden md:table-cell px-2 sm:px-3 py-2.5 sm:py-3.5 text-center whitespace-nowrap">
+                      {!user ? (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setLoginModalOpen(true);
+                          }}
+                          className="inline-flex items-center gap-1 rounded-full px-2 lg:px-2.5 py-0.5 text-[10px] font-bold border bg-mh-slate-800 border-mh-slate-750 text-mh-slate-400 hover:text-white transition-all"
+                          title="Sign in to track"
+                        >
+                          <LogIn size={11} />
+                          <span className="hidden lg:inline">Track</span>
+                        </button>
+                      ) : isTracked && challenge ? (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate('/challenges');
+                          }}
+                          className="inline-flex items-center gap-1 rounded-full px-2 lg:px-2.5 py-0.5 text-[10px] font-bold border border-emerald-500/50 bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25 transition-all shadow-sm"
+                          title="View in Hunter Challenges"
+                        >
+                          <CheckCircle2 size={11} />
+                          <span className="hidden lg:inline">Go to Challenge ➔</span>
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleAddChallenge(weapon);
+                          }}
+                          className="inline-flex items-center gap-1 rounded-full px-2 lg:px-2.5 py-0.5 text-[10px] font-bold border border-sky-600/50 bg-transparent text-sky-400 hover:bg-sky-900 hover:border-sky-500 hover:text-sky-200 transition-all shadow-sm"
+                          title="Add to Hunter Challenges"
+                        >
+                          <ChallengeIcon size={14} />
+                          <span className="hidden lg:inline">+ Challenge</span>
+                        </button>
+                      )}
+                    </td>
+
+                    {/* Extra: Crafted Status & Quick Level Selector */}
+                    <td className="hidden lg:table-cell px-3 py-3.5 text-center whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
                       {isWeaponCrafted && weaponCraftedRarity ? (
                         <select
                           value={weaponCraftedRarity}
@@ -871,8 +948,8 @@ export default function WeaponGuide() {
                       )}
                     </td>
 
-                    {/* Origin */}
-                    <td className="px-3 py-3.5">
+                    {/* Extra: Origin */}
+                    <td className="hidden xl:table-cell px-3 py-3.5 whitespace-nowrap">
                       {monster ? (
                         <span className="text-orange-400 font-bold">{monster.name}</span>
                       ) : (
@@ -889,87 +966,38 @@ export default function WeaponGuide() {
                       )}
                     </td>
 
-                    {/* Element / Status */}
-                    <td className="px-3 py-3.5">
-                      <span
-                        className={cn(
-                          'inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-bold border',
-                          elemCfg.bg,
-                          elemCfg.text,
-                          elemCfg.border,
-                        )}
-                      >
-                        <ElIcon size={11} className={elemCfg.color} />
-                        <span>{elemCfg.label}</span>
-                      </span>
-                    </td>
-
-                    {/* Attack & Affinity */}
-                    <td className="px-3 py-3.5 text-center font-mono font-bold text-mh-slate-100">
-                      <div>{weapon.attack ?? '—'}</div>
-                      {weapon.affinity !== null && weapon.affinity !== 0 && (
-                        <div className="text-[10px] text-mh-slate-400 font-mono">
-                          {weapon.affinity > 0 ? `+${weapon.affinity / 100}%` : `${weapon.affinity / 100}%`}
-                        </div>
-                      )}
-                    </td>
-
-                    {/* Apex effect */}
-                    <td className="px-3 py-3.5 font-semibold text-mh-gold-400 max-w-[160px] break-words">
+                    {/* Extra: Apex effect */}
+                    <td className="hidden 2xl:table-cell px-3 py-3.5 font-semibold text-mh-gold-400 max-w-[160px] break-words">
                       {weapon.apex_effect?.name || '—'}
                     </td>
 
-                    {/* Hunter Challenge Action / Status */}
-                    <td className="px-3 py-3.5 text-center">
-                      {!user ? (
+                    {/* 4. Select to Compare & Action */}
+                    <td className="py-2.5 sm:py-3.5 pl-2 sm:pl-3 pr-3 sm:pr-5 text-right whitespace-nowrap">
+                      <div className="flex items-center justify-end gap-1.5" onClick={(e) => e.stopPropagation()}>
                         <button
                           type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setLoginModalOpen(true);
-                          }}
-                          className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold border bg-mh-slate-800 border-mh-slate-750 text-mh-slate-400 hover:text-white transition-all"
+                          onClick={() => handleToggleCompare(weapon)}
+                          className={cn(
+                            'inline-flex items-center justify-center gap-1 rounded-lg p-1.5 sm:px-2.5 sm:py-1 text-xs font-bold transition-all border shadow-xs',
+                            isSelected
+                              ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-amber-500/20 shadow-md ring-1 ring-amber-400 font-black'
+                              : 'bg-mh-slate-800/90 border-mh-slate-700 text-mh-slate-300 hover:bg-mh-slate-750 hover:text-white hover:border-mh-slate-500',
+                          )}
+                          title={isSelected ? 'Selected for comparison (Click to de-select)' : 'Select to compare'}
+                          aria-label={isSelected ? 'De-select weapon from comparison' : 'Select weapon to compare'}
                         >
-                          <LogIn size={11} />
-                          <span>Track</span>
+                          <ArrowLeftRight size={13} className={isSelected ? 'text-slate-950 stroke-[2.5]' : 'text-amber-400'} />
+                          <span className="hidden xl:inline">{isSelected ? 'Comparing' : 'Compare'}</span>
                         </button>
-                      ) : isTracked && challenge ? (
                         <button
                           type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            navigate('/challenges');
-                          }}
-                          className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold border border-emerald-500/50 bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25 transition-all shadow-sm"
+                          onClick={() => setSelectedWeapon(weapon)}
+                          className="hidden md:flex rounded-lg p-1.5 text-mh-slate-400 hover:bg-mh-slate-800 hover:text-white transition-colors"
+                          title="Inspect weapon"
                         >
-                          <CheckCircle2 size={11} />
-                          <span>Go to Challenge ➔</span>
+                          <Eye size={14} />
                         </button>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleAddChallenge(weapon);
-                          }}
-                          className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold border border-sky-600/50 bg-transparent text-sky-400 hover:bg-sky-900 hover:border-sky-500 hover:text-sky-200 transition-all shadow-sm"
-                        >
-                          <ChallengeIcon size={14} />
-                          <span>+ Challenge</span>
-                        </button>
-                      )}
-                    </td>
-
-                    {/* Inspect Action */}
-                    <td className="py-3.5 pl-3 pr-5 text-right">
-                      <button
-                        type="button"
-                        onClick={() => setSelectedWeapon(weapon)}
-                        className="rounded-lg p-1.5 text-mh-slate-400 hover:bg-mh-slate-800 hover:text-white transition-colors"
-                        title="Inspect weapon"
-                      >
-                        <Eye size={14} />
-                      </button>
+                      </div>
                     </td>
                   </tr>
                 );

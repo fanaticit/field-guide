@@ -8,6 +8,7 @@ import { Bug, RefreshCw, AlertTriangle, Search, X } from 'lucide-react';
 import { usePublicMonsters, type DBMonster } from '../../hooks/useAdminMonsters';
 import { useUIStore } from '../../store/uiStore';
 import { cn } from '../../lib/utils';
+import ElementIcon from '../../components/ElementIcon';
 
 // ── Game toggle ───────────────────────────────────────────────
 type GameId = 'mho';
@@ -33,12 +34,20 @@ const ELEMENT_COLOURS: Record<string, string> = {
   paralysis: 'bg-el-paralysis/15 text-el-paralysis border border-el-paralysis/30',
   sleep:     'bg-el-sleep/15 text-el-sleep border border-el-sleep/30',
   blast:     'bg-el-blast/15 text-el-blast border border-el-blast/30',
+  stun:      'bg-amber-400/15 text-amber-300 border border-amber-400/30',
 };
 
 const ELEMENT_LABELS: Record<string, string> = {
-  fire: '🔥 Fire', water: '💧 Water', thunder: '⚡ Thunder', ice: '❄️ Ice',
-  dragon: '🐉 Dragon', poison: '☠️ Poison', paralysis: '⚡ Para',
-  sleep: '💤 Sleep', blast: '💥 Blast',
+  fire: 'Fire',
+  water: 'Water',
+  thunder: 'Thunder',
+  ice: 'Ice',
+  dragon: 'Dragon',
+  poison: 'Poison',
+  paralysis: 'Para',
+  sleep: 'Sleep',
+  blast: 'Blast',
+  stun: 'Stun',
 };
 
 const TIER_CONFIG: Record<string, { label: string; cls: string }> = {
@@ -67,10 +76,11 @@ const SPECIES_LABELS: Record<string, string> = {
 function ElementChip({ el }: { el: string }) {
   return (
     <span className={cn(
-      'inline-flex items-center rounded-full px-1.5 py-0.5 text-[9px] font-semibold leading-none',
+      'inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[9px] font-semibold leading-none',
       ELEMENT_COLOURS[el] ?? 'bg-mh-slate-700/40 text-mh-slate-400 border border-mh-slate-700',
     )}>
-      {ELEMENT_LABELS[el] ?? el}
+      <ElementIcon element={el} size={11} />
+      <span>{ELEMENT_LABELS[el] ?? el}</span>
     </span>
   );
 }

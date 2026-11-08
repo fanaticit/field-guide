@@ -502,6 +502,29 @@ body {
   opacity: 0.6;
 }
 
+/* Feedback callout popover (coming off the feedback icon) */
+.main-nav-feedback-popover {
+  position: absolute;
+  left: calc(100% + 14px);
+  bottom: 4px;
+  z-index: 50;
+  width: max-content;
+  max-width: 300px;
+}
+
+.main-nav-feedback-popover__arrow {
+  position: absolute;
+  left: -5px;
+  bottom: 18px;
+  width: 10px;
+  height: 10px;
+  transform: rotate(45deg);
+  background: #17171c;
+  border-left: 1px solid rgba(234, 179, 8, 0.6);
+  border-bottom: 1px solid rgba(234, 179, 8, 0.6);
+  z-index: 1;
+}
+
 /* Sub-menu popover */
 .main-nav-scrim {
   position: fixed;
@@ -628,6 +651,22 @@ body {
     max-height: 60dvh;
     transform: translateX(-50%);
     animation: main-nav-pop-up 0.18s ease-out;
+  }
+
+  .main-nav-feedback-popover {
+    left: auto;
+    right: 0px;
+    bottom: calc(100% + 14px);
+    max-width: min(300px, calc(100vw - 32px));
+  }
+
+  .main-nav-feedback-popover__arrow {
+    left: auto;
+    right: 18px;
+    bottom: -5px;
+    border-left: none;
+    border-bottom: 1px solid rgba(234, 179, 8, 0.6);
+    border-right: 1px solid rgba(234, 179, 8, 0.6);
   }
 }
 

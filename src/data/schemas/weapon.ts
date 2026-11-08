@@ -172,7 +172,7 @@ export const WEAPON_ELEMENT_CONFIG: Record<
     bg: 'bg-yellow-400/15',
     text: 'text-yellow-200',
     dot: 'bg-yellow-300',
-    icon: '/images/ui/elements/thunder.png',
+    icon: '/images/ui/elements/stun.png',
   },
 };
 

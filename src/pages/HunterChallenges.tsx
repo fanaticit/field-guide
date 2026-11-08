@@ -254,14 +254,14 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
   const currentRarityName = isVisage
     ? c.current_rarity === 0 ? 'Unowned' : c.current_rarity === 1 ? 'Fine (Green)' : c.current_rarity === 2 ? 'Rare (Blue)' : c.current_rarity === 3 ? 'Epic (Purple)' : 'Superior (Gold)'
     : isAdventurer
-    ? c.current_rarity === 0 ? 'Not Recruited' : insightGoal ? `Insight ${adventurerInsightLabel(c.current_rarity).replace('Lv ', '')}` : 'Recruited'
+    ? c.current_rarity === 0 ? 'Not Recruited' : insightGoal ? `Insight ${adventurerInsightLabel(c.current_rarity)}` : 'Recruited'
     : isBuddy
     ? c.current_rarity === 0 ? 'Not Recruited' : 'Recruited'
     : `R${c.current_rarity} crafted`;
   const targetRarityName = isVisage
     ? 'Superior (Gold)'
     : isAdventurer
-    ? insightGoal ? `Target: Insight ${adventurerInsightLabel(maxR).replace('Lv ', '')}` : 'Recruit to Roster'
+    ? insightGoal ? `Target: Insight ${adventurerInsightLabel(maxR)}` : 'Recruit to Roster'
     : isBuddy
     ? 'Recruit to Roster'
     : `Target: R${c.max_rarity}`;

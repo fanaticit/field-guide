@@ -25,6 +25,7 @@ import {
   LayoutGrid,
   BookMarked,
   ChevronUp,
+  X,
   type LucideIcon,
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -63,6 +64,28 @@ interface NavSection {
 
 const HOLD_MS = 350;
 
+const COOKIE_PAGE_VIEWS = 'fg_page_views';
+const COOKIE_FEEDBACK_PROMPT_DISMISSED = 'fg_feedback_prompt_dismissed';
+const COOKIE_FEEDBACK_TARGET_VIEWS = 'fg_feedback_target_views';
+
+const INITIAL_TARGET_VIEWS = 10;
+const LATER_INCREMENT = 30;
+const PROMPT_DELAY_MS = 3000;
+
+function getCookie(name: string): string | null {
+  if (typeof document === 'undefined') return null;
+  const match = document.cookie.match(
+    new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + '=([^;]*)'),
+  );
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+function setCookie(name: string, value: string, days = 365) {
+  if (typeof document === 'undefined') return;
+  const maxAge = days * 24 * 60 * 60;
+  document.cookie = `${name}=${encodeURIComponent(value)}; path=/; max-age=${maxAge}; SameSite=Lax`;
+}
+
 export default function MainNav() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -74,6 +97,8 @@ export default function MainNav() {
 
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
+  const [showFeedbackPrompt, setShowFeedbackPrompt] = useState(false);
+  const lastPathRef = useRef<string | null>(null);
   const { data: unreadCount = 0 } = useAdminFeedbackCount();
   const [openId, setOpenId] = useState<string | null>(null);
   const [anchorY, setAnchorY] = useState(0);
@@ -81,6 +106,54 @@ export default function MainNav() {
   const buttonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const holdCleanup = useRef<(() => void) | null>(null);
   const suppressClick = useRef(false);
+
+  // Track page views on unique route changes; show feedback popover on 10th page (or next target if 'Later' chosen)
+  useEffect(() => {
+    if (getCookie(COOKIE_FEEDBACK_PROMPT_DISMISSED) === '1') {
+      return;
+    }
+
+    if (lastPathRef.current !== pathname) {
+      lastPathRef.current = pathname;
+
+      const currentViews = parseInt(getCookie(COOKIE_PAGE_VIEWS) || '0', 10) + 1;
+      setCookie(COOKIE_PAGE_VIEWS, String(currentViews), 365);
+
+      const rawTarget = parseInt(getCookie(COOKIE_FEEDBACK_TARGET_VIEWS) || '0', 10);
+      const targetViews = rawTarget >= INITIAL_TARGET_VIEWS ? rawTarget : INITIAL_TARGET_VIEWS;
+
+      if (currentViews >= targetViews) {
+        const timer = window.setTimeout(() => {
+          setShowFeedbackPrompt(true);
+        }, PROMPT_DELAY_MS);
+        return () => window.clearTimeout(timer);
+      }
+    }
+  }, [pathname]);
+
+  const dismissPermanently = () => {
+    setShowFeedbackPrompt(false);
+    setCookie(COOKIE_FEEDBACK_PROMPT_DISMISSED, '1', 365);
+  };
+
+  const handleLater = () => {
+    setShowFeedbackPrompt(false);
+    const currentViews = parseInt(getCookie(COOKIE_PAGE_VIEWS) || '0', 10);
+    const nextTarget = currentViews + LATER_INCREMENT;
+    setCookie(COOKIE_FEEDBACK_TARGET_VIEWS, String(nextTarget), 365);
+  };
+
+  const handleOpenFeedbackFromPrompt = () => {
+    dismissPermanently();
+    setFeedbackModalOpen(true);
+  };
+
+  const handleFeedbackButtonClick = () => {
+    if (showFeedbackPrompt) {
+      dismissPermanently();
+    }
+    setFeedbackModalOpen(true);
+  };
 
   const isLoggedIn = !!user;
   const displayName = profile?.display_name ?? profile?.username ?? user?.email?.split('@')[0] ?? 'Hunter';
@@ -340,7 +413,7 @@ export default function MainNav() {
             data-active={feedbackModalOpen}
             data-accent="rare"
             aria-label="Send Feedback & Bug Reports"
-            onClick={() => setFeedbackModalOpen(true)}
+            onClick={handleFeedbackButtonClick}
           >
             <span className="main-nav__bubble">
               <span className="main-nav__icon">
@@ -356,6 +429,61 @@ export default function MainNav() {
               Feedback & Bugs
             </span>
           </button>
+
+          {/* Feedback callout popup */}
+          {showFeedbackPrompt && !feedbackModalOpen && (
+            <div
+              role="dialog"
+              aria-label="Feedback prompt"
+              className="main-nav-feedback-popover animate-fade-in"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="main-nav-feedback-popover__arrow" aria-hidden="true" />
+              <div className="relative flex flex-col gap-2 rounded-2xl border border-mh-gold-500/60 bg-mh-slate-900/98 p-3 shadow-2xl backdrop-blur-md ring-1 ring-mh-gold-500/20 max-w-[300px]">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-mh-gold-500/15 ring-1 ring-mh-gold-500/30 p-1">
+                      <img
+                        src="/img/ui/BtnIcon_Chat.png"
+                        alt=""
+                        className="h-full w-full object-contain"
+                        draggable={false}
+                      />
+                    </div>
+                    <p className="text-xs font-semibold text-white leading-tight">
+                      Please give us feedback on the site.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={dismissPermanently}
+                    className="-mr-1 -mt-1 rounded-lg p-1 text-mh-slate-400 hover:bg-mh-slate-800 hover:text-white transition-colors"
+                    title="Don't ask again"
+                    aria-label="Don't ask again"
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+
+                <div className="flex items-center gap-2 pl-9">
+                  <button
+                    type="button"
+                    onClick={handleOpenFeedbackFromPrompt}
+                    className="rounded-lg bg-mh-gold-500 px-3 py-1 text-xs font-bold text-mh-slate-950 hover:bg-mh-gold-400 transition-colors shadow-sm whitespace-nowrap"
+                  >
+                    Give Feedback
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleLater}
+                    className="rounded-lg border border-mh-slate-700 bg-mh-slate-800/80 px-2.5 py-1 text-xs font-medium text-mh-slate-300 hover:bg-mh-slate-700 hover:text-white transition-colors whitespace-nowrap"
+                  >
+                    Later
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </nav>
 

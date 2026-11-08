@@ -18,6 +18,7 @@ import {
 import { useAuthStore } from '../../store/authStore';
 import { useUIStore } from '../../store/uiStore';
 import { submitFeedback, type FeedbackType } from '../../hooks/useAdminFeedback';
+import HumanCheck, { useHumanCheck } from '../auth/HumanCheck';
 import { cn } from '../../lib/utils';
 
 interface FeedbackModalProps {
@@ -81,6 +82,9 @@ export default function FeedbackModal({ open, onClose }: FeedbackModalProps) {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  const humanCheck = useHumanCheck();
+  const { reset: resetHumanCheck } = humanCheck;
+
   // Reset form when modal opens
   useEffect(() => {
     if (open) {
@@ -90,8 +94,9 @@ export default function FeedbackModal({ open, onClose }: FeedbackModalProps) {
       setErrorMsg(null);
       setIsSubmitted(false);
       setIsSubmitting(false);
+      resetHumanCheck();
     }
-  }, [open]);
+  }, [open, resetHumanCheck]);
 
   // Handle ESC key
   useEffect(() => {
@@ -117,6 +122,11 @@ export default function FeedbackModal({ open, onClose }: FeedbackModalProps) {
     }
     if (!description.trim()) {
       setErrorMsg('Please describe what happened or what you would like added.');
+      return;
+    }
+
+    if (!humanCheck.verify()) {
+      setErrorMsg("That answer wasn't right — please solve the new math question.");
       return;
     }
 
@@ -313,6 +323,17 @@ export default function FeedbackModal({ open, onClose }: FeedbackModalProps) {
               />
             </div>
 
+            {/* Human Verification (Math Problem) */}
+            <div className="rounded-xl border border-mh-slate-800 bg-mh-slate-950/60 p-3">
+              <HumanCheck
+                id="feedback-human-check"
+                question={humanCheck.challenge.question}
+                value={humanCheck.answer}
+                onChange={humanCheck.setAnswer}
+                onRefresh={humanCheck.reset}
+              />
+            </div>
+
             {/* Auto Context Note */}
             <div className="flex items-center gap-2 rounded-lg bg-mh-slate-950/60 border border-mh-slate-800 px-3 py-2 text-[11px] text-mh-slate-400">
               <Monitor size={14} className="shrink-0 text-mh-slate-400" />
@@ -332,7 +353,7 @@ export default function FeedbackModal({ open, onClose }: FeedbackModalProps) {
               </button>
               <button
                 type="submit"
-                disabled={isSubmitting || !title.trim() || !description.trim()}
+                disabled={isSubmitting || !title.trim() || !description.trim() || !humanCheck.answer.trim()}
                 className={cn(
                   'flex items-center gap-2 rounded-xl bg-mh-gold-500 px-5 py-2 text-xs font-bold text-mh-slate-950 shadow-md',
                   'hover:bg-mh-gold-400 transition-all duration-150',

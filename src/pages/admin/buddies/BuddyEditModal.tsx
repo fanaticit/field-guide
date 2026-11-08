@@ -13,6 +13,8 @@ import {
   Zap,
   Heart,
   Sparkles,
+  Plus,
+  Edit2,
 } from 'lucide-react';
 import {
   type DBBuddy,
@@ -23,7 +25,12 @@ import {
   BUDDY_TIERS,
   BUDDY_ROLES,
 } from '../../../data/schemas/buddy';
-import { useUpsertBuddy, useDeleteBuddy } from '../../../hooks/useAdminBuddies';
+import {
+  useUpsertBuddy,
+  useDeleteBuddy,
+  useBuddySkills,
+  useSaveBuddySkills,
+} from '../../../hooks/useAdminBuddies';
 import { supabase } from '../../../lib/supabase';
 import { cn } from '../../../lib/utils';
 
@@ -237,18 +244,41 @@ interface Props {
   onClose: () => void;
 }
 
+interface LocalSkill {
+  id?: string;
+  buddy_id: string;
+  kind: 'skill' | 'passive' | 'other';
+  sort_order: number;
+  name: string;
+  description: string | null;
+}
+
 export default function BuddyEditModal({ buddy, open, onClose }: Props) {
   const isNew = buddy === null;
+  const [activeTab, setActiveTab] = useState<'details' | 'skills'>('details');
   const [form, setForm] = useState<BuddyUpsert>(emptyForm());
   const [idTouched, setIdTouched] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
+  // Buddy skills state
+  const { data: dbSkills = [], isLoading: isLoadingSkills } = useBuddySkills(buddy?.id);
+  const [skillsList, setSkillsList] = useState<LocalSkill[]>([]);
+  const [editingSkillIndex, setEditingSkillIndex] = useState<number | null>(null);
+  const [skillForm, setSkillForm] = useState<{
+    kind: 'skill' | 'passive' | 'other';
+    name: string;
+    description: string;
+  }>({ kind: 'skill', name: '', description: '' });
+
   const upsert = useUpsertBuddy();
   const remove = useDeleteBuddy();
+  const saveSkills = useSaveBuddySkills();
 
   useEffect(() => {
     if (open) {
+      setActiveTab('details');
+      setEditingSkillIndex(null);
       if (buddy) {
         setForm({
           id: buddy.id,
@@ -270,11 +300,28 @@ export default function BuddyEditModal({ buddy, open, onClose }: Props) {
       } else {
         setForm(emptyForm());
         setIdTouched(false);
+        setSkillsList([]);
       }
       setConfirmDelete(false);
       setErrorMsg(null);
     }
   }, [open, buddy]);
+
+  // Sync loaded skills from database
+  useEffect(() => {
+    if (buddy && dbSkills) {
+      setSkillsList(
+        dbSkills.map((s) => ({
+          id: s.id,
+          buddy_id: s.buddy_id,
+          kind: s.kind,
+          sort_order: s.sort_order,
+          name: s.name,
+          description: s.description,
+        })),
+      );
+    }
+  }, [buddy, dbSkills]);
 
   if (!open) return null;
 
@@ -284,6 +331,49 @@ export default function BuddyEditModal({ buddy, open, onClose }: Props) {
       name,
       id: !idTouched && isNew ? toSlug(name) : prev.id,
     }));
+  }
+
+  function handleAddSkill() {
+    if (!skillForm.name.trim()) return;
+    const newSkill: LocalSkill = {
+      buddy_id: form.id || 'temp',
+      kind: skillForm.kind,
+      name: skillForm.name.trim(),
+      description: skillForm.description.trim() || null,
+      sort_order: skillsList.length + 1,
+    };
+    if (editingSkillIndex !== null) {
+      const updated = [...skillsList];
+      updated[editingSkillIndex] = {
+        ...updated[editingSkillIndex],
+        kind: skillForm.kind,
+        name: skillForm.name.trim(),
+        description: skillForm.description.trim() || null,
+      };
+      setSkillsList(updated);
+      setEditingSkillIndex(null);
+    } else {
+      setSkillsList([...skillsList, newSkill]);
+    }
+    setSkillForm({ kind: skillForm.kind, name: '', description: '' });
+  }
+
+  function handleEditSkill(index: number) {
+    const item = skillsList[index];
+    setEditingSkillIndex(index);
+    setSkillForm({
+      kind: item.kind,
+      name: item.name,
+      description: item.description ?? '',
+    });
+  }
+
+  function handleDeleteSkill(index: number) {
+    setSkillsList(skillsList.filter((_, i) => i !== index));
+    if (editingSkillIndex === index) {
+      setEditingSkillIndex(null);
+      setSkillForm({ kind: 'skill', name: '', description: '' });
+    }
   }
 
   async function handleSave() {
@@ -303,6 +393,17 @@ export default function BuddyEditModal({ buddy, open, onClose }: Props) {
         status_reason: form.status === 'in_game' ? null : (form.status_reason?.trim() || null),
       };
       await upsert.mutateAsync(payload);
+
+      // Save buddy skills
+      await saveSkills.mutateAsync({
+        buddyId: form.id,
+        skills: skillsList.map((s, idx) => ({
+          ...s,
+          buddy_id: form.id,
+          sort_order: idx + 1,
+        })),
+      });
+
       onClose();
     } catch (err) {
       setErrorMsg((err as Error).message || 'Failed to save Buddy.');
@@ -346,6 +447,35 @@ export default function BuddyEditModal({ buddy, open, onClose }: Props) {
           </button>
         </div>
 
+        {/* Tab Navigation */}
+        <div className="flex border-b border-mh-slate-750 bg-mh-slate-850/60 px-6">
+          <button
+            type="button"
+            onClick={() => setActiveTab('details')}
+            className={cn(
+              'border-b-2 px-4 py-2.5 text-xs font-bold transition-all',
+              activeTab === 'details'
+                ? 'border-mh-gold-500 text-mh-gold-400'
+                : 'border-transparent text-mh-slate-400 hover:text-mh-slate-200',
+            )}
+          >
+            Buddy Details
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('skills')}
+            className={cn(
+              'flex items-center gap-1.5 border-b-2 px-4 py-2.5 text-xs font-bold transition-all',
+              activeTab === 'skills'
+                ? 'border-mh-gold-500 text-mh-gold-400'
+                : 'border-transparent text-mh-slate-400 hover:text-mh-slate-200',
+            )}
+          >
+            <Zap size={13} />
+            <span>Skills &amp; Passives ({skillsList.length})</span>
+          </button>
+        </div>
+
         {/* Form Body */}
         <div className="min-h-0 flex-1 overflow-y-auto p-6 space-y-5">
           {errorMsg && (
@@ -355,226 +485,404 @@ export default function BuddyEditModal({ buddy, open, onClose }: Props) {
             </div>
           )}
 
-          {/* Row 1: Name & Slug ID */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div>
-              <label className="block text-xs font-medium text-mh-slate-300 mb-1.5">
-                Buddy Name <span className="text-red-400">*</span>
-              </label>
-              <input
-                type="text"
-                value={form.name}
-                onChange={(e) => handleNameChange(e.target.value)}
-                placeholder="e.g. Palico Hero"
-                className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-100 placeholder-mh-slate-500 outline-none focus:border-mh-gold-500/50"
-              />
-            </div>
+          {/* Tab 1: Details */}
+          {activeTab === 'details' && (
+            <>
+              {/* Row 1: Name & Slug ID */}
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="block text-xs font-medium text-mh-slate-300 mb-1.5">
+                    Buddy Name <span className="text-red-400">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={form.name}
+                    onChange={(e) => handleNameChange(e.target.value)}
+                    placeholder="e.g. Palico Hero"
+                    className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-100 placeholder-mh-slate-500 outline-none focus:border-mh-gold-500/50"
+                  />
+                </div>
 
-            <div>
-              <label className="block text-xs font-medium text-mh-slate-300 mb-1.5">
-                Buddy ID / Slug <span className="text-red-400">*</span>
-              </label>
-              <input
-                type="text"
-                value={form.id}
-                readOnly={!isNew}
-                onChange={(e) => {
-                  setIdTouched(true);
-                  setForm((p) => ({ ...p, id: toSlug(e.target.value) }));
-                }}
-                placeholder="e.g. palico_hero"
-                className={cn(
-                  'w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm font-mono text-mh-slate-100 placeholder-mh-slate-500 outline-none focus:border-mh-gold-500/50',
-                  !isNew && 'opacity-60 cursor-not-allowed bg-mh-slate-800/50',
-                )}
-              />
-            </div>
-          </div>
-
-          {/* Row 2: Japanese Name */}
-          <div>
-            <label className="block text-xs font-medium text-mh-slate-400 mb-1.5">
-              Japanese Name (optional)
-            </label>
-            <input
-              type="text"
-              value={form.name_ja ?? ''}
-              onChange={(e) => setForm((p) => ({ ...p, name_ja: e.target.value || null }))}
-              placeholder="e.g. オトモアイルー"
-              className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-100 placeholder-mh-slate-500 outline-none focus:border-mh-gold-500/50"
-            />
-          </div>
-
-          {/* Row 3: Tier & Role Selectors */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {/* Tier */}
-            <div className="rounded-xl border border-mh-slate-750 bg-mh-slate-850 p-4 space-y-2.5">
-              <label className="block text-xs font-bold uppercase tracking-wider text-mh-slate-300">
-                Buddy Tier / Rarity
-              </label>
-              <div className="grid grid-cols-3 gap-2">
-                {BUDDY_TIERS.map((t) => {
-                  const cfg = TIER_CONFIG[t];
-                  const isSelected = form.tier === t;
-                  return (
-                    <button
-                      key={t}
-                      type="button"
-                      onClick={() => setForm((p) => ({ ...p, tier: t }))}
-                      className={cn(
-                        'flex items-center justify-center gap-1.5 rounded-lg border py-2.5 text-xs font-bold transition-all',
-                        isSelected
-                          ? `${cfg.badgeBg} ${cfg.badgeText} ${cfg.badgeBorder} ring-1 ring-current/40`
-                          : 'border-mh-slate-750 bg-mh-slate-800 text-mh-slate-400 hover:text-white',
-                      )}
-                    >
-                      <span>{t}</span>
-                      {isSelected && <Check size={12} className="shrink-0" />}
-                    </button>
-                  );
-                })}
+                <div>
+                  <label className="block text-xs font-medium text-mh-slate-300 mb-1.5">
+                    Buddy ID / Slug <span className="text-red-400">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={form.id}
+                    readOnly={!isNew}
+                    onChange={(e) => {
+                      setIdTouched(true);
+                      setForm((p) => ({ ...p, id: toSlug(e.target.value) }));
+                    }}
+                    placeholder="e.g. palico_hero"
+                    className={cn(
+                      'w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm font-mono text-mh-slate-100 placeholder-mh-slate-500 outline-none focus:border-mh-gold-500/50',
+                      !isNew && 'opacity-60 cursor-not-allowed bg-mh-slate-800/50',
+                    )}
+                  />
+                </div>
               </div>
-            </div>
 
-            {/* Role */}
-            <div className="rounded-xl border border-mh-slate-750 bg-mh-slate-850 p-4 space-y-2.5">
-              <label className="block text-xs font-bold uppercase tracking-wider text-mh-slate-300">
-                Combat Role
-              </label>
-              <div className="grid grid-cols-3 gap-2">
-                {BUDDY_ROLES.map((r) => {
-                  const cfg = ROLE_CONFIG[r];
-                  const Icon = ROLE_ICONS[r];
-                  const isSelected = form.role === r;
-                  return (
-                    <button
-                      key={r}
-                      type="button"
-                      onClick={() => setForm((p) => ({ ...p, role: r }))}
-                      className={cn(
-                        'flex flex-col items-center justify-center gap-1 rounded-lg border py-2 text-xs font-bold transition-all',
-                        isSelected
-                          ? `${cfg.bg} ${cfg.text} ${cfg.border} ring-1 ring-current/40`
-                          : 'border-mh-slate-750 bg-mh-slate-800 text-mh-slate-400 hover:text-white',
-                      )}
-                    >
-                      <Icon size={14} />
-                      <span className="text-[11px]">{r}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-
-          {/* Row 4: Core Passive Textarea */}
-          <div className="rounded-xl border border-mh-slate-750 bg-mh-slate-850 p-4 space-y-2">
-            <label className="block text-xs font-bold uppercase tracking-wider text-mh-slate-300">
-              Core Passive Ability
-            </label>
-            <p className="text-[11px] text-mh-slate-500">
-              The unique passive effect or support ability provided by this Buddy.
-            </p>
-            <textarea
-              rows={3}
-              value={form.core_passive ?? ''}
-              onChange={(e) => setForm((p) => ({ ...p, core_passive: e.target.value || null }))}
-              placeholder="e.g. When hunter's health is below 40%, automatically restores 25% HP and grants a defense boost for 15s."
-              className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-xs text-mh-slate-100 placeholder-mh-slate-500 outline-none focus:border-mh-gold-500/50 leading-relaxed"
-            />
-          </div>
-
-          {/* Row 5: Image Uploader */}
-          <ImageUploadField
-            label="Buddy Portrait / Artwork"
-            subLabel="Clean portrait image with softened borders"
-            value={form.image}
-            onChange={(url) => setForm((p) => ({ ...p, image: url }))}
-            slug={form.id}
-          />
-
-          {/* Row 6: Active & Spoiler Toggles */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="flex items-center justify-between rounded-xl border border-mh-slate-750 bg-mh-slate-800/40 p-3.5">
+              {/* Row 2: Japanese Name */}
               <div>
-                <p className="text-xs font-bold text-mh-slate-200">Active in Field Guide</p>
-                <p className="text-[11px] text-mh-slate-500">
-                  Visible to users in field guide
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setForm((p) => ({ ...p, is_active: !p.is_active }))}
-                className={cn(
-                  'relative inline-flex h-5 w-9 shrink-0 rounded-full transition-colors duration-200',
-                  form.is_active ? 'bg-green-500' : 'bg-mh-slate-700',
-                )}
-              >
-                <span
-                  className={cn(
-                    'absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform duration-200',
-                    form.is_active ? 'translate-x-[18px]' : 'translate-x-0.5',
-                  )}
-                />
-              </button>
-            </div>
-
-            <div className="flex items-center justify-between rounded-xl border border-mh-slate-750 bg-mh-slate-800/40 p-3.5">
-              <div>
-                <p className="text-xs font-bold text-amber-300">Mark as spoiler</p>
-                <p className="text-[11px] text-mh-slate-500">
-                  Only shown to users with "Show Spoilers"
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setForm((p) => ({ ...p, is_spoiler: !p.is_spoiler }))}
-                className={cn(
-                  'relative inline-flex h-5 w-9 shrink-0 rounded-full transition-colors duration-200',
-                  form.is_spoiler ? 'bg-amber-500' : 'bg-mh-slate-700',
-                )}
-              >
-                <span
-                  className={cn(
-                    'absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform duration-200',
-                    form.is_spoiler ? 'translate-x-[18px]' : 'translate-x-0.5',
-                  )}
-                />
-              </button>
-            </div>
-          </div>
-
-          {/* Row 7: Game Release Status & Reason */}
-          <div className="rounded-xl border border-mh-slate-750 bg-mh-slate-800/40 p-3.5 space-y-3">
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-mh-slate-300 mb-1">
-                Game Release Status
-              </label>
-              <select
-                value={form.status}
-                onChange={(e) => setForm((p) => ({ ...p, status: e.target.value as BuddyStatus }))}
-                className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-xs text-mh-slate-100 outline-none focus:border-mh-gold-500/50"
-              >
-                <option value="in_game">In Game (Currently Available)</option>
-                <option value="not_in_game">Not In Game (Unreleased / Upcoming / Debug)</option>
-              </select>
-            </div>
-
-            {form.status === 'not_in_game' && (
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-amber-400 mb-1">
-                  Status Reason (Admin notes / unreleased reason)
+                <label className="block text-xs font-medium text-mh-slate-400 mb-1.5">
+                  Japanese Name (optional)
                 </label>
                 <input
                   type="text"
-                  value={form.status_reason ?? ''}
-                  onChange={(e) => setForm((p) => ({ ...p, status_reason: e.target.value }))}
-                  placeholder="e.g. Upcoming – Recruitment banner starts 2026-11-27"
-                  className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-xs text-mh-slate-100 placeholder-mh-slate-500 outline-none focus:border-mh-gold-500/50"
+                  value={form.name_ja ?? ''}
+                  onChange={(e) => setForm((p) => ({ ...p, name_ja: e.target.value || null }))}
+                  placeholder="e.g. オトモアイルー"
+                  className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-100 placeholder-mh-slate-500 outline-none focus:border-mh-gold-500/50"
                 />
               </div>
-            )}
-          </div>
+
+              {/* Row 3: Tier & Role Selectors */}
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {/* Tier */}
+                <div className="rounded-xl border border-mh-slate-750 bg-mh-slate-850 p-4 space-y-2.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-mh-slate-300">
+                    Buddy Tier / Rarity
+                  </label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {BUDDY_TIERS.map((t) => {
+                      const cfg = TIER_CONFIG[t];
+                      const isSelected = form.tier === t;
+                      return (
+                        <button
+                          key={t}
+                          type="button"
+                          onClick={() => setForm((p) => ({ ...p, tier: t }))}
+                          className={cn(
+                            'flex items-center justify-center gap-1.5 rounded-lg border py-2.5 text-xs font-bold transition-all',
+                            isSelected
+                              ? `${cfg.badgeBg} ${cfg.badgeText} ${cfg.badgeBorder} ring-1 ring-current/40`
+                              : 'border-mh-slate-750 bg-mh-slate-800 text-mh-slate-400 hover:text-white',
+                          )}
+                        >
+                          <span>{t}</span>
+                          {isSelected && <Check size={12} className="shrink-0" />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Role */}
+                <div className="rounded-xl border border-mh-slate-750 bg-mh-slate-850 p-4 space-y-2.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-mh-slate-300">
+                    Combat Role
+                  </label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {BUDDY_ROLES.map((r) => {
+                      const cfg = ROLE_CONFIG[r];
+                      const Icon = ROLE_ICONS[r];
+                      const isSelected = form.role === r;
+                      return (
+                        <button
+                          key={r}
+                          type="button"
+                          onClick={() => setForm((p) => ({ ...p, role: r }))}
+                          className={cn(
+                            'flex flex-col items-center justify-center gap-1 rounded-lg border py-2 text-xs font-bold transition-all',
+                            isSelected
+                              ? `${cfg.bg} ${cfg.text} ${cfg.border} ring-1 ring-current/40`
+                              : 'border-mh-slate-750 bg-mh-slate-800 text-mh-slate-400 hover:text-white',
+                          )}
+                        >
+                          <Icon size={14} />
+                          <span className="text-[11px]">{r}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              {/* Row 4: Core Passive Textarea */}
+              <div className="rounded-xl border border-mh-slate-750 bg-mh-slate-850 p-4 space-y-2">
+                <label className="block text-xs font-bold uppercase tracking-wider text-mh-slate-300">
+                  Core Passive Ability
+                </label>
+                <p className="text-[11px] text-mh-slate-500">
+                  The unique passive effect or support ability provided by this Buddy.
+                </p>
+                <textarea
+                  rows={3}
+                  value={form.core_passive ?? ''}
+                  onChange={(e) => setForm((p) => ({ ...p, core_passive: e.target.value || null }))}
+                  placeholder="e.g. When hunter's health is below 40%, automatically restores 25% HP and grants a defense boost for 15s."
+                  className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-xs text-mh-slate-100 placeholder-mh-slate-500 outline-none focus:border-mh-gold-500/50 leading-relaxed"
+                />
+              </div>
+
+              {/* Row 5: Image Uploader */}
+              <ImageUploadField
+                label="Buddy Portrait / Artwork"
+                subLabel="Clean portrait image with softened borders"
+                value={form.image}
+                onChange={(url) => setForm((p) => ({ ...p, image: url }))}
+                slug={form.id}
+              />
+
+              {/* Row 6: Active & Spoiler Toggles */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="flex items-center justify-between rounded-xl border border-mh-slate-750 bg-mh-slate-800/40 p-3.5">
+                  <div>
+                    <p className="text-xs font-bold text-mh-slate-200">Active in Field Guide</p>
+                    <p className="text-[11px] text-mh-slate-500">
+                      Visible to users in field guide
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setForm((p) => ({ ...p, is_active: !p.is_active }))}
+                    className={cn(
+                      'relative inline-flex h-5 w-9 shrink-0 rounded-full transition-colors duration-200',
+                      form.is_active ? 'bg-green-500' : 'bg-mh-slate-700',
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        'absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform duration-200',
+                        form.is_active ? 'translate-x-[18px]' : 'translate-x-0.5',
+                      )}
+                    />
+                  </button>
+                </div>
+
+                <div className="flex items-center justify-between rounded-xl border border-mh-slate-750 bg-mh-slate-800/40 p-3.5">
+                  <div>
+                    <p className="text-xs font-bold text-amber-300">Mark as spoiler</p>
+                    <p className="text-[11px] text-mh-slate-500">
+                      Only shown to users with "Show Spoilers"
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setForm((p) => ({ ...p, is_spoiler: !p.is_spoiler }))}
+                    className={cn(
+                      'relative inline-flex h-5 w-9 shrink-0 rounded-full transition-colors duration-200',
+                      form.is_spoiler ? 'bg-amber-500' : 'bg-mh-slate-700',
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        'absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform duration-200',
+                        form.is_spoiler ? 'translate-x-[18px]' : 'translate-x-0.5',
+                      )}
+                    />
+                  </button>
+                </div>
+              </div>
+
+              {/* Row 7: Game Release Status & Reason */}
+              <div className="rounded-xl border border-mh-slate-750 bg-mh-slate-800/40 p-3.5 space-y-3">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-mh-slate-300 mb-1">
+                    Game Release Status
+                  </label>
+                  <select
+                    value={form.status}
+                    onChange={(e) => setForm((p) => ({ ...p, status: e.target.value as BuddyStatus }))}
+                    className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-xs text-mh-slate-100 outline-none focus:border-mh-gold-500/50"
+                  >
+                    <option value="in_game">In Game (Currently Available)</option>
+                    <option value="not_in_game">Not In Game (Unreleased / Upcoming / Debug)</option>
+                  </select>
+                </div>
+
+                {form.status === 'not_in_game' && (
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-amber-400 mb-1">
+                      Status Reason (Admin notes / unreleased reason)
+                    </label>
+                    <input
+                      type="text"
+                      value={form.status_reason ?? ''}
+                      onChange={(e) => setForm((p) => ({ ...p, status_reason: e.target.value }))}
+                      placeholder="e.g. Upcoming – Recruitment banner starts 2026-11-27"
+                      className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-xs text-mh-slate-100 placeholder-mh-slate-500 outline-none focus:border-mh-gold-500/50"
+                    />
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+
+          {/* Tab 2: Skills & Passives */}
+          {activeTab === 'skills' && (
+            <div className="space-y-6">
+              {/* Form to Add / Edit a Skill */}
+              <div className="rounded-xl border border-mh-gold-500/30 bg-mh-slate-850 p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-mh-gold-400">
+                    {editingSkillIndex !== null ? 'Edit Skill / Ability' : 'Add New Skill / Ability'}
+                  </h3>
+                  {editingSkillIndex !== null && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setEditingSkillIndex(null);
+                        setSkillForm({ kind: 'skill', name: '', description: '' });
+                      }}
+                      className="text-[11px] text-mh-slate-400 hover:text-white underline"
+                    >
+                      Cancel Edit
+                    </button>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div>
+                    <label className="block text-[11px] font-medium text-mh-slate-300 mb-1">
+                      Ability Type
+                    </label>
+                    <select
+                      value={skillForm.kind}
+                      onChange={(e) =>
+                        setSkillForm((p) => ({
+                          ...p,
+                          kind: e.target.value as 'skill' | 'passive' | 'other',
+                        }))
+                      }
+                      className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-2.5 py-1.5 text-xs text-mh-slate-100 outline-none focus:border-mh-gold-500/50"
+                    >
+                      <option value="skill">Active Skill (Basic)</option>
+                      <option value="passive">Passive Skill</option>
+                      <option value="other">Unique Skill</option>
+                    </select>
+                  </div>
+
+                  <div className="sm:col-span-2">
+                    <label className="block text-[11px] font-medium text-mh-slate-300 mb-1">
+                      Skill Name <span className="text-red-400">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={skillForm.name}
+                      onChange={(e) => setSkillForm((p) => ({ ...p, name: e.target.value }))}
+                      placeholder="e.g. Felyne's Swift Swipe"
+                      className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-100 placeholder-mh-slate-500 outline-none focus:border-mh-gold-500/50"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-medium text-mh-slate-300 mb-1">
+                    Skill Description &amp; Cooldown
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={skillForm.description}
+                    onChange={(e) => setSkillForm((p) => ({ ...p, description: e.target.value }))}
+                    placeholder="e.g. Slashes rapidly dealing 1% attack damage. Cooldown: 4s."
+                    className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-100 placeholder-mh-slate-500 outline-none focus:border-mh-gold-500/50"
+                  />
+                </div>
+
+                <div className="flex justify-end pt-1">
+                  <button
+                    type="button"
+                    onClick={handleAddSkill}
+                    disabled={!skillForm.name.trim()}
+                    className="flex items-center gap-1.5 rounded-lg bg-mh-gold-500 px-3 py-1.5 text-xs font-bold text-mh-slate-950 hover:bg-mh-gold-400 disabled:opacity-50 transition-all shadow-sm"
+                  >
+                    <Plus size={13} />
+                    <span>{editingSkillIndex !== null ? 'Update Ability' : 'Add Ability'}</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Existing Skills List Grouped by Kind */}
+              {isLoadingSkills && skillsList.length === 0 ? (
+                <div className="flex items-center justify-center p-8 text-mh-slate-500 text-xs">
+                  <Loader2 size={16} className="animate-spin mr-2" />
+                  Loading companion skills...
+                </div>
+              ) : skillsList.length === 0 ? (
+                <div className="rounded-xl border border-mh-slate-800 bg-mh-slate-850/50 p-6 text-center text-xs text-mh-slate-500">
+                  No skills added yet for this Buddy. Use the form above to add active, passive, or unique skills.
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {(
+                    [
+                      { kind: 'skill', label: 'Active Skills' },
+                      { kind: 'passive', label: 'Passive Skills' },
+                      { kind: 'other', label: 'Unique Skills' },
+                    ] as const
+                  ).map(({ kind, label }) => {
+                    const groupSkills = skillsList
+                      .map((s, idx) => ({ ...s, originalIndex: idx }))
+                      .filter((s) => s.kind === kind);
+
+                    if (groupSkills.length === 0) return null;
+
+                    return (
+                      <div key={kind} className="rounded-xl border border-mh-slate-750 bg-mh-slate-850/80 overflow-hidden">
+                        <div className="flex items-center justify-between border-b border-mh-slate-750 px-3.5 py-2 bg-mh-slate-800/60">
+                          <span className="text-xs font-bold uppercase tracking-wider text-mh-slate-300">
+                            {label} ({groupSkills.length})
+                          </span>
+                        </div>
+                        <ul className="divide-y divide-mh-slate-750/60">
+                          {groupSkills.map((sk) => (
+                            <li
+                              key={sk.originalIndex}
+                              className={cn(
+                                'flex items-start justify-between gap-3 p-3 transition-colors',
+                                editingSkillIndex === sk.originalIndex
+                                  ? 'bg-mh-gold-500/10'
+                                  : 'hover:bg-mh-slate-800/40',
+                              )}
+                            >
+                              <div className="min-w-0 flex-1">
+                                <div className="flex items-center gap-2">
+                                  <span className="font-bold text-xs text-mh-slate-100">
+                                    {sk.name}
+                                  </span>
+                                  {editingSkillIndex === sk.originalIndex && (
+                                    <span className="text-[10px] font-semibold text-mh-gold-400">
+                                      (Editing)
+                                    </span>
+                                  )}
+                                </div>
+                                {sk.description && (
+                                  <p className="mt-1 text-xs text-mh-slate-400 leading-relaxed">
+                                    {sk.description}
+                                  </p>
+                                )}
+                              </div>
+                              <div className="flex items-center gap-1 shrink-0 pt-0.5">
+                                <button
+                                  type="button"
+                                  onClick={() => handleEditSkill(sk.originalIndex)}
+                                  className="rounded p-1 text-mh-slate-400 hover:bg-mh-slate-700 hover:text-white transition-colors"
+                                  title="Edit skill"
+                                >
+                                  <Edit2 size={13} />
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleDeleteSkill(sk.originalIndex)}
+                                  className="rounded p-1 text-mh-slate-500 hover:bg-red-500/20 hover:text-red-400 transition-colors"
+                                  title="Delete skill"
+                                >
+                                  <Trash2 size={13} />
+                                </button>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Footer */}
@@ -623,11 +931,11 @@ export default function BuddyEditModal({ buddy, open, onClose }: Props) {
             </button>
             <button
               type="button"
-              disabled={upsert.isPending}
+              disabled={upsert.isPending || saveSkills.isPending}
               onClick={handleSave}
               className="flex items-center gap-1.5 rounded-lg bg-mh-gold-500 px-5 py-2 text-xs font-bold text-mh-slate-950 hover:bg-mh-gold-400 disabled:opacity-50 transition-all shadow-sm"
             >
-              {upsert.isPending ? <Loader2 size={14} className="animate-spin" /> : null}
+              {upsert.isPending || saveSkills.isPending ? <Loader2 size={14} className="animate-spin" /> : null}
               {isNew ? 'Create Buddy' : 'Save Changes'}
             </button>
           </div>

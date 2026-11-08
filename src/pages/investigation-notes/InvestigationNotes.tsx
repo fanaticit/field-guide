@@ -72,7 +72,7 @@ export default function InvestigationNotes() {
       </div>
 
       {/* Sub-page content */}
-      <div className={activeSubPage === 'visages' ? 'p-0 sm:p-2 lg:p-4 flex-1 flex flex-col min-h-0' : 'p-6 lg:p-8'}>
+      <div className={activeSubPage === 'visages' ? 'p-0 sm:p-2 lg:p-4 flex-1 flex flex-col min-h-0' : 'p-1 sm:p-6 lg:p-8'}>
         {activeSubPage === 'monster-guide' && <MonsterGuide />}
         {activeSubPage === 'adventurers' && <AdventurerGuide />}
         {activeSubPage === 'visages' && <VisageSetsGuide />}

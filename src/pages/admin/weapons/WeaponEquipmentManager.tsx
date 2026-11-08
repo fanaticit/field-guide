@@ -22,6 +22,7 @@ import {
 } from '../../../data/schemas/weapon';
 import WeaponEditModal from './WeaponEditModal';
 import { cn } from '../../../lib/utils';
+import ElementIcon from '../../../components/ElementIcon';
 
 const selectCls =
   'rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-300 outline-none';
@@ -225,7 +226,8 @@ export default function WeaponEquipmentManager() {
                       )}
                     </td>
                     <td className="px-3 py-2">
-                      <span className={cn('inline-flex items-center gap-1 rounded border px-1.5 py-0.5 text-[11px]', el.bg, el.text, el.border)}>
+                      <span className={cn('inline-flex items-center gap-1.5 rounded border px-1.5 py-0.5 text-[11px]', el.bg, el.text, el.border)}>
+                        <ElementIcon element={w.element_type} size={12} />
                         {el.label}{w.element_damage ? ` ${w.element_damage}` : ''}
                       </span>
                     </td>

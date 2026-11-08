@@ -16,6 +16,8 @@ import {
   Eye,
   Bookmark,
   Star,
+  Video,
+  ExternalLink,
 } from 'lucide-react';
 import {
   type DBAdventurer,
@@ -30,6 +32,8 @@ import {
 import { WEAPON_TYPES } from '../../data/core/weapon-types';
 import { usePublicAdventurers, useUpdateAdventurerWeapon } from '../../hooks/useAdminAdventurers';
 import { useUserAdventurerCollection } from '../../hooks/useUserAdventurerCollection';
+import { usePageGuide } from '../../hooks/usePageGuide';
+import { getYouTubeEmbedUrl } from '../../lib/youtube';
 import {
   useHunterChallenges,
   useAddAdventurerChallenge,
@@ -82,6 +86,11 @@ export default function AdventurerGuide() {
   const { data: adventurers = [], isLoading } = usePublicAdventurers({
     showSpoilers: Boolean(profile?.show_spoilers),
   });
+  const { data: pageGuide } = usePageGuide('adventurers');
+  const guideEmbedUrl = useMemo(
+    () => getYouTubeEmbedUrl(pageGuide?.youtube_url),
+    [pageGuide?.youtube_url],
+  );
   const updateWeaponMutation = useUpdateAdventurerWeapon();
   const { isRecruited, toggleRecruited, getInsightLevel, setInsightLevel } = useUserAdventurerCollection();
 
@@ -641,6 +650,53 @@ export default function AdventurerGuide() {
           </div>
         )}
       </div>
+
+      {/* ── Page Guide Video (YouTube) ── */}
+      {guideEmbedUrl && (
+        <section className="mt-8 rounded-2xl border border-mh-slate-700 bg-mh-slate-850/80 p-5 sm:p-6 shadow-xl backdrop-blur-sm">
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-500/15 text-red-400 border border-red-500/30">
+                <Video size={20} />
+              </div>
+              <div>
+                <h3 className="font-display text-base font-bold text-white flex items-center gap-2">
+                  <span>{pageGuide?.title || 'Adventurer System Guide'}</span>
+                  <span className="rounded-full bg-red-500/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-red-300 border border-red-500/30">
+                    YouTube Guide
+                  </span>
+                </h3>
+                <p className="text-xs text-mh-slate-400 mt-0.5">
+                  {pageGuide?.description ||
+                    'Watch this video overview to learn more about Outlanders adventurers, roles, recruitment, and insight progression.'}
+                </p>
+              </div>
+            </div>
+
+            {pageGuide?.youtube_url && (
+              <a
+                href={pageGuide.youtube_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-mh-slate-700 bg-mh-slate-800 px-3.5 py-1.5 text-xs font-semibold text-mh-slate-300 hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-300 transition-all shadow-sm"
+              >
+                <span>Watch on YouTube</span>
+                <ExternalLink size={13} />
+              </a>
+            )}
+          </div>
+
+          <div className="relative w-full max-w-4xl mx-auto aspect-video overflow-hidden rounded-xl border border-mh-slate-700 bg-black shadow-2xl">
+            <iframe
+              src={guideEmbedUrl}
+              title={pageGuide?.title || 'Adventurer System Guide'}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              className="absolute inset-0 h-full w-full border-0"
+            />
+          </div>
+        </section>
+      )}
 
       {/* ── Detail Modal ── */}
       {inspectedAdventurer && (

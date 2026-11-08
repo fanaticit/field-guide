@@ -57,6 +57,7 @@ import LoginModal from '../../components/auth/LoginModal';
 
 const INTRO_HIDDEN_KEY = 'armour-intro-hidden';
 const BUILD_COLLAPSED_KEY = 'armour-build-collapsed';
+const SKILL_FILTER_KEY = 'armour-skill-filter';
 
 /** Slot names of the game data -> the slot ids used on this page and in the build planner */
 const SLOT_FROM_GAME: Record<string, ArmourSlot> = {
@@ -313,8 +314,33 @@ export default function ArmourGuide() {
     localStorage.setItem(INTRO_HIDDEN_KEY, next ? '1' : '0');
   };
   
-  // Multi-skill filter
-  const [selectedSkillIds, setSelectedSkillIds] = useState<string[]>([]);
+  // Multi-skill filter (persisted so navigation to/from armory keeps applied skill filters)
+  const [selectedSkillIds, setSelectedSkillIds] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem(SKILL_FILTER_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.every((id) => typeof id === 'string')) {
+          return parsed;
+        }
+      }
+    } catch {
+      // ignore parse / storage errors
+    }
+    return [];
+  });
+
+  useEffect(() => {
+    try {
+      if (selectedSkillIds.length > 0) {
+        localStorage.setItem(SKILL_FILTER_KEY, JSON.stringify(selectedSkillIds));
+      } else {
+        localStorage.removeItem(SKILL_FILTER_KEY);
+      }
+    } catch {
+      // ignore storage errors
+    }
+  }, [selectedSkillIds]);
   const [skillSearchQuery, setSkillSearchQuery] = useState('');
   const [selectedSkillToAdd, setSelectedSkillToAdd] = useState<string>('');
 
@@ -393,13 +419,25 @@ export default function ArmourGuide() {
     [levelRows, skillsMap],
   );
 
+  // Prune any saved skill IDs that no longer exist in the database (e.g. after schema cleanup)
+  useEffect(() => {
+    if (dbSkills.length === 0 || selectedSkillIds.length === 0) return;
+    const valid = selectedSkillIds.filter((id) => skillsMap.has(id));
+    if (valid.length !== selectedSkillIds.length) {
+      setSelectedSkillIds(valid);
+    }
+  }, [dbSkills, skillsMap, selectedSkillIds]);
+
   // The skill filter works on skill names: a skill matches whichever level (id) the piece has
   const selectedSkillNames = useMemo(
-    () => new Set(selectedSkillIds.map((id) => skillsMap.get(id)?.name)),
+    () => new Set(selectedSkillIds.map((id) => skillsMap.get(id)?.name).filter((n): n is string => Boolean(n))),
     [selectedSkillIds, skillsMap],
   );
   const matchesSelectedSkill = useCallback(
-    (id: string) => selectedSkillNames.has(skillsMap.get(id)?.name),
+    (id: string) => {
+      const name = skillsMap.get(id)?.name;
+      return name ? selectedSkillNames.has(name) : false;
+    },
     [selectedSkillNames, skillsMap],
   );
 
@@ -900,13 +938,14 @@ export default function ArmourGuide() {
 
       // Multi-skill filter: set must have at least one piece with any of the selected skills
       if (selectedSkillIds.length > 0) {
+        if (selectedSkillNames.size === 0) return true;
         const hasMatchingSkill = set.allSkills.some((s) => matchesSelectedSkill(s.id));
         if (!hasMatchingSkill) return false;
       }
 
       return true;
     });
-  }, [allSets, search, selectedSkillIds, matchesSelectedSkill, monstersMap, skillsMap]);
+  }, [allSets, search, selectedSkillIds, selectedSkillNames, matchesSelectedSkill, monstersMap, skillsMap]);
 
   // Helper to find matching skill theme for a piece
   const getPieceMatchingTheme = useCallback(
@@ -2051,7 +2090,7 @@ export default function ArmourGuide() {
                   )}
                 >
                   <span className="h-1.5 w-1.5 rounded-full bg-current opacity-80" />
-                  <span>{skillMeta?.name ?? sId}</span>
+                  <span>{skillMeta?.name ?? '...'}</span>
                   {skillMeta?.is_set_bonus && (
                     <span className="text-[9px] opacity-75 font-normal">(Set Bonus)</span>
                   )}

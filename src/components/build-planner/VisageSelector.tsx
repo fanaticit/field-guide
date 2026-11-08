@@ -32,7 +32,7 @@ export function VisageSelector() {
   const { user } = useAuthStore();
   const navigate = useNavigate();
   const {
-    buddy, coreVisage, visage2, visage3, visage4, visage5,
+    coreVisage, visage2, visage3, visage4, visage5,
     setVisage, setSlotInkType, selectedInkTypes, getTotalVisagePoints,
     useMine, setUseMine,
   } = useBuildPlannerStore();
@@ -40,6 +40,7 @@ export function VisageSelector() {
   const [inkPickSlot, setInkPickSlot] = useState<VisageSlot | null>(null);
   const [filterInk, setFilterInk] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showCardSlots, setShowCardSlots] = useState(true);
   const { isCollected } = useUserVisageCollection();
 
   const { data: visages, isLoading: isVisageLoading } = useQuery({
@@ -155,8 +156,6 @@ export function VisageSelector() {
       useBuildPlannerStore.setState(patch);
     }
   }, [visages, coreVisage, visage2, visage3, visage4, visage5]);
-
-  if (!buddy) return null;
 
   const renderCard = (slot: VisageSlot, label: string, selected: Visage | null, core: boolean) => {
     const card = (selected && visages ? visages.find(v => v.id === selected.id) : null) || selected;
@@ -362,10 +361,21 @@ export function VisageSelector() {
         <button
           type="button"
           onClick={() => navigate('/gallery')}
-          className="btn-mho-panel !px-3 !py-1 !text-[10px] !border-[var(--theme-accent)] !text-[var(--theme-accent)] !bg-[color-mix(in_srgb,var(--theme-accent)_15%,transparent)] hover:!text-white"
+          className="btn-mho-panel !px-3 !py-1 !text-[10px] !border-[var(--theme-accent)] !text-[var(--theme-accent)] !bg-[color-mix(in_srgb,var(--theme-accent)_15%,transparent)] hover:!text-white cursor-pointer"
           title="Browse Visage Sets and load one into this build"
         >
           Load a Visage Set
+        </button>
+        <button
+          type="button"
+          onClick={() => setShowCardSlots((prev) => !prev)}
+          className={`btn-mho-panel !px-3 !py-1 !text-[10px] transition-all cursor-pointer ${
+            showCardSlots
+              ? '!border-rarity-5 !text-white !bg-rarity-5/20 shadow-sm'
+              : '!border-mh-slate-700 text-mh-slate-300 hover:text-white'
+          }`}
+        >
+          {showCardSlots ? "Hide Visage Cards" : "I'll Select My Own Cards"}
         </button>
         {/* Collection toggle */}
         <button
@@ -386,22 +396,104 @@ export function VisageSelector() {
         </span>
       </div>
 
-      {/* Compact row: Core | divider | 4 slots */}
-      <div className="flex w-full items-start gap-2 sm:gap-3">
-        <div className="w-16 shrink-0">
-          {renderCard('core', 'Core', coreVisage, true)}
-        </div>
+      {/* Card Slots or Preview */}
+      {showCardSlots ? (
+        /* Compact row: Core | divider | 4 slots */
+        <div className="flex w-full items-start gap-2 sm:gap-3">
+          <div className="w-16 shrink-0">
+            {renderCard('core', 'Core', coreVisage, true)}
+          </div>
 
-        <div className="w-px self-stretch bg-mh-slate-700/50" />
+          <div className="w-px self-stretch bg-mh-slate-700/50" />
 
-        <div className="flex gap-2">
-          {([[2, visage2], [3, visage3], [4, visage4], [5, visage5]] as const).map(([slot, card]) => (
-            <div key={slot} className="w-16 shrink-0">
-              {renderCard(slot, `Slot ${slot}`, card, false)}
-            </div>
-          ))}
+          <div className="flex gap-2">
+            {([[2, visage2], [3, visage3], [4, visage4], [5, visage5]] as const).map(([slot, card]) => (
+              <div key={slot} className="w-16 shrink-0">
+                {renderCard(slot, `Slot ${slot}`, card, false)}
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      ) : equippedCards.length > 0 ? (
+        <div className="flex flex-col gap-2 p-2.5 rounded-lg border border-mh-slate-700/60 bg-mh-slate-800/40">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-xs text-mh-slate-400 font-medium">
+              Equipped Visage Cards ({equippedCards.length}/5)
+            </span>
+            <button
+              type="button"
+              onClick={() => setShowCardSlots(true)}
+              className="text-[11px] text-[var(--theme-accent)] hover:underline font-medium cursor-pointer"
+            >
+              Customize Cards
+            </button>
+          </div>
+          <div className="flex items-center gap-2 overflow-x-auto pb-1">
+            {([
+              ['Core', coreVisage, true],
+              ['Slot 2', visage2, false],
+              ['Slot 3', visage3, false],
+              ['Slot 4', visage4, false],
+              ['Slot 5', visage5, false],
+            ] as const).map(([label, card, isCore], idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => setShowCardSlots(true)}
+                className={`flex items-center gap-1.5 px-2 py-1.5 rounded bg-mh-slate-800/80 border text-xs shrink-0 cursor-pointer hover:border-mh-slate-500 transition-colors text-left ${
+                  isCore ? 'border-rarity-5/50' : 'border-mh-slate-700/60'
+                }`}
+                title={card ? `${label}: ${card.name} (${card.points} pts)` : `${label}: Empty`}
+              >
+                {card?.monster_icon ? (
+                  <img
+                    src={card.monster_icon}
+                    alt={card.name}
+                    className="w-6 h-6 object-contain rounded"
+                  />
+                ) : (
+                  <div className="w-6 h-6 rounded bg-mh-slate-700/50 flex items-center justify-center text-[10px] text-mh-slate-500">
+                    —
+                  </div>
+                )}
+                <div className="flex flex-col min-w-0">
+                  <span className={`text-[10px] font-bold leading-tight ${isCore ? 'text-rarity-5' : 'text-mh-slate-400'}`}>
+                    {label}
+                  </span>
+                  <span className="text-xs text-mh-slate-200 font-medium truncate max-w-[90px]">
+                    {card?.name ?? <span className="text-mh-slate-500 font-normal">Empty</span>}
+                  </span>
+                </div>
+                {card && (
+                  <span className="text-[10px] px-1 py-0.5 rounded bg-mh-slate-700 text-mh-slate-300 font-mono">
+                    {card.points}pt
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="p-3 rounded-lg border border-dashed border-mh-slate-700/60 bg-mh-slate-800/20 text-center text-xs text-mh-slate-400">
+          Visage card selection is hidden. Click{' '}
+          <button
+            type="button"
+            onClick={() => setShowCardSlots(true)}
+            className="text-[var(--theme-accent)] hover:underline font-medium cursor-pointer"
+          >
+            I'll Select My Own Cards
+          </button>{' '}
+          or{' '}
+          <button
+            type="button"
+            onClick={() => navigate('/gallery')}
+            className="text-[var(--theme-accent)] hover:underline font-medium cursor-pointer"
+          >
+            Load a Visage Set
+          </button>
+          .
+        </div>
+      )}
 
       {/* Duplicate warning */}
       {hasDuplicates && (

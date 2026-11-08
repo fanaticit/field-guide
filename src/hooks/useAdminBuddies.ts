@@ -31,6 +31,24 @@ export function useBuddySkills(buddyId: string | null | undefined) {
   });
 }
 
+export const ALL_BUDDY_SKILLS_KEY = 'all-buddy-skills';
+
+/** All buddy skills across all companions for searching and quick lookup */
+export function useAllBuddySkills() {
+  return useQuery({
+    queryKey: [ALL_BUDDY_SKILLS_KEY],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('buddy_skills')
+        .select('*')
+        .order('sort_order', { ascending: true });
+      if (error) throw error;
+      return (data ?? []) as BuddySkill[];
+    },
+    staleTime: 1000 * 60 * 10,
+  });
+}
+
 export const BUDDIES_KEY = 'admin-buddies';
 export const PUBLIC_BUDDIES_KEY = 'public-buddies';
 
@@ -295,6 +313,104 @@ export function useToggleBuddySpoiler() {
     onSettled: () => {
       qc.invalidateQueries({ queryKey: [BUDDIES_KEY] });
       qc.invalidateQueries({ queryKey: [PUBLIC_BUDDIES_KEY] });
+    },
+  });
+}
+
+export type BuddySkillUpsert = Omit<BuddySkill, 'id'> & { id?: string };
+
+export function useUpsertBuddySkill() {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (skill: BuddySkillUpsert) => {
+      const { data, error } = await supabase
+        .from('buddy_skills')
+        .upsert(skill)
+        .select()
+        .single();
+      if (error) throw error;
+      return data as BuddySkill;
+    },
+    onSuccess: (_, vars) => {
+      qc.invalidateQueries({ queryKey: ['buddy-skills', vars.buddy_id] });
+      qc.invalidateQueries({ queryKey: [ALL_BUDDY_SKILLS_KEY] });
+    },
+  });
+}
+
+export function useDeleteBuddySkill() {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, buddyId }: { id: string; buddyId: string }) => {
+      const { error } = await supabase
+        .from('buddy_skills')
+        .delete()
+        .eq('id', id);
+      if (error) throw error;
+      return { id, buddyId };
+    },
+    onSuccess: (_, vars) => {
+      qc.invalidateQueries({ queryKey: ['buddy-skills', vars.buddyId] });
+      qc.invalidateQueries({ queryKey: [ALL_BUDDY_SKILLS_KEY] });
+    },
+  });
+}
+
+export function useSaveBuddySkills() {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      buddyId,
+      skills,
+    }: {
+      buddyId: string;
+      skills: Array<Omit<BuddySkill, 'id'> & { id?: string }>;
+    }) => {
+      // 1. Fetch current skills for this buddy
+      const { data: current, error: fetchErr } = await supabase
+        .from('buddy_skills')
+        .select('id')
+        .eq('buddy_id', buddyId);
+      if (fetchErr) throw fetchErr;
+
+      const currentIds = new Set((current || []).map((s: { id: string }) => s.id));
+      const keepIds = new Set(skills.map((s) => s.id).filter(Boolean));
+
+      // 2. Delete removed skills
+      const toDelete = Array.from(currentIds).filter((id) => !keepIds.has(id));
+      if (toDelete.length > 0) {
+        const { error: delErr } = await supabase
+          .from('buddy_skills')
+          .delete()
+          .in('id', toDelete);
+        if (delErr) throw delErr;
+      }
+
+      // 3. Upsert skills
+      if (skills.length > 0) {
+        const payload = skills.map((s, idx) => ({
+          ...(s.id ? { id: s.id } : {}),
+          buddy_id: buddyId,
+          kind: s.kind,
+          sort_order: s.sort_order ?? idx + 1,
+          name: s.name.trim(),
+          description: s.description?.trim() || null,
+        }));
+
+        const { error: upsertErr } = await supabase
+          .from('buddy_skills')
+          .upsert(payload);
+        if (upsertErr) throw upsertErr;
+      }
+
+      return buddyId;
+    },
+    onSuccess: (buddyId) => {
+      qc.invalidateQueries({ queryKey: ['buddy-skills', buddyId] });
+      qc.invalidateQueries({ queryKey: [ALL_BUDDY_SKILLS_KEY] });
     },
   });
 }

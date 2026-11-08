@@ -10,12 +10,6 @@ import {
   Sparkles,
   CheckCircle2,
   ArrowLeftRight,
-  Shield,
-  Flame,
-  Droplets,
-  Zap,
-  Snowflake,
-  Skull,
   LogIn,
   Hammer,
   Plus,
@@ -35,20 +29,7 @@ import { useAdminMonsters } from '../../hooks/useAdminMonsters';
 import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
 import ChallengeIcon from '../../components/ChallengeIcon';
-
-const ELEMENT_ICONS: Record<WeaponElementType, React.ComponentType<{ size?: number; className?: string }>> = {
-  raw: Shield,
-  fire: Flame,
-  water: Droplets,
-  thunder: Zap,
-  ice: Snowflake,
-  dragon: Sparkles,
-  poison: Skull,
-  paralysis: Zap,
-  blast: Flame,
-  sleep: Snowflake,
-  stun: Zap,
-};
+import ElementIcon from '../../components/ElementIcon';
 
 const ELEMENT_GLOWS: Record<WeaponElementType, string> = {
   raw: 'from-mh-gold-500/10 via-mh-slate-900 to-mh-slate-950',
@@ -105,7 +86,6 @@ export default function WeaponCard({
   const monsterObj = weapon.monster_id ? monsters.find((m) => m.id === weapon.monster_id) : null;
   const srcCfg = WEAPON_SOURCE_CONFIG[weapon.source_type] || WEAPON_SOURCE_CONFIG.unknown;
   const elemCfg = WEAPON_ELEMENT_CONFIG[weapon.element_type] || WEAPON_ELEMENT_CONFIG.raw;
-  const ElIcon = ELEMENT_ICONS[weapon.element_type] || Shield;
   const glowTheme = ELEMENT_GLOWS[weapon.element_type] || ELEMENT_GLOWS.raw;
 
   const isTracked = Boolean(challenge && challenge.status !== 'abandoned');
@@ -252,13 +232,13 @@ export default function WeaponCard({
           {/* Element / Status Badge */}
           <span
             className={cn(
-              'inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-bold border shadow-sm',
+              'inline-flex items-center gap-1.5 rounded-md px-1.5 py-0.5 text-[10px] font-bold border shadow-sm',
               elemCfg.bg,
               elemCfg.text,
               elemCfg.border,
             )}
           >
-            <ElIcon size={11} className={elemCfg.color} />
+            <ElementIcon element={weapon.element_type} size={13} />
             <span>{elemCfg.label}</span>
           </span>
 
@@ -338,7 +318,7 @@ export default function WeaponCard({
             )}
             {weapon.element_type !== 'raw' && (
               <span className={cn('inline-flex items-center gap-1 rounded border px-1.5 py-0.5 font-mono', elemCfg.bg, elemCfg.text, elemCfg.border)}>
-                <ElIcon size={10} />
+                <ElementIcon element={weapon.element_type} size={12} />
                 {elemCfg.label}{weapon.element_damage ? ` ${weapon.element_damage}` : ''}
               </span>
             )}

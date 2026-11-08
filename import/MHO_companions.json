@@ -6,6 +6,12 @@
   "type": "Assault",
   "rarity": "SR",
   "description": "These Felynes accompanied adventurers to this land. Full of energy and curiosity, they possess powerful Assault hunting abilities.",
+  "core_passive": {
+   "name": "Icarus's Aid",
+   "description": "All adventurers in the squad deal 1.8% / 3% / 4% more elemental damage.",
+   "ascension_phases": 3,
+   "buff_id": 102042
+  },
   "skills": [
    {
     "name": "Felyne's Swift Swipe",
@@ -59,6 +65,12 @@
   "type": "Support",
   "rarity": "R",
   "description": "They possess the ability to fly that others can only dream of. They can also restore Adventurers' health and provide buffs, making them indispensable during hunts.",
+  "core_passive": {
+   "name": "Lido's Aid",
+   "description": "All Adventurers in the squad deal 0.6% / 0.8% / 1% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 104022
+  },
   "skills": [
    {
     "name": "Trillan's Dart",
@@ -127,6 +139,12 @@
   "type": "Disruptor",
   "rarity": "R",
   "description": "These Rutacoes lived on this island long before the arrival of adventurers. They've witnessed vast history and possess unique Disruptor hunting abilities.",
+  "core_passive": {
+   "name": "Akumu's Aid",
+   "description": "All Adventurers in the squad deal 0.6% / 0.8% / 1% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 103033
+  },
   "skills": [
    {
     "name": "Strike",
@@ -185,6 +203,12 @@
   "type": "Assault",
   "rarity": "R",
   "description": "",
+  "core_passive": {
+   "name": "Aloo's Aid",
+   "description": "All Adventurers in the squad deal 0.6% / 0.8% / 1% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 102046
+  },
   "skills": [
    {
     "name": "Felyne's Swift Swipe",
@@ -241,6 +265,12 @@
   "type": "Assault",
   "rarity": "R",
   "description": "As precious as peridot, as robust as an olive.",
+  "core_passive": {
+   "name": "Shadow's Aid",
+   "description": "All Adventurers in the squad deal 0.6% / 0.8% / 1% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 102047
+  },
   "skills": [
    {
     "name": "Felyne's Swift Swipe",
@@ -297,6 +327,12 @@
   "type": "Disruptor",
   "rarity": "R",
   "description": "You are my only friend...\nDon't you betray me.",
+  "core_passive": {
+   "name": "Wolfe's Aid",
+   "description": "All Adventurers in the squad deal 0.6% / 0.8% / 1% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 103040
+  },
   "skills": [
    {
     "name": "Strike",
@@ -358,6 +394,12 @@
   "type": "Support",
   "rarity": "R",
   "description": "With the right approach, even the most harmful-looking things can become an adventurer's best friend.",
+  "core_passive": {
+   "name": "Viper's Aid",
+   "description": "All Adventurers in the squad deal 0.6% / 0.8% / 1% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 104027
+  },
   "skills": [
    {
     "name": "Trillan's Dart",
@@ -429,6 +471,12 @@
   "type": "Disruptor",
   "rarity": "R",
   "description": "They agreed to use the similar sound in both their names as its name.",
+  "core_passive": {
+   "name": "Pupo's Aid",
+   "description": "All Adventurers in the squad deal 0.6% / 0.8% / 1% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 103039
+  },
   "skills": [
    {
     "name": "Strike",
@@ -490,6 +538,12 @@
   "type": "Disruptor",
   "rarity": "R",
   "description": "An adorable little treasure, gifted by her father on her birthday—a token of everlasting love.",
+  "core_passive": {
+   "name": "Boomie's Aid",
+   "description": "All Adventurers in the squad deal 0.6% / 0.8% / 1% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 103041
+  },
   "skills": [
    {
     "name": "Strike",
@@ -551,6 +605,12 @@
   "type": "Assault",
   "rarity": "R",
   "description": "Skilled at finding berries in the wild. Whether they're actually tasty is another question.",
+  "core_passive": {
+   "name": "Zira's Aid",
+   "description": "All Adventurers in the squad deal 0.6% / 0.8% / 1% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 102048
+  },
   "skills": [
    {
     "name": "Felyne's Swift Swipe",
@@ -607,6 +667,12 @@
   "type": "Assault",
   "rarity": "R",
   "description": "Overwhelmingly graceful with its every paw and claw.",
+  "core_passive": {
+   "name": "Alon's Aid",
+   "description": "All Adventurers in the squad deal 0.6% / 0.8% / 1% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 102049
+  },
   "skills": [
    {
     "name": "Felyne's Swift Swipe",
@@ -663,6 +729,12 @@
   "type": "Support",
   "rarity": "R",
   "description": "You are my only friend...\nDon't you betray me.",
+  "core_passive": {
+   "name": "Horn's Aid",
+   "description": "All Adventurers in the squad deal 0.6% / 0.8% / 1% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 104028
+  },
   "skills": [
    {
     "name": "Trillan's Dart",
@@ -734,6 +806,12 @@
   "type": "Disruptor",
   "rarity": "R",
   "description": "Its favorite color is actually gray—something it's never shared with others.",
+  "core_passive": {
+   "name": "Wrench's Aid",
+   "description": "All Adventurers in the squad deal 0.6% / 0.8% / 1% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 103037
+  },
   "skills": [
    {
     "name": "Strike",
@@ -795,6 +873,12 @@
   "type": "Assault",
   "rarity": "R",
   "description": "Overwhelmingly graceful with its every paw and claw.",
+  "core_passive": {
+   "name": "Ron's Aid",
+   "description": "All adventurers in the squad deal 0.6% / 0.8% / 1% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 102081
+  },
   "skills": [
    {
     "name": "Felyne's Swift Swipe",
@@ -851,6 +935,12 @@
   "type": "Disruptor",
   "rarity": "R",
   "description": "They possess the ability to fly that others can only dream of. They can also restore Adventurers' health and provide buffs, making them indispensable during hunts.",
+  "core_passive": {
+   "name": "Mac's Aid",
+   "description": "All Adventurers in the squad deal 0.6% / 0.8% / 1% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 104028
+  },
   "skills": [
    {
     "name": "Strike",
@@ -912,6 +1002,12 @@
   "type": "Support",
   "rarity": "R",
   "description": "You are my only friend...\nDon't you betray me.",
+  "core_passive": {
+   "name": "Bladey's Aid",
+   "description": "All Adventurers in the squad deal 0.6% / 0.8% / 1% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 104028
+  },
   "skills": [
    {
     "name": "Trillan's Dart",
@@ -983,6 +1079,12 @@
   "type": "Support",
   "rarity": "R",
   "description": "You are my only friend...\nDon't you betray me.",
+  "core_passive": {
+   "name": "Mith's Aid",
+   "description": "All adventurers in the squad deal 0.6% / 0.8% / 1% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 104090
+  },
   "skills": [
    {
     "name": "Trillan's Dart",
@@ -1054,6 +1156,12 @@
   "type": "Support",
   "rarity": "R",
   "description": "You are my only friend...\nDon't you betray me.",
+  "core_passive": {
+   "name": "Lynn's Aid",
+   "description": "All adventurers in the squad deal 0.6% / 0.8% / 1% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 104091
+  },
   "skills": [
    {
     "name": "Trillan's Dart",
@@ -1125,6 +1233,12 @@
   "type": "Disruptor",
   "rarity": "SR",
   "description": "They possess the ability to fly that others can only dream of. They can also restore Adventurers' health and provide buffs, making them indispensable during hunts.",
+  "core_passive": {
+   "name": "Falee Hendsom's Aid",
+   "description": "Increases part break efficiency against suppressed monsters by 4% / 8% / 12% for all adventurers in the squad.",
+   "ascension_phases": 3,
+   "buff_id": 103080
+  },
   "skills": [
    {
     "name": "Strike",
@@ -1183,6 +1297,12 @@
   "type": "Assault",
   "rarity": "SR",
   "description": "",
+  "core_passive": {
+   "name": "Fortie's Aid",
+   "description": "All adventurers in the squad deal 1% / 1.3% / 1.8% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 102050
+  },
   "skills": [
    {
     "name": "Felyne's Swift Swipe",
@@ -1236,6 +1356,12 @@
   "type": "Disruptor",
   "rarity": "SR",
   "description": "",
+  "core_passive": {
+   "name": "Barim's Aid",
+   "description": "When any adventurer in the squad suppresses a monster, that suppression duration is extended by 5% / 10% / 15%.",
+   "ascension_phases": 3,
+   "buff_id": 103043
+  },
   "skills": [
    {
     "name": "Strike",
@@ -1294,6 +1420,12 @@
   "type": "Support",
   "rarity": "SR",
   "description": "",
+  "core_passive": {
+   "name": "Ravinge's Aid",
+   "description": "All adventurers in the squad deal 1.8% / 3% / 4% more elemental damage.",
+   "ascension_phases": 3,
+   "buff_id": 104029
+  },
   "skills": [
    {
     "name": "Trillan's Dart",
@@ -1362,6 +1494,12 @@
   "type": "Assault",
   "rarity": "SSR",
   "description": "",
+  "core_passive": {
+   "name": "Kojiro's Aid",
+   "description": "When the Adventurer carrying this Buddy deals rupture damage, fire damage dealt is increased by 30% / 40% / 50% for 10s.\n\nAll adventurers in the squad deal 2% / 3.5% / 5% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 102051
+  },
   "skills": [
    {
     "name": "Felyne's Swift Swipe",
@@ -1415,6 +1553,12 @@
   "type": "Assault",
   "rarity": "SSR",
   "description": "",
+  "core_passive": {
+   "name": "Pipa's Aid",
+   "description": "When the adventurer carrying this buddy deals piercing damage, they deal 25% / 32% / 40% more thunder damage.\n\nAll adventurers in the squad deal 2% / 3.5% / 5% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 102052
+  },
   "skills": [
    {
     "name": "Felyne's Swift Swipe",
@@ -1468,6 +1612,12 @@
   "type": "Disruptor",
   "rarity": "SSR",
   "description": "",
+  "core_passive": {
+   "name": "Hoppy's Aid",
+   "description": "When the adventurer carrying this buddy is airborne, they deal 21% / 28% / 35% more water damage.\n\nAll adventurers in the squad deal 2% / 3.5% / 5% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 103045
+  },
   "skills": [
    {
     "name": "Strike",
@@ -1526,6 +1676,12 @@
   "type": "Disruptor",
   "rarity": "SSR",
   "description": "",
+  "core_passive": {
+   "name": "Devu's Aid",
+   "description": "When the Adventurer carrying this Buddy deals combo damage, dragon damage dealt is increased by 15% / 20% / 25% for 10s.\n\nAll adventurers in the squad deal 2% / 3.5% / 5% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 103044
+  },
   "skills": [
    {
     "name": "Strike",
@@ -1584,6 +1740,12 @@
   "type": "Assault",
   "rarity": "SSR",
   "description": "",
+  "core_passive": {
+   "name": "Daisho's Aid",
+   "description": "When the Adventurer carrying this Buddy triggers parry or ferocity, dragon damage dealt is increased by 21% / 28% / 35% for 10s.\n\nAll adventurers in the squad deal 2% / 3.5% / 5% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 102053
+  },
   "skills": [
    {
     "name": "Felyne's Swift Swipe",
@@ -1637,6 +1799,12 @@
   "type": "Support",
   "rarity": "SSR",
   "description": "",
+  "core_passive": {
+   "name": "Nailu's Aid",
+   "description": "When the adventurer carrying this buddy applies a Shield to an ally, they deal 30% / 40% / 50% more dragon damage for 10s.\n\nAll adventurers in the squad deal 2% / 3.5% / 5% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 104030
+  },
   "skills": [
    {
     "name": "Trillan's Dart",
@@ -1705,6 +1873,12 @@
   "type": "Disruptor",
   "rarity": "SSR",
   "description": "",
+  "core_passive": {
+   "name": "Aryo's Aid",
+   "description": "When the adventurer carrying this buddy lands a Draw Weapon attack, they deal 3.6% / 4.8% / 6% more fire damage for 15s, stacking up to 5 times, with each trigger refreshing the duration.\n\nAll adventurers in the squad deal 2% / 3.5% / 5% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 103046
+  },
   "skills": [
    {
     "name": "Strike",
@@ -1763,6 +1937,12 @@
   "type": "Assault",
   "rarity": "SSR",
   "description": "Overwhelmingly graceful with its every paw and claw.",
+  "core_passive": {
+   "name": "Ro's Aid",
+   "description": "When the adventurer carrying this buddy triggers Charge damage, they deal 15% / 20% / 25% more ice damage for 10s.\n\nAll adventurers in the squad deal 2% / 3.5% / 5% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 102080
+  },
   "skills": [
    {
     "name": "Felyne's Swift Swipe",
@@ -1816,6 +1996,12 @@
   "type": "Support",
   "rarity": "SR",
   "description": "You are my only friend...\nDon't you betray me.",
+  "core_passive": {
+   "name": "Blademaster's Aid",
+   "description": "All adventurers in the squad deal 1% / 1.3% / 1.8% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 104080
+  },
   "skills": [
    {
     "name": "Trillan's Dart",
@@ -1884,6 +2070,12 @@
   "type": "Support",
   "rarity": "SSR",
   "description": "You are my only friend...\nDon't you betray me.",
+  "core_passive": {
+   "name": "Pheasant's Aid",
+   "description": "When the adventurer carrying this buddy triggers Parry, they deal 15% / 20% / 25% more thunder damage for 10s.\n\nAll adventurers in the squad deal 2% / 3.5% / 5% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 104081
+  },
   "skills": [
    {
     "name": "Trillan's Dart",
@@ -1952,6 +2144,12 @@
   "type": "Support",
   "rarity": "SSR",
   "description": "You are my only friend...\nDon't you betray me.",
+  "core_passive": {
+   "name": "Elwin's Aid",
+   "description": "When the adventurer carrying this buddy uses a bow and lands an attack at the highest charge level, they deal 15% / 20% / 25% more ice damage for 10s.\n\nAll adventurers in the squad deal 2% / 3.5% / 5% more damage.",
+   "ascension_phases": 3,
+   "buff_id": 104082
+  },
   "skills": [
    {
     "name": "Trillan's Dart",
@@ -2020,6 +2218,12 @@
   "type": "Assault",
   "rarity": "SR",
   "description": "As precious as peridot, as robust as an olive.",
+  "core_passive": {
+   "name": "Banako's Aid",
+   "description": "All adventurers in the squad gain 0.6% / 0.8% / 1% affinity.",
+   "ascension_phases": 3,
+   "buff_id": 102041
+  },
   "skills": [
    {
     "name": "Felyne's Swift Swipe",
@@ -2073,6 +2277,12 @@
   "type": "Disruptor",
   "rarity": "SR",
   "description": "They agreed to use the similar sound in both their names as its name.",
+  "core_passive": {
+   "name": "Nako's Aid",
+   "description": "All adventurers in the squad deal 2% / 2.6% / 3.6% more damage to suppressed monsters.",
+   "ascension_phases": 3,
+   "buff_id": 103034
+  },
   "skills": [
    {
     "name": "Strike",
@@ -2131,6 +2341,12 @@
   "type": "Support",
   "rarity": "SR",
   "description": "They possess the ability to fly that others can only dream of. They can also restore Adventurers' health and provide buffs, making them indispensable during hunts.",
+  "core_passive": {
+   "name": "Ario's Aid",
+   "description": "All adventurers in the squad gain 0.6% / 0.8% / 1% affinity.",
+   "ascension_phases": 3,
+   "buff_id": 104023
+  },
   "skills": [
    {
     "name": "Trillan's Dart",
@@ -2199,6 +2415,12 @@
   "type": "Assault",
   "rarity": "SR",
   "description": "",
+  "core_passive": {
+   "name": "Tidal Claw's Aid",
+   "description": "Increases part break efficiency by 2% / 4% / 6% for all adventurers in the squad.",
+   "ascension_phases": 3,
+   "buff_id": 102043
+  },
   "skills": [
    {
     "name": "Felyne's Swift Swipe",
@@ -2252,6 +2474,12 @@
   "type": "Assault",
   "rarity": "SR",
   "description": "",
+  "core_passive": {
+   "name": "Sand Velvet's Aid",
+   "description": "Increases elemental critical damage by 1.2% / 1.6% / 2% for all adventurers in the squad.",
+   "ascension_phases": 3,
+   "buff_id": 102044
+  },
   "skills": [
    {
     "name": "Felyne's Swift Swipe",
@@ -2305,6 +2533,12 @@
   "type": "Disruptor",
   "rarity": "SR",
   "description": "",
+  "core_passive": {
+   "name": "Reefcore's Aid",
+   "description": "When any adventurer in the squad suppresses a monster, all adventurers in the squad recover 5 / 10 / 15 stamina.",
+   "ascension_phases": 3,
+   "buff_id": 103035
+  },
   "skills": [
    {
     "name": "Strike",
@@ -2363,6 +2597,12 @@
   "type": "Disruptor",
   "rarity": "SR",
   "description": "",
+  "core_passive": {
+   "name": "Sand Echo's Aid",
+   "description": "All adventurers in the squad gain 1.8% / 2.5% / 3% increased stamina recovery rate.",
+   "ascension_phases": 3,
+   "buff_id": 103036
+  },
   "skills": [
    {
     "name": "Strike",
@@ -2421,6 +2661,12 @@
   "type": "Support",
   "rarity": "SR",
   "description": "",
+  "core_passive": {
+   "name": "Tidal Sound's Aid",
+   "description": "All adventurers in the squad gain 3.5% / 5% / 6% damage reduction.",
+   "ascension_phases": 3,
+   "buff_id": 104024
+  },
   "skills": [
    {
     "name": "Trillan's Dart",
@@ -2489,6 +2735,12 @@
   "type": "Support",
   "rarity": "SR",
   "description": "",
+  "core_passive": {
+   "name": "Golden Bell's Aid",
+   "description": "All adventurers in the squad gain 1.8% / 2.5% / 3% increased stamina recovery rate.",
+   "ascension_phases": 3,
+   "buff_id": 104025
+  },
   "skills": [
    {
     "name": "Trillan's Dart",
@@ -2557,6 +2809,7 @@
   "type": "Assault",
   "rarity": "SR",
   "description": "As precious as peridot, as robust as an olive.",
+  "core_passive": null,
   "skills": [],
   "passive_skills": [],
   "other_skills": [],

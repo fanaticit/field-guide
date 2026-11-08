@@ -25,6 +25,7 @@ import {
 } from '../../../hooks/useAdminMonsters';
 import { supabase } from '../../../lib/supabase';
 import { cn } from '../../../lib/utils';
+import ElementIcon from '../../../components/ElementIcon';
 
 // ── Constants ────────────────────────────────────────────────
 const SPECIES_OPTIONS = [
@@ -162,13 +163,14 @@ function TagToggle({ options, selected, onChange }: {
             type="button"
             onClick={() => toggle(opt)}
             className={cn(
-              'rounded-md px-2.5 py-1 text-xs font-semibold ring-1 capitalize transition-all duration-150',
+              'inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-semibold ring-1 capitalize transition-all duration-150',
               active
                 ? (ELEMENT_COLORS[opt] ?? 'bg-mh-gold-500/20 text-mh-gold-300 ring-mh-gold-500/30')
-                : 'bg-mh-slate-800 text-mh-slate-500 ring-mh-slate-700 hover:ring-mh-slate-500',
+                : 'bg-mh-slate-800 text-mh-slate-400 ring-mh-slate-700 hover:ring-mh-slate-500 hover:text-white',
             )}
           >
-            {opt}
+            <ElementIcon element={opt} size={13} />
+            <span>{opt}</span>
           </button>
         );
       })}

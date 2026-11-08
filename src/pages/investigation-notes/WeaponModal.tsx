@@ -7,12 +7,6 @@ import {
   Sword,
   Sparkles,
   CheckCircle2,
-  Shield,
-  Flame,
-  Droplets,
-  Zap,
-  Snowflake,
-  Skull,
   Info,
   LogIn,
   Trash2,
@@ -42,20 +36,7 @@ import {
 import { useAuthStore } from '../../store/authStore';
 import { cn } from '../../lib/utils';
 import ChallengeIcon from '../../components/ChallengeIcon';
-
-const ELEMENT_ICONS: Record<WeaponElementType, React.ComponentType<{ size?: number; className?: string }>> = {
-  raw: Shield,
-  fire: Flame,
-  water: Droplets,
-  thunder: Zap,
-  ice: Snowflake,
-  dragon: Sparkles,
-  poison: Skull,
-  paralysis: Zap,
-  blast: Flame,
-  sleep: Snowflake,
-  stun: Zap,
-};
+import ElementIcon from '../../components/ElementIcon';
 
 const ELEMENT_GLOWS: Record<WeaponElementType, string> = {
   raw: 'from-mh-gold-500/10 via-mh-slate-900 to-mh-slate-950',
@@ -112,6 +93,26 @@ export default function WeaponModal({
     setSelectedCraftRarity(null);
     setSelectedMaxRarity(null);
   }, [weapon?.id]);
+
+  // Lock background scrolling while modal is open
+  useEffect(() => {
+    if (!open) return;
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [open]);
+
+  // Close modal on Escape key
+  useEffect(() => {
+    if (!open) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [open, onClose]);
   const [feedbackMsg, setFeedbackMsg] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -121,7 +122,6 @@ export default function WeaponModal({
   const monsterObj = weapon.monster_id ? monsters.find((m) => m.id === weapon.monster_id) : null;
   const srcCfg = WEAPON_SOURCE_CONFIG[weapon.source_type] || WEAPON_SOURCE_CONFIG.unknown;
   const elemCfg = WEAPON_ELEMENT_CONFIG[weapon.element_type] || WEAPON_ELEMENT_CONFIG.raw;
-  const ElIcon = ELEMENT_ICONS[weapon.element_type] || Shield;
   const glowTheme = ELEMENT_GLOWS[weapon.element_type] || ELEMENT_GLOWS.raw;
 
   const isTracked = Boolean(challenge && challenge.status !== 'abandoned');
@@ -198,27 +198,22 @@ export default function WeaponModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 md:p-6 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
+      {/* Backdrop click to dismiss */}
+      <div className="fixed inset-0 -z-10" onClick={onClose} aria-hidden="true" />
+
       <div
         role="dialog"
         aria-modal="true"
-        className="relative w-full max-w-5xl rounded-3xl border border-mh-slate-700 bg-mh-slate-900 shadow-2xl overflow-hidden flex flex-col md:flex-row max-h-[92vh]"
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-5xl rounded-2xl sm:rounded-3xl border border-mh-slate-750 bg-mh-slate-900 shadow-2xl overflow-hidden flex flex-col md:flex-row max-h-[92dvh] sm:max-h-[90vh]"
       >
-        {/* Close Button on Mobile */}
-        <button
-          type="button"
-          onClick={onClose}
-          className="md:hidden absolute top-4 right-4 z-20 rounded-full p-2 bg-mh-slate-900/80 border border-mh-slate-700 text-mh-slate-400 hover:text-white transition-colors"
-        >
-          <X size={18} />
-        </button>
-
         {/* ═══════════════════════════════════════════════════════
-            LEFT PANEL: Weapon Showcase Image (Takes Over Left Side)
+            LEFT PANEL (Desktop Only): Weapon Showcase Image
            ═══════════════════════════════════════════════════════ */}
         <div
           className={cn(
-            'w-full md:w-[44%] lg:w-[46%] shrink-0 flex flex-col justify-between p-6 sm:p-7 md:p-8 relative overflow-hidden border-b md:border-b-0 md:border-r border-mh-slate-750 bg-gradient-to-b',
+            'hidden md:flex md:w-[44%] lg:w-[46%] shrink-0 flex-col justify-between p-6 sm:p-7 md:p-8 relative overflow-hidden border-r border-mh-slate-750 bg-gradient-to-b',
             glowTheme,
           )}
         >
@@ -236,7 +231,7 @@ export default function WeaponModal({
               {activeCraftedRarity ? `✓ R${activeCraftedRarity} Crafted` : getRarityBadgeStyle(weapon.rarity || 1).label}
             </span>
 
-            <span className="rounded-lg bg-mh-slate-900/90 border border-mh-slate-700/80 px-2.5 py-1 text-xs font-bold text-mh-slate-200 shadow-sm">
+            <span className="rounded-lg bg-mh-slate-900/90 border border-mh-slate-750 px-2.5 py-1 text-xs font-bold text-mh-slate-200 shadow-sm">
               {weaponTypeObj?.name || weapon.weapon_type_id}
             </span>
 
@@ -278,7 +273,7 @@ export default function WeaponModal({
                   elemCfg.border,
                 )}
               >
-                <ElIcon size={14} className={elemCfg.color} />
+                <ElementIcon element={weapon.element_type} size={15} />
                 <span>{elemCfg.label}</span>
               </span>
 
@@ -308,38 +303,100 @@ export default function WeaponModal({
 
         {/* ═══════════════════════════════════════════════════════
             RIGHT PANEL: Details, Skills & Hunter's Challenge Forge
+            (On Mobile, this is the main unified scrollable container)
            ═══════════════════════════════════════════════════════ */}
         <div className="flex-1 flex flex-col min-w-0 bg-mh-slate-900 overflow-hidden">
           {/* Header */}
-          <div className="flex items-start justify-between border-b border-mh-slate-750 bg-mh-slate-950/90 px-6 py-4 gap-4">
+          <div className="flex items-center justify-between border-b border-mh-slate-750 bg-mh-slate-950/95 px-4 py-3 sm:px-6 sm:py-4 gap-3 shrink-0">
             <div className="min-w-0 flex-1">
-              <div className="flex flex-wrap items-baseline gap-2">
-                <h2 className="font-display text-xl sm:text-2xl font-bold text-mh-slate-100 break-words leading-tight">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h2 className="font-display text-base sm:text-xl md:text-2xl font-bold text-mh-slate-100 break-words leading-tight truncate">
                   {weapon.name}
                 </h2>
                 {weapon.name_ja && (
-                  <span className="text-xs text-mh-slate-500 font-medium break-words">
+                  <span className="text-xs text-mh-slate-500 font-medium hidden sm:inline truncate">
                     ({weapon.name_ja})
                   </span>
                 )}
               </div>
 
-              <p className="mt-1 text-xs text-mh-slate-400">
-                {[weapon.series, weapon.status === 'not_in_game' ? weapon.status_reason : null].filter(Boolean).join(' · ')}
-              </p>
+              <div className="flex items-center gap-2 mt-1 flex-wrap">
+                <span className={cn('rounded px-2 py-0.5 text-[10px] font-bold border font-mono shadow-xs', getRarityBadgeStyle(activeCraftedRarity ?? weapon.rarity ?? 1).badge)}>
+                  {activeCraftedRarity ? `✓ R${activeCraftedRarity}` : getRarityBadgeStyle(weapon.rarity || 1).label}
+                </span>
+                <span className="rounded bg-mh-slate-800 border border-mh-slate-750 px-2 py-0.5 text-[10px] font-bold text-mh-slate-300 shadow-xs">
+                  {weaponTypeObj?.name || weapon.weapon_type_id}
+                </span>
+                {weapon.series && (
+                  <span className="text-[10px] text-mh-slate-400 hidden sm:inline truncate">
+                    · {weapon.series}
+                  </span>
+                )}
+              </div>
             </div>
 
             <button
               type="button"
               onClick={onClose}
-              className="hidden md:flex rounded-full p-2 text-mh-slate-400 hover:bg-mh-slate-800 hover:text-white transition-colors shrink-0"
+              className="rounded-full p-1.5 sm:p-2 text-mh-slate-400 hover:bg-mh-slate-800 hover:text-white transition-colors shrink-0"
+              aria-label="Close dialog"
             >
               <X size={18} />
             </button>
           </div>
 
           {/* Scrollable Content Body */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-5">
+          <div className="flex-1 overflow-y-auto overscroll-contain p-3.5 sm:p-5 md:p-6 space-y-4 md:space-y-5">
+            {/* ── Mobile Compact Artwork Showcase (Mobile only) ── */}
+            <div
+              className={cn(
+                'md:hidden rounded-2xl border border-mh-slate-750 bg-gradient-to-b p-3.5 relative overflow-hidden flex flex-col items-center justify-center text-center shadow-lg',
+                glowTheme,
+              )}
+            >
+              <div className="relative z-10 w-full flex items-center justify-center my-1.5 min-h-[130px] max-h-[170px]">
+                {weapon.image ? (
+                  <img
+                    src={weapon.image}
+                    alt={weapon.name}
+                    className="max-h-36 sm:max-h-40 w-full object-contain filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)]"
+                    onError={(e) => {
+                      (e.target as HTMLElement).style.display = 'none';
+                    }}
+                  />
+                ) : (
+                  <Sword size={48} className="text-mh-slate-600" />
+                )}
+              </div>
+              <div className="relative z-10 flex flex-wrap items-center justify-center gap-1.5 mt-2">
+                <span
+                  className={cn(
+                    'inline-flex items-center gap-1 rounded-lg px-2 py-0.5 text-[11px] font-bold border shadow-xs',
+                    elemCfg.bg,
+                    elemCfg.text,
+                    elemCfg.border,
+                  )}
+                >
+                  <ElementIcon element={weapon.element_type} size={13} />
+                  <span>{elemCfg.label}</span>
+                </span>
+                <span
+                  className={cn(
+                    'rounded-lg px-2 py-0.5 text-[11px] font-bold border shadow-xs',
+                    srcCfg.bg,
+                    srcCfg.text,
+                    srcCfg.border,
+                  )}
+                >
+                  {monsterObj ? `Monster: ${monsterObj.name}` : srcCfg.label}
+                </span>
+              </div>
+              {weapon.description && (
+                <p className="relative z-10 text-[11px] text-mh-slate-300 italic mt-2 max-w-md leading-relaxed">
+                  "{weapon.description}"
+                </p>
+              )}
+            </div>
             {/* ── User Weapon Crafting Status & Level Tracker ── */}
             <div className="rounded-2xl border border-mh-slate-700 bg-mh-slate-950/80 p-5 space-y-3 shadow-md">
               <div className="flex items-center justify-between">
@@ -663,7 +720,10 @@ export default function WeaponModal({
                   </div>
                 </div>
                 <div className="rounded-lg border border-mh-slate-750 bg-mh-slate-900 p-2">
-                  <div className="text-[10px] uppercase text-mh-slate-500">{elemCfg.label}</div>
+                  <div className="text-[10px] uppercase text-mh-slate-500 flex items-center gap-1">
+                    <ElementIcon element={weapon.element_type} size={11} />
+                    <span>{elemCfg.label}</span>
+                  </div>
                   <div className="font-mono text-sm font-bold text-mh-slate-100">{weapon.element_damage ?? '—'}</div>
                 </div>
                 <div className="rounded-lg border border-mh-slate-750 bg-mh-slate-900 p-2">

@@ -40,7 +40,7 @@ export function InsightPill({ level, className }: { level: number; className?: s
       )}
     >
       <Star size={10} className={isMax ? 'fill-slate-950' : 'text-mh-gold-400'} />
-      <span>{isMax ? 'Insight Max' : `Insight ${level}`}</span>
+      <span>{isMax ? 'Insight Max' : `Insight Lv ${level}`}</span>
     </span>
   );
 }
@@ -68,7 +68,7 @@ export function InsightPicker({ level, onChange }: PickerProps) {
         )}
       >
         <Star size={10} className={isMax ? 'fill-slate-950' : 'text-mh-gold-400'} />
-        <span>{isMax ? 'Max' : `Insight ${level}`}</span>
+        <span>{isMax ? 'Max' : `Insight Lv ${level}`}</span>
         <ChevronDown size={10} />
       </button>
 
@@ -92,7 +92,7 @@ export function InsightPicker({ level, onChange }: PickerProps) {
                   : 'text-mh-slate-300 hover:bg-mh-slate-800 hover:text-white',
               )}
             >
-              <span>{lvl === ADVENTURER_MAX_INSIGHT ? 'Max (7)' : `Level ${lvl}`}</span>
+              <span>{lvl === ADVENTURER_MAX_INSIGHT ? 'Max (7)' : `Insight Lv ${lvl}`}</span>
               {lvl === level && <Check size={12} />}
             </button>
           ))}
@@ -114,7 +114,7 @@ export function InsightRow({ level, onChange }: PickerProps) {
             key={lvl}
             type="button"
             onClick={() => onChange(lvl)}
-            title={isMaxBtn ? 'Max insight' : `Insight level ${lvl}`}
+            title={isMaxBtn ? 'Max insight' : `Insight Lv ${lvl}`}
             className={cn(
               'rounded-lg border py-1.5 text-xs font-bold transition-all hover:scale-105 active:scale-95',
               reached
@@ -189,7 +189,7 @@ export function ChallengeGoalMenu({ currentLevel, onSelect, className, children,
               }}
               className="flex w-full items-center rounded-lg px-2 py-1.5 text-left text-xs font-semibold text-mh-slate-200 transition-colors hover:bg-sky-900 hover:text-white"
             >
-              {lvl === 1 ? 'Recruit only' : `Reach Insight ${adventurerInsightLabel(lvl).replace('Lv ', '')}`}
+              {lvl === 1 ? 'Recruit only' : `Reach Insight ${adventurerInsightLabel(lvl)}`}
             </button>
           ))}
         </div>

@@ -4,6 +4,7 @@
 // ─────────────────────────────────────────────────────────────
 import { cn } from '../lib/utils';
 import type { CoreMonster } from '../data/schemas/index.js';
+import ElementIcon from './ElementIcon';
 
 // ── Element / weakness colour map ────────────────────────────
 const ELEMENT_COLOURS: Record<string, string> = {
@@ -16,20 +17,22 @@ const ELEMENT_COLOURS: Record<string, string> = {
   paralysis:  'bg-el-paralysis/15 text-el-paralysis border border-el-paralysis/30',
   sleep:      'bg-el-sleep/15 text-el-sleep border border-el-sleep/30',
   blast:      'bg-el-blast/15 text-el-blast border border-el-blast/30',
+  stun:       'bg-amber-400/15 text-amber-300 border border-amber-400/30',
   none:       'bg-mh-slate-700/40 text-mh-slate-400 border border-mh-slate-700',
 };
 
 const ELEMENT_LABELS: Record<string, string> = {
-  fire: '🔥 Fire',
-  water: '💧 Water',
-  thunder: '⚡ Thunder',
-  ice: '❄️ Ice',
-  dragon: '🐉 Dragon',
-  poison: '☠️ Poison',
-  paralysis: '⚡ Para',
-  sleep: '💤 Sleep',
-  blast: '💥 Blast',
-  none: '— None',
+  fire: 'Fire',
+  water: 'Water',
+  thunder: 'Thunder',
+  ice: 'Ice',
+  dragon: 'Dragon',
+  poison: 'Poison',
+  paralysis: 'Para',
+  sleep: 'Sleep',
+  blast: 'Blast',
+  stun: 'Stun',
+  none: 'None',
 };
 
 // ── Tier badge config ─────────────────────────────────────────
@@ -50,11 +53,12 @@ function ElementChip({ el }: { el: string }) {
   return (
     <span
       className={cn(
-        'inline-flex items-center rounded-full px-1.5 py-0.5 text-[9px] font-semibold leading-none',
+        'inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[9px] font-semibold leading-none',
         ELEMENT_COLOURS[el] ?? ELEMENT_COLOURS.none,
       )}
     >
-      {ELEMENT_LABELS[el] ?? el}
+      <ElementIcon element={el} size={11} />
+      <span>{ELEMENT_LABELS[el] ?? el}</span>
     </span>
   );
 }

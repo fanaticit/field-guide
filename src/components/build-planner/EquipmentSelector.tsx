@@ -242,6 +242,7 @@ export function EquipmentSelector() {
   const gender = profile?.equipment_gender ?? 'male';
   const { isCrafted } = useUserWeaponCollection();
   const [showAllWeapons, setShowAllWeapons] = useState(false);
+  const [showArmourPieces, setShowArmourPieces] = useState(false);
 
   // When useMine toggle changes, reset the local showAllWeapons override
   useEffect(() => {
@@ -360,16 +361,31 @@ export function EquipmentSelector() {
   return (
     // Lift the whole panel above its siblings while a dropdown is open
     <div className="mho-panel has-[[data-dropdown-open]]:relative has-[[data-dropdown-open]]:z-30 p-4 flex flex-col gap-4">
-      <div className="flex items-center justify-between gap-2">
-        <h2 className="font-display text-base font-bold uppercase tracking-wide text-white flex items-center gap-2"><span className="text-[#FFD700] text-xs">❖</span>Equipment</h2>
-        <button
-          type="button"
-          onClick={() => navigate('/armory/armour')}
-          className="btn-mho-panel !px-3 !py-1.5 !text-xs !border-[var(--theme-accent)] !text-[var(--theme-accent)] !bg-[color-mix(in_srgb,var(--theme-accent)_15%,transparent)] hover:!text-white"
-          title="Browse armour sets and send one back to this build"
-        >
-          Make an Armour Set
-        </button>
+      <div className="flex items-center justify-between gap-2 flex-wrap">
+        <h2 className="font-display text-base font-bold uppercase tracking-wide text-white flex items-center gap-2 mr-auto">
+          <span className="text-[#FFD700] text-xs">❖</span>Equipment
+        </h2>
+        <div className="flex items-center gap-2 flex-wrap">
+          <button
+            type="button"
+            onClick={() => navigate('/armory/armour')}
+            className="btn-mho-panel !px-3 !py-1.5 !text-xs !border-[var(--theme-accent)] !text-[var(--theme-accent)] !bg-[color-mix(in_srgb,var(--theme-accent)_15%,transparent)] hover:!text-white cursor-pointer"
+            title="Browse armour sets and send one back to this build"
+          >
+            Make an Armour Set
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowArmourPieces((prev) => !prev)}
+            className={`btn-mho-panel !px-3 !py-1.5 !text-xs transition-all cursor-pointer ${
+              showArmourPieces
+                ? '!border-rarity-3 !text-white !bg-rarity-3/20 shadow-sm'
+                : '!border-mh-slate-700 text-mh-slate-300 hover:text-white'
+            }`}
+          >
+            {showArmourPieces ? "Hide Armour Pieces" : "I'll Select My Own Armour Pieces"}
+          </button>
+        </div>
       </div>
 
       <div className="flex flex-col gap-2.5">
@@ -398,30 +414,90 @@ export function EquipmentSelector() {
           }
           onChange={id => setWeapon(weapons?.find(w => w.id === id) || null)}
         />
-        {(['helm', 'chest', 'gloves', 'waist', 'greaves'] as const).map(slot => {
-          const current = { helm, chest, gloves, waist, greaves }[slot];
-          const slotLabel = SLOT_LABEL[slot];
-          // find the monster_icon for the current piece
-          const currentPieceWithMonster = (armours || []).find(a => a.id === current?.id) as (ArmourPiece & { monster_icon?: string }) | undefined;
-          
-          const slotIconPath = `/images/armor/${slot}.png`;
+        {showArmourPieces ? (
+          (['helm', 'chest', 'gloves', 'waist', 'greaves'] as const).map(slot => {
+            const current = { helm, chest, gloves, waist, greaves }[slot];
+            const slotLabel = SLOT_LABEL[slot];
+            // find the monster_icon for the current piece
+            const currentPieceWithMonster = (armours || []).find(a => a.id === current?.id) as (ArmourPiece & { monster_icon?: string }) | undefined;
+            
+            const slotIconPath = `/images/armor/${slot}.png`;
             return (
               <SearchableDropdown
                 key={slot}
                 label={slotLabel}
                 highlightClasses={hoveredSkillId && highlightSlots.has(slot) ? getHighlightClasses(hoveredSkillCategory) : undefined}
                 placeholderIcon={slotIconPath}
-              items={armourItems(slot)}
-              selectedId={current?.id}
-              selectedImage={armourPieceIcon(current, gender) || currentPieceWithMonster?.monster_icon || undefined}
-              isLoading={isArmourLoading}
-              onChange={id => {
-                const piece = armours?.find(a => a.id === id) || null;
-                setArmour(slot, piece);
-              }}
-            />
-          );
-        })}
+                items={armourItems(slot)}
+                selectedId={current?.id}
+                selectedImage={armourPieceIcon(current, gender) || currentPieceWithMonster?.monster_icon || undefined}
+                isLoading={isArmourLoading}
+                onChange={id => {
+                  const piece = armours?.find(a => a.id === id) || null;
+                  setArmour(slot, piece);
+                }}
+              />
+            );
+          })
+        ) : (helm || chest || gloves || waist || greaves) ? (
+          <div className="flex flex-col gap-2 p-2.5 rounded-lg border border-mh-slate-700/60 bg-mh-slate-800/40">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-xs text-mh-slate-400 font-medium">
+                Equipped Armour ({[helm, chest, gloves, waist, greaves].filter(Boolean).length}/5)
+              </span>
+              <button
+                type="button"
+                onClick={() => setShowArmourPieces(true)}
+                className="text-[11px] text-[var(--theme-accent)] hover:underline font-medium cursor-pointer"
+              >
+                Customize Pieces
+              </button>
+            </div>
+            <div className="grid grid-cols-5 gap-1.5 sm:gap-2">
+              {(['helm', 'chest', 'gloves', 'waist', 'greaves'] as const).map((slot) => {
+                const current = { helm, chest, gloves, waist, greaves }[slot];
+                const currentPieceWithMonster = (armours || []).find((a) => a.id === current?.id) as (ArmourPiece & { monster_icon?: string }) | undefined;
+                const icon = armourPieceIcon(current, gender) || currentPieceWithMonster?.monster_icon || `/images/armor/${slot}.png`;
+                const pieceName = current ? ((current.set_name ?? current.monster_name ?? 'Armour') + ' ' + (current.set_variant ?? '')).trim() : null;
+                return (
+                  <button
+                    key={slot}
+                    type="button"
+                    onClick={() => setShowArmourPieces(true)}
+                    className="flex flex-col items-center p-1.5 rounded bg-mh-slate-800/80 border border-mh-slate-700/60 text-center hover:border-mh-slate-500 transition-colors group cursor-pointer"
+                    title={current ? `${SLOT_LABEL[slot]}: ${pieceName}` : `${SLOT_LABEL[slot]}: Empty`}
+                  >
+                    <img src={icon} alt={SLOT_LABEL[slot]} className="w-6 h-6 object-contain" />
+                    <span className="text-[10px] text-mh-slate-400 font-bold uppercase mt-1 leading-none">{SLOT_LABEL[slot]}</span>
+                    <span className="text-[10px] text-mh-slate-300 truncate w-full mt-0.5 group-hover:text-white">
+                      {pieceName ?? <span className="text-mh-slate-500">None</span>}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ) : (
+          <div className="p-3 rounded-lg border border-dashed border-mh-slate-700/60 bg-mh-slate-800/20 text-center text-xs text-mh-slate-400">
+            Armour piece selection is hidden. Click{' '}
+            <button
+              type="button"
+              onClick={() => setShowArmourPieces(true)}
+              className="text-[var(--theme-accent)] hover:underline font-medium cursor-pointer"
+            >
+              I'll Select My Own Armour Pieces
+            </button>{' '}
+            or{' '}
+            <button
+              type="button"
+              onClick={() => navigate('/armory/armour')}
+              className="text-[var(--theme-accent)] hover:underline font-medium cursor-pointer"
+            >
+              Make an Armour Set
+            </button>
+            .
+          </div>
+        )}
       </div>
     </div>
   );

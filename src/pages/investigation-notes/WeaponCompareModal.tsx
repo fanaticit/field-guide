@@ -6,21 +6,13 @@ import {
   X,
   Sword,
   ArrowLeftRight,
-  Shield,
-  Flame,
-  Droplets,
-  Zap,
-  Snowflake,
-  Skull,
-  Sparkles,
-  ChevronLeft,
-  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
   Equal,
 } from 'lucide-react';
 import {
   type DBWeapon,
   type DBWeaponUpgrade,
-  type WeaponElementType,
   WEAPON_SOURCE_CONFIG,
   WEAPON_ELEMENT_CONFIG,
   WEAPON_SHARPNESS_ICONS,
@@ -30,20 +22,7 @@ import { WEAPON_TYPES } from '../../data/core/weapon-types';
 import { useAdminMonsters } from '../../hooks/useAdminMonsters';
 import { useWeaponUpgrades } from '../../hooks/useAdminWeapons';
 import { cn } from '../../lib/utils';
-
-const ELEMENT_ICONS: Record<WeaponElementType, React.ComponentType<{ size?: number; className?: string }>> = {
-  raw: Shield,
-  fire: Flame,
-  water: Droplets,
-  thunder: Zap,
-  ice: Snowflake,
-  dragon: Sparkles,
-  poison: Skull,
-  paralysis: Zap,
-  blast: Flame,
-  sleep: Snowflake,
-  stun: Zap,
-};
+import ElementIcon from '../../components/ElementIcon';
 
 interface Props {
   weapon1: DBWeapon;
@@ -156,9 +135,6 @@ export default function WeaponCompareModal({
   const elemCfg1 = WEAPON_ELEMENT_CONFIG[weapon1.element_type] || WEAPON_ELEMENT_CONFIG.raw;
   const elemCfg2 = WEAPON_ELEMENT_CONFIG[weapon2.element_type] || WEAPON_ELEMENT_CONFIG.raw;
 
-  const ElIcon1 = ELEMENT_ICONS[weapon1.element_type] || Shield;
-  const ElIcon2 = ELEMENT_ICONS[weapon2.element_type] || Shield;
-
   const isLoading = loading1 || loading2;
 
   return (
@@ -233,7 +209,7 @@ export default function WeaponCompareModal({
                 )}
                 <span>&bull;</span>
                 <span className={cn('inline-flex items-center gap-1', elemCfg1.text)}>
-                  <ElIcon1 size={10} />
+                  <ElementIcon element={weapon1.element_type} size={11} />
                   <span>{elemCfg1.label}</span>
                 </span>
               </div>
@@ -263,7 +239,7 @@ export default function WeaponCompareModal({
               </h3>
               <div className="flex items-center justify-end gap-1.5 text-[10px] text-mh-slate-400 truncate mt-0.5">
                 <span className={cn('inline-flex items-center gap-1', elemCfg2.text)}>
-                  <ElIcon2 size={10} />
+                  <ElementIcon element={weapon2.element_type} size={11} />
                   <span>{elemCfg2.label}</span>
                 </span>
                 <span>&bull;</span>
@@ -313,12 +289,18 @@ export default function WeaponCompareModal({
               const elem1 = u1?.element_type ?? weapon1.element_type;
               const elemDmg1 = u1?.element_damage ?? null;
               const elemCfgRow1 = WEAPON_ELEMENT_CONFIG[elem1] || WEAPON_ELEMENT_CONFIG.raw;
-              const EIconRow1 = ELEMENT_ICONS[elem1] || Shield;
 
               const elem2 = u2?.element_type ?? weapon2.element_type;
               const elemDmg2 = u2?.element_damage ?? null;
               const elemCfgRow2 = WEAPON_ELEMENT_CONFIG[elem2] || WEAPON_ELEMENT_CONFIG.raw;
-              const EIconRow2 = ELEMENT_ICONS[elem2] || Shield;
+
+              // Element comparison
+              const hasBothRows = Boolean(u1 && u2);
+              const elemVal1 = u1 && elem1 !== 'raw' ? (elemDmg1 !== null && elemDmg1 !== undefined ? elemDmg1 : 1) : 0;
+              const elemVal2 = u2 && elem2 !== 'raw' ? (elemDmg2 !== null && elemDmg2 !== undefined ? elemDmg2 : 1) : 0;
+              const elemDiff = elemVal1 - elemVal2;
+              const isElem1Higher = hasBothRows && elemDiff > 0;
+              const isElem2Higher = hasBothRows && elemDiff < 0;
 
               // Sharpness
               const sharp1 = u1?.sharpness ?? null;
@@ -383,7 +365,7 @@ export default function WeaponCompareModal({
                                   elemCfgRow1.border,
                                 )}
                               >
-                                <EIconRow1 size={10} />
+                                <ElementIcon element={elem1} size={11} />
                                 <span>{elemCfgRow1.label}{elemDmg1 ? ` ${elemDmg1}` : ''}</span>
                               </span>
                             )}
@@ -430,18 +412,60 @@ export default function WeaponCompareModal({
                       {rarityStyle.label}
                     </span>
 
-                    {/* Quick difference indicator */}
-                    {hasBothAtk && (
-                      <div className="mt-1 flex items-center justify-center text-[10px] text-mh-slate-400">
-                        {isAtk1Higher ? (
-                          <ChevronLeft size={13} className="text-emerald-400" />
-                        ) : isAtk2Higher ? (
-                          <ChevronRight size={13} className="text-emerald-400" />
-                        ) : (
-                          <Equal size={11} className="text-mh-slate-500" />
-                        )}
-                      </div>
-                    )}
+                    {/* Quick difference indicators */}
+                    <div className="mt-1.5 flex flex-col items-center gap-1">
+                      {/* Attack difference: double sign pointing to bigger */}
+                      {hasBothAtk && (
+                        <div
+                          className="flex items-center justify-center gap-1 text-[11px]"
+                          title={
+                            isAtk1Higher
+                              ? `${weapon1.name} has higher Attack (+${atkDiff})`
+                              : isAtk2Higher
+                              ? `${weapon2.name} has higher Attack (+${Math.abs(atkDiff)})`
+                              : 'Attack is equal'
+                          }
+                        >
+                          <Sword size={11} className="text-mh-slate-400 shrink-0" />
+                          {isAtk1Higher ? (
+                            <ChevronsLeft size={14} className="text-emerald-400 stroke-[2.5]" />
+                          ) : isAtk2Higher ? (
+                            <ChevronsRight size={14} className="text-emerald-400 stroke-[2.5]" />
+                          ) : (
+                            <Equal size={12} className="text-mh-slate-500" />
+                          )}
+                        </div>
+                      )}
+
+                      {/* Element / Status difference: double sign pointing to bigger in element color */}
+                      {hasBothRows && (
+                        <div
+                          className="flex items-center justify-center gap-1 text-[11px]"
+                          title={
+                            isElem1Higher
+                              ? `${weapon1.name} has higher ${elemCfgRow1.label}${elemDmg1 ? ` (${elemDmg1})` : ''}`
+                              : isElem2Higher
+                              ? `${weapon2.name} has higher ${elemCfgRow2.label}${elemDmg2 ? ` (${elemDmg2})` : ''}`
+                              : elemVal1 > 0
+                              ? `Element is equal (${elemCfgRow1.label}${elemDmg1 ? ` ${elemDmg1}` : ''})`
+                              : 'Neither weapon has an element'
+                          }
+                        >
+                          <ElementIcon
+                            element={isElem1Higher ? elem1 : isElem2Higher ? elem2 : (elem1 !== 'raw' ? elem1 : elem2)}
+                            size={11}
+                            className="shrink-0"
+                          />
+                          {isElem1Higher ? (
+                            <ChevronsLeft size={14} className={cn(elemCfgRow1.color, 'stroke-[2.5]')} />
+                          ) : isElem2Higher ? (
+                            <ChevronsRight size={14} className={cn(elemCfgRow2.color, 'stroke-[2.5]')} />
+                          ) : (
+                            <Equal size={12} className={elemVal1 > 0 ? elemCfgRow1.color : 'text-mh-slate-600'} />
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   {/* ── RIGHT: Weapon 2 Stats at Rarity r ── */}
@@ -501,7 +525,7 @@ export default function WeaponCompareModal({
                                   elemCfgRow2.border,
                                 )}
                               >
-                                <EIconRow2 size={10} />
+                                <ElementIcon element={elem2} size={11} />
                                 <span>{elemCfgRow2.label}{elemDmg2 ? ` ${elemDmg2}` : ''}</span>
                               </span>
                             )}

@@ -1,16 +1,20 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Shield, ChevronRight, Sparkles, Flame } from 'lucide-react';
+import { Shield, ChevronRight, Sparkles, Flame, Settings, LogIn } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import LoginModal from '../components/auth/LoginModal';
 import FeatureShowcase from '../components/home/FeatureShowcase';
 import { useUIStore } from '../store/uiStore';
-import { DEFAULT_SECTION_THEMES } from '../config/themes';
+import { resolveSectionTheme } from '../config/themes';
 
 export default function LandingPage() {
   const navigate = useNavigate();
   const { user } = useAuthStore();
-  const galleryTheme = useUIStore((s) => s.sectionThemes['/gallery'] ?? DEFAULT_SECTION_THEMES['/gallery']);
+  const sectionThemes = useUIStore((s) => s.sectionThemes);
+  const galleryTheme = resolveSectionTheme('/gallery', sectionThemes);
+  const armoryTheme = resolveSectionTheme('/armory', sectionThemes);
+  const challengesTheme = resolveSectionTheme('/challenges', sectionThemes);
+  const settingsTheme = resolveSectionTheme('/settings', sectionThemes);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
 
   const handleCTA = () => {
@@ -88,21 +92,181 @@ export default function LandingPage() {
             Share gear builds, manage your Visage Cards, and keep a field guide of what to hunt next.
           </p>
 
-          {/* Call to Actions */}
-          <div className="mt-10 flex flex-col sm:flex-row items-center gap-4">
-            <div data-rarity-theme={galleryTheme} className="section-theme w-full sm:w-auto">
-              <Link to="/gallery/collection?mode=builder" className="btn-mho-gold w-full sm:w-auto">
-                <span>Build a Visage Set</span>
-                <ChevronRight size={18} />
-              </Link>
+          {/* ── Quick Navigation Cluster (Themed Hunter's Compass) ── */}
+          <div className="mt-10 w-full max-w-4xl space-y-3.5">
+            {/* Row 1: Dual Primary Highlight CTAs */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              {/* Make Armour Combinations (Armory theme) */}
+              <div data-rarity-theme={armoryTheme} className="section-theme">
+                <Link
+                  to="/armory/armour"
+                  className="btn-mho-gold w-full flex items-center justify-between !py-3.5 !px-5 rounded-xl shadow-lg group transition-all"
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <img
+                      src="/img/ui/Equipment%20Icon.png"
+                      alt="Armour"
+                      className="w-7 h-7 object-contain drop-shadow group-hover:scale-110 transition-transform"
+                    />
+                    <div className="text-left min-w-0">
+                      <div className="font-display font-bold text-sm tracking-wide leading-tight">
+                        Make Armour Combinations
+                      </div>
+                      <div className="text-[11px] opacity-80 font-sans font-medium truncate">
+                        Armory &middot; Sets &amp; resistances
+                      </div>
+                    </div>
+                  </div>
+                  <ChevronRight size={18} className="shrink-0 opacity-75 group-hover:translate-x-0.5 transition-transform" />
+                </Link>
+              </div>
+
+              {/* Build a Visage Set (Gallery theme) */}
+              <div data-rarity-theme={galleryTheme} className="section-theme">
+                <Link
+                  to="/gallery/collection?mode=builder"
+                  className="btn-mho-gold w-full flex items-center justify-between !py-3.5 !px-5 rounded-xl shadow-lg group transition-all"
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <img
+                      src="/img/ui/Visage%20Icon.png"
+                      alt="Visage"
+                      className="w-7 h-7 object-contain drop-shadow group-hover:scale-110 transition-transform"
+                    />
+                    <div className="text-left min-w-0">
+                      <div className="font-display font-bold text-sm tracking-wide leading-tight">
+                        Build a Visage Set
+                      </div>
+                      <div className="text-[11px] opacity-80 font-sans font-medium truncate">
+                        Gallery &middot; Card synergy builder
+                      </div>
+                    </div>
+                  </div>
+                  <ChevronRight size={18} className="shrink-0 opacity-75 group-hover:translate-x-0.5 transition-transform" />
+                </Link>
+              </div>
             </div>
-            <Link
-              to="/armory"
-              className="btn-mho-panel w-full sm:w-auto"
-            >
-              <span>Browse Community Builds</span>
-              <Shield size={16} className="text-[#A3A3A3]" />
-            </Link>
+
+            {/* Row 2: Secondary Hub Features (Armory + Challenges) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+              {/* Browse Community Builds (Armory theme) */}
+              <div data-rarity-theme={armoryTheme} className="section-theme">
+                <Link
+                  to="/armory"
+                  className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-mh-slate-900/90 hover:bg-mh-slate-800/90 border border-white/10 hover:border-[var(--theme-accent)] transition-all group shadow-sm text-left"
+                >
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-black/40 border border-white/10 group-hover:border-[var(--theme-accent)] transition-colors">
+                    <Shield size={16} className="text-[var(--theme-accent)]" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-display font-bold text-xs text-white group-hover:text-[var(--theme-accent)] transition-colors truncate">
+                      Community Builds
+                    </div>
+                    <div className="text-[10px] text-mh-slate-400 truncate">
+                      Browse top gear sets
+                    </div>
+                  </div>
+                </Link>
+              </div>
+
+              {/* Compare Weapons (Challenges theme) */}
+              <div data-rarity-theme={challengesTheme} className="section-theme">
+                <Link
+                  to="/challenges/weapons"
+                  className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-mh-slate-900/90 hover:bg-mh-slate-800/90 border border-white/10 hover:border-[var(--theme-accent)] transition-all group shadow-sm text-left"
+                >
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-black/40 border border-white/10 group-hover:border-[var(--theme-accent)] transition-colors">
+                    <img
+                      src="/img/ui/Weapons%20Icon.png"
+                      alt="Weapons"
+                      className="w-5 h-5 object-contain"
+                    />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-display font-bold text-xs text-white group-hover:text-[var(--theme-accent)] transition-colors truncate">
+                      Compare Weapons
+                    </div>
+                    <div className="text-[10px] text-mh-slate-400 truncate">
+                      Upgrades, damage & tiers
+                    </div>
+                  </div>
+                </Link>
+              </div>
+
+              {/* Find the right Buddy (Challenges theme) */}
+              <div data-rarity-theme={challengesTheme} className="section-theme">
+                <Link
+                  to="/challenges/buddies"
+                  className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-mh-slate-900/90 hover:bg-mh-slate-800/90 border border-white/10 hover:border-[var(--theme-accent)] transition-all group shadow-sm text-left"
+                >
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-black/40 border border-white/10 group-hover:border-[var(--theme-accent)] transition-colors">
+                    <img
+                      src="/img/ui/Buddy%20Icon.png"
+                      alt="Buddy"
+                      className="w-5 h-5 object-contain"
+                    />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-display font-bold text-xs text-white group-hover:text-[var(--theme-accent)] transition-colors truncate">
+                      Find the Right Buddy
+                    </div>
+                    <div className="text-[10px] text-mh-slate-400 truncate">
+                      Felyne roles & abilities
+                    </div>
+                  </div>
+                </Link>
+              </div>
+
+              {/* See Adventurers (Challenges theme) */}
+              <div data-rarity-theme={challengesTheme} className="section-theme">
+                <Link
+                  to="/challenges/adventurers"
+                  className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-mh-slate-900/90 hover:bg-mh-slate-800/90 border border-white/10 hover:border-[var(--theme-accent)] transition-all group shadow-sm text-left"
+                >
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-black/40 border border-white/10 group-hover:border-[var(--theme-accent)] transition-colors">
+                    <img
+                      src="/img/ui/Adventurer%20Icon.png"
+                      alt="Adventurers"
+                      className="w-5 h-5 object-contain"
+                    />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-display font-bold text-xs text-white group-hover:text-[var(--theme-accent)] transition-colors truncate">
+                      See Adventurers
+                    </div>
+                    <div className="text-[10px] text-mh-slate-400 truncate">
+                      Hunter roster & support
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            </div>
+
+            {/* Row 3: Account Anchor (Profile & Settings / Login) */}
+            <div data-rarity-theme={settingsTheme} className="section-theme pt-1">
+              {user ? (
+                <Link
+                  to="/settings"
+                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[var(--theme-accent)] text-xs font-semibold text-mh-slate-300 hover:text-white transition-all shadow-xs"
+                >
+                  <Settings size={14} className="text-[var(--theme-accent)]" />
+                  <span>Profile & Settings</span>
+                  <span className="text-mh-slate-500 font-normal">&middot; Manage guild preferences & data</span>
+                  <ChevronRight size={13} className="text-mh-slate-500" />
+                </Link>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setLoginModalOpen(true)}
+                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[var(--theme-accent)] text-xs font-semibold text-mh-slate-300 hover:text-white transition-all shadow-xs cursor-pointer"
+                >
+                  <LogIn size={14} className="text-[var(--theme-accent)]" />
+                  <span>Hunter Login &amp; Register</span>
+                  <span className="text-mh-slate-500 font-normal">&middot; Save builds &amp; sync your collection</span>
+                  <ChevronRight size={13} className="text-mh-slate-500" />
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
