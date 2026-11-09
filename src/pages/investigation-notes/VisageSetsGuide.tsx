@@ -5,14 +5,12 @@ import {
   Loader2,
   Plus,
   Bookmark,
-  BookOpen,
-  Hammer,
   ChevronDown,
   ArrowLeft,
 } from 'lucide-react';
 import { useVisageSetsData } from '../../hooks/useVisageSets';
 import { type DBVisage, type VisageRarity, getInkConfig } from '../../data/schemas/visage';
-import { useNavigate, useSearchParams, Link } from 'react-router-dom';
+import { useNavigate, useSearchParams, Link, Navigate } from 'react-router-dom';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
 import {
   useHunterChallenges,
@@ -23,29 +21,7 @@ import {
 import VisageCard, { InkIconComponent } from './VisageCard';
 import VisageModal from './VisageModal';
 import LoginModal from '../../components/auth/LoginModal';
-import VisageBuilderPanel from '../../components/visage-builder/VisageBuilderPanel';
-import SaveVisageBuildModal from '../../components/visage-builder/SaveVisageBuildModal';
-import DuplicateBuildModal from '../../components/visage-builder/DuplicateBuildModal';
-import MissingCardsChallengeModal from '../../components/visage-builder/MissingCardsChallengeModal';
 import { useVisageBuilderStore } from '../../store/visageBuilderStore';
-import {
-  useVisageBuild,
-  useSaveVisageBuild,
-  useVisageBuildsList,
-  useUserVisageFavorites,
-} from '../../hooks/useVisageBuilds';
-import {
-  VISAGE_BUILD_SLOTS,
-  VISAGE_POINT_CAP,
-  canPlaceCard,
-  firstEmptySlot,
-  ownsCardInk,
-  rowToLoadout,
-  findDuplicateBuild,
-  getBuildability,
-  type MissingCard,
-  type VisageBuildRow,
-} from '../../lib/visageBuild';
 import { cn } from '../../lib/utils';
 import { useUIStore } from '../../store/uiStore';
 import { DEFAULT_SECTION_THEMES } from '../../config/themes';
@@ -58,12 +34,14 @@ const FIELD_INPUT =
   'w-full border border-[var(--border-subtle)] bg-black/30 text-xs text-white placeholder-[var(--text-secondary)] outline-none focus:border-[#FFD700]/70';
 
 export default function VisageSetsGuide() {
+  const [searchParams] = useSearchParams();
+  const mode = searchParams.get('mode');
+  const build = searchParams.get('build');
+
   const theme = useUIStore((s) => s.sectionThemes['/gallery'] ?? DEFAULT_SECTION_THEMES['/gallery']);
   const { user, profile } = useAuthStore();
   const {
     sets,
-    dbVisages,
-    collectionMap,
     isLoading,
     getCardCollection,
     setCardRarity,
@@ -72,6 +50,7 @@ export default function VisageSetsGuide() {
   } = useVisageSetsData({ showSpoilers: Boolean(profile?.show_spoilers) });
   const isAdmin = useAuthStore(selectIsAdmin);
   const navigate = useNavigate();
+  const builder = useVisageBuilderStore();
 
   const [selectedSetId, setSelectedSetId] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
@@ -97,179 +76,6 @@ export default function VisageSetsGuide() {
     };
   }, [showCollectedModal]);
 
-  // ── Builder mode (URL driven: ?mode=builder&build=<id>) ──────
-  const [searchParams, setSearchParams] = useSearchParams();
-  const isBuilder = searchParams.get('mode') === 'builder';
-  const buildParam = searchParams.get('build');
-
-  const builder = useVisageBuilderStore();
-  const { loadout, sourceMode } = builder;
-  const [notice, setNotice] = useState<string | null>(null);
-  const [saveModal, setSaveModal] = useState<{ open: boolean; asNew: boolean }>({ open: false, asNew: false });
-  const [saveError, setSaveError] = useState<string | null>(null);
-  const [duplicateModal, setDuplicateModal] = useState<{
-    open: boolean;
-    duplicate: VisageBuildRow | null;
-    pendingAsNew: boolean;
-  }>({ open: false, duplicate: null, pendingAsNew: false });
-  const [missingPrompt, setMissingPrompt] = useState<MissingCard[]>([]);
-  const [missingError, setMissingError] = useState<string | null>(null);
-
-  const saveBuild = useSaveVisageBuild();
-  const { data: loadedBuild } = useVisageBuild(isBuilder ? buildParam : null);
-  const { data: allBuilds = [] } = useVisageBuildsList();
-  const { favoritesSet, addFavorite, isLoading: isFavoriting } = useUserVisageFavorites();
-
-  const visagesById = useMemo(() => new Map(dbVisages.map((v) => [v.id, v])), [dbVisages]);
-
-  // Load a saved build into the builder when ?build= changes
-  useEffect(() => {
-    if (!loadedBuild || visagesById.size === 0) return;
-    if (builder.buildId === loadedBuild.id) return;
-    builder.load({
-      buildId: loadedBuild.id,
-      authorId: loadedBuild.author_id,
-      title: loadedBuild.title,
-      description: loadedBuild.description ?? '',
-      isPublished: loadedBuild.is_published,
-      loadout: rowToLoadout(loadedBuild, visagesById),
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadedBuild, visagesById]);
-
-  const setMode = (mode: 'album' | 'builder') => {
-    const next = new URLSearchParams(searchParams);
-    if (mode === 'builder') {
-      next.set('mode', 'builder');
-      if (builder.buildId) next.set('build', builder.buildId);
-    } else {
-      next.delete('mode');
-      next.delete('build');
-    }
-    setSearchParams(next, { replace: true });
-  };
-
-  const isOwner = !builder.buildId || builder.authorId === user?.id;
-
-  const buildCountFor = (cardId: string, ink: string) =>
-    VISAGE_BUILD_SLOTS.filter((s) => loadout[s].visage?.id === cardId && loadout[s].ink === ink).length;
-
-  const getBuildBlock = (card: DBVisage, ink: string): string | null => {
-    if (card.status === 'not_in_game' || card.is_spoiler) return 'Not available for builds (unreleased item)';
-    if (sourceMode === 'mine' && !ownsCardInk(collectionMap, card.id, ink)) return 'Not in your collection';
-    const slot = firstEmptySlot(loadout);
-    if (!slot) return 'All slots are full';
-    if (!canPlaceCard(loadout, card, slot)) return `Exceeds ${VISAGE_POINT_CAP} points`;
-    return null;
-  };
-
-  const handleBuildCardClick = (card: DBVisage, ink: string) => {
-    if (buildCountFor(card.id, ink) > 0) {
-      builder.removeCard(card.id, ink);
-      setNotice(null);
-      return;
-    }
-    const block = getBuildBlock(card, ink);
-    if (block) {
-      setNotice(`Can't add ${card.name}: ${block}.`);
-      return;
-    }
-    builder.addCard(card, ink);
-    setNotice(null);
-  };
-
-  const handleSaveRequest = (asNew: boolean) => {
-    if (!user) {
-      setLoginModalOpen(true);
-      return;
-    }
-
-    // Check for duplicate loadout in directory
-    const duplicate = findDuplicateBuild(
-      loadout,
-      allBuilds,
-      visagesById,
-      asNew ? null : builder.buildId,
-    );
-
-    if (duplicate) {
-      setDuplicateModal({
-        open: true,
-        duplicate,
-        pendingAsNew: asNew,
-      });
-      return;
-    }
-
-    setSaveError(null);
-    setSaveModal({ open: true, asNew });
-  };
-
-  const handleFavoriteExistingDuplicate = async (dup: VisageBuildRow) => {
-    try {
-      await addFavorite(dup.id);
-      setNotice(`Favorited "${dup.title}"! Added to your favorites.`);
-      setDuplicateModal({ open: false, duplicate: null, pendingAsNew: false });
-    } catch (e) {
-      alert(e instanceof Error ? e.message : 'Failed to favorite build');
-    }
-  };
-
-  const handleSaveCustomAnyway = () => {
-    const asNew = duplicateModal.pendingAsNew;
-    setDuplicateModal({ open: false, duplicate: null, pendingAsNew: false });
-    setSaveError(null);
-    setSaveModal({ open: true, asNew });
-  };
-
-  const handleSaveConfirm = async (v: { title: string; description: string; isPublished: boolean }) => {
-    if (!user) return;
-    const updateExisting = !saveModal.asNew && builder.buildId && isOwner;
-    try {
-      const id = await saveBuild.mutateAsync({
-        id: updateExisting ? builder.buildId : null,
-        authorId: user.id,
-        title: v.title,
-        description: v.description,
-        isPublished: v.isPublished,
-        loadout,
-      });
-      builder.setMeta(v);
-      builder.markSaved(id, user.id);
-      setSaveModal({ open: false, asNew: false });
-      const next = new URLSearchParams(searchParams);
-      next.set('mode', 'builder');
-      next.set('build', id);
-      setSearchParams(next, { replace: true });
-
-      // Offer to track cards the hunter doesn't own yet
-      const missing = getBuildability(loadout, collectionMap).missing.filter(
-        (m) => !getVisageChallenge(challenges, m.visage.id, m.ink),
-      );
-      if (missing.length > 0) {
-        setMissingError(null);
-        setMissingPrompt(missing);
-      }
-    } catch (e) {
-      setSaveError(e instanceof Error ? e.message : 'Failed to save build.');
-    }
-  };
-
-  const handleConfirmMissingChallenges = async () => {
-    try {
-      for (const m of missingPrompt) {
-        await handleAddVisageChallenge(m.visage, m.ink, collectionMap[`${m.visage.id}:${m.ink}`]?.rarity);
-      }
-      setNotice(
-        `Added ${missingPrompt.length} card${missingPrompt.length > 1 ? 's' : ''} to your Personal Hunter's Challenge.`,
-      );
-      setMissingPrompt([]);
-    } catch (e) {
-      setMissingError(e instanceof Error ? e.message : 'Failed to add challenges.');
-    }
-  };
-
-  // ── Personal Challenges ──────────────────────────────────────
   const { data: challenges = [] } = useHunterChallenges(user?.id);
   const addVisageChallenge = useAddVisageChallenge();
 
@@ -284,58 +90,90 @@ export default function VisageSetsGuide() {
     }
 
     const rarityIdx = currentRarity ? VISAGE_RARITY_INDEX[currentRarity] ?? 0 : 0;
-    await addVisageChallenge.mutateAsync({
-      userId: user.id,
-      game: 'mho',
-      visageId: card.id,
-      visageName: card.name,
-      inkType: (inkType || 'flames').toLowerCase(),
-      monsterId: card.monster_id ?? null,
-      monsterName: card.name,
-      pieceImage: card.monster_icon ?? null,
-      setIcon: card.monster_icon ?? null,
-      currentRarity: rarityIdx,
-      craftRarity: 1, // Fine
-      maxRarity: 4, // Superior
-    });
+    try {
+      await addVisageChallenge.mutateAsync({
+        userId: user.id,
+        game: 'mho',
+        visageId: card.id,
+        visageName: card.name,
+        inkType: (inkType || 'flames').toLowerCase(),
+        monsterId: card.monster_id ?? null,
+        monsterName: card.name,
+        pieceImage: card.monster_icon ?? null,
+        setIcon: card.monster_icon ?? null,
+        currentRarity: rarityIdx,
+        craftRarity: 1, // Fine
+        maxRarity: 4, // Superior
+      });
+    } catch (err) {
+      console.error('Failed to add visage challenge', err);
+    }
   };
 
-  // Filter the sets list on the left
+  // Helper to test if a card matches the search query (card name or core effect)
+  const cardMatchesSearch = (c: DBVisage, q: string) => {
+    if (c.name.toLowerCase().includes(q)) return true;
+    if (c.core_effect && c.core_effect.toLowerCase().includes(q)) return true;
+    return false;
+  };
+
+  // Filter and sort sets
   const filteredSets = useMemo(() => {
-    let list = [...sets];
+    return sets.filter((s) => {
+      if (filterMode === 'complete' && s.collectedCards < s.totalCards) return false;
+      if (filterMode === 'incomplete' && s.collectedCards === s.totalCards) return false;
+      if (searchQuery.trim() !== '') {
+        const q = searchQuery.toLowerCase().trim();
+        const matchesName = s.name.toLowerCase().includes(q);
+        const matchesShort = (s.shortName || '').toLowerCase().includes(q);
+        const matchesCard = s.cards.some((c) => cardMatchesSearch(c, q));
+        if (!matchesName && !matchesShort && !matchesCard) return false;
+      }
+      return true;
+    });
+  }, [sets, filterMode, searchQuery]);
 
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase().trim();
-      list = list.filter(
-        (s) =>
-          s.name.toLowerCase().includes(q) ||
-          s.shortName.toLowerCase().includes(q) ||
-          s.cards.some((c) => c.name.toLowerCase().includes(q) || c.id.toLowerCase().includes(q)),
-      );
+  // Keep selection synced when search/filters change
+  useEffect(() => {
+    if (filteredSets.length > 0) {
+      const exists = filteredSets.some((s) => s.id === selectedSetId);
+      if (!exists) {
+        setSelectedSetId(filteredSets[0].id);
+      }
     }
+  }, [filteredSets, selectedSetId]);
 
-    if (filterMode === 'complete') {
-      list = list.filter((s) => s.collectedCards === s.totalCards && s.totalCards > 0);
-    } else if (filterMode === 'incomplete') {
-      list = list.filter((s) => s.collectedCards < s.totalCards);
-    }
-
-    return list;
-  }, [sets, searchQuery, filterMode]);
-
-  // Currently selected active set
   const activeSet = useMemo(() => {
-    if (selectedSetId) {
-      const found = sets.find((s) => s.id === selectedSetId);
-      if (found) return found;
-    }
-    return sets[0] || null;
-  }, [sets, selectedSetId]);
+    return sets.find((s) => s.id === selectedSetId) || filteredSets[0] || sets[0] || null;
+  }, [sets, filteredSets, selectedSetId]);
 
   const activeInkCfg = activeSet ? getInkConfig(activeSet.id) : getInkConfig('flames');
 
+  // Columns for the active set, optionally filtered by search query
+  const displayedColumns = useMemo(() => {
+    if (!activeSet) return [];
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return activeSet.groupedColumns;
+
+    const hasCardMatches = activeSet.cards.some((c) => cardMatchesSearch(c, q));
+    if (!hasCardMatches) return activeSet.groupedColumns;
+
+    return activeSet.groupedColumns
+      .map((col) => {
+        const matchingCards = col.cards.filter((c) => cardMatchesSearch(c, q));
+        return {
+          ...col,
+          cards: matchingCards,
+          totalCount: matchingCards.length,
+          collectedCount: matchingCards.filter((c) =>
+            getCardCollection(c.id, activeSet.id),
+          ).length,
+        };
+      })
+      .filter((col) => col.cards.length > 0);
+  }, [activeSet, searchQuery, getCardCollection]);
+
   // Collection statistics across all available card slots in all sets
-  // Each (card, ink_set) pairing represents a distinct collectible slot in the album
   const collectionStats = useMemo(() => {
     let totalSlots = 0;
     let ssrCount = 0; // superior (Gold / SSR)
@@ -381,6 +219,11 @@ export default function VisageSetsGuide() {
     };
   }, [sets, getCardCollection]);
 
+  // If a user navigates to ?mode=builder, redirect to the new dedicated builder page
+  if (mode === 'builder') {
+    return <Navigate to={build ? `/gallery/set?build=${build}` : '/gallery/set'} replace />;
+  }
+
   return (
     <div data-rarity-theme={theme} className="section-theme flex flex-col flex-1 min-h-0 h-full gap-3 p-2 sm:p-3 text-white overflow-hidden">
       {/* ── Top Bar: Back to Gallery (Left), Centered Title (Center), Controls (Right) ── */}
@@ -408,11 +251,11 @@ export default function VisageSetsGuide() {
                 draggable={false}
                 className="h-7 w-7 sm:h-8 sm:w-8 shrink-0 object-contain"
               />
-              <span>{isBuilder ? 'Building Visage Set' : 'Visage Collection'}</span>
+              <span>Visage Collection</span>
             </h1>
           </div>
 
-          {/* Right: Collected Info & Toggle (Desktop) */}
+          {/* Right: Collected Info & New Visage Build button */}
           <div className="order-3 flex items-center gap-2 sm:gap-3 justify-end shrink-0 ml-auto sm:ml-0">
             {isLoading && <Loader2 size={14} className="animate-spin text-[var(--theme-accent)] shrink-0" />}
 
@@ -527,208 +370,76 @@ export default function VisageSetsGuide() {
               </div>
             </div>
 
-            {/* Album / Build Set toggle (desktop) */}
+            {/* "New Visage Build" button (desktop) */}
             <div className="hidden sm:block shrink-0">
-              <div className="inline-flex rounded-lg border border-[var(--border-subtle)] bg-black/30 p-0.5 text-xs">
-                <button
-                  type="button"
-                  onClick={() => setMode('album')}
-                  className={cn(
-                    'flex items-center gap-1.5 rounded-md px-2.5 sm:px-3 py-1 font-bold transition-all text-xs',
-                    !isBuilder ? ACTIVE_PILL : INACTIVE_PILL,
-                  )}
-                >
-                  <BookOpen size={13} />
-                  <span>Album</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setMode('builder')}
-                  className={cn(
-                    'flex items-center gap-1.5 rounded-md px-2.5 sm:px-3 py-1 font-bold transition-all text-xs',
-                    isBuilder ? ACTIVE_PILL : INACTIVE_PILL,
-                  )}
-                >
-                  <Hammer size={13} />
-                  <span>Build Set</span>
-                  {builder.dirty && <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />}
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  builder.reset();
+                  navigate('/gallery/set');
+                }}
+                className="btn-mho-gold shrink-0 !px-3 !py-1.5 !text-xs flex items-center gap-1.5 font-bold"
+              >
+                <Plus size={15} />
+                <span>New Visage Build</span>
+              </button>
             </div>
           </div>
 
-          {/* Row 2 (Mobile only): Album / Build Set toggle centered */}
+          {/* Row 2 (Mobile only): "New Visage Build" button centered */}
           <div className="order-4 sm:hidden w-full flex justify-center pt-1 border-t border-white/5">
-            <div className="inline-flex rounded-lg border border-[var(--border-subtle)] bg-black/30 p-0.5 text-xs">
-              <button
-                type="button"
-                onClick={() => setMode('album')}
-                className={cn(
-                  'flex items-center gap-1.5 rounded-md px-2.5 sm:px-3 py-1 font-bold transition-all text-xs',
-                  !isBuilder ? ACTIVE_PILL : INACTIVE_PILL,
-                )}
-              >
-                <BookOpen size={13} />
-                <span>Album</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setMode('builder')}
-                className={cn(
-                  'flex items-center gap-1.5 rounded-md px-2.5 sm:px-3 py-1 font-bold transition-all text-xs',
-                  isBuilder ? ACTIVE_PILL : INACTIVE_PILL,
-                )}
-              >
-                <Hammer size={13} />
-                <span>Build Set</span>
-                {builder.dirty && <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />}
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={() => {
+                builder.reset();
+                navigate('/gallery/set');
+              }}
+              className="btn-mho-gold w-full !py-1.5 !text-xs flex items-center justify-center gap-1.5 font-bold"
+            >
+              <Plus size={15} />
+              <span>New Visage Build</span>
+            </button>
           </div>
         </div>
       </div>
 
       {/* ── Main Book Container ── */}
-      {/* Layout follows the width of this container (not the screen) so the cards never need a sideways scroll */}
       <div className="@container flex flex-1 min-h-0 flex-col overflow-hidden">
-      <div className="flex flex-1 min-h-0 flex-col @[1250px]:flex-row gap-3 overflow-hidden">
-        {/* ── Compact Sets Strip on top (narrow containers) ── */}
-        <div className="mho-panel-deep @[1250px]:hidden shrink-0 flex flex-col min-h-0">
-          {/* Compact search & filter row */}
-          <div className="p-2 border-b border-[var(--border-subtle)] flex items-center gap-2">
-            <div className="relative flex-1">
-              <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search sets or monsters…"
-                className={cn(FIELD_INPUT, 'rounded-md py-1 pl-7 pr-2')}
-              />
-            </div>
-            {/* Filter pills */}
-            <div className="flex rounded-md border border-[var(--border-subtle)] bg-black/30 p-0.5 text-[10px] shrink-0">
-              {(['all', 'complete', 'incomplete'] as const).map((m) => (
-                <button
-                  key={m}
-                  onClick={() => setFilterMode(m)}
-                  className={cn(
-                    'px-2 py-0.5 rounded capitalize font-medium transition-colors',
-                    filterMode === m ? ACTIVE_PILL : INACTIVE_PILL,
-                  )}
-                >
-                  {m === 'all' ? `All (${sets.length})` : m}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Horizontally scrollable sets chips */}
-          <div className="flex items-center gap-1.5 overflow-x-auto p-2 scrollbar-none">
-            {filteredSets.map((s) => {
-              const cfg = getInkConfig(s.id);
-              const isSelected = activeSet?.id === s.id;
-              const isComplete = s.collectedCards === s.totalCards && s.totalCards > 0;
-
-              return (
-                <button
-                  key={s.id}
-                  onClick={() => setSelectedSetId(s.id)}
-                  className={cn(
-                    'flex items-center gap-2 rounded-xl px-2.5 py-1.5 shrink-0 transition-all text-left border select-none',
-                    isSelected
-                      ? 'bg-[var(--bg-superior)] border-[var(--border-active)] shadow-[0_0_12px_var(--accent-gold-glow)] text-white'
-                      : 'bg-white/5 border-[var(--border-subtle)] hover:border-[#FFD700]/50 text-mh-slate-300',
-                  )}
-                >
-                  <div
-                    className={cn(
-                      'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-xs',
-                      cfg.bg,
-                      cfg.border,
-                      cfg.text,
-                    )}
-                  >
-                    <InkIconComponent iconName={s.iconName || cfg.iconName} size={12} />
-                  </div>
-
-                  <span className={cn('text-xs font-bold whitespace-nowrap', isSelected ? 'text-[#FFD700]' : 'text-mh-slate-200')}>
-                    {s.shortName || s.name}
-                  </span>
-
-                  <span
-                    className={cn(
-                      'font-mono text-[10px] font-bold px-1.5 py-0.5 rounded',
-                      isComplete
-                        ? 'text-green-400 bg-green-500/15 border border-green-500/30'
-                        : s.collectedCards > 0
-                          ? 'text-amber-400 bg-amber-500/10'
-                          : 'text-mh-slate-500',
-                    )}
-                  >
-                    {s.collectedCards}/{s.totalCards}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* ── Left Sidebar: Sets List (wide containers) ── */}
-        <div className="mho-panel-deep hidden @[1250px]:flex w-72 @[1500px]:w-80 shrink-0 flex-col min-h-0 overflow-hidden">
-          {/* Search & Filter Bar */}
-          <div className="p-3 border-b border-[var(--border-subtle)] space-y-2 shrink-0">
-            <div className="relative">
-              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search sets or monsters…"
-                className={cn(FIELD_INPUT, 'rounded-lg py-1.5 pl-8 pr-3')}
-              />
-            </div>
-
-            {/* Filter mode */}
-            <div className="grid grid-cols-3 rounded-lg border border-[var(--border-subtle)] bg-black/30 p-0.5 text-xs">
-              <button
-                onClick={() => setFilterMode('all')}
-                className={cn(
-                  'rounded-md py-1 font-medium transition-colors text-center text-[11px]',
-                  filterMode === 'all' ? ACTIVE_PILL : INACTIVE_PILL,
-                )}
-              >
-                All ({sets.length})
-              </button>
-              <button
-                onClick={() => setFilterMode('complete')}
-                className={cn(
-                  'rounded-md py-1 font-medium transition-colors text-center text-[11px]',
-                  filterMode === 'complete' ? ACTIVE_PILL : INACTIVE_PILL,
-                )}
-              >
-                Complete
-              </button>
-              <button
-                onClick={() => setFilterMode('incomplete')}
-                className={cn(
-                  'rounded-md py-1 font-medium transition-colors text-center text-[11px]',
-                  filterMode === 'incomplete' ? ACTIVE_PILL : INACTIVE_PILL,
-                )}
-              >
-                Incomplete
-              </button>
-            </div>
-          </div>
-
-          {/* Sets List Items */}
-          <div className="flex-1 min-h-0 overflow-y-auto p-3 space-y-1.5">
-            {filteredSets.length === 0 ? (
-              <div className="p-6 text-center text-xs text-mh-slate-500">
-                No ink sets match your search criteria.
+        <div className="flex flex-1 min-h-0 flex-col @[1250px]:flex-row gap-3 overflow-hidden">
+          {/* ── Compact Sets Strip on top (narrow containers) ── */}
+          <div className="mho-panel-deep @[1250px]:hidden shrink-0 flex flex-col min-h-0">
+            {/* Compact search & filter row */}
+            <div className="p-2 border-b border-[var(--border-subtle)] flex items-center gap-2">
+              <div className="relative flex-1">
+                <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search sets or monsters…"
+                  className={cn(FIELD_INPUT, 'rounded-md py-1 pl-7 pr-2')}
+                />
               </div>
-            ) : (
-              filteredSets.map((s) => {
+              {/* Filter pills */}
+              <div className="flex rounded-md border border-[var(--border-subtle)] bg-black/30 p-0.5 text-[10px] shrink-0">
+                {(['all', 'complete', 'incomplete'] as const).map((m) => (
+                  <button
+                    key={m}
+                    onClick={() => setFilterMode(m)}
+                    className={cn(
+                      'px-2 py-0.5 rounded capitalize font-medium transition-colors',
+                      filterMode === m ? ACTIVE_PILL : INACTIVE_PILL,
+                    )}
+                  >
+                    {m === 'all' ? `All (${sets.length})` : m}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Horizontally scrollable sets chips */}
+            <div className="flex items-center gap-1.5 overflow-x-auto p-2 scrollbar-none">
+              {filteredSets.map((s) => {
                 const cfg = getInkConfig(s.id);
                 const isSelected = activeSet?.id === s.id;
                 const isComplete = s.collectedCards === s.totalCards && s.totalCards > 0;
@@ -738,296 +449,320 @@ export default function VisageSetsGuide() {
                     key={s.id}
                     onClick={() => setSelectedSetId(s.id)}
                     className={cn(
-                      'w-full flex items-center justify-between rounded-xl px-3 py-2.5 transition-all text-left group border',
+                      'flex items-center gap-2 rounded-xl px-2.5 py-1.5 shrink-0 transition-all text-left border select-none',
                       isSelected
-                        ? 'bg-[var(--bg-superior)] border-[var(--border-active)] shadow-[0_0_12px_var(--accent-gold-glow)]'
-                        : 'bg-white/5 border-[var(--border-subtle)] hover:border-[#FFD700]/50 hover:bg-white/10 text-mh-slate-300',
+                        ? 'bg-[var(--bg-superior)] border-[var(--border-active)] shadow-[0_0_12px_var(--accent-gold-glow)] text-white'
+                        : 'bg-white/5 border-[var(--border-subtle)] hover:border-[#FFD700]/50 text-mh-slate-300',
                     )}
                   >
-                    <div className="flex items-center gap-2.5 min-w-0">
-                      {/* Ink Icon Badge */}
-                      <div
-                        className={cn(
-                          'flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border text-xs shadow-sm transition-transform group-hover:scale-105',
-                          cfg.bg,
-                          cfg.border,
-                          cfg.text,
-                        )}
-                      >
-                        <InkIconComponent iconName={s.iconName || cfg.iconName} size={14} />
-                      </div>
-
-                      {/* Set Name */}
-                      <div className="truncate">
-                        <span
-                          className={cn(
-                            'block text-xs font-bold truncate leading-tight',
-                            isSelected ? 'text-[#FFD700]' : 'text-mh-slate-200 group-hover:text-white',
-                          )}
-                        >
-                          {s.name}
-                        </span>
-                        <span className="text-[10px] text-[var(--text-secondary)] font-mono">
-                          {s.cards.length} {s.cards.length === 1 ? 'card' : 'cards'}
-                        </span>
-                      </div>
+                    <div
+                      className={cn(
+                        'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-xs',
+                        cfg.bg,
+                        cfg.border,
+                        cfg.text,
+                      )}
+                    >
+                      <InkIconComponent iconName={s.iconName || cfg.iconName} size={12} />
                     </div>
 
-                    {/* Progress Badge */}
-                    <div className="flex items-center gap-1 shrink-0 ml-2">
-                      <span
-                        className={cn(
-                          'font-mono text-xs font-bold px-1.5 py-0.5 rounded',
-                          isComplete
-                            ? 'text-green-400 bg-green-500/15 border border-green-500/30'
-                            : s.collectedCards > 0
-                              ? 'text-amber-400 bg-amber-500/10'
-                              : 'text-mh-slate-500',
-                        )}
-                      >
-                        {s.collectedCards}/{s.totalCards}
-                      </span>
-                    </div>
+                    <span className={cn('text-xs font-bold whitespace-nowrap', isSelected ? 'text-[#FFD700]' : 'text-mh-slate-200')}>
+                      {s.shortName || s.name}
+                    </span>
+
+                    <span
+                      className={cn(
+                        'font-mono text-[10px] font-bold px-1.5 py-0.5 rounded',
+                        isComplete
+                          ? 'text-green-400 bg-green-500/15 border border-green-500/30'
+                          : s.collectedCards > 0
+                            ? 'text-amber-400 bg-amber-500/10'
+                            : 'text-mh-slate-500',
+                      )}
+                    >
+                      {s.collectedCards}/{s.totalCards}
+                    </span>
                   </button>
                 );
-              })
+              })}
+            </div>
+          </div>
+
+          {/* ── Left Sidebar: Sets List (wide containers) ── */}
+          <div className="mho-panel-deep hidden @[1250px]:flex w-72 @[1500px]:w-80 shrink-0 flex-col min-h-0 overflow-hidden">
+            {/* Search & Filter Bar */}
+            <div className="p-3 border-b border-[var(--border-subtle)] space-y-2 shrink-0">
+              <div className="relative">
+                <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search sets or monsters…"
+                  className={cn(FIELD_INPUT, 'rounded-lg py-1.5 pl-8 pr-3')}
+                />
+              </div>
+
+              {/* Filter mode */}
+              <div className="grid grid-cols-3 rounded-lg border border-[var(--border-subtle)] bg-black/30 p-0.5 text-xs">
+                <button
+                  onClick={() => setFilterMode('all')}
+                  className={cn(
+                    'rounded-md py-1 font-medium transition-colors text-center text-[11px]',
+                    filterMode === 'all' ? ACTIVE_PILL : INACTIVE_PILL,
+                  )}
+                >
+                  All ({sets.length})
+                </button>
+                <button
+                  onClick={() => setFilterMode('complete')}
+                  className={cn(
+                    'rounded-md py-1 font-medium transition-colors text-center text-[11px]',
+                    filterMode === 'complete' ? ACTIVE_PILL : INACTIVE_PILL,
+                  )}
+                >
+                  Complete
+                </button>
+                <button
+                  onClick={() => setFilterMode('incomplete')}
+                  className={cn(
+                    'rounded-md py-1 font-medium transition-colors text-center text-[11px]',
+                    filterMode === 'incomplete' ? ACTIVE_PILL : INACTIVE_PILL,
+                  )}
+                >
+                  Incomplete
+                </button>
+              </div>
+            </div>
+
+            {/* Sets List Items */}
+            <div className="flex-1 min-h-0 overflow-y-auto p-3 space-y-1.5">
+              {filteredSets.length === 0 ? (
+                <div className="p-6 text-center text-xs text-mh-slate-500">
+                  No ink sets match your search criteria.
+                </div>
+              ) : (
+                filteredSets.map((s) => {
+                  const cfg = getInkConfig(s.id);
+                  const isSelected = activeSet?.id === s.id;
+                  const isComplete = s.collectedCards === s.totalCards && s.totalCards > 0;
+
+                  return (
+                    <button
+                      key={s.id}
+                      onClick={() => setSelectedSetId(s.id)}
+                      className={cn(
+                        'w-full flex items-center justify-between rounded-xl px-3 py-2.5 transition-all text-left group border',
+                        isSelected
+                          ? 'bg-[var(--bg-superior)] border-[var(--border-active)] shadow-[0_0_12px_var(--accent-gold-glow)]'
+                          : 'bg-white/5 border-[var(--border-subtle)] hover:border-[#FFD700]/50 hover:bg-white/10 text-mh-slate-300',
+                      )}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={cn(
+                            'flex h-8 w-8 items-center justify-center rounded-lg border text-sm shadow-sm transition-transform group-hover:scale-105',
+                            cfg.bg,
+                            cfg.border,
+                            cfg.text,
+                          )}
+                        >
+                          <InkIconComponent iconName={s.iconName || cfg.iconName} size={16} />
+                        </div>
+                        <div>
+                          <span
+                            className={cn(
+                              'font-display text-sm font-bold tracking-wide transition-colors block',
+                              isSelected ? 'text-white' : 'text-mh-slate-200 group-hover:text-white',
+                            )}
+                          >
+                            {s.shortName || s.name}
+                          </span>
+                          <span className="text-[10px] text-mh-slate-400 block -mt-0.5">
+                            {s.cards.length} Visages
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-1.5">
+                        <span
+                          className={cn(
+                            'font-mono text-xs font-bold px-2 py-0.5 rounded-md border',
+                            isComplete
+                              ? 'text-green-400 bg-green-500/15 border-green-500/30'
+                              : s.collectedCards > 0
+                                ? 'text-amber-400 bg-amber-500/10 border-amber-500/20'
+                                : 'text-mh-slate-500 bg-black/20 border-white/5',
+                          )}
+                        >
+                          {s.collectedCards}/{s.totalCards}
+                        </span>
+                      </div>
+                    </button>
+                  );
+                })
+              )}
+            </div>
+          </div>
+
+          {/* ── Right Content: Active Set View (Album Mode) ── */}
+          <div className="flex-1 min-h-0 overflow-y-auto p-2.5 sm:p-4 lg:p-6">
+            {isLoading ? (
+              <div className="flex flex-col items-center justify-center h-full min-h-[300px] text-center">
+                <Loader2 size={32} className="animate-spin text-[#FFD700] mb-3" />
+                <p className="text-sm font-bold text-mh-slate-300">Loading Visage Sets…</p>
+              </div>
+            ) : activeSet ? (
+              <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6">
+                {/* Set Header Bar */}
+                <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3 border-b border-white/10 pb-2 sm:pb-3">
+                  <div className="flex items-center gap-2.5 sm:gap-3">
+                    <div
+                      className={cn(
+                        'flex h-9 w-9 items-center justify-center rounded-xl border shadow-md',
+                        activeInkCfg.bg,
+                        activeInkCfg.border,
+                        activeInkCfg.text,
+                      )}
+                    >
+                      <InkIconComponent iconName={activeSet.iconName || activeInkCfg.iconName} size={20} />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2.5">
+                        <h1 className="font-display text-xl sm:text-2xl font-bold text-white tracking-wide uppercase">
+                          {activeSet.name}
+                        </h1>
+                        <span className="font-mono text-xs font-bold text-green-400 bg-green-500/10 border border-green-500/30 px-2 py-0.5 rounded-md">
+                          {activeSet.collectedCards}/{activeSet.totalCards}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="text-xs flex items-center gap-1.5">
+                    <span className="text-[var(--text-secondary)]">
+                      Click any card to inspect stats & effect
+                    </span>
+                  </div>
+                </div>
+
+                {/* ── Columns Grouped by Points ── */}
+                {displayedColumns.length > 0 ? (
+                  <div className="flex flex-wrap gap-4 sm:gap-6 items-start pb-3">
+                    {displayedColumns.map((col) => (
+                      <div
+                        key={col.points}
+                        className="mho-panel flex-1 min-w-[200px] max-w-[340px] p-4 shadow-md"
+                      >
+                        {/* Group Header */}
+                        <div className="flex items-center justify-between border-b border-white/10 pb-2.5 mb-3.5">
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-[#FFD700] text-xs">❖</span>
+                            <span className="font-display text-sm font-bold uppercase tracking-wide text-white">
+                              Points: {col.points}
+                            </span>
+                          </div>
+                          <span className="font-mono text-xs font-semibold text-green-400">
+                            {col.collectedCount}/{col.totalCount}
+                          </span>
+                        </div>
+
+                        {/* Card Grid within this Point Group */}
+                        <div className="grid grid-cols-2 sm:grid-cols-2 gap-3 justify-items-center">
+                          {col.cards.map((card) => (
+                            <VisageCard
+                              key={card.id}
+                              card={card}
+                              currentInk={activeSet.id}
+                              collectionEntry={getCardCollection(card.id, activeSet.id)}
+                              challenge={getVisageChallenge(challenges, card.id, activeSet.id)}
+                              onSetRarity={(rarity, qty) => setCardRarity(card.id, activeSet.id, rarity, qty)}
+                              onSetQuantity={(qty) => setCardQuantity(card.id, activeSet.id, qty)}
+                              onRemoveFromCollection={() => removeCardFromCollection(card.id, activeSet.id)}
+                              onAddChallenge={handleAddVisageChallenge}
+                              onClick={() => setInspectedCard(card)}
+                              buildMode={false}
+                              onInspect={() => setInspectedCard(card)}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-[var(--border-subtle)] bg-white/5 py-12 px-6 text-center">
+                    <div className={cn('flex h-12 w-12 items-center justify-center rounded-xl border mb-3', activeInkCfg.bg, activeInkCfg.border, activeInkCfg.text)}>
+                      <InkIconComponent iconName={activeSet.iconName || activeInkCfg.iconName} size={24} />
+                    </div>
+                    <h3 className="font-display text-sm font-bold text-mh-slate-300">
+                      {searchQuery.trim()
+                        ? `No cards in ${activeSet.name} match "${searchQuery}"`
+                        : `No Visage cards for ${activeSet.name} in Supabase yet`}
+                    </h3>
+                    <p className="text-xs text-mh-slate-500 mt-1 max-w-sm">
+                      Cards assigned to this ink in the database will automatically appear here grouped by their points.
+                    </p>
+                    {isAdmin && (
+                      <button
+                        onClick={() => navigate('/admin/visages')}
+                        className="mt-4 flex items-center gap-1.5 rounded-lg bg-mh-gold-500/15 border border-mh-gold-500/30 px-3.5 py-1.5 text-xs font-bold text-mh-gold-300 hover:bg-mh-gold-500/25 transition-colors"
+                      >
+                        <Plus size={13} />
+                        Add Cards in Admin Panel
+                      </button>
+                    )}
+                  </div>
+                )}
+
+                {/* ── Set Bonus Skills Section (Directly underneath the groups) ── */}
+                <div className="mho-card-rarity rarity-theme-standard p-5 shadow-lg space-y-3">
+                  <div className="flex items-center gap-2 text-sm font-bold text-[#FFD700]">
+                    <div className={cn('flex h-5 w-5 items-center justify-center rounded', activeInkCfg.text)}>
+                      <InkIconComponent iconName={activeSet.iconName || activeInkCfg.iconName} size={15} />
+                    </div>
+                    <span>{activeSet.name}</span>
+                  </div>
+
+                  <div className="space-y-2 pl-1">
+                    {activeSet.thresholds.map((tier, idx) => (
+                      <div key={idx} className="flex items-start gap-2 text-xs sm:text-sm text-mh-slate-200">
+                        <span className="text-mh-gold-400 font-bold mt-0.5">•</span>
+                        <div>
+                          <span className="font-display font-bold text-mh-gold-300 mr-2">
+                            [ {tier.pieces}-Piece Set ]
+                          </span>
+                          <span className="text-mh-slate-100">
+                            {tier.description}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center p-12 text-center text-mh-slate-500 min-h-[300px]">
+                <Layers size={48} className="mb-3 opacity-30 text-mh-gold-400" />
+                <h3 className="font-display text-base font-bold text-mh-slate-300">
+                  No Visage Sets Found in Database
+                </h3>
+                <p className="text-xs text-mh-slate-400 mt-1 max-w-md">
+                  Sets are automatically generated when Visage cards are added to Supabase and linked to a set bonus skill or ink type.
+                </p>
+                {isAdmin && (
+                  <button
+                    onClick={() => navigate('/admin/visages')}
+                    className="mt-4 flex items-center gap-1.5 rounded-lg bg-mh-gold-500/15 border border-mh-gold-500/30 px-4 py-2 text-xs font-bold text-mh-gold-300 hover:bg-mh-gold-500/25 transition-colors shadow-sm"
+                  >
+                    <Plus size={14} />
+                    Manage Visages in Admin Panel
+                  </button>
+                )}
+              </div>
             )}
           </div>
         </div>
-
-        {/* ── Right Content: Active Set View ── */}
-        <div className="flex-1 min-h-0 overflow-y-auto p-2.5 sm:p-4 lg:p-6">
-          {isLoading ? (
-            <div className="flex flex-col items-center justify-center h-full min-h-[300px] text-center">
-              <Loader2 size={32} className="animate-spin text-[#FFD700] mb-3" />
-              <p className="text-sm font-bold text-mh-slate-300">Loading Visage Sets…</p>
-            </div>
-          ) : activeSet ? (
-            <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6">
-              {/* Set Header Bar */}
-              <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3 border-b border-white/10 pb-2 sm:pb-3">
-                <div className="flex items-center gap-2.5 sm:gap-3">
-                  <div
-                    className={cn(
-                      'flex h-9 w-9 items-center justify-center rounded-xl border shadow-md',
-                      activeInkCfg.bg,
-                      activeInkCfg.border,
-                      activeInkCfg.text,
-                    )}
-                  >
-                    <InkIconComponent iconName={activeSet.iconName || activeInkCfg.iconName} size={20} />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2.5">
-                      <h1 className="font-display text-xl sm:text-2xl font-bold text-white tracking-wide uppercase">
-                        {activeSet.name}
-                      </h1>
-                      <span className="font-mono text-xs font-bold text-green-400 bg-green-500/10 border border-green-500/30 px-2 py-0.5 rounded-md">
-                        {activeSet.collectedCards}/{activeSet.totalCards}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="text-xs flex items-center gap-1.5">
-                  <span className="text-[var(--text-secondary)]">
-                    {isBuilder ? 'Click card to add/remove from build' : 'Click any card to inspect stats & effect'}
-                  </span>
-                </div>
-              </div>
-
-              {/* Inline Builder Panel (narrower containers) */}
-              {isBuilder && (
-                <div className="@[1640px]:hidden">
-                  <VisageBuilderPanel
-                    sets={sets}
-                    visages={dbVisages}
-                    collectionMap={collectionMap}
-                    isOwner={isOwner}
-                    notice={notice}
-                    onNotice={setNotice}
-                    onSave={handleSaveRequest}
-                  />
-                </div>
-              )}
-
-              {/* ── Columns Grouped by Points ── */}
-              {activeSet.groupedColumns.length > 0 ? (
-                <div className="flex flex-wrap gap-4 sm:gap-6 items-start pb-3">
-                  {activeSet.groupedColumns.map((col) => (
-                    <div
-                      key={col.points}
-                      className="mho-panel flex-1 min-w-[200px] max-w-[340px] p-4 shadow-md"
-                    >
-                      {/* Group Header */}
-                      <div className="flex items-center justify-between border-b border-white/10 pb-2.5 mb-3.5">
-                        <div className="flex items-center gap-1.5">
-                          <span className="text-[#FFD700] text-xs">❖</span>
-                          <span className="font-display text-sm font-bold uppercase tracking-wide text-white">
-                            Points: {col.points}
-                          </span>
-                        </div>
-                        <span className="font-mono text-xs font-semibold text-green-400">
-                          {col.collectedCount}/{col.totalCount}
-                        </span>
-                      </div>
-
-                      {/* Card Grid within this Point Group */}
-                      <div className="grid grid-cols-2 sm:grid-cols-2 gap-3 justify-items-center">
-                        {col.cards.map((card) => (
-                          <VisageCard
-                            key={card.id}
-                            card={card}
-                            currentInk={activeSet.id}
-                            collectionEntry={getCardCollection(card.id, activeSet.id)}
-                            challenge={getVisageChallenge(challenges, card.id, activeSet.id)}
-                            onSetRarity={(rarity, qty) => setCardRarity(card.id, activeSet.id, rarity, qty)}
-                            onSetQuantity={(qty) => setCardQuantity(card.id, activeSet.id, qty)}
-                            onRemoveFromCollection={() => removeCardFromCollection(card.id, activeSet.id)}
-                            onAddChallenge={handleAddVisageChallenge}
-                            onClick={() => {
-                              if (isBuilder) {
-                                handleBuildCardClick(card, activeSet.id);
-                              } else {
-                                setInspectedCard(card);
-                              }
-                            }}
-                            buildMode={isBuilder}
-                            isCoreCard={isBuilder && loadout.core.visage?.id === card.id}
-                            buildCount={isBuilder ? buildCountFor(card.id, activeSet.id) : 0}
-                            buildDisabled={isBuilder ? Boolean(getBuildBlock(card, activeSet.id)) : false}
-                            buildDisabledReason={isBuilder ? (getBuildBlock(card, activeSet.id) ?? undefined) : undefined}
-                            onInspect={() => setInspectedCard(card)}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-[var(--border-subtle)] bg-white/5 py-12 px-6 text-center">
-                  <div className={cn('flex h-12 w-12 items-center justify-center rounded-xl border mb-3', activeInkCfg.bg, activeInkCfg.border, activeInkCfg.text)}>
-                    <InkIconComponent iconName={activeSet.iconName || activeInkCfg.iconName} size={24} />
-                  </div>
-                  <h3 className="font-display text-sm font-bold text-mh-slate-300">
-                    No Visage cards for {activeSet.name} in Supabase yet
-                  </h3>
-                  <p className="text-xs text-mh-slate-500 mt-1 max-w-sm">
-                    Cards assigned to this ink in the database will automatically appear here grouped by their points.
-                  </p>
-                  {isAdmin && (
-                    <button
-                      onClick={() => navigate('/admin/visages')}
-                      className="mt-4 flex items-center gap-1.5 rounded-lg bg-mh-gold-500/15 border border-mh-gold-500/30 px-3.5 py-1.5 text-xs font-bold text-mh-gold-300 hover:bg-mh-gold-500/25 transition-colors"
-                    >
-                      <Plus size={13} />
-                      Add Cards in Admin Panel
-                    </button>
-                  )}
-                </div>
-              )}
-
-              {/* ── Set Bonus Skills Section (Directly underneath the groups) ── */}
-              <div className="mho-card-rarity rarity-theme-standard p-5 shadow-lg space-y-3">
-                {/* Title */}
-                <div className="flex items-center gap-2 text-sm font-bold text-[#FFD700]">
-                  <div className={cn('flex h-5 w-5 items-center justify-center rounded', activeInkCfg.text)}>
-                    <InkIconComponent iconName={activeSet.iconName || activeInkCfg.iconName} size={15} />
-                  </div>
-                  <span>{activeSet.name}</span>
-                </div>
-
-                {/* Skill Threshold Bullets */}
-                <div className="space-y-2 pl-1">
-                  {activeSet.thresholds.map((tier, idx) => (
-                    <div key={idx} className="flex items-start gap-2 text-xs sm:text-sm text-mh-slate-200">
-                      <span className="text-mh-gold-400 font-bold mt-0.5">•</span>
-                      <div>
-                        <span className="font-display font-bold text-mh-gold-300 mr-2">
-                          [ {tier.pieces}-Piece Set ]
-                        </span>
-                        <span className="text-mh-slate-100">
-                          {tier.description}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center p-12 text-center text-mh-slate-500 min-h-[300px]">
-              <Layers size={48} className="mb-3 opacity-30 text-mh-gold-400" />
-              <h3 className="font-display text-base font-bold text-mh-slate-300">
-                No Visage Sets Found in Database
-              </h3>
-              <p className="text-xs text-mh-slate-400 mt-1 max-w-md">
-                Sets are automatically generated when Visage cards are added to Supabase and linked to a set bonus skill or ink type.
-              </p>
-              {isAdmin && (
-                <button
-                  onClick={() => navigate('/admin/visages')}
-                  className="mt-4 flex items-center gap-1.5 rounded-lg bg-mh-gold-500/15 border border-mh-gold-500/30 px-4 py-2 text-xs font-bold text-mh-gold-300 hover:bg-mh-gold-500/25 transition-colors shadow-sm"
-                >
-                  <Plus size={14} />
-                  Manage Visages in Admin Panel
-                </button>
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* ── Builder Column (wide containers) ── */}
-        {isBuilder && (
-          <div className="mho-panel-deep hidden @[1640px]:block w-[380px] @[1900px]:w-[420px] shrink-0 overflow-y-auto p-4 min-h-0">
-            <VisageBuilderPanel
-              sets={sets}
-              visages={dbVisages}
-              collectionMap={collectionMap}
-              isOwner={isOwner}
-              notice={notice}
-              onNotice={setNotice}
-              onSave={handleSaveRequest}
-            />
-          </div>
-        )}
       </div>
-      </div>
-
-      {/* ── Duplicate Build Modal ── */}
-      <DuplicateBuildModal
-        open={duplicateModal.open}
-        duplicate={duplicateModal.duplicate}
-        visagesById={visagesById}
-        isFavorite={Boolean(duplicateModal.duplicate && favoritesSet.has(duplicateModal.duplicate.id))}
-        isFavoriting={isFavoriting}
-        onClose={() => setDuplicateModal({ open: false, duplicate: null, pendingAsNew: false })}
-        onFavoriteExisting={handleFavoriteExistingDuplicate}
-        onSaveCustomAnyway={handleSaveCustomAnyway}
-      />
-
-      {/* ── Missing Cards → Personal Hunter's Challenge Prompt ── */}
-      <MissingCardsChallengeModal
-        open={missingPrompt.length > 0}
-        missing={missingPrompt}
-        adding={addVisageChallenge.isPending}
-        error={missingError}
-        onConfirm={handleConfirmMissingChallenges}
-        onDecline={() => setMissingPrompt([])}
-      />
-
-      {/* ── Save Visage Build Modal ── */}
-      <SaveVisageBuildModal
-        open={saveModal.open}
-        asNew={saveModal.asNew}
-        initialTitle={builder.title}
-        initialDescription={builder.description}
-        initialPublished={builder.isPublished}
-        saving={saveBuild.isPending}
-        error={saveError}
-        onClose={() => setSaveModal({ open: false, asNew: false })}
-        onConfirm={handleSaveConfirm}
-      />
 
       {/* ── Card Detail Modal ── */}
       <VisageModal

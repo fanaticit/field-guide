@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
 
 interface PageTitlePanelProps {
+  /** Optional back button placed before the title icon */
+  backButton?: ReactNode;
   /** Artwork shown at the left of the title */
   icon: string;
   title: string;
@@ -17,6 +19,7 @@ interface PageTitlePanelProps {
  * `.section-theme` / `.challenges-theme` element with a data-rarity-theme attribute.
  */
 export default function PageTitlePanel({
+  backButton,
   icon,
   title,
   description,
@@ -29,6 +32,7 @@ export default function PageTitlePanel({
 
   return (
     <div className="mho-panel mho-card-rarity flex flex-wrap items-center gap-x-3 gap-y-2 px-3 py-2 shadow-xl">
+      {backButton}
       <img src={icon} alt="" draggable={false} className="h-8 w-8 shrink-0 object-contain" />
       <h1 className="font-display text-base font-bold uppercase tracking-wide text-white flex items-center gap-1.5 shrink-0">
         <span className="text-[var(--theme-accent)] text-sm">❖</span>

@@ -124,7 +124,7 @@ export default function LandingPage() {
               {/* Build a Visage Set (Gallery theme) */}
               <div data-rarity-theme={galleryTheme} className="section-theme">
                 <Link
-                  to="/gallery/collection?mode=builder"
+                  to="/gallery/set"
                   className="btn-mho-gold w-full flex items-center justify-between !py-3.5 !px-5 rounded-xl shadow-lg group transition-all"
                 >
                   <div className="flex items-center gap-3 min-w-0">

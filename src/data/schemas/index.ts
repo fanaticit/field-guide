@@ -46,4 +46,5 @@ export type {
 } from './game.js';
 
 export * from './adventurer.js';
+export * from './otherResource.js';
 

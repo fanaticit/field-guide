@@ -24,6 +24,7 @@ import {
   Home,
   LayoutGrid,
   BookMarked,
+  Layers,
   ChevronUp,
   X,
   type LucideIcon,
@@ -31,6 +32,7 @@ import {
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
 import { useBuildPlannerStore } from '../../store/buildPlannerStore';
+import { useVisageBuilderStore } from '../../store/visageBuilderStore';
 import { useUIStore } from '../../store/uiStore';
 import { DEFAULT_SECTION_THEMES, themeToNavAccent } from '../../config/themes';
 import { cn } from '../../lib/utils';
@@ -226,6 +228,16 @@ export default function MainNav() {
       active: pathname.startsWith('/gallery'),
       subItems: [
         { id: 'gallery-sets', label: 'Visage Sets', icon: Sparkles, active: pathname === '/gallery' || pathname === '/gallery/sets', onSelect: go('/gallery') },
+        {
+          id: 'gallery-builder',
+          label: 'Build Set',
+          icon: Layers,
+          active: pathname.startsWith('/gallery/set'),
+          onSelect: () => {
+            const { buildId } = useVisageBuilderStore.getState();
+            navigate(buildId ? `/gallery/set?build=${buildId}` : '/gallery/set');
+          },
+        },
         { id: 'gallery-collection', label: 'Visage Collection', icon: BookMarked, active: pathname.startsWith('/gallery/collection'), onSelect: go('/gallery/collection') },
       ],
     },

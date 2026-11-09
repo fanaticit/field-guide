@@ -79,7 +79,7 @@ const SECTIONS: Section[] = [
           'Assemble a five card Visage set within the point cap, watch the ink set bonuses light up, and send it straight to the Build Planner to attach it to a build.',
         image: 'visage-builder',
         imageAlt: 'Visage set builder with card slots and set bonuses',
-        to: '/gallery/collection?mode=builder',
+        to: '/gallery/set',
         linkLabel: 'Build a set',
       },
       {

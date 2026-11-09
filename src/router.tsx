@@ -23,6 +23,7 @@ import VisageBuilds from './pages/VisageBuilds';
 import HunterChallenges from './pages/HunterChallenges';
 import ArmourGuide from './pages/investigation-notes/ArmourGuide';
 import VisageSetsGuide from './pages/investigation-notes/VisageSetsGuide';
+import VisageSetBuilder from './pages/investigation-notes/VisageSetBuilder';
 import AdventurerGuide from './pages/investigation-notes/AdventurerGuide';
 import BuddyGuide from './pages/investigation-notes/BuddyGuide';
 import WeaponGuide from './pages/investigation-notes/WeaponGuide';
@@ -47,7 +48,9 @@ export const router = createBrowserRouter([
 
       // ── 2. Gallery ──
       { path: 'gallery', element: <VisageBuilds /> },
-      { path: 'gallery/sets', element: <Navigate to="/gallery" replace /> },
+      { path: 'gallery/sets', element: <Navigate to="/gallery/set" replace /> },
+      { path: 'gallery/set', element: <div className="p-0 sm:p-2 lg:p-4 flex-1 flex flex-col min-h-0"><VisageSetBuilder /></div> },
+      { path: 'gallery/set/:buildId', element: <div className="p-0 sm:p-2 lg:p-4 flex-1 flex flex-col min-h-0"><VisageSetBuilder /></div> },
       { path: 'gallery/collection', element: <div className="p-0 sm:p-2 lg:p-4 flex-1 flex flex-col min-h-0"><VisageSetsGuide /></div> },
 
       // ── 3. Challenges ──

@@ -8,6 +8,7 @@ export type Page =
   | 'build-planner'
   | 'armour'
   | 'gallery'
+  | 'visage-set'
   | 'visage-collection'
   | 'challenges'
   | 'adventurers'

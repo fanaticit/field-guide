@@ -16,6 +16,8 @@ const pageToPath: Record<string, string> = {
   'build-planner': '/armory/planner',
   'armour': '/armory/armour',
   'gallery': '/gallery',
+  'visage-set': '/gallery/set',
+  'visage-builder': '/gallery/set',
   'visage-collection': '/gallery/collection',
   'challenges': '/challenges',
   'adventurers': '/challenges/adventurers',

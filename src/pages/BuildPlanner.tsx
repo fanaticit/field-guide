@@ -1,6 +1,6 @@
 import { Save, Copy, ArrowLeft, ThumbsUp, RotateCcw, CheckCircle2, Package, Globe } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '../store/authStore';
 import { useBuildPlannerStore } from '../store/buildPlannerStore';
@@ -22,6 +22,7 @@ export default function BuildPlanner() {
   const store = useBuildPlannerStore();
   const { buildId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const queryClient = useQueryClient();
   const titleInputRef = useRef<HTMLInputElement>(null);
   useSkillCatalogLoader();
@@ -44,6 +45,13 @@ export default function BuildPlanner() {
       setSelectionFeedback(null);
     }, 2200);
   };
+
+  useEffect(() => {
+    if (location.state?.sentVisages) {
+      triggerFeedback('Equipped Visage Set from Gallery!');
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   // Track previous selections for feedback
   const prevSelectionsRef = useRef({

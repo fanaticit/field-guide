@@ -5,8 +5,7 @@
 // Visuals are lifted from build-planner/VisageSelector.
 // ─────────────────────────────────────────────────────────────
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ChevronDown, Copy, Library, Plus, RotateCcw, Save, Search, Check, Sparkles } from 'lucide-react';
+import { ChevronDown, Search, Sparkles } from 'lucide-react';
 import { getInkConfig, DEFAULT_VISAGE_RARITY, type DBVisage } from '../../data/schemas/visage';
 import type { CardCollectionEntry, VisageSet } from '../../hooks/useVisageSets';
 import { InkIconComponent } from '../../pages/investigation-notes/VisageCard';
@@ -15,7 +14,6 @@ import {
   VISAGE_POINT_CAP,
   canPlaceCard,
   getBuildability,
-  getTotalPoints,
   normalizeInk,
   ownsCardInk,
   slotLabel,
@@ -29,24 +27,32 @@ interface Props {
   sets: VisageSet[];
   visages: DBVisage[];
   collectionMap: Record<string, CardCollectionEntry>;
-  isOwner: boolean;
   notice: string | null;
   onNotice: (msg: string | null) => void;
-  onSave: (asNew: boolean) => void;
+  // Optional legacy props kept for seamless compatibility
+  isOwner?: boolean;
+  onSave?: (asNew: boolean) => void;
+  onSendToPlanner?: () => void;
+  isSaving?: boolean;
+  isJustSaved?: boolean;
 }
 
-export default function VisageBuilderPanel({ sets, visages, collectionMap, isOwner, notice, onNotice, onSave }: Props) {
-  const { loadout, sourceMode, setSourceMode, setSlot, setSlotInk, buildId, title, dirty, reset } = useVisageBuilderStore();
+export default function VisageBuilderPanel({
+  sets,
+  visages,
+  collectionMap,
+  notice,
+  onNotice,
+}: Props) {
+  const { loadout, sourceMode, setSlot, setSlotInk } = useVisageBuilderStore();
 
   const [openSlot, setOpenSlot] = useState<VisageBuildSlot | null>(null);
   const [inkPickSlot, setInkPickSlot] = useState<VisageBuildSlot | null>(null);
   const [filterInk, setFilterInk] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [showEffects, setShowEffects] = useState(false);
-  const [copied, setCopied] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
-  const totalPoints = getTotalPoints(loadout);
   const buildability = useMemo(() => getBuildability(loadout, collectionMap), [loadout, collectionMap]);
   const filled = Object.values(loadout).some((e) => e.visage);
   const mineOnly = sourceMode === 'mine';
@@ -90,18 +96,6 @@ export default function VisageBuilderPanel({ sets, visages, collectionMap, isOwn
     setFilterInk(ink);
     setSearch('');
     setInkPickSlot(null);
-  };
-
-  const copyLink = async () => {
-    if (!buildId) return;
-    const url = `${window.location.origin}/gallery/collection?mode=builder&build=${buildId}`;
-    try {
-      await navigator.clipboard.writeText(url);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
-    } catch {
-      window.prompt('Copy this link', url);
-    }
   };
 
   const renderSlot = (slot: VisageBuildSlot) => {
@@ -232,7 +226,7 @@ export default function VisageBuilderPanel({ sets, visages, collectionMap, isOwn
     const q = search.toLowerCase().trim();
     const list = visages.filter((v) => {
       if (filterInk && !v.ink_types.some((i) => normalizeInk(i) === filterInk)) return false;
-      if (q && !v.name.toLowerCase().includes(q)) return false;
+      if (q && !v.name.toLowerCase().includes(q) && !(v.core_effect && v.core_effect.toLowerCase().includes(q))) return false;
       return true;
     });
 
@@ -319,40 +313,6 @@ export default function VisageBuilderPanel({ sets, visages, collectionMap, isOwn
 
   return (
     <div ref={rootRef} className="mho-panel rounded-2xl p-3 sm:p-4 flex flex-col gap-3 shadow-xl">
-      {/* Header */}
-      <div className="flex items-center gap-2 flex-wrap">
-        <div className="mr-auto min-w-0">
-          <h2 className="font-display text-sm font-bold uppercase tracking-wide text-[#FFD700] truncate flex items-center gap-1.5">
-            {title || 'New Visage Build'}
-            {dirty && <span className="w-1.5 h-1.5 rounded-full bg-amber-400" title="Unsaved changes" />}
-          </h2>
-        </div>
-        <div className="flex rounded-full border border-[var(--border-subtle)] bg-black/30 p-0.5 text-[10px] font-bold">
-          {(['mine', 'any'] as const).map((m) => (
-            <button
-              key={m}
-              onClick={() => setSourceMode(m)}
-              className={cn(
-                'px-2.5 py-0.5 rounded-full transition-colors',
-                sourceMode === m
-                  ? 'bg-gradient-to-b from-[#EAD17A] to-[#C9A042] text-[#1A1408]'
-                  : 'text-[var(--text-secondary)] hover:text-white',
-              )}
-            >
-              {m === 'mine' ? '📦 My Cards' : '🌐 Any Cards'}
-            </button>
-          ))}
-        </div>
-        <span
-          className={cn(
-            'px-2 py-0.5 rounded-full text-[10px] font-bold',
-            totalPoints > VISAGE_POINT_CAP ? 'bg-red-500/20 text-red-400' : 'bg-mh-slate-800 text-mh-slate-300',
-          )}
-        >
-          {totalPoints} / {VISAGE_POINT_CAP} pts
-        </span>
-      </div>
-
       {/* Slots */}
       <div className="flex w-full items-start gap-2">
         <div className="w-[22%] shrink-0">{renderSlot('core')}</div>
@@ -429,53 +389,6 @@ export default function VisageBuilderPanel({ sets, visages, collectionMap, isOwn
         <div className={cn('mt-2 xl:mt-0', showEffects ? 'block' : 'hidden xl:block')}>
           <VisageBuildEffects loadout={loadout} sets={sets} onAddForInk={openPickerForInk} />
         </div>
-      </div>
-
-      {/* Actions */}
-      <div className="flex flex-wrap items-center gap-1.5 border-t border-white/10 pt-3">
-        <button
-          onClick={() => onSave(false)}
-          disabled={!filled}
-          className="btn-mho-gold !px-3 !py-1.5 !text-xs disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:transform-none"
-        >
-          <Save size={13} />
-          {buildId && isOwner ? 'Save' : 'Save Build'}
-        </button>
-        {buildId && isOwner && (
-          <button
-            onClick={() => onSave(true)}
-            disabled={!filled}
-            className="flex items-center gap-1.5 rounded-lg border border-mh-slate-700 px-2.5 py-1.5 text-xs font-bold text-mh-slate-300 hover:text-white hover:border-mh-slate-500 disabled:opacity-40"
-          >
-            <Plus size={13} />
-            Save as new
-          </button>
-        )}
-        {buildId && (
-          <button
-            onClick={copyLink}
-            className="flex items-center gap-1.5 rounded-lg border border-mh-slate-700 px-2.5 py-1.5 text-xs font-bold text-mh-slate-300 hover:text-white hover:border-mh-slate-500"
-          >
-            {copied ? <Check size={13} className="text-emerald-400" /> : <Copy size={13} />}
-            {copied ? 'Copied' : 'Link'}
-          </button>
-        )}
-        <button
-          onClick={() => {
-            if (!dirty || window.confirm('Clear this build? Unsaved changes will be lost.')) reset();
-          }}
-          className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-bold text-mh-slate-400 hover:text-red-300"
-        >
-          <RotateCcw size={13} />
-          New
-        </button>
-        <Link
-          to="/gallery"
-          className="ml-auto flex items-center gap-1.5 text-[11px] font-semibold text-[#FFD700] hover:text-white"
-        >
-          <Library size={13} />
-          Browse builds
-        </Link>
       </div>
     </div>
   );

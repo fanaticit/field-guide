@@ -211,7 +211,7 @@ export default function VisageBuilds() {
       isPublished: row.is_published,
       loadout,
     });
-    navigate(`/gallery/collection?mode=builder&build=${row.id}`);
+    navigate(`/gallery/set?build=${row.id}`);
   };
 
   const handleLoadToPlanner = (row: TVisageBuildRow) => {
@@ -252,7 +252,7 @@ export default function VisageBuilds() {
           <button
             onClick={() => {
               builder.reset();
-              navigate('/gallery/collection?mode=builder');
+              navigate('/gallery/set');
             }}
             className="btn-mho-gold shrink-0 !px-3 !py-1.5 !text-xs"
           >
@@ -416,7 +416,7 @@ export default function VisageBuilds() {
             <button
               onClick={() => {
                 builder.reset();
-                navigate('/gallery/collection?mode=builder');
+                navigate('/gallery/set');
               }}
               className="btn-mho-gold mt-4 !px-4 !py-2 !text-xs"
             >
