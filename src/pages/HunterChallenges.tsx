@@ -47,6 +47,9 @@ import PageTitlePanel from '../components/layout/PageTitlePanel';
 import VisageIcon from '../components/visage/VisageIcon';
 import ArtBackdrop from '../components/ArtBackdrop';
 import { VISAGE_RARITY_OPTIONS, type VisageRarity } from '../data/schemas/visage';
+import { WEAPON_RARITY_NAMES } from '../data/core/weapon-names';
+import { getWeaponDisplayName, type DBWeapon } from '../data/schemas/weapon';
+import { useAdminWeapons } from '../hooks/useAdminWeapons';
 
 // ── Slot display helpers ──────────────────────────────────────
 
@@ -67,6 +70,30 @@ const SLOT_ICONS: Record<string, string> = {
 };
 
 // ── Helpers ───────────────────────────────────────────────────
+
+export function getChallengeDisplayName(c: HunterChallenge, weaponsMap?: Map<string, DBWeapon>): string {
+  if (c.challenge_type === 'weapon' || c.weapon_id) {
+    const weapon = c.weapon_id ? weaponsMap?.get(c.weapon_id) : null;
+    const curR = c.current_rarity ?? 0;
+    let targetRarity: number;
+    if (c.status === 'completed') {
+      targetRarity = c.max_rarity || curR || 1;
+    } else if (c.status === 'crafting' || curR === 0) {
+      targetRarity = c.craft_rarity || 1;
+    } else {
+      // Upgrading: target the NEXT level up weapon name
+      targetRarity = curR + 1;
+    }
+
+    if (weapon) {
+      return getWeaponDisplayName(weapon, targetRarity);
+    }
+    if (c.weapon_id && WEAPON_RARITY_NAMES[c.weapon_id]?.[targetRarity]) {
+      return WEAPON_RARITY_NAMES[c.weapon_id][targetRarity];
+    }
+  }
+  return c.set_name ?? 'Unknown Set';
+}
 
 export function toRoman(num: number): string {
   const roman = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI'];
@@ -202,6 +229,7 @@ interface ChallengeCardProps {
   /** Monster sketch drawn behind visage challenges. */
   sketchImage?: string | null;
   compact?: boolean;
+  weaponsMap?: Map<string, DBWeapon>;
 }
 
 /** The rarity of the visage card being searched for: Fine -> Rare -> Epic -> Superior. */
@@ -220,7 +248,7 @@ function visageArt(c: HunterChallenge, className: string) {
   );
 }
 
-function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, backgroundImage, sketchImage, compact = false }: ChallengeCardProps) {
+function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, backgroundImage, sketchImage, compact = false, weaponsMap }: ChallengeCardProps) {
   const [isEditingMaterial, setIsEditingMaterial] = useState(false);
   const [editMaterial, setEditMaterial] = useState(c.missing_material ?? '');
   const [editActivity, setEditActivity] = useState(c.missing_material_activity ?? '');
@@ -292,7 +320,7 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
 
         {/* Info */}
         <div className="flex-1 min-w-0">
-          <p className="text-xs font-bold text-sky-100 truncate">{c.set_name ?? 'Unknown Set'}</p>
+          <p className="text-xs font-bold text-sky-100 truncate">{getChallengeDisplayName(c, weaponsMap)}</p>
           <div className="flex flex-col gap-0.5 mt-0.5">
             <div className="flex items-center gap-2">
               <p className="text-[10px] text-sky-400 truncate">{slotLabel}</p>
@@ -373,7 +401,7 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0">
               <h3 className="font-display text-sm font-bold text-white truncate">
-                {c.set_name ?? 'Unknown Set'}
+                {getChallengeDisplayName(c, weaponsMap)}
               </h3>
               <p className="text-xs text-sky-400 mt-0.5">
                 {slotLabel}
@@ -575,9 +603,10 @@ interface HuntingTargetsPanelProps {
   onSelect: (selection: Selection) => void;
   /** Monster ID → sketch, drawn behind visage rows. */
   sketches?: Map<string, string>;
+  weaponsMap?: Map<string, DBWeapon>;
 }
 
-function HuntingTargetsPanel({ monsterGroups, selection, onSelect, sketches }: HuntingTargetsPanelProps) {
+function HuntingTargetsPanel({ monsterGroups, selection, onSelect, sketches, weaponsMap }: HuntingTargetsPanelProps) {
   const [expandedMonster, setExpandedMonster] = useState<string | null>(null);
   const selectedMonster = selection?.kind === 'monster' ? selection.value : null;
   const selectedActivity = selection?.kind === 'activity' ? selection.value : null;
@@ -726,7 +755,7 @@ function HuntingTargetsPanel({ monsterGroups, selection, onSelect, sketches }: H
 
                           <div className="flex-1 min-w-0">
                             <p className="text-xs font-semibold text-sky-200 truncate">{slotLabel}</p>
-                            <p className="text-[10px] text-sky-500 truncate">{c.set_name ?? '—'}</p>
+                            <p className="text-[10px] text-sky-500 truncate">{getChallengeDisplayName(c, weaponsMap)}</p>
                           </div>
 
                           <span className={cn('rounded px-1.5 py-0.5 text-[9px] font-bold border shrink-0', style.badge)}>
@@ -906,6 +935,11 @@ export default function HunterChallenges() {
   const monsterSketches = useMemo(
     () => new Map(monsters.filter((m) => m.sketch).map((m) => [m.id, m.sketch as string])),
     [monsters],
+  );
+  const { data: weapons = [] } = useAdminWeapons({ isActive: true });
+  const weaponsMap = useMemo(
+    () => new Map(weapons.map((w) => [w.id, w])),
+    [weapons],
   );
   const deleteChallenge = useDeleteChallenge();
   const updateMaterial = useUpdateChallengeMaterial();
@@ -1139,6 +1173,7 @@ export default function HunterChallenges() {
                   selection={selection}
                   onSelect={setSelection}
                   sketches={monsterSketches}
+                  weaponsMap={weaponsMap}
                 />
               </div>
             )}
@@ -1226,6 +1261,7 @@ export default function HunterChallenges() {
                         onDelete={handleDelete}
                         backgroundImage={c.adventurer_id ? adventurerBackgrounds.get(c.adventurer_id) : null}
                         sketchImage={c.monster_id ? monsterSketches.get(c.monster_id) : null}
+                        weaponsMap={weaponsMap}
                       />
                     ))}
                   </div>
@@ -1241,6 +1277,7 @@ export default function HunterChallenges() {
                         onDelete={handleDelete}
                         backgroundImage={c.adventurer_id ? adventurerBackgrounds.get(c.adventurer_id) : null}
                         sketchImage={c.monster_id ? monsterSketches.get(c.monster_id) : null}
+                        weaponsMap={weaponsMap}
                         compact
                       />
                     ))}

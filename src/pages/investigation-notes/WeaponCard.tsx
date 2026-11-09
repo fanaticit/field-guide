@@ -23,6 +23,7 @@ import {
   WEAPON_ELEMENT_CONFIG,
   WEAPON_SHARPNESS_ICONS,
   getRarityBadgeStyle,
+  getWeaponDisplayName,
 } from '../../data/schemas/weapon';
 import { WEAPON_TYPES } from '../../data/core/weapon-types';
 import { useAdminMonsters } from '../../hooks/useAdminMonsters';
@@ -264,8 +265,14 @@ export default function WeaponCard({
           {/* Wrapped Weapon Title */}
           <div>
             <h3 className="font-display text-sm sm:text-base font-bold text-mh-slate-100 group-hover:text-mh-gold-300 transition-colors break-words leading-tight">
-              {weapon.name}
+              {getWeaponDisplayName(weapon, activeCraftedRarity)}
             </h3>
+
+            {getWeaponDisplayName(weapon, activeCraftedRarity) !== weapon.name && (
+              <p className="text-[10px] text-mh-slate-400 font-medium break-words mt-0.5">
+                Base: {weapon.name}
+              </p>
+            )}
 
             {weapon.series && (
               <p className="text-[11px] text-mh-slate-500 font-medium break-words mt-0.5">{weapon.series}</p>

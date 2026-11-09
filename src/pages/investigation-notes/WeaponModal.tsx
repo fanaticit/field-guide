@@ -22,6 +22,7 @@ import {
   WEAPON_ELEMENT_CONFIG,
   WEAPON_SHARPNESS_ICONS,
   getRarityBadgeStyle,
+  getWeaponDisplayName,
 } from '../../data/schemas/weapon';
 import { WEAPON_TYPES } from '../../data/core/weapon-types';
 import { useAdminMonsters } from '../../hooks/useAdminMonsters';
@@ -311,8 +312,13 @@ export default function WeaponModal({
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2 flex-wrap">
                 <h2 className="font-display text-base sm:text-xl md:text-2xl font-bold text-mh-slate-100 break-words leading-tight truncate">
-                  {weapon.name}
+                  {getWeaponDisplayName(weapon, activeCraftedRarity)}
                 </h2>
+                {getWeaponDisplayName(weapon, activeCraftedRarity) !== weapon.name && (
+                  <span className="text-xs text-mh-slate-400 font-medium hidden sm:inline truncate">
+                    (Base: {weapon.name})
+                  </span>
+                )}
                 {weapon.name_ja && (
                   <span className="text-xs text-mh-slate-500 font-medium hidden sm:inline truncate">
                     ({weapon.name_ja})
@@ -781,6 +787,7 @@ export default function WeaponModal({
                     <thead className="text-[10px] uppercase tracking-wider text-mh-slate-500">
                       <tr>
                         <th className="py-1 pr-2">Rarity</th>
+                        <th className="py-1 pr-2">Name</th>
                         <th className="py-1 pr-2">Attack</th>
                         <th className="py-1 pr-2">{elemCfg.label}</th>
                         <th className="py-1 pr-2">Lv</th>
@@ -790,10 +797,14 @@ export default function WeaponModal({
                     <tbody className="divide-y divide-mh-slate-800">
                       {upgrades.map((u) => {
                         const rs = getRarityBadgeStyle(u.rarity);
+                        const stepName = u.name ?? getWeaponDisplayName(weapon, u.rarity);
                         return (
                           <tr key={u.rarity} className={cn(isCrafted && u.rarity === currentRarity && 'bg-yellow-500/10')}>
                             <td className="py-1.5 pr-2">
                               <span className={cn('rounded border px-1.5 py-0.5 text-[10px] font-bold font-mono', rs.badge)}>{rs.label}</span>
+                            </td>
+                            <td className="py-1.5 pr-2 font-medium text-mh-slate-200 whitespace-nowrap">
+                              {stepName}
                             </td>
                             <td className="py-1.5 pr-2 text-mh-slate-100">
                               {u.attack ?? '—'}

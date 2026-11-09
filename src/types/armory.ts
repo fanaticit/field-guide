@@ -31,6 +31,8 @@ export interface BuildWeapon {
   monster_id?: string | null;
   image?: string | null;
   element_type?: string | null;
+  max_name?: string | null;
+  rarity_names?: Record<string | number, string> | null;
 }
 
 export interface BuildVisage {

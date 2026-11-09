@@ -26,6 +26,7 @@ import {
   WEAPON_SOURCE_CONFIG,
   WEAPON_ELEMENT_CONFIG,
   getRarityBadgeStyle,
+  getWeaponDisplayName,
 } from '../../data/schemas/weapon';
 import { WEAPON_TYPES } from '../../data/core/weapon-types';
 import { useAdminWeapons } from '../../hooks/useAdminWeapons';
@@ -41,7 +42,7 @@ import { useUIStore } from '../../store/uiStore';
 import { DEFAULT_SECTION_THEMES } from '../../config/themes';
 import ChallengeIcon from '../../components/ChallengeIcon';
 import PageTitlePanel from '../../components/layout/PageTitlePanel';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import WeaponCard from './WeaponCard';
 import WeaponModal from './WeaponModal';
 import WeaponCompareModal from './WeaponCompareModal';
@@ -65,10 +66,19 @@ export default function WeaponGuide() {
     setIntroHidden(next);
     localStorage.setItem(INTRO_HIDDEN_KEY, next ? '1' : '0');
   };
+  const [searchParams] = useSearchParams();
+  const typeParam = searchParams.get('type');
+  const compareParam = searchParams.get('compare');
+
   const [search, setSearch] = useState('');
   const [filterOwnership, setFilterOwnership] = useState<OwnershipFilter>('all');
   const [filterChallenge, setFilterChallenge] = useState<ChallengeFilter>('all');
-  const [filterWeaponType, setFilterWeaponType] = useState<string>('all');
+  const [filterWeaponType, setFilterWeaponType] = useState<string>(() => {
+    if (typeParam && (typeParam === 'all' || WEAPON_TYPES.some((wt) => wt.id === typeParam))) {
+      return typeParam;
+    }
+    return 'all';
+  });
   const [filterElement, setFilterElement] = useState<WeaponElementType | 'all'>('all');
   const [filterMaxRarity, setFilterMaxRarity] = useState<string>('all');
   const [sortOrder, setSortOrder] = useState<SortOrder>('rarity-desc');
@@ -121,6 +131,26 @@ export default function WeaponGuide() {
 
   const addChallenge = useAddWeaponChallenge();
   const navigate = useNavigate();
+
+  // Sync if type query param changes
+  useEffect(() => {
+    if (typeParam && (typeParam === 'all' || WEAPON_TYPES.some((wt) => wt.id === typeParam))) {
+      setFilterWeaponType(typeParam);
+    }
+  }, [typeParam]);
+
+  // Pre-select weapon for comparison from query param
+  useEffect(() => {
+    if (compareParam && weapons.length > 0 && !selectedForCompare) {
+      const match = weapons.find((w) => w.id === compareParam);
+      if (match) {
+        setSelectedForCompare(match);
+        if (!typeParam && match.weapon_type_id) {
+          setFilterWeaponType(match.weapon_type_id);
+        }
+      }
+    }
+  }, [compareParam, typeParam, weapons, selectedForCompare]);
 
   const monstersMap = useMemo(() => new Map(monsters.map((m) => [m.id, m])), [monsters]);
   const weaponTypesMap = useMemo(() => new Map(WEAPON_TYPES.map((w) => [w.id, w])), []);
@@ -204,8 +234,12 @@ export default function WeaponGuide() {
       const q = search.toLowerCase();
       list = list.filter((w) => {
         const monster = w.monster_id ? monstersMap.get(w.monster_id) : null;
+        const matchesEvolvedName =
+          (w.max_name ?? '').toLowerCase().includes(q) ||
+          Object.values(w.rarity_names ?? {}).some((n) => n.toLowerCase().includes(q));
         return (
           w.name.toLowerCase().includes(q) ||
+          matchesEvolvedName ||
           (w.series ?? '').toLowerCase().includes(q) ||
           w.id.toLowerCase().includes(q) ||
           (w.name_ja ?? '').toLowerCase().includes(q) ||
@@ -770,6 +804,8 @@ export default function WeaponGuide() {
                 const isSelected = selectedForCompare?.id === weapon.id;
                 const weaponCraftedRarity = getCraftedRarity(weapon.id);
                 const isWeaponCrafted = isCrafted(weapon.id) && Boolean(weaponCraftedRarity);
+                const activeCraftedRarity = weaponCraftedRarity ?? (challenge && challenge.current_rarity > 0 ? challenge.current_rarity : null);
+                const displayName = getWeaponDisplayName(weapon, activeCraftedRarity);
 
                 return (
                   <tr
@@ -787,7 +823,7 @@ export default function WeaponGuide() {
                           {weapon.image ? (
                             <img
                               src={weapon.image}
-                              alt={weapon.name}
+                              alt={displayName}
                               className="h-full w-full object-contain"
                             />
                           ) : (
@@ -795,7 +831,10 @@ export default function WeaponGuide() {
                           )}
                         </div>
                         <div className="min-w-0 max-w-[120px] xs:max-w-[150px] sm:max-w-[200px]">
-                          <p className="font-bold text-mh-slate-100 break-words leading-tight text-xs">{weapon.name}</p>
+                          <p className="font-bold text-mh-slate-100 break-words leading-tight text-xs">{displayName}</p>
+                          {displayName !== weapon.name && (
+                            <p className="text-[10px] text-mh-slate-400 break-words">Base: {weapon.name}</p>
+                          )}
                           {weapon.series && (
                             <p className="hidden sm:block text-[10px] text-mh-slate-500 break-words">{weapon.series}</p>
                           )}

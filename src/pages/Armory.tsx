@@ -12,6 +12,7 @@ import {
   type MonsterLookup,
 } from '../types/armory';
 import { INK_CONFIG } from '../data/schemas/visage';
+import { getWeaponMaxName, type DBWeapon } from '../data/schemas/weapon';
 import PageTitlePanel from '../components/layout/PageTitlePanel';
 import { useUIStore } from '../store/uiStore';
 import { DEFAULT_SECTION_THEMES } from '../config/themes';
@@ -191,7 +192,10 @@ export default function Armory() {
         const authorMatch = build.author?.username?.toLowerCase().includes(query);
         const advMatch = build.adventurer?.name?.toLowerCase().includes(query);
         const wtMatch = build.weapon_type?.name?.toLowerCase().includes(query);
-        const weaponMatch = build.weapon?.name?.toLowerCase().includes(query);
+        const weaponMatch = build.weapon && (
+          build.weapon.name?.toLowerCase().includes(query) ||
+          getWeaponMaxName(build.weapon as DBWeapon)?.toLowerCase().includes(query)
+        );
 
         if (!titleMatch && !authorMatch && !advMatch && !wtMatch && !weaponMatch) {
           return false;

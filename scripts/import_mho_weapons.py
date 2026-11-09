@@ -28,7 +28,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SRC = ROOT / "import" / "Weapons"
+SRC = ROOT / "import" / "Weapons" if (ROOT / "import" / "Weapons").exists() else ROOT / "import"
 DST = ROOT / "public" / "images" / "weapons"
 URL = "/images/weapons/"
 DEFAULT_OUT = ROOT / "supabase" / "migrations" / "20261105000002_import_mho_weapons.sql"
@@ -120,10 +120,19 @@ def build():
                 "options": w["legendary_awakening_slots"],
             }
 
+        rarity_names = {}
+        max_name = w["name"]
+        for step in up.get("upgrade_path", []):
+            if step.get("name"):
+                rarity_names[str(step["rarity"])] = step["name"]
+                max_name = step["name"]
+
         rows.append(
             {
                 "id": str(w["id"]),
                 "name": w["name"],
+                "max_name": max_name,
+                "rarity_names": rarity_names if rarity_names else None,
                 "type": TYPE_IDS[w["type"]],
                 "monster": w["monster"] or None,
                 "series": w["series"].strip() or None,
@@ -166,6 +175,7 @@ def build():
                 {
                     "weapon": str(w["id"]),
                     "rarity": step["rarity"],
+                    "name": step.get("name") or None,
                     "attack": stats.get("Attack"),
                     "affinity": stats.get("Affinity (raw)"),
                     "element_type": e_type,
@@ -183,9 +193,11 @@ def build():
 
 def render(rows, steps):
     def weapon_row(r):
-        return "  ({id}, {name}, {type}, {monster}, {series}, {src}, {src_detail}, {el}, {eld}, {atk}, {aff}, {sharp}, {deco}, {rarity}, {maxr}, {craft}, {apex}, {apex_season}, {effect}, {awake}, {image}, {desc}, {status}, {reason}, {active}, {spoiler}, {order})".format(
+        return "  ({id}, {name}, {max_name}, {rarity_names}, {type}, {monster}, {series}, {src}, {src_detail}, {el}, {eld}, {atk}, {aff}, {sharp}, {deco}, {rarity}, {maxr}, {craft}, {apex}, {apex_season}, {effect}, {awake}, {image}, {desc}, {status}, {reason}, {active}, {spoiler}, {order})".format(
             id=sql_str(r["id"]),
             name=sql_str(r["name"]),
+            max_name=sql_str(r["max_name"]),
+            rarity_names=sql_json(r["rarity_names"]),
             type=sql_str(r["type"]),
             monster=sql_str(r["monster"]),
             series=sql_str(r["series"]),
@@ -214,9 +226,10 @@ def render(rows, steps):
         )
 
     def step_row(s):
-        return "  ({w}, {rarity}, {atk}, {aff}, {el}, {eld}, {stats}, {sharp}, {gains}, {mats}, {money}, {lvl})".format(
+        return "  ({w}, {rarity}, {name}, {atk}, {aff}, {el}, {eld}, {stats}, {sharp}, {gains}, {mats}, {money}, {lvl})".format(
             w=sql_str(s["weapon"]),
             rarity=s["rarity"],
+            name=sql_str(s["name"]),
             atk=sql_int(s["attack"]),
             aff=sql_int(s["affinity"]),
             el=sql_str(s["element_type"]),
@@ -271,6 +284,8 @@ ALTER TABLE public.weapons DROP CONSTRAINT IF EXISTS weapons_source_type_check;
 ALTER TABLE public.weapons DROP CONSTRAINT IF EXISTS weapons_element_type_check;
 ALTER TABLE public.weapons ALTER COLUMN source_type SET DEFAULT 'forge';
 
+ALTER TABLE public.weapons ADD COLUMN IF NOT EXISTS max_name      TEXT;
+ALTER TABLE public.weapons ADD COLUMN IF NOT EXISTS rarity_names  JSONB;
 ALTER TABLE public.weapons ADD COLUMN IF NOT EXISTS series          TEXT;
 ALTER TABLE public.weapons ADD COLUMN IF NOT EXISTS source_detail   TEXT;
 ALTER TABLE public.weapons ADD COLUMN IF NOT EXISTS sharpness       TEXT;
@@ -301,6 +316,7 @@ CREATE INDEX IF NOT EXISTS idx_weapons_visible ON public.weapons(is_active, is_s
 CREATE TABLE IF NOT EXISTS public.weapon_upgrades (
   weapon_id       TEXT        NOT NULL REFERENCES public.weapons(id) ON DELETE CASCADE,
   rarity          INTEGER     NOT NULL,
+  name            TEXT,
   attack          INTEGER,
   affinity        INTEGER,
   element_type    TEXT        NOT NULL DEFAULT 'raw',
@@ -316,6 +332,7 @@ CREATE TABLE IF NOT EXISTS public.weapon_upgrades (
   required_level  INTEGER,
   PRIMARY KEY (weapon_id, rarity)
 );
+ALTER TABLE public.weapon_upgrades ADD COLUMN IF NOT EXISTS name TEXT;
 
 ALTER TABLE public.weapon_upgrades ENABLE ROW LEVEL SECURITY;
 
@@ -329,7 +346,7 @@ CREATE POLICY "weapon_upgrades_write_admin" ON public.weapon_upgrades FOR ALL
 
 -- ── Data: weapons ───────────────────────────────────────────
 CREATE TEMP TABLE _weapon_import (
-  id TEXT, name TEXT, weapon_type_id TEXT, monster_name TEXT, series TEXT, source_type TEXT, source_detail TEXT,
+  id TEXT, name TEXT, max_name TEXT, rarity_names JSONB, weapon_type_id TEXT, monster_name TEXT, series TEXT, source_type TEXT, source_detail TEXT,
   element_type TEXT, element_damage INTEGER, attack INTEGER, affinity INTEGER, sharpness TEXT,
   deco_slots INTEGER[], rarity INTEGER, max_rarity INTEGER, craftable BOOLEAN, is_apex BOOLEAN, apex_season TEXT,
   apex_effect JSONB, awakening_slots JSONB, image TEXT, description TEXT,
@@ -340,11 +357,11 @@ INSERT INTO _weapon_import VALUES
 {weapons_sql};
 
 INSERT INTO public.weapons
-  (id, name, weapon_type_id, monster_id, series, source_type, source_detail, element_type, element_damage, attack, affinity,
+  (id, name, max_name, rarity_names, weapon_type_id, monster_id, series, source_type, source_detail, element_type, element_damage, attack, affinity,
    sharpness, deco_slots, rarity, max_rarity, craftable, is_apex, apex_season, apex_effect, awakening_slots, image, description,
    status, status_reason, is_active, is_spoiler, sort_order)
 SELECT
-  w.id, w.name, w.weapon_type_id,
+  w.id, w.name, w.max_name, w.rarity_names, w.weapon_type_id,
   (SELECT m.id FROM public.monsters m WHERE m.name = w.monster_name ORDER BY m.id LIMIT 1),
   w.series, w.source_type, w.source_detail, w.element_type, w.element_damage, w.attack, w.affinity,
   w.sharpness, w.deco_slots, w.rarity, w.max_rarity, w.craftable, w.is_apex, w.apex_season, w.apex_effect, w.awakening_slots, w.image, w.description,
@@ -353,7 +370,7 @@ FROM _weapon_import w;
 
 -- ── Data: weapon_upgrades ───────────────────────────────────
 INSERT INTO public.weapon_upgrades
-  (weapon_id, rarity, attack, affinity, element_type, element_damage, stats, sharpness, gains, materials, money, required_level)
+  (weapon_id, rarity, name, attack, affinity, element_type, element_damage, stats, sharpness, gains, materials, money, required_level)
 VALUES
 {steps_sql};
 

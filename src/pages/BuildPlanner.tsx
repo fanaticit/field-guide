@@ -14,6 +14,7 @@ import { clearBuildDraft } from '../store/buildDraftCookie';
 import { supabase } from '../lib/supabase';
 import { useSkillCatalogLoader } from '../hooks/useSkillCatalog';
 import { normalizeVisageRow } from '../data/schemas/visage';
+import { getWeaponMaxName, type DBWeapon } from '../data/schemas/weapon';
 
 export default function BuildPlanner() {
   const { user } = useAuthStore();
@@ -64,7 +65,7 @@ export default function BuildPlanner() {
     } else if (store.buddy && store.buddy.id !== prev.buddy) {
       triggerFeedback(`Equipped Buddy: ${store.buddy.name}`);
     } else if (store.weapon && store.weapon.id !== prev.wep) {
-      triggerFeedback(`Equipped Weapon: ${store.weapon.name}`);
+      triggerFeedback(`Equipped Weapon: ${getWeaponMaxName(store.weapon as DBWeapon)}`);
     } else if (store.helm && store.helm.id !== prev.helm) {
       triggerFeedback(`Equipped Helm: ${store.helm.set_name || 'Helm'}`);
     } else if (store.chest && store.chest.id !== prev.chest) {

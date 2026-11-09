@@ -1,11 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { Globe, Package } from 'lucide-react';
+import { Globe, Package, ArrowLeftRight } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useBuildPlannerStore, armourPieceIcon, type Weapon, type ArmourPiece } from '../../store/buildPlannerStore';
 import { useAuthStore } from '../../store/authStore';
 import { useUserWeaponCollection } from '../../hooks/useUserWeaponCollection';
+import { cn } from '../../lib/utils';
+import { getWeaponMaxName, type DBWeapon } from '../../data/schemas/weapon';
 
 type PlannerSlot = 'helm' | 'chest' | 'gloves' | 'waist' | 'greaves';
 // Slot names of the game data
@@ -45,6 +47,14 @@ interface DropdownItem {
   badge?: string;
 }
 
+export interface DropdownFooterButton {
+  label: string;
+  onClick: () => void;
+  icon?: React.ReactNode;
+  variant?: 'amber' | 'gold' | 'cyan' | 'default';
+  title?: string;
+}
+
 interface SearchableDropdownProps {
   label: string;
   items: DropdownItem[];
@@ -55,16 +65,13 @@ interface SearchableDropdownProps {
   isLoading?: boolean;
   highlightClasses?: string;
   emptyMessage?: string;
-  footerButton?: {
-    label: string;
-    onClick: () => void;
-    icon?: React.ReactNode;
-  };
+  footerButton?: DropdownFooterButton;
+  footerButtons?: DropdownFooterButton[];
   onChange: (id: string | null) => void;
 }
 
 function SearchableDropdown({
-  label, items, selectedId, selectedImage, placeholderIcon, placeholder, isLoading, highlightClasses, emptyMessage, footerButton, onChange,
+  label, items, selectedId, selectedImage, placeholderIcon, placeholder, isLoading, highlightClasses, emptyMessage, footerButton, footerButtons, onChange,
 }: SearchableDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -188,16 +195,33 @@ function SearchableDropdown({
                 ))
               )}
             </div>
-            {footerButton && (
-              <button
-                type="button"
-                onClick={() => footerButton.onClick()}
-                className="w-full py-2 px-3 text-xs font-bold text-amber-400 hover:text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 border-t border-mh-slate-750 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-              >
-                {footerButton.icon}
-                <span>{footerButton.label}</span>
-              </button>
-            )}
+            {(() => {
+              const effectiveButtons = footerButtons ?? (footerButton ? [footerButton] : []);
+              if (effectiveButtons.length === 0) return null;
+              return (
+                <div className="flex items-stretch border-t border-mh-slate-750 divide-x divide-mh-slate-750 bg-mh-slate-900/95">
+                  {effectiveButtons.map((btn, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      title={btn.title}
+                      onClick={() => btn.onClick()}
+                      className={cn(
+                        'flex-1 py-2 px-2.5 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer min-w-0',
+                        btn.variant === 'gold'
+                          ? 'text-mh-gold-400 hover:text-mh-gold-300 bg-mh-gold-500/10 hover:bg-mh-gold-500/20'
+                          : btn.variant === 'cyan'
+                          ? 'text-cyan-400 hover:text-cyan-300 bg-cyan-500/10 hover:bg-cyan-500/20'
+                          : 'text-amber-400 hover:text-amber-300 bg-amber-500/10 hover:bg-amber-500/20',
+                      )}
+                    >
+                      {btn.icon && <span className="shrink-0">{btn.icon}</span>}
+                      <span className="truncate">{btn.label}</span>
+                    </button>
+                  ))}
+                </div>
+              );
+            })()}
           </div>
         )}
       </div>
@@ -255,6 +279,18 @@ export function EquipmentSelector() {
   const activeWeaponTypeId = adventurer?.is_default
     ? (weaponType?.id || weapon?.weapon_type_id)
     : adventurer?.allowed_weapon_types?.[0];
+
+  const handleGoToCompare = () => {
+    const params = new URLSearchParams();
+    if (activeWeaponTypeId) {
+      params.set('type', activeWeaponTypeId);
+    }
+    if (weapon?.id) {
+      params.set('compare', weapon.id);
+    }
+    const query = params.toString();
+    navigate(`/challenges/weapons${query ? `?${query}` : ''}`);
+  };
 
   const { data: weapons, isLoading: isWepLoading } = useQuery({
     queryKey: ['weapons', activeWeaponTypeId],
@@ -319,22 +355,31 @@ export function EquipmentSelector() {
   const totalWeaponsCount = weapons?.length || 0;
   const craftedWeaponsCount = (weapons || []).filter(w => isCrafted(w.id)).length;
 
-  // Convert weapons to dropdown items (sorted by rarity descending, then name)
+  // Convert weapons to dropdown items (sorted by rarity descending, then max name)
   const weaponItems: DropdownItem[] = [...filteredWeapons]
-    .sort((a, b) => (b.rarity ?? 1) - (a.rarity ?? 1) || a.name.localeCompare(b.name))
-    .map(w => ({
-      id: w.id,
-      primaryLabel: w.name,
-      badge: isCrafted(w.id) ? '✓ Crafted' : undefined,
-      secondaryLabel: [
-        'R' + (w.rarity ?? 1) + (w.max_rarity && w.max_rarity > (w.rarity ?? 1) ? '→R' + w.max_rarity : ''),
-        w.attack ? 'ATK ' + w.attack : null,
-        w.element_type && w.element_type !== 'raw'
-          ? w.element_type[0].toUpperCase() + w.element_type.slice(1) + (w.element_damage ? ' ' + w.element_damage : '')
-          : null,
-      ].filter(Boolean).join(' · '),
-      icon: w.image ?? undefined,
-    }));
+    .sort((a, b) => {
+      const nameA = getWeaponMaxName(a as DBWeapon);
+      const nameB = getWeaponMaxName(b as DBWeapon);
+      return (b.rarity ?? 1) - (a.rarity ?? 1) || nameA.localeCompare(nameB);
+    })
+    .map(w => {
+      const maxName = getWeaponMaxName(w as DBWeapon);
+      const hasDifferentBase = maxName && maxName.toLowerCase() !== w.name.toLowerCase();
+      return {
+        id: w.id,
+        primaryLabel: maxName,
+        badge: isCrafted(w.id) ? '✓ Crafted' : undefined,
+        secondaryLabel: [
+          hasDifferentBase ? `Base: ${w.name}` : (w.series ?? null),
+          'R' + (w.rarity ?? 1) + (w.max_rarity && w.max_rarity > (w.rarity ?? 1) ? '→R' + w.max_rarity : ''),
+          w.attack ? 'ATK ' + w.attack : null,
+          w.element_type && w.element_type !== 'raw'
+            ? w.element_type[0].toUpperCase() + w.element_type.slice(1) + (w.element_damage ? ' ' + w.element_damage : '')
+            : null,
+        ].filter(Boolean).join(' · '),
+        icon: w.image ?? undefined,
+      };
+    });
 
   // Convert armour pieces to dropdown items per slot (highest rarity first)
   const armourItems = (slot: PlannerSlot): DropdownItem[] =>
@@ -397,21 +442,30 @@ export function EquipmentSelector() {
           selectedImage={weapon?.image ?? undefined}
           isLoading={isWepLoading}
           emptyMessage={isOnlyCrafted ? 'No crafted weapons found for this type.' : undefined}
-          footerButton={
-            isOnlyCrafted
-              ? {
+          footerButtons={[
+            ...(isOnlyCrafted
+              ? [{
                   label: `Load All Weapons (${totalWeaponsCount})`,
                   onClick: () => setShowAllWeapons(true),
                   icon: <Globe size={13} />,
-                }
+                  variant: 'amber' as const,
+                }]
               : useMine
-              ? {
+              ? [{
                   label: `Show Only Crafted (${craftedWeaponsCount})`,
                   onClick: () => setShowAllWeapons(false),
                   icon: <Package size={13} />,
-                }
-              : undefined
-          }
+                  variant: 'amber' as const,
+                }]
+              : []),
+            {
+              label: 'Compare Weapons',
+              onClick: handleGoToCompare,
+              icon: <ArrowLeftRight size={13} />,
+              variant: 'gold' as const,
+              title: 'Go to Weapons Comparison',
+            },
+          ]}
           onChange={id => setWeapon(weapons?.find(w => w.id === id) || null)}
         />
         {showArmourPieces ? (

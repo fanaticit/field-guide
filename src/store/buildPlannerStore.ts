@@ -29,6 +29,8 @@ export interface Weapon {
   max_rarity?: number;
   series?: string | null;
   monster_id?: string | null;
+  max_name?: string | null;
+  rarity_names?: Record<string | number, string> | null;
 }
 
 /** A row of public.armour_pieces */

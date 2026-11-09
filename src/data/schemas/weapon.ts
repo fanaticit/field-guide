@@ -1,5 +1,6 @@
 import type { AnyElement } from './monster.js';
 import type { ArmourSkill } from './armour.js';
+import { WEAPON_RARITY_NAMES, WEAPON_MAX_NAMES } from '../core/weapon-names.js';
 
 export type WeaponCategory = 'melee' | 'ranged';
 
@@ -270,6 +271,8 @@ export interface DBWeapon {
   is_active: boolean;
   /** Only shown to users who turned on "Show spoilers" */
   is_spoiler: boolean;
+  max_name?: string | null;
+  rarity_names?: Record<string | number, string> | null;
   sort_order: number;
   created_at: string;
   updated_at: string;
@@ -279,6 +282,7 @@ export interface DBWeapon {
 export interface DBWeaponUpgrade {
   weapon_id: string;
   rarity: number;
+  name?: string | null;
   attack: number | null;
   affinity: number | null;
   element_type: WeaponElementType;
@@ -292,6 +296,43 @@ export interface DBWeaponUpgrade {
 }
 
 export type WeaponUpsert = Omit<DBWeapon, 'created_at' | 'updated_at'>;
+
+/**
+ * Resolves the display name of a weapon based on its rarity level.
+ * Falls back to static game data lookup, then to base weapon name.
+ */
+export function getWeaponDisplayName(
+  weapon: { id: string; name: string; max_name?: string | null; rarity_names?: Record<string | number, string> | null },
+  rarity?: number | null,
+): string {
+  if (rarity && weapon.rarity_names?.[rarity]) {
+    return weapon.rarity_names[rarity];
+  }
+  if (rarity && WEAPON_RARITY_NAMES[weapon.id]?.[rarity]) {
+    return WEAPON_RARITY_NAMES[weapon.id][rarity];
+  }
+  return weapon.name;
+}
+
+/**
+ * Resolves the fully maxed-out name of a weapon (at max_rarity).
+ * Falls back to static game data lookup, then to base weapon name.
+ */
+export function getWeaponMaxName(
+  weapon: { id: string; name: string; max_name?: string | null; max_rarity?: number; rarity_names?: Record<string | number, string> | null },
+): string {
+  if (weapon.max_name) return weapon.max_name;
+  if (weapon.max_rarity && weapon.rarity_names?.[weapon.max_rarity]) {
+    return weapon.rarity_names[weapon.max_rarity];
+  }
+  if (WEAPON_MAX_NAMES[weapon.id]) {
+    return WEAPON_MAX_NAMES[weapon.id];
+  }
+  if (weapon.max_rarity && WEAPON_RARITY_NAMES[weapon.id]?.[weapon.max_rarity]) {
+    return WEAPON_RARITY_NAMES[weapon.id][weapon.max_rarity];
+  }
+  return weapon.name;
+}
 
 /** Helper to provide consistent visual styling and labels for equipment rarity badges (R1 to R12) */
 export function getRarityBadgeStyle(rarity: number = 1): {

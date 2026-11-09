@@ -8,6 +8,7 @@ import {
   type ArmoryBuild,
   type MonsterLookup,
 } from '../../types/armory';
+import { getWeaponMaxName, type DBWeapon } from '../../data/schemas/weapon';
 
 interface ArmoryBuildCardProps {
   build: ArmoryBuild;
@@ -40,8 +41,9 @@ export function ArmoryBuildCard({ build, monsterMap }: ArmoryBuildCardProps) {
   // Weapon display info
   const weaponMonster = resolveMonster(build.weapon?.monster_id);
   const weaponIcon = weaponMonster?.icon || build.weapon?.image || build.weapon_type?.icon || null;
-  const weaponTitle = build.weapon?.name 
-    ? `Weapon: ${build.weapon.name}${weaponMonster?.name ? ` (${weaponMonster.name})` : ''}`
+  const weaponName = getWeaponMaxName(build.weapon as DBWeapon);
+  const weaponTitle = weaponName 
+    ? `Weapon: ${weaponName}${weaponMonster?.name ? ` (${weaponMonster.name})` : ''}`
     : build.weapon_type?.name 
       ? `Weapon Type: ${build.weapon_type.name}` 
       : 'No weapon selected';
@@ -188,7 +190,7 @@ export function ArmoryBuildCard({ build, monsterMap }: ArmoryBuildCardProps) {
             {weaponIcon ? (
               <img
                 src={weaponIcon}
-                alt={build.weapon?.name || 'Weapon'}
+                alt={weaponName || 'Weapon'}
                 className="w-full h-full object-contain filter drop-shadow"
               />
             ) : (

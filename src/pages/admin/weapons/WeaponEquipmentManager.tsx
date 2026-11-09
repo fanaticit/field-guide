@@ -16,6 +16,7 @@ import {
   WEAPON_SHARPNESS_ICONS,
   WEAPON_SOURCE_CONFIG,
   getRarityBadgeStyle,
+  getWeaponMaxName,
   type DBWeapon,
   type WeaponElementType,
   type WeaponSourceType,
@@ -80,9 +81,11 @@ export default function WeaponEquipmentManager() {
       if (filterVisibility === 'spoiler' && !w.is_spoiler) return false;
       if (!q) return true;
       const monsterName = w.monster_id ? monstersById.get(w.monster_id)?.name ?? '' : '';
+      const maxName = getWeaponMaxName(w);
       return (
         w.id.includes(q) ||
         w.name.toLowerCase().includes(q) ||
+        maxName.toLowerCase().includes(q) ||
         (w.series ?? '').toLowerCase().includes(q) ||
         monsterName.toLowerCase().includes(q)
       );
@@ -208,6 +211,9 @@ export default function WeaponEquipmentManager() {
                         )}
                         <div>
                           <div className="text-sm font-semibold text-mh-slate-100">{w.name}</div>
+                          {getWeaponMaxName(w) !== w.name && (
+                            <div className="text-[10px] text-mh-gold-400">Max: {getWeaponMaxName(w)}</div>
+                          )}
                           <div className="text-[11px] text-mh-slate-500">{w.series ?? '—'}</div>
                           <div className="font-mono text-[10px] text-mh-slate-600">{w.id}</div>
                         </div>

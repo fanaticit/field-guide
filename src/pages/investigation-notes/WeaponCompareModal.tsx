@@ -17,6 +17,7 @@ import {
   WEAPON_ELEMENT_CONFIG,
   WEAPON_SHARPNESS_ICONS,
   getRarityBadgeStyle,
+  getWeaponDisplayName,
 } from '../../data/schemas/weapon';
 import { WEAPON_TYPES } from '../../data/core/weapon-types';
 import { useAdminMonsters } from '../../hooks/useAdminMonsters';
@@ -306,6 +307,9 @@ export default function WeaponCompareModal({
               const sharp1 = u1?.sharpness ?? null;
               const sharp2 = u2?.sharpness ?? null;
 
+              const name1AtRarity = u1?.name ?? getWeaponDisplayName(weapon1, r);
+              const name2AtRarity = u2?.name ?? getWeaponDisplayName(weapon2, r);
+
               return (
                 <div
                   key={r}
@@ -320,7 +324,7 @@ export default function WeaponCompareModal({
                           {weapon1.image ? (
                             <img
                               src={weapon1.image}
-                              alt={weapon1.name}
+                              alt={name1AtRarity}
                               className="h-full w-full object-contain filter drop-shadow"
                             />
                           ) : (
@@ -330,6 +334,9 @@ export default function WeaponCompareModal({
 
                         {/* Stats Stack */}
                         <div className="min-w-0 flex-1 space-y-1">
+                          <p className="text-[11px] font-semibold text-mh-slate-200 truncate" title={name1AtRarity}>
+                            {name1AtRarity}
+                          </p>
                           {/* Attack & Advantage */}
                           <div className="flex items-center gap-1.5 flex-wrap">
                             <span
@@ -420,9 +427,9 @@ export default function WeaponCompareModal({
                           className="flex items-center justify-center gap-1 text-[11px]"
                           title={
                             isAtk1Higher
-                              ? `${weapon1.name} has higher Attack (+${atkDiff})`
+                              ? `${name1AtRarity} has higher Attack (+${atkDiff})`
                               : isAtk2Higher
-                              ? `${weapon2.name} has higher Attack (+${Math.abs(atkDiff)})`
+                              ? `${name2AtRarity} has higher Attack (+${Math.abs(atkDiff)})`
                               : 'Attack is equal'
                           }
                         >
@@ -443,9 +450,9 @@ export default function WeaponCompareModal({
                           className="flex items-center justify-center gap-1 text-[11px]"
                           title={
                             isElem1Higher
-                              ? `${weapon1.name} has higher ${elemCfgRow1.label}${elemDmg1 ? ` (${elemDmg1})` : ''}`
+                              ? `${name1AtRarity} has higher ${elemCfgRow1.label}${elemDmg1 ? ` (${elemDmg1})` : ''}`
                               : isElem2Higher
-                              ? `${weapon2.name} has higher ${elemCfgRow2.label}${elemDmg2 ? ` (${elemDmg2})` : ''}`
+                              ? `${name2AtRarity} has higher ${elemCfgRow2.label}${elemDmg2 ? ` (${elemDmg2})` : ''}`
                               : elemVal1 > 0
                               ? `Element is equal (${elemCfgRow1.label}${elemDmg1 ? ` ${elemDmg1}` : ''})`
                               : 'Neither weapon has an element'
@@ -474,6 +481,9 @@ export default function WeaponCompareModal({
                       <div className="flex items-center justify-end gap-2.5 sm:gap-3 text-right">
                         {/* Stats Stack */}
                         <div className="min-w-0 flex-1 space-y-1">
+                          <p className="text-[11px] font-semibold text-mh-slate-200 truncate" title={name2AtRarity}>
+                            {name2AtRarity}
+                          </p>
                           {/* Attack & Advantage */}
                           <div className="flex items-center justify-end gap-1.5 flex-wrap">
                             {isAtk2Higher && (
@@ -537,7 +547,7 @@ export default function WeaponCompareModal({
                           {weapon2.image ? (
                             <img
                               src={weapon2.image}
-                              alt={weapon2.name}
+                              alt={name2AtRarity}
                               className="h-full w-full object-contain filter drop-shadow"
                             />
                           ) : (

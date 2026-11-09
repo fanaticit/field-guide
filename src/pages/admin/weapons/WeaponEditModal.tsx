@@ -14,6 +14,7 @@ import {
   WEAPON_SHARPNESS_ICONS,
   WEAPON_SOURCE_CONFIG,
   getRarityBadgeStyle,
+  getWeaponMaxName,
   type DBWeapon,
   type DBWeaponType,
   type WeaponElementType,
@@ -60,6 +61,8 @@ function emptyForm(): WeaponUpsert {
     is_active: true,
     is_spoiler: false,
     sort_order: 0,
+    max_name: null,
+    rarity_names: null,
   };
 }
 
@@ -234,8 +237,17 @@ export default function WeaponEditModal({ weapon, open, onClose, monsters, weapo
               />
             </div>
             <div className="sm:col-span-2">
-              <label className={labelCls}>Name *</label>
-              <input type="text" value={form.name} onChange={(e) => patch({ name: e.target.value })} className={inputCls} />
+              <label className={labelCls}>Name {isNew ? '*' : '(from game data)'}</label>
+              {isNew ? (
+                <input type="text" value={form.name} onChange={(e) => patch({ name: e.target.value })} className={inputCls} />
+              ) : (
+                <div className="flex flex-col justify-center rounded-lg border border-mh-slate-700 bg-mh-slate-800/60 px-3 py-2 text-sm text-mh-slate-200">
+                  <span className="font-semibold">{form.name}</span>
+                  {getWeaponMaxName(form) !== form.name && (
+                    <span className="text-xs text-mh-gold-400 mt-0.5">Max level: {getWeaponMaxName(form)}</span>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 
