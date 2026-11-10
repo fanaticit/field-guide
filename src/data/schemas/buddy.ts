@@ -133,14 +133,31 @@ export interface BuddySkill {
 
 export type BuddyUpsert = Omit<DBBuddy, 'created_at' | 'updated_at'>;
 
+export const BUDDY_TIER_LEVELS = [0, 1, 2] as const;
+export type BuddyTierLevel = (typeof BUDDY_TIER_LEVELS)[number];
+export const BUDDY_MAX_TIER_LEVEL: BuddyTierLevel = 2;
+
+export function clampBuddyTierLevel(val: number): BuddyTierLevel {
+  if (val >= 2) return 2;
+  if (val <= 0) return 0;
+  return 1;
+}
+
+export function buddyTierLevelLabel(level: number): string {
+  if (level >= BUDDY_MAX_TIER_LEVEL) return 'Max (2)';
+  return `Tier ${level}`;
+}
+
 export interface UserBuddyCollectionItem {
   user_id: string;
   buddy_id: string;
-  quantity: number;
+  tier_level?: number;
+  quantity?: number;
   created_at?: string;
   updated_at?: string;
 }
 
 export interface BuddyCollectionEntry {
-  quantity: number;
+  tier_level: number;
+  quantity?: number;
 }

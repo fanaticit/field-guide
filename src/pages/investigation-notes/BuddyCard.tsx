@@ -1,8 +1,8 @@
 // ─────────────────────────────────────────────────────────────
 // BuddyCard — Presentation card for MHO Companions with Collection Tracking
 // ─────────────────────────────────────────────────────────────
-import { useState, useRef, useEffect } from 'react';
-import { Cat, Sparkles, Plus, Trash2, Target } from 'lucide-react';
+import { useState } from 'react';
+import { Cat, Sparkles, Plus, Check, Target } from 'lucide-react';
 import {
   type DBBuddy,
   type BuddyCollectionEntry,
@@ -14,15 +14,14 @@ import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
 import ArtBackdrop from '../../components/ArtBackdrop';
 import { ROLE_ICONS } from '../../components/RoleIcon';
-
-const QTY_OPTIONS = [1, 2, 3, 4, 5];
+import { BuddyTierPicker } from './BuddyTierLevel';
 
 interface BuddyCardProps {
   buddy: DBBuddy;
   collectionEntry?: BuddyCollectionEntry;
   challenge?: HunterChallenge;
-  onSetQuantity: (quantity: number) => void;
-  onRemoveFromCollection: () => void;
+  onToggleOwned: () => void;
+  onSetTierLevel: (tierLevel: number) => void;
   onAddChallenge?: (buddy: DBBuddy) => void;
   onClick: () => void;
 }
@@ -31,17 +30,15 @@ export default function BuddyCard({
   buddy,
   collectionEntry,
   challenge,
-  onSetQuantity,
-  onRemoveFromCollection,
+  onToggleOwned,
+  onSetTierLevel,
   onAddChallenge,
   onClick,
 }: BuddyCardProps) {
   const [imageError, setImageError] = useState(false);
-  const [showQtyMenu, setShowQtyMenu] = useState(false);
-  const qtyMenuRef = useRef<HTMLDivElement>(null);
 
   const isOwned = Boolean(collectionEntry);
-  const currentQty = collectionEntry?.quantity ?? 0;
+  const currentTierLevel = collectionEntry?.tier_level ?? 0;
   const isTracked = Boolean(challenge && challenge.status !== 'abandoned');
   const isChallengeDone = challenge?.status === 'completed';
 
@@ -52,18 +49,6 @@ export default function BuddyCard({
   const isSSR = buddy.tier === 'SSR';
   const isSR = buddy.tier === 'SR';
 
-  // Close quantity popup when clicking outside
-  useEffect(() => {
-    if (!showQtyMenu) return;
-    function handleOutside(e: MouseEvent) {
-      if (qtyMenuRef.current && !qtyMenuRef.current.contains(e.target as Node)) {
-        setShowQtyMenu(false);
-      }
-    }
-    window.addEventListener('mousedown', handleOutside);
-    return () => window.removeEventListener('mousedown', handleOutside);
-  }, [showQtyMenu]);
-
   return (
     <div
       onClick={onClick}
@@ -73,7 +58,7 @@ export default function BuddyCard({
       style={buddyTierBorder(buddy.tier, isOwned)}
       className={cn(
         'group relative isolate overflow-hidden flex flex-col justify-between rounded-2xl border cursor-pointer select-none transition-all duration-200',
-        'p-4 shadow-md hover:scale-[1.01] hover:shadow-xl hover:z-10',
+        'p-3.5 sm:p-4 shadow-md hover:scale-[1.01] hover:shadow-xl hover:z-10 w-full min-w-0 max-w-full box-border',
         isOwned
           ? isSSR
             ? 'border-amber-500/50 bg-gradient-to-b from-[#1f1a14] via-[#151824] to-[#121622] hover:border-amber-400 shadow-amber-500/10'
@@ -94,9 +79,9 @@ export default function BuddyCard({
       )}
 
       {/* Upper Content: Large Image on the Left, Labels & Buttons Stacked on the Right */}
-      <div className="flex items-center gap-3.5 sm:gap-4">
+      <div className="flex items-center gap-3 sm:gap-4 min-w-0 w-full">
         {/* Left: Large Buddy Image (prominent visible presentation without enclosing border) */}
-        <div className="relative h-24 w-24 sm:h-28 sm:w-28 shrink-0 flex items-center justify-center">
+        <div className="relative h-20 w-20 sm:h-28 sm:w-28 shrink-0 flex items-center justify-center">
           {buddy.image && !imageError ? (
             <img
               src={buddy.image}
@@ -106,25 +91,25 @@ export default function BuddyCard({
             />
           ) : (
             <div className="flex flex-col items-center justify-center text-mh-slate-500">
-              <Cat size={36} className={isOwned ? (isSSR ? 'text-amber-400' : isSR ? 'text-purple-400' : 'text-blue-400') : 'text-mh-slate-500'} />
+              <Cat size={32} className={isOwned ? (isSSR ? 'text-amber-400' : isSR ? 'text-purple-400' : 'text-blue-400') : 'text-mh-slate-500'} />
             </div>
           )}
         </div>
 
         {/* Right: Stacked Name, Badges, and Action Buttons */}
-        <div className="min-w-0 flex-1 flex flex-col gap-2">
+        <div className="min-w-0 flex-1 flex flex-col gap-1.5 sm:gap-2">
           {/* Name & Japanese Subtitle */}
-          <div>
-            <div className="flex items-center gap-1.5 flex-wrap">
+          <div className="min-w-0">
+            <div className="flex items-center gap-1.5 flex-wrap min-w-0">
               <h3 className={cn(
-                'font-display text-base font-bold leading-tight transition-colors line-clamp-1',
+                'font-display text-base font-bold leading-tight transition-colors truncate',
                 isOwned ? 'text-mh-slate-100 group-hover:text-mh-gold-300' : 'text-mh-slate-200 group-hover:text-mh-gold-300',
               )}>
                 {buddy.name}
               </h3>
               {(buddy.status === 'not_in_game' || buddy.is_spoiler) && (
                 <span
-                  className="rounded bg-amber-500/20 border border-amber-500/40 px-1.5 py-0.2 text-[9px] font-bold text-amber-300 uppercase tracking-wider"
+                  className="rounded bg-amber-500/20 border border-amber-500/40 px-1.5 py-0.2 text-[9px] font-bold text-amber-300 uppercase tracking-wider shrink-0"
                   title="***Spoiler***"
                 >
                   Coming
@@ -139,10 +124,10 @@ export default function BuddyCard({
           </div>
 
           {/* Tier & Role Badges */}
-          <div className="flex items-center gap-1.5 flex-wrap">
+          <div className="flex items-center gap-1.5 flex-wrap min-w-0">
             <span
               className={cn(
-                'inline-flex items-center justify-center rounded-lg px-2 py-0.5 text-xs font-black tracking-wider border shadow-sm',
+                'inline-flex items-center justify-center rounded-lg px-2 py-0.5 text-xs font-black tracking-wider border shadow-sm shrink-0',
                 tierCfg.badgeBg,
                 tierCfg.badgeText,
                 tierCfg.badgeBorder,
@@ -153,19 +138,19 @@ export default function BuddyCard({
 
             <span
               className={cn(
-                'inline-flex items-center gap-1.5 rounded-lg px-2 py-0.5 text-[11px] font-bold border',
+                'inline-flex items-center gap-1 rounded-lg px-2 py-0.5 text-[11px] font-bold border shrink-0',
                 roleCfg.bg,
                 roleCfg.text,
                 roleCfg.border,
               )}
             >
-              <RoleIcon size={24} />
+              <RoleIcon size={18} className="shrink-0" />
               <span>{buddy.role}</span>
             </span>
 
             {(buddy.status === 'not_in_game' || buddy.is_spoiler) && (
               <span
-                className="inline-flex items-center gap-1 rounded-lg px-2 py-0.5 text-xs font-bold border border-amber-500/50 bg-amber-500/20 text-amber-300 shadow-xs"
+                className="inline-flex items-center gap-1 rounded-lg px-2 py-0.5 text-xs font-bold border border-amber-500/50 bg-amber-500/20 text-amber-300 shadow-xs shrink-0"
                 title="***Spoiler***"
               >
                 <span>Coming</span>
@@ -175,7 +160,7 @@ export default function BuddyCard({
 
           {/* Action Buttons Row */}
           <div
-            className="relative z-20 flex items-center gap-1.5 flex-wrap pt-0.5"
+            className="relative z-20 flex items-center gap-1.5 flex-wrap pt-0.5 min-w-0"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Challenge Button if not already owned */}
@@ -201,107 +186,53 @@ export default function BuddyCard({
               )
             )}
 
-            {/* Quantity / Ownership Button */}
-            {isOwned ? (
-              <div className="relative">
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowQtyMenu((prev) => !prev);
-                  }}
-                  title={`You own ${currentQty >= 5 ? '5+' : currentQty} of this companion. Click to change count.`}
-                  className={cn(
-                    'inline-flex h-6 min-w-[24px] px-2 items-center justify-center gap-1 rounded-full text-[10px] font-black leading-none whitespace-nowrap',
-                    'border shadow-md transition-transform hover:scale-105 active:scale-95',
-                    isSSR
-                      ? 'bg-amber-500 text-slate-950 border-amber-300 shadow-amber-500/30 ring-1 ring-amber-400/50'
-                      : isSR
-                        ? 'bg-purple-600 text-white border-purple-300 shadow-purple-500/30 ring-1 ring-purple-400/50'
-                        : 'bg-blue-600 text-white border-blue-300 shadow-blue-500/30 ring-1 ring-blue-400/50',
-                  )}
-                >
-                  <span>{currentQty >= 5 ? '5+' : currentQty} Owned</span>
-                </button>
-
-                {/* Quantity Selection Popup Window */}
-                {showQtyMenu && (
-                  <div
-                    ref={qtyMenuRef}
-                    className="absolute top-full left-0 sm:left-auto sm:right-0 mt-2 z-50 flex flex-col gap-1.5 rounded-xl border border-mh-slate-700 bg-mh-slate-950/95 p-2 shadow-2xl backdrop-blur-md min-w-[130px] animate-in fade-in zoom-in-95 duration-100"
-                  >
-                    <div className="px-1.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-mh-gold-400 border-b border-mh-slate-800">
-                      Quantity Owned
-                    </div>
-
-                    <div className="grid grid-cols-5 gap-1 my-0.5">
-                      {QTY_OPTIONS.map((q) => {
-                        const isSelected = currentQty === q;
-                        return (
-                          <button
-                            key={q}
-                            type="button"
-                            onClick={() => {
-                              onSetQuantity(q);
-                              setShowQtyMenu(false);
-                            }}
-                            className={cn(
-                              'flex h-7 w-7 items-center justify-center rounded-lg text-xs font-bold transition-all',
-                              isSelected
-                                ? 'bg-mh-gold-500 text-slate-950 font-black ring-1 ring-white shadow-sm'
-                                : 'bg-mh-slate-900 text-mh-slate-200 hover:bg-mh-slate-800 hover:text-white',
-                            )}
-                          >
-                            {q === 5 ? '5+' : q}
-                          </button>
-                        );
-                      })}
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() => {
-                        onRemoveFromCollection();
-                        setShowQtyMenu(false);
-                      }}
-                      className="flex items-center justify-center gap-1.5 rounded-lg bg-red-500/15 border border-red-500/30 px-2 py-1 text-[11px] font-semibold text-red-400 hover:bg-red-500/25 transition-colors mt-0.5"
-                    >
-                      <Trash2 size={11} />
-                      <span>Remove</span>
-                    </button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onSetQuantity(1);
-                }}
-                title="Click to mark this companion as owned in your collection"
-                className={cn(
-                  'inline-flex h-6 items-center justify-center gap-1 rounded-full px-2 text-[10px] font-bold whitespace-nowrap',
-                  'border border-mh-slate-700 bg-mh-slate-900/90 text-mh-slate-300 shadow-sm',
-                  'transition-all hover:scale-105 hover:border-mh-gold-500 hover:bg-mh-gold-500/20 hover:text-mh-gold-300',
-                )}
-              >
-                <Plus size={11} />
-                <span>Collect</span>
-              </button>
+            {/* Tier Level Picker (When Owned) */}
+            {isOwned && (
+              <BuddyTierPicker
+                level={currentTierLevel}
+                onChange={(lvl) => onSetTierLevel(lvl)}
+              />
             )}
+
+            {/* Collect / Owned Toggle Button */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleOwned();
+              }}
+              title={isOwned ? 'Collected companion. Click to remove from collection.' : 'Click to mark as collected'}
+              className={cn(
+                'inline-flex h-6 items-center justify-center gap-1 rounded-full px-2 text-[10px] font-bold whitespace-nowrap transition-all hover:scale-105 active:scale-95',
+                isOwned
+                  ? 'bg-emerald-500 text-slate-950 border border-emerald-300 shadow-md shadow-emerald-500/30 ring-1 ring-emerald-400/50'
+                  : 'border border-mh-slate-700 bg-mh-slate-900/90 text-mh-slate-300 shadow-sm hover:border-mh-gold-500 hover:bg-mh-gold-500/20 hover:text-mh-gold-300',
+              )}
+            >
+              {isOwned ? (
+                <>
+                  <Check size={11} strokeWidth={3} />
+                  <span>Owned</span>
+                </>
+              ) : (
+                <>
+                  <Plus size={11} />
+                  <span>Collect</span>
+                </>
+              )}
+            </button>
           </div>
         </div>
       </div>
 
       {/* Bottom: Core Passive under the buttons */}
-      <div className="mt-3 pt-3 border-t border-mh-slate-800/80">
-        <div className="rounded-xl bg-mh-slate-950/70 p-2.5 border border-mh-slate-800/70 space-y-1">
+      <div className="mt-3 pt-3 border-t border-mh-slate-800/80 w-full min-w-0">
+        <div className="rounded-xl bg-mh-slate-950/70 p-2.5 border border-mh-slate-800/70 space-y-1 w-full min-w-0 overflow-hidden">
           <div className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-mh-gold-400">
-            <Sparkles size={11} className="text-mh-gold-400" />
+            <Sparkles size={11} className="text-mh-gold-400 shrink-0" />
             <span>Core Passive</span>
           </div>
-          <p className="text-xs text-mh-slate-300 line-clamp-2 leading-relaxed">
+          <p className="text-xs text-mh-slate-300 line-clamp-2 leading-relaxed break-words">
             {buddy.core_passive || (
               <span className="text-mh-slate-500 italic">No passive skill documented yet.</span>
             )}

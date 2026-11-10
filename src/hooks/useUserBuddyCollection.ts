@@ -1,14 +1,23 @@
 // ─────────────────────────────────────────────────────────────
-// useUserBuddyCollection — Hook for managing hunter's owned Buddies & quantities
+// useUserBuddyCollection — Hook for managing hunter's owned Buddies & tier levels (0, 1, 2)
 // ─────────────────────────────────────────────────────────────
 import { useState, useMemo, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
-import type { BuddyCollectionEntry } from '../data/schemas/buddy';
+import {
+  type BuddyCollectionEntry,
+  clampBuddyTierLevel,
+} from '../data/schemas/buddy';
 
 const STORAGE_KEY = 'field-guide-user-buddy-collection';
 const USER_BUDDY_COLLECTION_QUERY_KEY = 'user-buddy-collection';
+
+interface DbBuddyCollectionRow {
+  buddy_id: string;
+  tier_level?: number;
+  quantity?: number;
+}
 
 export function useUserBuddyCollection() {
   const user = useAuthStore((s) => s.user);
@@ -37,21 +46,28 @@ export function useUserBuddyCollection() {
   // 1. Live Supabase Query (when signed in)
   const { data: dbCollection = [], isLoading: isLoadingCollection } = useQuery({
     queryKey: [USER_BUDDY_COLLECTION_QUERY_KEY, user?.id],
-    queryFn: async () => {
+    queryFn: async (): Promise<DbBuddyCollectionRow[]> => {
       if (!user) return [];
-      const { data, error } = await supabase
+      let { data, error } = await supabase
         .from('user_buddy_collection')
-        .select('*')
+        .select('buddy_id, tier_level, quantity')
         .eq('user_id', user.id);
+
+      if (error) {
+        // In case tier_level column isn't migrated yet in the current environment
+        const fallback = await supabase
+          .from('user_buddy_collection')
+          .select('buddy_id, quantity')
+          .eq('user_id', user.id);
+        data = fallback.data as typeof data;
+        error = fallback.error;
+      }
 
       if (error) {
         console.warn('user_buddy_collection query error:', error);
         return [];
       }
-      return (data ?? []) as Array<{
-        buddy_id: string;
-        quantity: number;
-      }>;
+      return (data ?? []) as DbBuddyCollectionRow[];
     },
     enabled: Boolean(user),
     staleTime: 1000 * 60,
@@ -63,7 +79,8 @@ export function useUserBuddyCollection() {
       const map: Record<string, BuddyCollectionEntry> = {};
       for (const item of dbCollection) {
         map[item.buddy_id] = {
-          quantity: Math.min(5, Math.max(1, item.quantity || 1)),
+          tier_level: clampBuddyTierLevel(item.tier_level ?? 0),
+          quantity: item.quantity ?? 1,
         };
       }
       return map;
@@ -71,21 +88,21 @@ export function useUserBuddyCollection() {
     return localMap;
   }, [user, dbCollection, localMap]);
 
-  // 2. Upsert Mutation (set quantity)
+  // 2. Upsert Mutation (set tier_level)
   const upsertMutation = useMutation({
     mutationFn: async ({
       buddyId,
-      quantity,
+      tierLevel,
     }: {
       buddyId: string;
-      quantity: number;
+      tierLevel: number;
     }) => {
-      const cleanQty = Math.min(5, Math.max(1, quantity));
+      const cleanTier = clampBuddyTierLevel(tierLevel);
 
       if (!user) {
         saveLocal({
           ...localMap,
-          [buddyId]: { quantity: cleanQty },
+          [buddyId]: { tier_level: cleanTier, quantity: 1 },
         });
         return;
       }
@@ -94,32 +111,45 @@ export function useUserBuddyCollection() {
         {
           user_id: user.id,
           buddy_id: buddyId,
-          quantity: cleanQty,
+          tier_level: cleanTier,
+          quantity: 1,
           updated_at: new Date().toISOString(),
         },
         { onConflict: 'user_id,buddy_id' },
       );
-      if (error) throw error;
+      if (error) {
+        // Fallback without tier_level column if DB not migrated yet
+        const { error: fallbackError } = await supabase.from('user_buddy_collection').upsert(
+          {
+            user_id: user.id,
+            buddy_id: buddyId,
+            quantity: 1,
+            updated_at: new Date().toISOString(),
+          },
+          { onConflict: 'user_id,buddy_id' },
+        );
+        if (fallbackError) throw fallbackError;
+      }
     },
-    onMutate: async ({ buddyId, quantity }) => {
+    onMutate: async ({ buddyId, tierLevel }) => {
       if (!user) return;
       await qc.cancelQueries({ queryKey: [USER_BUDDY_COLLECTION_QUERY_KEY, user.id] });
-      const previous = qc.getQueryData<Array<{ buddy_id: string; quantity: number }>>([
+      const previous = qc.getQueryData<DbBuddyCollectionRow[]>([
         USER_BUDDY_COLLECTION_QUERY_KEY,
         user.id,
       ]);
 
-      const cleanQty = Math.min(5, Math.max(1, quantity));
+      const cleanTier = clampBuddyTierLevel(tierLevel);
       qc.setQueryData(
         [USER_BUDDY_COLLECTION_QUERY_KEY, user.id],
-        (old: Array<{ buddy_id: string; quantity: number }> = []) => {
+        (old: DbBuddyCollectionRow[] = []) => {
           const idx = old.findIndex((item) => item.buddy_id === buddyId);
           if (idx >= 0) {
             const next = [...old];
-            next[idx] = { buddy_id: buddyId, quantity: cleanQty };
+            next[idx] = { ...next[idx], buddy_id: buddyId, tier_level: cleanTier, quantity: 1 };
             return next;
           }
-          return [...old, { buddy_id: buddyId, quantity: cleanQty }];
+          return [...old, { buddy_id: buddyId, tier_level: cleanTier, quantity: 1 }];
         },
       );
 
@@ -156,14 +186,14 @@ export function useUserBuddyCollection() {
     onMutate: async (buddyId) => {
       if (!user) return;
       await qc.cancelQueries({ queryKey: [USER_BUDDY_COLLECTION_QUERY_KEY, user.id] });
-      const previous = qc.getQueryData<Array<{ buddy_id: string; quantity: number }>>([
+      const previous = qc.getQueryData<DbBuddyCollectionRow[]>([
         USER_BUDDY_COLLECTION_QUERY_KEY,
         user.id,
       ]);
 
       qc.setQueryData(
         [USER_BUDDY_COLLECTION_QUERY_KEY, user.id],
-        (old: Array<{ buddy_id: string; quantity: number }> = []) =>
+        (old: DbBuddyCollectionRow[] = []) =>
           old.filter((item) => item.buddy_id !== buddyId),
       );
 
@@ -185,28 +215,32 @@ export function useUserBuddyCollection() {
     [collectionMap],
   );
 
-  const getQuantity = useCallback(
-    (buddyId: string) => collectionMap[buddyId]?.quantity ?? 0,
+  const getTierLevel = useCallback(
+    (buddyId: string) => collectionMap[buddyId]?.tier_level ?? 0,
     [collectionMap],
   );
 
-  const setBuddyQuantity = useCallback(
-    (buddyId: string, quantity: number) => {
-      if (quantity <= 0) {
-        deleteMutation.mutate(buddyId);
-      } else {
-        upsertMutation.mutate({ buddyId, quantity });
-      }
+  const setBuddyTierLevel = useCallback(
+    (buddyId: string, tierLevel: number) => {
+      upsertMutation.mutate({ buddyId, tierLevel });
     },
-    [upsertMutation, deleteMutation],
+    [upsertMutation],
   );
 
-  const toggleBuddyOwned = useCallback(
+  // Backward compatibility alias for any existing code
+  const setBuddyQuantity = useCallback(
+    (buddyId: string, _qty: number) => {
+      upsertMutation.mutate({ buddyId, tierLevel: collectionMap[buddyId]?.tier_level ?? 0 });
+    },
+    [upsertMutation, collectionMap],
+  );
+
+  const toggleBuddyCollected = useCallback(
     (buddyId: string) => {
       if (collectionMap[buddyId]) {
         deleteMutation.mutate(buddyId);
       } else {
-        upsertMutation.mutate({ buddyId, quantity: 1 });
+        upsertMutation.mutate({ buddyId, tierLevel: 0 });
       }
     },
     [collectionMap, upsertMutation, deleteMutation],
@@ -227,9 +261,11 @@ export function useUserBuddyCollection() {
     collectionMap,
     isLoadingCollection,
     isOwned,
-    getQuantity,
+    getTierLevel,
+    setBuddyTierLevel,
     setBuddyQuantity,
-    toggleBuddyOwned,
+    toggleBuddyCollected,
+    toggleBuddyOwned: toggleBuddyCollected,
     removeBuddyFromCollection,
     totalCollected,
   };

@@ -232,7 +232,7 @@ export default function AdventurerGuide() {
   }
 
   return (
-    <div data-rarity-theme={theme} className="challenges-theme px-6 pb-6 pt-2 lg:px-8 lg:pb-8 lg:pt-3 space-y-8 max-w-7xl mx-auto text-white">
+    <div data-rarity-theme={theme} className="challenges-theme px-2 sm:px-6 pb-6 pt-2 lg:px-8 lg:pb-8 lg:pt-3 space-y-6 sm:space-y-8 max-w-7xl mx-auto text-white">
       <PageTitlePanel
         icon="/img/ui/Adventurer%20Icon.png"
         title="Adventurers"

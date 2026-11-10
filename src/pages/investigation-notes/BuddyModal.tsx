@@ -1,9 +1,6 @@
-// ─────────────────────────────────────────────────────────────
-// BuddyModal — Inspection Dialog for Buddy details with Collection Controls
-// ─────────────────────────────────────────────────────────────
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { X, Cat, Zap, Sparkles, Info, Check, Trash2, Target, CheckCircle2 } from 'lucide-react';
+import { X, Cat, Zap, Sparkles, Info, Check, Target, CheckCircle2, Plus } from 'lucide-react';
 import {
   type DBBuddy,
   type BuddyRole,
@@ -19,6 +16,7 @@ import { useBuddySkills } from '../../hooks/useAdminBuddies';
 import { usePublicAdventurers } from '../../hooks/useAdminAdventurers';
 import { useAuthStore } from '../../store/authStore';
 import { ROLE_ICONS } from '../../components/RoleIcon';
+import { BuddyTierRow, BuddyTierLevelPill } from './BuddyTierLevel';
 
 const ROLE_DESCRIPTIONS: Record<BuddyRole, string> = {
   Assault: 'Direct damage specialist focused on dealing burst and sustained offensive damage to monsters.',
@@ -26,16 +24,15 @@ const ROLE_DESCRIPTIONS: Record<BuddyRole, string> = {
   Support: 'Provides combat buffs, party healing, defense enhancements, and utility aids during hunts.',
 };
 
-const QTY_OPTIONS = [1, 2, 3, 4, 5];
-
 interface BuddyModalProps {
   buddy: DBBuddy | null;
   open: boolean;
   onClose: () => void;
   collectionEntry?: BuddyCollectionEntry;
   challenge?: HunterChallenge;
-  onSetQuantity: (quantity: number) => void;
-  onRemoveFromCollection: () => void;
+  onToggleOwned: () => void;
+  onSetTierLevel: (tierLevel: number) => void;
+  onRemoveFromCollection?: () => void;
   onAddChallenge?: (buddy: DBBuddy) => void;
 }
 
@@ -45,7 +42,8 @@ export default function BuddyModal({
   onClose,
   collectionEntry,
   challenge,
-  onSetQuantity,
+  onToggleOwned,
+  onSetTierLevel,
   onRemoveFromCollection,
   onAddChallenge,
 }: BuddyModalProps) {
@@ -66,7 +64,7 @@ export default function BuddyModal({
   ] as const;
 
   const isOwned = Boolean(collectionEntry);
-  const currentQty = collectionEntry?.quantity ?? 1;
+  const currentTierLevel = collectionEntry?.tier_level ?? 0;
 
   const tierCfg = TIER_CONFIG[buddy.tier] || TIER_CONFIG.R;
   const roleCfg = ROLE_CONFIG[buddy.role] || ROLE_CONFIG.Support;
@@ -184,9 +182,6 @@ export default function BuddyModal({
                   </span>
                 )}
               </div>
-              <p className="font-mono text-xs text-mh-slate-500 mt-1">
-                Identifier: <span className="text-mh-slate-400">{buddy.id}</span>
-              </p>
               <p className="text-xs text-mh-slate-400 mt-1">
                 {buddy.species ? `${buddy.species} Companion` : 'Aesoland Companion'} &bull; Monster Hunter Outlanders
               </p>
@@ -226,32 +221,16 @@ export default function BuddyModal({
                   ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
                   : 'bg-mh-slate-800 text-mh-slate-400 border border-mh-slate-700'
               )}>
-                {isOwned ? `Owned (${currentQty >= 5 ? '5+' : currentQty})` : 'Not Owned'}
+                {isOwned ? (currentTierLevel >= 2 ? 'Owned · Tier Max (2)' : `Owned · Tier ${currentTierLevel}`) : 'Not Owned'}
               </span>
             </div>
 
             <div className="flex items-center justify-between gap-3 pt-2 border-t border-mh-slate-800 flex-wrap">
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs text-mh-slate-400 font-medium mr-1">Quantity:</span>
-                {QTY_OPTIONS.map((q) => {
-                  const isSelected = isOwned && currentQty === q;
-                  return (
-                    <button
-                      key={q}
-                      type="button"
-                      onClick={() => onSetQuantity(q)}
-                      className={cn(
-                        'flex h-7 w-7 items-center justify-center rounded-lg text-xs font-bold transition-all',
-                        isSelected
-                          ? 'bg-mh-gold-500 text-slate-950 font-black ring-1 ring-white shadow-sm'
-                          : 'bg-mh-slate-900 border border-mh-slate-800 text-mh-slate-300 hover:bg-mh-slate-800 hover:text-white',
-                      )}
-                    >
-                      {q === 5 ? '5+' : q}
-                    </button>
-                  );
-                })}
-              </div>
+              <p className="text-xs text-mh-slate-400">
+                {isOwned
+                  ? 'This companion is unlocked in your field guide roster.'
+                  : 'Mark as collected when unlocked in Monster Hunter Outlanders.'}
+              </p>
 
               <div className="flex items-center gap-2">
                 {!isOwned && (
@@ -276,18 +255,43 @@ export default function BuddyModal({
                   )
                 )}
 
-                {isOwned && (
-                  <button
-                    type="button"
-                    onClick={onRemoveFromCollection}
-                    className="flex items-center gap-1 rounded-lg bg-red-500/15 border border-red-500/30 px-2.5 py-1.5 text-xs font-semibold text-red-400 hover:bg-red-500/25 transition-colors"
-                  >
-                    <Trash2 size={12} />
-                    <span>Remove</span>
-                  </button>
-                )}
+                <button
+                  type="button"
+                  onClick={isOwned ? (onRemoveFromCollection ?? onToggleOwned) : onToggleOwned}
+                  className={cn(
+                    'flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all shrink-0',
+                    isOwned
+                      ? 'bg-red-500/15 border border-red-500/30 text-red-400 hover:bg-red-500/25'
+                      : 'bg-mh-gold-500 text-mh-slate-950 hover:bg-mh-gold-400 shadow-sm',
+                  )}
+                >
+                  {isOwned ? (
+                    <>
+                      <X size={13} />
+                      <span>Remove</span>
+                    </>
+                  ) : (
+                    <>
+                      <Plus size={13} />
+                      <span>Mark Collected</span>
+                    </>
+                  )}
+                </button>
               </div>
             </div>
+
+            {/* Buddy Tier Level Row (Tier 0, 1, 2 Max) */}
+            {isOwned && (
+              <div className="space-y-2 pt-2 border-t border-mh-slate-800">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-wider text-mh-slate-300">
+                    Buddy Tier Level
+                  </span>
+                  <BuddyTierLevelPill level={currentTierLevel} />
+                </div>
+                <BuddyTierRow level={currentTierLevel} onChange={(lvl) => onSetTierLevel(lvl)} />
+              </div>
+            )}
           </div>
 
           {/* Role Overview */}

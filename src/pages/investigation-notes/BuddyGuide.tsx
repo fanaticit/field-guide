@@ -10,6 +10,9 @@ import {
   Info,
   CheckCircle2,
   Bookmark,
+  Layers,
+  Plus,
+  Check,
 } from 'lucide-react';
 import {
   type DBBuddy,
@@ -19,6 +22,7 @@ import {
   BUDDY_ROLES,
   TIER_CONFIG,
   ROLE_CONFIG,
+  BUDDY_MAX_TIER_LEVEL,
 } from '../../data/schemas/buddy';
 import { ADVENTURER_RARITY_CONFIG } from '../../data/schemas/adventurer';
 import { usePublicBuddies, useAllBuddySkills } from '../../hooks/useAdminBuddies';
@@ -33,6 +37,7 @@ import { useUIStore } from '../../store/uiStore';
 import { DEFAULT_SECTION_THEMES } from '../../config/themes';
 import BuddyCard from './BuddyCard';
 import BuddyModal from './BuddyModal';
+import { BuddyTierPicker } from './BuddyTierLevel';
 import PageTitlePanel from '../../components/layout/PageTitlePanel';
 import LoginModal from '../../components/auth/LoginModal';
 import { ROLE_ICONS } from '../../components/RoleIcon';
@@ -86,8 +91,10 @@ export default function BuddyGuide() {
 
   const {
     collectionMap,
-    setBuddyQuantity,
+    toggleBuddyCollected,
+    setBuddyTierLevel,
     removeBuddyFromCollection,
+    getTierLevel,
   } = useUserBuddyCollection();
 
   const { data: challenges = [] } = useHunterChallenges(user?.id);
@@ -176,6 +183,9 @@ export default function BuddyGuide() {
     const total = eligibleBuddies.length;
     const eligibleCollected = eligibleBuddies.filter((b) => Boolean(collectionMap[b.id])).length;
     const progressPct = total > 0 ? Math.round((eligibleCollected / total) * 100) : 0;
+    const maxTierCount = eligibleBuddies.filter(
+      (b) => getTierLevel(b.id) >= BUDDY_MAX_TIER_LEVEL,
+    ).length;
 
     const tiers = {} as Record<BuddyTier, { total: number; owned: number }>;
     for (const tier of BUDDY_TIERS) {
@@ -183,11 +193,11 @@ export default function BuddyGuide() {
       tiers[tier] = { total: inTier.length, owned: inTier.filter((b) => collectionMap[b.id]).length };
     }
 
-    return { total, totalCollected: eligibleCollected, progressPct, tiers };
-  }, [buddies, collectionMap]);
+    return { total, totalCollected: eligibleCollected, progressPct, maxTierCount, tiers };
+  }, [buddies, collectionMap, getTierLevel]);
 
   return (
-    <div data-rarity-theme={theme} className="challenges-theme flex flex-col gap-6 px-6 pb-6 pt-2 lg:px-8 lg:pb-8 lg:pt-3 text-white">
+    <div data-rarity-theme={theme} className="challenges-theme flex flex-col gap-6 px-3 sm:px-6 pb-6 pt-2 lg:px-8 lg:pb-8 lg:pt-3 text-white max-w-7xl mx-auto w-full">
       <PageTitlePanel
         icon="/img/ui/Buddy%20Icon.png"
         title="Buddies"
@@ -198,7 +208,7 @@ export default function BuddyGuide() {
             Collect the Aesoland companions that fight alongside you. Each buddy has a rarity, a combat role
             (Assault, Disruptor or Support), a core passive, and unique abilities. Search companions by name,
             combat role, or keywords in their core passive and combat skills. Tap a card to inspect abilities
-            and update how many you own, or add the ones you're missing to your Hunter's Challenges{' '}
+            and track your buddy tier level (Tier 0 to Tier 2 Max), or add the ones you're missing to your Hunter's Challenges{' '}
             <span className="text-mh-slate-200 font-semibold">recruitment list</span> so you know who to aim for.
           </>
         }
@@ -214,6 +224,17 @@ export default function BuddyGuide() {
               <span className="font-display text-sm font-black text-white">{stats.totalCollected}</span>
               <span className="text-[10px] text-mh-slate-500">/ {stats.total}</span>
               <span className="text-[9px] font-bold text-emerald-400 ml-0.5">({stats.progressPct}%)</span>
+            </div>
+          </div>
+
+          <div className="px-2.5 py-0.5 text-center border-r border-[var(--border-subtle)]" title="Buddies at max tier (Tier 2)">
+            <div className="flex items-center justify-center gap-1 text-[9px] uppercase font-bold text-[var(--theme-accent)]">
+              <Layers size={10} />
+              <span>Max Tier</span>
+            </div>
+            <div className="flex items-baseline justify-center gap-1">
+              <span className="font-display text-xs font-bold text-white">{stats.maxTierCount}</span>
+              <span className="text-[10px] text-mh-slate-500">/ {stats.total}</span>
             </div>
           </div>
 
@@ -411,8 +432,8 @@ export default function BuddyGuide() {
               buddy={buddy}
               collectionEntry={collectionMap[buddy.id]}
               challenge={getBuddyChallenge(challenges, buddy.id)}
-              onSetQuantity={(qty) => setBuddyQuantity(buddy.id, qty)}
-              onRemoveFromCollection={() => removeBuddyFromCollection(buddy.id)}
+              onToggleOwned={() => toggleBuddyCollected(buddy.id)}
+              onSetTierLevel={(lvl) => setBuddyTierLevel(buddy.id, lvl)}
               onAddChallenge={handleAddChallenge}
               onClick={() => setInspectedBuddy(buddy)}
             />
@@ -427,7 +448,7 @@ export default function BuddyGuide() {
                 <th className="px-5 py-3.5 min-w-[200px]">Companion</th>
                 <th className="px-4 py-3.5 w-24">Tier</th>
                 <th className="px-4 py-3.5 w-32">Role</th>
-                <th className="px-4 py-3.5 w-32">Owned</th>
+                <th className="px-4 py-3.5 w-36">Owned</th>
                 <th className="px-5 py-3.5 min-w-[250px]">Core Passive Skill</th>
               </tr>
             </thead>
@@ -438,7 +459,7 @@ export default function BuddyGuide() {
                 const RoleIcon = ROLE_ICONS[buddy.role] || ROLE_ICONS.Support;
                 const entry = collectionMap[buddy.id];
                 const isOwned = Boolean(entry);
-                const qty = entry?.quantity ?? 0;
+                const tierLevel = entry?.tier_level ?? 0;
 
                 return (
                   <tr
@@ -481,9 +502,6 @@ export default function BuddyGuide() {
                               {buddy.name_ja}
                             </span>
                           )}
-                          <p className="font-mono text-[10px] text-mh-slate-500">
-                            {buddy.id}
-                          </p>
                         </div>
                       </div>
                     </td>
@@ -516,21 +534,29 @@ export default function BuddyGuide() {
                     </td>
 
                     <td className="px-4 py-3.5" onClick={(e) => e.stopPropagation()}>
-                      {isOwned ? (
-                        <div className="flex items-center gap-1.5">
-                          <span className="rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 text-[11px] font-bold">
-                            {qty >= 5 ? '5+' : qty} Owned
-                          </span>
-                        </div>
-                      ) : (
+                      <div className="flex items-center gap-1.5">
                         <button
                           type="button"
-                          onClick={() => setBuddyQuantity(buddy.id, 1)}
-                          className="rounded-lg border border-mh-slate-700 bg-mh-slate-800/80 px-2.5 py-1 text-[11px] font-medium text-mh-slate-400 hover:border-mh-gold-500 hover:text-mh-gold-300 transition-colors"
+                          onClick={() => toggleBuddyCollected(buddy.id)}
+                          className={cn(
+                            'inline-flex items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-bold transition-all shadow-sm border',
+                            isOwned
+                              ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 hover:bg-emerald-500/30'
+                              : 'bg-mh-slate-800/80 text-mh-slate-400 border-mh-slate-700 hover:border-mh-gold-500 hover:text-mh-gold-300',
+                          )}
+                          title={isOwned ? 'Collected (click to remove)' : 'Click to collect'}
                         >
-                          + Collect
+                          {isOwned ? <Check size={11} /> : <Plus size={11} />}
+                          <span>{isOwned ? 'Owned' : 'Collect'}</span>
                         </button>
-                      )}
+
+                        {isOwned && (
+                          <BuddyTierPicker
+                            level={tierLevel}
+                            onChange={(lvl) => setBuddyTierLevel(buddy.id, lvl)}
+                          />
+                        )}
+                      </div>
                     </td>
 
                     <td className="px-5 py-3.5">
@@ -550,7 +576,7 @@ export default function BuddyGuide() {
       <div className="flex items-start gap-2.5 rounded-xl border border-mh-slate-800/80 bg-mh-slate-950/60 p-4 text-xs text-mh-slate-400">
         <Info size={16} className="text-mh-gold-400 shrink-0 mt-0.5" />
         <p className="leading-relaxed">
-          <span className="font-semibold text-mh-slate-300">Hunter Collection:</span> Click the quantity count ball on any companion card or table row to quickly update how many copies you own (up to 5+).
+          <span className="font-semibold text-mh-slate-300">Companion Tiers:</span> Buddies unlock at <span className="font-bold text-white">Tier 0</span> and can be advanced through <span className="font-bold text-white">Tier 1</span> up to <span className="font-bold text-amber-300">Tier 2 (Max)</span>. Use the tier picker on each card or table row to track your current companion tier level.
         </p>
       </div>
 
@@ -560,7 +586,8 @@ export default function BuddyGuide() {
         open={inspectedBuddy !== null}
         collectionEntry={inspectedBuddy ? collectionMap[inspectedBuddy.id] : undefined}
         challenge={inspectedBuddy ? getBuddyChallenge(challenges, inspectedBuddy.id) : undefined}
-        onSetQuantity={(qty) => inspectedBuddy && setBuddyQuantity(inspectedBuddy.id, qty)}
+        onToggleOwned={() => inspectedBuddy && toggleBuddyCollected(inspectedBuddy.id)}
+        onSetTierLevel={(lvl) => inspectedBuddy && setBuddyTierLevel(inspectedBuddy.id, lvl)}
         onRemoveFromCollection={() => inspectedBuddy && removeBuddyFromCollection(inspectedBuddy.id)}
         onAddChallenge={handleAddChallenge}
         onClose={() => setInspectedBuddy(null)}
