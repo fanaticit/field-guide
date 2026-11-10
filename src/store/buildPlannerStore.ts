@@ -8,6 +8,7 @@ export interface Adventurer {
   is_default: boolean;
   allowed_weapon_types: string[];
   image?: string;
+  background_image?: string | null;
 }
 
 export interface WeaponType {
@@ -77,7 +78,9 @@ export interface Visage {
   points: number;
   core_effect: string;
   ink_types: string[];
+  monster_id?: string | null;
   monster_icon?: string | null;
+  monster_sketch?: string | null;
   status?: 'in_game' | 'not_in_game';
   status_reason?: string | null;
   is_spoiler?: boolean;

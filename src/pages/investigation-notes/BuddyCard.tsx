@@ -2,10 +2,9 @@
 // BuddyCard — Presentation card for MHO Companions with Collection Tracking
 // ─────────────────────────────────────────────────────────────
 import { useState, useRef, useEffect } from 'react';
-import { Swords, Zap, Heart, Cat, Sparkles, Plus, Trash2, Target } from 'lucide-react';
+import { Cat, Sparkles, Plus, Trash2, Target } from 'lucide-react';
 import {
   type DBBuddy,
-  type BuddyRole,
   type BuddyCollectionEntry,
   TIER_CONFIG,
   ROLE_CONFIG,
@@ -14,12 +13,7 @@ import {
 import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
 import ArtBackdrop from '../../components/ArtBackdrop';
-
-const ROLE_ICONS: Record<BuddyRole, React.ComponentType<{ size?: number; className?: string }>> = {
-  Assault: Swords,
-  Disruptor: Zap,
-  Support: Heart,
-};
+import { ROLE_ICONS } from '../../components/RoleIcon';
 
 const QTY_OPTIONS = [1, 2, 3, 4, 5];
 
@@ -53,7 +47,7 @@ export default function BuddyCard({
 
   const tierCfg = TIER_CONFIG[buddy.tier] || TIER_CONFIG.R;
   const roleCfg = ROLE_CONFIG[buddy.role] || ROLE_CONFIG.Support;
-  const RoleIcon = ROLE_ICONS[buddy.role] || Heart;
+  const RoleIcon = ROLE_ICONS[buddy.role] || ROLE_ICONS.Support;
 
   const isSSR = buddy.tier === 'SSR';
   const isSR = buddy.tier === 'SR';
@@ -159,13 +153,13 @@ export default function BuddyCard({
 
             <span
               className={cn(
-                'inline-flex items-center gap-1 rounded-lg px-2 py-0.5 text-[11px] font-bold border',
+                'inline-flex items-center gap-1.5 rounded-lg px-2 py-0.5 text-[11px] font-bold border',
                 roleCfg.bg,
                 roleCfg.text,
                 roleCfg.border,
               )}
             >
-              <RoleIcon size={12} />
+              <RoleIcon size={24} />
               <span>{buddy.role}</span>
             </span>
 

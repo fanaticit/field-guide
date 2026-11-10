@@ -185,13 +185,25 @@ export function HeroBuddySelector() {
             setShowBuddyList(false);
             setShowWtList(false);
           }}
-          className={`w-full h-[54px] flex items-center gap-3 bg-mh-slate-850 hover:bg-mh-slate-800 border rounded-xl p-2 sm:px-3 transition-all cursor-pointer text-left shadow-sm group ${
+          className={`w-full h-[54px] flex items-center gap-3 bg-mh-slate-850 hover:bg-mh-slate-800 border rounded-xl p-2 sm:px-3 transition-all cursor-pointer text-left shadow-sm group relative isolate overflow-hidden ${
             showAdvList
               ? 'border-rarity-3/80 ring-2 ring-rarity-3/30 bg-mh-slate-800'
               : 'border-mh-slate-750/80 hover:border-mh-slate-650'
           }`}
           title="Click to change Hunter"
         >
+          {/* Background sketch/artwork */}
+          {adventurer && (adventurer.background_image || adventurer.image) && (
+            <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+              <img
+                src={adventurer.background_image || adventurer.image}
+                alt=""
+                className="absolute right-0 top-1/2 -translate-y-1/2 h-[220%] w-auto max-w-none object-cover opacity-25 group-hover:opacity-35 transition-opacity duration-300"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-mh-slate-850/95 via-mh-slate-850/75 to-mh-slate-850/20" />
+            </div>
+          )}
+
           {/* Avatar */}
           <div className="w-9 h-9 rounded-lg overflow-hidden bg-mh-slate-900 border border-mh-slate-700/80 flex items-center justify-center shrink-0 group-hover:border-rarity-3/60 transition-colors">
             {adventurer?.image ? (
@@ -358,13 +370,25 @@ export function HeroBuddySelector() {
             setShowAdvList(false);
             setShowWtList(false);
           }}
-          className={`w-full h-[54px] flex items-center gap-3 bg-mh-slate-850 hover:bg-mh-slate-800 border rounded-xl p-2 sm:px-3 transition-all cursor-pointer text-left shadow-sm group ${
+          className={`w-full h-[54px] flex items-center gap-3 bg-mh-slate-850 hover:bg-mh-slate-800 border rounded-xl p-2 sm:px-3 transition-all cursor-pointer text-left shadow-sm group relative isolate overflow-hidden ${
             showBuddyList
               ? 'border-rarity-5/80 ring-2 ring-rarity-5/30 bg-mh-slate-800'
               : 'border-mh-slate-750/80 hover:border-mh-slate-650'
           }`}
           title={buddy?.core_passive ? `Buddy: ${buddy.name} (${buddy.core_passive})` : 'Click to select Buddy'}
         >
+          {/* Background sketch/artwork */}
+          {buddy?.image && (
+            <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+              <img
+                src={buddy.image}
+                alt=""
+                className="absolute right-0 top-1/2 -translate-y-1/2 h-[180%] w-auto max-w-none object-contain opacity-25 group-hover:opacity-35 transition-opacity duration-300"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-mh-slate-850/95 via-mh-slate-850/75 to-mh-slate-850/20" />
+            </div>
+          )}
+
           {/* Avatar */}
           <div className={`w-9 h-9 rounded-lg overflow-hidden bg-mh-slate-900 border flex items-center justify-center shrink-0 transition-colors ${
             buddy?.tier ? `${getBuddyTheme(buddy.tier).border} group-hover:border-rarity-5/60` : 'border-mh-slate-700/80 group-hover:border-rarity-5/60'

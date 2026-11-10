@@ -5,9 +5,6 @@ import { useState, useMemo } from 'react';
 import {
   Search,
   Cat,
-  Swords,
-  Zap,
-  Heart,
   LayoutGrid,
   List,
   Info,
@@ -17,7 +14,6 @@ import {
 import {
   type DBBuddy,
   type BuddyTier,
-  type BuddyRole,
   BUDDY_TIERS,
   BUDDY_TIER_RARITY,
   BUDDY_ROLES,
@@ -39,17 +35,12 @@ import BuddyCard from './BuddyCard';
 import BuddyModal from './BuddyModal';
 import PageTitlePanel from '../../components/layout/PageTitlePanel';
 import LoginModal from '../../components/auth/LoginModal';
+import { ROLE_ICONS } from '../../components/RoleIcon';
 import { cn } from '../../lib/utils';
 
 type ViewMode = 'grid' | 'table';
 type OwnershipFilter = 'all' | 'owned' | 'unowned';
 const INTRO_HIDDEN_KEY = 'buddies-intro-hidden';
-
-const ROLE_ICONS: Record<BuddyRole, React.ComponentType<{ size?: number; className?: string }>> = {
-  Assault: Swords,
-  Disruptor: Zap,
-  Support: Heart,
-};
 
 const TIER_ORDER: Record<BuddyTier, number> = {
   SSR: 3,
@@ -355,7 +346,7 @@ export default function BuddyGuide() {
                       : 'text-mh-slate-400 hover:text-white',
                   )}
                 >
-                  <RoleIcon size={12} />
+                  <RoleIcon size={24} />
                   <span>{role}</span>
                 </button>
               );
@@ -444,7 +435,7 @@ export default function BuddyGuide() {
               {filtered.map((buddy) => {
                 const tierCfg = TIER_CONFIG[buddy.tier] || TIER_CONFIG.R;
                 const roleCfg = ROLE_CONFIG[buddy.role] || ROLE_CONFIG.Support;
-                const RoleIcon = ROLE_ICONS[buddy.role] || Heart;
+                const RoleIcon = ROLE_ICONS[buddy.role] || ROLE_ICONS.Support;
                 const entry = collectionMap[buddy.id];
                 const isOwned = Boolean(entry);
                 const qty = entry?.quantity ?? 0;
@@ -513,13 +504,13 @@ export default function BuddyGuide() {
                     <td className="px-4 py-3.5">
                       <span
                         className={cn(
-                          'inline-flex items-center gap-1 rounded-lg px-2.5 py-0.5 text-[11px] font-bold border',
+                          'inline-flex items-center gap-1.5 rounded-lg px-2.5 py-0.5 text-[11px] font-bold border',
                           roleCfg.bg,
                           roleCfg.text,
                           roleCfg.border,
                         )}
                       >
-                        <RoleIcon size={12} />
+                        <RoleIcon size={24} />
                         <span>{buddy.role}</span>
                       </span>
                     </td>

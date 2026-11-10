@@ -7,8 +7,6 @@ import {
   X,
   User,
   Swords,
-  Zap,
-  Heart,
   Sparkles,
   Info,
   CheckCircle2,
@@ -29,13 +27,7 @@ import { useAdventurerSkills } from '../../hooks/useAdminAdventurers';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
 import AdventurerRarityBadge from './AdventurerRarityBadge';
 import { ChallengeGoalMenu, InsightPill, InsightRow } from './AdventurerInsight';
-
-const ROLE_ICONS: Record<string, typeof Swords> = {
-  Assault: Swords,
-  Disrupter: Zap,
-  Disruptor: Zap,
-  Support: Heart,
-};
+import { ROLE_ICONS } from '../../components/RoleIcon';
 
 interface AdventurerModalProps {
   adventurer: DBAdventurer | null;
@@ -73,7 +65,7 @@ export default function AdventurerModal({
 
   const roleKey = (adventurer.role === 'Disruptor' ? 'Disrupter' : adventurer.role) as 'Assault' | 'Disrupter' | 'Support';
   const roleCfg = ADVENTURER_ROLE_CONFIG[roleKey] || ADVENTURER_ROLE_CONFIG.Assault;
-  const RoleIcon = ROLE_ICONS[roleKey] || Swords;
+  const RoleIcon = ROLE_ICONS[roleKey] || ROLE_ICONS.Assault;
   const elemCfg = ELEMENT_OPTIONS[adventurer.element_specialization || 'raw'] || ELEMENT_OPTIONS.raw;
   const activeWeaponObj = WEAPON_TYPES.find((w) => w.id === adventurer.weapon_type);
   const currentInsight = isRecruited ? Math.max(1, insightLevel) : 0;
@@ -135,7 +127,7 @@ export default function AdventurerModal({
                 roleCfg.border,
               )}
             >
-              <RoleIcon size={13} />
+              <RoleIcon size={26} />
               <span>{roleCfg.label}</span>
             </span>
 
@@ -202,9 +194,6 @@ export default function AdventurerModal({
               {adventurer.title && (
                 <p className="text-sm font-semibold italic text-mh-gold-300 mt-0.5">{adventurer.title}</p>
               )}
-              <p className="font-mono text-xs text-mh-slate-500 mt-1">
-                Identifier: <span className="text-mh-slate-400">{adventurer.id}</span>
-              </p>
               <p className="text-xs text-mh-slate-400 mt-1">
                 Aesoland Adventurer &bull; Monster Hunter Outlanders
               </p>
@@ -335,7 +324,7 @@ export default function AdventurerModal({
           {/* Tactical Role Analysis */}
           <div className={cn('rounded-xl border p-4 space-y-1.5', roleCfg.bg, roleCfg.border)}>
             <div className="flex items-center gap-2">
-              <RoleIcon size={16} className={roleCfg.text} />
+              <RoleIcon size={32} />
               <h4 className={cn('text-xs font-bold uppercase tracking-wider', roleCfg.text)}>
                 Tactical Role: {roleCfg.label}
               </h4>

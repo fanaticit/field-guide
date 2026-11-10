@@ -5,9 +5,6 @@ import { useState, useMemo } from 'react';
 import {
   User,
   Search,
-  Swords,
-  Zap,
-  Heart,
   Sparkles,
   LayoutGrid,
   List,
@@ -49,18 +46,12 @@ import AdventurerRarityBadge from './AdventurerRarityBadge';
 import { InsightPicker } from './AdventurerInsight';
 import PageTitlePanel from '../../components/layout/PageTitlePanel';
 import LoginModal from '../../components/auth/LoginModal';
+import RoleIcon, { ROLE_ICONS } from '../../components/RoleIcon';
 import { cn } from '../../lib/utils';
 
 type ViewMode = 'grid' | 'table';
 const INTRO_HIDDEN_KEY = 'adventurers-intro-hidden';
 type OwnershipFilter = 'all' | 'recruited' | 'missing';
-
-const ROLE_ICONS: Record<string, typeof Swords> = {
-  Assault: Swords,
-  Disrupter: Zap,
-  Disruptor: Zap,
-  Support: Heart,
-};
 
 export default function AdventurerGuide() {
   const [search, setSearch] = useState('');
@@ -372,11 +363,12 @@ export default function AdventurerGuide() {
                     type="button"
                     onClick={() => setRoleFilter(isSelected ? 'all' : r)}
                     className={cn(
-                      'rounded-lg px-2.5 py-1 text-xs font-semibold transition-all',
+                      'inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold transition-all',
                       isSelected ? `${cfg.bg} ${cfg.text} ring-1 ${cfg.border}` : 'text-mh-slate-400 hover:text-white',
                     )}
                   >
-                    {r}
+                    <RoleIcon role={r} size={26} />
+                    <span>{r}</span>
                   </button>
                 );
               })}
@@ -502,7 +494,7 @@ export default function AdventurerGuide() {
                 {filteredAdventurers.map((adv) => {
                   const roleKey = (adv.role === 'Disruptor' ? 'Disrupter' : adv.role) as 'Assault' | 'Disrupter' | 'Support';
                   const roleCfg = ADVENTURER_ROLE_CONFIG[roleKey] || ADVENTURER_ROLE_CONFIG.Assault;
-                  const RoleIcon = ROLE_ICONS[roleKey] || Swords;
+                  const RoleIcon = ROLE_ICONS[roleKey] || ROLE_ICONS.Assault;
                   const elemCfg = ELEMENT_OPTIONS[adv.element_specialization || 'raw'] || ELEMENT_OPTIONS.raw;
                   const weaponObj = WEAPON_TYPES.find((w) => w.id === adv.weapon_type);
                   const recruited = isRecruited(adv);
@@ -557,8 +549,8 @@ export default function AdventurerGuide() {
 
                       {/* Role */}
                       <td className="px-3 py-3">
-                        <span className={cn('inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-bold border', roleCfg.bg, roleCfg.text, roleCfg.border)}>
-                          <RoleIcon size={11} />
+                        <span className={cn('inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-[10px] font-bold border', roleCfg.bg, roleCfg.text, roleCfg.border)}>
+                          <RoleIcon size={22} />
                           <span>{roleCfg.label}</span>
                         </span>
                       </td>

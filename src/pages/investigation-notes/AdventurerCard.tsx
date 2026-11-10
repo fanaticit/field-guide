@@ -7,8 +7,6 @@ import {
   User,
   Sparkles,
   Swords,
-  Zap,
-  Heart,
   Check,
   Plus,
 } from 'lucide-react';
@@ -24,13 +22,7 @@ import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
 import AdventurerRarityBadge from './AdventurerRarityBadge';
 import { ChallengeGoalMenu, InsightPicker } from './AdventurerInsight';
-
-const ROLE_ICONS: Record<string, typeof Swords> = {
-  Assault: Swords,
-  Disrupter: Zap,
-  Disruptor: Zap,
-  Support: Heart,
-};
+import { ROLE_ICONS } from '../../components/RoleIcon';
 
 interface AdventurerCardProps {
   adventurer: DBAdventurer;
@@ -69,7 +61,7 @@ export default function AdventurerCard({
 
   const roleKey = (adventurer.role === 'Disruptor' ? 'Disrupter' : adventurer.role) as 'Assault' | 'Disrupter' | 'Support';
   const roleCfg = ADVENTURER_ROLE_CONFIG[roleKey] || ADVENTURER_ROLE_CONFIG.Assault;
-  const RoleIcon = ROLE_ICONS[roleKey] || Swords;
+  const RoleIcon = ROLE_ICONS[roleKey] || ROLE_ICONS.Assault;
   const elemCfg = ELEMENT_OPTIONS[adventurer.element_specialization || 'raw'] || ELEMENT_OPTIONS.raw;
 
   const activeWeaponId = adventurer.weapon_type || 'sword_shield';
@@ -123,13 +115,13 @@ export default function AdventurerCard({
           ) : (
             <span
               className={cn(
-                'flex items-center gap-1 rounded-lg px-2.5 py-0.5 text-xs font-bold border shadow-xs',
+                'flex items-center gap-1.5 rounded-lg px-2.5 py-0.5 text-xs font-bold border shadow-xs',
                 roleCfg.bg,
                 roleCfg.text,
                 roleCfg.border,
               )}
             >
-              <RoleIcon size={12} />
+              <RoleIcon size={24} />
               <span>{roleCfg.label}</span>
             </span>
           )}

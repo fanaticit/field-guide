@@ -7,6 +7,7 @@ export type AdventurerRole = 'Assault' | 'Disrupter' | 'Disruptor' | 'Support';
 export interface AdventurerRoleConfig {
   role: 'Assault' | 'Disrupter' | 'Support';
   label: string;
+  icon: string;
   bg: string;
   text: string;
   border: string;
@@ -18,6 +19,7 @@ export const ADVENTURER_ROLE_CONFIG: Record<'Assault' | 'Disrupter' | 'Support',
   Assault: {
     role: 'Assault',
     label: 'Assault',
+    icon: '/images/roles/assault.png',
     bg: 'bg-red-500/15',
     text: 'text-red-400',
     border: 'border-red-500/30',
@@ -27,6 +29,7 @@ export const ADVENTURER_ROLE_CONFIG: Record<'Assault' | 'Disrupter' | 'Support',
   Disrupter: {
     role: 'Disrupter',
     label: 'Disrupter',
+    icon: '/images/roles/disrupter.png',
     bg: 'bg-purple-500/15',
     text: 'text-purple-400',
     border: 'border-purple-500/30',
@@ -36,6 +39,7 @@ export const ADVENTURER_ROLE_CONFIG: Record<'Assault' | 'Disrupter' | 'Support',
   Support: {
     role: 'Support',
     label: 'Support',
+    icon: '/images/roles/support.png',
     bg: 'bg-emerald-500/15',
     text: 'text-emerald-400',
     border: 'border-emerald-500/30',

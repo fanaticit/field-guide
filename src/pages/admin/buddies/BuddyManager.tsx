@@ -10,9 +10,6 @@ import {
   Trash2,
   LayoutGrid,
   List,
-  Swords,
-  Zap,
-  Heart,
   Cat,
 } from 'lucide-react';
 import {
@@ -31,6 +28,7 @@ import {
 } from '../../../hooks/useAdminBuddies';
 import BuddyEditModal from './BuddyEditModal';
 import { cn } from '../../../lib/utils';
+import { ROLE_ICONS } from '../../../components/RoleIcon';
 
 type ViewMode = 'grid' | 'table';
 type SortKey = 'name' | 'tier' | 'role';
@@ -40,12 +38,6 @@ const TIER_ORDER: Record<BuddyTier, number> = {
   SSR: 3,
   SR: 2,
   R: 1,
-};
-
-const ROLE_ICONS = {
-  Assault: Swords,
-  Disruptor: Zap,
-  Support: Heart,
 };
 
 function ActiveToggle({ buddy }: { buddy: DBBuddy }) {
@@ -317,7 +309,7 @@ export default function BuddyManager() {
             {filtered.map((buddy) => {
               const tierCfg = TIER_CONFIG[buddy.tier] || TIER_CONFIG.R;
               const roleCfg = ROLE_CONFIG[buddy.role] || ROLE_CONFIG.Assault;
-              const RoleIcon = ROLE_ICONS[buddy.role] || Swords;
+              const RoleIcon = ROLE_ICONS[buddy.role] || ROLE_ICONS.Support;
 
               return (
                 <div
@@ -351,7 +343,7 @@ export default function BuddyManager() {
                           roleCfg.border,
                         )}
                       >
-                        <RoleIcon size={12} />
+                        <RoleIcon size={24} />
                         <span>{buddy.role}</span>
                       </span>
                     </div>
@@ -465,7 +457,7 @@ export default function BuddyManager() {
                 {filtered.map((buddy) => {
                   const tierCfg = TIER_CONFIG[buddy.tier] || TIER_CONFIG.R;
                   const roleCfg = ROLE_CONFIG[buddy.role] || ROLE_CONFIG.Assault;
-                  const RoleIcon = ROLE_ICONS[buddy.role] || Swords;
+                  const RoleIcon = ROLE_ICONS[buddy.role] || ROLE_ICONS.Support;
 
                   return (
                     <tr
@@ -537,7 +529,7 @@ export default function BuddyManager() {
                             roleCfg.border,
                           )}
                         >
-                          <RoleIcon size={11} />
+                          <RoleIcon size={22} />
                           <span>{buddy.role}</span>
                         </span>
                       </td>

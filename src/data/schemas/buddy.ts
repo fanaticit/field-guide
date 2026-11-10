@@ -42,6 +42,7 @@ export const TIER_CONFIG: Record<BuddyTier, TierConfig> = {
 export interface RoleConfig {
   role: BuddyRole;
   label: string;
+  icon: string;
   bg: string;
   text: string;
   border: string;
@@ -52,6 +53,7 @@ export const ROLE_CONFIG: Record<BuddyRole, RoleConfig> = {
   Assault: {
     role: 'Assault',
     label: 'Assault',
+    icon: '/images/roles/assault.png',
     bg: 'bg-red-500/15',
     text: 'text-red-400',
     border: 'border-red-500/30',
@@ -60,6 +62,7 @@ export const ROLE_CONFIG: Record<BuddyRole, RoleConfig> = {
   Disruptor: {
     role: 'Disruptor',
     label: 'Disruptor',
+    icon: '/images/roles/disrupter.png',
     bg: 'bg-purple-500/15',
     text: 'text-purple-400',
     border: 'border-purple-500/30',
@@ -68,6 +71,7 @@ export const ROLE_CONFIG: Record<BuddyRole, RoleConfig> = {
   Support: {
     role: 'Support',
     label: 'Support',
+    icon: '/images/roles/support.png',
     bg: 'bg-emerald-500/15',
     text: 'text-emerald-400',
     border: 'border-emerald-500/30',

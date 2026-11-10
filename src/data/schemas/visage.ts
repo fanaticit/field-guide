@@ -339,6 +339,8 @@ export interface DBVisage {
   ink_types: InkType[];
   /** Joined from monsters.icon; the card art is composed from this + a rarity background */
   monster_icon?: string | null;
+  /** Joined from monsters.sketch */
+  monster_sketch?: string | null;
   /** Inherent / Core Effect of this Visage card */
   core_effect: string | null;
   status: VisageStatus;
@@ -351,14 +353,16 @@ export interface DBVisage {
   updated_at: string;
 }
 
-export type VisageUpsert = Omit<DBVisage, 'created_at' | 'updated_at' | 'monster_icon'>;
+export type VisageUpsert = Omit<DBVisage, 'created_at' | 'updated_at' | 'monster_icon' | 'monster_sketch'>;
 
-/** Supabase select that pulls the linked monster icon along with the visage row */
-export const VISAGE_SELECT = '*, monster:monsters(icon)';
+/** Supabase select that pulls the linked monster icon and sketch along with the visage row */
+export const VISAGE_SELECT = '*, monster:monsters(icon, sketch)';
 
-/** Flattens the joined `monster` relation into `monster_icon` and normalises array columns */
+/** Flattens the joined `monster` relation into `monster_icon` and `monster_sketch` and normalises array columns */
 export function normalizeVisageRow(row: Record<string, unknown>): DBVisage {
-  const { monster, ...rest } = row as Record<string, unknown> & { monster?: { icon?: string | null } | null };
+  const { monster, ...rest } = row as Record<string, unknown> & {
+    monster?: { icon?: string | null; sketch?: string | null } | null;
+  };
   return {
     ...rest,
     points: typeof rest.points === 'number' ? rest.points : 1,
@@ -369,6 +373,7 @@ export function normalizeVisageRow(row: Record<string, unknown>): DBVisage {
     is_spoiler: Boolean(rest.is_spoiler),
     is_active: Boolean(rest.is_active),
     monster_icon: monster?.icon ?? null,
+    monster_sketch: monster?.sketch ?? null,
   } as DBVisage;
 }
 

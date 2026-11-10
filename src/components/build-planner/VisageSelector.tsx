@@ -10,6 +10,7 @@ import { getInkConfig, DEFAULT_VISAGE_RARITY, VISAGE_SELECT, normalizeVisageRow 
 import VisageIcon from '../visage/VisageIcon';
 import { InkIconComponent } from '../../pages/investigation-notes/VisageCard';
 import { useUserVisageCollection } from '../../hooks/useVisageSets';
+import { cn } from '../../lib/utils';
 
 
 const INK_SET_BONUSES: Record<string, { pieces: number; description: string }[]> = {
@@ -27,6 +28,30 @@ const INK_SET_BONUSES: Record<string, { pieces: number; description: string }[]>
   raw:        [ { pieces: 2, description: 'Raw damage +5%. Affinity +5%.' }, { pieces: 4, description: 'Raw damage +10%. Affinity +15%.' } ],
   combat:     [ { pieces: 2, description: 'Raw damage +5%. Affinity +5%.' }, { pieces: 4, description: 'Raw damage +10%. Affinity +15%.' } ],
 };
+
+function CoreMonsterBackdrop({
+  src,
+  className,
+  alt = '',
+}: {
+  src?: string | null;
+  className: string;
+  alt?: string;
+}) {
+  if (!src) return null;
+  const isSketch = src.includes('sketch') || src.includes('Sketch');
+  return (
+    <img
+      src={src}
+      alt={alt}
+      className={cn(
+        'absolute pointer-events-none object-contain transition-all duration-300 filter',
+        isSketch ? 'invert brightness-125 contrast-125' : 'drop-shadow-lg',
+        className
+      )}
+    />
+  );
+}
 
 export function VisageSelector() {
   const { user } = useAuthStore();
@@ -128,7 +153,7 @@ export function VisageSelector() {
   });
   const activeInks = Object.entries(inkCounts).filter(([, count]) => count > 0);
 
-  // Auto-enrich any slotted cards missing monster_icon when the visages query loads
+  // Auto-enrich any slotted cards missing monster_icon or monster_sketch when the visages query loads
   useEffect(() => {
     if (!visages || visages.length === 0) return;
     const currentSlots: { slot: VisageSlot; card: Visage | null }[] = [
@@ -142,11 +167,15 @@ export function VisageSelector() {
     let shouldUpdate = false;
 
     currentSlots.forEach(({ slot, card }) => {
-      if (card && !card.monster_icon) {
+      if (card && (!card.monster_icon || !card.monster_sketch)) {
         const full = visages.find(v => v.id === card.id);
-        if (full?.monster_icon) {
+        if (full?.monster_icon || full?.monster_sketch) {
           const key = slot === 'core' ? 'coreVisage' : `visage${slot}`;
-          patch[key] = full;
+          patch[key] = {
+            ...card,
+            monster_icon: full.monster_icon ?? card.monster_icon,
+            monster_sketch: full.monster_sketch ?? card.monster_sketch,
+          };
           shouldUpdate = true;
         }
       }
@@ -354,7 +383,18 @@ export function VisageSelector() {
   };
 
   return (
-    <div className="mho-panel has-[[data-dropdown-open]]:relative has-[[data-dropdown-open]]:z-30 p-4 flex flex-col gap-4">
+    <div className="mho-panel relative isolate overflow-hidden has-[[data-dropdown-open]]:relative has-[[data-dropdown-open]]:z-30 p-4 flex flex-col gap-4">
+      {/* Main Core Monster Sketch Backdrop */}
+      {coreVisage && (coreVisage.monster_sketch || coreVisage.monster_icon) && (
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+          <CoreMonsterBackdrop
+            src={coreVisage.monster_sketch || coreVisage.monster_icon}
+            className="left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[140%] max-h-[400px] w-auto max-w-none opacity-20 filter drop-shadow-xl transition-opacity duration-300"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#131622]/90 via-[#131622]/65 to-[#131622]/85 pointer-events-none" />
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex items-center gap-2 flex-wrap">
         <h2 className="font-display text-base font-bold uppercase tracking-wide text-white mr-auto flex items-center gap-2"><span className="text-[#FFD700] text-xs">❖</span>Visage Cards</h2>

@@ -11,9 +11,6 @@ import {
   List,
   User,
   Sparkles,
-  Swords,
-  Zap,
-  Heart,
   Video,
 } from 'lucide-react';
 import {
@@ -33,17 +30,12 @@ import AdventurerEditModal from './AdventurerEditModal';
 import AdventurerVideoModal from './AdventurerVideoModal';
 import AdventurerRarityBadge from '../../investigation-notes/AdventurerRarityBadge';
 import { cn } from '../../../lib/utils';
+import RoleIcon, { ROLE_ICONS } from '../../../components/RoleIcon';
 
 type ViewMode = 'grid' | 'table';
+
 type SortKey = 'name' | 'role' | 'element' | 'order';
 type SortDir = 'asc' | 'desc';
-
-const ROLE_ICONS: Record<string, typeof Swords> = {
-  Assault: Swords,
-  Disrupter: Zap,
-  Disruptor: Zap,
-  Support: Heart,
-};
 
 function ActiveToggle({ adventurer }: { adventurer: DBAdventurer }) {
   const toggle = useToggleAdventurerActive();
@@ -285,13 +277,14 @@ export default function AdventurerManager() {
                   type="button"
                   onClick={() => setFilterRole(isSelected ? '' : r)}
                   className={cn(
-                    'rounded-lg px-2.5 py-1 text-xs font-semibold transition-all',
+                    'inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold transition-all',
                     isSelected
                       ? `${cfg.bg} ${cfg.text} ring-1 ${cfg.border}`
                       : 'text-mh-slate-400 hover:text-mh-slate-200',
                   )}
                 >
-                  {r}
+                  <RoleIcon role={r} size={26} />
+                  <span>{r}</span>
                 </button>
               );
             })}
@@ -380,7 +373,7 @@ export default function AdventurerManager() {
           {filtered.map((adventurer) => {
             const roleKey = adventurer.role === 'Disruptor' ? 'Disrupter' : adventurer.role;
             const roleCfg = ADVENTURER_ROLE_CONFIG[roleKey] || ADVENTURER_ROLE_CONFIG.Assault;
-            const RoleIcon = ROLE_ICONS[roleKey] || Swords;
+            const RoleIcon = ROLE_ICONS[roleKey] || ROLE_ICONS.Assault;
             const elemCfg = ELEMENT_OPTIONS[adventurer.element_specialization || 'raw'] || ELEMENT_OPTIONS.raw;
             const weaponName = weaponTypeMap.get(adventurer.weapon_type || '') || adventurer.weapon_type || 'Custom';
 
@@ -404,8 +397,8 @@ export default function AdventurerManager() {
                           <span>Player Avatar</span>
                         </span>
                       )}
-                      <span className={cn('flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-bold border', roleCfg.bg, roleCfg.text, roleCfg.border)}>
-                        <RoleIcon size={11} />
+                      <span className={cn('flex items-center gap-1.5 rounded-md px-2 py-0.5 text-[10px] font-bold border', roleCfg.bg, roleCfg.text, roleCfg.border)}>
+                        <RoleIcon size={22} />
                         <span>{roleCfg.label}</span>
                       </span>
                       <AdventurerRarityBadge rarity={adventurer.rarity} className="!rounded-md !py-0.5 !text-[10px]" />

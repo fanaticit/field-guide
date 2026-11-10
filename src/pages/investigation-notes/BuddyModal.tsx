@@ -3,7 +3,7 @@
 // ─────────────────────────────────────────────────────────────
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { X, Cat, Swords, Zap, Heart, Sparkles, Info, Check, Trash2, Target, CheckCircle2 } from 'lucide-react';
+import { X, Cat, Zap, Sparkles, Info, Check, Trash2, Target, CheckCircle2 } from 'lucide-react';
 import {
   type DBBuddy,
   type BuddyRole,
@@ -18,12 +18,7 @@ import ArtBackdrop from '../../components/ArtBackdrop';
 import { useBuddySkills } from '../../hooks/useAdminBuddies';
 import { usePublicAdventurers } from '../../hooks/useAdminAdventurers';
 import { useAuthStore } from '../../store/authStore';
-
-const ROLE_ICONS: Record<BuddyRole, React.ComponentType<{ size?: number; className?: string }>> = {
-  Assault: Swords,
-  Disruptor: Zap,
-  Support: Heart,
-};
+import { ROLE_ICONS } from '../../components/RoleIcon';
 
 const ROLE_DESCRIPTIONS: Record<BuddyRole, string> = {
   Assault: 'Direct damage specialist focused on dealing burst and sustained offensive damage to monsters.',
@@ -75,7 +70,7 @@ export default function BuddyModal({
 
   const tierCfg = TIER_CONFIG[buddy.tier] || TIER_CONFIG.R;
   const roleCfg = ROLE_CONFIG[buddy.role] || ROLE_CONFIG.Support;
-  const RoleIcon = ROLE_ICONS[buddy.role] || Heart;
+  const RoleIcon = ROLE_ICONS[buddy.role] || ROLE_ICONS.Support;
 
   const isSSR = buddy.tier === 'SSR';
   const isSR = buddy.tier === 'SR';
@@ -131,7 +126,7 @@ export default function BuddyModal({
                 roleCfg.border,
               )}
             >
-              <RoleIcon size={13} />
+              <RoleIcon size={26} />
               <span>{buddy.role} Role</span>
             </span>
 
@@ -297,8 +292,8 @@ export default function BuddyModal({
 
           {/* Role Overview */}
           <div className="rounded-xl border border-mh-slate-800 bg-mh-slate-900/60 p-4 space-y-1.5">
-            <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-mh-slate-300">
-              <RoleIcon size={14} className={roleCfg.text} />
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-mh-slate-300">
+              <RoleIcon size={28} />
               <span>Combat Role: {buddy.role}</span>
             </div>
             <p className="text-xs text-mh-slate-400 leading-relaxed">

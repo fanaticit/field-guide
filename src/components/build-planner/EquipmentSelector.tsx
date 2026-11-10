@@ -405,7 +405,18 @@ export function EquipmentSelector() {
 
   return (
     // Lift the whole panel above its siblings while a dropdown is open
-    <div className="mho-panel has-[[data-dropdown-open]]:relative has-[[data-dropdown-open]]:z-30 p-4 flex flex-col gap-4">
+    <div className="mho-panel relative isolate overflow-hidden has-[[data-dropdown-open]]:relative has-[[data-dropdown-open]]:z-30 p-4 flex flex-col gap-4">
+      {/* Background Weapon Artwork */}
+      {weapon?.image && (
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+          <img
+            src={weapon.image}
+            alt=""
+            className="absolute -right-4 top-1/2 -translate-y-1/2 h-[140%] max-h-[380px] w-auto max-w-none object-contain opacity-20 filter drop-shadow-2xl transition-opacity duration-300"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#131622]/95 via-[#131622]/75 to-[#131622]/20" />
+        </div>
+      )}
       <div className="flex items-center justify-between gap-2 flex-wrap">
         <h2 className="font-display text-base font-bold uppercase tracking-wide text-white flex items-center gap-2 mr-auto">
           <span className="text-[#FFD700] text-xs">❖</span>Equipment

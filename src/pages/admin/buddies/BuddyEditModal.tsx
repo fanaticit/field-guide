@@ -9,9 +9,7 @@ import {
   Check,
   AlertCircle,
   Upload,
-  Swords,
   Zap,
-  Heart,
   Sparkles,
   Plus,
   Edit2,
@@ -232,11 +230,7 @@ function emptyForm(): BuddyUpsert {
   };
 }
 
-const ROLE_ICONS = {
-  Assault: Swords,
-  Disruptor: Zap,
-  Support: Heart,
-};
+import { ROLE_ICONS } from '../../../components/RoleIcon';
 
 interface Props {
   buddy: DBBuddy | null;
@@ -591,7 +585,7 @@ export default function BuddyEditModal({ buddy, open, onClose }: Props) {
                               : 'border-mh-slate-750 bg-mh-slate-800 text-mh-slate-400 hover:text-white',
                           )}
                         >
-                          <Icon size={14} />
+                          <Icon size={28} />
                           <span className="text-[11px]">{r}</span>
                         </button>
                       );
