@@ -532,23 +532,40 @@ export default function BuildPlanner() {
             </div>
 
             {/* Use Mine / Use All Toggle */}
-            <button
-              type="button"
-              onClick={() => {
-                const next = !store.useMine;
-                store.setUseMine(next);
-                triggerFeedback(next ? 'Using your cards & crafted weapons' : 'Using all cards & weapons');
-              }}
-              className={`rounded-md px-2.5 py-1.5 text-[10px] font-bold uppercase transition-all flex items-center gap-1.5 shrink-0 border shadow-sm cursor-pointer ${
-                store.useMine
-                  ? 'bg-rarity-5/20 text-rarity-5 border-rarity-5/40 hover:bg-rarity-5/30'
-                  : 'bg-black/30 text-mh-slate-300 border-[var(--border-subtle)] hover:text-white hover:border-white/30'
-              }`}
-              title={store.useMine ? 'Currently using your cards & weapons. Click to switch to Use All' : 'Currently using all cards & weapons. Click to switch to Use Mine'}
-            >
-              {store.useMine ? <Package size={12} className="text-rarity-5" /> : <Globe size={12} className="text-mh-slate-400" />}
-              <span>{store.useMine ? 'Use Mine' : 'Use All'}</span>
-            </button>
+            <div className="flex items-center bg-black/40 p-0.5 rounded-md border border-[var(--border-subtle)] shrink-0">
+              <button
+                type="button"
+                onClick={() => {
+                  store.setUseMine(true);
+                  triggerFeedback('Using your cards & crafted weapons');
+                }}
+                className={`rounded px-2.5 py-1 text-[10px] font-bold uppercase transition-all flex items-center gap-1.5 cursor-pointer ${
+                  store.useMine
+                    ? 'bg-rarity-5/20 text-rarity-5 border border-rarity-5/40 shadow-sm'
+                    : 'text-mh-slate-400 hover:text-white border border-transparent'
+                }`}
+                title="Only use your collection & crafted weapons"
+              >
+                <Package size={12} className={store.useMine ? 'text-rarity-5' : 'text-mh-slate-400'} />
+                <span>My Collection</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  store.setUseMine(false);
+                  triggerFeedback('Using all cards & weapons');
+                }}
+                className={`rounded px-2.5 py-1 text-[10px] font-bold uppercase transition-all flex items-center gap-1.5 cursor-pointer ${
+                  !store.useMine
+                    ? 'bg-rarity-5/20 text-rarity-5 border border-rarity-5/40 shadow-sm'
+                    : 'text-mh-slate-400 hover:text-white border border-transparent'
+                }`}
+                title="Use all cards and weapons in the database"
+              >
+                <Globe size={12} className={!store.useMine ? 'text-rarity-5' : 'text-mh-slate-400'} />
+                <span>All Cards</span>
+              </button>
+            </div>
           </div>
 
           {/* Compact Notes field */}

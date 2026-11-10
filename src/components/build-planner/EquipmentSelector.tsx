@@ -405,10 +405,10 @@ export function EquipmentSelector() {
 
   return (
     // Lift the whole panel above its siblings while a dropdown is open
-    <div className="mho-panel relative isolate overflow-hidden has-[[data-dropdown-open]]:relative has-[[data-dropdown-open]]:z-30 p-4 flex flex-col gap-4">
+    <div className="mho-panel relative isolate has-[[data-dropdown-open]]:relative has-[[data-dropdown-open]]:z-50 p-4 flex flex-col gap-4">
       {/* Background Weapon Artwork */}
       {weapon?.image && (
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden rounded-[inherit]">
           <img
             src={weapon.image}
             alt=""

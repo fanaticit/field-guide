@@ -341,15 +341,14 @@ export function VisageSelector() {
                       return (
                         <button
                           key={v.id}
-                          title={v.name}
-                          disabled={!owned}
+                          title={v.name + (owned ? ' (In collection)' : ' (Not in collection)')}
                           onClick={() => { handleVisageChange(slot, v.id); if (filterInk && v.ink_types.includes(filterInk)) setSlotInkType(slot, filterInk); setOpenSlot(null); setFilterInk(null); }}
-                          className={`relative aspect-[3/4] rounded bg-mh-slate-800 border overflow-hidden group transition-all ${
+                          className={`relative aspect-[3/4] rounded bg-mh-slate-800 border overflow-hidden group transition-all cursor-pointer ${
                             isEquippedHere
                               ? 'border-rarity-5 ring-1 ring-rarity-5'
                               : owned
                                 ? 'border-mh-slate-600 hover:border-mh-slate-400'
-                                : 'border-mh-slate-800 opacity-40 hover:opacity-70 hover:border-mh-slate-700'
+                                : 'border-mh-slate-750 hover:border-mh-slate-500 opacity-85 hover:opacity-100'
                           }`}
                         >
                           <div className="absolute inset-0 flex items-center justify-center">
@@ -361,14 +360,15 @@ export function VisageSelector() {
                               <InkIconComponent iconName={inkC.iconName} size={8} />
                             </div>
                           )}
+                          {/* Owned indicator in top-right */}
+                          {owned && (
+                            <span
+                              className="absolute top-0.5 right-0.5 w-2 h-2 rounded-full bg-emerald-400 ring-1 ring-black/60 shadow-sm"
+                              title="In your collection"
+                            />
+                          )}
                           {/* Point cost in bottom-right */}
                           <div className="absolute bottom-0 right-0 bg-black/80 px-0.5 text-[8px] font-bold text-white">{v.points}</div>
-                          {/* Not-owned lock icon */}
-                          {!owned && (
-                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/60 transition-opacity">
-                              <span className="text-[12px]">🔒</span>
-                            </div>
-                          )}
                         </button>
                       );
                     })
@@ -383,10 +383,10 @@ export function VisageSelector() {
   };
 
   return (
-    <div className="mho-panel relative isolate overflow-hidden has-[[data-dropdown-open]]:relative has-[[data-dropdown-open]]:z-30 p-4 flex flex-col gap-4">
+    <div className="mho-panel relative isolate has-[[data-dropdown-open]]:relative has-[[data-dropdown-open]]:z-50 p-4 flex flex-col gap-4">
       {/* Main Core Monster Sketch Backdrop */}
       {coreVisage && (coreVisage.monster_sketch || coreVisage.monster_icon) && (
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden rounded-[inherit]">
           <CoreMonsterBackdrop
             src={coreVisage.monster_sketch || coreVisage.monster_icon}
             className="left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[140%] max-h-[400px] w-auto max-w-none opacity-20 filter drop-shadow-xl transition-opacity duration-300"
@@ -417,20 +417,35 @@ export function VisageSelector() {
         >
           {showCardSlots ? "Hide Visage Cards" : "I'll Select My Own Cards"}
         </button>
-        {/* Collection toggle */}
-        <button
-          type="button"
-          onClick={() => setUseMine(!useMine)}
-          title={useMine ? 'Showing only your collection — click to show all cards' : 'Click to filter to your collection only'}
-          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold border transition-all cursor-pointer ${
-            useMine
-              ? 'bg-rarity-5/20 border-rarity-5/60 text-rarity-5'
-              : 'bg-mh-slate-800 border-mh-slate-700 text-mh-slate-400 hover:text-mh-slate-300'
-          }`}
-        >
-          <span>{useMine ? '📦' : '🌐'}</span>
-          {useMine ? 'My Collection' : 'All Cards'}
-        </button>
+        {/* Collection toggle (both My Collection and All Cards visible side by side) */}
+        <div className="flex items-center bg-mh-slate-800/90 border border-mh-slate-750 p-0.5 rounded-full text-[10px] font-bold shrink-0 shadow-inner">
+          <button
+            type="button"
+            onClick={() => setUseMine(true)}
+            title="Filter to only cards in your collection"
+            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full transition-all cursor-pointer ${
+              useMine
+                ? 'bg-rarity-5/25 text-rarity-5 border border-rarity-5/50 shadow-sm'
+                : 'text-mh-slate-400 hover:text-mh-slate-200 border border-transparent'
+            }`}
+          >
+            <span>📦</span>
+            <span>My Collection</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setUseMine(false)}
+            title="Show all cards in the game"
+            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full transition-all cursor-pointer ${
+              !useMine
+                ? 'bg-rarity-5/25 text-rarity-5 border border-rarity-5/50 shadow-sm'
+                : 'text-mh-slate-400 hover:text-mh-slate-200 border border-transparent'
+            }`}
+          >
+            <span>🌐</span>
+            <span>All Cards</span>
+          </button>
+        </div>
         <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${totalPoints > 12 ? 'bg-red-500/20 text-red-400' : 'bg-mh-slate-800 text-mh-slate-300'}`}>
           {totalPoints} / 12 pts
         </span>

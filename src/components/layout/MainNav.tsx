@@ -5,8 +5,7 @@
 //   • Desktop / mobile landscape → floating rail on the LEFT
 //   • Mobile portrait            → floating bar at the BOTTOM
 // The active item is lifted out of the bar in a notched bubble.
-// Tap the active item, or press-and-hold any item, to open its sub-menu.
-// Hold → slide your thumb onto a page → release to go there.
+// Click any item to open its sub-menu.
 // ─────────────────────────────────────────────────────────────
 import { useEffect, useRef, useState } from 'react';
 import type React from 'react';
@@ -64,8 +63,6 @@ interface NavSection {
   subItems: SubNavItem[];
 }
 
-const HOLD_MS = 350;
-
 const COOKIE_PAGE_VIEWS = 'fg_page_views';
 const COOKIE_FEEDBACK_PROMPT_DISMISSED = 'fg_feedback_prompt_dismissed';
 const COOKIE_FEEDBACK_TARGET_VIEWS = 'fg_feedback_target_views';
@@ -104,10 +101,7 @@ export default function MainNav() {
   const { data: unreadCount = 0 } = useAdminFeedbackCount();
   const [openId, setOpenId] = useState<string | null>(null);
   const [anchorY, setAnchorY] = useState(0);
-  const [hoverSubId, setHoverSubId] = useState<string | null>(null);
   const buttonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
-  const holdCleanup = useRef<(() => void) | null>(null);
-  const suppressClick = useRef(false);
 
   // Track page views on unique route changes; show feedback popover on 10th page (or next target if 'Later' chosen)
   useEffect(() => {
@@ -275,69 +269,13 @@ export default function MainNav() {
     return () => window.removeEventListener('keydown', onKey);
   }, [openId]);
 
-  useEffect(() => () => holdCleanup.current?.(), []);
-
   const openMenu = (section: NavSection) => {
     const rect = buttonRefs.current[section.id]?.getBoundingClientRect();
     if (rect) setAnchorY(rect.top + rect.height / 2);
     setOpenId(section.id);
   };
 
-  const subIdAt = (x: number, y: number) =>
-    document.elementFromPoint(x, y)?.closest<HTMLElement>('[data-sub-id]')?.dataset.subId ?? null;
-
-  // Press-and-hold: open the menu, track the pointer over its items, select on release
-  const handlePointerDown = (section: NavSection, e: React.PointerEvent) => {
-    if (e.pointerType === 'mouse' && e.button !== 0) return;
-    holdCleanup.current?.();
-
-    let fired = false;
-    const timer = window.setTimeout(() => {
-      fired = true;
-      suppressClick.current = true;
-      openMenu(section);
-      navigator.vibrate?.(12);
-    }, HOLD_MS);
-
-    const onMove = (ev: PointerEvent) => {
-      if (fired) setHoverSubId(subIdAt(ev.clientX, ev.clientY));
-    };
-    const onEnd = (ev: PointerEvent) => {
-      cleanup();
-      setHoverSubId(null);
-      if (!fired) return;
-      // Swallow the click that follows a long press
-      window.setTimeout(() => {
-        suppressClick.current = false;
-      }, 50);
-      if (ev.type !== 'pointerup') return;
-      const sub = section.subItems.find((item) => item.id === subIdAt(ev.clientX, ev.clientY));
-      if (sub) {
-        setOpenId(null);
-        sub.onSelect();
-      }
-    };
-    const cleanup = () => {
-      window.clearTimeout(timer);
-      window.removeEventListener('pointermove', onMove);
-      window.removeEventListener('pointerup', onEnd);
-      window.removeEventListener('pointercancel', onEnd);
-      holdCleanup.current = null;
-    };
-
-    window.addEventListener('pointermove', onMove);
-    window.addEventListener('pointerup', onEnd);
-    window.addEventListener('pointercancel', onEnd);
-    holdCleanup.current = cleanup;
-  };
-
   const handleSectionClick = (section: NavSection) => {
-    if (suppressClick.current) return;
-    if (!section.active) {
-      setOpenId(null);
-      navigate(section.path);
-      return;
-    }
     if (openId === section.id) {
       setOpenId(null);
       return;
@@ -375,10 +313,9 @@ export default function MainNav() {
                 data-accent={section.accent}
                 aria-label={section.label}
                 aria-current={section.active ? 'page' : undefined}
-                aria-haspopup={section.active ? 'menu' : undefined}
-                aria-expanded={section.active ? openId === section.id : undefined}
+                aria-haspopup="menu"
+                aria-expanded={openId === section.id}
                 onClick={() => handleSectionClick(section)}
-                onPointerDown={(e) => handlePointerDown(section, e)}
                 onContextMenu={(e) => e.preventDefault()}
               >
                 <span className="main-nav__bubble">
@@ -398,7 +335,7 @@ export default function MainNav() {
                       {unreadCount > 99 ? '99+' : unreadCount}
                     </span>
                   )}
-                  {section.active && (
+                  {(section.active || openId === section.id) && (
                     <ChevronUp
                       size={10}
                       strokeWidth={3}
@@ -523,17 +460,15 @@ export default function MainNav() {
                   key={sub.id}
                   type="button"
                   role="menuitem"
-                  data-sub-id={sub.id}
                   onClick={() => {
                     setOpenId(null);
                     sub.onSelect();
                   }}
                   className={cn(
-                    'flex w-full items-center gap-2.5 rounded-lg border px-3 py-2.5 text-left text-sm transition-colors',
+                    'flex w-full items-center gap-2.5 rounded-lg border px-3 py-2.5 text-left text-sm transition-colors cursor-pointer',
                     sub.active
                       ? 'border-[var(--nav-accent)]/50 bg-[var(--bg-panel-primary)] font-bold text-[var(--nav-accent)]'
                       : 'border-transparent text-[#A3A3A3] hover:bg-white/5 hover:text-white',
-                    hoverSubId === sub.id && '!border-[var(--nav-accent)] !bg-white/10 !text-white',
                   )}
                 >
                   {sub.iconSrc ? (
