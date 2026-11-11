@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import {
   Sparkles,
   ArrowLeft,
@@ -13,8 +14,18 @@ import {
   Clock,
   ScrollText,
 } from 'lucide-react';
+import { usePatchReactions, DEFAULT_REACTION_EMOJIS } from '../hooks/usePatchReactions';
 
 export default function GameUpdates() {
+  const patchVersion = '1.0.9.3';
+  const { counts, react } = usePatchReactions(patchVersion);
+  const [justClicked, setJustClicked] = useState<string | null>(null);
+
+  const handleEmojiClick = (emoji: string) => {
+    react(emoji);
+    setJustClicked(emoji);
+    setTimeout(() => setJustClicked(null), 600);
+  };
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8 space-y-8 animate-fade-in">
       {/* Navigation breadcrumb / back link */}
@@ -68,7 +79,7 @@ export default function GameUpdates() {
       <div className="space-y-6">
         <div className="rounded-2xl border border-mh-gold-500/40 bg-gradient-to-b from-mh-slate-900/90 to-mh-slate-950 p-6 sm:p-8 shadow-xl relative">
           {/* Top Patch Title Strip */}
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-5 mb-6">
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-5 mb-6">
             <div className="flex items-center gap-3">
               <span className="flex h-3 w-3 rounded-full bg-emerald-400 ring-4 ring-emerald-400/20 animate-pulse" />
               <div>
@@ -82,9 +93,42 @@ export default function GameUpdates() {
               </div>
             </div>
 
-            <span className="inline-flex items-center rounded-lg bg-mh-gold-500/15 px-3 py-1 text-xs font-semibold text-mh-gold-300 border border-mh-gold-500/30">
-              Current Live Version
-            </span>
+            {/* Emoji Reactions & Live Version Badge */}
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="flex items-center gap-1.5 rounded-xl bg-black/50 border border-white/10 p-1 shadow-inner">
+                <span className="hidden sm:inline px-2 text-[10px] font-semibold uppercase tracking-wider text-mh-slate-400">
+                  Rate Patch:
+                </span>
+                {DEFAULT_REACTION_EMOJIS.map(({ emoji, label }) => {
+                  const count = counts[emoji] || 0;
+                  const isBouncing = justClicked === emoji;
+                  return (
+                    <button
+                      key={emoji}
+                      type="button"
+                      onClick={() => handleEmojiClick(emoji)}
+                      title={`${label} (${count})`}
+                      className={`group relative flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium transition-all cursor-pointer ${
+                        isBouncing
+                          ? 'scale-110 bg-mh-gold-500/25 border border-mh-gold-500/60 text-white'
+                          : 'bg-white/5 hover:bg-white/10 border border-white/5 hover:border-mh-gold-500/30 text-mh-slate-300 hover:text-white'
+                      }`}
+                    >
+                      <span className={`text-base transition-transform group-hover:scale-125 ${isBouncing ? 'animate-bounce' : ''}`}>
+                        {emoji}
+                      </span>
+                      <span className="font-mono text-xs font-bold tabular-nums text-mh-gold-300">
+                        {count}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <span className="inline-flex items-center rounded-lg bg-mh-gold-500/15 px-3 py-1.5 text-xs font-semibold text-mh-gold-300 border border-mh-gold-500/30">
+                Current Live Version
+              </span>
+            </div>
           </div>
 
           {/* Notice Banner: Skill Guild Might */}
