@@ -26,6 +26,7 @@ import {
   Layers,
   ChevronUp,
   X,
+  ScrollText,
   type LucideIcon,
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -165,9 +166,10 @@ export default function MainNav() {
       iconSrc: '/img/ui/Home%20Icon.png',
       iconZoom: 1,
       accent: 'superior',
-      active: pathname === '/' || pathname === '/settings' || pathname.startsWith('/admin'),
+      active: pathname === '/' || pathname === '/updates' || pathname === '/settings' || pathname.startsWith('/admin'),
       subItems: [
         { id: 'home-root', label: 'Home', icon: Home, active: pathname === '/', onSelect: go('/') },
+        { id: 'home-updates', label: 'Game Updates', icon: ScrollText, active: pathname === '/updates', onSelect: go('/updates') },
         ...(isLoggedIn
           ? [{ id: 'home-settings', label: 'Profile & Settings', icon: Settings, active: pathname === '/settings', onSelect: go('/settings') }]
           : [{ id: 'home-login', label: 'Login', icon: LogIn, active: false, onSelect: () => setLoginModalOpen(true) }]),

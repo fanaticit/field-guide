@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Shield, ChevronRight, Sparkles, Flame, Settings, LogIn } from 'lucide-react';
+import { Shield, ChevronRight, Sparkles, Flame, Settings, LogIn, ScrollText } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import LoginModal from '../components/auth/LoginModal';
 import FeatureShowcase from '../components/home/FeatureShowcase';
@@ -266,6 +266,18 @@ export default function LandingPage() {
                   <ChevronRight size={13} className="text-mh-slate-500" />
                 </button>
               )}
+            </div>
+
+            {/* Row 4: Game Updates / Patch Notes */}
+            <div className="pt-1.5 flex justify-center">
+              <Link
+                to="/updates"
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-mh-gold-500/10 hover:bg-mh-gold-500/20 border border-mh-gold-500/30 text-xs font-semibold text-mh-gold-300 hover:text-mh-gold-200 transition-all shadow-sm group"
+              >
+                <ScrollText size={13} className="text-mh-gold-400 group-hover:scale-110 transition-transform" />
+                <span>Latest Game Updates &middot; Patch 1.0.9.3</span>
+                <ChevronRight size={13} className="opacity-70 group-hover:translate-x-0.5 transition-transform" />
+              </Link>
             </div>
           </div>
         </div>

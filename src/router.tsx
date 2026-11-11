@@ -16,6 +16,7 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import Layout from './Layout';
 import LandingPage from './pages/LandingPage';
+import GameUpdates from './pages/GameUpdates';
 
 import BuildPlanner from './pages/BuildPlanner';
 import Armory from './pages/Armory';
@@ -38,6 +39,7 @@ export const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { index: true, element: <LandingPage /> },
+      { path: 'updates', element: <GameUpdates /> },
 
       // ── 1. Hunter's Armory ──
       { path: 'armory', element: <Armory /> },
