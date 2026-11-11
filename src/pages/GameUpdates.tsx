@@ -94,7 +94,7 @@ export default function GameUpdates() {
               <strong className="text-white block font-semibold mb-1">
                 Guild Might Skill Cap Adjustment
               </strong>
-              The six Guild Might skills (<strong>Weapon, Helm, Mail, Gauntlets, Coil, and Greaves</strong>) now stop at level 11 instead of 12, so their level 12 rows are gone.
+              The six Guild Might skills (<strong>Weapon, Helm, Mail, Gauntlets, Coil, and Greaves</strong>) now stop at level 11 instead of 12.
             </div>
           </div>
 
@@ -123,7 +123,7 @@ export default function GameUpdates() {
                 <li className="flex items-start gap-2.5">
                   <span className="h-1.5 w-1.5 rounded-full bg-mh-gold-400 mt-2 shrink-0" />
                   <div>
-                    <strong className="text-white font-medium">Visage card enhancing:</strong> Each level costs 475 less.
+                    <strong className="text-white font-medium">Visage card enhancing cost:</strong> Each level costs 475 less zenny.
                     <div className="mt-1 flex flex-wrap gap-2 text-[11px] font-mono text-mh-slate-400">
                       <span className="rounded bg-white/5 px-2 py-0.5 border border-white/5">500 → 25</span>
                       <span className="rounded bg-white/5 px-2 py-0.5 border border-white/5">660 → 185</span>
