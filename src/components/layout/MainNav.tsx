@@ -306,7 +306,11 @@ export default function MainNav() {
           onClick={() => navigate('/?home=true', { state: { fromNav: true } })}
           aria-label="Field Guide home"
         >
-          <img src="/favicon.png" alt="" className="h-9 w-9 object-contain drop-shadow-md" />
+          <img
+            src="/images/ui/field-guide-icon-removebg-preview.png"
+            alt="Field Guide"
+            className="h-10 w-10 object-contain drop-shadow-md transition-transform duration-200 hover:scale-110 active:scale-95"
+          />
         </button>
 
         <ul className="main-nav__items">

@@ -70,30 +70,24 @@ export default function LandingPage() {
             <span>Monster Hunters Outlanders - Field Guide</span>
           </div>
 
-          {/* Featured Field Guide Tome (blended into the page) */}
-          <div className="relative my-2 flex items-center justify-center">
-            {/* Ambient backlight behind the book */}
+          {/* Featured Field Guide Banner */}
+          <div className="relative my-3 sm:my-5 w-full max-w-2xl sm:max-w-3xl lg:max-w-4xl flex items-center justify-center">
+            {/* Ambient backlight behind the banner */}
             <div
-              className="pointer-events-none absolute inset-0 -m-8 rounded-full blur-2xl"
+              className="pointer-events-none absolute inset-0 -m-4 sm:-m-6 rounded-3xl blur-2xl opacity-60"
               style={{
                 background:
-                  'radial-gradient(circle at 50% 50%, rgba(117, 182, 112, 0.22) 0%, rgba(255, 215, 0, 0.12) 40%, transparent 70%)',
+                  'radial-gradient(ellipse at 50% 50%, rgba(255, 215, 0, 0.18) 0%, rgba(180, 83, 9, 0.10) 50%, transparent 75%)',
               }}
             />
 
-            {/* The Book Image with feathered edge blending */}
-            <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 max-w-full flex items-center justify-center">
+            <div className="relative w-full overflow-hidden rounded-xl sm:rounded-2xl border border-white/15 shadow-2xl bg-black/40 group">
               <img
-                src="/field_guide_big_background.jpeg"
-                alt="Monster Hunter Field Guide Tome"
-                className="w-full h-full object-cover select-none drop-shadow-2xl transition-transform duration-500 hover:scale-105"
-                style={{
-                  maskImage:
-                    'radial-gradient(circle at 50% 50%, black 45%, rgba(0,0,0,0.75) 65%, transparent 95%)',
-                  WebkitMaskImage:
-                    'radial-gradient(circle at 50% 50%, black 45%, rgba(0,0,0,0.75) 65%, transparent 95%)',
-                }}
+                src="/images/ui/banner_small.jpeg"
+                alt="Monster Hunter Field Guide"
+                className="w-full h-auto object-cover select-none transition-transform duration-700 group-hover:scale-[1.02]"
               />
+              <div className="pointer-events-none absolute inset-0 rounded-xl sm:rounded-2xl ring-1 ring-inset ring-white/10" />
             </div>
           </div>
 

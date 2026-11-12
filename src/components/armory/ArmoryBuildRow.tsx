@@ -34,7 +34,7 @@ export function ArmoryBuildRow({ build, monsterMap }: ArmoryBuildRowProps) {
   // Weapon display info
   const weaponMonster = resolveMonster(build.weapon?.monster_id);
   const weaponIcon = weaponMonster?.icon || build.weapon?.image || build.weapon_type?.icon || null;
-  const weaponName = getWeaponMaxName(build.weapon as DBWeapon);
+  const weaponName = build.weapon ? getWeaponMaxName(build.weapon as DBWeapon) : '';
   const weaponTitle = weaponName 
     ? `Weapon: ${weaponName}${weaponMonster?.name ? ` (${weaponMonster.name})` : ''}`
     : build.weapon_type?.name 

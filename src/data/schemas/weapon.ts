@@ -319,19 +319,20 @@ export function getWeaponDisplayName(
  * Falls back to static game data lookup, then to base weapon name.
  */
 export function getWeaponMaxName(
-  weapon: { id: string; name: string; max_name?: string | null; max_rarity?: number; rarity_names?: Record<string | number, string> | null },
+  weapon?: { id?: string; name?: string; max_name?: string | null; max_rarity?: number; rarity_names?: Record<string | number, string> | null } | null,
 ): string {
+  if (!weapon) return '';
   if (weapon.max_name) return weapon.max_name;
   if (weapon.max_rarity && weapon.rarity_names?.[weapon.max_rarity]) {
     return weapon.rarity_names[weapon.max_rarity];
   }
-  if (WEAPON_MAX_NAMES[weapon.id]) {
+  if (weapon.id && WEAPON_MAX_NAMES[weapon.id]) {
     return WEAPON_MAX_NAMES[weapon.id];
   }
-  if (weapon.max_rarity && WEAPON_RARITY_NAMES[weapon.id]?.[weapon.max_rarity]) {
+  if (weapon.id && weapon.max_rarity && WEAPON_RARITY_NAMES[weapon.id]?.[weapon.max_rarity]) {
     return WEAPON_RARITY_NAMES[weapon.id][weapon.max_rarity];
   }
-  return weapon.name;
+  return weapon.name || '';
 }
 
 /** Helper to provide consistent visual styling and labels for equipment rarity badges (R1 to R12) */

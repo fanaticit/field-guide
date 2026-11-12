@@ -148,7 +148,11 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
 
           {/* Logo */}
           <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center">
-            <img src="/favicon.png" alt="Field Guide Logo" className="h-full w-full object-contain drop-shadow-lg" />
+            <img
+              src="/images/ui/field-guide-icon-removebg-preview.png"
+              alt="Field Guide Logo"
+              className="h-full w-full object-contain drop-shadow-lg"
+            />
           </div>
 
           {/* Title */}
