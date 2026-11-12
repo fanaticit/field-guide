@@ -1,7 +1,8 @@
 // ─────────────────────────────────────────────────────────────
 // AdventurerGuide — Investigation Notes view for MHO Playable Adventurers with Roster Recruitment Tracking
 // ─────────────────────────────────────────────────────────────
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
   User,
   Search,
@@ -54,6 +55,7 @@ const INTRO_HIDDEN_KEY = 'adventurers-intro-hidden';
 type OwnershipFilter = 'all' | 'recruited' | 'missing';
 
 export default function AdventurerGuide() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState<string>('all');
   const [elementFilter, setElementFilter] = useState<string>('all');
@@ -77,6 +79,20 @@ export default function AdventurerGuide() {
   const { data: adventurers = [], isLoading } = usePublicAdventurers({
     showSpoilers: Boolean(profile?.show_spoilers),
   });
+
+  // Open adventurer detail modal if specified in URL (?adventurer=midori or ?id=102002)
+  useEffect(() => {
+    const advParam = searchParams.get('adventurer') || searchParams.get('id');
+    if (!advParam || adventurers.length === 0) return;
+
+    const query = advParam.trim().toLowerCase();
+    const matched = adventurers.find(
+      (a) => a.id.toLowerCase() === query || a.name.toLowerCase() === query,
+    );
+    if (matched) {
+      setInspectedAdventurer(matched);
+    }
+  }, [searchParams, adventurers]);
   const { data: pageGuide } = usePageGuide('adventurers');
   const guideEmbedUrl = useMemo(
     () => getYouTubeEmbedUrl(pageGuide?.youtube_url),
@@ -699,7 +715,15 @@ export default function AdventurerGuide() {
               : inspectedAdventurer
           }
           open={Boolean(inspectedAdventurer)}
-          onClose={() => setInspectedAdventurer(null)}
+          onClose={() => {
+            setInspectedAdventurer(null);
+            if (searchParams.has('adventurer') || searchParams.has('id')) {
+              const next = new URLSearchParams(searchParams);
+              next.delete('adventurer');
+              next.delete('id');
+              setSearchParams(next, { replace: true });
+            }
+          }}
           isRecruited={isRecruited(inspectedAdventurer)}
           insightLevel={getInsightLevel(inspectedAdventurer)}
           challenge={getAdventurerChallenge(challenges, inspectedAdventurer.id)}

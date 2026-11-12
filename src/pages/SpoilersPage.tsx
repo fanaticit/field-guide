@@ -28,6 +28,8 @@ import {
   Trophy,
   Gift,
   AlertTriangle,
+  UserCheck,
+  ArrowRight,
 } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import LoginModal from '../components/auth/LoginModal';
@@ -37,6 +39,7 @@ interface BannerItem {
   id: string;
   name: string;
   adventurer: string;
+  adventurerId: string;
   role: string;
   weapon: string;
   type: 'Featured' | 'Festival' | 'Rotating';
@@ -58,6 +61,7 @@ const FEATURED_BANNERS: BannerItem[] = [
     id: 'autumn-refrain',
     name: 'Autumn Refrain',
     adventurer: 'Midori',
+    adventurerId: '102002',
     role: 'Assault',
     weapon: 'Long Sword',
     type: 'Featured',
@@ -77,6 +81,7 @@ const FEATURED_BANNERS: BannerItem[] = [
     id: 'heart-of-the-thaw',
     name: 'Heart of the Thaw',
     adventurer: 'Stylia',
+    adventurerId: '114004',
     role: 'Support',
     weapon: 'Bow',
     type: 'Featured',
@@ -98,6 +103,7 @@ const FEATURED_BANNERS: BannerItem[] = [
     id: 'crimson-authority',
     name: 'Crimson Authority',
     adventurer: 'Freya',
+    adventurerId: '101003',
     role: 'Disruptor',
     weapon: 'Great Sword',
     type: 'Festival',
@@ -121,6 +127,7 @@ const ROTATING_BANNERS: BannerItem[] = [
     id: 'pounding-smith',
     name: 'Pounding Smith',
     adventurer: 'Rhodes',
+    adventurerId: '105001',
     role: 'Assault',
     weapon: 'Hammer',
     type: 'Rotating',
@@ -489,6 +496,17 @@ export default function SpoilersPage() {
                         <li>Pity carryover: Yes, pity counts carry over to the next Featured/Festival banner.</li>
                       </ul>
                     </div>
+
+                    <div className="pt-1 flex flex-wrap items-center gap-3">
+                      <Link
+                        to={`/challenges/adventurers?adventurer=${banner.adventurerId}`}
+                        className="inline-flex items-center gap-2 rounded-xl bg-mh-gold-500/15 border border-mh-gold-500/35 px-4 py-2 text-xs font-bold text-mh-gold-300 hover:bg-mh-gold-500 hover:text-mh-slate-950 transition-all shadow-sm group"
+                      >
+                        <UserCheck size={14} className="group-hover:scale-110 transition-transform" />
+                        <span>View {banner.adventurer} in Adventurer Guide</span>
+                        <ArrowRight size={13} className="opacity-70 group-hover:translate-x-0.5 transition-transform" />
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -620,6 +638,17 @@ export default function SpoilersPage() {
                         <p className="font-semibold text-amber-300 mb-0.5">Upcoming Rotating Schedule Notice:</p>
                         <p>Nothing is scheduled to start when Rhodes’ Pounding Smith banner ends on 27 Nov at 02:59 UTC.</p>
                       </div>
+                    </div>
+
+                    <div className="pt-1 flex flex-wrap items-center gap-3">
+                      <Link
+                        to={`/challenges/adventurers?adventurer=${banner.adventurerId}`}
+                        className="inline-flex items-center gap-2 rounded-xl bg-blue-500/15 border border-blue-500/35 px-4 py-2 text-xs font-bold text-blue-300 hover:bg-blue-500 hover:text-white transition-all shadow-sm group"
+                      >
+                        <UserCheck size={14} className="group-hover:scale-110 transition-transform" />
+                        <span>View {banner.adventurer} in Adventurer Guide</span>
+                        <ArrowRight size={13} className="opacity-70 group-hover:translate-x-0.5 transition-transform" />
+                      </Link>
                     </div>
                   </div>
                 </div>
