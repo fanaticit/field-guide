@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { Shield, ChevronRight, Sparkles, Flame, Settings, LogIn, ScrollText } from 'lucide-react';
-import { useAuthStore } from '../store/authStore';
+import { useAuthStore, getLandingPagePath } from '../store/authStore';
 import LoginModal from '../components/auth/LoginModal';
 import FeatureShowcase from '../components/home/FeatureShowcase';
 import { useUIStore } from '../store/uiStore';
@@ -9,13 +9,32 @@ import { resolveSectionTheme } from '../config/themes';
 
 export default function LandingPage() {
   const navigate = useNavigate();
-  const { user } = useAuthStore();
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const { user, profile, loading } = useAuthStore();
   const sectionThemes = useUIStore((s) => s.sectionThemes);
   const galleryTheme = resolveSectionTheme('/gallery', sectionThemes);
   const armoryTheme = resolveSectionTheme('/armory', sectionThemes);
   const challengesTheme = resolveSectionTheme('/challenges', sectionThemes);
   const settingsTheme = resolveSectionTheme('/settings', sectionThemes);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
+
+  // If a logged-in user visits the home page and has configured a different startup page, redirect them.
+  // Explicit visits via the navigation rail or ?home=true allow the user to view Home when desired.
+  const stayOnHome = searchParams.get('home') === 'true' || Boolean(location.state?.fromNav);
+  const targetPath = getLandingPagePath(profile);
+  const shouldRedirect = !loading && !!user && !stayOnHome && targetPath !== '/';
+
+  useEffect(() => {
+    if (shouldRedirect) {
+      navigate(targetPath, { replace: true });
+    }
+  }, [shouldRedirect, targetPath, navigate]);
+
+  // While auth state is initializing or when actively redirecting, avoid flashing the home page
+  if (loading || shouldRedirect) {
+    return null;
+  }
 
   const handleCTA = () => {
     if (user) {

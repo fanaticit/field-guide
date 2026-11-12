@@ -27,6 +27,7 @@ import {
   ChevronUp,
   X,
   ScrollText,
+  Eye,
   type LucideIcon,
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -167,13 +168,16 @@ export default function MainNav() {
       iconSrc: '/img/ui/Home%20Icon.png',
       iconZoom: 1,
       accent: 'superior',
-      active: pathname === '/' || pathname === '/updates' || pathname === '/settings' || pathname.startsWith('/admin'),
+      active: pathname === '/' || pathname === '/updates' || pathname === '/settings' || pathname === '/spoilers' || pathname.startsWith('/admin'),
       subItems: [
-        { id: 'home-root', label: 'Home', icon: Home, iconSrc: '/img/ui/Home%20Icon.png', iconZoom: 0.75, active: pathname === '/', onSelect: go('/') },
+        { id: 'home-root', label: 'Home', icon: Home, iconSrc: '/img/ui/Home%20Icon.png', iconZoom: 0.75, active: pathname === '/', onSelect: () => navigate('/?home=true', { state: { fromNav: true } }) },
         { id: 'home-updates', label: 'Game Updates', icon: ScrollText, iconSrc: '/img/ui/game_updates.png', active: pathname === '/updates', onSelect: go('/updates') },
         ...(isLoggedIn
           ? [{ id: 'home-settings', label: 'Profile & Settings', icon: Settings, iconSrc: '/img/ui/profile_and_settings.png', active: pathname === '/settings', onSelect: go('/settings') }]
           : [{ id: 'home-login', label: 'Login', icon: LogIn, iconSrc: '/img/ui/logout.png', active: false, onSelect: () => setLoginModalOpen(true) }]),
+        ...(isLoggedIn && profile?.show_spoilers
+          ? [{ id: 'home-spoilers', label: 'Spoilers', icon: Eye, iconSrc: '/img/ui/AggPageIcon_Recruit.png', iconZoom: 0.85, active: pathname === '/spoilers', onSelect: go('/spoilers') }]
+          : []),
         ...(isAdmin
           ? [{
               id: 'home-admin',
@@ -299,7 +303,7 @@ export default function MainNav() {
         <button
           type="button"
           className="main-nav__brand"
-          onClick={() => navigate('/')}
+          onClick={() => navigate('/?home=true', { state: { fromNav: true } })}
           aria-label="Field Guide home"
         >
           <img src="/favicon.png" alt="" className="h-9 w-9 object-contain drop-shadow-md" />

@@ -10,8 +10,10 @@ import { useUIStore } from './uiStore';
 import { router } from '../router';
 
 // Map the stored Page identifier to a route path
-const pageToPath: Record<string, string> = {
+export const pageToPath: Record<string, string> = {
   'field-guide': '/',
+  'home': '/',
+  '/': '/',
   'armory': '/armory',
   'build-planner': '/armory/planner',
   'armour': '/armory/armour',
@@ -26,9 +28,24 @@ const pageToPath: Record<string, string> = {
   'admin': '/admin/feedback',
   'settings': '/settings',
   'profile': '/settings',
+  'spoilers': '/spoilers',
   'community-hub': '/armory',
   'investigation-notes': '/armory/armour',
 };
+
+/** Resolves a user's chosen default landing page to a client path, with admin permission safeguards */
+export function getLandingPagePath(profile?: UserProfile | null): string {
+  const localDefault = typeof localStorage !== 'undefined' ? localStorage.getItem('fg_user_default_page') : null;
+  const page = (profile?.default_page && profile.default_page !== 'field-guide')
+    ? profile.default_page
+    : (localDefault ?? profile?.default_page);
+  if (!page) return '/';
+  const path = pageToPath[page] ?? '/';
+  if (path.startsWith('/admin') && profile?.role !== 'admin') {
+    return '/';
+  }
+  return path;
+}
 
 export type EquipmentGender = 'male' | 'female';
 
@@ -131,10 +148,10 @@ export const useAuthStore = create<AuthState>((set) => ({
     if (data.user) {
       await useAuthStore.getState().fetchProfile(data.user.id);
       const profile = useAuthStore.getState().profile;
-      if (profile?.default_page) {
-        router.navigate(pageToPath[profile.default_page] ?? '/');
+      const target = getLandingPagePath(profile);
+      if (target !== '/' && window.location.pathname === '/') {
+        router.navigate(target);
       }
-
     }
     return true;
   },
@@ -198,6 +215,10 @@ export const useAuthStore = create<AuthState>((set) => ({
       return;
     }
     const profile = data as UserProfile;
+    const localDefault = typeof localStorage !== 'undefined' ? localStorage.getItem('fg_user_default_page') : null;
+    if (localDefault && (!profile.default_page || profile.default_page === 'field-guide')) {
+      profile.default_page = localDefault;
+    }
     set({ profile });
     if (profile.default_game) {
       useUIStore.getState().setDefaultGame(profile.default_game);
@@ -207,6 +228,13 @@ export const useAuthStore = create<AuthState>((set) => ({
   // ── Profile update ──────────────────────────────────────────
   updateProfile: async (updates: Partial<UserProfile>) => {
     const { user, profile } = useAuthStore.getState();
+
+    if (updates.default_page && typeof localStorage !== 'undefined') {
+      try {
+        localStorage.setItem('fg_user_default_page', updates.default_page);
+      } catch {}
+    }
+
     if (!user) {
       // Local/guest mode
       if (profile) {
@@ -225,6 +253,29 @@ export const useAuthStore = create<AuthState>((set) => ({
       .eq('id', user.id);
 
     if (error) {
+      // If the remote DB has an outdated profiles_default_page_check constraint,
+      // fallback to 'field-guide' in the DB while preserving the user's choice in local storage & client state.
+      if (error.message.includes('profiles_default_page_check')) {
+        console.warn('[Auth] Remote DB check constraint rejected default_page. Preserving setting locally and saving fallback.');
+        const fallbackUpdates = { ...updates, default_page: 'field-guide' };
+        const { error: retryError } = await supabase
+          .from('profiles')
+          .update(fallbackUpdates)
+          .eq('id', user.id);
+
+        if (!retryError) {
+          set((state) => ({
+            profile: state.profile ? { ...state.profile, ...updates } : null,
+            authLoading: false,
+            authError: null,
+          }));
+          if (updates.default_game) {
+            useUIStore.getState().setDefaultGame(updates.default_game);
+          }
+          return true;
+        }
+      }
+
       console.error('[Auth] Failed to update profile:', error.message);
       set({ authError: error.message, authLoading: false });
       return false;
@@ -251,20 +302,28 @@ export function initAuth() {
     window.location.hash.includes('access_token') ||
     window.location.search.includes('code=');
 
-  supabase.auth.getSession().then(async ({ data: { session } }) => {
-    const store = useAuthStore.getState();
-    store.setSession(session);
-    if (session?.user) {
-      await store.fetchProfile(session.user.id);
-      if (isOAuthCallback) {
-        const profile = useAuthStore.getState().profile;
-        if (profile?.default_page) {
-          router.navigate(pageToPath[profile.default_page] ?? '/');
+  supabase.auth
+    .getSession()
+    .then(async ({ data: { session } }) => {
+      const store = useAuthStore.getState();
+      store.setSession(session);
+      if (session?.user) {
+        await store.fetchProfile(session.user.id);
+        if (isOAuthCallback) {
+          const profile = useAuthStore.getState().profile;
+          const target = getLandingPagePath(profile);
+          if (target !== '/') {
+            router.navigate(target);
+          }
         }
       }
-    }
-    useAuthStore.setState({ loading: false });
-  });
+    })
+    .catch((err) => {
+      console.error('[Auth] Failed to get session on init:', err);
+    })
+    .finally(() => {
+      useAuthStore.setState({ loading: false });
+    });
 
   supabase.auth.onAuthStateChange((_event, session) => {
     const store = useAuthStore.getState();

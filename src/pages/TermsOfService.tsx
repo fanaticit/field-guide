@@ -4,7 +4,7 @@ import { ArrowLeft, Scale } from 'lucide-react';
 export default function TermsOfService() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
-      <Link to="/" className="inline-flex items-center gap-2 text-sm font-medium text-mh-slate-400 hover:text-mh-gold-400 transition-colors mb-8">
+      <Link to="/?home=true" className="inline-flex items-center gap-2 text-sm font-medium text-mh-slate-400 hover:text-mh-gold-400 transition-colors mb-8">
         <ArrowLeft size={16} />
         Back to Home
       </Link>

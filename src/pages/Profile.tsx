@@ -165,18 +165,43 @@ export default function ProfilePage() {
 
   return (
     <div className="flex flex-col gap-8 p-6 lg:p-8 max-w-5xl mx-auto pb-16">
-      {/* ── Page Header ── */}
-      <div className="flex flex-col gap-1">
-        <div className="flex items-center gap-2">
-          <User size={20} className="text-mh-gold-400" />
-          <span className="rarity-badge rarity-2">Hunter Profile</span>
+      {/* ── Page Header & Top Actions ── */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-2">
+            <User size={20} className="text-mh-gold-400" />
+            <span className="rarity-badge rarity-2">Hunter Profile</span>
+          </div>
+          <h1 className="font-display text-2xl font-bold text-mh-slate-100 lg:text-3xl">
+            Profile & Preferences
+          </h1>
+          <p className="text-sm text-mh-slate-400">
+            Customize your hunter identity and startup preferences.
+          </p>
         </div>
-        <h1 className="font-display text-2xl font-bold text-mh-slate-100 lg:text-3xl">
-          Profile & Preferences
-        </h1>
-        <p className="text-sm text-mh-slate-400">
-          Customize your hunter identity and startup preferences.
-        </p>
+
+        {/* Top Save & Reset Action Buttons */}
+        <div className="flex items-center gap-2.5 sm:self-center shrink-0">
+          <button
+            type="button"
+            onClick={handleReset}
+            disabled={authLoading}
+            className="flex items-center gap-2 rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3.5 py-2 text-xs font-semibold text-mh-slate-300 hover:bg-mh-slate-700 transition-colors disabled:opacity-50"
+          >
+            <RotateCcw size={14} />
+            Reset
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handleSave()}
+            disabled={authLoading}
+            className="flex items-center gap-2 rounded-xl bg-mh-gold-500 px-5 py-2.5 text-sm font-bold text-mh-slate-950 hover:bg-mh-gold-400 transition-colors shadow-lg disabled:opacity-50"
+          >
+            <Save size={16} />
+            {authLoading ? 'Saving...' : 'Save Preferences'}
+          </button>
+        </div>
       </div>
 
       {/* ── Guest Mode Banner ── */}

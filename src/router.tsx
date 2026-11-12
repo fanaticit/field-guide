@@ -17,6 +17,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 import Layout from './Layout';
 import LandingPage from './pages/LandingPage';
 import GameUpdates from './pages/GameUpdates';
+import SpoilersPage from './pages/SpoilersPage';
 
 import BuildPlanner from './pages/BuildPlanner';
 import Armory from './pages/Armory';
@@ -40,6 +41,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <LandingPage /> },
       { path: 'updates', element: <GameUpdates /> },
+      { path: 'spoilers', element: <SpoilersPage /> },
 
       // ── 1. Hunter's Armory ──
       { path: 'armory', element: <Armory /> },
@@ -85,6 +87,7 @@ export const router = createBrowserRouter([
       { path: 'investigation-notes/:subPage', element: <Navigate to="/challenges" replace /> },
       { path: 'community-hub', element: <Navigate to="/armory" replace /> },
       { path: 'monsters', element: <Navigate to="/" replace /> },
+      { path: 'home/spoilers', element: <Navigate to="/spoilers" replace /> },
 
       // Catch-all → home
       { path: '*', element: <Navigate to="/" replace /> },

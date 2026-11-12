@@ -31,7 +31,7 @@ export default function GameUpdates() {
       {/* Navigation breadcrumb / back link */}
       <div>
         <Link
-          to="/"
+          to="/?home=true"
           className="inline-flex items-center gap-2 text-xs font-semibold text-mh-slate-400 hover:text-mh-gold-400 transition-colors uppercase tracking-wider"
         >
           <ArrowLeft size={14} />
