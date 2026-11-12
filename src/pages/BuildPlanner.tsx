@@ -1,4 +1,5 @@
-import { Save, Copy, ArrowLeft, ThumbsUp, RotateCcw, CheckCircle2, Package, Globe } from 'lucide-react';
+import { Save, Copy, ArrowLeft, ThumbsUp, RotateCcw, CheckCircle2, Package, Globe, Video, ExternalLink } from 'lucide-react';
+import { getYouTubeEmbedUrl } from '../lib/youtube';
 import { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
@@ -177,6 +178,7 @@ export default function BuildPlanner() {
             }
           }
           store.setDescription(desc);
+          store.setYoutubeUrl(data.youtube_url || '');
           store.setBuildRole(role as 'main' | 'support');
           
           store.setAuthorId(data.author_id);
@@ -271,6 +273,7 @@ export default function BuildPlanner() {
       visage_3_id: store.visage3?.id || null,
       visage_4_id: store.visage4?.id || null,
       visage_5_id: store.visage5?.id || null,
+      youtube_url: store.youtubeUrl.trim() || null,
       is_published: true, // Auto-publish for now
     };
 
@@ -568,15 +571,31 @@ export default function BuildPlanner() {
             </div>
           </div>
 
-          {/* Compact Notes field */}
-          <div className="w-full landscape:w-[320px] md:w-[360px] lg:w-[380px] xl:w-[460px] shrink-0">
-            <input 
-              type="text"
-              placeholder="Notes or strategy description (optional)..."
-              className="w-full bg-black/30 border border-[var(--border-subtle)] hover:border-white/30 rounded-lg text-xs text-white focus:border-[#FFD700]/70 focus:ring-0 px-3 py-1.5 placeholder-[var(--text-secondary)] transition-colors"
-              value={store.description}
-              onChange={(e) => store.setDescription(e.target.value)}
-            />
+          {/* Notes & YouTube link fields */}
+          <div className="flex flex-col sm:flex-row gap-2 w-full landscape:w-auto md:w-auto shrink-0">
+            {/* Compact Notes field */}
+            <div className="w-full sm:w-[200px] md:w-[220px] lg:w-[260px] xl:w-[280px]">
+              <input 
+                type="text"
+                placeholder="Notes or strategy description (optional)..."
+                className="w-full bg-black/30 border border-[var(--border-subtle)] hover:border-white/30 rounded-lg text-xs text-white focus:border-[#FFD700]/70 focus:ring-0 px-3 py-1.5 placeholder-[var(--text-secondary)] transition-colors"
+                value={store.description}
+                onChange={(e) => store.setDescription(e.target.value)}
+              />
+            </div>
+            {/* YouTube Guide URL field */}
+            <div className="w-full sm:w-[200px] md:w-[220px] lg:w-[260px] xl:w-[280px] relative">
+              <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none text-red-400">
+                <Video size={13} />
+              </div>
+              <input 
+                type="url"
+                placeholder="YouTube video link (optional)..."
+                className="w-full bg-black/30 border border-[var(--border-subtle)] hover:border-white/30 rounded-lg text-xs text-white focus:border-red-500/70 focus:ring-0 pl-8 pr-3 py-1.5 placeholder-[var(--text-secondary)] transition-colors"
+                value={store.youtubeUrl}
+                onChange={(e) => store.setYoutubeUrl(e.target.value)}
+              />
+            </div>
           </div>
         </div>
 
@@ -596,6 +615,51 @@ export default function BuildPlanner() {
           <SkillSummaryPanel />
         </div>
       </div>
+
+      {/* 4. YouTube Video Showcase Panel (When a valid video URL is present) */}
+      {getYouTubeEmbedUrl(store.youtubeUrl) && (
+        <div className="w-full mho-panel p-4 flex flex-col gap-3 rounded-xl border border-red-500/30 bg-gradient-to-b from-red-950/20 via-black/40 to-black/60 shadow-xl overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-2">
+            <div className="flex items-center gap-2 text-sm font-bold text-white tracking-wide">
+              <span className="p-1 rounded bg-red-600/30 text-red-400 border border-red-500/40">
+                <Video size={16} />
+              </span>
+              <span>Video Guide / Showcase</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <a
+                href={store.youtubeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-xs text-mh-slate-400 hover:text-white transition-colors"
+              >
+                <span>Watch on YouTube</span>
+                <ExternalLink size={12} />
+              </a>
+              {store.youtubeUrl && (
+                <button
+                  type="button"
+                  onClick={() => store.setYoutubeUrl('')}
+                  className="text-[11px] text-mh-slate-500 hover:text-red-400 transition-colors ml-2 cursor-pointer"
+                  title="Clear video link"
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-black/60 border border-white/10 shadow-inner max-w-4xl mx-auto">
+            <iframe
+              src={getYouTubeEmbedUrl(store.youtubeUrl)!}
+              title="YouTube video player for build"
+              className="absolute inset-0 w-full h-full border-0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            />
+          </div>
+        </div>
+      )}
 
       {/* Selection Feedback Notification Toast */}
       {selectionFeedback && (

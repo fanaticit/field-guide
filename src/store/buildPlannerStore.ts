@@ -79,6 +79,7 @@ export interface Visage {
   core_effect: string;
   ink_types: string[];
   monster_id?: string | null;
+  monster_name?: string | null;
   monster_icon?: string | null;
   monster_sketch?: string | null;
   status?: 'in_game' | 'not_in_game';
@@ -93,6 +94,7 @@ interface BuildPlannerState {
   buildId: string | null;
   title: string;
   description: string;
+  youtubeUrl: string;
   buildRole: 'main' | 'support';
   author_id: string | null;
   is_published: boolean;
@@ -123,6 +125,7 @@ interface BuildPlannerState {
   setBuildId: (id: string | null) => void;
   setTitle: (title: string) => void;
   setDescription: (desc: string) => void;
+  setYoutubeUrl: (url: string) => void;
   setBuildRole: (role: 'main' | 'support') => void;
   setAuthorId: (id: string | null) => void;
   setIsPublished: (pub: boolean) => void;
@@ -152,6 +155,7 @@ export const useBuildPlannerStore = create<BuildPlannerState>((set, get) => ({
   buildId: null,
   title: '',
   description: '',
+  youtubeUrl: '',
   buildRole: 'main',
   author_id: null,
   is_published: false,
@@ -174,13 +178,14 @@ export const useBuildPlannerStore = create<BuildPlannerState>((set, get) => ({
   visage4: null,
   visage5: null,
   selectedInkTypes: {},
-  useMine: true,
+  useMine: false,
 
   setUseMine: (useMine) => set({ useMine }),
   toggleUseMine: () => set((state) => ({ useMine: !state.useMine })),
   setBuildId: (id) => set({ buildId: id }),
   setTitle: (title) => set({ title }),
   setDescription: (description) => set({ description }),
+  setYoutubeUrl: (youtubeUrl) => set({ youtubeUrl }),
   setBuildRole: (role) => set({ buildRole: role }),
   setAuthorId: (id) => set({ author_id: id }),
   setIsPublished: (pub) => set({ is_published: pub }),
@@ -234,6 +239,7 @@ export const useBuildPlannerStore = create<BuildPlannerState>((set, get) => ({
     buildId: null,
     title: '',
     description: '',
+    youtubeUrl: '',
     buildRole: 'main',
     author_id: null,
     is_published: false,
@@ -254,7 +260,7 @@ export const useBuildPlannerStore = create<BuildPlannerState>((set, get) => ({
     visage4: null,
     visage5: null,
     selectedInkTypes: {},
-    useMine: true,
+    useMine: false,
   }),
 
   getTotalVisagePoints: () => {

@@ -46,6 +46,7 @@ interface SubNavItem {
   icon: LucideIcon;
   /** Optional artwork that replaces the Lucide icon */
   iconSrc?: string;
+  iconZoom?: number;
   active: boolean;
   onSelect: () => void;
   badge?: number;
@@ -168,23 +169,24 @@ export default function MainNav() {
       accent: 'superior',
       active: pathname === '/' || pathname === '/updates' || pathname === '/settings' || pathname.startsWith('/admin'),
       subItems: [
-        { id: 'home-root', label: 'Home', icon: Home, active: pathname === '/', onSelect: go('/') },
-        { id: 'home-updates', label: 'Game Updates', icon: ScrollText, active: pathname === '/updates', onSelect: go('/updates') },
+        { id: 'home-root', label: 'Home', icon: Home, iconSrc: '/img/ui/Home%20Icon.png', iconZoom: 0.75, active: pathname === '/', onSelect: go('/') },
+        { id: 'home-updates', label: 'Game Updates', icon: ScrollText, iconSrc: '/img/ui/game_updates.png', active: pathname === '/updates', onSelect: go('/updates') },
         ...(isLoggedIn
-          ? [{ id: 'home-settings', label: 'Profile & Settings', icon: Settings, active: pathname === '/settings', onSelect: go('/settings') }]
-          : [{ id: 'home-login', label: 'Login', icon: LogIn, active: false, onSelect: () => setLoginModalOpen(true) }]),
+          ? [{ id: 'home-settings', label: 'Profile & Settings', icon: Settings, iconSrc: '/img/ui/profile_and_settings.png', active: pathname === '/settings', onSelect: go('/settings') }]
+          : [{ id: 'home-login', label: 'Login', icon: LogIn, iconSrc: '/img/ui/logout.png', active: false, onSelect: () => setLoginModalOpen(true) }]),
         ...(isAdmin
           ? [{
               id: 'home-admin',
               label: 'Admin Panel',
               icon: ShieldAlert,
+              iconSrc: '/img/ui/adminpanel.png',
               active: pathname.startsWith('/admin'),
               onSelect: go('/admin/feedback'),
               badge: unreadCount > 0 ? unreadCount : undefined,
             }]
           : []),
         ...(isLoggedIn
-          ? [{ id: 'home-logout', label: 'Logout', icon: LogOut, active: false, onSelect: () => signOut() }]
+          ? [{ id: 'home-logout', label: 'Logout', icon: LogOut, iconSrc: '/img/ui/logout.png', active: false, onSelect: () => signOut() }]
           : []),
       ],
     },
@@ -198,11 +200,12 @@ export default function MainNav() {
       accent: themeToNavAccent(armoryTheme),
       active: pathname.startsWith('/armory') || pathname.startsWith('/build-planner'),
       subItems: [
-        { id: 'armory-builds', label: 'Community Builds', icon: LayoutGrid, active: pathname === '/armory' || pathname === '/armory/builds', onSelect: go('/armory') },
+        { id: 'armory-builds', label: 'Community Builds', icon: LayoutGrid, iconSrc: '/img/ui/community_builds.png', active: pathname === '/armory' || pathname === '/armory/builds', onSelect: go('/armory') },
         {
           id: 'armory-planner',
           label: 'Build Planner',
           icon: Sword,
+          iconSrc: '/img/ui/build_planner.png',
           active: pathname.startsWith('/armory/planner') || pathname.startsWith('/build-planner'),
           onSelect: () => {
             // Keep the hunter's in-progress build; "Clear / Start New" is the explicit reset
@@ -210,7 +213,7 @@ export default function MainNav() {
             navigate(buildId ? `/armory/planner/${buildId}` : '/armory/planner');
           },
         },
-        { id: 'armory-armour', label: 'Armour', icon: Shield, iconSrc: '/img/ui/Equipment%20Icon.png', active: pathname.startsWith('/armory/armour'), onSelect: go('/armory/armour') },
+        { id: 'armory-armour', label: 'Armour', icon: Shield, iconSrc: '/img/ui/Equipment%20Icon.png', iconZoom: 0.75, active: pathname.startsWith('/armory/armour'), onSelect: go('/armory/armour') },
       ],
     },
     {
@@ -223,18 +226,19 @@ export default function MainNav() {
       accent: themeToNavAccent(galleryTheme),
       active: pathname.startsWith('/gallery'),
       subItems: [
-        { id: 'gallery-sets', label: 'Visage Sets', icon: Sparkles, active: pathname === '/gallery' || pathname === '/gallery/sets', onSelect: go('/gallery') },
+        { id: 'gallery-sets', label: 'Visage Sets', icon: Sparkles, iconSrc: '/img/ui/visage_sets.png', active: pathname === '/gallery' || pathname === '/gallery/sets', onSelect: go('/gallery') },
         {
           id: 'gallery-builder',
           label: 'Build Set',
           icon: Layers,
+          iconSrc: '/img/ui/build_set.png',
           active: pathname.startsWith('/gallery/set'),
           onSelect: () => {
             const { buildId } = useVisageBuilderStore.getState();
             navigate(buildId ? `/gallery/set?build=${buildId}` : '/gallery/set');
           },
         },
-        { id: 'gallery-collection', label: 'Visage Collection', icon: BookMarked, active: pathname.startsWith('/gallery/collection'), onSelect: go('/gallery/collection') },
+        { id: 'gallery-collection', label: 'Visage Collection', icon: BookMarked, iconSrc: '/img/ui/visage_collection.png', active: pathname.startsWith('/gallery/collection'), onSelect: go('/gallery/collection') },
       ],
     },
     {
@@ -247,10 +251,10 @@ export default function MainNav() {
       accent: themeToNavAccent(challengesTheme),
       active: pathname.startsWith('/challenges'),
       subItems: [
-        { id: 'challenges-my', label: 'My Challenges', icon: Target, active: pathname === '/challenges', onSelect: go('/challenges') },
+        { id: 'challenges-my', label: 'My Challenges', icon: Target, iconSrc: '/img/ui/my_challenges.png', active: pathname === '/challenges', onSelect: go('/challenges') },
         { id: 'challenges-adventurers', label: 'Adventurer', icon: UserCheck, iconSrc: '/img/ui/Adventurer%20Icon.png', active: pathname.startsWith('/challenges/adventurers'), onSelect: go('/challenges/adventurers') },
-        { id: 'challenges-buddies', label: 'Buddies', icon: Cat, iconSrc: '/img/ui/Buddy%20Icon.png', active: pathname.startsWith('/challenges/buddies'), onSelect: go('/challenges/buddies') },
-        { id: 'challenges-weapons', label: 'Weapons', icon: Sword, iconSrc: '/img/ui/Weapons%20Icon.png', active: pathname.startsWith('/challenges/weapons'), onSelect: go('/challenges/weapons') },
+        { id: 'challenges-buddies', label: 'Buddies', icon: Cat, iconSrc: '/img/ui/Buddy%20Icon.png', iconZoom: 0.75, active: pathname.startsWith('/challenges/buddies'), onSelect: go('/challenges/buddies') },
+        { id: 'challenges-weapons', label: 'Weapons', icon: Sword, iconSrc: '/img/ui/Weapons%20Icon.png', iconZoom: 0.75, active: pathname.startsWith('/challenges/weapons'), onSelect: go('/challenges/weapons') },
       ],
     },
   ];
@@ -446,7 +450,7 @@ export default function MainNav() {
           data-accent={openSection.accent}
           style={{ '--anchor-y': `${anchorY}px` } as React.CSSProperties}
         >
-          <div className="px-3 pb-2 pt-1.5">
+          <div className="px-2 pb-1.5 pt-1">
             <p className="font-display text-sm font-bold leading-none tracking-wide text-[var(--nav-accent)]">
               {openSection.label}
             </p>
@@ -467,17 +471,25 @@ export default function MainNav() {
                     sub.onSelect();
                   }}
                   className={cn(
-                    'flex w-full items-center gap-2.5 rounded-lg border px-3 py-2.5 text-left text-sm transition-colors cursor-pointer',
+                    'flex w-full items-center gap-2.5 rounded-lg border px-2 py-1 text-left text-sm transition-colors cursor-pointer',
                     sub.active
                       ? 'border-[var(--nav-accent)]/50 bg-[var(--bg-panel-primary)] font-bold text-[var(--nav-accent)]'
                       : 'border-transparent text-[#A3A3A3] hover:bg-white/5 hover:text-white',
                   )}
                 >
-                  {sub.iconSrc ? (
-                    <img src={sub.iconSrc} alt="" draggable={false} className="h-5 w-5 shrink-0 object-contain" />
-                  ) : (
-                    <SubIcon size={16} className="shrink-0" />
-                  )}
+                  <div className="relative flex h-10 w-10 shrink-0 items-center justify-center">
+                    {sub.iconSrc ? (
+                      <img
+                        src={sub.iconSrc}
+                        alt=""
+                        draggable={false}
+                        className="h-full w-full object-contain"
+                        style={sub.iconZoom ? { transform: `scale(${sub.iconZoom})` } : undefined}
+                      />
+                    ) : (
+                      <SubIcon size={24} className="shrink-0" />
+                    )}
+                  </div>
                   <span className="truncate">{sub.label}</span>
                   {sub.badge !== undefined && sub.badge > 0 && (
                     <span className="ml-auto rounded-full bg-red-500/20 px-1.5 py-0.5 text-[10px] font-bold text-red-400 ring-1 ring-red-500/40">

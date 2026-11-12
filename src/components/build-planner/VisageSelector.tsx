@@ -53,6 +53,25 @@ function CoreMonsterBackdrop({
   );
 }
 
+function highlightMatch(text: string, terms: string[]) {
+  if (!terms.length || !text) return text;
+  const escapedTerms = terms
+    .filter(t => t.length > 0)
+    .map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+  if (!escapedTerms.length) return text;
+  const regex = new RegExp(`(${escapedTerms.join('|')})`, 'gi');
+  const parts = text.split(regex);
+  return parts.map((part, i) =>
+    regex.test(part) ? (
+      <mark key={i} className="bg-rarity-5/30 text-amber-200 rounded px-0.5 font-semibold">
+        {part}
+      </mark>
+    ) : (
+      part
+    )
+  );
+}
+
 export function VisageSelector() {
   const { user } = useAuthStore();
   const navigate = useNavigate();
@@ -130,6 +149,118 @@ export function VisageSelector() {
     setVisage(slot, selected);
   };
 
+  // Close any open visage / ink dropdown when clicking elsewhere on the page or pressing Escape
+  useEffect(() => {
+    if (openSlot === null && inkPickSlot === null) return;
+    const handlePointerDown = (e: MouseEvent | TouchEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+      // Clicks inside a dropdown, or on the open slot itself (which toggles on its own), are handled elsewhere
+      const activeSlot = String(openSlot ?? inkPickSlot);
+      if (target.closest('[data-dropdown-open]') || target.closest(`[data-visage-slot="${activeSlot}"]`)) return;
+      setOpenSlot(null);
+      setInkPickSlot(null);
+      setFilterInk(null);
+    };
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setOpenSlot(null);
+        setInkPickSlot(null);
+        setFilterInk(null);
+      }
+    };
+    document.addEventListener('mousedown', handlePointerDown);
+    document.addEventListener('touchstart', handlePointerDown);
+    document.addEventListener('keydown', handleKey);
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown);
+      document.removeEventListener('touchstart', handlePointerDown);
+      document.removeEventListener('keydown', handleKey);
+    };
+  }, [openSlot, inkPickSlot]);
+
+  // ── Auto-fill ────────────────────────────────────────────────
+  const [autoFillNote, setAutoFillNote] = useState<string | null>(null);
+
+  /** The card's own ink entry matching the requested ink ('fire' and 'flames' are treated as the same ink) */
+  const matchingInk = (v: Visage, ink: string) => {
+    const target = getInkConfig(ink).id;
+    return v.ink_types.find(it => getInkConfig(it).id === target) ?? null;
+  };
+
+  /** Owned for this specific ink (rarity does not matter) */
+  const isCardOwnedForInk = (v: Visage, cardInk: string) => {
+    if (user && ownedCollection) return ownedCollection.has(`${v.id}::${cardInk}`);
+    return isCollected(v.id, cardInk);
+  };
+
+  /**
+   * Fills slots 2–5 with cards of the given ink, keeping the Core card.
+   * Picks the highest point cards that still leave room for every remaining slot within the 12 point limit,
+   * and never uses the same monster twice (including the Core card's monster).
+   */
+  const autoFillInk = (ink: string) => {
+    if (!visages || !coreVisage) return;
+    const inkCfg = getInkConfig(ink);
+    const monsterKey = (v: Visage) => v.monster_id || v.name.toLowerCase();
+
+    const pool = visages
+      .filter(v => !v.is_spoiler && v.status !== 'not_in_game' && v.id !== coreVisage.id)
+      .map(v => ({ v, cardInk: matchingInk(v, ink) }))
+      .filter((x): x is { v: Visage; cardInk: string } => !!x.cardInk)
+      .filter(x => !useMine || isCardOwnedForInk(x.v, x.cardInk))
+      .filter(x => monsterKey(x.v) !== monsterKey(coreVisage))
+      .sort((a, b) => b.v.points - a.v.points || a.v.name.localeCompare(b.v.name));
+
+    let budget = 12 - (coreVisage.points || 0);
+    const usedMonsters = new Set<string>([monsterKey(coreVisage)]);
+    const picks: { v: Visage; cardInk: string }[] = [];
+
+    for (let i = 0; i < 4; i++) {
+      const remainingAfter = 3 - i;
+      const available = pool.filter(x => !usedMonsters.has(monsterKey(x.v)));
+      if (available.length === 0) break;
+      const minPts = Math.min(...available.map(x => x.v.points));
+      // Leave enough budget so the remaining slots can still be filled with the cheapest cards
+      const reserve = Math.min(remainingAfter, available.length - 1) * minPts;
+      const pick =
+        available.find(x => x.v.points <= budget - reserve) ??
+        available.find(x => x.v.points <= budget);
+      if (!pick) break;
+      picks.push(pick);
+      usedMonsters.add(monsterKey(pick.v));
+      budget -= pick.v.points;
+    }
+
+    const state = useBuildPlannerStore.getState();
+    const newInks = { ...state.selectedInkTypes };
+    const patch: Record<string, Visage | null> = {};
+    ([2, 3, 4, 5] as const).forEach((slot, idx) => {
+      const p = picks[idx];
+      patch[`visage${slot}`] = p ? p.v : null;
+      if (p) newInks[String(slot)] = p.cardInk;
+      else delete newInks[String(slot)];
+    });
+    useBuildPlannerStore.setState({ ...patch, selectedInkTypes: newInks });
+    setOpenSlot(null);
+    setInkPickSlot(null);
+
+    if (picks.length === 0) {
+      setAutoFillNote(useMine
+        ? `No ${inkCfg.shortName} cards in your collection to fill with.`
+        : `No ${inkCfg.shortName} cards available to fill with.`);
+    } else if (picks.length < 4) {
+      setAutoFillNote(useMine
+        ? `Only ${picks.length} ${inkCfg.shortName} card${picks.length > 1 ? 's' : ''} from your collection could be added.`
+        : `Only ${picks.length} ${inkCfg.shortName} card${picks.length > 1 ? 's' : ''} fit within the 12 point limit.`);
+    } else {
+      setAutoFillNote(null);
+    }
+  };
+
+  const coreInk = coreVisage ? selectedInkTypes['core'] || coreVisage.ink_types[0] : null;
+  const coreInkCfg = coreInk ? getInkConfig(coreInk) : null;
+
   const equippedCards = [coreVisage, visage2, visage3, visage4, visage5].filter(Boolean) as Visage[];
 
   // Duplicate check
@@ -195,7 +326,7 @@ export function VisageSelector() {
     const isInkPickOpen = inkPickSlot === slot;
 
     return (
-      <div key={slot} className="flex flex-col items-center relative w-full">
+      <div key={slot} data-visage-slot={slotKey} className="flex flex-col items-center relative w-full">
         <label className={`text-[9px] font-bold mb-1 uppercase tracking-wider ${core ? 'text-rarity-5' : 'text-mh-slate-500'}`}>
           {label}
         </label>
@@ -265,57 +396,96 @@ export function VisageSelector() {
         )}
 
         {/* Visage Picker Popover */}
-        {openSlot === slot && (
-          <div data-dropdown-open="true" className={`absolute top-[105%] ${core ? 'left-0' : 'left-1/2 -translate-x-1/2'} w-[300px] sm:w-[320px] max-h-[400px] overflow-hidden bg-mh-slate-900 border border-mh-slate-700 rounded-xl shadow-2xl p-2 z-50 flex flex-col gap-2`}>
-            <div className="flex flex-col gap-2 px-1 border-b border-mh-slate-800 pb-2 mb-1 shrink-0">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-xs font-bold text-mh-slate-300">Select Visage</span>
-                  {filterInk && (
-                    <div className="flex items-center gap-1 bg-mh-slate-800 px-1.5 py-0.5 rounded border border-mh-slate-700">
-                      <span className="text-[9px] font-bold text-mh-slate-400">{getInkConfig(filterInk).shortName} Only</span>
-                      <button onClick={() => setFilterInk(null)} className="ml-0.5 text-mh-slate-500 hover:text-red-400 leading-none pb-0.5">&times;</button>
-                    </div>
+        {openSlot === slot && (() => {
+          const isFiltered = searchQuery.trim().length > 0;
+          return (
+            <div
+              data-dropdown-open="true"
+              className={`absolute top-[105%] ${
+                core
+                  ? 'left-0'
+                  : slot === 5 || slot === 4
+                    ? 'right-0'
+                    : 'left-1/2 -translate-x-1/2'
+              } ${
+                isFiltered
+                  ? 'w-[320px] sm:w-[390px] md:w-[440px] max-w-[calc(100vw-2rem)]'
+                  : 'w-[300px] sm:w-[320px]'
+              } max-h-[440px] overflow-hidden bg-mh-slate-900 border border-mh-slate-700 rounded-xl shadow-2xl p-2 z-50 flex flex-col gap-2`}
+            >
+              <div className="flex flex-col gap-2 px-1 border-b border-mh-slate-800 pb-2 mb-1 shrink-0">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs font-bold text-mh-slate-300">
+                      {core ? 'Select Core Visage' : 'Select Visage'}
+                    </span>
+                    {filterInk && (
+                      <div className="flex items-center gap-1 bg-mh-slate-800 px-1.5 py-0.5 rounded border border-mh-slate-700">
+                        <span className="text-[9px] font-bold text-mh-slate-400">{getInkConfig(filterInk).shortName} Only</span>
+                        <button onClick={() => setFilterInk(null)} className="ml-0.5 text-mh-slate-500 hover:text-red-400 leading-none pb-0.5">&times;</button>
+                      </div>
+                    )}
+                  </div>
+                  {card && (
+                    <button
+                      onClick={() => { setVisage(slot, null); setOpenSlot(null); }}
+                      className="text-[10px] text-red-400 hover:text-red-300"
+                    >
+                      Clear
+                    </button>
                   )}
                 </div>
-                {card && (
-                  <button
-                    onClick={() => { setVisage(slot, null); setOpenSlot(null); }}
-                    className="text-[10px] text-red-400 hover:text-red-300"
-                  >
-                    Clear
-                  </button>
-                )}
+                <div className="relative">
+                  <Search size={12} className="absolute left-2 top-1/2 -translate-y-1/2 text-mh-slate-500" />
+                  <input
+                    type="text"
+                    autoFocus
+                    placeholder={core ? "Search monster or core effect" : "Search cards..."}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full bg-mh-slate-800 border border-mh-slate-700 rounded text-xs px-2 pl-6 pr-6 py-1.5 text-mh-slate-200 placeholder:text-mh-slate-500 focus:outline-none focus:border-rarity-5 transition-colors"
+                  />
+                  {searchQuery && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchQuery('')}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-mh-slate-500 hover:text-white text-xs leading-none"
+                      title="Clear search"
+                    >
+                      &times;
+                    </button>
+                  )}
+                </div>
               </div>
-              <div className="relative">
-                <Search size={12} className="absolute left-2 top-1/2 -translate-y-1/2 text-mh-slate-500" />
-                <input
-                  type="text"
-                  autoFocus
-                  placeholder="Search cards..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-mh-slate-800 border border-mh-slate-700 rounded text-xs px-2 pl-6 py-1.5 text-mh-slate-200 placeholder:text-mh-slate-600 focus:outline-none focus:border-rarity-5 transition-colors"
-                />
-              </div>
-            </div>
 
-            {isVisageLoading ? (
-              <p className="text-center text-xs text-mh-slate-500 py-4">Loading cards...</p>
-            ) : (() => {
-              // Group and filter
-              const filtered = visages?.filter(v => {
-                if (filterInk && !v.ink_types.includes(filterInk)) return false;
-                if (searchQuery && !v.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
-                if (!useMine) return true;
-                // If collection only, user must own AT LEAST ONE ink version of this card
-                return isCardOwned(v);
-              }) || [];
+              {isVisageLoading ? (
+                <p className="text-center text-xs text-mh-slate-500 py-4">Loading cards...</p>
+              ) : (() => {
+                const q = searchQuery.toLowerCase().trim();
+                const terms = q.split(/\s+/).filter(Boolean);
 
-              return (
-                <div className="grid grid-cols-4 gap-1.5 overflow-y-auto pr-1 pb-1">
-                  {filtered.length === 0 ? (
-                    <div className="col-span-4 py-8 text-center flex flex-col items-center gap-2">
+                // Group and filter
+                const filtered = visages?.filter(v => {
+                  if (filterInk && !v.ink_types.includes(filterInk)) return false;
+                  if (terms.length > 0) {
+                    const cardName = (v.name || '').toLowerCase();
+                    const monsterName = (v.monster_name || '').toLowerCase();
+                    const coreEffect = (v.core_effect || '').toLowerCase();
+                    const matches = terms.every(term =>
+                      cardName.includes(term) ||
+                      monsterName.includes(term) ||
+                      coreEffect.includes(term)
+                    );
+                    if (!matches) return false;
+                  }
+                  if (!useMine) return true;
+                  // If collection only, user must own AT LEAST ONE ink version of this card
+                  return isCardOwned(v);
+                }) || [];
+
+                if (filtered.length === 0) {
+                  return (
+                    <div className="py-8 text-center flex flex-col items-center gap-2">
                       <p className="text-xs text-mh-slate-400">
                         {useMine ? 'No cards in your collection match.' : 'No cards found.'}
                       </p>
@@ -329,12 +499,112 @@ export function VisageSelector() {
                         </button>
                       )}
                     </div>
-                  ) : (
-                    filtered.map(v => {
+                  );
+                }
+
+                // If user typed search text: Show card on the left and Core Effect text next to the card
+                if (isFiltered) {
+                  return (
+                    <div className="flex flex-col gap-1.5 overflow-y-auto pr-1 pb-1">
+                      {filtered.map(v => {
+                        const isEquippedHere = card?.id === v.id;
+                        const owned = isCardOwned(v);
+                        const ink = v.ink_types[0];
+                        const inkC = getInkConfig(ink);
+
+                        return (
+                          <button
+                            key={v.id}
+                            type="button"
+                            title={v.name + (owned ? ' (In collection)' : ' (Not in collection)')}
+                            onClick={() => {
+                              handleVisageChange(slot, v.id);
+                              if (filterInk && v.ink_types.includes(filterInk)) setSlotInkType(slot, filterInk);
+                              setOpenSlot(null);
+                              setFilterInk(null);
+                              setSearchQuery('');
+                            }}
+                            className={`flex items-start gap-2.5 p-2 rounded-lg border text-left group transition-all cursor-pointer ${
+                              isEquippedHere
+                                ? 'bg-rarity-5/10 border-rarity-5 ring-1 ring-rarity-5'
+                                : owned
+                                  ? 'bg-mh-slate-800/80 border-mh-slate-700/80 hover:bg-mh-slate-800 hover:border-rarity-5/50'
+                                  : 'bg-mh-slate-850/60 border-mh-slate-750 hover:bg-mh-slate-800 hover:border-mh-slate-600 opacity-90 hover:opacity-100'
+                            }`}
+                          >
+                            {/* Card on the left */}
+                            <div className="w-13 sm:w-15 shrink-0 aspect-[3/4] relative rounded bg-mh-slate-850 border border-mh-slate-750 overflow-hidden shadow-sm">
+                              <div className="absolute inset-0 flex items-center justify-center">
+                                <VisageIcon visage={v} rarity={DEFAULT_VISAGE_RARITY} />
+                              </div>
+                              {ink && (
+                                <div className={`absolute top-0.5 left-0.5 w-3.5 h-3.5 rounded-full flex items-center justify-center ${inkC.dotColor} text-white shadow-sm ring-1 ring-black/40`}>
+                                  <InkIconComponent iconName={inkC.iconName} size={9} />
+                                </div>
+                              )}
+                              {owned && (
+                                <span
+                                  className="absolute top-0.5 right-0.5 w-2 h-2 rounded-full bg-emerald-400 ring-1 ring-black/60 shadow-sm"
+                                  title="In your collection"
+                                />
+                              )}
+                              <div className="absolute bottom-0 right-0 bg-black/85 px-1 text-[8px] font-bold text-white rounded-tl">
+                                {v.points}pt
+                              </div>
+                            </div>
+
+                            {/* Right side: Monster Name, Inks, and Core Effect text next to the card */}
+                            <div className="flex-1 min-w-0 flex flex-col gap-1">
+                              <div className="flex items-center justify-between gap-1.5">
+                                <span className="font-display font-bold text-xs sm:text-sm text-mh-slate-100 group-hover:text-rarity-5 transition-colors truncate">
+                                  {highlightMatch(v.name, terms)}
+                                </span>
+                                <div className="flex items-center gap-1 shrink-0">
+                                  {v.ink_types.map(it => {
+                                    const itConfig = getInkConfig(it);
+                                    return (
+                                      <span
+                                        key={it}
+                                        className={`text-[9px] font-semibold px-1 rounded flex items-center gap-0.5 ${itConfig.bg} ${itConfig.text} border ${itConfig.border}`}
+                                      >
+                                        <InkIconComponent iconName={itConfig.iconName} size={8} />
+                                        <span className="hidden sm:inline">{itConfig.shortName}</span>
+                                      </span>
+                                    );
+                                  })}
+                                  <span className="text-[10px] font-bold px-1 rounded bg-black/50 text-mh-slate-300">
+                                    {v.points}pt
+                                  </span>
+                                </div>
+                              </div>
+
+                              {/* Core Effect Text */}
+                              {v.core_effect ? (
+                                <div className="p-1.5 rounded bg-black/40 border border-white/5 text-[11px] leading-snug">
+                                  <span className="text-rarity-5 font-bold text-[10px] uppercase tracking-wide mr-1 inline-block">
+                                    ❖ Core:
+                                  </span>
+                                  <span className="text-mh-slate-200">
+                                    {highlightMatch(v.core_effect, terms)}
+                                  </span>
+                                </div>
+                              ) : (
+                                <p className="text-[10px] text-mh-slate-500 italic">No core effect</p>
+                              )}
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  );
+                }
+
+                // Unfiltered view: 4-column compact visual grid
+                return (
+                  <div className="grid grid-cols-4 gap-1.5 overflow-y-auto pr-1 pb-1">
+                    {filtered.map(v => {
                       const isEquippedHere = card?.id === v.id;
-                      // Count if owned *at all* (for any ink)
                       const owned = isCardOwned(v);
-                      // Just for display in the grid, grab the first ink's color
                       const ink = v.ink_types[0];
                       const inkC = getInkConfig(ink);
 
@@ -342,7 +612,12 @@ export function VisageSelector() {
                         <button
                           key={v.id}
                           title={v.name + (owned ? ' (In collection)' : ' (Not in collection)')}
-                          onClick={() => { handleVisageChange(slot, v.id); if (filterInk && v.ink_types.includes(filterInk)) setSlotInkType(slot, filterInk); setOpenSlot(null); setFilterInk(null); }}
+                          onClick={() => {
+                            handleVisageChange(slot, v.id);
+                            if (filterInk && v.ink_types.includes(filterInk)) setSlotInkType(slot, filterInk);
+                            setOpenSlot(null);
+                            setFilterInk(null);
+                          }}
                           className={`relative aspect-[3/4] rounded bg-mh-slate-800 border overflow-hidden group transition-all cursor-pointer ${
                             isEquippedHere
                               ? 'border-rarity-5 ring-1 ring-rarity-5'
@@ -371,13 +646,13 @@ export function VisageSelector() {
                           <div className="absolute bottom-0 right-0 bg-black/80 px-0.5 text-[8px] font-bold text-white">{v.points}</div>
                         </button>
                       );
-                    })
-                  )}
-                </div>
-              );
-            })()}
-          </div>
-        )}
+                    })}
+                  </div>
+                );
+              })()}
+            </div>
+          );
+        })()}
       </div>
     );
   };
@@ -454,7 +729,7 @@ export function VisageSelector() {
       {/* Card Slots or Preview */}
       {showCardSlots ? (
         /* Compact row: Core | divider | 4 slots */
-        <div className="flex w-full items-start gap-2 sm:gap-3">
+        <div className="flex flex-wrap w-full items-start gap-2 sm:gap-3">
           <div className="w-16 shrink-0">
             {renderCard('core', 'Core', coreVisage, true)}
           </div>
@@ -468,6 +743,31 @@ export function VisageSelector() {
               </div>
             ))}
           </div>
+
+          {/* Auto-fill the 4 support slots with the Core card's ink (respects All Cards / My Collection) */}
+          {coreVisage && coreInk && coreInkCfg && (
+            <div className="flex flex-col items-start gap-1 self-center ml-1">
+              <button
+                type="button"
+                onClick={() => autoFillInk(coreInk)}
+                title={useMine
+                  ? `Fill slots 2–5 with ${coreInkCfg.shortName} cards from your collection`
+                  : `Fill slots 2–5 with the highest point ${coreInkCfg.shortName} cards`}
+                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-[10px] font-bold uppercase tracking-wide transition-all cursor-pointer hover:brightness-125 ${coreInkCfg.bg} ${coreInkCfg.text} ${coreInkCfg.border}`}
+              >
+                <InkIconComponent iconName={coreInkCfg.iconName} size={12} />
+                <span className="text-left leading-tight">
+                  Auto-fill {coreInkCfg.shortName}
+                  <span className="block text-[8px] font-semibold normal-case opacity-80">
+                    {useMine ? 'from My Collection' : 'from All Cards'}
+                  </span>
+                </span>
+              </button>
+              {autoFillNote && (
+                <p className="text-[10px] text-amber-300/90 leading-snug max-w-[160px]">{autoFillNote}</p>
+              )}
+            </div>
+          )}
         </div>
       ) : equippedCards.length > 0 ? (
         <div className="flex flex-col gap-2 p-2.5 rounded-lg border border-mh-slate-700/60 bg-mh-slate-800/40">
@@ -596,6 +896,19 @@ export function VisageSelector() {
                       </button>
                     );
                   })()}
+                  {/* Auto-fill slots 2–5 with this ink (respects All Cards / My Collection) */}
+                  {coreVisage && (
+                    <button
+                      type="button"
+                      onClick={() => autoFillInk(ink)}
+                      title={useMine
+                        ? `Auto-fill slots 2–5 with ${c.shortName} cards from your collection`
+                        : `Auto-fill slots 2–5 with the highest point ${c.shortName} cards`}
+                      className="h-4 px-1.5 flex items-center justify-center rounded-full bg-mh-slate-700/50 hover:bg-mh-slate-600 text-[9px] font-bold uppercase tracking-wide text-mh-slate-400 hover:text-white transition-colors cursor-pointer"
+                    >
+                      auto
+                    </button>
+                  )}
                   {/* Pip progress bar */}
                   <div className="flex gap-1 ml-auto">
                     {Array.from({ length: MAX_PIPS }).map((_, i) => {

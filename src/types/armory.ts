@@ -45,6 +45,7 @@ export interface ArmoryBuild {
   id: string;
   title: string;
   description?: string | null;
+  youtube_url?: string | null;
   upvotes: number;
   downvotes: number;
   created_at: string;

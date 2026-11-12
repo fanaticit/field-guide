@@ -75,6 +75,7 @@ export default function Armory() {
           id,
           title,
           description,
+          youtube_url,
           upvotes,
           downvotes,
           created_at,

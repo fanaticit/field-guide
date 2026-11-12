@@ -14,6 +14,7 @@ const VISAGE_KEYS = ['coreVisage', 'visage2', 'visage3', 'visage4', 'visage5'] a
 interface DraftCookie {
   t?: string;
   d?: string;
+  yt?: string;
   r?: 'main' | 'support';
   adv?: string;
   wt?: string;
@@ -50,6 +51,7 @@ function saveDraft() {
   const draft: DraftCookie = {};
   if (s.title) draft.t = s.title.slice(0, 100);
   if (s.description) draft.d = s.description.slice(0, 500);
+  if (s.youtubeUrl) draft.yt = s.youtubeUrl.slice(0, 200);
   if (s.buildRole !== 'main') draft.r = s.buildRole;
   if (s.adventurer) draft.adv = s.adventurer.id;
   if (s.weaponType) draft.wt = s.weaponType.id;
@@ -126,6 +128,7 @@ async function hydrateFromCookie(): Promise<boolean> {
     const patch: Record<string, unknown> = {};
     if (!current.title && draft.t) patch.title = draft.t;
     if (!current.description && draft.d) patch.description = draft.d;
+    if (!current.youtubeUrl && draft.yt) patch.youtubeUrl = draft.yt;
     if (draft.r) patch.buildRole = draft.r;
     if (!current.adventurer && draft.adv && advs.get(draft.adv)) patch.adventurer = advs.get(draft.adv);
     if (!current.weaponType && draft.wt && types.get(draft.wt)) patch.weaponType = types.get(draft.wt);

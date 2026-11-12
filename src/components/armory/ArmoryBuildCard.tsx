@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { getInkConfig } from '../../data/schemas/visage';
 import { InkIconComponent } from '../../pages/investigation-notes/VisageCard';
-import { Sparkles, Sword } from 'lucide-react';
+import { Sparkles, Sword, Video } from 'lucide-react';
 import {
   fallbackMonster,
   getHighestLevelInk,
@@ -151,15 +151,26 @@ export function ArmoryBuildCard({ build, monsterMap }: ArmoryBuildCardProps) {
         {/* Title, Role, Author */}
         <div className="flex flex-col min-w-0 flex-1 justify-center">
           <div className="flex items-center justify-between gap-1.5 mb-0.5">
-            {role === 'main' ? (
-              <span className="bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 rounded px-1.5 py-0 text-[8px] font-bold uppercase tracking-wider shrink-0">
-                Main
-              </span>
-            ) : (
-              <span className="bg-amber-500/15 text-amber-400 border border-amber-500/30 rounded px-1.5 py-0 text-[8px] font-bold uppercase tracking-wider shrink-0">
-                Support
-              </span>
-            )}
+            <div className="flex items-center gap-1">
+              {build.youtube_url && (
+                <span
+                  title="Has video guide"
+                  className="bg-red-500/15 text-red-400 border border-red-500/30 rounded px-1 py-0 text-[8px] font-bold uppercase tracking-wider flex items-center gap-0.5 shrink-0"
+                >
+                  <Video size={9} className="text-red-400" />
+                  <span>Video</span>
+                </span>
+              )}
+              {role === 'main' ? (
+                <span className="bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 rounded px-1.5 py-0 text-[8px] font-bold uppercase tracking-wider shrink-0">
+                  Main
+                </span>
+              ) : (
+                <span className="bg-amber-500/15 text-amber-400 border border-amber-500/30 rounded px-1.5 py-0 text-[8px] font-bold uppercase tracking-wider shrink-0">
+                  Support
+                </span>
+              )}
+            </div>
             <span className="text-xs font-bold text-rarity-3 shrink-0 flex items-center gap-0.5">
               <span>↑</span> {build.upvotes}
             </span>

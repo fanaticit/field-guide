@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { getInkConfig } from '../../data/schemas/visage';
 import { InkIconComponent } from '../../pages/investigation-notes/VisageCard';
-import { Sparkles, Sword } from 'lucide-react';
+import { Sparkles, Sword, Video } from 'lucide-react';
 import {
   fallbackMonster,
   getHighestLevelInk,
@@ -146,6 +146,15 @@ export function ArmoryBuildRow({ build, monsterMap }: ArmoryBuildRowProps) {
           <h3 className="font-display font-bold text-xs sm:text-sm landscape:text-sm text-mh-slate-100 group-hover:text-white transition-colors truncate">
             {build.title}
           </h3>
+          {build.youtube_url && (
+            <span
+              title="Has video guide"
+              className="bg-red-500/15 text-red-400 border border-red-500/30 rounded px-1 py-0 text-[7px] sm:text-[8px] font-bold uppercase tracking-wider flex items-center gap-0.5 shrink-0"
+            >
+              <Video size={9} className="text-red-400" />
+              <span>Video</span>
+            </span>
+          )}
           {role === 'main' ? (
             <span className="bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 rounded px-1 py-0 text-[7px] sm:text-[8px] font-bold uppercase tracking-wider shrink-0">
               Main
