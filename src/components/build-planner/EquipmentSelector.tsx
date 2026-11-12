@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { Globe, Package, ArrowLeftRight } from 'lucide-react';
@@ -6,6 +6,8 @@ import { supabase } from '../../lib/supabase';
 import { useBuildPlannerStore, armourPieceIcon, type Weapon, type ArmourPiece } from '../../store/buildPlannerStore';
 import { useAuthStore } from '../../store/authStore';
 import { useUserWeaponCollection } from '../../hooks/useUserWeaponCollection';
+import { useAdminSkills, type DBSkill } from '../../hooks/useAdminSkills';
+import { buildSkillIndex } from '../../lib/skillIndex';
 import { cn } from '../../lib/utils';
 import { getWeaponMaxName, type DBWeapon } from '../../data/schemas/weapon';
 
@@ -35,6 +37,141 @@ const CATEGORY_ALIASES: Record<string, string> = {
   Survival: 'survival',
   Exploration: 'general',
 };
+
+function getSetBonusDisplay(
+  setBonus: { pieces: number; skill_id: string } | null | undefined,
+  byId: Map<string, DBSkill>
+) {
+  if (!setBonus) return null;
+  const sk = byId.get(setBonus.skill_id);
+  const name = sk?.name || 'Set Bonus';
+  let desc = sk?.description;
+
+  if (!desc && sk?.set_thresholds?.length) {
+    const matchingTier =
+      sk.set_thresholds.find((t) => typeof t === 'object' && t.pieces === setBonus.pieces) ||
+      sk.set_thresholds[0];
+    if (matchingTier && typeof matchingTier === 'object') {
+      if (matchingTier.description) {
+        desc = matchingTier.description;
+      } else if (matchingTier.granted_skill_id) {
+        const granted = byId.get(matchingTier.granted_skill_id);
+        desc = granted
+          ? `${granted.name} Lv. ${matchingTier.granted_skill_level ?? 1}${
+              granted.description ? ` (${granted.description})` : ''
+            }`
+          : null;
+      }
+    }
+  }
+
+  return {
+    pieces: setBonus.pieces,
+    name,
+    description: desc,
+  };
+}
+
+function ArmourPieceTooltip({
+  piece,
+  slot,
+  byId,
+  align = 'center',
+}: {
+  piece: ArmourPiece | null | undefined;
+  slot: PlannerSlot;
+  byId: Map<string, DBSkill>;
+  align?: 'left' | 'center' | 'right';
+}) {
+  if (!piece) return null;
+
+  const pieceName = ((piece.set_name ?? piece.monster_name ?? 'Armour') + ' ' + (piece.set_variant ?? '')).trim();
+  const skills = (piece.skills ?? [])
+    .map((idOrObj: unknown) => {
+      const id = typeof idOrObj === 'string' ? idOrObj : (idOrObj as { id?: string })?.id;
+      return id ? byId.get(id) : null;
+    })
+    .filter(Boolean) as DBSkill[];
+  const setBonus = getSetBonusDisplay(piece.set_bonus, byId);
+
+  const alignClasses =
+    align === 'left'
+      ? 'left-0'
+      : align === 'right'
+      ? 'right-0'
+      : 'left-1/2 -translate-x-1/2';
+
+  return (
+    <div
+      className={`absolute bottom-full mb-2 ${alignClasses} w-64 sm:w-72 max-w-[calc(100vw-2rem)] p-2.5 rounded-lg bg-mh-slate-900/95 backdrop-blur-md border border-mh-slate-700 shadow-2xl z-50 pointer-events-none flex flex-col gap-2 text-left animate-in fade-in zoom-in-95 duration-150`}
+    >
+      {/* Header */}
+      <div className="border-b border-mh-slate-800 pb-1.5 flex items-start justify-between gap-1">
+        <div className="flex flex-col min-w-0">
+          <span className="text-xs font-bold text-white leading-tight truncate">{pieceName}</span>
+          <span className="text-[10px] text-mh-slate-400 leading-tight">
+            {SLOT_LABEL[slot]} · Rarity {piece.rarity ?? 1}
+          </span>
+        </div>
+      </div>
+
+      {/* Skills */}
+      {skills.length > 0 && (
+        <div className="flex flex-col gap-1.5">
+          <span className="text-[9px] font-bold text-mh-slate-400 uppercase tracking-wider">Skills</span>
+          {skills.map((sk) => {
+            const cat = CATEGORY_ALIASES[sk.category] ?? sk.category;
+            const catColor =
+              cat === 'attack' ? 'text-red-400' :
+              cat === 'critical' ? 'text-purple-400' :
+              cat === 'defense' ? 'text-blue-400' :
+              cat === 'survival' ? 'text-orange-400' :
+              cat === 'status' ? 'text-emerald-400' :
+              cat === 'utility' ? 'text-yellow-400' :
+              cat === 'health' ? 'text-green-400' :
+              'text-mh-slate-300';
+
+            return (
+              <div key={sk.id} className="flex flex-col gap-0.5 bg-black/40 p-1.5 rounded border border-white/5">
+                <div className="flex items-center justify-between gap-1">
+                  <span className={`text-[11px] font-bold ${catColor}`}>{sk.name}</span>
+                  <span className={`text-[10px] font-display font-black ${catColor}`}>Lv. {sk.level}</span>
+                </div>
+                {sk.description && (
+                  <span className="text-[10px] text-mh-slate-300 leading-tight">{sk.description}</span>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Set Bonus */}
+      {setBonus && (
+        <div className="flex flex-col gap-1 pt-1 border-t border-mh-slate-800/80">
+          <div className="flex items-center justify-between gap-1">
+            <span className="text-[9px] font-bold text-amber-400 uppercase tracking-wider">Set Bonus</span>
+            <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
+              {setBonus.pieces}pc
+            </span>
+          </div>
+          <div className="flex flex-col gap-0.5 bg-amber-500/10 p-1.5 rounded border border-amber-500/20">
+            <span className="text-[11px] font-bold text-amber-300">
+              {setBonus.name}
+            </span>
+            {setBonus.description && (
+              <span className="text-[10px] text-mh-slate-200 leading-tight">{setBonus.description}</span>
+            )}
+          </div>
+        </div>
+      )}
+
+      {skills.length === 0 && !setBonus && (
+        <span className="text-[10px] text-mh-slate-500 italic">No skills or set bonus on this piece.</span>
+      )}
+    </div>
+  );
+}
 
 // ─── Shared Searchable Dropdown ──────────────────────────────────────────────
 
@@ -67,13 +204,15 @@ interface SearchableDropdownProps {
   emptyMessage?: string;
   footerButton?: DropdownFooterButton;
   footerButtons?: DropdownFooterButton[];
+  tooltipContent?: React.ReactNode;
   onChange: (id: string | null) => void;
 }
 
 function SearchableDropdown({
-  label, items, selectedId, selectedImage, placeholderIcon, placeholder, isLoading, highlightClasses, emptyMessage, footerButton, footerButtons, onChange,
+  label, items, selectedId, selectedImage, placeholderIcon, placeholder, isLoading, highlightClasses, emptyMessage, footerButton, footerButtons, tooltipContent, onChange,
 }: SearchableDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const [query, setQuery] = useState('');
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -117,6 +256,8 @@ function SearchableDropdown({
       <div ref={containerRef} className="relative flex-1 min-w-0">
         <button
           onClick={() => !isLoading && setIsOpen(!isOpen)}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
           disabled={isLoading}
           className={`w-full flex items-center justify-between bg-mh-slate-800/80 hover:bg-mh-slate-700 border rounded-lg p-2 px-3 transition-colors text-left h-[50px] ${highlightClasses ? highlightClasses : 'border-mh-slate-700'}`}
         >
@@ -137,6 +278,9 @@ function SearchableDropdown({
           </div>
           <span className="text-[10px] text-mh-slate-600 shrink-0 ml-2">▼</span>
         </button>
+
+        {/* Hover Tooltip when dropdown is closed */}
+        {!isOpen && isHovered && tooltipContent}
 
         {/* Dropdown panel */}
         {isOpen && (
@@ -241,18 +385,18 @@ function SearchableDropdown({
 // ─── Equipment Selector ───────────────────────────────────────────────────────
 
 
-const getHighlightClasses = (cat: string | null) => {
-  if (!cat) return '';
-  switch (CATEGORY_ALIASES[cat] ?? cat) {
-    case 'attack': return 'border-red-500 ring-1 ring-red-500/50 bg-red-500/10 shadow-lg shadow-red-500/20';
-    case 'critical': return 'border-purple-500 ring-1 ring-purple-500/50 bg-purple-500/10 shadow-lg shadow-purple-500/20';
-    case 'defense': return 'border-blue-500 ring-1 ring-blue-500/50 bg-blue-500/10 shadow-lg shadow-blue-500/20';
-    case 'survival': return 'border-orange-500 ring-1 ring-orange-500/50 bg-orange-500/10 shadow-lg shadow-orange-500/20';
-    case 'status': return 'border-emerald-500 ring-1 ring-emerald-500/50 bg-emerald-500/10 shadow-lg shadow-emerald-500/20';
-    case 'utility': return 'border-yellow-500 ring-1 ring-yellow-500/50 bg-yellow-500/10 shadow-lg shadow-yellow-500/20';
-    case 'health': return 'border-green-500 ring-1 ring-green-500/50 bg-green-500/10 shadow-lg shadow-green-500/20';
+const getHighlightClasses = (cat: string | null | undefined) => {
+  const resolved = cat ? (CATEGORY_ALIASES[cat] ?? cat) : 'general';
+  switch (resolved) {
+    case 'attack': return 'border-red-500 ring-2 ring-red-500/50 bg-red-500/20 shadow-lg shadow-red-500/30';
+    case 'critical': return 'border-purple-500 ring-2 ring-purple-500/50 bg-purple-500/20 shadow-lg shadow-purple-500/30';
+    case 'defense': return 'border-blue-500 ring-2 ring-blue-500/50 bg-blue-500/20 shadow-lg shadow-blue-500/30';
+    case 'survival': return 'border-orange-500 ring-2 ring-orange-500/50 bg-orange-500/20 shadow-lg shadow-orange-500/30';
+    case 'status': return 'border-emerald-500 ring-2 ring-emerald-500/50 bg-emerald-500/20 shadow-lg shadow-emerald-500/30';
+    case 'utility': return 'border-yellow-500 ring-2 ring-yellow-500/50 bg-yellow-500/20 shadow-lg shadow-yellow-500/30';
+    case 'health': return 'border-green-500 ring-2 ring-green-500/50 bg-green-500/20 shadow-lg shadow-green-500/30';
     case 'general':
-    default: return 'border-mh-slate-400 ring-1 ring-mh-slate-400/50 bg-mh-slate-400/10 shadow-lg shadow-mh-slate-400/20';
+    default: return 'border-rarity-3 ring-2 ring-rarity-3/50 bg-rarity-3/20 shadow-lg shadow-rarity-3/30';
   }
 };
 
@@ -267,6 +411,10 @@ export function EquipmentSelector() {
   const { isCrafted } = useUserWeaponCollection();
   const [showAllWeapons, setShowAllWeapons] = useState(false);
   const [showArmourPieces, setShowArmourPieces] = useState(false);
+  const [hoveredArmourSlot, setHoveredArmourSlot] = useState<PlannerSlot | null>(null);
+
+  const { data: skillsData = [] } = useAdminSkills({ isActive: true });
+  const { byId } = useMemo(() => buildSkillIndex(skillsData), [skillsData]);
 
   // When useMine toggle changes, reset the local showAllWeapons override
   useEffect(() => {
@@ -497,6 +645,7 @@ export function EquipmentSelector() {
                 selectedId={current?.id}
                 selectedImage={armourPieceIcon(current, gender) || currentPieceWithMonster?.monster_icon || undefined}
                 isLoading={isArmourLoading}
+                tooltipContent={current ? <ArmourPieceTooltip piece={current} slot={slot} byId={byId} align="left" /> : undefined}
                 onChange={id => {
                   const piece = armours?.find(a => a.id === id) || null;
                   setArmour(slot, piece);
@@ -524,20 +673,39 @@ export function EquipmentSelector() {
                 const currentPieceWithMonster = (armours || []).find((a) => a.id === current?.id) as (ArmourPiece & { monster_icon?: string }) | undefined;
                 const icon = armourPieceIcon(current, gender) || currentPieceWithMonster?.monster_icon || `/images/armor/${slot}.png`;
                 const pieceName = current ? ((current.set_name ?? current.monster_name ?? 'Armour') + ' ' + (current.set_variant ?? '')).trim() : null;
+                const isHighlighted = Boolean(hoveredSkillId && highlightSlots.has(slot));
+                const isHovered = hoveredArmourSlot === slot;
+                const align = slot === 'helm' || slot === 'chest' ? 'left' : slot === 'waist' || slot === 'greaves' ? 'right' : 'center';
+
                 return (
-                  <button
+                  <div
                     key={slot}
-                    type="button"
-                    onClick={() => setShowArmourPieces(true)}
-                    className="flex flex-col items-center p-1.5 rounded bg-mh-slate-800/80 border border-mh-slate-700/60 text-center hover:border-mh-slate-500 transition-colors group cursor-pointer"
-                    title={current ? `${SLOT_LABEL[slot]}: ${pieceName}` : `${SLOT_LABEL[slot]}: Empty`}
+                    className={`relative ${isHovered ? 'z-30' : ''}`}
+                    onMouseEnter={() => setHoveredArmourSlot(slot)}
+                    onMouseLeave={() => setHoveredArmourSlot(null)}
                   >
-                    <img src={icon} alt={SLOT_LABEL[slot]} className="w-6 h-6 object-contain" />
-                    <span className="text-[10px] text-mh-slate-400 font-bold uppercase mt-1 leading-none">{SLOT_LABEL[slot]}</span>
-                    <span className="text-[10px] text-mh-slate-300 truncate w-full mt-0.5 group-hover:text-white">
-                      {pieceName ?? <span className="text-mh-slate-500">None</span>}
-                    </span>
-                  </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowArmourPieces(true)}
+                      className={`w-full flex flex-col items-center p-1.5 rounded border text-center transition-all group cursor-pointer ${
+                        isHighlighted
+                          ? `${getHighlightClasses(hoveredSkillCategory)} scale-[1.04] z-10`
+                          : 'border-mh-slate-700/60 bg-mh-slate-800/80 hover:border-mh-slate-500'
+                      }`}
+                      title={!current ? `${SLOT_LABEL[slot]}: Empty` : undefined}
+                    >
+                      <img src={icon} alt={SLOT_LABEL[slot]} className="w-6 h-6 object-contain" />
+                      <span className={`text-[10px] font-bold uppercase mt-1 leading-none ${isHighlighted ? 'text-white' : 'text-mh-slate-400'}`}>
+                        {SLOT_LABEL[slot]}
+                      </span>
+                      <span className={`text-[10px] truncate w-full mt-0.5 ${isHighlighted ? 'text-white font-semibold' : 'text-mh-slate-300 group-hover:text-white'}`}>
+                        {pieceName ?? <span className="text-mh-slate-500">None</span>}
+                      </span>
+                    </button>
+                    {isHovered && current && (
+                      <ArmourPieceTooltip piece={current} slot={slot} byId={byId} align={align} />
+                    )}
+                  </div>
                 );
               })}
             </div>

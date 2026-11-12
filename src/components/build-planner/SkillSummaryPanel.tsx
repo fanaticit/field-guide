@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useRef, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '../../lib/supabase';
 import { useAdminSkills } from '../../hooks/useAdminSkills';
@@ -35,9 +35,41 @@ export function SkillSummaryPanel() {
   } = useBuildPlannerStore();
   const activeSkills = getActiveSkills();
 
-  // Full skill definitions to display names, descriptions and max levels
   const { data: skillsData = [], isLoading } = useAdminSkills({ isActive: true, isSetBonus: false });
   const { byId, levelRows } = useMemo(() => buildSkillIndex(skillsData), [skillsData]);
+
+  // Touch tracking to cleanly separate mobile taps from desktop mouse hover
+  const lastTouchRef = useRef(0);
+
+  const handleTouch = (skillId: string, cat: string) => {
+    lastTouchRef.current = Date.now();
+    setHoveredSkillId(hoveredSkillId === skillId ? null : skillId, cat);
+  };
+
+  const handleMouseEnter = (skillId: string, cat: string) => {
+    if (Date.now() - lastTouchRef.current < 500) return;
+    setHoveredSkillId(skillId, cat);
+  };
+
+  const handleMouseLeave = () => {
+    if (Date.now() - lastTouchRef.current < 500) return;
+    setHoveredSkillId(null);
+  };
+
+  // On mobile touch, tapping outside skill items dismisses the highlight
+  useEffect(() => {
+    if (!hoveredSkillId) return;
+    const handlePointerDown = (e: MouseEvent | TouchEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+      if (target.closest('[data-skill-item]')) return;
+      setHoveredSkillId(null);
+    };
+    document.addEventListener('pointerdown', handlePointerDown);
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+    };
+  }, [hoveredSkillId, setHoveredSkillId]);
 
   // Query monsters for sketches / icons
   const { data: monsters = [] } = useQuery({
@@ -189,10 +221,13 @@ export function SkillSummaryPanel() {
 
             return (
               <div 
-                key={skill.id} 
-                className={`p-2.5 rounded-lg border flex items-center justify-between relative cursor-default transition-all ${hoveredSkillId === skill.id ? 'ring-2 ' + cfg.ring + ' ' + cfg.bg : cfg.bg} ${cfg.border}`}
-                onMouseEnter={() => setHoveredSkillId(skill.id, cat)}
-                onMouseLeave={() => setHoveredSkillId(null)}
+                key={skill.id}
+                data-skill-item={skill.id}
+                className={`p-2.5 rounded-lg border flex items-center justify-between relative cursor-pointer select-none transition-all ${hoveredSkillId === skill.id ? 'ring-2 ' + cfg.ring + ' ' + cfg.bg : cfg.bg} ${cfg.border}`}
+                onMouseEnter={() => handleMouseEnter(skill.id, cat)}
+                onMouseLeave={handleMouseLeave}
+                onTouchStart={() => handleTouch(skill.id, cat)}
+                onClick={() => handleTouch(skill.id, cat)}
               >
                 {/* Tooltip */}
                 {hoveredSkillId === skill.id && (
