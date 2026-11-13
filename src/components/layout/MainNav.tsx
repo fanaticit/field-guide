@@ -20,7 +20,6 @@ import {
   Settings,
   LogIn,
   LogOut,
-  Home,
   LayoutGrid,
   BookMarked,
   Layers,
@@ -66,6 +65,94 @@ interface NavSection {
   subItems: SubNavItem[];
 }
 
+interface BarNavItem {
+  id: string;
+  label: string;
+  iconSrc: string;
+  iconZoom?: number;
+  accent: 'superior' | 'epic' | 'fine' | 'rare';
+  active: boolean;
+  section?: NavSection;
+  onSelect?: () => void;
+  badge?: number;
+}
+
+function useNavCapacity(navRef: React.RefObject<HTMLElement | null>): number {
+  const [capacity, setCapacity] = useState<number>(() => {
+    if (typeof window === 'undefined') return 0;
+    const isPortrait = window.matchMedia('(max-width: 1023px) and (orientation: portrait)').matches;
+    if (isPortrait) {
+      const w = window.innerWidth;
+      if (w >= 860) return 8;
+      if (w >= 800) return 7;
+      if (w >= 740) return 6;
+      if (w >= 680) return 5;
+      if (w >= 620) return 4;
+      if (w >= 560) return 3;
+      if (w >= 500) return 2;
+      if (w >= 440) return 1;
+      return 0;
+    } else {
+      const h = window.innerHeight;
+      if (h >= 880) return 8;
+      if (h >= 820) return 7;
+      if (h >= 760) return 6;
+      if (h >= 700) return 5;
+      if (h >= 640) return 4;
+      if (h >= 580) return 3;
+      if (h >= 520) return 2;
+      if (h >= 460) return 1;
+      return 0;
+    }
+  });
+
+  useEffect(() => {
+    const update = () => {
+      if (typeof window === 'undefined') return;
+      const isPortrait = window.matchMedia('(max-width: 1023px) and (orientation: portrait)').matches;
+
+      if (isPortrait) {
+        const w = navRef.current?.clientWidth || window.innerWidth;
+        if (w >= 860) setCapacity(8);
+        else if (w >= 800) setCapacity(7);
+        else if (w >= 740) setCapacity(6);
+        else if (w >= 680) setCapacity(5);
+        else if (w >= 620) setCapacity(4);
+        else if (w >= 560) setCapacity(3);
+        else if (w >= 500) setCapacity(2);
+        else if (w >= 440) setCapacity(1);
+        else setCapacity(0);
+      } else {
+        const h = navRef.current?.clientHeight || window.innerHeight;
+        if (h >= 880) setCapacity(8);
+        else if (h >= 820) setCapacity(7);
+        else if (h >= 760) setCapacity(6);
+        else if (h >= 700) setCapacity(5);
+        else if (h >= 640) setCapacity(4);
+        else if (h >= 580) setCapacity(3);
+        else if (h >= 520) setCapacity(2);
+        else if (h >= 460) setCapacity(1);
+        else setCapacity(0);
+      }
+    };
+
+    update();
+    window.addEventListener('resize', update);
+    let ro: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== 'undefined' && navRef.current) {
+      ro = new ResizeObserver(() => update());
+      ro.observe(navRef.current);
+    }
+
+    return () => {
+      window.removeEventListener('resize', update);
+      ro?.disconnect();
+    };
+  }, [navRef]);
+
+  return capacity;
+}
+
 const COOKIE_PAGE_VIEWS = 'fg_page_views';
 const COOKIE_FEEDBACK_PROMPT_DISMISSED = 'fg_feedback_prompt_dismissed';
 const COOKIE_FEEDBACK_TARGET_VIEWS = 'fg_feedback_target_views';
@@ -105,6 +192,8 @@ export default function MainNav() {
   const [openId, setOpenId] = useState<string | null>(null);
   const [anchorY, setAnchorY] = useState(0);
   const buttonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const navRef = useRef<HTMLElement | null>(null);
+  const capacity = useNavCapacity(navRef);
 
   // Track page views on unique route changes; show feedback popover on 10th page (or next target if 'Later' chosen)
   useEffect(() => {
@@ -159,108 +248,319 @@ export default function MainNav() {
 
   const go = (path: string) => () => navigate(path);
 
-  const sections: NavSection[] = [
+  // Priority order for spill-out items:
+  // 1 - Weapons (/challenges/weapons) — spills out first, returns last.
+  // 2 - Visage Collection (/gallery/collection)
+  // 3 - Armour (/armory/armour)
+  // 4 - Buddies (/challenges/buddies)
+  // 5 - Build Set (/gallery/set)
+  // 6 - Build Planner (/armory/planner)
+  // 7 - Adventurer (/challenges/adventurers)
+  // 8 - Game Updates (/updates) — spills out last, returns first.
+  const isWeaponsSpilled = capacity >= 1;
+  const isVisageSpilled = capacity >= 2;
+  const isArmourSpilled = capacity >= 3;
+  const isBuddiesSpilled = capacity >= 4;
+  const isBuildSetSpilled = capacity >= 5;
+  const isBuildPlannerSpilled = capacity >= 6;
+  const isAdventurerSpilled = capacity >= 7;
+  const isUpdatesSpilled = capacity >= 8;
+
+  const isWeaponsActive = pathname.startsWith('/challenges/weapons');
+  const isVisageActive = pathname.startsWith('/gallery/collection');
+  const isArmourActive = pathname.startsWith('/armory/armour');
+  const isBuddiesActive = pathname.startsWith('/challenges/buddies');
+  const isBuildSetActive = pathname.startsWith('/gallery/set');
+  const isBuildPlannerActive = pathname.startsWith('/armory/planner') || pathname.startsWith('/build-planner');
+  const isAdventurerActive = pathname.startsWith('/challenges/adventurers');
+  const isUpdatesActive = pathname === '/updates';
+
+  const isChallengesChildSpilledAndActive =
+    (isWeaponsSpilled && isWeaponsActive) ||
+    (isBuddiesSpilled && isBuddiesActive) ||
+    (isAdventurerSpilled && isAdventurerActive);
+
+  const isGalleryChildSpilledAndActive =
+    (isVisageSpilled && isVisageActive) ||
+    (isBuildSetSpilled && isBuildSetActive);
+
+  const isArmoryChildSpilledAndActive =
+    (isArmourSpilled && isArmourActive) ||
+    (isBuildPlannerSpilled && isBuildPlannerActive);
+
+  const challengesActive = pathname.startsWith('/challenges') && !isChallengesChildSpilledAndActive;
+  const galleryActive = pathname.startsWith('/gallery') && !isGalleryChildSpilledAndActive;
+  const armoryActive = (pathname.startsWith('/armory') || pathname.startsWith('/build-planner')) && !isArmoryChildSpilledAndActive;
+  const homeActive = (pathname === '/' || pathname === '/updates' || pathname === '/settings' || pathname === '/spoilers' || pathname.startsWith('/admin')) && !(isUpdatesSpilled && isUpdatesActive);
+
+  const homeSection: NavSection = {
+    id: 'home',
+    path: '/',
+    label: 'Home',
+    description: isLoggedIn ? displayName : 'Welcome to Field Guide',
+    iconSrc: '/img/ui/Home%20Icon.png',
+    iconZoom: 1,
+    accent: 'superior',
+    active: homeActive,
+    subItems: [
+      ...(!isUpdatesSpilled
+        ? [{ id: 'home-updates', label: 'Game Updates', icon: ScrollText, iconSrc: '/img/ui/game_updates.png', active: isUpdatesActive, onSelect: go('/updates') }]
+        : []),
+      ...(isLoggedIn
+        ? [{ id: 'home-settings', label: 'Profile & Settings', icon: Settings, iconSrc: '/img/ui/profile_and_settings.png', active: pathname === '/settings', onSelect: go('/settings') }]
+        : [{ id: 'home-login', label: 'Login', icon: LogIn, iconSrc: '/img/ui/logout.png', active: false, onSelect: () => setLoginModalOpen(true) }]),
+      ...(isLoggedIn && profile?.show_spoilers
+        ? [{ id: 'home-spoilers', label: 'Spoilers', icon: Eye, iconSrc: '/img/ui/AggPageIcon_Recruit.png', iconZoom: 0.85, active: pathname === '/spoilers', onSelect: go('/spoilers') }]
+        : []),
+      ...(isAdmin
+        ? [{
+            id: 'home-admin',
+            label: 'Admin Panel',
+            icon: ShieldAlert,
+            iconSrc: '/img/ui/adminpanel.png',
+            active: pathname.startsWith('/admin'),
+            onSelect: go('/admin/feedback'),
+            badge: unreadCount > 0 ? unreadCount : undefined,
+          }]
+        : []),
+      ...(isLoggedIn
+        ? [{ id: 'home-logout', label: 'Logout', icon: LogOut, iconSrc: '/img/ui/logout.png', active: false, onSelect: () => signOut() }]
+        : []),
+    ],
+  };
+
+  const armorySection: NavSection = {
+    id: 'armory',
+    path: '/armory',
+    label: 'Armory',
+    description: 'Builds, Planner & Armour',
+    iconSrc: '/img/ui/Equipment%20Icon.png',
+    iconZoom: 0.85,
+    accent: themeToNavAccent(armoryTheme),
+    active: armoryActive,
+    subItems: [
+      { id: 'armory-builds', label: 'Community Builds', icon: LayoutGrid, iconSrc: '/img/ui/community_builds.png', active: pathname === '/armory' || pathname === '/armory/builds', onSelect: go('/armory') },
+      ...(!isBuildPlannerSpilled
+        ? [{
+            id: 'armory-planner',
+            label: 'Build Planner',
+            icon: Sword,
+            iconSrc: '/img/ui/build_planner.png',
+            active: isBuildPlannerActive,
+            onSelect: () => {
+              const { buildId } = useBuildPlannerStore.getState();
+              navigate(buildId ? `/armory/planner/${buildId}` : '/armory/planner');
+            },
+          }]
+        : []),
+      ...(!isArmourSpilled
+        ? [{ id: 'armory-armour', label: 'Armour', icon: Shield, iconSrc: '/img/ui/Equipment%20Icon.png', iconZoom: 0.75, active: isArmourActive, onSelect: go('/armory/armour') }]
+        : []),
+    ],
+  };
+
+  const gallerySection: NavSection = {
+    id: 'gallery',
+    path: '/gallery',
+    label: 'Gallery',
+    description: 'Visage Sets & Collection',
+    iconSrc: '/img/ui/Visage%20Icon.png',
+    iconZoom: 0.85,
+    accent: themeToNavAccent(galleryTheme),
+    active: galleryActive,
+    subItems: [
+      { id: 'gallery-sets', label: 'Visage Sets', icon: Sparkles, iconSrc: '/img/ui/visage_sets.png', active: pathname === '/gallery' || pathname === '/gallery/sets', onSelect: go('/gallery') },
+      ...(!isBuildSetSpilled
+        ? [{
+            id: 'gallery-builder',
+            label: 'Build Set',
+            icon: Layers,
+            iconSrc: '/img/ui/build_set.png',
+            active: isBuildSetActive,
+            onSelect: () => {
+              const { buildId } = useVisageBuilderStore.getState();
+              navigate(buildId ? `/gallery/set?build=${buildId}` : '/gallery/set');
+            },
+          }]
+        : []),
+      ...(!isVisageSpilled
+        ? [{ id: 'gallery-collection', label: 'Visage Collection', icon: BookMarked, iconSrc: '/img/ui/visage_collection.png', active: isVisageActive, onSelect: go('/gallery/collection') }]
+        : []),
+    ],
+  };
+
+  const challengesSection: NavSection = {
+    id: 'challenges',
+    path: '/challenges',
+    label: 'Challenges',
+    description: 'Hunter Goals & Records',
+    iconSrc: '/img/ui/Challenge%20Icon.png',
+    iconZoom: 1,
+    accent: themeToNavAccent(challengesTheme),
+    active: challengesActive,
+    subItems: [
+      { id: 'challenges-my', label: 'My Challenges', icon: Target, iconSrc: '/img/ui/my_challenges.png', active: pathname === '/challenges', onSelect: go('/challenges') },
+      ...(!isAdventurerSpilled
+        ? [{ id: 'challenges-adventurers', label: 'Adventurer', icon: UserCheck, iconSrc: '/img/ui/Adventurer%20Icon.png', active: isAdventurerActive, onSelect: go('/challenges/adventurers') }]
+        : []),
+      ...(!isBuddiesSpilled
+        ? [{ id: 'challenges-buddies', label: 'Buddies', icon: Cat, iconSrc: '/img/ui/Buddy%20Icon.png', iconZoom: 0.75, active: isBuddiesActive, onSelect: go('/challenges/buddies') }]
+        : []),
+      ...(!isWeaponsSpilled
+        ? [{ id: 'challenges-weapons', label: 'Weapons', icon: Sword, iconSrc: '/img/ui/Weapons%20Icon.png', iconZoom: 0.75, active: isWeaponsActive, onSelect: go('/challenges/weapons') }]
+        : []),
+    ],
+  };
+
+  const sections: NavSection[] = [homeSection, armorySection, gallerySection, challengesSection];
+
+  const barItems: BarNavItem[] = [
     {
       id: 'home',
-      path: '/',
       label: 'Home',
-      description: isLoggedIn ? displayName : 'Welcome to Field Guide',
       iconSrc: '/img/ui/Home%20Icon.png',
       iconZoom: 1,
       accent: 'superior',
-      active: pathname === '/' || pathname === '/updates' || pathname === '/settings' || pathname === '/spoilers' || pathname.startsWith('/admin'),
-      subItems: [
-        { id: 'home-root', label: 'Home', icon: Home, iconSrc: '/img/ui/Home%20Icon.png', iconZoom: 0.75, active: pathname === '/', onSelect: () => navigate('/?home=true', { state: { fromNav: true } }) },
-        { id: 'home-updates', label: 'Game Updates', icon: ScrollText, iconSrc: '/img/ui/game_updates.png', active: pathname === '/updates', onSelect: go('/updates') },
-        ...(isLoggedIn
-          ? [{ id: 'home-settings', label: 'Profile & Settings', icon: Settings, iconSrc: '/img/ui/profile_and_settings.png', active: pathname === '/settings', onSelect: go('/settings') }]
-          : [{ id: 'home-login', label: 'Login', icon: LogIn, iconSrc: '/img/ui/logout.png', active: false, onSelect: () => setLoginModalOpen(true) }]),
-        ...(isLoggedIn && profile?.show_spoilers
-          ? [{ id: 'home-spoilers', label: 'Spoilers', icon: Eye, iconSrc: '/img/ui/AggPageIcon_Recruit.png', iconZoom: 0.85, active: pathname === '/spoilers', onSelect: go('/spoilers') }]
-          : []),
-        ...(isAdmin
-          ? [{
-              id: 'home-admin',
-              label: 'Admin Panel',
-              icon: ShieldAlert,
-              iconSrc: '/img/ui/adminpanel.png',
-              active: pathname.startsWith('/admin'),
-              onSelect: go('/admin/feedback'),
-              badge: unreadCount > 0 ? unreadCount : undefined,
-            }]
-          : []),
-        ...(isLoggedIn
-          ? [{ id: 'home-logout', label: 'Logout', icon: LogOut, iconSrc: '/img/ui/logout.png', active: false, onSelect: () => signOut() }]
-          : []),
-      ],
+      active: homeActive,
+      section: homeSection,
     },
+    ...(isUpdatesSpilled
+      ? [
+          {
+            id: 'home-updates-spill',
+            label: 'Game Updates',
+            iconSrc: '/img/ui/game_updates.png',
+            iconZoom: 0.85,
+            accent: 'superior' as const,
+            active: isUpdatesActive,
+            onSelect: go('/updates'),
+          },
+        ]
+      : []),
     {
       id: 'armory',
-      path: '/armory',
       label: 'Armory',
-      description: 'Builds, Planner & Armour',
       iconSrc: '/img/ui/Equipment%20Icon.png',
       iconZoom: 0.85,
       accent: themeToNavAccent(armoryTheme),
-      active: pathname.startsWith('/armory') || pathname.startsWith('/build-planner'),
-      subItems: [
-        { id: 'armory-builds', label: 'Community Builds', icon: LayoutGrid, iconSrc: '/img/ui/community_builds.png', active: pathname === '/armory' || pathname === '/armory/builds', onSelect: go('/armory') },
-        {
-          id: 'armory-planner',
-          label: 'Build Planner',
-          icon: Sword,
-          iconSrc: '/img/ui/build_planner.png',
-          active: pathname.startsWith('/armory/planner') || pathname.startsWith('/build-planner'),
-          onSelect: () => {
-            // Keep the hunter's in-progress build; "Clear / Start New" is the explicit reset
-            const { buildId } = useBuildPlannerStore.getState();
-            navigate(buildId ? `/armory/planner/${buildId}` : '/armory/planner');
-          },
-        },
-        { id: 'armory-armour', label: 'Armour', icon: Shield, iconSrc: '/img/ui/Equipment%20Icon.png', iconZoom: 0.75, active: pathname.startsWith('/armory/armour'), onSelect: go('/armory/armour') },
-      ],
+      active: armoryActive,
+      section: armorySection,
     },
+    ...(isBuildPlannerSpilled
+      ? [
+          {
+            id: 'armory-planner-spill',
+            label: 'Build Planner',
+            iconSrc: '/img/ui/build_planner.png',
+            iconZoom: 0.85,
+            accent: themeToNavAccent(armoryTheme),
+            active: isBuildPlannerActive,
+            onSelect: () => {
+              const { buildId } = useBuildPlannerStore.getState();
+              navigate(buildId ? `/armory/planner/${buildId}` : '/armory/planner');
+            },
+          },
+        ]
+      : []),
+    ...(isArmourSpilled
+      ? [
+          {
+            id: 'armory-armour-spill',
+            label: 'Armour',
+            iconSrc: '/img/ui/Equipment%20Icon.png',
+            iconZoom: 0.75,
+            accent: themeToNavAccent(armoryTheme),
+            active: isArmourActive,
+            onSelect: go('/armory/armour'),
+          },
+        ]
+      : []),
     {
       id: 'gallery',
-      path: '/gallery',
       label: 'Gallery',
-      description: 'Visage Sets & Collection',
       iconSrc: '/img/ui/Visage%20Icon.png',
       iconZoom: 0.85,
       accent: themeToNavAccent(galleryTheme),
-      active: pathname.startsWith('/gallery'),
-      subItems: [
-        { id: 'gallery-sets', label: 'Visage Sets', icon: Sparkles, iconSrc: '/img/ui/visage_sets.png', active: pathname === '/gallery' || pathname === '/gallery/sets', onSelect: go('/gallery') },
-        {
-          id: 'gallery-builder',
-          label: 'Build Set',
-          icon: Layers,
-          iconSrc: '/img/ui/build_set.png',
-          active: pathname.startsWith('/gallery/set'),
-          onSelect: () => {
-            const { buildId } = useVisageBuilderStore.getState();
-            navigate(buildId ? `/gallery/set?build=${buildId}` : '/gallery/set');
-          },
-        },
-        { id: 'gallery-collection', label: 'Visage Collection', icon: BookMarked, iconSrc: '/img/ui/visage_collection.png', active: pathname.startsWith('/gallery/collection'), onSelect: go('/gallery/collection') },
-      ],
+      active: galleryActive,
+      section: gallerySection,
     },
+    ...(isBuildSetSpilled
+      ? [
+          {
+            id: 'gallery-set-spill',
+            label: 'Build Set',
+            iconSrc: '/img/ui/build_set.png',
+            iconZoom: 0.85,
+            accent: themeToNavAccent(galleryTheme),
+            active: isBuildSetActive,
+            onSelect: () => {
+              const { buildId } = useVisageBuilderStore.getState();
+              navigate(buildId ? `/gallery/set?build=${buildId}` : '/gallery/set');
+            },
+          },
+        ]
+      : []),
+    ...(isVisageSpilled
+      ? [
+          {
+            id: 'gallery-collection-spill',
+            label: 'Visage Collection',
+            iconSrc: '/img/ui/visage_collection.png',
+            iconZoom: 0.85,
+            accent: themeToNavAccent(galleryTheme),
+            active: isVisageActive,
+            onSelect: go('/gallery/collection'),
+          },
+        ]
+      : []),
     {
       id: 'challenges',
-      path: '/challenges',
       label: 'Challenges',
-      description: 'Hunter Goals & Records',
       iconSrc: '/img/ui/Challenge%20Icon.png',
       iconZoom: 1,
       accent: themeToNavAccent(challengesTheme),
-      active: pathname.startsWith('/challenges'),
-      subItems: [
-        { id: 'challenges-my', label: 'My Challenges', icon: Target, iconSrc: '/img/ui/my_challenges.png', active: pathname === '/challenges', onSelect: go('/challenges') },
-        { id: 'challenges-adventurers', label: 'Adventurer', icon: UserCheck, iconSrc: '/img/ui/Adventurer%20Icon.png', active: pathname.startsWith('/challenges/adventurers'), onSelect: go('/challenges/adventurers') },
-        { id: 'challenges-buddies', label: 'Buddies', icon: Cat, iconSrc: '/img/ui/Buddy%20Icon.png', iconZoom: 0.75, active: pathname.startsWith('/challenges/buddies'), onSelect: go('/challenges/buddies') },
-        { id: 'challenges-weapons', label: 'Weapons', icon: Sword, iconSrc: '/img/ui/Weapons%20Icon.png', iconZoom: 0.75, active: pathname.startsWith('/challenges/weapons'), onSelect: go('/challenges/weapons') },
-      ],
+      active: challengesActive,
+      section: challengesSection,
     },
+    ...(isAdventurerSpilled
+      ? [
+          {
+            id: 'challenges-adventurers-spill',
+            label: 'Adventurer',
+            iconSrc: '/img/ui/Adventurer%20Icon.png',
+            iconZoom: 0.85,
+            accent: themeToNavAccent(challengesTheme),
+            active: isAdventurerActive,
+            onSelect: go('/challenges/adventurers'),
+          },
+        ]
+      : []),
+    ...(isBuddiesSpilled
+      ? [
+          {
+            id: 'challenges-buddies-spill',
+            label: 'Buddies',
+            iconSrc: '/img/ui/Buddy%20Icon.png',
+            iconZoom: 0.75,
+            accent: themeToNavAccent(challengesTheme),
+            active: isBuddiesActive,
+            onSelect: go('/challenges/buddies'),
+          },
+        ]
+      : []),
+    ...(isWeaponsSpilled
+      ? [
+          {
+            id: 'challenges-weapons-spill',
+            label: 'Weapons',
+            iconSrc: '/img/ui/Weapons%20Icon.png',
+            iconZoom: 0.75,
+            accent: themeToNavAccent(challengesTheme),
+            active: isWeaponsActive,
+            onSelect: go('/challenges/weapons'),
+          },
+        ]
+      : []),
   ];
 
   const openSection = sections.find((s) => s.id === openId) ?? null;
@@ -297,7 +597,7 @@ export default function MainNav() {
     <>
       {openSection && <div className="main-nav-scrim" onClick={() => setOpenId(null)} aria-hidden="true" />}
 
-      <nav className="main-nav" aria-label="Main navigation">
+      <nav ref={navRef} className="main-nav" aria-label="Main navigation">
         <span className="main-nav__surface" aria-hidden="true" />
 
         <button
@@ -314,56 +614,69 @@ export default function MainNav() {
         </button>
 
         <ul className="main-nav__items">
-          {sections.map((section) => (
-            <li key={section.id}>
-              <button
-                type="button"
-                id={`nav-${section.id}`}
-                ref={(el) => {
-                  buttonRefs.current[section.id] = el;
-                }}
-                className="main-nav__btn"
-                data-active={section.active}
-                data-accent={section.accent}
-                aria-label={section.label}
-                aria-current={section.active ? 'page' : undefined}
-                aria-haspopup="menu"
-                aria-expanded={openId === section.id}
-                onClick={() => handleSectionClick(section)}
-                onContextMenu={(e) => e.preventDefault()}
-              >
-                <span className="main-nav__bubble">
-                  <span className="main-nav__icon">
-                    <img
-                      src={section.iconSrc}
-                      alt=""
-                      draggable={false}
-                      style={{ transform: `scale(${section.iconZoom})` }}
-                    />
-                  </span>
-                  {section.id === 'home' && isAdmin && unreadCount > 0 && (
-                    <span
-                      className="absolute -top-1 -right-1 z-20 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-red-500 px-1 text-[9px] font-bold text-white shadow-md ring-2 ring-[#232328] animate-pulse"
-                      title={`${unreadCount} new feedback message${unreadCount > 1 ? 's' : ''}`}
-                    >
-                      {unreadCount > 99 ? '99+' : unreadCount}
+          {barItems.map((item) => {
+            const hasSubmenu = Boolean(item.section && item.section.subItems.length > 1);
+            return (
+              <li key={item.id}>
+                <button
+                  type="button"
+                  id={`nav-${item.id}`}
+                  ref={hasSubmenu && item.section ? (el) => { buttonRefs.current[item.section!.id] = el; } : undefined}
+                  className="main-nav__btn"
+                  data-active={item.active}
+                  data-accent={item.accent}
+                  aria-label={item.label}
+                  aria-current={item.active ? 'page' : undefined}
+                  aria-haspopup={hasSubmenu ? 'menu' : undefined}
+                  aria-expanded={hasSubmenu ? openId === item.section!.id : undefined}
+                  onClick={
+                    item.section
+                      ? item.section.subItems.length === 1
+                        ? () => {
+                            setOpenId(null);
+                            item.section!.subItems[0].onSelect();
+                          }
+                        : () => handleSectionClick(item.section!)
+                      : () => {
+                          setOpenId(null);
+                          item.onSelect?.();
+                        }
+                  }
+                  onContextMenu={(e) => e.preventDefault()}
+                >
+                  <span className="main-nav__bubble">
+                    <span className="main-nav__icon">
+                      <img
+                        src={item.iconSrc}
+                        alt=""
+                        draggable={false}
+                        style={{ transform: `scale(${item.iconZoom ?? 1})` }}
+                      />
                     </span>
-                  )}
-                  {(section.active || openId === section.id) && (
-                    <ChevronUp
-                      size={10}
-                      strokeWidth={3}
-                      className={cn('main-nav__more', openId === section.id && 'is-open')}
-                      aria-hidden="true"
-                    />
-                  )}
-                </span>
-                <span className="main-nav__tip" role="tooltip">
-                  {section.label}
-                </span>
-              </button>
-            </li>
-          ))}
+                    {item.id === 'home' && isAdmin && unreadCount > 0 && (
+                      <span
+                        className="absolute -top-1 -right-1 z-20 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-red-500 px-1 text-[9px] font-bold text-white shadow-md ring-2 ring-[#232328] animate-pulse"
+                        title={`${unreadCount} new feedback message${unreadCount > 1 ? 's' : ''}`}
+                      >
+                        {unreadCount > 99 ? '99+' : unreadCount}
+                      </span>
+                    )}
+                    {hasSubmenu && (item.active || openId === item.section!.id) && (
+                      <ChevronUp
+                        size={10}
+                        strokeWidth={3}
+                        className={cn('main-nav__more', openId === item.section!.id && 'is-open')}
+                        aria-hidden="true"
+                      />
+                    )}
+                  </span>
+                  <span className="main-nav__tip" role="tooltip">
+                    {item.label}
+                  </span>
+                </button>
+              </li>
+            );
+          })}
         </ul>
 
         {/* Footer / Utility action: Bottom on desktop rail, far right on mobile bottom bar */}
