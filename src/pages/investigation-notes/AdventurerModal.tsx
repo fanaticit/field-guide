@@ -1,8 +1,9 @@
 // ─────────────────────────────────────────────────────────────
 // AdventurerModal — Detailed Inspection Dialog for MHO Adventurers
 // ─────────────────────────────────────────────────────────────
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAdminWeaponTypes } from '../../hooks/useAdminWeapons';
 import {
   X,
   User,
@@ -60,6 +61,13 @@ export default function AdventurerModal({
   const [imageError, setImageError] = useState(false);
   const [backgroundError, setBackgroundError] = useState(false);
   const { data: skills = [] } = useAdventurerSkills(open ? adventurer?.id : null);
+  const { data: allWeaponTypes = [] } = useAdminWeaponTypes({ isActive: true });
+
+  const availableWeaponTypes = useMemo(() => {
+    const list = allWeaponTypes.filter((wt) => Array.isArray(wt.games) && wt.games.includes('mho'));
+    if (list.length > 0) return list;
+    return WEAPON_TYPES;
+  }, [allWeaponTypes]);
 
   if (!open || !adventurer) return null;
 
@@ -345,7 +353,7 @@ export default function AdventurerModal({
               </div>
               {adventurer.is_default && (
                 <span className="text-[11px] font-bold text-mh-gold-400">
-                  All 14 Weapons Available
+                  {availableWeaponTypes.length} Weapons Available
                 </span>
               )}
             </div>
@@ -356,7 +364,7 @@ export default function AdventurerModal({
                   As your customizable hunter, select your active weapon discipline:
                 </p>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 max-h-48 overflow-y-auto p-1">
-                  {WEAPON_TYPES.map((w) => {
+                  {availableWeaponTypes.map((w) => {
                     const isSelected = w.id === adventurer.weapon_type;
                     return (
                       <button

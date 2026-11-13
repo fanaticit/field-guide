@@ -14,7 +14,7 @@ export interface Adventurer {
 export interface WeaponType {
   id: string;
   name: string;
-  icon?: string;
+  icon?: string | null;
 }
 
 /** A row of public.weapons (weapons carry no skills in the game data) */

@@ -4,6 +4,7 @@ import { ChevronDown, Lock, User, Swords, PawPrint, Check, Search } from 'lucide
 import { supabase } from '../../lib/supabase';
 import { useBuildPlannerStore, type Adventurer, type WeaponType, type Buddy } from '../../store/buildPlannerStore';
 import { useUserBuddyCollection } from '../../hooks/useUserBuddyCollection';
+import { useAdminWeaponTypes } from '../../hooks/useAdminWeapons';
 
 const BUDDY_TIER_THEMES: Record<string, {
   border: string;
@@ -76,14 +77,12 @@ export function HeroBuddySelector() {
     }
   });
 
-  const { data: weaponTypes } = useQuery({
-    queryKey: ['weapon_types'],
-    queryFn: async () => {
-      const { data, error } = await supabase.from('weapon_types').select('*').eq('is_active', true).order('sort_order');
-      if (error) throw error;
-      return data as WeaponType[];
-    }
-  });
+  const { data: allWeaponTypes = [] } = useAdminWeaponTypes({ isActive: true });
+
+  // Only weapon types confirmed available in Monster Hunter Outlanders (configured in Admin Other)
+  const availableWeaponTypes = useMemo(() => {
+    return allWeaponTypes.filter(wt => Array.isArray(wt.games) && wt.games.includes('mho'));
+  }, [allWeaponTypes]);
 
   const { data: buddies } = useQuery({
     queryKey: ['buddies'],
@@ -127,15 +126,34 @@ export function HeroBuddySelector() {
 
   const isWeaponLocked = !adventurer?.is_default && !!adventurer?.allowed_weapon_types?.[0];
   const forcedWeaponType = isWeaponLocked 
-    ? weaponTypes?.find(wt => wt.id === adventurer.allowed_weapon_types[0])
+    ? allWeaponTypes.find(wt => wt.id === adventurer.allowed_weapon_types[0])
     : null;
   const activeWeaponType = isWeaponLocked ? (forcedWeaponType || weaponType) : weaponType;
+
+  // Ensure Fated Adventurer always has an available MHO weapon type selected
+  useEffect(() => {
+    if (adventurer?.is_default && availableWeaponTypes.length > 0) {
+      if (!weaponType || !availableWeaponTypes.some(wt => wt.id === weaponType.id)) {
+        const defaultType =
+          availableWeaponTypes.find(wt => wt.id === (adventurer as any).weapon_type) ||
+          availableWeaponTypes[0];
+        if (defaultType) setWeaponType(defaultType);
+      }
+    }
+  }, [adventurer, availableWeaponTypes, weaponType, setWeaponType]);
 
   const handleSelectAdventurer = (adv: Adventurer) => {
     setAdventurer(adv);
     if (!adv.is_default && adv.allowed_weapon_types?.[0]) {
-      const matched = weaponTypes?.find(wt => wt.id === adv.allowed_weapon_types[0]);
+      const matched = allWeaponTypes.find(wt => wt.id === adv.allowed_weapon_types[0]);
       if (matched) setWeaponType(matched);
+    } else if (adv.is_default) {
+      if (!weaponType || !availableWeaponTypes.some(wt => wt.id === weaponType.id)) {
+        const defaultType =
+          availableWeaponTypes.find(wt => wt.id === (adv as any).weapon_type) ||
+          availableWeaponTypes[0];
+        if (defaultType) setWeaponType(defaultType);
+      }
     }
     setShowAdvList(false);
   };
@@ -327,11 +345,11 @@ export function HeroBuddySelector() {
           <div data-dropdown-open="true" className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 z-50 w-72 sm:w-84 bg-mh-slate-900 border border-mh-slate-700 rounded-xl shadow-2xl p-2.5 backdrop-blur-md animate-in fade-in zoom-in-95 duration-150">
             <div className="flex items-center justify-between pb-2 mb-2 border-b border-mh-slate-800 text-xs font-bold text-mh-slate-300 px-1">
               <span>Select Weapon Type</span>
-              <span className="text-[10px] font-normal text-mh-slate-500">{weaponTypes?.length || 0} types</span>
+              <span className="text-[10px] font-normal text-mh-slate-500">{availableWeaponTypes.length} available</span>
             </div>
 
             <div className="grid grid-cols-2 gap-1.5 max-h-64 overflow-y-auto pr-1">
-              {weaponTypes?.map(wt => {
+              {availableWeaponTypes.map(wt => {
                 const isSelected = activeWeaponType?.id === wt.id;
                 return (
                   <button

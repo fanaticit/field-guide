@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '../lib/supabase';
-import { Shield, Search, Filter, Plus, LayoutGrid, List, Sparkles } from 'lucide-react';
+import { Shield, Search, Filter, Plus, LayoutGrid, List, Sparkles, ArrowUpDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ArmoryBuildCard } from '../components/armory/ArmoryBuildCard';
 import { ArmoryBuildRow } from '../components/armory/ArmoryBuildRow';
@@ -52,6 +52,7 @@ export default function Armory() {
   const [roleFilter, setRoleFilter] = useState<'all' | 'main' | 'support'>('all');
   const [selectedWeaponType, setSelectedWeaponType] = useState<string>('all');
   const [selectedInk, setSelectedInk] = useState<string>('all');
+  const [sortBy, setSortBy] = useState<'upvotes' | 'newest' | 'oldest' | 'title'>('upvotes');
   const [viewMode, setViewModeState] = useState<'panel' | 'list'>(() => {
     const saved = getCookie('armory_view_mode');
     if (saved === 'panel' || saved === 'list') {
@@ -97,6 +98,7 @@ export default function Armory() {
           visage_5:visages!mho_builds_visage_5_id_fkey(id, name, ink_types)
         `)
         .eq('is_published', true)
+        .order('upvotes', { ascending: false })
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -158,11 +160,11 @@ export default function Armory() {
       .map((id) => (INK_CONFIG as any)[id]);
   }, []);
 
-  // 4. Filter builds based on search query, role, weapon type, and ink type
+  // 4. Filter and sort builds based on search query, role, weapon type, ink type, and sort order
   const filteredBuilds = useMemo(() => {
     if (!builds) return [];
 
-    return builds.filter((build) => {
+    const list = builds.filter((build) => {
       // Role filter
       const desc = build.description || '';
       const isSupport = /<!-- role:support -->/.test(desc);
@@ -205,7 +207,25 @@ export default function Armory() {
 
       return true;
     });
-  }, [builds, roleFilter, selectedWeaponType, selectedInk, searchQuery]);
+
+    return list.sort((a, b) => {
+      if (sortBy === 'upvotes') {
+        const diff = (b.upvotes || 0) - (a.upvotes || 0);
+        if (diff !== 0) return diff;
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+      }
+      if (sortBy === 'newest') {
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+      }
+      if (sortBy === 'oldest') {
+        return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+      }
+      if (sortBy === 'title') {
+        return a.title.localeCompare(b.title);
+      }
+      return 0;
+    });
+  }, [builds, roleFilter, selectedWeaponType, selectedInk, searchQuery, sortBy]);
 
   const isLoading = isBuildsLoading || isMonstersLoading;
 
@@ -355,6 +375,29 @@ export default function Armory() {
               ))}
             </select>
           </div>
+
+          {/* Sort By Filter */}
+          <div className="flex items-center gap-1.5 bg-black/30 px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] text-xs">
+            <ArrowUpDown size={13} className="text-[var(--text-secondary)]" />
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as 'upvotes' | 'newest' | 'oldest' | 'title')}
+              className="bg-transparent text-xs text-white focus:outline-none cursor-pointer pr-1"
+            >
+              <option value="upvotes" className="bg-mh-slate-900 text-mh-slate-200">
+                Most Upvoted
+              </option>
+              <option value="newest" className="bg-mh-slate-900 text-mh-slate-200">
+                Newest First
+              </option>
+              <option value="oldest" className="bg-mh-slate-900 text-mh-slate-200">
+                Oldest First
+              </option>
+              <option value="title" className="bg-mh-slate-900 text-mh-slate-200">
+                Title (A–Z)
+              </option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -365,13 +408,14 @@ export default function Armory() {
             Showing <strong className="text-white">{filteredBuilds.length}</strong> {filteredBuilds.length === 1 ? 'build' : 'builds'}
             {builds && filteredBuilds.length !== builds.length && ` (filtered from ${builds.length})`}
           </span>
-          {(searchQuery || roleFilter !== 'all' || selectedWeaponType !== 'all' || selectedInk !== 'all') && (
+          {(searchQuery || roleFilter !== 'all' || selectedWeaponType !== 'all' || selectedInk !== 'all' || sortBy !== 'upvotes') && (
             <button
               onClick={() => {
                 setSearchQuery('');
                 setRoleFilter('all');
                 setSelectedWeaponType('all');
                 setSelectedInk('all');
+                setSortBy('upvotes');
               }}
               className="text-[var(--theme-accent)] hover:underline text-[11px] font-bold"
             >

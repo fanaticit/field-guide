@@ -595,7 +595,7 @@ export function EquipmentSelector() {
       <div className="flex flex-col gap-2.5">
         <SearchableDropdown
           label="Weapon"
-          placeholderIcon="/images/weapons/great_sword.png"
+          placeholderIcon={weaponType?.icon || (activeWeaponTypeId ? `/images/weapons/${activeWeaponTypeId}.svg` : '/images/weapons/great_sword.png')}
           items={weaponItems}
           selectedId={weapon?.id}
           selectedImage={weapon?.image ?? undefined}
