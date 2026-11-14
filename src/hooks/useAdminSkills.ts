@@ -53,6 +53,12 @@ export interface DBSkill {
   sort_orders: Record<string, number>;
   description: string | null;
   notes: string | null;
+  /** Underlying game Skill Type ID (e.g. 43 for Health Boost, 111 for Airborne) */
+  skill_type_id: number | null;
+  /** Game status, e.g. "In game", "Debug – not used by any item" */
+  game_status: string;
+  /** Flag for debug/test/unused skills */
+  is_debug: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -64,6 +70,8 @@ export interface SkillFilters {
   category?: string;
   isSetBonus?: boolean;
   isActive?: boolean | null;
+  isDebug?: boolean | null;
+  gameStatus?: string;
 }
 
 export const SKILLS_KEY = 'admin-skills';
@@ -72,7 +80,7 @@ export const SKILLS_KEY = 'admin-skills';
 
 export function useAdminSkills(filters: SkillFilters = {}) {
   return useQuery({
-    queryKey: [SKILLS_KEY, filters.category, filters.search, filters.isSetBonus, filters.isActive],
+    queryKey: [SKILLS_KEY, filters.category, filters.search, filters.isSetBonus, filters.isActive, filters.isDebug, filters.gameStatus],
     queryFn: async () => {
       let q = supabase
         .from('skills')
@@ -92,6 +100,12 @@ export function useAdminSkills(filters: SkillFilters = {}) {
       if (filters.isActive !== null && filters.isActive !== undefined) {
         q = q.eq('is_active', filters.isActive);
       }
+      if (filters.isDebug !== null && filters.isDebug !== undefined) {
+        q = q.eq('is_debug', filters.isDebug);
+      }
+      if (filters.gameStatus) {
+        q = q.eq('game_status', filters.gameStatus);
+      }
 
       const { data, error } = await q;
       if (error) throw error;
@@ -102,6 +116,9 @@ export function useAdminSkills(filters: SkillFilters = {}) {
         level: Number(s.level) || 1,
         max_levels: Number(s.max_levels) || 1,
         sort_orders: (s.sort_orders as Record<string, number>) || {},
+        skill_type_id: s.skill_type_id !== null && s.skill_type_id !== undefined ? Number(s.skill_type_id) : null,
+        game_status: typeof s.game_status === 'string' ? s.game_status : 'In game',
+        is_debug: Boolean(s.is_debug),
       })) as DBSkill[];
     },
     staleTime: 1000 * 60 * 2,

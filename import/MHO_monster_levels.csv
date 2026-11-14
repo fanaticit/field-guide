@@ -1,0 +1,543 @@
+﻿Monster ID,Monster,Content,Hunt ID,Hunt difficulty,Monster level,Suggested hunt power,Health,Attack
+110101,Great Jagras,Hunt,10110101,1,1,938,1630,134
+110101,Great Jagras,Hunt,10510101,2,5,3099,16079,590
+110101,Great Jagras,Hunt,10910101,3,9,5229,37917,822
+110101,Great Jagras,Hunt,11110101,4,11,8346,76613,1057
+110101,Great Jagras,Hunt,11310101,5,13,12903,138203,1190
+110101,Great Jagras,Hunt,11510101,6,15,14813,307432,1390
+110101,Great Jagras,Extreme Hunt,20310101,,6,3313,26164,462
+110101,Great Jagras,Field (open world),,,1,,1665,144
+110101,Great Jagras,Field (open world),,,2,,4252,329
+110101,Great Jagras,Field (open world),,,3,,5416,329
+110101,Great Jagras,Field (open world),,,4,,7068,345
+110101,Great Jagras,Field (open world),,,5,,8991,402
+110101,Great Jagras,Field (open world),,,6,,14651,570
+110101,Great Jagras,Field (open world),,,7,,25239,717
+110101,Great Jagras,Field (open world),,,8,,33052,802
+110101,Great Jagras,Field (open world),,,9,,43492,971
+110101,Great Jagras,Field (open world),,,10,,52984,1037
+110101,Great Jagras,Field (open world),,,11,,76477,1104
+110101,Great Jagras,Field (open world),,,12,,102475,1104
+110101,Great Jagras,Field (open world),,,13,,145452,1237
+110101,Great Jagras,Field (open world),,,14,,190339,1300
+110101,Great Jagras,Field (open world),,,15,,250865,1370
+110101,Great Jagras,Field (open world),,,16,,320057,1510
+110701,Kulu-Ya-Ku,Hunt,10110701,1,1,938,2200,134
+110701,Kulu-Ya-Ku,Hunt,10510701,2,5,3099,17725,590
+110701,Kulu-Ya-Ku,Hunt,10910701,3,9,5229,41798,822
+110701,Kulu-Ya-Ku,Hunt,11110701,4,11,8346,84456,1057
+110701,Kulu-Ya-Ku,Hunt,11310701,5,13,12903,152351,1190
+110701,Kulu-Ya-Ku,Hunt,11510701,6,15,14813,338905,1390
+110701,Kulu-Ya-Ku,Extreme Hunt,20510701,,8,4228,38978,630
+110701,Kulu-Ya-Ku,Field (open world),,,1,,1836,144
+110701,Kulu-Ya-Ku,Field (open world),,,2,,4687,329
+110701,Kulu-Ya-Ku,Field (open world),,,3,,5971,329
+110701,Kulu-Ya-Ku,Field (open world),,,4,,7792,345
+110701,Kulu-Ya-Ku,Field (open world),,,5,,9911,402
+110701,Kulu-Ya-Ku,Field (open world),,,6,,16151,570
+110701,Kulu-Ya-Ku,Field (open world),,,7,,27823,717
+110701,Kulu-Ya-Ku,Field (open world),,,8,,36436,802
+110701,Kulu-Ya-Ku,Field (open world),,,9,,47944,971
+110701,Kulu-Ya-Ku,Field (open world),,,10,,58408,1037
+110701,Kulu-Ya-Ku,Field (open world),,,11,,84306,1104
+110701,Kulu-Ya-Ku,Field (open world),,,12,,112965,1104
+110701,Kulu-Ya-Ku,Field (open world),,,13,,160342,1237
+110701,Kulu-Ya-Ku,Field (open world),,,14,,209824,1300
+110701,Kulu-Ya-Ku,Field (open world),,,15,,276547,1370
+110701,Kulu-Ya-Ku,Field (open world),,,16,,352822,1510
+110201,Pukei-Pukei,Hunt,10110201,1,1,938,2200,134
+110201,Pukei-Pukei,Hunt,10510201,2,5,3099,14677,590
+110201,Pukei-Pukei,Hunt,10910201,3,9,5229,34611,822
+110201,Pukei-Pukei,Hunt,11110201,4,11,8346,69934,1057
+110201,Pukei-Pukei,Hunt,11310201,5,13,12903,126153,1190
+110201,Pukei-Pukei,Hunt,11510201,6,15,14813,280628,1390
+110201,Pukei-Pukei,Extreme Hunt,20510201,,8,4794,35040,630
+110201,Pukei-Pukei,Field (open world),,,1,,1520,144
+110201,Pukei-Pukei,Field (open world),,,2,,3881,329
+110201,Pukei-Pukei,Field (open world),,,3,,4944,329
+110201,Pukei-Pukei,Field (open world),,,4,,6452,345
+110201,Pukei-Pukei,Field (open world),,,5,,8207,402
+110201,Pukei-Pukei,Field (open world),,,6,,13373,570
+110201,Pukei-Pukei,Field (open world),,,7,,23039,717
+110201,Pukei-Pukei,Field (open world),,,8,,30171,802
+110201,Pukei-Pukei,Field (open world),,,9,,39700,971
+110201,Pukei-Pukei,Field (open world),,,10,,48364,1037
+110201,Pukei-Pukei,Field (open world),,,11,,69809,1104
+110201,Pukei-Pukei,Field (open world),,,12,,93540,1104
+110201,Pukei-Pukei,Field (open world),,,13,,132771,1237
+110201,Pukei-Pukei,Field (open world),,,14,,173744,1300
+110201,Pukei-Pukei,Field (open world),,,15,,228993,1370
+110201,Pukei-Pukei,Field (open world),,,16,,292152,1510
+104401,Barroth,Hunt,10204401,1,2,1544,4054,329
+104401,Barroth,Hunt,10604401,2,6,3524,12172,590
+104401,Barroth,Hunt,10904401,3,9,6179,31755,991
+104401,Barroth,Hunt,11104401,4,11,8909,61548,1124
+104401,Barroth,Hunt,11304401,5,13,13363,105352,1257
+104401,Barroth,Hunt,11504401,6,15,15283,212224,1460
+104401,Barroth,Extreme Hunt,21104401,,11,9462,112425,1097
+104401,Barroth,Field (open world),,,2,,2792,329
+104401,Barroth,Field (open world),,,3,,3557,329
+104401,Barroth,Field (open world),,,4,,4642,345
+104401,Barroth,Field (open world),,,5,,5904,402
+104401,Barroth,Field (open world),,,6,,9621,570
+104401,Barroth,Field (open world),,,7,,16575,717
+104401,Barroth,Field (open world),,,8,,21706,802
+104401,Barroth,Field (open world),,,9,,28562,971
+104401,Barroth,Field (open world),,,10,,34795,1037
+104401,Barroth,Field (open world),,,11,,50223,1104
+104401,Barroth,Field (open world),,,12,,67296,1104
+104401,Barroth,Field (open world),,,13,,95520,1237
+104401,Barroth,Field (open world),,,14,,124997,1300
+104401,Barroth,Field (open world),,,15,,164745,1370
+104401,Barroth,Field (open world),,,16,,210184,1510
+110801,Jyuratodus,Hunt,10210801,1,2,1478,2677,329
+110801,Jyuratodus,Hunt,10610801,2,6,3524,9708,590
+110801,Jyuratodus,Hunt,10910801,3,9,6179,25326,991
+110801,Jyuratodus,Hunt,11110801,4,11,8909,49088,1124
+110801,Jyuratodus,Hunt,11310801,5,13,13363,84025,1257
+110801,Jyuratodus,Hunt,11510801,6,15,15283,169262,1460
+110801,Jyuratodus,Extreme Hunt,20910801,,9,7414,60255,1031
+110801,Jyuratodus,Field (open world),,,2,,2227,329
+110801,Jyuratodus,Field (open world),,,3,,2837,329
+110801,Jyuratodus,Field (open world),,,4,,3702,345
+110801,Jyuratodus,Field (open world),,,5,,4709,402
+110801,Jyuratodus,Field (open world),,,6,,7674,570
+110801,Jyuratodus,Field (open world),,,7,,13220,717
+110801,Jyuratodus,Field (open world),,,8,,17312,802
+110801,Jyuratodus,Field (open world),,,9,,22780,971
+110801,Jyuratodus,Field (open world),,,10,,27751,1037
+110801,Jyuratodus,Field (open world),,,11,,40056,1104
+110801,Jyuratodus,Field (open world),,,12,,53673,1104
+110801,Jyuratodus,Field (open world),,,13,,76183,1237
+110801,Jyuratodus,Field (open world),,,14,,99693,1300
+110801,Jyuratodus,Field (open world),,,15,,131395,1370
+110801,Jyuratodus,Field (open world),,,16,,167635,1510
+110901,Tobi-Kadachi,Hunt,10510901,2,5,2900,11387,590
+110901,Tobi-Kadachi,Hunt,10910901,3,9,6179,34243,991
+110901,Tobi-Kadachi,Hunt,11110901,4,11,10100,84444,1124
+110901,Tobi-Kadachi,Hunt,11310901,5,13,13516,126575,1320
+110901,Tobi-Kadachi,Hunt,11510901,6,15,15283,228856,1460
+110901,Tobi-Kadachi,Extreme Hunt,21310901,,13,13496,235398,1230
+110901,Tobi-Kadachi,Field (open world),,,5,,6367,402
+110901,Tobi-Kadachi,Field (open world),,,6,,10375,570
+110901,Tobi-Kadachi,Field (open world),,,7,,17874,717
+110901,Tobi-Kadachi,Field (open world),,,8,,23407,802
+110901,Tobi-Kadachi,Field (open world),,,9,,30800,971
+110901,Tobi-Kadachi,Field (open world),,,10,,37522,1037
+110901,Tobi-Kadachi,Field (open world),,,11,,54159,1104
+110901,Tobi-Kadachi,Field (open world),,,12,,72570,1104
+110901,Tobi-Kadachi,Field (open world),,,13,,103005,1237
+110901,Tobi-Kadachi,Field (open world),,,14,,134793,1300
+110901,Tobi-Kadachi,Field (open world),,,15,,177656,1370
+110901,Tobi-Kadachi,Field (open world),,,16,,226656,1510
+110001,Anjanath,Hunt,10310001,1,3,1890,5760,355
+110001,Anjanath,Hunt,10710001,2,7,4775,21177,737
+110001,Anjanath,Hunt,11010001,3,10,6454,36492,991
+110001,Anjanath,Hunt,11210001,4,12,10307,85980,1124
+110001,Anjanath,Hunt,11410001,5,14,13943,159702,1320
+110001,Anjanath,Hunt,11610001,6,16,15766,247511,1460
+110001,Anjanath,Extreme Hunt,21110001,,11,10015,107217,1097
+110001,Anjanath,Field (open world),,,3,,3708,329
+110001,Anjanath,Field (open world),,,4,,4839,345
+110001,Anjanath,Field (open world),,,5,,6156,402
+110001,Anjanath,Field (open world),,,6,,10031,570
+110001,Anjanath,Field (open world),,,7,,17280,717
+110001,Anjanath,Field (open world),,,8,,22629,802
+110001,Anjanath,Field (open world),,,9,,29777,971
+110001,Anjanath,Field (open world),,,10,,36276,1037
+110001,Anjanath,Field (open world),,,11,,52360,1104
+110001,Anjanath,Field (open world),,,12,,70160,1104
+110001,Anjanath,Field (open world),,,13,,99585,1237
+110001,Anjanath,Field (open world),,,14,,130316,1300
+110001,Anjanath,Field (open world),,,15,,171756,1370
+110001,Anjanath,Field (open world),,,16,,219129,1510
+100101,Rathian,Hunt,10700101,2,7,4775,19417,737
+100101,Rathian,Hunt,11000101,3,10,7616,40760,1057
+100101,Rathian,Hunt,11200101,4,12,10307,78833,1124
+100101,Rathian,Hunt,11400101,5,14,13943,146427,1320
+100101,Rathian,Hunt,11600101,6,16,15766,226938,1460
+100101,Rathian,Extreme Hunt,21400101,,14,16219,493352,1360
+100101,Rathian,Field (open world),,,6,,9197,570
+100101,Rathian,Field (open world),,,7,,15844,717
+100101,Rathian,Field (open world),,,8,,20749,802
+100101,Rathian,Field (open world),,,9,,27302,971
+100101,Rathian,Field (open world),,,10,,33261,1037
+100101,Rathian,Field (open world),,,11,,48008,1104
+100101,Rathian,Field (open world),,,12,,64328,1104
+100101,Rathian,Field (open world),,,13,,91307,1237
+100101,Rathian,Field (open world),,,14,,119485,1300
+100101,Rathian,Field (open world),,,15,,157480,1370
+100101,Rathian,Field (open world),,,16,,200915,1510
+112001,Tzitzi-Ya-Ku,Hunt,11012001,3,10,6454,33325,991
+112001,Tzitzi-Ya-Ku,Hunt,11112001,4,11,8909,58598,1124
+112001,Tzitzi-Ya-Ku,Hunt,11312001,5,13,12903,86409,1190
+112001,Tzitzi-Ya-Ku,Hunt,11512001,6,15,14813,192218,1390
+112001,Tzitzi-Ya-Ku,Extreme Hunt,21512001,,15,17775,737324,1430
+112001,Tzitzi-Ya-Ku,Field (open world),,,8,,20666,802
+112001,Tzitzi-Ya-Ku,Field (open world),,,9,,27193,971
+112001,Tzitzi-Ya-Ku,Field (open world),,,10,,33127,1037
+112001,Tzitzi-Ya-Ku,Field (open world),,,11,,47816,1104
+112001,Tzitzi-Ya-Ku,Field (open world),,,12,,64071,1104
+112001,Tzitzi-Ya-Ku,Field (open world),,,13,,90942,1237
+112001,Tzitzi-Ya-Ku,Field (open world),,,14,,119007,1300
+112001,Tzitzi-Ya-Ku,Field (open world),,,15,,156850,1370
+112001,Tzitzi-Ya-Ku,Field (open world),,,16,,200111,1510
+111001,Paolumu,Hunt,11011001,3,10,6454,28399,991
+111001,Paolumu,Hunt,11211001,4,12,11163,71060,1190
+111001,Paolumu,Hunt,11411001,5,14,13943,124287,1320
+111001,Paolumu,Hunt,11611001,6,16,15766,192625,1460
+111001,Paolumu,Extreme Hunt,21511001,,15,17775,588319,1430
+111001,Paolumu,Field (open world),,,8,,17611,802
+111001,Paolumu,Field (open world),,,9,,23174,971
+111001,Paolumu,Field (open world),,,10,,28232,1037
+111001,Paolumu,Field (open world),,,11,,40749,1104
+111001,Paolumu,Field (open world),,,12,,54602,1104
+111001,Paolumu,Field (open world),,,13,,77501,1237
+111001,Paolumu,Field (open world),,,14,,101418,1300
+111001,Paolumu,Field (open world),,,15,,133669,1370
+111001,Paolumu,Field (open world),,,16,,170536,1510
+111101,Legiana,Hunt,11011101,3,10,7616,33456,1057
+111101,Legiana,Hunt,11211101,4,12,11457,64838,1190
+111101,Legiana,Hunt,11411101,5,14,14360,135800,1390
+111101,Legiana,Hunt,11611101,6,16,15766,186270,1460
+111101,Legiana,Extreme Hunt,21611101,,16,18339,568125,1500
+111101,Legiana,Field (open world),,,8,,17030,802
+111101,Legiana,Field (open world),,,9,,22409,971
+111101,Legiana,Field (open world),,,10,,27300,1037
+111101,Legiana,Field (open world),,,11,,39405,1104
+111101,Legiana,Field (open world),,,12,,52800,1104
+111101,Legiana,Field (open world),,,13,,74945,1237
+111101,Legiana,Field (open world),,,14,,98073,1300
+111101,Legiana,Field (open world),,,15,,129259,1370
+111101,Legiana,Field (open world),,,16,,164911,1510
+100201,Rathalos,Hunt,10800201,2,8,4790,13894,737
+100201,Rathalos,Hunt,11000201,3,10,7616,28434,1057
+100201,Rathalos,Hunt,11200201,4,12,11247,52974,1190
+100201,Rathalos,Hunt,11400201,5,14,14360,115416,1390
+100201,Rathalos,Hunt,11600201,6,16,15766,158312,1460
+100201,Rathalos,Extreme Hunt,21500201,,15,16731,381697,1360
+100201,Rathalos,Field (open world),,,6,,6416,570
+100201,Rathalos,Field (open world),,,7,,11053,717
+100201,Rathalos,Field (open world),,,8,,14474,802
+100201,Rathalos,Field (open world),,,9,,19046,971
+100201,Rathalos,Field (open world),,,10,,23203,1037
+100201,Rathalos,Field (open world),,,11,,33490,1104
+100201,Rathalos,Field (open world),,,12,,44875,1104
+100201,Rathalos,Field (open world),,,13,,63696,1237
+100201,Rathalos,Field (open world),,,14,,83352,1300
+100201,Rathalos,Field (open world),,,15,,109858,1370
+100201,Rathalos,Field (open world),,,16,,140158,1510
+100701,Diablos,Hunt,10900701,3,9,5229,19624,822
+100701,Diablos,Hunt,11200701,4,12,11457,65126,1190
+100701,Diablos,Hunt,11400701,5,14,14360,136403,1390
+100701,Diablos,Hunt,11600701,6,16,15766,187098,1460
+100701,Diablos,Extreme Hunt,21500701,,15,16731,470055,1360
+100701,Diablos,Field (open world),,,8,,17106,802
+100701,Diablos,Field (open world),,,9,,22509,971
+100701,Diablos,Field (open world),,,10,,27422,1037
+100701,Diablos,Field (open world),,,11,,39580,1104
+100701,Diablos,Field (open world),,,12,,53035,1104
+100701,Diablos,Field (open world),,,13,,75278,1237
+100701,Diablos,Field (open world),,,14,,98509,1300
+100701,Diablos,Field (open world),,,15,,129834,1370
+100701,Diablos,Field (open world),,,16,,165644,1510
+111201,Great Girros,Hunt,10211201,1,2,1158,2300,194
+111201,Great Girros,Hunt,10511201,2,5,3099,15589,590
+111201,Great Girros,Hunt,10911201,3,9,5229,36760,822
+111201,Great Girros,Hunt,11111201,4,11,8909,90862,1124
+111201,Great Girros,Hunt,11311201,5,13,12903,133986,1190
+111201,Great Girros,Hunt,11511201,6,15,14813,298053,1390
+111201,Great Girros,Extreme Hunt,20911201,,9,6495,108855,862
+111201,Great Girros,Field (open world),,,2,,4122,329
+111201,Great Girros,Field (open world),,,3,,5251,329
+111201,Great Girros,Field (open world),,,4,,6853,345
+111201,Great Girros,Field (open world),,,5,,8717,402
+111201,Great Girros,Field (open world),,,6,,14204,570
+111201,Great Girros,Field (open world),,,7,,24469,717
+111201,Great Girros,Field (open world),,,8,,32044,802
+111201,Great Girros,Field (open world),,,9,,42165,971
+111201,Great Girros,Field (open world),,,10,,51368,1037
+111201,Great Girros,Field (open world),,,11,,74144,1104
+111201,Great Girros,Field (open world),,,12,,99348,1104
+111201,Great Girros,Field (open world),,,13,,141015,1237
+111201,Great Girros,Field (open world),,,14,,184532,1300
+111201,Great Girros,Field (open world),,,15,,243211,1370
+111201,Great Girros,Field (open world),,,16,,310292,1510
+111401,Radobaan,Hunt,10911401,3,9,5413,18724,822
+111401,Radobaan,Hunt,11211401,4,12,11163,61648,1190
+111401,Radobaan,Hunt,11411401,5,14,13943,107825,1320
+111401,Radobaan,Hunt,11611401,6,16,15766,167110,1460
+111401,Radobaan,Extreme Hunt,21511401,,15,17232,401002,1430
+111401,Radobaan,Field (open world),,,8,,15279,802
+111401,Radobaan,Field (open world),,,9,,20104,971
+111401,Radobaan,Field (open world),,,10,,24492,1037
+111401,Radobaan,Field (open world),,,11,,35352,1104
+111401,Radobaan,Field (open world),,,12,,47369,1104
+111401,Radobaan,Field (open world),,,13,,67236,1237
+111401,Radobaan,Field (open world),,,14,,87985,1300
+111401,Radobaan,Field (open world),,,15,,115963,1370
+111401,Radobaan,Field (open world),,,16,,147948,1510
+111301,Odogaron,Hunt,10911301,3,9,6179,31640,991
+111301,Odogaron,Hunt,11211301,4,12,11457,82340,1190
+111301,Odogaron,Hunt,11411301,5,14,14360,172456,1390
+111301,Odogaron,Hunt,11611301,6,16,15766,236551,1460
+111301,Odogaron,Extreme Hunt,21511301,,15,17232,656396,1430
+111301,Odogaron,Field (open world),,,8,,21627,802
+111301,Odogaron,Field (open world),,,9,,28459,971
+111301,Odogaron,Field (open world),,,10,,34669,1037
+111301,Odogaron,Field (open world),,,11,,50042,1104
+111301,Odogaron,Field (open world),,,12,,67053,1104
+111301,Odogaron,Field (open world),,,13,,95175,1237
+111301,Odogaron,Field (open world),,,14,,124546,1300
+111301,Odogaron,Field (open world),,,15,,164150,1370
+111301,Odogaron,Field (open world),,,16,,209425,1510
+100702,Black Diablos,Hunt,11500702,6,15,14813,139879,1390
+100702,Black Diablos,Extreme Hunt,21600702,,16,26646,1528604,1640
+100702,Black Diablos,Field (open world),,,13,,66179,1237
+100702,Black Diablos,Field (open world),,,14,,86602,1300
+100702,Black Diablos,Field (open world),,,15,,114141,1370
+100702,Black Diablos,Field (open world),,,16,,145623,1510
+100102,Pink Rathian,Hunt,11100102,4,11,8346,31297,1057
+100102,Pink Rathian,Hunt,11400102,5,14,14360,107667,1390
+100102,Pink Rathian,Hunt,11600102,6,16,15766,147682,1460
+100102,Pink Rathian,Extreme Hunt,21600102,,16,18919,501813,1500
+100102,Pink Rathian,Field (open world),,,10,,21645,1037
+100102,Pink Rathian,Field (open world),,,11,,31242,1104
+100102,Pink Rathian,Field (open world),,,12,,41862,1104
+100102,Pink Rathian,Field (open world),,,13,,59419,1237
+100102,Pink Rathian,Field (open world),,,14,,77756,1300
+100102,Pink Rathian,Field (open world),,,15,,102481,1370
+100102,Pink Rathian,Field (open world),,,16,,130747,1510
+110110,Radiant Great Jagras,Hunt,10410110,1,4,2484,21225,422
+110110,Radiant Great Jagras,Hunt,10610110,2,6,3524,36252,590
+110110,Radiant Great Jagras,Hunt,10910110,3,9,6179,94572,991
+110110,Radiant Great Jagras,Hunt,11110110,4,11,9588,230371,1124
+110110,Radiant Great Jagras,Hunt,11310110,5,13,13363,418350,1257
+110110,Radiant Great Jagras,Hunt,11510110,6,15,15283,758459,1460
+110110,Radiant Great Jagras,Extreme Hunt,21310110,,13,12120,1065298,1164
+110110,Radiant Great Jagras,Field (open world),,,4,,13824,345
+110110,Radiant Great Jagras,Field (open world),,,5,,17585,402
+110110,Radiant Great Jagras,Field (open world),,,6,,28654,570
+110110,Radiant Great Jagras,Field (open world),,,7,,49364,717
+110110,Radiant Great Jagras,Field (open world),,,8,,64644,802
+110110,Radiant Great Jagras,Field (open world),,,9,,85063,971
+110110,Radiant Great Jagras,Field (open world),,,10,,103627,1037
+110110,Radiant Great Jagras,Field (open world),,,11,,164532,1104
+110110,Radiant Great Jagras,Field (open world),,,12,,220464,1104
+110110,Radiant Great Jagras,Field (open world),,,13,,312926,1237
+110110,Radiant Great Jagras,Field (open world),,,14,,409495,1300
+110110,Radiant Great Jagras,Field (open world),,,15,,539711,1370
+110110,Radiant Great Jagras,Field (open world),,,16,,688571,1510
+110210,Radiant Pukei-Pukei,Hunt,10410210,1,4,2484,21388,422
+110210,Radiant Pukei-Pukei,Hunt,10610210,2,6,3524,36530,590
+110210,Radiant Pukei-Pukei,Hunt,10910210,3,9,6179,95299,991
+110210,Radiant Pukei-Pukei,Hunt,11110210,4,11,9588,232141,1124
+110210,Radiant Pukei-Pukei,Hunt,11310210,5,13,13363,421564,1257
+110210,Radiant Pukei-Pukei,Hunt,11510210,6,15,15283,764287,1460
+110210,Radiant Pukei-Pukei,Extreme Hunt,21310210,,13,12368,1108002,1164
+110210,Radiant Pukei-Pukei,Field (open world),,,4,,14537,345
+110210,Radiant Pukei-Pukei,Field (open world),,,5,,18491,402
+110210,Radiant Pukei-Pukei,Field (open world),,,6,,30131,570
+110210,Radiant Pukei-Pukei,Field (open world),,,7,,51908,717
+110210,Radiant Pukei-Pukei,Field (open world),,,8,,67977,802
+110210,Radiant Pukei-Pukei,Field (open world),,,9,,89447,971
+110210,Radiant Pukei-Pukei,Field (open world),,,10,,108969,1037
+110210,Radiant Pukei-Pukei,Field (open world),,,11,,173013,1104
+110210,Radiant Pukei-Pukei,Field (open world),,,12,,231828,1104
+110210,Radiant Pukei-Pukei,Field (open world),,,13,,329056,1237
+110210,Radiant Pukei-Pukei,Field (open world),,,14,,430604,1300
+110210,Radiant Pukei-Pukei,Field (open world),,,15,,567532,1370
+110210,Radiant Pukei-Pukei,Field (open world),,,16,,724065,1510
+104410,Radiant Barroth,Hunt,10604410,2,6,3524,30418,590
+104410,Radiant Barroth,Hunt,11004410,3,10,6454,87468,991
+104410,Radiant Barroth,Hunt,11204410,4,12,10307,226699,1124
+104410,Radiant Barroth,Hunt,11404410,5,14,13943,459356,1320
+104410,Radiant Barroth,Hunt,11604410,6,16,15766,711925,1460
+104410,Radiant Barroth,Extreme Hunt,21404410,,14,15483,1359761,1230
+104410,Radiant Barroth,Field (open world),,,6,,24043,570
+104410,Radiant Barroth,Field (open world),,,7,,41420,717
+104410,Radiant Barroth,Field (open world),,,8,,54242,802
+104410,Radiant Barroth,Field (open world),,,9,,71374,971
+104410,Radiant Barroth,Field (open world),,,10,,86951,1037
+104410,Radiant Barroth,Field (open world),,,11,,138055,1104
+104410,Radiant Barroth,Field (open world),,,12,,184986,1104
+104410,Radiant Barroth,Field (open world),,,13,,262569,1237
+104410,Radiant Barroth,Field (open world),,,14,,343598,1300
+104410,Radiant Barroth,Field (open world),,,15,,452860,1370
+104410,Radiant Barroth,Field (open world),,,16,,577764,1510
+110810,Radiant Jyuratodus,Hunt,10710810,2,7,4775,34962,737
+110810,Radiant Jyuratodus,Hunt,11010810,3,10,6454,60246,991
+110810,Radiant Jyuratodus,Hunt,11210810,4,12,10307,156145,1124
+110810,Radiant Jyuratodus,Hunt,11410810,5,14,13943,316393,1320
+110810,Radiant Jyuratodus,Hunt,11610810,6,16,15766,490357,1460
+110810,Radiant Jyuratodus,Extreme Hunt,21410810,,14,16035,870903,1297
+110810,Radiant Jyuratodus,Field (open world),,,6,,16560,570
+110810,Radiant Jyuratodus,Field (open world),,,7,,28529,717
+110810,Radiant Jyuratodus,Field (open world),,,8,,37360,802
+110810,Radiant Jyuratodus,Field (open world),,,9,,49161,971
+110810,Radiant Jyuratodus,Field (open world),,,10,,59890,1037
+110810,Radiant Jyuratodus,Field (open world),,,11,,95089,1104
+110810,Radiant Jyuratodus,Field (open world),,,12,,127414,1104
+110810,Radiant Jyuratodus,Field (open world),,,13,,180851,1237
+110810,Radiant Jyuratodus,Field (open world),,,14,,236662,1300
+110810,Radiant Jyuratodus,Field (open world),,,15,,311919,1370
+110810,Radiant Jyuratodus,Field (open world),,,16,,397950,1510
+110010,Radiant Anjanath,Hunt,10510010,2,5,2900,24156,590
+110010,Radiant Anjanath,Hunt,11010010,3,10,7616,87358,1057
+110010,Radiant Anjanath,Hunt,11210010,4,12,11247,216999,1190
+110010,Radiant Anjanath,Hunt,11410010,5,14,14360,425506,1390
+110010,Radiant Anjanath,Hunt,11610010,6,16,15766,583647,1460
+110010,Radiant Anjanath,Extreme Hunt,21310010,,13,13748,873911,1230
+110010,Radiant Anjanath,Field (open world),,,5,,12096,402
+110010,Radiant Anjanath,Field (open world),,,6,,19711,570
+110010,Radiant Anjanath,Field (open world),,,7,,33957,717
+110010,Radiant Anjanath,Field (open world),,,8,,44468,802
+110010,Radiant Anjanath,Field (open world),,,9,,58514,971
+110010,Radiant Anjanath,Field (open world),,,10,,71284,1037
+110010,Radiant Anjanath,Field (open world),,,11,,113180,1104
+110010,Radiant Anjanath,Field (open world),,,12,,151655,1104
+110010,Radiant Anjanath,Field (open world),,,13,,215258,1237
+110010,Radiant Anjanath,Field (open world),,,14,,281687,1300
+110010,Radiant Anjanath,Field (open world),,,15,,371261,1370
+110010,Radiant Anjanath,Field (open world),,,16,,473660,1510
+199901,Radiant Rathian,Hunt,10399901,1,3,2100,7752,355
+199901,Radiant Rathian,Hunt,10899901,2,8,4790,28071,737
+199901,Radiant Rathian,Hunt,11099901,3,10,7616,57448,1057
+199901,Radiant Rathian,Hunt,11299901,4,12,11247,142703,1190
+199901,Radiant Rathian,Hunt,11499901,5,14,14360,279822,1390
+199901,Radiant Rathian,Hunt,11699901,6,16,15766,383819,1460
+199901,Radiant Rathian,Extreme Hunt,21299901,,12,10989,311107,1164
+199901,Radiant Rathian,Field (open world),,,3,,4792,329
+199901,Radiant Rathian,Field (open world),,,4,,6254,345
+199901,Radiant Rathian,Field (open world),,,5,,7955,402
+199901,Radiant Rathian,Field (open world),,,6,,12962,570
+199901,Radiant Rathian,Field (open world),,,7,,22331,717
+199901,Radiant Rathian,Field (open world),,,8,,29243,802
+199901,Radiant Rathian,Field (open world),,,9,,38480,971
+199901,Radiant Rathian,Field (open world),,,10,,46878,1037
+199901,Radiant Rathian,Field (open world),,,11,,74430,1104
+199901,Radiant Rathian,Field (open world),,,12,,99731,1104
+199901,Radiant Rathian,Field (open world),,,13,,141559,1237
+199901,Radiant Rathian,Field (open world),,,14,,185244,1300
+199901,Radiant Rathian,Field (open world),,,15,,244150,1370
+199901,Radiant Rathian,Field (open world),,,16,,311489,1510
+100210,Radiant Rathalos,Hunt,11300210,5,13,13363,156441,1257
+100210,Radiant Rathalos,Hunt,11600210,6,16,15766,317280,1460
+100210,Radiant Rathalos,Extreme Hunt,21600210,,16,22964,4600374,1590
+100210,Radiant Rathalos,Field (open world),,,12,,82442,1104
+100210,Radiant Rathalos,Field (open world),,,13,,117018,1237
+100210,Radiant Rathalos,Field (open world),,,14,,153130,1300
+100210,Radiant Rathalos,Field (open world),,,15,,201824,1370
+100210,Radiant Rathalos,Field (open world),,,16,,257490,1510
+100710,Radiant Diablos,Hunt,11300710,5,13,12903,169584,1190
+100710,Radiant Diablos,Hunt,11600710,6,16,15766,399239,1460
+100710,Radiant Diablos,Extreme Hunt,21600710,,16,21351,3461750,1570
+100710,Radiant Diablos,Field (open world),,,12,,103738,1104
+100710,Radiant Diablos,Field (open world),,,13,,147246,1237
+100710,Radiant Diablos,Field (open world),,,14,,192686,1300
+100710,Radiant Diablos,Field (open world),,,15,,253958,1370
+100710,Radiant Diablos,Field (open world),,,16,,324004,1510
+110710,Radiant Kulu-Ya-Ku,Hunt,10610710,2,6,3524,29415,590
+110710,Radiant Kulu-Ya-Ku,Hunt,10910710,3,9,6179,76737,991
+110710,Radiant Kulu-Ya-Ku,Hunt,11110710,4,11,10100,208160,1124
+110710,Radiant Kulu-Ya-Ku,Hunt,11310710,5,13,13516,400445,1320
+110710,Radiant Kulu-Ya-Ku,Hunt,11510710,6,15,15283,615426,1460
+110710,Radiant Kulu-Ya-Ku,Extreme Hunt,21410710,,14,13748,1206849,1230
+110710,Radiant Kulu-Ya-Ku,Field (open world),,,6,,23251,570
+110710,Radiant Kulu-Ya-Ku,Field (open world),,,7,,40055,717
+110710,Radiant Kulu-Ya-Ku,Field (open world),,,8,,52454,802
+110710,Radiant Kulu-Ya-Ku,Field (open world),,,9,,69021,971
+110710,Radiant Kulu-Ya-Ku,Field (open world),,,10,,84085,1037
+110710,Radiant Kulu-Ya-Ku,Field (open world),,,11,,133504,1104
+110710,Radiant Kulu-Ya-Ku,Field (open world),,,12,,178888,1104
+110710,Radiant Kulu-Ya-Ku,Field (open world),,,13,,253913,1237
+110710,Radiant Kulu-Ya-Ku,Field (open world),,,14,,332271,1300
+110710,Radiant Kulu-Ya-Ku,Field (open world),,,15,,437930,1370
+110710,Radiant Kulu-Ya-Ku,Field (open world),,,16,,558717,1510
+111010,Radiant Paolumu,Hunt,11111010,4,11,9158,153740,1124
+111010,Radiant Paolumu,Hunt,11411010,5,14,14360,475299,1390
+111010,Radiant Paolumu,Hunt,11611010,6,16,15766,651946,1460
+111010,Radiant Paolumu,Extreme Hunt,21611010,,16,19531,2910945,1570
+111010,Radiant Paolumu,Field (open world),,,10,,79626,1037
+111010,Radiant Paolumu,Field (open world),,,11,,126424,1104
+111010,Radiant Paolumu,Field (open world),,,12,,169401,1104
+111010,Radiant Paolumu,Field (open world),,,13,,240448,1237
+111010,Radiant Paolumu,Field (open world),,,14,,314650,1300
+111010,Radiant Paolumu,Field (open world),,,15,,414707,1370
+111010,Radiant Paolumu,Field (open world),,,16,,529088,1510
+111110,Radiant Legiana,Hunt,11311110,5,13,13516,331971,1320
+111110,Radiant Legiana,Hunt,11611110,6,16,15766,570732,1460
+111110,Radiant Legiana,Extreme Hunt,21611110,,16,23308,6772317,1595
+111110,Radiant Legiana,Field (open world),,,12,,148299,1104
+111110,Radiant Legiana,Field (open world),,,13,,210495,1237
+111110,Radiant Legiana,Field (open world),,,14,,275454,1300
+111110,Radiant Legiana,Field (open world),,,15,,363046,1370
+111110,Radiant Legiana,Field (open world),,,16,,463179,1510
+111210,Radiant Great Girros,Hunt,10911210,3,9,5229,66083,822
+111210,Radiant Great Girros,Hunt,11111210,4,11,10100,228604,1124
+111210,Radiant Great Girros,Hunt,11311210,5,13,13516,439775,1320
+111210,Radiant Great Girros,Hunt,11511210,6,15,15283,675869,1460
+111210,Radiant Great Girros,Extreme Hunt,21511210,,15,17232,3092249,1430
+111210,Radiant Great Girros,Field (open world),,,8,,57605,802
+111210,Radiant Great Girros,Field (open world),,,9,,75800,971
+111210,Radiant Great Girros,Field (open world),,,10,,92343,1037
+111210,Radiant Great Girros,Field (open world),,,11,,146616,1104
+111210,Radiant Great Girros,Field (open world),,,12,,196457,1104
+111210,Radiant Great Girros,Field (open world),,,13,,278851,1237
+111210,Radiant Great Girros,Field (open world),,,14,,364905,1300
+111210,Radiant Great Girros,Field (open world),,,15,,480941,1370
+111210,Radiant Great Girros,Field (open world),,,16,,613591,1510
+110910,Radiant Tobi-Kadachi,Hunt,10910910,3,9,5413,50785,822
+110910,Radiant Tobi-Kadachi,Hunt,11210910,4,12,11163,183931,1190
+110910,Radiant Tobi-Kadachi,Hunt,11410910,5,14,13943,350947,1320
+110910,Radiant Tobi-Kadachi,Hunt,11610910,6,16,15766,543909,1460
+110910,Radiant Tobi-Kadachi,Extreme Hunt,21510910,,15,17232,2022300,1430
+110910,Radiant Tobi-Kadachi,Field (open world),,,8,,41441,802
+110910,Radiant Tobi-Kadachi,Field (open world),,,9,,54530,971
+110910,Radiant Tobi-Kadachi,Field (open world),,,10,,66431,1037
+110910,Radiant Tobi-Kadachi,Field (open world),,,11,,105474,1104
+110910,Radiant Tobi-Kadachi,Field (open world),,,12,,141329,1104
+110910,Radiant Tobi-Kadachi,Field (open world),,,13,,200602,1237
+110910,Radiant Tobi-Kadachi,Field (open world),,,14,,262508,1300
+110910,Radiant Tobi-Kadachi,Field (open world),,,15,,345984,1370
+110910,Radiant Tobi-Kadachi,Field (open world),,,16,,441411,1510
+111410,Radiant Radobaan,Hunt,11411410,5,14,13943,257081,1320
+111410,Radiant Radobaan,Hunt,11611410,6,16,15766,398432,1460
+111410,Radiant Radobaan,Extreme Hunt,21611410,,16,24012,4235757,1605
+111410,Radiant Radobaan,Field (open world),,,13,,146948,1237
+111410,Radiant Radobaan,Field (open world),,,14,,192296,1300
+111410,Radiant Radobaan,Field (open world),,,15,,253445,1370
+111410,Radiant Radobaan,Field (open world),,,16,,323349,1510
+100111,Radiant Pink Rathian,Hunt,11400111,5,14,14360,269291,1390
+100111,Radiant Pink Rathian,Hunt,11600111,6,16,15766,369374,1460
+100111,Radiant Pink Rathian,Extreme Hunt,21600111,,16,24736,4057125,1615
+100111,Radiant Pink Rathian,Field (open world),,,13,,136231,1237
+100111,Radiant Pink Rathian,Field (open world),,,14,,178272,1300
+100111,Radiant Pink Rathian,Field (open world),,,15,,234961,1370
+100111,Radiant Pink Rathian,Field (open world),,,16,,299766,1510
+112010,Radiant Tzitzi-Ya-Ku,Hunt,11212010,4,12,10307,206888,1124
+112010,Radiant Tzitzi-Ya-Ku,Hunt,11312010,5,13,13516,377909,1320
+112010,Radiant Tzitzi-Ya-Ku,Hunt,11512010,6,15,15283,580791,1460
+112010,Radiant Tzitzi-Ya-Ku,Extreme Hunt,21612010,,16,19736,4530561,1570
+112010,Radiant Tzitzi-Ya-Ku,Field (open world),,,11,,125991,1104
+112010,Radiant Tzitzi-Ya-Ku,Field (open world),,,12,,168821,1104
+112010,Radiant Tzitzi-Ya-Ku,Field (open world),,,13,,239623,1237
+112010,Radiant Tzitzi-Ya-Ku,Field (open world),,,14,,313572,1300
+112010,Radiant Tzitzi-Ya-Ku,Field (open world),,,15,,413285,1370
+112010,Radiant Tzitzi-Ya-Ku,Field (open world),,,16,,527274,1510
+100711,Radiant Black Diablos,Hunt,11600711,6,16,15766,672643,1460
+100711,Radiant Black Diablos,Extreme Hunt,21600711,,16,28704,7396592,1665
+100711,Radiant Black Diablos,Field (open world),,,13,,228998,1237
+100711,Radiant Black Diablos,Field (open world),,,14,,299667,1300
+100711,Radiant Black Diablos,Field (open world),,,15,,394959,1370
+100711,Radiant Black Diablos,Field (open world),,,16,,503894,1510
+111310,Radiant Odogaron,Hunt,11211310,4,12,11247,177307,1190
+111310,Radiant Odogaron,Hunt,11411310,5,14,14360,347674,1390
+111310,Radiant Odogaron,Hunt,11611310,6,16,15766,476889,1460
+111310,Radiant Odogaron,Extreme Hunt,21611310,,16,21063,3715353,1570
+111310,Radiant Odogaron,Field (open world),,,11,,92478,1104
+111310,Radiant Odogaron,Field (open world),,,12,,123915,1104
+111310,Radiant Odogaron,Field (open world),,,13,,175884,1237
+111310,Radiant Odogaron,Field (open world),,,14,,230162,1300
+111310,Radiant Odogaron,Field (open world),,,15,,303352,1370
+111310,Radiant Odogaron,Field (open world),,,16,,387020,1510

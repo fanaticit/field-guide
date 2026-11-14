@@ -24,6 +24,8 @@ export const pageToPath: Record<string, string> = {
   'challenges': '/challenges',
   'adventurers': '/challenges/adventurers',
   'buddies': '/challenges/buddies',
+  'monsters': '/challenges/monsters',
+  'challenges/monsters': '/challenges/monsters',
   'weapons': '/challenges/weapons',
   'admin': '/admin/feedback',
   'settings': '/settings',

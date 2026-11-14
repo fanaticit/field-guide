@@ -28,6 +28,7 @@ import VisageSetsGuide from './pages/investigation-notes/VisageSetsGuide';
 import VisageSetBuilder from './pages/investigation-notes/VisageSetBuilder';
 import AdventurerGuide from './pages/investigation-notes/AdventurerGuide';
 import BuddyGuide from './pages/investigation-notes/BuddyGuide';
+import MonsterGuide from './pages/investigation-notes/MonsterGuide';
 import WeaponGuide from './pages/investigation-notes/WeaponGuide';
 import AdminPage from './pages/admin/AdminPage';
 import SettingsPage from './pages/Settings';
@@ -61,6 +62,7 @@ export const router = createBrowserRouter([
       { path: 'challenges', element: <HunterChallenges /> },
       { path: 'challenges/adventurers', element: <div className="px-1 sm:px-6 pb-6 pt-2 sm:pt-3 lg:px-8 lg:pb-8 lg:pt-4 min-h-full"><AdventurerGuide /></div> },
       { path: 'challenges/buddies', element: <div className="px-1 sm:px-6 pb-6 pt-2 sm:pt-3 lg:px-8 lg:pb-8 lg:pt-4 min-h-full"><BuddyGuide /></div> },
+      { path: 'challenges/monsters', element: <div className="px-1 sm:px-6 pb-6 pt-2 sm:pt-3 lg:px-8 lg:pb-8 lg:pt-4 min-h-full"><MonsterGuide /></div> },
       { path: 'challenges/weapons', element: <div className="px-1 sm:px-6 pb-6 pt-2 sm:pt-3 lg:px-8 lg:pb-8 lg:pt-4 min-h-full"><WeaponGuide /></div> },
 
       // ── User & Admin ──
@@ -86,7 +88,8 @@ export const router = createBrowserRouter([
       { path: 'investigation-notes', element: <Navigate to="/armory/armour" replace /> },
       { path: 'investigation-notes/:subPage', element: <Navigate to="/challenges" replace /> },
       { path: 'community-hub', element: <Navigate to="/armory" replace /> },
-      { path: 'monsters', element: <Navigate to="/" replace /> },
+      { path: 'monsters', element: <Navigate to="/challenges/monsters" replace /> },
+      { path: 'investigation-notes/monsters', element: <Navigate to="/challenges/monsters" replace /> },
       { path: 'home/spoilers', element: <Navigate to="/spoilers" replace /> },
 
       // Catch-all → home

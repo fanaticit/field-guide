@@ -68,20 +68,19 @@ def group_skills(rows):
     return groups
 
 
-def load_active_skill_names(all_skills):
+def load_active_criteria(all_skills):
     """Identifies skills that appear on armour pieces & upgrades or weapons."""
-    active_names = set()
-
     # 1. Weapon skills from MHO_weapons.json
+    weapon_names = set()
     weapons_json = ROOT / "import" / "MHO_weapons.json"
     if weapons_json.exists():
         with open(weapons_json, encoding="utf-8") as f:
             for w in json.load(f):
                 if w.get("legendary_intrinsic_effect"):
-                    active_names.add(w["legendary_intrinsic_effect"]["name"])
+                    weapon_names.add(w["legendary_intrinsic_effect"]["name"])
                 for slot in w.get("legendary_awakening_slots", []):
                     for opt in slot:
-                        active_names.add(opt)
+                        weapon_names.add(opt)
 
     # 2. Armour skills from MHO_armour.json, MHO_armour_upgrades.json, MHO_armour.csv
     direct_ids = set()
@@ -118,14 +117,15 @@ def load_active_skill_names(all_skills):
                                 direct_ids.add(sk["Entry ID"].strip())
                                 break
 
+    active_type_ids = set()
     for sk in all_skills:
-        if sk["Entry ID"].strip() in direct_ids:
-            active_names.add(sk["Skill"].strip())
+        if sk["Entry ID"].strip() in direct_ids and sk.get("Skill type ID", "").strip():
+            active_type_ids.add(sk["Skill type ID"].strip())
 
-    return active_names
+    return active_type_ids, weapon_names, direct_ids
 
 
-def build_records(groups, active_names):
+def build_records(groups, active_type_ids, weapon_names, direct_ids):
     records = []
     for group in groups:
         first = group[0]
@@ -135,6 +135,19 @@ def build_records(groups, active_names):
             icon_file = (r["Icon"] or first["Icon"]).strip().split("/")[-1]
             if not (ICON_DIR / icon_file).exists():
                 sys.exit(f"Missing icon file {icon_file} for entry {r['Entry ID']}")
+
+            tid_str = r.get("Skill type ID", "").strip()
+            skill_type_id = int(tid_str) if tid_str else None
+            game_status = r.get("Status", "").strip() or "In game"
+            is_debug = bool(r.get("Debug", "").strip().lower() == "yes" or game_status != "In game")
+
+            # Active if in game AND (skill type is on armour OR direct ID on armour OR weapon effect name)
+            is_active = (not is_debug) and (
+                (tid_str and tid_str in active_type_ids)
+                or (r["Entry ID"].strip() in direct_ids)
+                or (r["Skill"].strip() in weapon_names)
+            )
+
             records.append(
                 {
                     "id": r["Entry ID"].strip(),
@@ -144,7 +157,10 @@ def build_records(groups, active_names):
                     "category": category or "general",
                     "icon": ICON_URL_PREFIX + icon_file,
                     "description": r["Description"].strip(),
-                    "is_active": r["Skill"].strip() in active_names,
+                    "skill_type_id": skill_type_id,
+                    "game_status": game_status,
+                    "is_debug": is_debug,
+                    "is_active": is_active,
                 }
             )
     return records
@@ -152,7 +168,7 @@ def build_records(groups, active_names):
 
 def render(records):
     values = ",\n".join(
-        "  ({id}, {name}, {category}, {level}, {max_levels}, {is_active}, {icon}, {description})".format(
+        "  ({id}, {name}, {category}, {level}, {max_levels}, {is_active}, {icon}, {description}, {skill_type_id}, {game_status}, {is_debug})".format(
             id=sql_str(r["id"]),
             name=sql_str(r["name"]),
             category=sql_str(r["category"]),
@@ -161,6 +177,9 @@ def render(records):
             is_active="TRUE" if r["is_active"] else "FALSE",
             icon=sql_str(r["icon"]),
             description=sql_str(r["description"]),
+            skill_type_id=str(r["skill_type_id"]) if r["skill_type_id"] is not None else "NULL",
+            game_status=sql_str(r["game_status"]),
+            is_debug="TRUE" if r["is_debug"] else "FALSE",
         )
         for r in records
     )
@@ -175,20 +194,28 @@ def render(records):
 
 BEGIN;
 
+ALTER TABLE public.skills
+  ADD COLUMN IF NOT EXISTS skill_type_id INTEGER,
+  ADD COLUMN IF NOT EXISTS game_status   TEXT    NOT NULL DEFAULT 'In game',
+  ADD COLUMN IF NOT EXISTS is_debug      BOOLEAN NOT NULL DEFAULT FALSE;
+
 DELETE FROM public.skills WHERE is_set_bonus = FALSE;
 
 INSERT INTO public.skills
-  (id, name, category, level, max_levels, is_active, icon, description)
+  (id, name, category, level, max_levels, is_active, icon, description, skill_type_id, game_status, is_debug)
 VALUES
 {values}
 ON CONFLICT (id) DO UPDATE SET
-  name        = EXCLUDED.name,
-  category    = EXCLUDED.category,
-  level       = EXCLUDED.level,
-  max_levels  = EXCLUDED.max_levels,
-  is_active   = EXCLUDED.is_active,
-  icon        = EXCLUDED.icon,
-  description = EXCLUDED.description;
+  name          = EXCLUDED.name,
+  category      = EXCLUDED.category,
+  level         = EXCLUDED.level,
+  max_levels    = EXCLUDED.max_levels,
+  is_active     = EXCLUDED.is_active,
+  icon          = EXCLUDED.icon,
+  description   = EXCLUDED.description,
+  skill_type_id = EXCLUDED.skill_type_id,
+  game_status   = EXCLUDED.game_status,
+  is_debug      = EXCLUDED.is_debug;
 
 COMMIT;
 """
@@ -205,8 +232,8 @@ def main():
         levels = [int(r["Level"]) for r in group]
         if levels != list(range(1, len(levels) + 1)):
             sys.exit(f"Non-contiguous levels for {group[0]['Skill']}: {levels}")
-    active_names = load_active_skill_names(rows)
-    records = build_records(groups, active_names)
+    active_type_ids, weapon_names, direct_ids = load_active_criteria(rows)
+    records = build_records(groups, active_type_ids, weapon_names, direct_ids)
     ids = [r["id"] for r in records]
     if len(ids) != len(set(ids)):
         sys.exit("Duplicate Entry IDs in CSV")

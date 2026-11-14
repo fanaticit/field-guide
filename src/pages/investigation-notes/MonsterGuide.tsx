@@ -1,29 +1,73 @@
 // ─────────────────────────────────────────────────────────────
-// Monster Guide — shows the live monster roster for MHO
-// pulled directly from Supabase, grouped by tier, sorted by the
-// per-game sort order set in the admin panel.
+// MonsterGuide — Field Guide view for Monsters & Study Progress
+// Copies the layout and aesthetic of the Weapons page.
+// Default view: List/Table view showing icons, name, Species, and weak to.
+// Primary user workflow: Filter by Species to see what monsters are in that species.
 // ─────────────────────────────────────────────────────────────
-import { useState, useMemo, useEffect } from 'react';
-import { Bug, RefreshCw, AlertTriangle, Search, X } from 'lucide-react';
-import { usePublicMonsters, type DBMonster } from '../../hooks/useAdminMonsters';
+import { useState, useMemo, useEffect, useRef } from 'react';
+import {
+  Search,
+  LayoutGrid,
+  List,
+  Shield,
+  Bookmark,
+  CheckCircle2,
+  ChevronDown,
+  Check,
+  Footprints,
+  X,
+} from 'lucide-react';
+import {
+  useAdminMonsters,
+  type DBMonster,
+} from '../../hooks/useAdminMonsters';
+import {
+  useUserMonsterStudy,
+} from '../../hooks/useUserMonsterStudy';
+import {
+  useHunterChallenges,
+} from '../../hooks/useHunterChallenges';
+import { useAuthStore } from '../../store/authStore';
 import { useUIStore } from '../../store/uiStore';
-import { cn } from '../../lib/utils';
+import { DEFAULT_SECTION_THEMES } from '../../config/themes';
+import PageTitlePanel from '../../components/layout/PageTitlePanel';
+import MonsterModal from './MonsterModal';
 import ElementIcon from '../../components/ElementIcon';
+import { cn } from '../../lib/utils';
+import { useSearchParams } from 'react-router-dom';
 
-// ── Game toggle ───────────────────────────────────────────────
-type GameId = 'mho';
+type ViewMode = 'table' | 'grid';
+type SortOrder = 'name-asc' | 'tier-desc' | 'default';
+type StudyFilter = 'all' | 'studied' | 'finished' | 'untracked';
 
+const INTRO_HIDDEN_KEY = 'monsters-intro-hidden';
 
-// ── Tier section config ───────────────────────────────────────
-const TIER_SECTIONS: { tier: string; label: string; badgeCls: string; desc: string }[] = [
-  { tier: 'small', label: 'Small Monsters',  badgeCls: 'rarity-1',     desc: 'Common small creatures encountered in the field' },
-  { tier: 'low',   label: 'Low Rank',        badgeCls: 'rarity-2',     desc: 'Introductory monsters — easier encounters' },
-  { tier: 'high',  label: 'High Rank',       badgeCls: 'rarity-4',     desc: 'Mid-tier threats requiring solid preparation' },
-  { tier: 'elder', label: 'Elder Dragons',   badgeCls: 'rarity-elder', desc: 'Ancient forces of nature — the toughest hunts' },
-  { tier: 'collab',label: 'Collab / Event',  badgeCls: 'rarity-5',     desc: 'Limited-time collaboration monsters' },
-];
+const SPECIES_CONFIG: Record<string, { label: string; icon?: string }> = {
+  flying_wyvern:  { label: 'Flying Wyvern' },
+  brute_wyvern:   { label: 'Brute Wyvern' },
+  bird_wyvern:    { label: 'Bird Wyvern' },
+  fanged_wyvern:  { label: 'Fanged Wyvern' },
+  fanged_beast:   { label: 'Fanged Beast' },
+  leviathan:      { label: 'Leviathan' },
+  elder_dragon:   { label: 'Elder Dragon' },
+  piscine_wyvern: { label: 'Piscine Wyvern' },
+  carapaceon:     { label: 'Carapaceon' },
+  temnoceran:     { label: 'Temnoceran' },
+  neopteron:      { label: 'Neopteron' },
+  herbivore:      { label: 'Herbivore' },
+  lynian:         { label: 'Lynian' },
+  wingdrake:      { label: 'Wingdrake' },
+  relict:         { label: 'Relict' },
+};
 
-// ── Element colours ───────────────────────────────────────────
+const TIER_CONFIG: Record<string, { label: string; cls: string; order: number }> = {
+  small:  { label: 'Small',  cls: 'rarity-1', order: 1 },
+  low:    { label: 'Low',    cls: 'rarity-2', order: 2 },
+  high:   { label: 'High',   cls: 'rarity-4', order: 3 },
+  elder:  { label: 'Elder',  cls: 'rarity-elder', order: 4 },
+  collab: { label: 'Collab', cls: 'rarity-5', order: 5 },
+};
+
 const ELEMENT_COLOURS: Record<string, string> = {
   fire:      'bg-el-fire/15 text-el-fire border border-el-fire/30',
   water:     'bg-el-water/15 text-el-water border border-el-water/30',
@@ -44,255 +88,879 @@ const ELEMENT_LABELS: Record<string, string> = {
   ice: 'Ice',
   dragon: 'Dragon',
   poison: 'Poison',
-  paralysis: 'Para',
+  paralysis: 'Paralysis',
   sleep: 'Sleep',
   blast: 'Blast',
   stun: 'Stun',
 };
 
-const TIER_CONFIG: Record<string, { label: string; cls: string }> = {
-  small:  { label: 'Small',  cls: 'rarity-1' },
-  low:    { label: 'Low',    cls: 'rarity-2' },
-  high:   { label: 'High',   cls: 'rarity-4' },
-  elder:  { label: 'Elder',  cls: 'rarity-elder' },
-  collab: { label: 'Collab', cls: 'rarity-5' },
-};
+const AVAILABLE_ELEMENTS = [
+  'fire',
+  'water',
+  'thunder',
+  'ice',
+  'dragon',
+  'poison',
+  'paralysis',
+  'sleep',
+  'blast',
+];
 
-const SPECIES_LABELS: Record<string, string> = {
-  flying_wyvern:  'Flying Wyvern',
-  brute_wyvern:   'Brute Wyvern',
-  bird_wyvern:    'Bird Wyvern',
-  fanged_wyvern:  'Fanged Wyvern',
-  fanged_beast:   'Fanged Beast',
-  leviathan:      'Leviathan',
-  elder_dragon:   'Elder Dragon',
-  piscine_wyvern: 'Piscine Wyvern',
-  carapaceon:     'Carapaceon',
-  temnoceran:     'Temnoceran',
-  neopteron:      'Neopteron',
-};
-
-// ── Monster card (DB-shape) ───────────────────────────────────
-function ElementChip({ el }: { el: string }) {
-  return (
-    <span className={cn(
-      'inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[9px] font-semibold leading-none',
-      ELEMENT_COLOURS[el] ?? 'bg-mh-slate-700/40 text-mh-slate-400 border border-mh-slate-700',
-    )}>
-      <ElementIcon element={el} size={11} />
-      <span>{ELEMENT_LABELS[el] ?? el}</span>
-    </span>
-  );
-}
-
-function MonsterCard({ monster, game }: { monster: DBMonster; game: string }) {
-  const tierCfg   = TIER_CONFIG[monster.tier] ?? { label: monster.tier, cls: 'rarity-1' };
-  const sortOrder = monster.sort_order ?? monster.sort_orders?.[game];
-
-  return (
-    <div className="mh-card flex flex-col gap-3 p-3">
-      <div className="flex items-start gap-3">
-        {/* Icon / silhouette */}
-        <div className="relative shrink-0">
-          {monster.icon ? (
-            <img
-              src={monster.icon}
-              alt={monster.name}
-              className="h-14 w-14 rounded-lg object-contain"
-              onError={(e) => {
-                (e.currentTarget as HTMLImageElement).style.display = 'none';
-                (e.currentTarget.nextElementSibling as HTMLElement | null)?.classList.remove('hidden');
-              }}
-            />
-          ) : null}
-          <div
-            className={cn(
-              'flex h-14 w-14 items-center justify-center rounded-lg bg-mh-slate-700/60 text-2xl',
-              monster.icon ? 'hidden' : '',
-            )}
-            aria-hidden="true"
-          >
-            🐾
-          </div>
-        </div>
-
-        {/* Name + meta */}
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-1.5">
-            {sortOrder !== undefined && (
-              <span className="font-mono text-[9px] text-mh-slate-600">#{sortOrder}</span>
-            )}
-            <span className={`rarity-badge ${tierCfg.cls}`}>{tierCfg.label}</span>
-            {monster.is_variant && (
-              <span className="rounded bg-mh-slate-700 px-1 py-px text-[8px] font-bold uppercase tracking-wider text-mh-slate-500">
-                variant
-              </span>
-            )}
-            {monster.is_radiant && (
-              <span className="rounded bg-yellow-500/20 px-1 py-px text-[8px] font-bold uppercase tracking-wider text-yellow-400">
-                radiant
-              </span>
-            )}
-          </div>
-          <p className="mt-1 truncate text-sm font-bold leading-tight text-mh-slate-100">
-            {monster.name}
-          </p>
-          {monster.name_ja && (
-            <p className="mt-0.5 truncate text-[10px] leading-none text-mh-slate-600">
-              {monster.name_ja}
-            </p>
-          )}
-          {monster.species && (
-            <p className="mt-0.5 text-[10px] text-mh-slate-600">
-              {SPECIES_LABELS[monster.species] ?? monster.species}
-            </p>
-          )}
-        </div>
-      </div>
-
-      {/* Elements */}
-      {monster.elements.length > 0 && (
-        <div className="flex flex-col gap-1">
-          <p className="text-[9px] font-semibold uppercase tracking-widest text-mh-slate-600">Element</p>
-          <div className="flex flex-wrap gap-1">
-            {monster.elements.map((el) => <ElementChip key={el} el={el} />)}
-          </div>
-        </div>
-      )}
-
-      {/* Weaknesses */}
-      {monster.weaknesses.length > 0 && (
-        <div className="flex flex-col gap-1">
-          <p className="text-[9px] font-semibold uppercase tracking-widest text-mh-slate-600">Weak to</p>
-          <div className="flex flex-wrap gap-1">
-            {monster.weaknesses.map((el) => <ElementChip key={el} el={el} />)}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-// ── Game tab content ──────────────────────────────────────────
-function GameMonsters({ game }: { game: string }) {
-  const [search, setSearch] = useState('');
-  const { data: monsters = [], isLoading, error, refetch } = usePublicMonsters(game);
-
-  const filtered = useMemo(() => {
-    if (!search) return monsters;
-    const q = search.toLowerCase();
-    return monsters.filter(
-      (m) => m.name.toLowerCase().includes(q) || (m.name_ja ?? '').toLowerCase().includes(q),
-    );
-  }, [monsters, search]);
-
-  if (isLoading) {
-    return (
-      <div className="flex h-48 items-center justify-center gap-3 text-mh-slate-500">
-        <RefreshCw size={20} className="animate-spin" />
-        <span>Loading monsters…</span>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex h-48 flex-col items-center justify-center gap-3 text-center">
-        <AlertTriangle size={28} className="text-red-400" />
-        <p className="text-sm text-red-400">{(error as Error).message}</p>
-        <button
-          onClick={() => refetch()}
-          className="rounded-lg bg-mh-slate-800 px-4 py-2 text-xs text-mh-slate-300 hover:bg-mh-slate-700"
-        >
-          Retry
-        </button>
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex flex-col gap-6">
-      {/* Search */}
-      <div className="relative max-w-sm">
-        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-mh-slate-600" />
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search monsters…"
-          className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 py-2 pl-9 pr-8 text-sm text-mh-slate-200 placeholder-mh-slate-600 outline-none focus:border-mh-gold-500/50"
-        />
-        {search && (
-          <button onClick={() => setSearch('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-mh-slate-600 hover:text-mh-slate-400">
-            <X size={13} />
-          </button>
-        )}
-      </div>
-
-      {/* Tier sections */}
-      {TIER_SECTIONS.map(({ tier, label, badgeCls, desc }) => {
-        const tiered = filtered.filter((m) => m.tier === tier);
-        if (tiered.length === 0) return null;
-
-        return (
-          <section key={tier} className="flex flex-col gap-4">
-            {/* Section header */}
-            <div className="flex items-center gap-3">
-              <div className="flex-1 border-t border-mh-slate-700" />
-              <div className="flex items-center gap-2">
-                <span className={`rarity-badge ${badgeCls}`}>{label}</span>
-                <span className="text-xs text-mh-slate-600">{tiered.length} monsters</span>
-              </div>
-              <div className="flex-1 border-t border-mh-slate-700" />
-            </div>
-            <p className="-mt-2 text-center text-xs text-mh-slate-600">{desc}</p>
-
-            {/* Monster grid */}
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {tiered.map((monster) => (
-                <MonsterCard key={monster.id} monster={monster} game={game} />
-              ))}
-            </div>
-          </section>
-        );
-      })}
-
-      {filtered.length === 0 && (
-        <p className="py-16 text-center text-mh-slate-600">No monsters match your search.</p>
-      )}
-    </div>
-  );
-}
-
-// ── Page root ─────────────────────────────────────────────────
 export default function MonsterGuide() {
-  const defaultGame = useUIStore((s) => s.defaultGame);
-  const [activeGame, setActiveGame] = useState<GameId>((defaultGame as GameId) || 'mho');
+  const { user } = useAuthStore();
+  const theme = useUIStore((s) => s.sectionThemes['/challenges'] ?? DEFAULT_SECTION_THEMES['/challenges']);
+
+  const [introHidden, setIntroHidden] = useState(() => {
+    if (typeof localStorage === 'undefined') return false;
+    return localStorage.getItem(INTRO_HIDDEN_KEY) === '1';
+  });
+
+  const toggleIntro = () => {
+    const next = !introHidden;
+    setIntroHidden(next);
+    localStorage.setItem(INTRO_HIDDEN_KEY, next ? '1' : '0');
+  };
+
+  const [searchParams] = useSearchParams();
+  const initialSpecies = searchParams.get('species') || 'all';
+  const initialSearch = searchParams.get('search') || '';
+
+  const [search, setSearch] = useState(initialSearch);
+  const [filterSpecies, setFilterSpecies] = useState<string>(initialSpecies);
+  const [filterTier, setFilterTier] = useState<string>('all');
+  const [filterWeakness, setFilterWeakness] = useState<string>('all');
+  const [filterStudy, setFilterStudy] = useState<StudyFilter>('all');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('name-asc');
+  // Default is list/table view as requested
+  const [viewMode, setViewMode] = useState<ViewMode>('table');
+
+  // Custom Dropdowns open state
+  const [speciesOpen, setSpeciesOpen] = useState(false);
+  const [weaknessOpen, setWeaknessOpen] = useState(false);
+  const speciesRef = useRef<HTMLDivElement>(null);
+  const weaknessRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (defaultGame === 'mho') {
-      setActiveGame(defaultGame as GameId);
+    function handleOutside(e: MouseEvent | TouchEvent) {
+      if (speciesRef.current && !speciesRef.current.contains(e.target as Node)) {
+        setSpeciesOpen(false);
+      }
+      if (weaknessRef.current && !weaknessRef.current.contains(e.target as Node)) {
+        setWeaknessOpen(false);
+      }
     }
-  }, [defaultGame]);
+    window.addEventListener('mousedown', handleOutside);
+    window.addEventListener('touchstart', handleOutside);
+    return () => {
+      window.removeEventListener('mousedown', handleOutside);
+      window.removeEventListener('touchstart', handleOutside);
+    };
+  }, []);
+
+  // Selected Monster for Detail Modal
+  const [selectedMonster, setSelectedMonster] = useState<DBMonster | null>(null);
+
+  // Queries & Hooks
+  const { data: monsters = [], isLoading } = useAdminMonsters({ isActive: true });
+  const { studyMap, getMonsterStudy } = useUserMonsterStudy();
+  const { data: challenges = [] } = useHunterChallenges(user?.id);
+
+  // Available Species list with monster count
+  const speciesList = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const m of monsters) {
+      if (m.species) {
+        counts.set(m.species, (counts.get(m.species) || 0) + 1);
+      }
+    }
+    return Array.from(counts.entries())
+      .map(([id, count]) => ({
+        id,
+        label: SPECIES_CONFIG[id]?.label || id.replace(/_/g, ' '),
+        count,
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label));
+  }, [monsters]);
+
+  const selectedSpeciesObj = filterSpecies !== 'all' ? speciesList.find((s) => s.id === filterSpecies) : null;
+
+  // Active monster challenges count
+  const activeMonsterChallenges = useMemo(() => {
+    return challenges.filter((c) => c.challenge_type === 'monster' && c.status !== 'abandoned');
+  }, [challenges]);
+
+  // Overall Statistics
+  const stats = useMemo(() => {
+    const total = monsters.length;
+    let finishedCount = 0;
+    let studiedCount = 0;
+
+    for (const m of monsters) {
+      const study = studyMap[m.id];
+      if (study) {
+        if (study.finished) finishedCount++;
+        if (
+          study.unlocked ||
+          study.photo_taken ||
+          study.witnessed_behavior ||
+          study.hunted_10_plus ||
+          study.finished ||
+          study.custom_tasks.some((t) => t.completed)
+        ) {
+          studiedCount++;
+        }
+      }
+    }
+
+    return {
+      total,
+      studiedCount,
+      studiedPct: total > 0 ? Math.round((studiedCount / total) * 100) : 0,
+      finishedCount,
+      finishedPct: total > 0 ? Math.round((finishedCount / total) * 100) : 0,
+      challengesTracked: activeMonsterChallenges.length,
+    };
+  }, [monsters, studyMap, activeMonsterChallenges]);
+
+  // Filtered & Sorted Monsters
+  const filteredMonsters = useMemo(() => {
+    let list = [...monsters];
+
+    // Search query
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      list = list.filter((m) => {
+        const speciesLabel = (m.species && SPECIES_CONFIG[m.species]?.label) || m.species || '';
+        return (
+          m.name.toLowerCase().includes(q) ||
+          (m.name_ja && m.name_ja.toLowerCase().includes(q)) ||
+          speciesLabel.toLowerCase().includes(q) ||
+          m.weaknesses.some((w) => w.toLowerCase().includes(q)) ||
+          m.elements.some((e) => e.toLowerCase().includes(q))
+        );
+      });
+    }
+
+    // Species filter
+    if (filterSpecies !== 'all') {
+      list = list.filter((m) => m.species === filterSpecies);
+    }
+
+    // Tier filter
+    if (filterTier !== 'all') {
+      list = list.filter((m) => m.tier === filterTier);
+    }
+
+    // Weakness filter
+    if (filterWeakness !== 'all') {
+      list = list.filter((m) => m.weaknesses.includes(filterWeakness));
+    }
+
+    // Study filter
+    if (filterStudy !== 'all') {
+      list = list.filter((m) => {
+        const s = studyMap[m.id];
+        if (filterStudy === 'finished') return Boolean(s?.finished);
+        if (filterStudy === 'studied') {
+          return Boolean(
+            s &&
+              (s.unlocked ||
+                s.photo_taken ||
+                s.witnessed_behavior ||
+                s.hunted_10_plus ||
+                s.finished ||
+                s.custom_tasks.some((t) => t.completed)),
+          );
+        }
+        if (filterStudy === 'untracked') {
+          return (
+            !s ||
+            (!s.unlocked &&
+              !s.photo_taken &&
+              !s.witnessed_behavior &&
+              !s.hunted_10_plus &&
+              !s.finished &&
+              !s.custom_tasks.some((t) => t.completed))
+          );
+        }
+        return true;
+      });
+    }
+
+    // Sorting
+    list.sort((a, b) => {
+      if (sortOrder === 'name-asc') {
+        const isSmallA = a.tier === 'small';
+        const isSmallB = b.tier === 'small';
+        if (isSmallA !== isSmallB) {
+          return isSmallA ? 1 : -1;
+        }
+        return a.name.localeCompare(b.name);
+      }
+      if (sortOrder === 'tier-desc') {
+        const orderA = TIER_CONFIG[a.tier]?.order || 0;
+        const orderB = TIER_CONFIG[b.tier]?.order || 0;
+        if (orderB !== orderA) return orderB - orderA;
+        return a.name.localeCompare(b.name);
+      }
+      if (a.sort_order !== null && b.sort_order !== null && a.sort_order !== b.sort_order) {
+        return a.sort_order - b.sort_order;
+      }
+      const isSmallA = a.tier === 'small';
+      const isSmallB = b.tier === 'small';
+      if (isSmallA !== isSmallB) {
+        return isSmallA ? 1 : -1;
+      }
+      return a.name.localeCompare(b.name);
+    });
+
+    return list;
+  }, [monsters, search, filterSpecies, filterTier, filterWeakness, filterStudy, sortOrder, studyMap]);
 
   return (
-    <div className="flex flex-col gap-8 p-6 lg:p-8">
-      {/* Page header */}
-      <div className="flex flex-col gap-1">
-        <div className="flex items-center gap-2">
-          <Bug size={20} className="text-mh-gold-500" />
-          <span className="rarity-badge rarity-5">Investigation Notes</span>
+    <div data-rarity-theme={theme} className="challenges-theme px-1 sm:px-4 lg:px-8 pb-6 pt-2 space-y-4 sm:space-y-6 max-w-7xl mx-auto text-white">
+      {/* ── Page Title & Metrics Panel ── */}
+      <PageTitlePanel
+        icon="/img/ui/monster.png"
+        title="Monster Field Guide"
+        hidden={introHidden}
+        onToggleHidden={toggleIntro}
+        description={
+          <>
+            Browse every monster, their species classification, elements, and vulnerabilities.
+            Filter by species to locate regional fauna and track your <span className="text-mh-gold-400 font-semibold">Study Progress</span> checklist
+            (Unlocked, Photo Taken, Ecological Behavior, Hunted 10+, and Custom Goals). Any research task can be sent to your
+            <span className="text-sky-300 font-semibold"> Hunter's Challenges</span> to monitor during hunts!
+          </>
+        }
+      >
+        {/* Study progress status metrics */}
+        <div className="flex flex-wrap items-center gap-1.5 bg-black/30 rounded-xl p-1 border border-[var(--border-subtle)]">
+          {/* Studied Metric */}
+          <div className="px-2.5 py-0.5 text-center border-r border-[var(--border-subtle)]">
+            <div className="flex items-center justify-center gap-1 text-[9px] uppercase font-bold text-mh-gold-400">
+              <Footprints size={10} />
+              <span>Studied</span>
+            </div>
+            <div className="flex items-baseline justify-center gap-1">
+              <span className="font-display text-sm font-black text-white">{stats.studiedCount}</span>
+              <span className="text-[10px] text-mh-slate-500">/ {stats.total}</span>
+              <span className="text-[9px] font-bold text-mh-gold-400 ml-0.5">
+                ({stats.studiedPct}%)
+              </span>
+            </div>
+          </div>
+
+          {/* Finished Metric */}
+          <div className="px-2.5 py-0.5 text-center border-r border-[var(--border-subtle)]">
+            <div className="flex items-center justify-center gap-1 text-[9px] uppercase font-bold text-emerald-400">
+              <Bookmark size={10} />
+              <span>Finished</span>
+            </div>
+            <div className="flex items-baseline justify-center gap-1">
+              <span className="font-display text-sm font-black text-white">{stats.finishedCount}</span>
+              <span className="text-[10px] text-mh-slate-500">/ {stats.total}</span>
+              <span className="text-[9px] font-bold text-emerald-400 ml-0.5">
+                ({stats.finishedPct}%)
+              </span>
+            </div>
+          </div>
+
+          {/* Challenges Tracked Metric */}
+          <div className="px-2 py-0.5 text-center">
+            <span className="block text-[9px] font-bold text-sky-400">In Challenges</span>
+            <span className="font-display text-xs font-bold text-sky-300">{stats.challengesTracked}</span>
+          </div>
         </div>
-        <h1 className="font-display text-2xl font-bold text-mh-slate-100 lg:text-3xl">
-          Monster Guide
-        </h1>
-        <p className="text-sm text-mh-slate-500">
-          Browse the monster roster, elements, and weaknesses for each game.
-        </p>
+      </PageTitlePanel>
+
+      {/* ── Toolbar: Search & Species-First Filters ── */}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-mh-slate-800 pb-3">
+        <div className="flex items-center gap-2">
+          <Footprints size={16} className="text-mh-gold-400" />
+          <h3 className="font-display text-sm font-bold uppercase tracking-wider text-mh-slate-200">
+            Monsters Roster
+          </h3>
+          <span className="rounded-full bg-mh-slate-800 border border-mh-slate-750 px-2 py-0.5 text-xs text-mh-slate-400 font-semibold">
+            {filteredMonsters.length} of {monsters.length}
+          </span>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Search */}
+          <div className="relative min-w-[200px]">
+            <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-mh-slate-500" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search monsters, species, elements…"
+              className="w-full rounded-xl border border-mh-slate-700 bg-mh-slate-800 py-1.5 pl-8 pr-7 text-xs text-mh-slate-200 placeholder-mh-slate-500 focus:border-mh-gold-500/50 focus:outline-none"
+            />
+            {search && (
+              <button
+                type="button"
+                onClick={() => setSearch('')}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-mh-slate-500 hover:text-white"
+              >
+                <X size={12} />
+              </button>
+            )}
+          </div>
+
+          {/* ── Primary Filter: Species Dropdown ── */}
+          <div ref={speciesRef} className="relative">
+            <button
+              type="button"
+              onClick={() => {
+                setSpeciesOpen((prev) => !prev);
+                setWeaknessOpen(false);
+              }}
+              className={cn(
+                'flex items-center gap-2 rounded-xl border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-200 transition-all hover:bg-mh-slate-750 focus:outline-none focus:border-mh-gold-500/50 shadow-sm',
+                filterSpecies !== 'all' && 'border-mh-gold-500/50 bg-mh-slate-800/90 text-mh-gold-300 font-semibold',
+              )}
+            >
+              <Footprints size={13} className="text-mh-gold-400 shrink-0" />
+              <span>{selectedSpeciesObj ? selectedSpeciesObj.label : 'All Species'}</span>
+              {selectedSpeciesObj && (
+                <span className="rounded-full bg-mh-gold-500/20 px-1.5 py-0.2 text-[10px] text-mh-gold-300 font-bold">
+                  {selectedSpeciesObj.count}
+                </span>
+              )}
+              <ChevronDown
+                size={13}
+                className={cn('text-mh-slate-400 transition-transform duration-200 shrink-0', speciesOpen && 'rotate-180')}
+              />
+            </button>
+
+            {speciesOpen && (
+              <div className="absolute left-0 top-full mt-1.5 z-50 min-w-[220px] rounded-2xl border border-mh-slate-700 bg-mh-slate-900/98 p-1.5 shadow-2xl backdrop-blur-md max-h-72 overflow-y-auto animate-fade-in divide-y divide-mh-slate-800/60">
+                <div className="pb-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFilterSpecies('all');
+                      setSpeciesOpen(false);
+                    }}
+                    className={cn(
+                      'w-full flex items-center justify-between rounded-xl px-2.5 py-1.5 text-xs transition-colors',
+                      filterSpecies === 'all'
+                        ? 'bg-mh-gold-500/15 text-mh-gold-300 font-bold'
+                        : 'text-mh-slate-300 hover:bg-mh-slate-800 hover:text-white',
+                    )}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Footprints size={14} className="text-mh-gold-400" />
+                      <span>All Species</span>
+                    </div>
+                    {filterSpecies === 'all' && <Check size={13} className="text-mh-gold-400" />}
+                  </button>
+                </div>
+
+                <div className="pt-1 space-y-0.5">
+                  {speciesList.map((sp) => {
+                    const isSelected = filterSpecies === sp.id;
+                    return (
+                      <button
+                        key={sp.id}
+                        type="button"
+                        onClick={() => {
+                          setFilterSpecies(sp.id);
+                          setSpeciesOpen(false);
+                        }}
+                        className={cn(
+                          'w-full flex items-center justify-between rounded-xl px-2.5 py-1.5 text-xs transition-colors',
+                          isSelected
+                            ? 'bg-mh-gold-500/15 text-mh-gold-300 font-bold'
+                            : 'text-mh-slate-300 hover:bg-mh-slate-800 hover:text-white',
+                        )}
+                      >
+                        <span className="truncate">{sp.label}</span>
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <span className="text-[10px] text-mh-slate-500 font-semibold">{sp.count}</span>
+                          {isSelected && <Check size={13} className="text-mh-gold-400" />}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* ── Weakness Filter Dropdown ── */}
+          <div ref={weaknessRef} className="relative">
+            <button
+              type="button"
+              onClick={() => {
+                setWeaknessOpen((prev) => !prev);
+                setSpeciesOpen(false);
+              }}
+              className={cn(
+                'flex items-center gap-2 rounded-xl border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-200 transition-all hover:bg-mh-slate-750 focus:outline-none focus:border-mh-gold-500/50 shadow-sm',
+                filterWeakness !== 'all' && 'border-mh-gold-500/50 bg-mh-slate-800/90 text-mh-gold-300 font-semibold',
+              )}
+            >
+              {filterWeakness !== 'all' ? (
+                <div className="flex h-4 w-4 shrink-0 items-center justify-center">
+                  <ElementIcon element={filterWeakness} size={14} />
+                </div>
+              ) : (
+                <Shield size={13} className="text-mh-slate-400 shrink-0" />
+              )}
+              <span>{filterWeakness !== 'all' ? `Weak to: ${ELEMENT_LABELS[filterWeakness] || filterWeakness}` : 'All Weaknesses'}</span>
+              <ChevronDown
+                size={13}
+                className={cn('text-mh-slate-400 transition-transform duration-200 shrink-0', weaknessOpen && 'rotate-180')}
+              />
+            </button>
+
+            {weaknessOpen && (
+              <div className="absolute left-0 top-full mt-1.5 z-50 min-w-[200px] rounded-2xl border border-mh-slate-700 bg-mh-slate-900/98 p-1.5 shadow-2xl backdrop-blur-md max-h-72 overflow-y-auto animate-fade-in divide-y divide-mh-slate-800/60">
+                <div className="pb-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFilterWeakness('all');
+                      setWeaknessOpen(false);
+                    }}
+                    className={cn(
+                      'w-full flex items-center justify-between rounded-xl px-2.5 py-1.5 text-xs transition-colors',
+                      filterWeakness === 'all'
+                        ? 'bg-mh-gold-500/15 text-mh-gold-300 font-bold'
+                        : 'text-mh-slate-300 hover:bg-mh-slate-800 hover:text-white',
+                    )}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Shield size={14} className="text-mh-slate-400" />
+                      <span>All Weaknesses</span>
+                    </div>
+                    {filterWeakness === 'all' && <Check size={13} className="text-mh-gold-400" />}
+                  </button>
+                </div>
+
+                <div className="pt-1 space-y-0.5">
+                  {AVAILABLE_ELEMENTS.map((el) => {
+                    const isSelected = filterWeakness === el;
+                    return (
+                      <button
+                        key={el}
+                        type="button"
+                        onClick={() => {
+                          setFilterWeakness(el);
+                          setWeaknessOpen(false);
+                        }}
+                        className={cn(
+                          'w-full flex items-center justify-between rounded-xl px-2.5 py-1.5 text-xs transition-colors',
+                          isSelected
+                            ? 'bg-mh-gold-500/15 text-mh-gold-300 font-bold'
+                            : 'text-mh-slate-300 hover:bg-mh-slate-800 hover:text-white',
+                        )}
+                      >
+                        <div className="flex items-center gap-2">
+                          <ElementIcon element={el} size={15} />
+                          <span>{ELEMENT_LABELS[el] ?? el}</span>
+                        </div>
+                        {isSelected && <Check size={13} className="text-mh-gold-400" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Tier Filter */}
+          <select
+            value={filterTier}
+            onChange={(e) => setFilterTier(e.target.value)}
+            className="rounded-xl border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-300 focus:border-mh-gold-500/50 focus:outline-none"
+          >
+            <option value="all">All Threat Ranks</option>
+            <option value="small">Small Monsters</option>
+            <option value="low">Low Rank</option>
+            <option value="high">High Rank</option>
+            <option value="elder">Elder Dragons</option>
+            <option value="collab">Collab / Event</option>
+          </select>
+
+          {/* Study Progress Filter */}
+          <select
+            value={filterStudy}
+            onChange={(e) => setFilterStudy(e.target.value as StudyFilter)}
+            className="rounded-xl border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-300 focus:border-mh-gold-500/50 focus:outline-none"
+          >
+            <option value="all">All Study States</option>
+            <option value="studied">Studied (Any Progress)</option>
+            <option value="finished">Finished / Mastered</option>
+            <option value="untracked">Not Yet Studied</option>
+          </select>
+
+          {/* Sort Order */}
+          <select
+            value={sortOrder}
+            onChange={(e) => setSortOrder(e.target.value as SortOrder)}
+            className="rounded-xl border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-300 focus:border-mh-gold-500/50 focus:outline-none"
+          >
+            <option value="name-asc">Large First, Then Small (A to Z)</option>
+            <option value="tier-desc">Threat: High to Low</option>
+            <option value="default">Game Order</option>
+          </select>
+
+          {/* View Mode Toggle */}
+          <div className="flex items-center rounded-xl border border-mh-slate-750 bg-mh-slate-900 p-0.5">
+            <button
+              type="button"
+              onClick={() => setViewMode('table')}
+              title="List / Table View (Default)"
+              className={cn(
+                'rounded-lg p-1.5 transition-colors',
+                viewMode === 'table'
+                  ? 'bg-mh-gold-500 text-slate-950 font-bold'
+                  : 'text-mh-slate-400 hover:text-white',
+              )}
+            >
+              <List size={15} />
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode('grid')}
+              title="Grid View"
+              className={cn(
+                'rounded-lg p-1.5 transition-colors',
+                viewMode === 'grid'
+                  ? 'bg-mh-gold-500 text-slate-950 font-bold'
+                  : 'text-mh-slate-400 hover:text-white',
+              )}
+            >
+              <LayoutGrid size={15} />
+            </button>
+          </div>
+        </div>
       </div>
 
-      {/* Per-game content — remounts when game changes to fresh-fetch */}
-      <GameMonsters key={activeGame} game={activeGame} />
+      {/* ── Main Content: List View (Default) or Grid View ── */}
+      {isLoading ? (
+        <div className="flex h-48 items-center justify-center">
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-mh-gold-400 border-t-transparent" />
+        </div>
+      ) : filteredMonsters.length === 0 ? (
+        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-mh-slate-750 bg-mh-slate-900/40 p-12 text-center">
+          <Footprints size={36} className="text-mh-slate-600 mb-2" />
+          <p className="text-xs font-semibold text-mh-slate-400">
+            No monsters match your active search and filter criteria.
+          </p>
+        </div>
+      ) : viewMode === 'table' ? (
+        /* ── List / Table View (Default) ── */
+        <div className="overflow-x-auto rounded-xl sm:rounded-2xl border border-mh-slate-750 bg-mh-slate-900/80 shadow-xl">
+          <table className="w-full text-left text-xs text-mh-slate-300">
+            <thead className="border-b border-mh-slate-750 bg-mh-slate-950/80 text-[11px] font-bold uppercase tracking-wider text-mh-slate-400">
+              <tr>
+                {/* 1. Monster (Icon + Name) */}
+                <th className="py-2.5 sm:py-3.5 pl-3 sm:pl-5 pr-2 sm:pr-3">Monster</th>
+                {/* 2. Species */}
+                <th className="px-2 sm:px-3 py-2.5 sm:py-3.5">Species</th>
+                {/* 3. Weak To */}
+                <th className="px-2 sm:px-3 py-2.5 sm:py-3.5">Weak to</th>
+                {/* 4. Elements */}
+                <th className="hidden md:table-cell px-2 sm:px-3 py-2.5 sm:py-3.5">Element</th>
+                {/* 5. Study Progress */}
+                <th className="px-2 sm:px-3 py-2.5 sm:py-3.5 text-center">Study Progress</th>
+                {/* 6. Action */}
+                <th className="py-2.5 sm:py-3.5 pl-2 sm:pl-3 pr-3 sm:pr-5 text-right">Details</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-mh-slate-800/80">
+              {filteredMonsters.map((monster) => {
+                const tierCfg = TIER_CONFIG[monster.tier] ?? { label: monster.tier, cls: 'rarity-1' };
+                const speciesLabel = (monster.species && SPECIES_CONFIG[monster.species]?.label) || monster.species || '—';
+                const study = getMonsterStudy(monster.id);
+
+                let completedCount = 0;
+                if (study.unlocked) completedCount++;
+                if (study.photo_taken) completedCount++;
+                if (study.witnessed_behavior) completedCount++;
+                if (study.hunted_10_plus) completedCount++;
+                if (study.finished) completedCount++;
+                study.custom_tasks.forEach((t) => {
+                  if (t.completed) completedCount++;
+                });
+                const totalTasks = 5 + study.custom_tasks.length;
+
+                return (
+                  <tr
+                    key={monster.id}
+                    onClick={() => setSelectedMonster(monster)}
+                    className="hover:bg-mh-slate-800/50 transition-colors cursor-pointer group"
+                  >
+                    {/* Monster Thumbnail + Name */}
+                    <td className="py-2.5 sm:py-3.5 pl-3 sm:pl-5 pr-2 sm:pr-3">
+                      <div className="flex items-center gap-2.5 sm:gap-3">
+                        <div className="relative flex h-18 w-18 sm:h-22 sm:w-22 shrink-0 items-center justify-center">
+                          {monster.icon ? (
+                            <img
+                              src={monster.icon}
+                              alt={monster.name}
+                              className="h-full w-full object-contain filter drop-shadow transition-transform duration-200 group-hover:scale-105"
+                              onError={(e) => {
+                                (e.currentTarget as HTMLImageElement).style.display = 'none';
+                              }}
+                            />
+                          ) : (
+                            <Footprints size={36} className="text-mh-slate-500" />
+                          )}
+                        </div>
+
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className={`rarity-badge ${tierCfg.cls}`}>{tierCfg.label}</span>
+                            {monster.is_variant && (
+                              <span className="rounded bg-purple-500/20 px-1 py-px text-[8px] font-bold uppercase tracking-wider text-purple-300">
+                                Variant
+                              </span>
+                            )}
+                            {monster.is_radiant && (
+                              <span className="rounded bg-amber-500/20 px-1 py-px text-[8px] font-bold uppercase tracking-wider text-amber-400">
+                                Radiant
+                              </span>
+                            )}
+                          </div>
+                          <p className="font-display font-bold text-xs sm:text-sm text-mh-slate-100 group-hover:text-mh-gold-300 transition-colors truncate">
+                            {monster.name}
+                          </p>
+                          {monster.name_ja && (
+                            <p className="text-[10px] text-mh-slate-500 truncate leading-none mt-0.5">
+                              {monster.name_ja}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </td>
+
+                    {/* Species */}
+                    <td className="px-2 sm:px-3 py-2.5 sm:py-3.5">
+                      <span className="inline-block rounded-md border border-mh-slate-750 bg-mh-slate-800/80 px-2 py-0.5 text-[11px] font-semibold text-mh-slate-300">
+                        {speciesLabel}
+                      </span>
+                    </td>
+
+                    {/* Weak To */}
+                    <td className="px-2 sm:px-3 py-2.5 sm:py-3.5">
+                      {monster.weaknesses && monster.weaknesses.length > 0 ? (
+                        <div className="flex flex-wrap gap-1">
+                          {monster.weaknesses.map((el) => (
+                            <span
+                              key={el}
+                              className={cn(
+                                'inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] font-bold leading-none',
+                                ELEMENT_COLOURS[el] ?? 'bg-mh-slate-800 text-mh-slate-400 border border-mh-slate-700',
+                              )}
+                            >
+                              <ElementIcon element={el} size={11} />
+                              <span>{ELEMENT_LABELS[el] ?? el}</span>
+                            </span>
+                          ))}
+                        </div>
+                      ) : (
+                        <span className="text-[10px] text-mh-slate-600">—</span>
+                      )}
+                    </td>
+
+                    {/* Elements */}
+                    <td className="hidden md:table-cell px-2 sm:px-3 py-2.5 sm:py-3.5">
+                      {monster.elements && monster.elements.length > 0 ? (
+                        <div className="flex flex-wrap gap-1">
+                          {monster.elements.map((el) => (
+                            <span
+                              key={el}
+                              className={cn(
+                                'inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] font-bold leading-none',
+                                ELEMENT_COLOURS[el] ?? 'bg-mh-slate-800 text-mh-slate-400 border border-mh-slate-700',
+                              )}
+                            >
+                              <ElementIcon element={el} size={11} />
+                              <span>{ELEMENT_LABELS[el] ?? el}</span>
+                            </span>
+                          ))}
+                        </div>
+                      ) : (
+                        <span className="text-[10px] text-mh-slate-600">Physical</span>
+                      )}
+                    </td>
+
+                    {/* Study Progress Indicator */}
+                    <td className="px-2 sm:px-3 py-2.5 sm:py-3.5 text-center">
+                      {study.finished ? (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 px-2.5 py-0.5 text-[10px] font-bold text-emerald-300">
+                          <CheckCircle2 size={11} />
+                          <span>Finished</span>
+                        </span>
+                      ) : completedCount > 0 ? (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-mh-gold-500/15 border border-mh-gold-500/30 px-2.5 py-0.5 text-[10px] font-bold text-mh-gold-300">
+                          <span>{completedCount}/{totalTasks}</span>
+                          <span className="text-mh-slate-500">done</span>
+                        </span>
+                      ) : (
+                        <span className="text-[10px] text-mh-slate-600 italic">Not started</span>
+                      )}
+                    </td>
+
+                    {/* Action / Inspect */}
+                    <td className="py-2.5 sm:py-3.5 pl-2 sm:pl-3 pr-3 sm:pr-5 text-right">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedMonster(monster);
+                        }}
+                        className="rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-2.5 py-1 text-[11px] font-semibold text-mh-slate-300 hover:border-mh-gold-500/50 hover:bg-mh-slate-750 hover:text-mh-gold-300 transition-colors shadow-sm"
+                      >
+                        Inspect
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        /* ── Grid View ── */
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {filteredMonsters.map((monster) => {
+            const tierCfg = TIER_CONFIG[monster.tier] ?? { label: monster.tier, cls: 'rarity-1' };
+            const speciesLabel = (monster.species && SPECIES_CONFIG[monster.species]?.label) || monster.species || '—';
+            const study = getMonsterStudy(monster.id);
+
+            let completedCount = 0;
+            if (study.unlocked) completedCount++;
+            if (study.photo_taken) completedCount++;
+            if (study.witnessed_behavior) completedCount++;
+            if (study.hunted_10_plus) completedCount++;
+            if (study.finished) completedCount++;
+            study.custom_tasks.forEach((t) => {
+              if (t.completed) completedCount++;
+            });
+            const totalTasks = 5 + study.custom_tasks.length;
+
+            return (
+              <div
+                key={monster.id}
+                onClick={() => setSelectedMonster(monster)}
+                className="relative isolate overflow-hidden rounded-2xl border border-mh-slate-800 bg-mh-slate-900/90 p-4 hover:border-mh-gold-500/50 hover:bg-mh-slate-850 cursor-pointer transition-all duration-200 group flex flex-col justify-between shadow-lg"
+              >
+                {/* Monster sketch in background if available */}
+                {monster.sketch && (
+                  <div className="pointer-events-none absolute inset-0 -z-10 opacity-15 overflow-hidden">
+                    <img
+                      src={monster.sketch}
+                      alt=""
+                      className="h-full w-full object-cover object-right filter brightness-125"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-mh-slate-950 via-mh-slate-950/60 to-transparent" />
+                  </div>
+                )}
+
+                <div className="space-y-3">
+                  {/* Top line: icon + details */}
+                  <div className="flex items-start gap-3">
+                    <div className="flex h-20 w-20 sm:h-24 sm:w-24 shrink-0 items-center justify-center">
+                      {monster.icon ? (
+                        <img
+                          src={monster.icon}
+                          alt={monster.name}
+                          className="h-full w-full object-contain filter drop-shadow transition-transform duration-200 group-hover:scale-105"
+                          onError={(e) => {
+                            (e.currentTarget as HTMLImageElement).style.display = 'none';
+                          }}
+                        />
+                      ) : (
+                        <Footprints size={40} className="text-mh-slate-500" />
+                      )}
+                    </div>
+
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span className={`rarity-badge ${tierCfg.cls}`}>{tierCfg.label}</span>
+                        {monster.is_variant && (
+                          <span className="rounded bg-purple-500/20 px-1 py-px text-[8px] font-bold uppercase tracking-wider text-purple-300">
+                            Variant
+                          </span>
+                        )}
+                        {monster.is_radiant && (
+                          <span className="rounded bg-amber-500/20 px-1 py-px text-[8px] font-bold uppercase tracking-wider text-amber-400">
+                            Radiant
+                          </span>
+                        )}
+                      </div>
+                      <h4 className="font-display font-bold text-sm text-white group-hover:text-mh-gold-300 transition-colors truncate mt-1">
+                        {monster.name}
+                      </h4>
+                      <p className="text-[11px] text-mh-slate-400 truncate">
+                        {speciesLabel}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Weaknesses */}
+                  {monster.weaknesses && monster.weaknesses.length > 0 && (
+                    <div className="space-y-1">
+                      <p className="text-[9px] font-bold uppercase tracking-widest text-mh-slate-500">
+                        Weak To
+                      </p>
+                      <div className="flex flex-wrap gap-1">
+                        {monster.weaknesses.map((el) => (
+                          <span
+                            key={el}
+                            className={cn(
+                              'inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[9px] font-semibold leading-none',
+                              ELEMENT_COLOURS[el] ?? 'bg-mh-slate-800 text-mh-slate-400 border border-mh-slate-700',
+                            )}
+                          >
+                            <ElementIcon element={el} size={11} />
+                            <span>{ELEMENT_LABELS[el] ?? el}</span>
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Footer: Study progress status */}
+                <div className="mt-4 pt-3 border-t border-mh-slate-800/80 flex items-center justify-between">
+                  <div className="text-[10px]">
+                    {study.finished ? (
+                      <span className="inline-flex items-center gap-1 font-bold text-emerald-400">
+                        <CheckCircle2 size={12} />
+                        Finished
+                      </span>
+                    ) : completedCount > 0 ? (
+                      <span className="font-bold text-mh-gold-300">
+                        {completedCount}/{totalTasks} Studied
+                      </span>
+                    ) : (
+                      <span className="text-mh-slate-500">Not studied</span>
+                    )}
+                  </div>
+
+                  <span className="text-[10px] font-semibold text-mh-gold-400 group-hover:translate-x-0.5 transition-transform">
+                    Inspect &rarr;
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* ── Detail Modal ── */}
+      <MonsterModal
+        monster={selectedMonster}
+        open={Boolean(selectedMonster)}
+        onClose={() => setSelectedMonster(null)}
+      />
     </div>
   );
 }

@@ -6,7 +6,8 @@ import type { DBSkill } from '../hooks/useAdminSkills';
  * (the level 1 row) plus a level.
  */
 export function buildSkillIndex(skills: DBSkill[]) {
-  const groupKey = (sk: DBSkill) => `${sk.name}|${sk.category}|${sk.max_levels}`;
+  const groupKey = (sk: DBSkill) =>
+    sk.skill_type_id ? `type_${sk.skill_type_id}` : `${sk.name}|${sk.category}|${sk.max_levels}`;
 
   const firstRow = new Map<string, DBSkill>();
   for (const sk of skills) {

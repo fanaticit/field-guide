@@ -381,7 +381,7 @@ export default function ArmourGuide() {
   const { data: upgradeTiers = [], isLoading: isLoadingTiers } = useAllArmourUpgradeTiers();
   const isLoadingPieces = isLoadingRaw || isLoadingTiers;
   const { data: monsters = [] } = useAdminMonsters({ game, isActive: true });
-  const { data: dbSkills = [] } = useAdminSkills({ isActive: true, isSetBonus: false });
+  const { data: dbSkills = [] } = useAdminSkills({ isActive: true });
   const { data: challenges = [] } = useHunterChallenges(user?.id);
   const addChallenge = useAddArmourChallenge();
   const navigate = useNavigate();
@@ -771,13 +771,14 @@ export default function ArmourGuide() {
       const item = exampleBuild[slotDef.id];
       if (!item?.piece?.skills) continue;
 
-      // Check unlock threshold against piece/set max rarity or slider
+      // Effective rarity of this piece capped between piece rarity and max rarity
+      const pieceRarity = item.piece.rarity ?? item.set.rarity ?? 1;
       const pieceMaxRarity = item.piece.max_rarity ?? item.set.maxRarity ?? 16;
-      const pieceUnlockLimit = Math.min(sliderRarity, pieceMaxRarity);
+      const pieceUnlockLimit = Math.min(Math.max(sliderRarity, pieceRarity), pieceMaxRarity);
 
       for (const s of item.piece.skills) {
-        const ur = s.unlockRarity ?? s.unlock_rarity ?? 1;
-        if (ur <= pieceUnlockLimit) {
+        const ur = s.unlockRarity ?? s.unlock_rarity ?? null;
+        if (ur === null || ur <= pieceUnlockLimit) {
           const meta = skillsMap.get(s.id);
           const isSetBonus = Boolean(meta?.is_set_bonus);
 

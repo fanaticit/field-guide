@@ -13,7 +13,7 @@ import { WEAPON_FORGE_MATERIALS } from '../data/core/gear-materials';
 // ── Types ────────────────────────────────────────────────────
 
 export type ChallengeStatus = 'crafting' | 'upgrading' | 'completed' | 'abandoned';
-export type ChallengeType   = 'armour_piece' | 'weapon' | 'visage_set' | 'adventurer' | 'buddy' | 'full_build';
+export type ChallengeType   = 'armour_piece' | 'weapon' | 'visage_set' | 'adventurer' | 'buddy' | 'full_build' | 'monster';
 
 export interface HunterChallenge {
   id:               string;
@@ -137,6 +137,17 @@ export interface AddBuddyChallengePayload {
   tier?:           string | null;
   role?:           string | null;
   notes?:          string | null;
+}
+
+export interface AddMonsterChallengePayload {
+  userId:          string;
+  game?:           string;
+  monsterId:       string;
+  monsterName:     string;
+  pieceImage?:     string | null;
+  setIcon?:        string | null;
+  notes?:          string | null;
+  completed?:      boolean;
 }
 
 export const VISAGE_RARITY_INDEX: Record<string, number> = {
@@ -467,12 +478,70 @@ export function useAddBuddyChallenge() {
   });
 }
 
-/** Highest rarity / level a challenge can reach: adventurer insight goal, 1 for buddies, 4 for visages. */
+// ── useAddMonsterChallenge ────────────────────────────────────
+
+export function useAddMonsterChallenge() {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (payload: AddMonsterChallengePayload) => {
+      let query = supabase
+        .from('hunter_challenges')
+        .select('id, status, created_at, notes')
+        .eq('user_id', payload.userId)
+        .eq('challenge_type', 'monster')
+        .eq('monster_id', payload.monsterId);
+
+      if (payload.notes) {
+        query = query.eq('notes', payload.notes);
+      }
+
+      const { data: existingList } = await query;
+      const existing = existingList?.[0];
+
+      if (existing && (existing.status === 'crafting' || existing.status === 'upgrading')) {
+        return { challenge: existing as unknown as HunterChallenge, wasAlreadyTracked: true };
+      }
+
+      const isComplete = Boolean(payload.completed);
+      const row = {
+        user_id:         payload.userId,
+        challenge_type:  'monster' as const,
+        game:            payload.game || 'mho',
+        monster_id:      payload.monsterId,
+        set_name:        payload.monsterName,
+        piece_image:     payload.pieceImage,
+        set_icon:        payload.setIcon || payload.pieceImage,
+        monster_name:    payload.monsterName,
+        craft_rarity:    1,
+        current_rarity:  isComplete ? 1 : 0,
+        max_rarity:      1,
+        status:          (isComplete ? 'completed' : 'crafting') as ChallengeStatus,
+        completed_at:    isComplete ? new Date().toISOString() : null,
+        notes:           payload.notes || null,
+      };
+
+      const res = existing
+        ? await supabase.from('hunter_challenges').update(row).eq('id', existing.id).select().single()
+        : await supabase.from('hunter_challenges').insert(row).select().single();
+
+      if (res.error) throw res.error;
+      return { challenge: res.data as HunterChallenge, wasAlreadyTracked: false };
+    },
+
+    onSuccess: (_data, variables) => {
+      qc.invalidateQueries({ queryKey: [HUNTER_CHALLENGES_KEY, variables.userId] });
+    },
+  });
+}
+
+/** Highest rarity / level a challenge can reach: adventurer insight goal, 1 for buddies and monsters, 4 for visages. */
 export function challengeMaxRarity(c: HunterChallenge): number {
   if (c.challenge_type === 'adventurer' || c.adventurer_id) {
     return Math.min(ADVENTURER_MAX_INSIGHT, Math.max(1, c.max_rarity || 1));
   }
   if (c.challenge_type === 'buddy' || c.buddy_id) return 1;
+  if (c.challenge_type === 'monster') return 1;
   if (c.challenge_type === 'visage_set' || c.visage_id) return 4;
   return c.max_rarity || 16;
 }
@@ -1016,6 +1085,11 @@ export function challengeStatusLabel(c: HunterChallenge): string {
   if (isBuddy) {
     if (c.status === 'completed') return 'Recruited';
     return 'Recruit';
+  }
+
+  if (c.challenge_type === 'monster') {
+    if (c.status === 'completed') return 'Done';
+    return 'Study';
   }
 
   if (c.status === 'crafting')  return 'Craft';

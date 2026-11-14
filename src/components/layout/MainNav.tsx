@@ -16,6 +16,7 @@ import {
   Target,
   UserCheck,
   Cat,
+  Footprints,
   Settings,
   LogIn,
   LogOut,
@@ -82,6 +83,7 @@ function useNavCapacity(navRef: React.RefObject<HTMLElement | null>): number {
     const isPortrait = window.matchMedia('(max-width: 1023px) and (orientation: portrait)').matches;
     if (isPortrait) {
       const w = window.innerWidth;
+      if (w >= 920) return 9;
       if (w >= 860) return 8;
       if (w >= 800) return 7;
       if (w >= 740) return 6;
@@ -93,6 +95,7 @@ function useNavCapacity(navRef: React.RefObject<HTMLElement | null>): number {
       return 0;
     } else {
       const h = window.innerHeight;
+      if (h >= 940) return 9;
       if (h >= 880) return 8;
       if (h >= 820) return 7;
       if (h >= 760) return 6;
@@ -112,7 +115,8 @@ function useNavCapacity(navRef: React.RefObject<HTMLElement | null>): number {
 
       if (isPortrait) {
         const w = navRef.current?.clientWidth || window.innerWidth;
-        if (w >= 860) setCapacity(8);
+        if (w >= 920) setCapacity(9);
+        else if (w >= 860) setCapacity(8);
         else if (w >= 800) setCapacity(7);
         else if (w >= 740) setCapacity(6);
         else if (w >= 680) setCapacity(5);
@@ -123,7 +127,8 @@ function useNavCapacity(navRef: React.RefObject<HTMLElement | null>): number {
         else setCapacity(0);
       } else {
         const h = navRef.current?.clientHeight || window.innerHeight;
-        if (h >= 880) setCapacity(8);
+        if (h >= 940) setCapacity(9);
+        else if (h >= 880) setCapacity(8);
         else if (h >= 820) setCapacity(7);
         else if (h >= 760) setCapacity(6);
         else if (h >= 700) setCapacity(5);
@@ -249,23 +254,26 @@ export default function MainNav() {
 
   // Priority order for spill-out items:
   // 1 - Weapons (/challenges/weapons) — spills out first, returns last.
-  // 2 - Visage Collection (/gallery/collection)
-  // 3 - Armour (/armory/armour)
-  // 4 - Buddies (/challenges/buddies)
-  // 5 - Build Set (/gallery/set)
-  // 6 - Build Planner (/armory/planner)
-  // 7 - Adventurer (/challenges/adventurers)
-  // 8 - Game Updates (/updates) — spills out last, returns first.
+  // 2 - Monsters (/challenges/monsters) — pops out after Weapons and before Visage Collection
+  // 3 - Visage Collection (/gallery/collection)
+  // 4 - Armour (/armory/armour)
+  // 5 - Buddies (/challenges/buddies)
+  // 6 - Build Set (/gallery/set)
+  // 7 - Build Planner (/armory/planner)
+  // 8 - Adventurer (/challenges/adventurers)
+  // 9 - Game Updates (/updates) — spills out last, returns first.
   const isWeaponsSpilled = capacity >= 1;
-  const isVisageSpilled = capacity >= 2;
-  const isArmourSpilled = capacity >= 3;
-  const isBuddiesSpilled = capacity >= 4;
-  const isBuildSetSpilled = capacity >= 5;
-  const isBuildPlannerSpilled = capacity >= 6;
-  const isAdventurerSpilled = capacity >= 7;
-  const isUpdatesSpilled = capacity >= 8;
+  const isMonstersSpilled = capacity >= 2;
+  const isVisageSpilled = capacity >= 3;
+  const isArmourSpilled = capacity >= 4;
+  const isBuddiesSpilled = capacity >= 5;
+  const isBuildSetSpilled = capacity >= 6;
+  const isBuildPlannerSpilled = capacity >= 7;
+  const isAdventurerSpilled = capacity >= 8;
+  const isUpdatesSpilled = capacity >= 9;
 
   const isWeaponsActive = pathname.startsWith('/challenges/weapons');
+  const isMonstersActive = pathname.startsWith('/challenges/monsters');
   const isVisageActive = pathname.startsWith('/gallery/collection');
   const isArmourActive = pathname.startsWith('/armory/armour');
   const isBuddiesActive = pathname.startsWith('/challenges/buddies');
@@ -276,6 +284,7 @@ export default function MainNav() {
 
   const isChallengesChildSpilledAndActive =
     (isWeaponsSpilled && isWeaponsActive) ||
+    (isMonstersSpilled && isMonstersActive) ||
     (isBuddiesSpilled && isBuddiesActive) ||
     (isAdventurerSpilled && isAdventurerActive);
 
@@ -393,6 +402,9 @@ export default function MainNav() {
         : []),
       ...(!isBuddiesSpilled
         ? [{ id: 'challenges-buddies', label: 'Buddies', icon: Cat, iconSrc: '/img/ui/Buddy%20Icon.png', iconZoom: 0.75, active: isBuddiesActive, onSelect: go('/challenges/buddies') }]
+        : []),
+      ...(!isMonstersSpilled
+        ? [{ id: 'challenges-monsters', label: 'Monsters', icon: Footprints, iconSrc: '/img/ui/monster.png', iconZoom: 0.85, active: isMonstersActive, onSelect: go('/challenges/monsters') }]
         : []),
       ...(!isWeaponsSpilled
         ? [{ id: 'challenges-weapons', label: 'Weapons', icon: Sword, iconSrc: '/img/ui/Weapons%20Icon.png', iconZoom: 0.75, active: isWeaponsActive, onSelect: go('/challenges/weapons') }]
@@ -533,6 +545,19 @@ export default function MainNav() {
             accent: themeToNavAccent(challengesTheme),
             active: isBuddiesActive,
             onSelect: go('/challenges/buddies'),
+          },
+        ]
+      : []),
+    ...(isMonstersSpilled
+      ? [
+          {
+            id: 'challenges-monsters-spill',
+            label: 'Monsters',
+            iconSrc: '/img/ui/monster.png',
+            iconZoom: 0.85,
+            accent: themeToNavAccent(challengesTheme),
+            active: isMonstersActive,
+            onSelect: go('/challenges/monsters'),
           },
         ]
       : []),

@@ -136,7 +136,263 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_GreatJagras.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/GreatJagras/Sketch_GreatJagras_C1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/GreatJagras/Sketch_GreatJagras_C1.png",
+  "species": "Fanged Wyvern",
+  "levels": [
+   {
+    "monster_id": 110101,
+    "monster": "Great Jagras",
+    "content": "Hunt",
+    "hunt_id": 10110101,
+    "difficulty": 1,
+    "level": 1,
+    "suggested_hunt_power": 938,
+    "health": 1630,
+    "attack": 134
+   },
+   {
+    "monster_id": 110101,
+    "monster": "Great Jagras",
+    "content": "Hunt",
+    "hunt_id": 10510101,
+    "difficulty": 2,
+    "level": 5,
+    "suggested_hunt_power": 3099,
+    "health": 16079,
+    "attack": 590
+   },
+   {
+    "monster_id": 110101,
+    "monster": "Great Jagras",
+    "content": "Hunt",
+    "hunt_id": 10910101,
+    "difficulty": 3,
+    "level": 9,
+    "suggested_hunt_power": 5229,
+    "health": 37917,
+    "attack": 822
+   },
+   {
+    "monster_id": 110101,
+    "monster": "Great Jagras",
+    "content": "Hunt",
+    "hunt_id": 11110101,
+    "difficulty": 4,
+    "level": 11,
+    "suggested_hunt_power": 8346,
+    "health": 76613,
+    "attack": 1057
+   },
+   {
+    "monster_id": 110101,
+    "monster": "Great Jagras",
+    "content": "Hunt",
+    "hunt_id": 11310101,
+    "difficulty": 5,
+    "level": 13,
+    "suggested_hunt_power": 12903,
+    "health": 138203,
+    "attack": 1190
+   },
+   {
+    "monster_id": 110101,
+    "monster": "Great Jagras",
+    "content": "Hunt",
+    "hunt_id": 11510101,
+    "difficulty": 6,
+    "level": 15,
+    "suggested_hunt_power": 14813,
+    "health": 307432,
+    "attack": 1390
+   },
+   {
+    "monster_id": 110101,
+    "monster": "Great Jagras",
+    "content": "Extreme Hunt",
+    "hunt_id": 20310101,
+    "difficulty": "",
+    "level": 6,
+    "suggested_hunt_power": 3313,
+    "health": 26164,
+    "attack": 462
+   },
+   {
+    "monster_id": 110101,
+    "monster": "Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 1,
+    "suggested_hunt_power": "",
+    "health": 1665,
+    "attack": 144
+   },
+   {
+    "monster_id": 110101,
+    "monster": "Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 2,
+    "suggested_hunt_power": "",
+    "health": 4252,
+    "attack": 329
+   },
+   {
+    "monster_id": 110101,
+    "monster": "Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 3,
+    "suggested_hunt_power": "",
+    "health": 5416,
+    "attack": 329
+   },
+   {
+    "monster_id": 110101,
+    "monster": "Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 4,
+    "suggested_hunt_power": "",
+    "health": 7068,
+    "attack": 345
+   },
+   {
+    "monster_id": 110101,
+    "monster": "Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 5,
+    "suggested_hunt_power": "",
+    "health": 8991,
+    "attack": 402
+   },
+   {
+    "monster_id": 110101,
+    "monster": "Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 6,
+    "suggested_hunt_power": "",
+    "health": 14651,
+    "attack": 570
+   },
+   {
+    "monster_id": 110101,
+    "monster": "Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 7,
+    "suggested_hunt_power": "",
+    "health": 25239,
+    "attack": 717
+   },
+   {
+    "monster_id": 110101,
+    "monster": "Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 8,
+    "suggested_hunt_power": "",
+    "health": 33052,
+    "attack": 802
+   },
+   {
+    "monster_id": 110101,
+    "monster": "Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 9,
+    "suggested_hunt_power": "",
+    "health": 43492,
+    "attack": 971
+   },
+   {
+    "monster_id": 110101,
+    "monster": "Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 10,
+    "suggested_hunt_power": "",
+    "health": 52984,
+    "attack": 1037
+   },
+   {
+    "monster_id": 110101,
+    "monster": "Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 76477,
+    "attack": 1104
+   },
+   {
+    "monster_id": 110101,
+    "monster": "Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 102475,
+    "attack": 1104
+   },
+   {
+    "monster_id": 110101,
+    "monster": "Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 145452,
+    "attack": 1237
+   },
+   {
+    "monster_id": 110101,
+    "monster": "Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 190339,
+    "attack": 1300
+   },
+   {
+    "monster_id": 110101,
+    "monster": "Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 250865,
+    "attack": 1370
+   },
+   {
+    "monster_id": 110101,
+    "monster": "Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 320057,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 110701,
@@ -262,7 +518,263 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_KuluYaKu.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/KuluYaKu/Sketch_KuluYaKu_D1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/KuluYaKu/Sketch_KuluYaKu_D1.png",
+  "species": "Bird Wyvern",
+  "levels": [
+   {
+    "monster_id": 110701,
+    "monster": "Kulu-Ya-Ku",
+    "content": "Hunt",
+    "hunt_id": 10110701,
+    "difficulty": 1,
+    "level": 1,
+    "suggested_hunt_power": 938,
+    "health": 2200,
+    "attack": 134
+   },
+   {
+    "monster_id": 110701,
+    "monster": "Kulu-Ya-Ku",
+    "content": "Hunt",
+    "hunt_id": 10510701,
+    "difficulty": 2,
+    "level": 5,
+    "suggested_hunt_power": 3099,
+    "health": 17725,
+    "attack": 590
+   },
+   {
+    "monster_id": 110701,
+    "monster": "Kulu-Ya-Ku",
+    "content": "Hunt",
+    "hunt_id": 10910701,
+    "difficulty": 3,
+    "level": 9,
+    "suggested_hunt_power": 5229,
+    "health": 41798,
+    "attack": 822
+   },
+   {
+    "monster_id": 110701,
+    "monster": "Kulu-Ya-Ku",
+    "content": "Hunt",
+    "hunt_id": 11110701,
+    "difficulty": 4,
+    "level": 11,
+    "suggested_hunt_power": 8346,
+    "health": 84456,
+    "attack": 1057
+   },
+   {
+    "monster_id": 110701,
+    "monster": "Kulu-Ya-Ku",
+    "content": "Hunt",
+    "hunt_id": 11310701,
+    "difficulty": 5,
+    "level": 13,
+    "suggested_hunt_power": 12903,
+    "health": 152351,
+    "attack": 1190
+   },
+   {
+    "monster_id": 110701,
+    "monster": "Kulu-Ya-Ku",
+    "content": "Hunt",
+    "hunt_id": 11510701,
+    "difficulty": 6,
+    "level": 15,
+    "suggested_hunt_power": 14813,
+    "health": 338905,
+    "attack": 1390
+   },
+   {
+    "monster_id": 110701,
+    "monster": "Kulu-Ya-Ku",
+    "content": "Extreme Hunt",
+    "hunt_id": 20510701,
+    "difficulty": "",
+    "level": 8,
+    "suggested_hunt_power": 4228,
+    "health": 38978,
+    "attack": 630
+   },
+   {
+    "monster_id": 110701,
+    "monster": "Kulu-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 1,
+    "suggested_hunt_power": "",
+    "health": 1836,
+    "attack": 144
+   },
+   {
+    "monster_id": 110701,
+    "monster": "Kulu-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 2,
+    "suggested_hunt_power": "",
+    "health": 4687,
+    "attack": 329
+   },
+   {
+    "monster_id": 110701,
+    "monster": "Kulu-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 3,
+    "suggested_hunt_power": "",
+    "health": 5971,
+    "attack": 329
+   },
+   {
+    "monster_id": 110701,
+    "monster": "Kulu-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 4,
+    "suggested_hunt_power": "",
+    "health": 7792,
+    "attack": 345
+   },
+   {
+    "monster_id": 110701,
+    "monster": "Kulu-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 5,
+    "suggested_hunt_power": "",
+    "health": 9911,
+    "attack": 402
+   },
+   {
+    "monster_id": 110701,
+    "monster": "Kulu-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 6,
+    "suggested_hunt_power": "",
+    "health": 16151,
+    "attack": 570
+   },
+   {
+    "monster_id": 110701,
+    "monster": "Kulu-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 7,
+    "suggested_hunt_power": "",
+    "health": 27823,
+    "attack": 717
+   },
+   {
+    "monster_id": 110701,
+    "monster": "Kulu-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 8,
+    "suggested_hunt_power": "",
+    "health": 36436,
+    "attack": 802
+   },
+   {
+    "monster_id": 110701,
+    "monster": "Kulu-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 9,
+    "suggested_hunt_power": "",
+    "health": 47944,
+    "attack": 971
+   },
+   {
+    "monster_id": 110701,
+    "monster": "Kulu-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 10,
+    "suggested_hunt_power": "",
+    "health": 58408,
+    "attack": 1037
+   },
+   {
+    "monster_id": 110701,
+    "monster": "Kulu-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 84306,
+    "attack": 1104
+   },
+   {
+    "monster_id": 110701,
+    "monster": "Kulu-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 112965,
+    "attack": 1104
+   },
+   {
+    "monster_id": 110701,
+    "monster": "Kulu-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 160342,
+    "attack": 1237
+   },
+   {
+    "monster_id": 110701,
+    "monster": "Kulu-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 209824,
+    "attack": 1300
+   },
+   {
+    "monster_id": 110701,
+    "monster": "Kulu-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 276547,
+    "attack": 1370
+   },
+   {
+    "monster_id": 110701,
+    "monster": "Kulu-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 352822,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 110201,
@@ -390,7 +902,263 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Pukei.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/PukeiPukei/Sketch_PukeiPukei_D1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/PukeiPukei/Sketch_PukeiPukei_D1.png",
+  "species": "Bird Wyvern",
+  "levels": [
+   {
+    "monster_id": 110201,
+    "monster": "Pukei-Pukei",
+    "content": "Hunt",
+    "hunt_id": 10110201,
+    "difficulty": 1,
+    "level": 1,
+    "suggested_hunt_power": 938,
+    "health": 2200,
+    "attack": 134
+   },
+   {
+    "monster_id": 110201,
+    "monster": "Pukei-Pukei",
+    "content": "Hunt",
+    "hunt_id": 10510201,
+    "difficulty": 2,
+    "level": 5,
+    "suggested_hunt_power": 3099,
+    "health": 14677,
+    "attack": 590
+   },
+   {
+    "monster_id": 110201,
+    "monster": "Pukei-Pukei",
+    "content": "Hunt",
+    "hunt_id": 10910201,
+    "difficulty": 3,
+    "level": 9,
+    "suggested_hunt_power": 5229,
+    "health": 34611,
+    "attack": 822
+   },
+   {
+    "monster_id": 110201,
+    "monster": "Pukei-Pukei",
+    "content": "Hunt",
+    "hunt_id": 11110201,
+    "difficulty": 4,
+    "level": 11,
+    "suggested_hunt_power": 8346,
+    "health": 69934,
+    "attack": 1057
+   },
+   {
+    "monster_id": 110201,
+    "monster": "Pukei-Pukei",
+    "content": "Hunt",
+    "hunt_id": 11310201,
+    "difficulty": 5,
+    "level": 13,
+    "suggested_hunt_power": 12903,
+    "health": 126153,
+    "attack": 1190
+   },
+   {
+    "monster_id": 110201,
+    "monster": "Pukei-Pukei",
+    "content": "Hunt",
+    "hunt_id": 11510201,
+    "difficulty": 6,
+    "level": 15,
+    "suggested_hunt_power": 14813,
+    "health": 280628,
+    "attack": 1390
+   },
+   {
+    "monster_id": 110201,
+    "monster": "Pukei-Pukei",
+    "content": "Extreme Hunt",
+    "hunt_id": 20510201,
+    "difficulty": "",
+    "level": 8,
+    "suggested_hunt_power": 4794,
+    "health": 35040,
+    "attack": 630
+   },
+   {
+    "monster_id": 110201,
+    "monster": "Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 1,
+    "suggested_hunt_power": "",
+    "health": 1520,
+    "attack": 144
+   },
+   {
+    "monster_id": 110201,
+    "monster": "Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 2,
+    "suggested_hunt_power": "",
+    "health": 3881,
+    "attack": 329
+   },
+   {
+    "monster_id": 110201,
+    "monster": "Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 3,
+    "suggested_hunt_power": "",
+    "health": 4944,
+    "attack": 329
+   },
+   {
+    "monster_id": 110201,
+    "monster": "Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 4,
+    "suggested_hunt_power": "",
+    "health": 6452,
+    "attack": 345
+   },
+   {
+    "monster_id": 110201,
+    "monster": "Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 5,
+    "suggested_hunt_power": "",
+    "health": 8207,
+    "attack": 402
+   },
+   {
+    "monster_id": 110201,
+    "monster": "Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 6,
+    "suggested_hunt_power": "",
+    "health": 13373,
+    "attack": 570
+   },
+   {
+    "monster_id": 110201,
+    "monster": "Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 7,
+    "suggested_hunt_power": "",
+    "health": 23039,
+    "attack": 717
+   },
+   {
+    "monster_id": 110201,
+    "monster": "Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 8,
+    "suggested_hunt_power": "",
+    "health": 30171,
+    "attack": 802
+   },
+   {
+    "monster_id": 110201,
+    "monster": "Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 9,
+    "suggested_hunt_power": "",
+    "health": 39700,
+    "attack": 971
+   },
+   {
+    "monster_id": 110201,
+    "monster": "Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 10,
+    "suggested_hunt_power": "",
+    "health": 48364,
+    "attack": 1037
+   },
+   {
+    "monster_id": 110201,
+    "monster": "Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 69809,
+    "attack": 1104
+   },
+   {
+    "monster_id": 110201,
+    "monster": "Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 93540,
+    "attack": 1104
+   },
+   {
+    "monster_id": 110201,
+    "monster": "Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 132771,
+    "attack": 1237
+   },
+   {
+    "monster_id": 110201,
+    "monster": "Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 173744,
+    "attack": 1300
+   },
+   {
+    "monster_id": 110201,
+    "monster": "Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 228993,
+    "attack": 1370
+   },
+   {
+    "monster_id": 110201,
+    "monster": "Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 292152,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 104401,
@@ -589,7 +1357,252 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Barroth.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Barroth/Sketch_Barroth_D1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Barroth/Sketch_Barroth_D1.png",
+  "species": "Brute Wyvern",
+  "levels": [
+   {
+    "monster_id": 104401,
+    "monster": "Barroth",
+    "content": "Hunt",
+    "hunt_id": 10204401,
+    "difficulty": 1,
+    "level": 2,
+    "suggested_hunt_power": 1544,
+    "health": 4054,
+    "attack": 329
+   },
+   {
+    "monster_id": 104401,
+    "monster": "Barroth",
+    "content": "Hunt",
+    "hunt_id": 10604401,
+    "difficulty": 2,
+    "level": 6,
+    "suggested_hunt_power": 3524,
+    "health": 12172,
+    "attack": 590
+   },
+   {
+    "monster_id": 104401,
+    "monster": "Barroth",
+    "content": "Hunt",
+    "hunt_id": 10904401,
+    "difficulty": 3,
+    "level": 9,
+    "suggested_hunt_power": 6179,
+    "health": 31755,
+    "attack": 991
+   },
+   {
+    "monster_id": 104401,
+    "monster": "Barroth",
+    "content": "Hunt",
+    "hunt_id": 11104401,
+    "difficulty": 4,
+    "level": 11,
+    "suggested_hunt_power": 8909,
+    "health": 61548,
+    "attack": 1124
+   },
+   {
+    "monster_id": 104401,
+    "monster": "Barroth",
+    "content": "Hunt",
+    "hunt_id": 11304401,
+    "difficulty": 5,
+    "level": 13,
+    "suggested_hunt_power": 13363,
+    "health": 105352,
+    "attack": 1257
+   },
+   {
+    "monster_id": 104401,
+    "monster": "Barroth",
+    "content": "Hunt",
+    "hunt_id": 11504401,
+    "difficulty": 6,
+    "level": 15,
+    "suggested_hunt_power": 15283,
+    "health": 212224,
+    "attack": 1460
+   },
+   {
+    "monster_id": 104401,
+    "monster": "Barroth",
+    "content": "Extreme Hunt",
+    "hunt_id": 21104401,
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": 9462,
+    "health": 112425,
+    "attack": 1097
+   },
+   {
+    "monster_id": 104401,
+    "monster": "Barroth",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 2,
+    "suggested_hunt_power": "",
+    "health": 2792,
+    "attack": 329
+   },
+   {
+    "monster_id": 104401,
+    "monster": "Barroth",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 3,
+    "suggested_hunt_power": "",
+    "health": 3557,
+    "attack": 329
+   },
+   {
+    "monster_id": 104401,
+    "monster": "Barroth",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 4,
+    "suggested_hunt_power": "",
+    "health": 4642,
+    "attack": 345
+   },
+   {
+    "monster_id": 104401,
+    "monster": "Barroth",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 5,
+    "suggested_hunt_power": "",
+    "health": 5904,
+    "attack": 402
+   },
+   {
+    "monster_id": 104401,
+    "monster": "Barroth",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 6,
+    "suggested_hunt_power": "",
+    "health": 9621,
+    "attack": 570
+   },
+   {
+    "monster_id": 104401,
+    "monster": "Barroth",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 7,
+    "suggested_hunt_power": "",
+    "health": 16575,
+    "attack": 717
+   },
+   {
+    "monster_id": 104401,
+    "monster": "Barroth",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 8,
+    "suggested_hunt_power": "",
+    "health": 21706,
+    "attack": 802
+   },
+   {
+    "monster_id": 104401,
+    "monster": "Barroth",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 9,
+    "suggested_hunt_power": "",
+    "health": 28562,
+    "attack": 971
+   },
+   {
+    "monster_id": 104401,
+    "monster": "Barroth",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 10,
+    "suggested_hunt_power": "",
+    "health": 34795,
+    "attack": 1037
+   },
+   {
+    "monster_id": 104401,
+    "monster": "Barroth",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 50223,
+    "attack": 1104
+   },
+   {
+    "monster_id": 104401,
+    "monster": "Barroth",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 67296,
+    "attack": 1104
+   },
+   {
+    "monster_id": 104401,
+    "monster": "Barroth",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 95520,
+    "attack": 1237
+   },
+   {
+    "monster_id": 104401,
+    "monster": "Barroth",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 124997,
+    "attack": 1300
+   },
+   {
+    "monster_id": 104401,
+    "monster": "Barroth",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 164745,
+    "attack": 1370
+   },
+   {
+    "monster_id": 104401,
+    "monster": "Barroth",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 210184,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 110801,
@@ -800,7 +1813,252 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Jyuratodus.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Jyuratodus/Sketch_Jyuratodus_D1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Jyuratodus/Sketch_Jyuratodus_D1.png",
+  "species": "Piscine Wyvern",
+  "levels": [
+   {
+    "monster_id": 110801,
+    "monster": "Jyuratodus",
+    "content": "Hunt",
+    "hunt_id": 10210801,
+    "difficulty": 1,
+    "level": 2,
+    "suggested_hunt_power": 1478,
+    "health": 2677,
+    "attack": 329
+   },
+   {
+    "monster_id": 110801,
+    "monster": "Jyuratodus",
+    "content": "Hunt",
+    "hunt_id": 10610801,
+    "difficulty": 2,
+    "level": 6,
+    "suggested_hunt_power": 3524,
+    "health": 9708,
+    "attack": 590
+   },
+   {
+    "monster_id": 110801,
+    "monster": "Jyuratodus",
+    "content": "Hunt",
+    "hunt_id": 10910801,
+    "difficulty": 3,
+    "level": 9,
+    "suggested_hunt_power": 6179,
+    "health": 25326,
+    "attack": 991
+   },
+   {
+    "monster_id": 110801,
+    "monster": "Jyuratodus",
+    "content": "Hunt",
+    "hunt_id": 11110801,
+    "difficulty": 4,
+    "level": 11,
+    "suggested_hunt_power": 8909,
+    "health": 49088,
+    "attack": 1124
+   },
+   {
+    "monster_id": 110801,
+    "monster": "Jyuratodus",
+    "content": "Hunt",
+    "hunt_id": 11310801,
+    "difficulty": 5,
+    "level": 13,
+    "suggested_hunt_power": 13363,
+    "health": 84025,
+    "attack": 1257
+   },
+   {
+    "monster_id": 110801,
+    "monster": "Jyuratodus",
+    "content": "Hunt",
+    "hunt_id": 11510801,
+    "difficulty": 6,
+    "level": 15,
+    "suggested_hunt_power": 15283,
+    "health": 169262,
+    "attack": 1460
+   },
+   {
+    "monster_id": 110801,
+    "monster": "Jyuratodus",
+    "content": "Extreme Hunt",
+    "hunt_id": 20910801,
+    "difficulty": "",
+    "level": 9,
+    "suggested_hunt_power": 7414,
+    "health": 60255,
+    "attack": 1031
+   },
+   {
+    "monster_id": 110801,
+    "monster": "Jyuratodus",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 2,
+    "suggested_hunt_power": "",
+    "health": 2227,
+    "attack": 329
+   },
+   {
+    "monster_id": 110801,
+    "monster": "Jyuratodus",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 3,
+    "suggested_hunt_power": "",
+    "health": 2837,
+    "attack": 329
+   },
+   {
+    "monster_id": 110801,
+    "monster": "Jyuratodus",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 4,
+    "suggested_hunt_power": "",
+    "health": 3702,
+    "attack": 345
+   },
+   {
+    "monster_id": 110801,
+    "monster": "Jyuratodus",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 5,
+    "suggested_hunt_power": "",
+    "health": 4709,
+    "attack": 402
+   },
+   {
+    "monster_id": 110801,
+    "monster": "Jyuratodus",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 6,
+    "suggested_hunt_power": "",
+    "health": 7674,
+    "attack": 570
+   },
+   {
+    "monster_id": 110801,
+    "monster": "Jyuratodus",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 7,
+    "suggested_hunt_power": "",
+    "health": 13220,
+    "attack": 717
+   },
+   {
+    "monster_id": 110801,
+    "monster": "Jyuratodus",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 8,
+    "suggested_hunt_power": "",
+    "health": 17312,
+    "attack": 802
+   },
+   {
+    "monster_id": 110801,
+    "monster": "Jyuratodus",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 9,
+    "suggested_hunt_power": "",
+    "health": 22780,
+    "attack": 971
+   },
+   {
+    "monster_id": 110801,
+    "monster": "Jyuratodus",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 10,
+    "suggested_hunt_power": "",
+    "health": 27751,
+    "attack": 1037
+   },
+   {
+    "monster_id": 110801,
+    "monster": "Jyuratodus",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 40056,
+    "attack": 1104
+   },
+   {
+    "monster_id": 110801,
+    "monster": "Jyuratodus",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 53673,
+    "attack": 1104
+   },
+   {
+    "monster_id": 110801,
+    "monster": "Jyuratodus",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 76183,
+    "attack": 1237
+   },
+   {
+    "monster_id": 110801,
+    "monster": "Jyuratodus",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 99693,
+    "attack": 1300
+   },
+   {
+    "monster_id": 110801,
+    "monster": "Jyuratodus",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 131395,
+    "attack": 1370
+   },
+   {
+    "monster_id": 110801,
+    "monster": "Jyuratodus",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 167635,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 110901,
@@ -928,7 +2186,208 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_FlyingThunderDragon.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/TobiKadachi/Sketch_TobiKadachi_C1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/TobiKadachi/Sketch_TobiKadachi_C1.png",
+  "species": "Fanged Wyvern",
+  "levels": [
+   {
+    "monster_id": 110901,
+    "monster": "Tobi-Kadachi",
+    "content": "Hunt",
+    "hunt_id": 10510901,
+    "difficulty": 2,
+    "level": 5,
+    "suggested_hunt_power": 2900,
+    "health": 11387,
+    "attack": 590
+   },
+   {
+    "monster_id": 110901,
+    "monster": "Tobi-Kadachi",
+    "content": "Hunt",
+    "hunt_id": 10910901,
+    "difficulty": 3,
+    "level": 9,
+    "suggested_hunt_power": 6179,
+    "health": 34243,
+    "attack": 991
+   },
+   {
+    "monster_id": 110901,
+    "monster": "Tobi-Kadachi",
+    "content": "Hunt",
+    "hunt_id": 11110901,
+    "difficulty": 4,
+    "level": 11,
+    "suggested_hunt_power": 10100,
+    "health": 84444,
+    "attack": 1124
+   },
+   {
+    "monster_id": 110901,
+    "monster": "Tobi-Kadachi",
+    "content": "Hunt",
+    "hunt_id": 11310901,
+    "difficulty": 5,
+    "level": 13,
+    "suggested_hunt_power": 13516,
+    "health": 126575,
+    "attack": 1320
+   },
+   {
+    "monster_id": 110901,
+    "monster": "Tobi-Kadachi",
+    "content": "Hunt",
+    "hunt_id": 11510901,
+    "difficulty": 6,
+    "level": 15,
+    "suggested_hunt_power": 15283,
+    "health": 228856,
+    "attack": 1460
+   },
+   {
+    "monster_id": 110901,
+    "monster": "Tobi-Kadachi",
+    "content": "Extreme Hunt",
+    "hunt_id": 21310901,
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": 13496,
+    "health": 235398,
+    "attack": 1230
+   },
+   {
+    "monster_id": 110901,
+    "monster": "Tobi-Kadachi",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 5,
+    "suggested_hunt_power": "",
+    "health": 6367,
+    "attack": 402
+   },
+   {
+    "monster_id": 110901,
+    "monster": "Tobi-Kadachi",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 6,
+    "suggested_hunt_power": "",
+    "health": 10375,
+    "attack": 570
+   },
+   {
+    "monster_id": 110901,
+    "monster": "Tobi-Kadachi",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 7,
+    "suggested_hunt_power": "",
+    "health": 17874,
+    "attack": 717
+   },
+   {
+    "monster_id": 110901,
+    "monster": "Tobi-Kadachi",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 8,
+    "suggested_hunt_power": "",
+    "health": 23407,
+    "attack": 802
+   },
+   {
+    "monster_id": 110901,
+    "monster": "Tobi-Kadachi",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 9,
+    "suggested_hunt_power": "",
+    "health": 30800,
+    "attack": 971
+   },
+   {
+    "monster_id": 110901,
+    "monster": "Tobi-Kadachi",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 10,
+    "suggested_hunt_power": "",
+    "health": 37522,
+    "attack": 1037
+   },
+   {
+    "monster_id": 110901,
+    "monster": "Tobi-Kadachi",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 54159,
+    "attack": 1104
+   },
+   {
+    "monster_id": 110901,
+    "monster": "Tobi-Kadachi",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 72570,
+    "attack": 1104
+   },
+   {
+    "monster_id": 110901,
+    "monster": "Tobi-Kadachi",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 103005,
+    "attack": 1237
+   },
+   {
+    "monster_id": 110901,
+    "monster": "Tobi-Kadachi",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 134793,
+    "attack": 1300
+   },
+   {
+    "monster_id": 110901,
+    "monster": "Tobi-Kadachi",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 177656,
+    "attack": 1370
+   },
+   {
+    "monster_id": 110901,
+    "monster": "Tobi-Kadachi",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 226656,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 110001,
@@ -1091,7 +2550,241 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Anjanath.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Anjanath/Sketch_Anjanath_C1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Anjanath/Sketch_Anjanath_C1.png",
+  "species": "Brute Wyvern",
+  "levels": [
+   {
+    "monster_id": 110001,
+    "monster": "Anjanath",
+    "content": "Hunt",
+    "hunt_id": 10310001,
+    "difficulty": 1,
+    "level": 3,
+    "suggested_hunt_power": 1890,
+    "health": 5760,
+    "attack": 355
+   },
+   {
+    "monster_id": 110001,
+    "monster": "Anjanath",
+    "content": "Hunt",
+    "hunt_id": 10710001,
+    "difficulty": 2,
+    "level": 7,
+    "suggested_hunt_power": 4775,
+    "health": 21177,
+    "attack": 737
+   },
+   {
+    "monster_id": 110001,
+    "monster": "Anjanath",
+    "content": "Hunt",
+    "hunt_id": 11010001,
+    "difficulty": 3,
+    "level": 10,
+    "suggested_hunt_power": 6454,
+    "health": 36492,
+    "attack": 991
+   },
+   {
+    "monster_id": 110001,
+    "monster": "Anjanath",
+    "content": "Hunt",
+    "hunt_id": 11210001,
+    "difficulty": 4,
+    "level": 12,
+    "suggested_hunt_power": 10307,
+    "health": 85980,
+    "attack": 1124
+   },
+   {
+    "monster_id": 110001,
+    "monster": "Anjanath",
+    "content": "Hunt",
+    "hunt_id": 11410001,
+    "difficulty": 5,
+    "level": 14,
+    "suggested_hunt_power": 13943,
+    "health": 159702,
+    "attack": 1320
+   },
+   {
+    "monster_id": 110001,
+    "monster": "Anjanath",
+    "content": "Hunt",
+    "hunt_id": 11610001,
+    "difficulty": 6,
+    "level": 16,
+    "suggested_hunt_power": 15766,
+    "health": 247511,
+    "attack": 1460
+   },
+   {
+    "monster_id": 110001,
+    "monster": "Anjanath",
+    "content": "Extreme Hunt",
+    "hunt_id": 21110001,
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": 10015,
+    "health": 107217,
+    "attack": 1097
+   },
+   {
+    "monster_id": 110001,
+    "monster": "Anjanath",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 3,
+    "suggested_hunt_power": "",
+    "health": 3708,
+    "attack": 329
+   },
+   {
+    "monster_id": 110001,
+    "monster": "Anjanath",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 4,
+    "suggested_hunt_power": "",
+    "health": 4839,
+    "attack": 345
+   },
+   {
+    "monster_id": 110001,
+    "monster": "Anjanath",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 5,
+    "suggested_hunt_power": "",
+    "health": 6156,
+    "attack": 402
+   },
+   {
+    "monster_id": 110001,
+    "monster": "Anjanath",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 6,
+    "suggested_hunt_power": "",
+    "health": 10031,
+    "attack": 570
+   },
+   {
+    "monster_id": 110001,
+    "monster": "Anjanath",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 7,
+    "suggested_hunt_power": "",
+    "health": 17280,
+    "attack": 717
+   },
+   {
+    "monster_id": 110001,
+    "monster": "Anjanath",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 8,
+    "suggested_hunt_power": "",
+    "health": 22629,
+    "attack": 802
+   },
+   {
+    "monster_id": 110001,
+    "monster": "Anjanath",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 9,
+    "suggested_hunt_power": "",
+    "health": 29777,
+    "attack": 971
+   },
+   {
+    "monster_id": 110001,
+    "monster": "Anjanath",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 10,
+    "suggested_hunt_power": "",
+    "health": 36276,
+    "attack": 1037
+   },
+   {
+    "monster_id": 110001,
+    "monster": "Anjanath",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 52360,
+    "attack": 1104
+   },
+   {
+    "monster_id": 110001,
+    "monster": "Anjanath",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 70160,
+    "attack": 1104
+   },
+   {
+    "monster_id": 110001,
+    "monster": "Anjanath",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 99585,
+    "attack": 1237
+   },
+   {
+    "monster_id": 110001,
+    "monster": "Anjanath",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 130316,
+    "attack": 1300
+   },
+   {
+    "monster_id": 110001,
+    "monster": "Anjanath",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 171756,
+    "attack": 1370
+   },
+   {
+    "monster_id": 110001,
+    "monster": "Anjanath",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 219129,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 100101,
@@ -1255,7 +2948,197 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathian.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathian/Sketch_Rathian_D1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathian/Sketch_Rathian_D1.png",
+  "species": "Flying Wyvern",
+  "levels": [
+   {
+    "monster_id": 100101,
+    "monster": "Rathian",
+    "content": "Hunt",
+    "hunt_id": 10700101,
+    "difficulty": 2,
+    "level": 7,
+    "suggested_hunt_power": 4775,
+    "health": 19417,
+    "attack": 737
+   },
+   {
+    "monster_id": 100101,
+    "monster": "Rathian",
+    "content": "Hunt",
+    "hunt_id": 11000101,
+    "difficulty": 3,
+    "level": 10,
+    "suggested_hunt_power": 7616,
+    "health": 40760,
+    "attack": 1057
+   },
+   {
+    "monster_id": 100101,
+    "monster": "Rathian",
+    "content": "Hunt",
+    "hunt_id": 11200101,
+    "difficulty": 4,
+    "level": 12,
+    "suggested_hunt_power": 10307,
+    "health": 78833,
+    "attack": 1124
+   },
+   {
+    "monster_id": 100101,
+    "monster": "Rathian",
+    "content": "Hunt",
+    "hunt_id": 11400101,
+    "difficulty": 5,
+    "level": 14,
+    "suggested_hunt_power": 13943,
+    "health": 146427,
+    "attack": 1320
+   },
+   {
+    "monster_id": 100101,
+    "monster": "Rathian",
+    "content": "Hunt",
+    "hunt_id": 11600101,
+    "difficulty": 6,
+    "level": 16,
+    "suggested_hunt_power": 15766,
+    "health": 226938,
+    "attack": 1460
+   },
+   {
+    "monster_id": 100101,
+    "monster": "Rathian",
+    "content": "Extreme Hunt",
+    "hunt_id": 21400101,
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": 16219,
+    "health": 493352,
+    "attack": 1360
+   },
+   {
+    "monster_id": 100101,
+    "monster": "Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 6,
+    "suggested_hunt_power": "",
+    "health": 9197,
+    "attack": 570
+   },
+   {
+    "monster_id": 100101,
+    "monster": "Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 7,
+    "suggested_hunt_power": "",
+    "health": 15844,
+    "attack": 717
+   },
+   {
+    "monster_id": 100101,
+    "monster": "Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 8,
+    "suggested_hunt_power": "",
+    "health": 20749,
+    "attack": 802
+   },
+   {
+    "monster_id": 100101,
+    "monster": "Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 9,
+    "suggested_hunt_power": "",
+    "health": 27302,
+    "attack": 971
+   },
+   {
+    "monster_id": 100101,
+    "monster": "Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 10,
+    "suggested_hunt_power": "",
+    "health": 33261,
+    "attack": 1037
+   },
+   {
+    "monster_id": 100101,
+    "monster": "Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 48008,
+    "attack": 1104
+   },
+   {
+    "monster_id": 100101,
+    "monster": "Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 64328,
+    "attack": 1104
+   },
+   {
+    "monster_id": 100101,
+    "monster": "Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 91307,
+    "attack": 1237
+   },
+   {
+    "monster_id": 100101,
+    "monster": "Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 119485,
+    "attack": 1300
+   },
+   {
+    "monster_id": 100101,
+    "monster": "Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 157480,
+    "attack": 1370
+   },
+   {
+    "monster_id": 100101,
+    "monster": "Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 200915,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 112001,
@@ -1356,7 +3239,164 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_DizzyBird.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/TzitziYaKu/Sketch_TzitziYaKu_D1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/TzitziYaKu/Sketch_TzitziYaKu_D1.png",
+  "species": "Bird Wyvern",
+  "levels": [
+   {
+    "monster_id": 112001,
+    "monster": "Tzitzi-Ya-Ku",
+    "content": "Hunt",
+    "hunt_id": 11012001,
+    "difficulty": 3,
+    "level": 10,
+    "suggested_hunt_power": 6454,
+    "health": 33325,
+    "attack": 991
+   },
+   {
+    "monster_id": 112001,
+    "monster": "Tzitzi-Ya-Ku",
+    "content": "Hunt",
+    "hunt_id": 11112001,
+    "difficulty": 4,
+    "level": 11,
+    "suggested_hunt_power": 8909,
+    "health": 58598,
+    "attack": 1124
+   },
+   {
+    "monster_id": 112001,
+    "monster": "Tzitzi-Ya-Ku",
+    "content": "Hunt",
+    "hunt_id": 11312001,
+    "difficulty": 5,
+    "level": 13,
+    "suggested_hunt_power": 12903,
+    "health": 86409,
+    "attack": 1190
+   },
+   {
+    "monster_id": 112001,
+    "monster": "Tzitzi-Ya-Ku",
+    "content": "Hunt",
+    "hunt_id": 11512001,
+    "difficulty": 6,
+    "level": 15,
+    "suggested_hunt_power": 14813,
+    "health": 192218,
+    "attack": 1390
+   },
+   {
+    "monster_id": 112001,
+    "monster": "Tzitzi-Ya-Ku",
+    "content": "Extreme Hunt",
+    "hunt_id": 21512001,
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": 17775,
+    "health": 737324,
+    "attack": 1430
+   },
+   {
+    "monster_id": 112001,
+    "monster": "Tzitzi-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 8,
+    "suggested_hunt_power": "",
+    "health": 20666,
+    "attack": 802
+   },
+   {
+    "monster_id": 112001,
+    "monster": "Tzitzi-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 9,
+    "suggested_hunt_power": "",
+    "health": 27193,
+    "attack": 971
+   },
+   {
+    "monster_id": 112001,
+    "monster": "Tzitzi-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 10,
+    "suggested_hunt_power": "",
+    "health": 33127,
+    "attack": 1037
+   },
+   {
+    "monster_id": 112001,
+    "monster": "Tzitzi-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 47816,
+    "attack": 1104
+   },
+   {
+    "monster_id": 112001,
+    "monster": "Tzitzi-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 64071,
+    "attack": 1104
+   },
+   {
+    "monster_id": 112001,
+    "monster": "Tzitzi-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 90942,
+    "attack": 1237
+   },
+   {
+    "monster_id": 112001,
+    "monster": "Tzitzi-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 119007,
+    "attack": 1300
+   },
+   {
+    "monster_id": 112001,
+    "monster": "Tzitzi-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 156850,
+    "attack": 1370
+   },
+   {
+    "monster_id": 112001,
+    "monster": "Tzitzi-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 200111,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 111001,
@@ -1508,7 +3548,164 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Paolumu.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Paolumu/Sketch_Paolumu_D1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Paolumu/Sketch_Paolumu_D1.png",
+  "species": "Flying Wyvern",
+  "levels": [
+   {
+    "monster_id": 111001,
+    "monster": "Paolumu",
+    "content": "Hunt",
+    "hunt_id": 11011001,
+    "difficulty": 3,
+    "level": 10,
+    "suggested_hunt_power": 6454,
+    "health": 28399,
+    "attack": 991
+   },
+   {
+    "monster_id": 111001,
+    "monster": "Paolumu",
+    "content": "Hunt",
+    "hunt_id": 11211001,
+    "difficulty": 4,
+    "level": 12,
+    "suggested_hunt_power": 11163,
+    "health": 71060,
+    "attack": 1190
+   },
+   {
+    "monster_id": 111001,
+    "monster": "Paolumu",
+    "content": "Hunt",
+    "hunt_id": 11411001,
+    "difficulty": 5,
+    "level": 14,
+    "suggested_hunt_power": 13943,
+    "health": 124287,
+    "attack": 1320
+   },
+   {
+    "monster_id": 111001,
+    "monster": "Paolumu",
+    "content": "Hunt",
+    "hunt_id": 11611001,
+    "difficulty": 6,
+    "level": 16,
+    "suggested_hunt_power": 15766,
+    "health": 192625,
+    "attack": 1460
+   },
+   {
+    "monster_id": 111001,
+    "monster": "Paolumu",
+    "content": "Extreme Hunt",
+    "hunt_id": 21511001,
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": 17775,
+    "health": 588319,
+    "attack": 1430
+   },
+   {
+    "monster_id": 111001,
+    "monster": "Paolumu",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 8,
+    "suggested_hunt_power": "",
+    "health": 17611,
+    "attack": 802
+   },
+   {
+    "monster_id": 111001,
+    "monster": "Paolumu",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 9,
+    "suggested_hunt_power": "",
+    "health": 23174,
+    "attack": 971
+   },
+   {
+    "monster_id": 111001,
+    "monster": "Paolumu",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 10,
+    "suggested_hunt_power": "",
+    "health": 28232,
+    "attack": 1037
+   },
+   {
+    "monster_id": 111001,
+    "monster": "Paolumu",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 40749,
+    "attack": 1104
+   },
+   {
+    "monster_id": 111001,
+    "monster": "Paolumu",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 54602,
+    "attack": 1104
+   },
+   {
+    "monster_id": 111001,
+    "monster": "Paolumu",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 77501,
+    "attack": 1237
+   },
+   {
+    "monster_id": 111001,
+    "monster": "Paolumu",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 101418,
+    "attack": 1300
+   },
+   {
+    "monster_id": 111001,
+    "monster": "Paolumu",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 133669,
+    "attack": 1370
+   },
+   {
+    "monster_id": 111001,
+    "monster": "Paolumu",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 170536,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 111101,
@@ -1660,7 +3857,164 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Legiana.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Legiana/Sketch_Legiana_D1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Legiana/Sketch_Legiana_D1.png",
+  "species": "Flying Wyvern",
+  "levels": [
+   {
+    "monster_id": 111101,
+    "monster": "Legiana",
+    "content": "Hunt",
+    "hunt_id": 11011101,
+    "difficulty": 3,
+    "level": 10,
+    "suggested_hunt_power": 7616,
+    "health": 33456,
+    "attack": 1057
+   },
+   {
+    "monster_id": 111101,
+    "monster": "Legiana",
+    "content": "Hunt",
+    "hunt_id": 11211101,
+    "difficulty": 4,
+    "level": 12,
+    "suggested_hunt_power": 11457,
+    "health": 64838,
+    "attack": 1190
+   },
+   {
+    "monster_id": 111101,
+    "monster": "Legiana",
+    "content": "Hunt",
+    "hunt_id": 11411101,
+    "difficulty": 5,
+    "level": 14,
+    "suggested_hunt_power": 14360,
+    "health": 135800,
+    "attack": 1390
+   },
+   {
+    "monster_id": 111101,
+    "monster": "Legiana",
+    "content": "Hunt",
+    "hunt_id": 11611101,
+    "difficulty": 6,
+    "level": 16,
+    "suggested_hunt_power": 15766,
+    "health": 186270,
+    "attack": 1460
+   },
+   {
+    "monster_id": 111101,
+    "monster": "Legiana",
+    "content": "Extreme Hunt",
+    "hunt_id": 21611101,
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": 18339,
+    "health": 568125,
+    "attack": 1500
+   },
+   {
+    "monster_id": 111101,
+    "monster": "Legiana",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 8,
+    "suggested_hunt_power": "",
+    "health": 17030,
+    "attack": 802
+   },
+   {
+    "monster_id": 111101,
+    "monster": "Legiana",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 9,
+    "suggested_hunt_power": "",
+    "health": 22409,
+    "attack": 971
+   },
+   {
+    "monster_id": 111101,
+    "monster": "Legiana",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 10,
+    "suggested_hunt_power": "",
+    "health": 27300,
+    "attack": 1037
+   },
+   {
+    "monster_id": 111101,
+    "monster": "Legiana",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 39405,
+    "attack": 1104
+   },
+   {
+    "monster_id": 111101,
+    "monster": "Legiana",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 52800,
+    "attack": 1104
+   },
+   {
+    "monster_id": 111101,
+    "monster": "Legiana",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 74945,
+    "attack": 1237
+   },
+   {
+    "monster_id": 111101,
+    "monster": "Legiana",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 98073,
+    "attack": 1300
+   },
+   {
+    "monster_id": 111101,
+    "monster": "Legiana",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 129259,
+    "attack": 1370
+   },
+   {
+    "monster_id": 111101,
+    "monster": "Legiana",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 164911,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 100201,
@@ -1824,7 +4178,197 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathalos.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathalos/Sketch_Rathalos_D1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathalos/Sketch_Rathalos_D1.png",
+  "species": "Flying Wyvern",
+  "levels": [
+   {
+    "monster_id": 100201,
+    "monster": "Rathalos",
+    "content": "Hunt",
+    "hunt_id": 10800201,
+    "difficulty": 2,
+    "level": 8,
+    "suggested_hunt_power": 4790,
+    "health": 13894,
+    "attack": 737
+   },
+   {
+    "monster_id": 100201,
+    "monster": "Rathalos",
+    "content": "Hunt",
+    "hunt_id": 11000201,
+    "difficulty": 3,
+    "level": 10,
+    "suggested_hunt_power": 7616,
+    "health": 28434,
+    "attack": 1057
+   },
+   {
+    "monster_id": 100201,
+    "monster": "Rathalos",
+    "content": "Hunt",
+    "hunt_id": 11200201,
+    "difficulty": 4,
+    "level": 12,
+    "suggested_hunt_power": 11247,
+    "health": 52974,
+    "attack": 1190
+   },
+   {
+    "monster_id": 100201,
+    "monster": "Rathalos",
+    "content": "Hunt",
+    "hunt_id": 11400201,
+    "difficulty": 5,
+    "level": 14,
+    "suggested_hunt_power": 14360,
+    "health": 115416,
+    "attack": 1390
+   },
+   {
+    "monster_id": 100201,
+    "monster": "Rathalos",
+    "content": "Hunt",
+    "hunt_id": 11600201,
+    "difficulty": 6,
+    "level": 16,
+    "suggested_hunt_power": 15766,
+    "health": 158312,
+    "attack": 1460
+   },
+   {
+    "monster_id": 100201,
+    "monster": "Rathalos",
+    "content": "Extreme Hunt",
+    "hunt_id": 21500201,
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": 16731,
+    "health": 381697,
+    "attack": 1360
+   },
+   {
+    "monster_id": 100201,
+    "monster": "Rathalos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 6,
+    "suggested_hunt_power": "",
+    "health": 6416,
+    "attack": 570
+   },
+   {
+    "monster_id": 100201,
+    "monster": "Rathalos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 7,
+    "suggested_hunt_power": "",
+    "health": 11053,
+    "attack": 717
+   },
+   {
+    "monster_id": 100201,
+    "monster": "Rathalos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 8,
+    "suggested_hunt_power": "",
+    "health": 14474,
+    "attack": 802
+   },
+   {
+    "monster_id": 100201,
+    "monster": "Rathalos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 9,
+    "suggested_hunt_power": "",
+    "health": 19046,
+    "attack": 971
+   },
+   {
+    "monster_id": 100201,
+    "monster": "Rathalos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 10,
+    "suggested_hunt_power": "",
+    "health": 23203,
+    "attack": 1037
+   },
+   {
+    "monster_id": 100201,
+    "monster": "Rathalos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 33490,
+    "attack": 1104
+   },
+   {
+    "monster_id": 100201,
+    "monster": "Rathalos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 44875,
+    "attack": 1104
+   },
+   {
+    "monster_id": 100201,
+    "monster": "Rathalos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 63696,
+    "attack": 1237
+   },
+   {
+    "monster_id": 100201,
+    "monster": "Rathalos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 83352,
+    "attack": 1300
+   },
+   {
+    "monster_id": 100201,
+    "monster": "Rathalos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 109858,
+    "attack": 1370
+   },
+   {
+    "monster_id": 100201,
+    "monster": "Rathalos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 140158,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 100701,
@@ -2011,7 +4555,164 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Diablos.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Diablos/Sketch_Diablos_D1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Diablos/Sketch_Diablos_D1.png",
+  "species": "Flying Wyvern",
+  "levels": [
+   {
+    "monster_id": 100701,
+    "monster": "Diablos",
+    "content": "Hunt",
+    "hunt_id": 10900701,
+    "difficulty": 3,
+    "level": 9,
+    "suggested_hunt_power": 5229,
+    "health": 19624,
+    "attack": 822
+   },
+   {
+    "monster_id": 100701,
+    "monster": "Diablos",
+    "content": "Hunt",
+    "hunt_id": 11200701,
+    "difficulty": 4,
+    "level": 12,
+    "suggested_hunt_power": 11457,
+    "health": 65126,
+    "attack": 1190
+   },
+   {
+    "monster_id": 100701,
+    "monster": "Diablos",
+    "content": "Hunt",
+    "hunt_id": 11400701,
+    "difficulty": 5,
+    "level": 14,
+    "suggested_hunt_power": 14360,
+    "health": 136403,
+    "attack": 1390
+   },
+   {
+    "monster_id": 100701,
+    "monster": "Diablos",
+    "content": "Hunt",
+    "hunt_id": 11600701,
+    "difficulty": 6,
+    "level": 16,
+    "suggested_hunt_power": 15766,
+    "health": 187098,
+    "attack": 1460
+   },
+   {
+    "monster_id": 100701,
+    "monster": "Diablos",
+    "content": "Extreme Hunt",
+    "hunt_id": 21500701,
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": 16731,
+    "health": 470055,
+    "attack": 1360
+   },
+   {
+    "monster_id": 100701,
+    "monster": "Diablos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 8,
+    "suggested_hunt_power": "",
+    "health": 17106,
+    "attack": 802
+   },
+   {
+    "monster_id": 100701,
+    "monster": "Diablos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 9,
+    "suggested_hunt_power": "",
+    "health": 22509,
+    "attack": 971
+   },
+   {
+    "monster_id": 100701,
+    "monster": "Diablos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 10,
+    "suggested_hunt_power": "",
+    "health": 27422,
+    "attack": 1037
+   },
+   {
+    "monster_id": 100701,
+    "monster": "Diablos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 39580,
+    "attack": 1104
+   },
+   {
+    "monster_id": 100701,
+    "monster": "Diablos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 53035,
+    "attack": 1104
+   },
+   {
+    "monster_id": 100701,
+    "monster": "Diablos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 75278,
+    "attack": 1237
+   },
+   {
+    "monster_id": 100701,
+    "monster": "Diablos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 98509,
+    "attack": 1300
+   },
+   {
+    "monster_id": 100701,
+    "monster": "Diablos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 129834,
+    "attack": 1370
+   },
+   {
+    "monster_id": 100701,
+    "monster": "Diablos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 165644,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 111201,
@@ -2138,7 +4839,252 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_DabiThiefDragon.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/GreatGirros/Sketch_GreatGirros_D1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/GreatGirros/Sketch_GreatGirros_D1.png",
+  "species": "Fanged Wyvern",
+  "levels": [
+   {
+    "monster_id": 111201,
+    "monster": "Great Girros",
+    "content": "Hunt",
+    "hunt_id": 10211201,
+    "difficulty": 1,
+    "level": 2,
+    "suggested_hunt_power": 1158,
+    "health": 2300,
+    "attack": 194
+   },
+   {
+    "monster_id": 111201,
+    "monster": "Great Girros",
+    "content": "Hunt",
+    "hunt_id": 10511201,
+    "difficulty": 2,
+    "level": 5,
+    "suggested_hunt_power": 3099,
+    "health": 15589,
+    "attack": 590
+   },
+   {
+    "monster_id": 111201,
+    "monster": "Great Girros",
+    "content": "Hunt",
+    "hunt_id": 10911201,
+    "difficulty": 3,
+    "level": 9,
+    "suggested_hunt_power": 5229,
+    "health": 36760,
+    "attack": 822
+   },
+   {
+    "monster_id": 111201,
+    "monster": "Great Girros",
+    "content": "Hunt",
+    "hunt_id": 11111201,
+    "difficulty": 4,
+    "level": 11,
+    "suggested_hunt_power": 8909,
+    "health": 90862,
+    "attack": 1124
+   },
+   {
+    "monster_id": 111201,
+    "monster": "Great Girros",
+    "content": "Hunt",
+    "hunt_id": 11311201,
+    "difficulty": 5,
+    "level": 13,
+    "suggested_hunt_power": 12903,
+    "health": 133986,
+    "attack": 1190
+   },
+   {
+    "monster_id": 111201,
+    "monster": "Great Girros",
+    "content": "Hunt",
+    "hunt_id": 11511201,
+    "difficulty": 6,
+    "level": 15,
+    "suggested_hunt_power": 14813,
+    "health": 298053,
+    "attack": 1390
+   },
+   {
+    "monster_id": 111201,
+    "monster": "Great Girros",
+    "content": "Extreme Hunt",
+    "hunt_id": 20911201,
+    "difficulty": "",
+    "level": 9,
+    "suggested_hunt_power": 6495,
+    "health": 108855,
+    "attack": 862
+   },
+   {
+    "monster_id": 111201,
+    "monster": "Great Girros",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 2,
+    "suggested_hunt_power": "",
+    "health": 4122,
+    "attack": 329
+   },
+   {
+    "monster_id": 111201,
+    "monster": "Great Girros",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 3,
+    "suggested_hunt_power": "",
+    "health": 5251,
+    "attack": 329
+   },
+   {
+    "monster_id": 111201,
+    "monster": "Great Girros",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 4,
+    "suggested_hunt_power": "",
+    "health": 6853,
+    "attack": 345
+   },
+   {
+    "monster_id": 111201,
+    "monster": "Great Girros",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 5,
+    "suggested_hunt_power": "",
+    "health": 8717,
+    "attack": 402
+   },
+   {
+    "monster_id": 111201,
+    "monster": "Great Girros",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 6,
+    "suggested_hunt_power": "",
+    "health": 14204,
+    "attack": 570
+   },
+   {
+    "monster_id": 111201,
+    "monster": "Great Girros",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 7,
+    "suggested_hunt_power": "",
+    "health": 24469,
+    "attack": 717
+   },
+   {
+    "monster_id": 111201,
+    "monster": "Great Girros",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 8,
+    "suggested_hunt_power": "",
+    "health": 32044,
+    "attack": 802
+   },
+   {
+    "monster_id": 111201,
+    "monster": "Great Girros",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 9,
+    "suggested_hunt_power": "",
+    "health": 42165,
+    "attack": 971
+   },
+   {
+    "monster_id": 111201,
+    "monster": "Great Girros",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 10,
+    "suggested_hunt_power": "",
+    "health": 51368,
+    "attack": 1037
+   },
+   {
+    "monster_id": 111201,
+    "monster": "Great Girros",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 74144,
+    "attack": 1104
+   },
+   {
+    "monster_id": 111201,
+    "monster": "Great Girros",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 99348,
+    "attack": 1104
+   },
+   {
+    "monster_id": 111201,
+    "monster": "Great Girros",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 141015,
+    "attack": 1237
+   },
+   {
+    "monster_id": 111201,
+    "monster": "Great Girros",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 184532,
+    "attack": 1300
+   },
+   {
+    "monster_id": 111201,
+    "monster": "Great Girros",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 243211,
+    "attack": 1370
+   },
+   {
+    "monster_id": 111201,
+    "monster": "Great Girros",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 310292,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 110301,
@@ -2516,7 +5462,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Nergigante.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Nergigante/Sketch_Nergigante_C1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Nergigante/Sketch_Nergigante_C1.png",
+  "species": "Elder Dragons",
+  "levels": []
  },
  {
   "id": 111401,
@@ -2668,7 +5616,164 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Radobaan.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Radobaan/Sketch_Radobaan_C1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Radobaan/Sketch_Radobaan_C1.png",
+  "species": "Brute Wyvern",
+  "levels": [
+   {
+    "monster_id": 111401,
+    "monster": "Radobaan",
+    "content": "Hunt",
+    "hunt_id": 10911401,
+    "difficulty": 3,
+    "level": 9,
+    "suggested_hunt_power": 5413,
+    "health": 18724,
+    "attack": 822
+   },
+   {
+    "monster_id": 111401,
+    "monster": "Radobaan",
+    "content": "Hunt",
+    "hunt_id": 11211401,
+    "difficulty": 4,
+    "level": 12,
+    "suggested_hunt_power": 11163,
+    "health": 61648,
+    "attack": 1190
+   },
+   {
+    "monster_id": 111401,
+    "monster": "Radobaan",
+    "content": "Hunt",
+    "hunt_id": 11411401,
+    "difficulty": 5,
+    "level": 14,
+    "suggested_hunt_power": 13943,
+    "health": 107825,
+    "attack": 1320
+   },
+   {
+    "monster_id": 111401,
+    "monster": "Radobaan",
+    "content": "Hunt",
+    "hunt_id": 11611401,
+    "difficulty": 6,
+    "level": 16,
+    "suggested_hunt_power": 15766,
+    "health": 167110,
+    "attack": 1460
+   },
+   {
+    "monster_id": 111401,
+    "monster": "Radobaan",
+    "content": "Extreme Hunt",
+    "hunt_id": 21511401,
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": 17232,
+    "health": 401002,
+    "attack": 1430
+   },
+   {
+    "monster_id": 111401,
+    "monster": "Radobaan",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 8,
+    "suggested_hunt_power": "",
+    "health": 15279,
+    "attack": 802
+   },
+   {
+    "monster_id": 111401,
+    "monster": "Radobaan",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 9,
+    "suggested_hunt_power": "",
+    "health": 20104,
+    "attack": 971
+   },
+   {
+    "monster_id": 111401,
+    "monster": "Radobaan",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 10,
+    "suggested_hunt_power": "",
+    "health": 24492,
+    "attack": 1037
+   },
+   {
+    "monster_id": 111401,
+    "monster": "Radobaan",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 35352,
+    "attack": 1104
+   },
+   {
+    "monster_id": 111401,
+    "monster": "Radobaan",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 47369,
+    "attack": 1104
+   },
+   {
+    "monster_id": 111401,
+    "monster": "Radobaan",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 67236,
+    "attack": 1237
+   },
+   {
+    "monster_id": 111401,
+    "monster": "Radobaan",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 87985,
+    "attack": 1300
+   },
+   {
+    "monster_id": 111401,
+    "monster": "Radobaan",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 115963,
+    "attack": 1370
+   },
+   {
+    "monster_id": 111401,
+    "monster": "Radobaan",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 147948,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 111301,
@@ -2796,7 +5901,164 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Odogaron.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Odogaron/Sketch_Odogaron_D1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Odogaron/Sketch_Odogaron_D1.png",
+  "species": "Fanged Wyvern",
+  "levels": [
+   {
+    "monster_id": 111301,
+    "monster": "Odogaron",
+    "content": "Hunt",
+    "hunt_id": 10911301,
+    "difficulty": 3,
+    "level": 9,
+    "suggested_hunt_power": 6179,
+    "health": 31640,
+    "attack": 991
+   },
+   {
+    "monster_id": 111301,
+    "monster": "Odogaron",
+    "content": "Hunt",
+    "hunt_id": 11211301,
+    "difficulty": 4,
+    "level": 12,
+    "suggested_hunt_power": 11457,
+    "health": 82340,
+    "attack": 1190
+   },
+   {
+    "monster_id": 111301,
+    "monster": "Odogaron",
+    "content": "Hunt",
+    "hunt_id": 11411301,
+    "difficulty": 5,
+    "level": 14,
+    "suggested_hunt_power": 14360,
+    "health": 172456,
+    "attack": 1390
+   },
+   {
+    "monster_id": 111301,
+    "monster": "Odogaron",
+    "content": "Hunt",
+    "hunt_id": 11611301,
+    "difficulty": 6,
+    "level": 16,
+    "suggested_hunt_power": 15766,
+    "health": 236551,
+    "attack": 1460
+   },
+   {
+    "monster_id": 111301,
+    "monster": "Odogaron",
+    "content": "Extreme Hunt",
+    "hunt_id": 21511301,
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": 17232,
+    "health": 656396,
+    "attack": 1430
+   },
+   {
+    "monster_id": 111301,
+    "monster": "Odogaron",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 8,
+    "suggested_hunt_power": "",
+    "health": 21627,
+    "attack": 802
+   },
+   {
+    "monster_id": 111301,
+    "monster": "Odogaron",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 9,
+    "suggested_hunt_power": "",
+    "health": 28459,
+    "attack": 971
+   },
+   {
+    "monster_id": 111301,
+    "monster": "Odogaron",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 10,
+    "suggested_hunt_power": "",
+    "health": 34669,
+    "attack": 1037
+   },
+   {
+    "monster_id": 111301,
+    "monster": "Odogaron",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 50042,
+    "attack": 1104
+   },
+   {
+    "monster_id": 111301,
+    "monster": "Odogaron",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 67053,
+    "attack": 1104
+   },
+   {
+    "monster_id": 111301,
+    "monster": "Odogaron",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 95175,
+    "attack": 1237
+   },
+   {
+    "monster_id": 111301,
+    "monster": "Odogaron",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 124546,
+    "attack": 1300
+   },
+   {
+    "monster_id": 111301,
+    "monster": "Odogaron",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 164150,
+    "attack": 1370
+   },
+   {
+    "monster_id": 111301,
+    "monster": "Odogaron",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 209425,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 100702,
@@ -2983,7 +6245,76 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_BlackDiablos.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/BlackDiablos/Sketch_BlackDiablos_D1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/BlackDiablos/Sketch_BlackDiablos_D1.png",
+  "species": "Flying Wyvern",
+  "levels": [
+   {
+    "monster_id": 100702,
+    "monster": "Black Diablos",
+    "content": "Hunt",
+    "hunt_id": 11500702,
+    "difficulty": 6,
+    "level": 15,
+    "suggested_hunt_power": 14813,
+    "health": 139879,
+    "attack": 1390
+   },
+   {
+    "monster_id": 100702,
+    "monster": "Black Diablos",
+    "content": "Extreme Hunt",
+    "hunt_id": 21600702,
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": 26646,
+    "health": 1528604,
+    "attack": 1640
+   },
+   {
+    "monster_id": 100702,
+    "monster": "Black Diablos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 66179,
+    "attack": 1237
+   },
+   {
+    "monster_id": 100702,
+    "monster": "Black Diablos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 86602,
+    "attack": 1300
+   },
+   {
+    "monster_id": 100702,
+    "monster": "Black Diablos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 114141,
+    "attack": 1370
+   },
+   {
+    "monster_id": 100702,
+    "monster": "Black Diablos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 145623,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 102401,
@@ -3086,7 +6417,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_KushalaDaora.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/KushalaDaora/Sketch_KushalaDaora_D1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/KushalaDaora/Sketch_KushalaDaora_D1.png",
+  "species": "Elder Dragons",
+  "levels": []
  },
  {
   "id": 100102,
@@ -3250,7 +6583,131 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_PinkRathian.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/PinkRathian/Sketch_PinkRathian_C1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/PinkRathian/Sketch_PinkRathian_C1.png",
+  "species": "Flying Wyvern",
+  "levels": [
+   {
+    "monster_id": 100102,
+    "monster": "Pink Rathian",
+    "content": "Hunt",
+    "hunt_id": 11100102,
+    "difficulty": 4,
+    "level": 11,
+    "suggested_hunt_power": 8346,
+    "health": 31297,
+    "attack": 1057
+   },
+   {
+    "monster_id": 100102,
+    "monster": "Pink Rathian",
+    "content": "Hunt",
+    "hunt_id": 11400102,
+    "difficulty": 5,
+    "level": 14,
+    "suggested_hunt_power": 14360,
+    "health": 107667,
+    "attack": 1390
+   },
+   {
+    "monster_id": 100102,
+    "monster": "Pink Rathian",
+    "content": "Hunt",
+    "hunt_id": 11600102,
+    "difficulty": 6,
+    "level": 16,
+    "suggested_hunt_power": 15766,
+    "health": 147682,
+    "attack": 1460
+   },
+   {
+    "monster_id": 100102,
+    "monster": "Pink Rathian",
+    "content": "Extreme Hunt",
+    "hunt_id": 21600102,
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": 18919,
+    "health": 501813,
+    "attack": 1500
+   },
+   {
+    "monster_id": 100102,
+    "monster": "Pink Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 10,
+    "suggested_hunt_power": "",
+    "health": 21645,
+    "attack": 1037
+   },
+   {
+    "monster_id": 100102,
+    "monster": "Pink Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 31242,
+    "attack": 1104
+   },
+   {
+    "monster_id": 100102,
+    "monster": "Pink Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 41862,
+    "attack": 1104
+   },
+   {
+    "monster_id": 100102,
+    "monster": "Pink Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 59419,
+    "attack": 1237
+   },
+   {
+    "monster_id": 100102,
+    "monster": "Pink Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 77756,
+    "attack": 1300
+   },
+   {
+    "monster_id": 100102,
+    "monster": "Pink Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 102481,
+    "attack": 1370
+   },
+   {
+    "monster_id": 100102,
+    "monster": "Pink Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 130747,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 110110,
@@ -3389,7 +6846,230 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_GreatJagras_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZGreatJagras/Sketch_RGZGreatJagras_C1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZGreatJagras/Sketch_RGZGreatJagras_C1.png",
+  "species": "Fanged Wyvern",
+  "levels": [
+   {
+    "monster_id": 110110,
+    "monster": "Radiant Great Jagras",
+    "content": "Hunt",
+    "hunt_id": 10410110,
+    "difficulty": 1,
+    "level": 4,
+    "suggested_hunt_power": 2484,
+    "health": 21225,
+    "attack": 422
+   },
+   {
+    "monster_id": 110110,
+    "monster": "Radiant Great Jagras",
+    "content": "Hunt",
+    "hunt_id": 10610110,
+    "difficulty": 2,
+    "level": 6,
+    "suggested_hunt_power": 3524,
+    "health": 36252,
+    "attack": 590
+   },
+   {
+    "monster_id": 110110,
+    "monster": "Radiant Great Jagras",
+    "content": "Hunt",
+    "hunt_id": 10910110,
+    "difficulty": 3,
+    "level": 9,
+    "suggested_hunt_power": 6179,
+    "health": 94572,
+    "attack": 991
+   },
+   {
+    "monster_id": 110110,
+    "monster": "Radiant Great Jagras",
+    "content": "Hunt",
+    "hunt_id": 11110110,
+    "difficulty": 4,
+    "level": 11,
+    "suggested_hunt_power": 9588,
+    "health": 230371,
+    "attack": 1124
+   },
+   {
+    "monster_id": 110110,
+    "monster": "Radiant Great Jagras",
+    "content": "Hunt",
+    "hunt_id": 11310110,
+    "difficulty": 5,
+    "level": 13,
+    "suggested_hunt_power": 13363,
+    "health": 418350,
+    "attack": 1257
+   },
+   {
+    "monster_id": 110110,
+    "monster": "Radiant Great Jagras",
+    "content": "Hunt",
+    "hunt_id": 11510110,
+    "difficulty": 6,
+    "level": 15,
+    "suggested_hunt_power": 15283,
+    "health": 758459,
+    "attack": 1460
+   },
+   {
+    "monster_id": 110110,
+    "monster": "Radiant Great Jagras",
+    "content": "Extreme Hunt",
+    "hunt_id": 21310110,
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": 12120,
+    "health": 1065298,
+    "attack": 1164
+   },
+   {
+    "monster_id": 110110,
+    "monster": "Radiant Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 4,
+    "suggested_hunt_power": "",
+    "health": 13824,
+    "attack": 345
+   },
+   {
+    "monster_id": 110110,
+    "monster": "Radiant Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 5,
+    "suggested_hunt_power": "",
+    "health": 17585,
+    "attack": 402
+   },
+   {
+    "monster_id": 110110,
+    "monster": "Radiant Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 6,
+    "suggested_hunt_power": "",
+    "health": 28654,
+    "attack": 570
+   },
+   {
+    "monster_id": 110110,
+    "monster": "Radiant Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 7,
+    "suggested_hunt_power": "",
+    "health": 49364,
+    "attack": 717
+   },
+   {
+    "monster_id": 110110,
+    "monster": "Radiant Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 8,
+    "suggested_hunt_power": "",
+    "health": 64644,
+    "attack": 802
+   },
+   {
+    "monster_id": 110110,
+    "monster": "Radiant Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 9,
+    "suggested_hunt_power": "",
+    "health": 85063,
+    "attack": 971
+   },
+   {
+    "monster_id": 110110,
+    "monster": "Radiant Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 10,
+    "suggested_hunt_power": "",
+    "health": 103627,
+    "attack": 1037
+   },
+   {
+    "monster_id": 110110,
+    "monster": "Radiant Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 164532,
+    "attack": 1104
+   },
+   {
+    "monster_id": 110110,
+    "monster": "Radiant Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 220464,
+    "attack": 1104
+   },
+   {
+    "monster_id": 110110,
+    "monster": "Radiant Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 312926,
+    "attack": 1237
+   },
+   {
+    "monster_id": 110110,
+    "monster": "Radiant Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 409495,
+    "attack": 1300
+   },
+   {
+    "monster_id": 110110,
+    "monster": "Radiant Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 539711,
+    "attack": 1370
+   },
+   {
+    "monster_id": 110110,
+    "monster": "Radiant Great Jagras",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 688571,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 110210,
@@ -3517,7 +7197,230 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_PukeiPukei_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPukeiPukei/Sketch_RGZPukeiPukei_C1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPukeiPukei/Sketch_RGZPukeiPukei_C1.png",
+  "species": "Bird Wyvern",
+  "levels": [
+   {
+    "monster_id": 110210,
+    "monster": "Radiant Pukei-Pukei",
+    "content": "Hunt",
+    "hunt_id": 10410210,
+    "difficulty": 1,
+    "level": 4,
+    "suggested_hunt_power": 2484,
+    "health": 21388,
+    "attack": 422
+   },
+   {
+    "monster_id": 110210,
+    "monster": "Radiant Pukei-Pukei",
+    "content": "Hunt",
+    "hunt_id": 10610210,
+    "difficulty": 2,
+    "level": 6,
+    "suggested_hunt_power": 3524,
+    "health": 36530,
+    "attack": 590
+   },
+   {
+    "monster_id": 110210,
+    "monster": "Radiant Pukei-Pukei",
+    "content": "Hunt",
+    "hunt_id": 10910210,
+    "difficulty": 3,
+    "level": 9,
+    "suggested_hunt_power": 6179,
+    "health": 95299,
+    "attack": 991
+   },
+   {
+    "monster_id": 110210,
+    "monster": "Radiant Pukei-Pukei",
+    "content": "Hunt",
+    "hunt_id": 11110210,
+    "difficulty": 4,
+    "level": 11,
+    "suggested_hunt_power": 9588,
+    "health": 232141,
+    "attack": 1124
+   },
+   {
+    "monster_id": 110210,
+    "monster": "Radiant Pukei-Pukei",
+    "content": "Hunt",
+    "hunt_id": 11310210,
+    "difficulty": 5,
+    "level": 13,
+    "suggested_hunt_power": 13363,
+    "health": 421564,
+    "attack": 1257
+   },
+   {
+    "monster_id": 110210,
+    "monster": "Radiant Pukei-Pukei",
+    "content": "Hunt",
+    "hunt_id": 11510210,
+    "difficulty": 6,
+    "level": 15,
+    "suggested_hunt_power": 15283,
+    "health": 764287,
+    "attack": 1460
+   },
+   {
+    "monster_id": 110210,
+    "monster": "Radiant Pukei-Pukei",
+    "content": "Extreme Hunt",
+    "hunt_id": 21310210,
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": 12368,
+    "health": 1108002,
+    "attack": 1164
+   },
+   {
+    "monster_id": 110210,
+    "monster": "Radiant Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 4,
+    "suggested_hunt_power": "",
+    "health": 14537,
+    "attack": 345
+   },
+   {
+    "monster_id": 110210,
+    "monster": "Radiant Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 5,
+    "suggested_hunt_power": "",
+    "health": 18491,
+    "attack": 402
+   },
+   {
+    "monster_id": 110210,
+    "monster": "Radiant Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 6,
+    "suggested_hunt_power": "",
+    "health": 30131,
+    "attack": 570
+   },
+   {
+    "monster_id": 110210,
+    "monster": "Radiant Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 7,
+    "suggested_hunt_power": "",
+    "health": 51908,
+    "attack": 717
+   },
+   {
+    "monster_id": 110210,
+    "monster": "Radiant Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 8,
+    "suggested_hunt_power": "",
+    "health": 67977,
+    "attack": 802
+   },
+   {
+    "monster_id": 110210,
+    "monster": "Radiant Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 9,
+    "suggested_hunt_power": "",
+    "health": 89447,
+    "attack": 971
+   },
+   {
+    "monster_id": 110210,
+    "monster": "Radiant Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 10,
+    "suggested_hunt_power": "",
+    "health": 108969,
+    "attack": 1037
+   },
+   {
+    "monster_id": 110210,
+    "monster": "Radiant Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 173013,
+    "attack": 1104
+   },
+   {
+    "monster_id": 110210,
+    "monster": "Radiant Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 231828,
+    "attack": 1104
+   },
+   {
+    "monster_id": 110210,
+    "monster": "Radiant Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 329056,
+    "attack": 1237
+   },
+   {
+    "monster_id": 110210,
+    "monster": "Radiant Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 430604,
+    "attack": 1300
+   },
+   {
+    "monster_id": 110210,
+    "monster": "Radiant Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 567532,
+    "attack": 1370
+   },
+   {
+    "monster_id": 110210,
+    "monster": "Radiant Pukei-Pukei",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 724065,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 104410,
@@ -3716,7 +7619,197 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Barroth_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZBarroth/Sketch_RGZBarroth_C1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZBarroth/Sketch_RGZBarroth_C1.png",
+  "species": "Brute Wyvern",
+  "levels": [
+   {
+    "monster_id": 104410,
+    "monster": "Radiant Barroth",
+    "content": "Hunt",
+    "hunt_id": 10604410,
+    "difficulty": 2,
+    "level": 6,
+    "suggested_hunt_power": 3524,
+    "health": 30418,
+    "attack": 590
+   },
+   {
+    "monster_id": 104410,
+    "monster": "Radiant Barroth",
+    "content": "Hunt",
+    "hunt_id": 11004410,
+    "difficulty": 3,
+    "level": 10,
+    "suggested_hunt_power": 6454,
+    "health": 87468,
+    "attack": 991
+   },
+   {
+    "monster_id": 104410,
+    "monster": "Radiant Barroth",
+    "content": "Hunt",
+    "hunt_id": 11204410,
+    "difficulty": 4,
+    "level": 12,
+    "suggested_hunt_power": 10307,
+    "health": 226699,
+    "attack": 1124
+   },
+   {
+    "monster_id": 104410,
+    "monster": "Radiant Barroth",
+    "content": "Hunt",
+    "hunt_id": 11404410,
+    "difficulty": 5,
+    "level": 14,
+    "suggested_hunt_power": 13943,
+    "health": 459356,
+    "attack": 1320
+   },
+   {
+    "monster_id": 104410,
+    "monster": "Radiant Barroth",
+    "content": "Hunt",
+    "hunt_id": 11604410,
+    "difficulty": 6,
+    "level": 16,
+    "suggested_hunt_power": 15766,
+    "health": 711925,
+    "attack": 1460
+   },
+   {
+    "monster_id": 104410,
+    "monster": "Radiant Barroth",
+    "content": "Extreme Hunt",
+    "hunt_id": 21404410,
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": 15483,
+    "health": 1359761,
+    "attack": 1230
+   },
+   {
+    "monster_id": 104410,
+    "monster": "Radiant Barroth",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 6,
+    "suggested_hunt_power": "",
+    "health": 24043,
+    "attack": 570
+   },
+   {
+    "monster_id": 104410,
+    "monster": "Radiant Barroth",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 7,
+    "suggested_hunt_power": "",
+    "health": 41420,
+    "attack": 717
+   },
+   {
+    "monster_id": 104410,
+    "monster": "Radiant Barroth",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 8,
+    "suggested_hunt_power": "",
+    "health": 54242,
+    "attack": 802
+   },
+   {
+    "monster_id": 104410,
+    "monster": "Radiant Barroth",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 9,
+    "suggested_hunt_power": "",
+    "health": 71374,
+    "attack": 971
+   },
+   {
+    "monster_id": 104410,
+    "monster": "Radiant Barroth",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 10,
+    "suggested_hunt_power": "",
+    "health": 86951,
+    "attack": 1037
+   },
+   {
+    "monster_id": 104410,
+    "monster": "Radiant Barroth",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 138055,
+    "attack": 1104
+   },
+   {
+    "monster_id": 104410,
+    "monster": "Radiant Barroth",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 184986,
+    "attack": 1104
+   },
+   {
+    "monster_id": 104410,
+    "monster": "Radiant Barroth",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 262569,
+    "attack": 1237
+   },
+   {
+    "monster_id": 104410,
+    "monster": "Radiant Barroth",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 343598,
+    "attack": 1300
+   },
+   {
+    "monster_id": 104410,
+    "monster": "Radiant Barroth",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 452860,
+    "attack": 1370
+   },
+   {
+    "monster_id": 104410,
+    "monster": "Radiant Barroth",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 577764,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 110810,
@@ -3927,7 +8020,197 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Jyuratodus_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZJyuratodus/Sketch_RGZJyuratodus_D1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZJyuratodus/Sketch_RGZJyuratodus_D1.png",
+  "species": "Piscine Wyvern",
+  "levels": [
+   {
+    "monster_id": 110810,
+    "monster": "Radiant Jyuratodus",
+    "content": "Hunt",
+    "hunt_id": 10710810,
+    "difficulty": 2,
+    "level": 7,
+    "suggested_hunt_power": 4775,
+    "health": 34962,
+    "attack": 737
+   },
+   {
+    "monster_id": 110810,
+    "monster": "Radiant Jyuratodus",
+    "content": "Hunt",
+    "hunt_id": 11010810,
+    "difficulty": 3,
+    "level": 10,
+    "suggested_hunt_power": 6454,
+    "health": 60246,
+    "attack": 991
+   },
+   {
+    "monster_id": 110810,
+    "monster": "Radiant Jyuratodus",
+    "content": "Hunt",
+    "hunt_id": 11210810,
+    "difficulty": 4,
+    "level": 12,
+    "suggested_hunt_power": 10307,
+    "health": 156145,
+    "attack": 1124
+   },
+   {
+    "monster_id": 110810,
+    "monster": "Radiant Jyuratodus",
+    "content": "Hunt",
+    "hunt_id": 11410810,
+    "difficulty": 5,
+    "level": 14,
+    "suggested_hunt_power": 13943,
+    "health": 316393,
+    "attack": 1320
+   },
+   {
+    "monster_id": 110810,
+    "monster": "Radiant Jyuratodus",
+    "content": "Hunt",
+    "hunt_id": 11610810,
+    "difficulty": 6,
+    "level": 16,
+    "suggested_hunt_power": 15766,
+    "health": 490357,
+    "attack": 1460
+   },
+   {
+    "monster_id": 110810,
+    "monster": "Radiant Jyuratodus",
+    "content": "Extreme Hunt",
+    "hunt_id": 21410810,
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": 16035,
+    "health": 870903,
+    "attack": 1297
+   },
+   {
+    "monster_id": 110810,
+    "monster": "Radiant Jyuratodus",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 6,
+    "suggested_hunt_power": "",
+    "health": 16560,
+    "attack": 570
+   },
+   {
+    "monster_id": 110810,
+    "monster": "Radiant Jyuratodus",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 7,
+    "suggested_hunt_power": "",
+    "health": 28529,
+    "attack": 717
+   },
+   {
+    "monster_id": 110810,
+    "monster": "Radiant Jyuratodus",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 8,
+    "suggested_hunt_power": "",
+    "health": 37360,
+    "attack": 802
+   },
+   {
+    "monster_id": 110810,
+    "monster": "Radiant Jyuratodus",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 9,
+    "suggested_hunt_power": "",
+    "health": 49161,
+    "attack": 971
+   },
+   {
+    "monster_id": 110810,
+    "monster": "Radiant Jyuratodus",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 10,
+    "suggested_hunt_power": "",
+    "health": 59890,
+    "attack": 1037
+   },
+   {
+    "monster_id": 110810,
+    "monster": "Radiant Jyuratodus",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 95089,
+    "attack": 1104
+   },
+   {
+    "monster_id": 110810,
+    "monster": "Radiant Jyuratodus",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 127414,
+    "attack": 1104
+   },
+   {
+    "monster_id": 110810,
+    "monster": "Radiant Jyuratodus",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 180851,
+    "attack": 1237
+   },
+   {
+    "monster_id": 110810,
+    "monster": "Radiant Jyuratodus",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 236662,
+    "attack": 1300
+   },
+   {
+    "monster_id": 110810,
+    "monster": "Radiant Jyuratodus",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 311919,
+    "attack": 1370
+   },
+   {
+    "monster_id": 110810,
+    "monster": "Radiant Jyuratodus",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 397950,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 110010,
@@ -4090,7 +8373,208 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Anjanath_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZAnjanath/Sketch_RGZAnjanath_D1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZAnjanath/Sketch_RGZAnjanath_D1.png",
+  "species": "Brute Wyvern",
+  "levels": [
+   {
+    "monster_id": 110010,
+    "monster": "Radiant Anjanath",
+    "content": "Hunt",
+    "hunt_id": 10510010,
+    "difficulty": 2,
+    "level": 5,
+    "suggested_hunt_power": 2900,
+    "health": 24156,
+    "attack": 590
+   },
+   {
+    "monster_id": 110010,
+    "monster": "Radiant Anjanath",
+    "content": "Hunt",
+    "hunt_id": 11010010,
+    "difficulty": 3,
+    "level": 10,
+    "suggested_hunt_power": 7616,
+    "health": 87358,
+    "attack": 1057
+   },
+   {
+    "monster_id": 110010,
+    "monster": "Radiant Anjanath",
+    "content": "Hunt",
+    "hunt_id": 11210010,
+    "difficulty": 4,
+    "level": 12,
+    "suggested_hunt_power": 11247,
+    "health": 216999,
+    "attack": 1190
+   },
+   {
+    "monster_id": 110010,
+    "monster": "Radiant Anjanath",
+    "content": "Hunt",
+    "hunt_id": 11410010,
+    "difficulty": 5,
+    "level": 14,
+    "suggested_hunt_power": 14360,
+    "health": 425506,
+    "attack": 1390
+   },
+   {
+    "monster_id": 110010,
+    "monster": "Radiant Anjanath",
+    "content": "Hunt",
+    "hunt_id": 11610010,
+    "difficulty": 6,
+    "level": 16,
+    "suggested_hunt_power": 15766,
+    "health": 583647,
+    "attack": 1460
+   },
+   {
+    "monster_id": 110010,
+    "monster": "Radiant Anjanath",
+    "content": "Extreme Hunt",
+    "hunt_id": 21310010,
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": 13748,
+    "health": 873911,
+    "attack": 1230
+   },
+   {
+    "monster_id": 110010,
+    "monster": "Radiant Anjanath",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 5,
+    "suggested_hunt_power": "",
+    "health": 12096,
+    "attack": 402
+   },
+   {
+    "monster_id": 110010,
+    "monster": "Radiant Anjanath",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 6,
+    "suggested_hunt_power": "",
+    "health": 19711,
+    "attack": 570
+   },
+   {
+    "monster_id": 110010,
+    "monster": "Radiant Anjanath",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 7,
+    "suggested_hunt_power": "",
+    "health": 33957,
+    "attack": 717
+   },
+   {
+    "monster_id": 110010,
+    "monster": "Radiant Anjanath",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 8,
+    "suggested_hunt_power": "",
+    "health": 44468,
+    "attack": 802
+   },
+   {
+    "monster_id": 110010,
+    "monster": "Radiant Anjanath",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 9,
+    "suggested_hunt_power": "",
+    "health": 58514,
+    "attack": 971
+   },
+   {
+    "monster_id": 110010,
+    "monster": "Radiant Anjanath",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 10,
+    "suggested_hunt_power": "",
+    "health": 71284,
+    "attack": 1037
+   },
+   {
+    "monster_id": 110010,
+    "monster": "Radiant Anjanath",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 113180,
+    "attack": 1104
+   },
+   {
+    "monster_id": 110010,
+    "monster": "Radiant Anjanath",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 151655,
+    "attack": 1104
+   },
+   {
+    "monster_id": 110010,
+    "monster": "Radiant Anjanath",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 215258,
+    "attack": 1237
+   },
+   {
+    "monster_id": 110010,
+    "monster": "Radiant Anjanath",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 281687,
+    "attack": 1300
+   },
+   {
+    "monster_id": 110010,
+    "monster": "Radiant Anjanath",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 371261,
+    "attack": 1370
+   },
+   {
+    "monster_id": 110010,
+    "monster": "Radiant Anjanath",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 473660,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 199901,
@@ -4121,7 +8605,241 @@
   ],
   "hitzones": [],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathian_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRathian/Sketch_RGZRathian_C1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRathian/Sketch_RGZRathian_C1.png",
+  "species": "Flying Wyvern",
+  "levels": [
+   {
+    "monster_id": 199901,
+    "monster": "Radiant Rathian",
+    "content": "Hunt",
+    "hunt_id": 10399901,
+    "difficulty": 1,
+    "level": 3,
+    "suggested_hunt_power": 2100,
+    "health": 7752,
+    "attack": 355
+   },
+   {
+    "monster_id": 199901,
+    "monster": "Radiant Rathian",
+    "content": "Hunt",
+    "hunt_id": 10899901,
+    "difficulty": 2,
+    "level": 8,
+    "suggested_hunt_power": 4790,
+    "health": 28071,
+    "attack": 737
+   },
+   {
+    "monster_id": 199901,
+    "monster": "Radiant Rathian",
+    "content": "Hunt",
+    "hunt_id": 11099901,
+    "difficulty": 3,
+    "level": 10,
+    "suggested_hunt_power": 7616,
+    "health": 57448,
+    "attack": 1057
+   },
+   {
+    "monster_id": 199901,
+    "monster": "Radiant Rathian",
+    "content": "Hunt",
+    "hunt_id": 11299901,
+    "difficulty": 4,
+    "level": 12,
+    "suggested_hunt_power": 11247,
+    "health": 142703,
+    "attack": 1190
+   },
+   {
+    "monster_id": 199901,
+    "monster": "Radiant Rathian",
+    "content": "Hunt",
+    "hunt_id": 11499901,
+    "difficulty": 5,
+    "level": 14,
+    "suggested_hunt_power": 14360,
+    "health": 279822,
+    "attack": 1390
+   },
+   {
+    "monster_id": 199901,
+    "monster": "Radiant Rathian",
+    "content": "Hunt",
+    "hunt_id": 11699901,
+    "difficulty": 6,
+    "level": 16,
+    "suggested_hunt_power": 15766,
+    "health": 383819,
+    "attack": 1460
+   },
+   {
+    "monster_id": 199901,
+    "monster": "Radiant Rathian",
+    "content": "Extreme Hunt",
+    "hunt_id": 21299901,
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": 10989,
+    "health": 311107,
+    "attack": 1164
+   },
+   {
+    "monster_id": 199901,
+    "monster": "Radiant Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 3,
+    "suggested_hunt_power": "",
+    "health": 4792,
+    "attack": 329
+   },
+   {
+    "monster_id": 199901,
+    "monster": "Radiant Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 4,
+    "suggested_hunt_power": "",
+    "health": 6254,
+    "attack": 345
+   },
+   {
+    "monster_id": 199901,
+    "monster": "Radiant Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 5,
+    "suggested_hunt_power": "",
+    "health": 7955,
+    "attack": 402
+   },
+   {
+    "monster_id": 199901,
+    "monster": "Radiant Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 6,
+    "suggested_hunt_power": "",
+    "health": 12962,
+    "attack": 570
+   },
+   {
+    "monster_id": 199901,
+    "monster": "Radiant Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 7,
+    "suggested_hunt_power": "",
+    "health": 22331,
+    "attack": 717
+   },
+   {
+    "monster_id": 199901,
+    "monster": "Radiant Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 8,
+    "suggested_hunt_power": "",
+    "health": 29243,
+    "attack": 802
+   },
+   {
+    "monster_id": 199901,
+    "monster": "Radiant Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 9,
+    "suggested_hunt_power": "",
+    "health": 38480,
+    "attack": 971
+   },
+   {
+    "monster_id": 199901,
+    "monster": "Radiant Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 10,
+    "suggested_hunt_power": "",
+    "health": 46878,
+    "attack": 1037
+   },
+   {
+    "monster_id": 199901,
+    "monster": "Radiant Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 74430,
+    "attack": 1104
+   },
+   {
+    "monster_id": 199901,
+    "monster": "Radiant Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 99731,
+    "attack": 1104
+   },
+   {
+    "monster_id": 199901,
+    "monster": "Radiant Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 141559,
+    "attack": 1237
+   },
+   {
+    "monster_id": 199901,
+    "monster": "Radiant Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 185244,
+    "attack": 1300
+   },
+   {
+    "monster_id": 199901,
+    "monster": "Radiant Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 244150,
+    "attack": 1370
+   },
+   {
+    "monster_id": 199901,
+    "monster": "Radiant Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 311489,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 100210,
@@ -4285,7 +9003,98 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathalos_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRathalos/Sketch_RGZRathalos_C1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRathalos/Sketch_RGZRathalos_C1.png",
+  "species": "Flying Wyvern",
+  "levels": [
+   {
+    "monster_id": 100210,
+    "monster": "Radiant Rathalos",
+    "content": "Hunt",
+    "hunt_id": 11300210,
+    "difficulty": 5,
+    "level": 13,
+    "suggested_hunt_power": 13363,
+    "health": 156441,
+    "attack": 1257
+   },
+   {
+    "monster_id": 100210,
+    "monster": "Radiant Rathalos",
+    "content": "Hunt",
+    "hunt_id": 11600210,
+    "difficulty": 6,
+    "level": 16,
+    "suggested_hunt_power": 15766,
+    "health": 317280,
+    "attack": 1460
+   },
+   {
+    "monster_id": 100210,
+    "monster": "Radiant Rathalos",
+    "content": "Extreme Hunt",
+    "hunt_id": 21600210,
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": 22964,
+    "health": 4600374,
+    "attack": 1590
+   },
+   {
+    "monster_id": 100210,
+    "monster": "Radiant Rathalos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 82442,
+    "attack": 1104
+   },
+   {
+    "monster_id": 100210,
+    "monster": "Radiant Rathalos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 117018,
+    "attack": 1237
+   },
+   {
+    "monster_id": 100210,
+    "monster": "Radiant Rathalos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 153130,
+    "attack": 1300
+   },
+   {
+    "monster_id": 100210,
+    "monster": "Radiant Rathalos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 201824,
+    "attack": 1370
+   },
+   {
+    "monster_id": 100210,
+    "monster": "Radiant Rathalos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 257490,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 100710,
@@ -4472,7 +9281,98 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Diablos_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZDiablos/Sketch_RGZDiablos_D1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZDiablos/Sketch_RGZDiablos_D1.png",
+  "species": "Flying Wyvern",
+  "levels": [
+   {
+    "monster_id": 100710,
+    "monster": "Radiant Diablos",
+    "content": "Hunt",
+    "hunt_id": 11300710,
+    "difficulty": 5,
+    "level": 13,
+    "suggested_hunt_power": 12903,
+    "health": 169584,
+    "attack": 1190
+   },
+   {
+    "monster_id": 100710,
+    "monster": "Radiant Diablos",
+    "content": "Hunt",
+    "hunt_id": 11600710,
+    "difficulty": 6,
+    "level": 16,
+    "suggested_hunt_power": 15766,
+    "health": 399239,
+    "attack": 1460
+   },
+   {
+    "monster_id": 100710,
+    "monster": "Radiant Diablos",
+    "content": "Extreme Hunt",
+    "hunt_id": 21600710,
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": 21351,
+    "health": 3461750,
+    "attack": 1570
+   },
+   {
+    "monster_id": 100710,
+    "monster": "Radiant Diablos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 103738,
+    "attack": 1104
+   },
+   {
+    "monster_id": 100710,
+    "monster": "Radiant Diablos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 147246,
+    "attack": 1237
+   },
+   {
+    "monster_id": 100710,
+    "monster": "Radiant Diablos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 192686,
+    "attack": 1300
+   },
+   {
+    "monster_id": 100710,
+    "monster": "Radiant Diablos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 253958,
+    "attack": 1370
+   },
+   {
+    "monster_id": 100710,
+    "monster": "Radiant Diablos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 324004,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 110710,
@@ -4634,7 +9534,197 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_KuluYaKu_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZKuluYaKu/Sketch_RGZKuluYaKu_D1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZKuluYaKu/Sketch_RGZKuluYaKu_D1.png",
+  "species": "Bird Wyvern",
+  "levels": [
+   {
+    "monster_id": 110710,
+    "monster": "Radiant Kulu-Ya-Ku",
+    "content": "Hunt",
+    "hunt_id": 10610710,
+    "difficulty": 2,
+    "level": 6,
+    "suggested_hunt_power": 3524,
+    "health": 29415,
+    "attack": 590
+   },
+   {
+    "monster_id": 110710,
+    "monster": "Radiant Kulu-Ya-Ku",
+    "content": "Hunt",
+    "hunt_id": 10910710,
+    "difficulty": 3,
+    "level": 9,
+    "suggested_hunt_power": 6179,
+    "health": 76737,
+    "attack": 991
+   },
+   {
+    "monster_id": 110710,
+    "monster": "Radiant Kulu-Ya-Ku",
+    "content": "Hunt",
+    "hunt_id": 11110710,
+    "difficulty": 4,
+    "level": 11,
+    "suggested_hunt_power": 10100,
+    "health": 208160,
+    "attack": 1124
+   },
+   {
+    "monster_id": 110710,
+    "monster": "Radiant Kulu-Ya-Ku",
+    "content": "Hunt",
+    "hunt_id": 11310710,
+    "difficulty": 5,
+    "level": 13,
+    "suggested_hunt_power": 13516,
+    "health": 400445,
+    "attack": 1320
+   },
+   {
+    "monster_id": 110710,
+    "monster": "Radiant Kulu-Ya-Ku",
+    "content": "Hunt",
+    "hunt_id": 11510710,
+    "difficulty": 6,
+    "level": 15,
+    "suggested_hunt_power": 15283,
+    "health": 615426,
+    "attack": 1460
+   },
+   {
+    "monster_id": 110710,
+    "monster": "Radiant Kulu-Ya-Ku",
+    "content": "Extreme Hunt",
+    "hunt_id": 21410710,
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": 13748,
+    "health": 1206849,
+    "attack": 1230
+   },
+   {
+    "monster_id": 110710,
+    "monster": "Radiant Kulu-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 6,
+    "suggested_hunt_power": "",
+    "health": 23251,
+    "attack": 570
+   },
+   {
+    "monster_id": 110710,
+    "monster": "Radiant Kulu-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 7,
+    "suggested_hunt_power": "",
+    "health": 40055,
+    "attack": 717
+   },
+   {
+    "monster_id": 110710,
+    "monster": "Radiant Kulu-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 8,
+    "suggested_hunt_power": "",
+    "health": 52454,
+    "attack": 802
+   },
+   {
+    "monster_id": 110710,
+    "monster": "Radiant Kulu-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 9,
+    "suggested_hunt_power": "",
+    "health": 69021,
+    "attack": 971
+   },
+   {
+    "monster_id": 110710,
+    "monster": "Radiant Kulu-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 10,
+    "suggested_hunt_power": "",
+    "health": 84085,
+    "attack": 1037
+   },
+   {
+    "monster_id": 110710,
+    "monster": "Radiant Kulu-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 133504,
+    "attack": 1104
+   },
+   {
+    "monster_id": 110710,
+    "monster": "Radiant Kulu-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 178888,
+    "attack": 1104
+   },
+   {
+    "monster_id": 110710,
+    "monster": "Radiant Kulu-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 253913,
+    "attack": 1237
+   },
+   {
+    "monster_id": 110710,
+    "monster": "Radiant Kulu-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 332271,
+    "attack": 1300
+   },
+   {
+    "monster_id": 110710,
+    "monster": "Radiant Kulu-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 437930,
+    "attack": 1370
+   },
+   {
+    "monster_id": 110710,
+    "monster": "Radiant Kulu-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 558717,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 111010,
@@ -4786,7 +9876,131 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Paolumu_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPaolumu/Sketch_RGZPaolumu_C1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPaolumu/Sketch_RGZPaolumu_C1.png",
+  "species": "Flying Wyvern",
+  "levels": [
+   {
+    "monster_id": 111010,
+    "monster": "Radiant Paolumu",
+    "content": "Hunt",
+    "hunt_id": 11111010,
+    "difficulty": 4,
+    "level": 11,
+    "suggested_hunt_power": 9158,
+    "health": 153740,
+    "attack": 1124
+   },
+   {
+    "monster_id": 111010,
+    "monster": "Radiant Paolumu",
+    "content": "Hunt",
+    "hunt_id": 11411010,
+    "difficulty": 5,
+    "level": 14,
+    "suggested_hunt_power": 14360,
+    "health": 475299,
+    "attack": 1390
+   },
+   {
+    "monster_id": 111010,
+    "monster": "Radiant Paolumu",
+    "content": "Hunt",
+    "hunt_id": 11611010,
+    "difficulty": 6,
+    "level": 16,
+    "suggested_hunt_power": 15766,
+    "health": 651946,
+    "attack": 1460
+   },
+   {
+    "monster_id": 111010,
+    "monster": "Radiant Paolumu",
+    "content": "Extreme Hunt",
+    "hunt_id": 21611010,
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": 19531,
+    "health": 2910945,
+    "attack": 1570
+   },
+   {
+    "monster_id": 111010,
+    "monster": "Radiant Paolumu",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 10,
+    "suggested_hunt_power": "",
+    "health": 79626,
+    "attack": 1037
+   },
+   {
+    "monster_id": 111010,
+    "monster": "Radiant Paolumu",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 126424,
+    "attack": 1104
+   },
+   {
+    "monster_id": 111010,
+    "monster": "Radiant Paolumu",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 169401,
+    "attack": 1104
+   },
+   {
+    "monster_id": 111010,
+    "monster": "Radiant Paolumu",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 240448,
+    "attack": 1237
+   },
+   {
+    "monster_id": 111010,
+    "monster": "Radiant Paolumu",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 314650,
+    "attack": 1300
+   },
+   {
+    "monster_id": 111010,
+    "monster": "Radiant Paolumu",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 414707,
+    "attack": 1370
+   },
+   {
+    "monster_id": 111010,
+    "monster": "Radiant Paolumu",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 529088,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 111110,
@@ -4938,7 +10152,98 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Legiana_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZLegiana/Sketch_RGZLegiana_D1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZLegiana/Sketch_RGZLegiana_D1.png",
+  "species": "Flying Wyvern",
+  "levels": [
+   {
+    "monster_id": 111110,
+    "monster": "Radiant Legiana",
+    "content": "Hunt",
+    "hunt_id": 11311110,
+    "difficulty": 5,
+    "level": 13,
+    "suggested_hunt_power": 13516,
+    "health": 331971,
+    "attack": 1320
+   },
+   {
+    "monster_id": 111110,
+    "monster": "Radiant Legiana",
+    "content": "Hunt",
+    "hunt_id": 11611110,
+    "difficulty": 6,
+    "level": 16,
+    "suggested_hunt_power": 15766,
+    "health": 570732,
+    "attack": 1460
+   },
+   {
+    "monster_id": 111110,
+    "monster": "Radiant Legiana",
+    "content": "Extreme Hunt",
+    "hunt_id": 21611110,
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": 23308,
+    "health": 6772317,
+    "attack": 1595
+   },
+   {
+    "monster_id": 111110,
+    "monster": "Radiant Legiana",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 148299,
+    "attack": 1104
+   },
+   {
+    "monster_id": 111110,
+    "monster": "Radiant Legiana",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 210495,
+    "attack": 1237
+   },
+   {
+    "monster_id": 111110,
+    "monster": "Radiant Legiana",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 275454,
+    "attack": 1300
+   },
+   {
+    "monster_id": 111110,
+    "monster": "Radiant Legiana",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 363046,
+    "attack": 1370
+   },
+   {
+    "monster_id": 111110,
+    "monster": "Radiant Legiana",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 463179,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 111210,
@@ -5065,7 +10370,164 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_GreatGirros_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZGreatGirros/Sketch_RGZGreatGirros_D1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZGreatGirros/Sketch_RGZGreatGirros_D1.png",
+  "species": "Fanged Wyvern",
+  "levels": [
+   {
+    "monster_id": 111210,
+    "monster": "Radiant Great Girros",
+    "content": "Hunt",
+    "hunt_id": 10911210,
+    "difficulty": 3,
+    "level": 9,
+    "suggested_hunt_power": 5229,
+    "health": 66083,
+    "attack": 822
+   },
+   {
+    "monster_id": 111210,
+    "monster": "Radiant Great Girros",
+    "content": "Hunt",
+    "hunt_id": 11111210,
+    "difficulty": 4,
+    "level": 11,
+    "suggested_hunt_power": 10100,
+    "health": 228604,
+    "attack": 1124
+   },
+   {
+    "monster_id": 111210,
+    "monster": "Radiant Great Girros",
+    "content": "Hunt",
+    "hunt_id": 11311210,
+    "difficulty": 5,
+    "level": 13,
+    "suggested_hunt_power": 13516,
+    "health": 439775,
+    "attack": 1320
+   },
+   {
+    "monster_id": 111210,
+    "monster": "Radiant Great Girros",
+    "content": "Hunt",
+    "hunt_id": 11511210,
+    "difficulty": 6,
+    "level": 15,
+    "suggested_hunt_power": 15283,
+    "health": 675869,
+    "attack": 1460
+   },
+   {
+    "monster_id": 111210,
+    "monster": "Radiant Great Girros",
+    "content": "Extreme Hunt",
+    "hunt_id": 21511210,
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": 17232,
+    "health": 3092249,
+    "attack": 1430
+   },
+   {
+    "monster_id": 111210,
+    "monster": "Radiant Great Girros",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 8,
+    "suggested_hunt_power": "",
+    "health": 57605,
+    "attack": 802
+   },
+   {
+    "monster_id": 111210,
+    "monster": "Radiant Great Girros",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 9,
+    "suggested_hunt_power": "",
+    "health": 75800,
+    "attack": 971
+   },
+   {
+    "monster_id": 111210,
+    "monster": "Radiant Great Girros",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 10,
+    "suggested_hunt_power": "",
+    "health": 92343,
+    "attack": 1037
+   },
+   {
+    "monster_id": 111210,
+    "monster": "Radiant Great Girros",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 146616,
+    "attack": 1104
+   },
+   {
+    "monster_id": 111210,
+    "monster": "Radiant Great Girros",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 196457,
+    "attack": 1104
+   },
+   {
+    "monster_id": 111210,
+    "monster": "Radiant Great Girros",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 278851,
+    "attack": 1237
+   },
+   {
+    "monster_id": 111210,
+    "monster": "Radiant Great Girros",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 364905,
+    "attack": 1300
+   },
+   {
+    "monster_id": 111210,
+    "monster": "Radiant Great Girros",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 480941,
+    "attack": 1370
+   },
+   {
+    "monster_id": 111210,
+    "monster": "Radiant Great Girros",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 613591,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 110910,
@@ -5193,7 +10655,164 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_TobiKadachi_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZTobiKadachi/Sketch_RGZTobiKadachi_C1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZTobiKadachi/Sketch_RGZTobiKadachi_C1.png",
+  "species": "Fanged Wyvern",
+  "levels": [
+   {
+    "monster_id": 110910,
+    "monster": "Radiant Tobi-Kadachi",
+    "content": "Hunt",
+    "hunt_id": 10910910,
+    "difficulty": 3,
+    "level": 9,
+    "suggested_hunt_power": 5413,
+    "health": 50785,
+    "attack": 822
+   },
+   {
+    "monster_id": 110910,
+    "monster": "Radiant Tobi-Kadachi",
+    "content": "Hunt",
+    "hunt_id": 11210910,
+    "difficulty": 4,
+    "level": 12,
+    "suggested_hunt_power": 11163,
+    "health": 183931,
+    "attack": 1190
+   },
+   {
+    "monster_id": 110910,
+    "monster": "Radiant Tobi-Kadachi",
+    "content": "Hunt",
+    "hunt_id": 11410910,
+    "difficulty": 5,
+    "level": 14,
+    "suggested_hunt_power": 13943,
+    "health": 350947,
+    "attack": 1320
+   },
+   {
+    "monster_id": 110910,
+    "monster": "Radiant Tobi-Kadachi",
+    "content": "Hunt",
+    "hunt_id": 11610910,
+    "difficulty": 6,
+    "level": 16,
+    "suggested_hunt_power": 15766,
+    "health": 543909,
+    "attack": 1460
+   },
+   {
+    "monster_id": 110910,
+    "monster": "Radiant Tobi-Kadachi",
+    "content": "Extreme Hunt",
+    "hunt_id": 21510910,
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": 17232,
+    "health": 2022300,
+    "attack": 1430
+   },
+   {
+    "monster_id": 110910,
+    "monster": "Radiant Tobi-Kadachi",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 8,
+    "suggested_hunt_power": "",
+    "health": 41441,
+    "attack": 802
+   },
+   {
+    "monster_id": 110910,
+    "monster": "Radiant Tobi-Kadachi",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 9,
+    "suggested_hunt_power": "",
+    "health": 54530,
+    "attack": 971
+   },
+   {
+    "monster_id": 110910,
+    "monster": "Radiant Tobi-Kadachi",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 10,
+    "suggested_hunt_power": "",
+    "health": 66431,
+    "attack": 1037
+   },
+   {
+    "monster_id": 110910,
+    "monster": "Radiant Tobi-Kadachi",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 105474,
+    "attack": 1104
+   },
+   {
+    "monster_id": 110910,
+    "monster": "Radiant Tobi-Kadachi",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 141329,
+    "attack": 1104
+   },
+   {
+    "monster_id": 110910,
+    "monster": "Radiant Tobi-Kadachi",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 200602,
+    "attack": 1237
+   },
+   {
+    "monster_id": 110910,
+    "monster": "Radiant Tobi-Kadachi",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 262508,
+    "attack": 1300
+   },
+   {
+    "monster_id": 110910,
+    "monster": "Radiant Tobi-Kadachi",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 345984,
+    "attack": 1370
+   },
+   {
+    "monster_id": 110910,
+    "monster": "Radiant Tobi-Kadachi",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 441411,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 111410,
@@ -5345,7 +10964,87 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Radobaan_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRadobaan/Sketch_RGZRadobaan_D1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRadobaan/Sketch_RGZRadobaan_D1.png",
+  "species": "Brute Wyvern",
+  "levels": [
+   {
+    "monster_id": 111410,
+    "monster": "Radiant Radobaan",
+    "content": "Hunt",
+    "hunt_id": 11411410,
+    "difficulty": 5,
+    "level": 14,
+    "suggested_hunt_power": 13943,
+    "health": 257081,
+    "attack": 1320
+   },
+   {
+    "monster_id": 111410,
+    "monster": "Radiant Radobaan",
+    "content": "Hunt",
+    "hunt_id": 11611410,
+    "difficulty": 6,
+    "level": 16,
+    "suggested_hunt_power": 15766,
+    "health": 398432,
+    "attack": 1460
+   },
+   {
+    "monster_id": 111410,
+    "monster": "Radiant Radobaan",
+    "content": "Extreme Hunt",
+    "hunt_id": 21611410,
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": 24012,
+    "health": 4235757,
+    "attack": 1605
+   },
+   {
+    "monster_id": 111410,
+    "monster": "Radiant Radobaan",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 146948,
+    "attack": 1237
+   },
+   {
+    "monster_id": 111410,
+    "monster": "Radiant Radobaan",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 192296,
+    "attack": 1300
+   },
+   {
+    "monster_id": 111410,
+    "monster": "Radiant Radobaan",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 253445,
+    "attack": 1370
+   },
+   {
+    "monster_id": 111410,
+    "monster": "Radiant Radobaan",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 323349,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 100111,
@@ -5509,7 +11208,87 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_PinkRathian_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPinkRathian/Sketch_RGZPinkRathian_C1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPinkRathian/Sketch_RGZPinkRathian_C1.png",
+  "species": "Flying Wyvern",
+  "levels": [
+   {
+    "monster_id": 100111,
+    "monster": "Radiant Pink Rathian",
+    "content": "Hunt",
+    "hunt_id": 11400111,
+    "difficulty": 5,
+    "level": 14,
+    "suggested_hunt_power": 14360,
+    "health": 269291,
+    "attack": 1390
+   },
+   {
+    "monster_id": 100111,
+    "monster": "Radiant Pink Rathian",
+    "content": "Hunt",
+    "hunt_id": 11600111,
+    "difficulty": 6,
+    "level": 16,
+    "suggested_hunt_power": 15766,
+    "health": 369374,
+    "attack": 1460
+   },
+   {
+    "monster_id": 100111,
+    "monster": "Radiant Pink Rathian",
+    "content": "Extreme Hunt",
+    "hunt_id": 21600111,
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": 24736,
+    "health": 4057125,
+    "attack": 1615
+   },
+   {
+    "monster_id": 100111,
+    "monster": "Radiant Pink Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 136231,
+    "attack": 1237
+   },
+   {
+    "monster_id": 100111,
+    "monster": "Radiant Pink Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 178272,
+    "attack": 1300
+   },
+   {
+    "monster_id": 100111,
+    "monster": "Radiant Pink Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 234961,
+    "attack": 1370
+   },
+   {
+    "monster_id": 100111,
+    "monster": "Radiant Pink Rathian",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 299766,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 112010,
@@ -5610,7 +11389,120 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_TzitziYaKu_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZTzitziYaKu/Sketch_RGZTzitziYaKu_C1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZTzitziYaKu/Sketch_RGZTzitziYaKu_C1.png",
+  "species": "Bird Wyvern",
+  "levels": [
+   {
+    "monster_id": 112010,
+    "monster": "Radiant Tzitzi-Ya-Ku",
+    "content": "Hunt",
+    "hunt_id": 11212010,
+    "difficulty": 4,
+    "level": 12,
+    "suggested_hunt_power": 10307,
+    "health": 206888,
+    "attack": 1124
+   },
+   {
+    "monster_id": 112010,
+    "monster": "Radiant Tzitzi-Ya-Ku",
+    "content": "Hunt",
+    "hunt_id": 11312010,
+    "difficulty": 5,
+    "level": 13,
+    "suggested_hunt_power": 13516,
+    "health": 377909,
+    "attack": 1320
+   },
+   {
+    "monster_id": 112010,
+    "monster": "Radiant Tzitzi-Ya-Ku",
+    "content": "Hunt",
+    "hunt_id": 11512010,
+    "difficulty": 6,
+    "level": 15,
+    "suggested_hunt_power": 15283,
+    "health": 580791,
+    "attack": 1460
+   },
+   {
+    "monster_id": 112010,
+    "monster": "Radiant Tzitzi-Ya-Ku",
+    "content": "Extreme Hunt",
+    "hunt_id": 21612010,
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": 19736,
+    "health": 4530561,
+    "attack": 1570
+   },
+   {
+    "monster_id": 112010,
+    "monster": "Radiant Tzitzi-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 125991,
+    "attack": 1104
+   },
+   {
+    "monster_id": 112010,
+    "monster": "Radiant Tzitzi-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 168821,
+    "attack": 1104
+   },
+   {
+    "monster_id": 112010,
+    "monster": "Radiant Tzitzi-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 239623,
+    "attack": 1237
+   },
+   {
+    "monster_id": 112010,
+    "monster": "Radiant Tzitzi-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 313572,
+    "attack": 1300
+   },
+   {
+    "monster_id": 112010,
+    "monster": "Radiant Tzitzi-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 413285,
+    "attack": 1370
+   },
+   {
+    "monster_id": 112010,
+    "monster": "Radiant Tzitzi-Ya-Ku",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 527274,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 100711,
@@ -5797,7 +11689,76 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_BlackDiablos_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZBlackDiablos/Sketch_RGZBlackDiablos_D1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZBlackDiablos/Sketch_RGZBlackDiablos_D1.png",
+  "species": "Flying Wyvern",
+  "levels": [
+   {
+    "monster_id": 100711,
+    "monster": "Radiant Black Diablos",
+    "content": "Hunt",
+    "hunt_id": 11600711,
+    "difficulty": 6,
+    "level": 16,
+    "suggested_hunt_power": 15766,
+    "health": 672643,
+    "attack": 1460
+   },
+   {
+    "monster_id": 100711,
+    "monster": "Radiant Black Diablos",
+    "content": "Extreme Hunt",
+    "hunt_id": 21600711,
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": 28704,
+    "health": 7396592,
+    "attack": 1665
+   },
+   {
+    "monster_id": 100711,
+    "monster": "Radiant Black Diablos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 228998,
+    "attack": 1237
+   },
+   {
+    "monster_id": 100711,
+    "monster": "Radiant Black Diablos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 299667,
+    "attack": 1300
+   },
+   {
+    "monster_id": 100711,
+    "monster": "Radiant Black Diablos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 394959,
+    "attack": 1370
+   },
+   {
+    "monster_id": 100711,
+    "monster": "Radiant Black Diablos",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 503894,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 111310,
@@ -5925,7 +11886,120 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Odogaron_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZOdogaron/Sketch_RGZOdogaron_D1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZOdogaron/Sketch_RGZOdogaron_D1.png",
+  "species": "Fanged Wyvern",
+  "levels": [
+   {
+    "monster_id": 111310,
+    "monster": "Radiant Odogaron",
+    "content": "Hunt",
+    "hunt_id": 11211310,
+    "difficulty": 4,
+    "level": 12,
+    "suggested_hunt_power": 11247,
+    "health": 177307,
+    "attack": 1190
+   },
+   {
+    "monster_id": 111310,
+    "monster": "Radiant Odogaron",
+    "content": "Hunt",
+    "hunt_id": 11411310,
+    "difficulty": 5,
+    "level": 14,
+    "suggested_hunt_power": 14360,
+    "health": 347674,
+    "attack": 1390
+   },
+   {
+    "monster_id": 111310,
+    "monster": "Radiant Odogaron",
+    "content": "Hunt",
+    "hunt_id": 11611310,
+    "difficulty": 6,
+    "level": 16,
+    "suggested_hunt_power": 15766,
+    "health": 476889,
+    "attack": 1460
+   },
+   {
+    "monster_id": 111310,
+    "monster": "Radiant Odogaron",
+    "content": "Extreme Hunt",
+    "hunt_id": 21611310,
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": 21063,
+    "health": 3715353,
+    "attack": 1570
+   },
+   {
+    "monster_id": 111310,
+    "monster": "Radiant Odogaron",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 11,
+    "suggested_hunt_power": "",
+    "health": 92478,
+    "attack": 1104
+   },
+   {
+    "monster_id": 111310,
+    "monster": "Radiant Odogaron",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 12,
+    "suggested_hunt_power": "",
+    "health": 123915,
+    "attack": 1104
+   },
+   {
+    "monster_id": 111310,
+    "monster": "Radiant Odogaron",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 13,
+    "suggested_hunt_power": "",
+    "health": 175884,
+    "attack": 1237
+   },
+   {
+    "monster_id": 111310,
+    "monster": "Radiant Odogaron",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 14,
+    "suggested_hunt_power": "",
+    "health": 230162,
+    "attack": 1300
+   },
+   {
+    "monster_id": 111310,
+    "monster": "Radiant Odogaron",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 15,
+    "suggested_hunt_power": "",
+    "health": 303352,
+    "attack": 1370
+   },
+   {
+    "monster_id": 111310,
+    "monster": "Radiant Odogaron",
+    "content": "Field (open world)",
+    "hunt_id": "",
+    "difficulty": "",
+    "level": 16,
+    "suggested_hunt_power": "",
+    "health": 387020,
+    "attack": 1510
+   }
+  ]
  },
  {
   "id": 140001,
@@ -6521,7 +12595,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_PrismireKnight.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RugerAidal/Sketch_RugerAidal_D1.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RugerAidal/Sketch_RugerAidal_D1.png",
+  "species": "Elder Dragons",
+  "levels": []
  },
  {
   "id": 100110,
@@ -6790,7 +12866,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathian_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathian/Sketch_Rathian_D1_Coloured.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathian/Sketch_Rathian_D1_Coloured.png",
+  "species": "Flying Wyvern",
+  "levels": []
  },
  {
   "id": 200101,
@@ -6843,7 +12921,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Aptonoth.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Aptonoth/Sketch_Aptonoth_Coloured.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Aptonoth/Sketch_Aptonoth_Coloured.png",
+  "species": "Herbivore",
+  "levels": []
  },
  {
   "id": 200201,
@@ -6896,7 +12976,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Apceros.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Apceros/Sketch_Apceros_Coloured.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Apceros/Sketch_Apceros_Coloured.png",
+  "species": "Herbivore",
+  "levels": []
  },
  {
   "id": 200301,
@@ -6949,7 +13031,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Kelbi.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/FemaleKelbi/Sketch_FemaleKelbi_Coloured.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/FemaleKelbi/Sketch_FemaleKelbi_Coloured.png",
+  "species": "Herbivore",
+  "levels": []
  },
  {
   "id": 200302,
@@ -7002,7 +13086,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Kelbi.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/FemaleKelbi/Sketch_FemaleKelbi_Coloured.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/FemaleKelbi/Sketch_FemaleKelbi_Coloured.png",
+  "species": "Herbivore",
+  "levels": []
  },
  {
   "id": 200501,
@@ -7043,7 +13129,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Hornetaur.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Hornetaur/Sketch_Hornetaur_Coloured.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Hornetaur/Sketch_Hornetaur_Coloured.png",
+  "species": "Neopteron",
+  "levels": []
  },
  {
   "id": 200510,
@@ -7084,7 +13172,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Hornetaur_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Hornetaur/Sketch_Hornetaur_Coloured.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Hornetaur/Sketch_Hornetaur_Coloured.png",
+  "species": "Neopteron",
+  "levels": []
  },
  {
   "id": 200601,
@@ -7125,7 +13215,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Vespoid.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Vespoid/Sketch_Vespoid_Coloured.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Vespoid/Sketch_Vespoid_Coloured.png",
+  "species": "Neopteron",
+  "levels": []
  },
  {
   "id": 202901,
@@ -7178,7 +13270,64 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Gajau.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajau/Sketch_Gajau_Coloured.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajau/Sketch_Gajau_Coloured.png",
+  "species": "Fish",
+  "levels": []
+ },
+ {
+  "id": 202910,
+  "name": "Radiant Gajau",
+  "large": false,
+  "description": "",
+  "ecology": "",
+  "hunting_tips": "",
+  "element_weakness_stars": {
+   "water": 1,
+   "fire": 3,
+   "ice": 1,
+   "thunder": 3,
+   "dragon": 0
+  },
+  "element_hitzone_average": {
+   "water": 75.0,
+   "fire": 97.5,
+   "ice": 75.0,
+   "thunder": 97.5,
+   "dragon": 52.5
+  },
+  "best_element": "fire",
+  "item_effectiveness": [],
+  "breakable_parts": [],
+  "hitzones": [
+   {
+    "part": "Head",
+    "cut": 80,
+    "impact": 80,
+    "shot": 80,
+    "water": 80,
+    "fire": 104,
+    "ice": 80,
+    "thunder": 104,
+    "dragon": 56,
+    "weak_point_stars": 0
+   },
+   {
+    "part": "Body",
+    "cut": 70,
+    "impact": 70,
+    "shot": 70,
+    "water": 70,
+    "fire": 91,
+    "ice": 70,
+    "thunder": 91,
+    "dragon": 49,
+    "weak_point_stars": 0
+   }
+  ],
+  "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Gajau_LightingStone.png",
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajau/Sketch_Gajau_Coloured.png",
+  "species": "Fish",
+  "levels": []
  },
  {
   "id": 204901,
@@ -7231,7 +13380,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Jagras.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Jagras/Sketch_Jagras_Coloured.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Jagras/Sketch_Jagras_Coloured.png",
+  "species": "Fanged Wyvern",
+  "levels": []
  },
  {
   "id": 204910,
@@ -7284,7 +13435,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Jagras_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Jagras/Sketch_Jagras_Coloured.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Jagras/Sketch_Jagras_Coloured.png",
+  "species": "Fanged Wyvern",
+  "levels": []
  },
  {
   "id": 205001,
@@ -7337,7 +13490,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Mernos.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Mernos/Sketch_Mernos_Coloured.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Mernos/Sketch_Mernos_Coloured.png",
+  "species": "Winged Wingdrakes",
+  "levels": []
  },
  {
   "id": 205010,
@@ -7390,7 +13545,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Mernos_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Mernos/Sketch_Mernos_Coloured.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Mernos/Sketch_Mernos_Coloured.png",
+  "species": "Winged Wingdrakes",
+  "levels": []
  },
  {
   "id": 205101,
@@ -7443,7 +13600,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Corontosaurus_01.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/MaleKestodon/Sketch_MaleKestodon_Coloured.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/MaleKestodon/Sketch_MaleKestodon_Coloured.png",
+  "species": "Herbivore",
+  "levels": []
  },
  {
   "id": 205102,
@@ -7496,7 +13655,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Corontosaurus_01.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/MaleKestodon/Sketch_MaleKestodon_Coloured.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/MaleKestodon/Sketch_MaleKestodon_Coloured.png",
+  "species": "Herbivore",
+  "levels": []
  },
  {
   "id": 205110,
@@ -7549,7 +13710,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Corontosaurus_01_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/MaleKestodon/Sketch_MaleKestodon_Coloured.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/MaleKestodon/Sketch_MaleKestodon_Coloured.png",
+  "species": "Herbivore",
+  "levels": []
  },
  {
   "id": 205111,
@@ -7602,7 +13765,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Corontosaurus_01_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/MaleKestodon/Sketch_MaleKestodon_Coloured.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/MaleKestodon/Sketch_MaleKestodon_Coloured.png",
+  "species": "Herbivore",
+  "levels": []
  },
  {
   "id": 205301,
@@ -7655,7 +13820,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Raphinos.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Raphinos/Sketch_Raphinos_Coloured.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Raphinos/Sketch_Raphinos_Coloured.png",
+  "species": "Winged Wingdrakes",
+  "levels": []
  },
  {
   "id": 205310,
@@ -7708,7 +13875,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Raphinos_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Raphinos/Sketch_Raphinos_Coloured.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Raphinos/Sketch_Raphinos_Coloured.png",
+  "species": "Winged Wingdrakes",
+  "levels": []
  },
  {
   "id": 205401,
@@ -7761,7 +13930,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Shamos.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Shamos/Sketch_Shamos_Coloured.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Shamos/Sketch_Shamos_Coloured.png",
+  "species": "Fanged Wyvern",
+  "levels": []
  },
  {
   "id": 205410,
@@ -7814,7 +13985,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Shamos_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Shamos/Sketch_Shamos_Coloured.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Shamos/Sketch_Shamos_Coloured.png",
+  "species": "Fanged Wyvern",
+  "levels": []
  },
  {
   "id": 205501,
@@ -7867,7 +14040,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Barnos.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Barnos/Sketch_Barnos_Coloured.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Barnos/Sketch_Barnos_Coloured.png",
+  "species": "Winged Wingdrakes",
+  "levels": []
  },
  {
   "id": 205601,
@@ -7920,7 +14095,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Girros.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Girros/Sketch_Girros_Coloured.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Girros/Sketch_Girros_Coloured.png",
+  "species": "Fanged Wyvern",
+  "levels": []
  },
  {
   "id": 205610,
@@ -7973,7 +14150,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Girros_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Girros/Sketch_Girros_Coloured.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Girros/Sketch_Girros_Coloured.png",
+  "species": "Fanged Wyvern",
+  "levels": []
  },
  {
   "id": 205801,
@@ -8026,7 +14205,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Gastodon.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gastodon/Sketch_Gastodon_Coloured.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gastodon/Sketch_Gastodon_Coloured.png",
+  "species": "Herbivore",
+  "levels": []
  },
  {
   "id": 205901,
@@ -8079,7 +14260,9 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Noios.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Noios/Sketch_Noios_Coloured.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Noios/Sketch_Noios_Coloured.png",
+  "species": "Winged Wingdrakes",
+  "levels": []
  },
  {
   "id": 206101,
@@ -8132,6 +14315,8 @@
    }
   ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Carapaceon.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajalaka/Sketch_Gajalaka_Coloured.png"
+  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/SmallMonster/Gajalaka/Sketch_Gajalaka_Coloured.png",
+  "species": "Lynian",
+  "levels": []
  }
 ]

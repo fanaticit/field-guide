@@ -80,6 +80,9 @@ const SLOT_ICONS: Record<string, string> = {
 // ── Helpers ───────────────────────────────────────────────────
 
 export function getChallengeDisplayName(c: HunterChallenge, weaponsMap?: Map<string, DBWeapon>): string {
+  if (c.challenge_type === 'monster') {
+    return c.monster_name ?? c.set_name ?? 'Monster Study';
+  }
   if (c.challenge_type === 'weapon' || c.weapon_id) {
     const weapon = c.weapon_id ? weaponsMap?.get(c.weapon_id) : null;
     const curR = c.current_rarity ?? 0;
@@ -121,20 +124,21 @@ function statusStyle(status: ChallengeStatus) {
 
 // ── Collection categories ─────────────────────────────────────
 
-type ItemCategory = 'weapon' | 'armour' | 'visage' | 'adventurer' | 'buddy';
+type ItemCategory = 'weapon' | 'armour' | 'visage' | 'adventurer' | 'buddy' | 'monster';
 type CategoryFilter = 'all' | ItemCategory;
 
 const CATEGORY_TABS: { id: CategoryFilter; label: string }[] = [
   { id: 'all',        label: 'All' },
   { id: 'weapon',     label: 'Weapons' },
   { id: 'armour',     label: 'Armour' },
+  { id: 'monster',    label: 'Monsters' },
   { id: 'visage',     label: 'Visage Cards' },
   { id: 'adventurer', label: 'Adventurers' },
   { id: 'buddy',      label: 'Buddies' },
 ];
 
 const CATEGORY_SINGULAR: Record<ItemCategory, string> = {
-  weapon: 'Weapon', armour: 'Armour', visage: 'Visage', adventurer: 'Adventurer', buddy: 'Buddy',
+  weapon: 'Weapon', armour: 'Armour', visage: 'Visage', adventurer: 'Adventurer', buddy: 'Buddy', monster: 'Monster Study',
 };
 
 const CATEGORY_COLLECTION_PATH: Record<ItemCategory, string> = {
@@ -143,13 +147,15 @@ const CATEGORY_COLLECTION_PATH: Record<ItemCategory, string> = {
   adventurer: '/challenges/adventurers',
   buddy: '/challenges/buddies',
   visage: '/gallery/collection',
+  monster: '/challenges/monsters',
 };
 
-/** Weapons, armour and visage cards come from monsters; adventurers and buddies come from recruitment. */
-const HUNT_CATEGORIES: ItemCategory[] = ['weapon', 'armour', 'visage'];
+/** Weapons, armour, visage cards and monster study come from monsters; adventurers and buddies come from recruitment. */
+const HUNT_CATEGORIES: ItemCategory[] = ['weapon', 'armour', 'visage', 'monster'];
 const RECRUIT_CATEGORIES: ItemCategory[] = ['adventurer', 'buddy'];
 
 function getCategory(c: HunterChallenge): ItemCategory {
+  if (c.challenge_type === 'monster') return 'monster';
   if (c.challenge_type === 'visage_set' || c.visage_id) return 'visage';
   if (c.challenge_type === 'weapon' || c.weapon_id) return 'weapon';
   if (c.challenge_type === 'adventurer' || c.adventurer_id) return 'adventurer';
@@ -171,6 +177,7 @@ type Selection =
 
 function getSlotLabel(c: HunterChallenge): string {
   switch (getCategory(c)) {
+    case 'monster':    return `Monster Study · ${c.notes || 'Research'}`;
     case 'visage':     return `Visage Card · ${c.ink_type ? c.ink_type.charAt(0).toUpperCase() + c.ink_type.slice(1) : 'Ink Set'}`;
     case 'weapon':     return `Weapon · ${c.weapon_type_id ?? 'Hunter Weapon'}`;
     case 'adventurer': return 'Adventurer · Playable Hero';
@@ -279,9 +286,10 @@ function ChallengeCard({
     setIsEditingMaterial(false);
   };
 
+  const isMonster = c.challenge_type === 'monster';
   const isVisage = c.challenge_type === 'visage_set' || Boolean(c.visage_id);
-  // Armour pieces & weapons show the sketch of the monster they are made from
-  const showsSketch = isVisage || c.challenge_type === 'armour_piece' || c.challenge_type === 'weapon' || Boolean(c.weapon_id);
+  // Armour pieces, weapons and monster challenges show the sketch of the monster
+  const showsSketch = isMonster || isVisage || c.challenge_type === 'armour_piece' || c.challenge_type === 'weapon' || Boolean(c.weapon_id);
   const isAdventurer = c.challenge_type === 'adventurer' || Boolean(c.adventurer_id);
   const isBuddy = c.challenge_type === 'buddy' || Boolean(c.buddy_id);
 
@@ -311,14 +319,18 @@ function ChallengeCard({
     ? Math.round((c.current_rarity / maxR) * 100)
     : 0;
 
-  const currentRarityName = isVisage
+  const currentRarityName = isMonster
+    ? c.status === 'completed' ? 'Research Complete' : 'In Progress'
+    : isVisage
     ? c.current_rarity === 0 ? 'Unowned' : c.current_rarity === 1 ? 'Fine (Green)' : c.current_rarity === 2 ? 'Rare (Blue)' : c.current_rarity === 3 ? 'Epic (Purple)' : 'Superior (Gold)'
     : isAdventurer
     ? c.current_rarity === 0 ? 'Not Recruited' : insightGoal ? `Insight ${adventurerInsightLabel(c.current_rarity)}` : 'Recruited'
     : isBuddy
     ? c.current_rarity === 0 ? 'Not Recruited' : 'Recruited'
     : `R${c.current_rarity} crafted`;
-  const targetRarityName = isVisage
+  const targetRarityName = isMonster
+    ? 'Complete Study Goal'
+    : isVisage
     ? 'Superior (Gold)'
     : isAdventurer
     ? insightGoal ? `Target: Insight ${adventurerInsightLabel(maxR)}` : 'Recruit to Roster'
@@ -360,7 +372,11 @@ function ChallengeCard({
                 {label}
               </span>
             </div>
-            {isVisage ? (
+            {isMonster ? (
+              <p className="text-[10px] text-sky-400 truncate">
+                {!isDone ? `Goal: ${c.notes || 'Field Research'}` : 'Research complete'}
+              </p>
+            ) : isVisage ? (
               <p className="text-[10px] text-sky-400 truncate">
                 {!isDone
                   ? `Search: Find ${c.current_rarity === 0 ? 'Fine' : c.current_rarity === 1 ? 'Rare' : c.current_rarity === 2 ? 'Epic' : 'Superior'} card`
@@ -445,7 +461,13 @@ function ChallengeCard({
               </h3>
               <p className="text-xs text-sky-400 mt-0.5">
                 {slotLabel}
-                {isVisage ? (
+                {isMonster ? (
+                  !isDone ? (
+                    <span className="text-sky-500">
+                      {' · '}Goal: {c.notes || 'Field Research'}
+                    </span>
+                  ) : null
+                ) : isVisage ? (
                   !isDone ? (
                     <span className="text-sky-500">
                       {' · '}Search for {c.current_rarity === 0 ? 'Fine' : c.current_rarity === 1 ? 'Rare' : c.current_rarity === 2 ? 'Epic' : 'Superior'} card
@@ -652,6 +674,8 @@ function ChallengeCard({
               : `Raise Insight to ${adventurerInsightLabel(c.current_rarity + 1)}`
             : isBuddy
             ? 'Mark as Recruited'
+            : isMonster
+            ? 'Complete Study Task'
             : c.status === 'crafting'
             ? 'Mark as Crafted (R1)'
             : `Upgrade to R${(c.current_rarity || 0) + 1}`}
@@ -769,9 +793,12 @@ function HuntingTargetsPanel({ monsterGroups, selection, onSelect, sketches, wea
           );
           const ranksNeeded = getMonsterRanksFromMaterials(allGroupMaterials).join(', ');
 
-          // The monster's sketch is shown on its row when it has a visage challenge, tinted by that card's target rarity
+          // The monster's sketch is shown on its row when it has a visage or monster challenge
+          const sketchTarget = group.challenges.find((c) => getCategory(c) === 'visage' || getCategory(c) === 'monster');
           const sketchVisage = group.challenges.find((c) => getCategory(c) === 'visage');
-          const sketch = sketchVisage?.monster_id ? sketches?.get(sketchVisage.monster_id) : null;
+          const sketch = sketchTarget?.monster_id
+            ? sketches?.get(sketchTarget.monster_id)
+            : (monsterId && monsterId !== '__general__' ? sketches?.get(monsterId) : null);
 
           const breakdown = HUNT_CATEGORIES
             .map(cat => {
@@ -782,6 +809,8 @@ function HuntingTargetsPanel({ monsterGroups, selection, onSelect, sketches, wea
             .map(x => {
               const label = x.cat === 'armour'
                 ? (x.n === 1 ? 'piece' : 'pieces')
+                : x.cat === 'monster'
+                ? (x.n === 1 ? 'study task' : 'study tasks')
                 : (x.n === 1 ? CATEGORY_SINGULAR[x.cat].toLowerCase() : `${CATEGORY_SINGULAR[x.cat].toLowerCase()}s`);
               return `${x.n} ${label}`;
             })
@@ -863,12 +892,16 @@ function HuntingTargetsPanel({ monsterGroups, selection, onSelect, sketches, wea
                           </div>
 
                           <div className="flex-1 min-w-0">
-                            <p className="text-xs font-semibold text-sky-200 truncate">{slotLabel}</p>
-                            <p className="text-[10px] text-sky-500 truncate">{getChallengeDisplayName(c, weaponsMap)}</p>
+                            <p className="text-xs font-semibold text-sky-200 truncate">
+                              {c.challenge_type === 'monster' ? (c.notes || 'Study Task') : slotLabel}
+                            </p>
+                            <p className="text-[10px] text-sky-500 truncate">
+                              {c.challenge_type === 'monster' ? (c.monster_name || 'Monster Study') : getChallengeDisplayName(c, weaponsMap)}
+                            </p>
                           </div>
 
                           <span className={cn('rounded px-1.5 py-0.5 text-[9px] font-bold border shrink-0', style.badge)}>
-                            {isVisageItem ? 'Find' : c.status === 'crafting' ? 'Craft' : c.status === 'upgrading' ? `→R${c.max_rarity}` : 'Done'}
+                            {isVisageItem ? 'Find' : c.challenge_type === 'monster' ? 'Study' : c.status === 'crafting' ? 'Craft' : c.status === 'upgrading' ? `→R${c.max_rarity}` : 'Done'}
                           </span>
                         </div>
 
@@ -1161,7 +1194,7 @@ export default function HunterChallenges() {
 
   // Open items per category, shown as counts on the category tabs
   const openCounts = useMemo(() => {
-    const counts: Record<CategoryFilter, number> = { all: 0, weapon: 0, armour: 0, visage: 0, adventurer: 0, buddy: 0 };
+    const counts: Record<CategoryFilter, number> = { all: 0, weapon: 0, armour: 0, monster: 0, visage: 0, adventurer: 0, buddy: 0 };
     for (const c of openChallenges) {
       counts.all += 1;
       counts[getCategory(c)] += 1;

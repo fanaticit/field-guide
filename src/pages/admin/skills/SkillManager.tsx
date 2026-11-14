@@ -71,6 +71,7 @@ export default function SkillManager() {
   const [filterCategory, setFilterCategory] = useState('');
   const [filterType, setFilterType] = useState<'' | 'skill' | 'set'>('');
   const [filterActive, setFilterActive] = useState<'' | 'active' | 'inactive'>('');
+  const [filterGameStatus, setFilterGameStatus] = useState<'' | 'in_game' | 'debug'>('');
   const [sortKey, setSortKey] = useState<SortKey>('name');
   const [sortDir, setSortDir] = useState<SortDir>('asc');
   const [editSkill, setEditSkill] = useState<DBSkill | null | 'new'>(null);
@@ -87,6 +88,8 @@ export default function SkillManager() {
         (s) =>
           s.name.toLowerCase().includes(q) ||
           s.id.toLowerCase().includes(q) ||
+          (s.skill_type_id ? String(s.skill_type_id).includes(q) : false) ||
+          (s.game_status ?? '').toLowerCase().includes(q) ||
           (s.name_ja ?? '').toLowerCase().includes(q),
       );
     }
@@ -95,6 +98,8 @@ export default function SkillManager() {
     if (filterType === 'set') list = list.filter((s) => s.is_set_bonus);
     if (filterActive === 'active') list = list.filter((s) => s.is_active);
     if (filterActive === 'inactive') list = list.filter((s) => !s.is_active);
+    if (filterGameStatus === 'in_game') list = list.filter((s) => !s.is_debug && s.game_status === 'In game');
+    if (filterGameStatus === 'debug') list = list.filter((s) => s.is_debug || s.game_status !== 'In game');
 
     list.sort((a, b) => {
       let av: string | number = '';
@@ -222,9 +227,19 @@ export default function SkillManager() {
             onChange={(e) => setFilterActive(e.target.value as '' | 'active' | 'inactive')}
             className="rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-300 outline-none"
           >
-            <option value="">All status</option>
+            <option value="">All active</option>
             <option value="active">Active only</option>
             <option value="inactive">Inactive only</option>
+          </select>
+
+          <select
+            value={filterGameStatus}
+            onChange={(e) => setFilterGameStatus(e.target.value as '' | 'in_game' | 'debug')}
+            className="rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-300 outline-none"
+          >
+            <option value="">All game status</option>
+            <option value="in_game">In game only</option>
+            <option value="debug">Debug only</option>
           </select>
 
           <button
@@ -320,9 +335,31 @@ export default function SkillManager() {
                               </span>
                             )}
                           </div>
-                          <span className="font-mono text-[11px] text-mh-slate-500">
-                            {skill.id}
-                          </span>
+                          <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
+                            <span className="font-mono text-[11px] text-mh-slate-500">
+                              {skill.id}
+                            </span>
+                            {skill.skill_type_id !== null && skill.skill_type_id !== undefined && (
+                              <span
+                                className="rounded bg-mh-slate-800 px-1.5 py-0.2 font-mono text-[10px] text-mh-slate-400 border border-mh-slate-700"
+                                title={`Game Skill Type ID: ${skill.skill_type_id}`}
+                              >
+                                Type {skill.skill_type_id}
+                              </span>
+                            )}
+                            {skill.is_debug || (skill.game_status && skill.game_status !== 'In game') ? (
+                              <span
+                                className="rounded bg-amber-500/10 px-1.5 py-0.2 text-[10px] font-medium text-amber-400 border border-amber-500/25"
+                                title={skill.game_status}
+                              >
+                                {skill.game_status?.startsWith('Debug') ? 'Debug' : skill.game_status}
+                              </span>
+                            ) : (
+                              <span className="rounded bg-emerald-500/10 px-1.5 py-0.2 text-[10px] font-medium text-emerald-400 border border-emerald-500/25">
+                                In game
+                              </span>
+                            )}
+                          </div>
 
                           {/* Set Bonus Tier Pills */}
                           {skill.is_set_bonus && (

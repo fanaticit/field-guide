@@ -50,8 +50,8 @@ export const ADMIN_FEEDBACK_LIST_KEY = 'admin-feedback-list';
 /**
  * Submit feedback from any player (guest or authenticated)
  */
-export async function submitFeedback(payload: CreateFeedbackPayload): Promise<SiteFeedback> {
-  const { data, error } = await supabase
+export async function submitFeedback(payload: CreateFeedbackPayload): Promise<void> {
+  const { error } = await supabase
     .from('site_feedback')
     .insert([
       {
@@ -67,12 +67,9 @@ export async function submitFeedback(payload: CreateFeedbackPayload): Promise<Si
         status: 'new',
         is_read: false,
       },
-    ])
-    .select()
-    .single();
+    ]);
 
   if (error) throw error;
-  return data as SiteFeedback;
 }
 
 /**

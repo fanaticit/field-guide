@@ -19,7 +19,10 @@
     "level": 3,
     "description": "Health +30."
    }
-  ]
+  ],
+  "used_by": "armour (16), set bonus, weapon awakening, decoration (290)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 7,
@@ -41,7 +44,10 @@
     "level": 3,
     "description": "Increases Health recovery by 1.3x when healing."
    }
-  ]
+  ],
+  "used_by": "armour (15), weapon awakening, decoration (27)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 25,
@@ -63,7 +69,10 @@
     "level": 3,
     "description": "Increases the recovery speed of gray health by 4x."
    }
-  ]
+  ],
+  "used_by": "armour (19), set bonus, weapon awakening, decoration (10)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 58,
@@ -101,7 +110,10 @@
     "level": 7,
     "description": "Attack +{SkillB_One_10081_01}"
    }
-  ]
+  ],
+  "used_by": "decoration (30)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 59,
@@ -139,7 +151,10 @@
     "level": 7,
     "description": "Defense +35"
    }
-  ]
+  ],
+  "used_by": "armour (16), weapon awakening, decoration (30)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 60,
@@ -177,7 +192,10 @@
     "level": 7,
     "description": "Affinity +16%."
    }
-  ]
+  ],
+  "used_by": "armour (17), set bonus, weapon awakening, decoration (30)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 61,
@@ -207,7 +225,10 @@
     "level": 5,
     "description": "Increases non-elemental damage dealt by critical hits by {SkillB_One_10111_01}."
    }
-  ]
+  ],
+  "used_by": "decoration (7)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 77,
@@ -237,7 +258,10 @@
     "level": 5,
     "description": "Greatly decreases the impact of attacks and reduces stamina depletion by 50%."
    }
-  ]
+  ],
+  "used_by": "armour (12), set bonus, weapon awakening, decoration (13)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 78,
@@ -259,7 +283,10 @@
     "level": 3,
     "description": "While active, damage +9%."
    }
-  ]
+  ],
+  "used_by": "armour (6), set bonus, weapon awakening, decoration (18)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 79,
@@ -281,7 +308,10 @@
     "level": 3,
     "description": "Health will automatically recover until it reaches 125."
    }
-  ]
+  ],
+  "used_by": "armour (5), set bonus, weapon awakening, decoration (10)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 19,
@@ -311,7 +341,10 @@
     "level": 5,
     "description": "While active, damage +19%."
    }
-  ]
+  ],
+  "used_by": "armour (12), set bonus, weapon awakening, decoration (19)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 42,
@@ -325,7 +358,10 @@
     "level": 1,
     "description": "Damage +23% and defense +50 when health is below 61."
    }
-  ]
+  ],
+  "used_by": "set bonus, weapon awakening, decoration (19)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 17,
@@ -355,7 +391,10 @@
     "level": 5,
     "description": "90s after a hunt begins, or after taking 100 total damage, increases affinity by 15% for 180s."
    }
-  ]
+  ],
+  "used_by": "armour (11), set bonus, weapon awakening, decoration (19)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 80,
@@ -385,7 +424,10 @@
     "level": 5,
     "description": "Above 50 health, you withstand an attack that would normally cause you to faint."
    }
-  ]
+  ],
+  "used_by": "decoration (18)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 62,
@@ -399,7 +441,10 @@
     "level": 1,
     "description": "Each faint increases damage by x1.1 and defense by +10."
    }
-  ]
+  ],
+  "used_by": "armour (5), set bonus, weapon awakening, decoration (16)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 34,
@@ -437,7 +482,10 @@
     "level": 7,
     "description": "Elemental attack +50. Damage +31% when stamina gauge is full for 5s."
    }
-  ]
+  ],
+  "used_by": "armour (7), weapon awakening, decoration (19)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 16,
@@ -467,7 +515,10 @@
     "level": 5,
     "description": "While active, affinity +15%."
    }
-  ]
+  ],
+  "used_by": "armour (10), set bonus, weapon awakening, decoration (19)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 81,
@@ -481,7 +532,10 @@
     "level": 1,
     "description": "While continuously dealing damage, recover 2 health every 5s."
    }
-  ]
+  ],
+  "used_by": "weapon awakening, decoration (16)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 8,
@@ -503,7 +557,10 @@
     "level": 3,
     "description": "When attacking weak points, affinity +14%."
    }
-  ]
+  ],
+  "used_by": "armour (11), set bonus, weapon awakening, decoration (19)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 20,
@@ -525,7 +582,10 @@
     "level": 3,
     "description": "Part damage x1.3."
    }
-  ]
+  ],
+  "used_by": "armour (12), set bonus, weapon awakening, decoration (18)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 82,
@@ -563,7 +623,10 @@
     "level": 7,
     "description": "Elemental attack +50. After activation, damage +31% for 30s."
    }
-  ]
+  ],
+  "used_by": "armour (7), weapon awakening, decoration (18)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 50,
@@ -585,7 +648,10 @@
     "level": 3,
     "description": "Massively increases invulnerability window."
    }
-  ]
+  ],
+  "used_by": "decoration (19)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 12,
@@ -603,7 +669,10 @@
     "level": 2,
     "description": "Greatly extends evasion distance."
    }
-  ]
+  ],
+  "used_by": "decoration (19)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 83,
@@ -617,7 +686,10 @@
     "level": 1,
     "description": "Allows you to guard against ordinarily unblockable attacks."
    }
-  ]
+  ],
+  "used_by": "armour (1), set bonus, weapon awakening, decoration (19)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 35,
@@ -639,7 +711,10 @@
     "level": 3,
     "description": "Prevents knockbacks and tripping from minor damage."
    }
-  ]
+  ],
+  "used_by": "armour (4), weapon awakening, decoration (19)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 11,
@@ -669,7 +744,10 @@
     "level": 5,
     "description": "When taking damage, has a 40% chance to reduce that damage by 60%."
    }
-  ]
+  ],
+  "used_by": "armour (20), set bonus, weapon awakening, decoration (21)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 1,
@@ -691,7 +769,10 @@
     "level": 3,
     "description": "Nullifies weak and strong monster roars."
    }
-  ]
+  ],
+  "used_by": "armour (4), set bonus, weapon awakening, decoration (20)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 5,
@@ -713,7 +794,10 @@
     "level": 3,
     "description": "Negates minor and major wind pressure."
    }
-  ]
+  ],
+  "used_by": "armour (11), set bonus, weapon awakening, decoration (20)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 24,
@@ -735,7 +819,10 @@
     "level": 3,
     "description": "Nullifies minor and major ground tremors."
    }
-  ]
+  ],
+  "used_by": "armour (10), set bonus, weapon awakening, decoration (19)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 64,
@@ -757,7 +844,10 @@
     "level": 3,
     "description": "Poison Buildup Rate x{SkillB_One_14001_01}."
    }
-  ]
+  ],
+  "used_by": "decoration (4)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 84,
@@ -771,7 +861,10 @@
     "level": 1,
     "description": "Extends the duration of monsters' poison effect by {SkillB_One_14009_01}."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – only on unused or test items (unfinished text)",
+  "debug": "yes"
  },
  {
   "id": 65,
@@ -797,7 +890,10 @@
     "level": 4,
     "description": "Paralysis buildup x{SkillB_One_14011_01}."
    }
-  ]
+  ],
+  "used_by": "decoration (4)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 66,
@@ -823,7 +919,10 @@
     "level": 4,
     "description": "Sleep buildup x{SkillB_One_14021_01}."
    }
-  ]
+  ],
+  "used_by": "decoration (4)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 67,
@@ -849,7 +948,10 @@
     "level": 4,
     "description": "Blast buildup x{SkillB_One_14031_01}."
    }
-  ]
+  ],
+  "used_by": "decoration (4)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 85,
@@ -863,7 +965,10 @@
     "level": 1,
     "description": "Multiplies ailment buildup x{SkillB_One_14041_01} (paralysis, poison, sleep, blast) when landing critical hits."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item (unfinished text)",
+  "debug": "yes"
  },
  {
   "id": 86,
@@ -877,7 +982,10 @@
     "level": 1,
     "description": "Multiplies ailment buildup x1.4 (paralysis, poison, sleep, blast) when landing critical hits."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 31,
@@ -907,7 +1015,10 @@
     "level": 5,
     "description": "Stun power x1.6"
    }
-  ]
+  ],
+  "used_by": "decoration (9)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 18,
@@ -921,7 +1032,10 @@
     "level": 1,
     "description": "While active, greatly improves evasion invulnerability time."
    }
-  ]
+  ],
+  "used_by": "decoration (1)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 15,
@@ -943,7 +1057,10 @@
     "level": 3,
     "description": "Prevents poison."
    }
-  ]
+  ],
+  "used_by": "armour (8), set bonus, weapon awakening, decoration (4)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 22,
@@ -965,7 +1082,10 @@
     "level": 3,
     "description": "Prevents paralysis."
    }
-  ]
+  ],
+  "used_by": "armour (7), set bonus, weapon awakening, decoration (4)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 23,
@@ -987,7 +1107,10 @@
     "level": 3,
     "description": "Prevents sleep."
    }
-  ]
+  ],
+  "used_by": "armour (11), set bonus, weapon awakening, decoration (4)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 51,
@@ -1009,7 +1132,10 @@
     "level": 3,
     "description": "Prevents blastblight."
    }
-  ]
+  ],
+  "used_by": "armour (2), set bonus, weapon awakening, decoration (4)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 2,
@@ -1023,7 +1149,10 @@
     "level": 1,
     "description": "Reduces limits on movement speed and evasion."
    }
-  ]
+  ],
+  "used_by": "set bonus, weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 14,
@@ -1045,7 +1174,10 @@
     "level": 3,
     "description": "Prevents stun."
    }
-  ]
+  ],
+  "used_by": "armour (13), set bonus, weapon awakening, decoration (4)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 87,
@@ -1067,7 +1199,10 @@
     "level": 3,
     "description": "Prevents bleeding."
    }
-  ]
+  ],
+  "used_by": "armour (4), set bonus, weapon awakening, decoration (4)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 88,
@@ -1089,7 +1224,10 @@
     "level": 3,
     "description": "Prevents Defense Down."
    }
-  ]
+  ],
+  "used_by": "armour (3), set bonus, weapon awakening, decoration (4)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 89,
@@ -1111,7 +1249,10 @@
     "level": 3,
     "description": "While active, damage +9% and ailment buildup x1.15 for 30s."
    }
-  ]
+  ],
+  "used_by": "weapon awakening, decoration (19)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 90,
@@ -1133,7 +1274,10 @@
     "level": 3,
     "description": "Increases the base attack of non-elemental weapons by {SkillB_One_15001_01}."
    }
-  ]
+  ],
+  "used_by": "decoration (1)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 68,
@@ -1171,7 +1315,10 @@
     "level": 7,
     "description": "Fire attack +50; fire damage +28%; against Radiant monsters, fire damage +70% instead."
    }
-  ]
+  ],
+  "used_by": "armour (7), set bonus, weapon awakening, decoration (4)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 69,
@@ -1209,7 +1356,10 @@
     "level": 7,
     "description": "Water attack +50; water damage +28%; against Radiant monsters, water damage +70% instead."
    }
-  ]
+  ],
+  "used_by": "armour (8), set bonus, weapon awakening, decoration (4)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 70,
@@ -1247,7 +1397,10 @@
     "level": 7,
     "description": "Ice attack +50; ice damage +28%; against Radiant monsters, ice damage +70% instead."
    }
-  ]
+  ],
+  "used_by": "armour (8), set bonus, weapon awakening, decoration (4)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 71,
@@ -1285,7 +1438,10 @@
     "level": 7,
     "description": "Thunder attack +50, thunder damage +28%; +70% instead against Radiant monsters."
    }
-  ]
+  ],
+  "used_by": "armour (7), set bonus, weapon awakening, decoration (4)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 72,
@@ -1323,7 +1479,10 @@
     "level": 7,
     "description": "Dragon attack +50; dragon damage +28%; against Radiant monsters, dragon damage +70% instead."
    }
-  ]
+  ],
+  "used_by": "armour (7), set bonus, weapon awakening, decoration (4)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 91,
@@ -1345,7 +1504,10 @@
     "level": 3,
     "description": "Increases elemental damage by 15% when landing critical hits."
    }
-  ]
+  ],
+  "used_by": "armour (12), set bonus, weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 92,
@@ -1371,7 +1533,10 @@
     "level": 4,
     "description": "Increases elemental critical damage by 16%."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 45,
@@ -1393,7 +1558,10 @@
     "level": 3,
     "description": "Fire resistance +20."
    }
-  ]
+  ],
+  "used_by": "armour (13), set bonus, weapon awakening, decoration (4)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 46,
@@ -1415,7 +1583,10 @@
     "level": 3,
     "description": "Water resistance +20."
    }
-  ]
+  ],
+  "used_by": "armour (7), set bonus, weapon awakening, decoration (4)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 47,
@@ -1437,7 +1608,10 @@
     "level": 3,
     "description": "Ice resistance +20."
    }
-  ]
+  ],
+  "used_by": "armour (8), set bonus, weapon awakening, decoration (4)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 48,
@@ -1459,7 +1633,10 @@
     "level": 3,
     "description": "Thunder resistance +20."
    }
-  ]
+  ],
+  "used_by": "armour (5), set bonus, weapon awakening, decoration (4)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 49,
@@ -1481,7 +1658,10 @@
     "level": 3,
     "description": "Dragon Resistance +20."
    }
-  ]
+  ],
+  "used_by": "armour (2), set bonus, weapon awakening, decoration (4)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 26,
@@ -1503,7 +1683,10 @@
     "level": 3,
     "description": "Nullifies all elemental ailments."
    }
-  ]
+  ],
+  "used_by": "decoration (4)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 93,
@@ -1517,7 +1700,10 @@
     "level": 1,
     "description": "Increases all elemental resistances by {SkillB_One_15141_01}x."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item (unfinished text)",
+  "debug": "yes"
  },
  {
   "id": 94,
@@ -1531,7 +1717,10 @@
     "level": 1,
     "description": "For every point of elemental resistance in your guard, your weapon's elemental attack increases by 2, up to a maximum of 50."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 95,
@@ -1545,7 +1734,10 @@
     "level": 1,
     "description": "Prevents attacks from being deflected."
    }
-  ]
+  ],
+  "used_by": "armour (2), set bonus, weapon awakening, decoration (1)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 112,
@@ -1559,7 +1751,10 @@
     "level": 1,
     "description": "Shortens the distance before ammo and arrows reach maximum power."
    }
-  ]
+  ],
+  "used_by": "armour (4), set bonus, weapon awakening, decoration (2)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 97,
@@ -1581,7 +1776,10 @@
     "level": 3,
     "description": "Normal Ammo Damage +12%."
    }
-  ]
+  ],
+  "used_by": "weapon awakening, decoration (2)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 98,
@@ -1603,7 +1801,10 @@
     "level": 3,
     "description": "Pierce Ammo Damage +12%."
    }
-  ]
+  ],
+  "used_by": "weapon awakening, decoration (2)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 99,
@@ -1625,7 +1826,10 @@
     "level": 3,
     "description": "Spread Ammo Damage +12%."
    }
-  ]
+  ],
+  "used_by": "weapon awakening, decoration (2)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 10,
@@ -1647,7 +1851,10 @@
     "level": 3,
     "description": "Increases bowgun special ammo damage by {SkillB_One_16111_01}."
    }
-  ]
+  ],
+  "used_by": "decoration (2)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 100,
@@ -1669,7 +1876,10 @@
     "level": 3,
     "description": "Increases the bow's basic attack and evasion attack damage by {SkillB_One_16121_01}."
    }
-  ]
+  ],
+  "used_by": "decoration (2)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 101,
@@ -1695,7 +1905,10 @@
     "level": 4,
     "description": "Elemental attack +25. Skill damage +20%."
    }
-  ]
+  ],
+  "used_by": "armour (5), weapon awakening, decoration (2)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 102,
@@ -1717,7 +1930,10 @@
     "level": 3,
     "description": "Increases the bow's Ultimate and Co-op Skill damage by {SkillB_One_16141_01}."
    }
-  ]
+  ],
+  "used_by": "decoration (2)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 103,
@@ -1731,7 +1947,10 @@
     "level": 1,
     "description": "Nullifies heat damage."
    }
-  ]
+  ],
+  "used_by": "decoration (2)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 6,
@@ -1753,7 +1972,10 @@
     "level": 3,
     "description": "Greatly increases the speed of meat-eating and consumption speed of items like potions and antidotes."
    }
-  ]
+  ],
+  "used_by": "armour (8), weapon awakening, decoration (9)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 73,
@@ -1775,7 +1997,10 @@
     "level": 3,
     "description": "Activates 75% of the time."
    }
-  ]
+  ],
+  "used_by": "armour (6), weapon awakening, decoration (9)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 36,
@@ -1797,7 +2022,10 @@
     "level": 3,
     "description": "Interactables restore an additional 100 health."
    }
-  ]
+  ],
+  "used_by": "armour (9), weapon awakening, decoration (10)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 105,
@@ -1819,7 +2047,10 @@
     "level": 3,
     "description": "Prevents monsters from engaging after being spotted."
    }
-  ]
+  ],
+  "used_by": "armour (12), weapon awakening, decoration (5)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 106,
@@ -1833,7 +2064,10 @@
     "level": 1,
     "description": "Speeds up gathering and prevents stagger while gathering."
    }
-  ]
+  ],
+  "used_by": "armour (2), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 74,
@@ -1855,7 +2089,10 @@
     "level": 3,
     "description": "One extra consumable insect item per gather +1."
    }
-  ]
+  ],
+  "used_by": "armour (9), weapon awakening, decoration (4)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 107,
@@ -1877,7 +2114,10 @@
     "level": 3,
     "description": "Allows you to gather 1 extra time from mining outcrops."
    }
-  ]
+  ],
+  "used_by": "armour (4), set bonus, weapon awakening, decoration (4)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 75,
@@ -1891,7 +2131,10 @@
     "level": 1,
     "description": "Honey gathered +1."
    }
-  ]
+  ],
+  "used_by": "armour (3), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 108,
@@ -1905,7 +2148,10 @@
     "level": 1,
     "description": "Lets you carve 1 additional 1|plural(one=time, other=times). (No effect when joining mid-quest.)"
    }
-  ]
+  ],
+  "used_by": "armour (1), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 3,
@@ -1919,7 +2165,10 @@
     "level": 1,
     "description": "Prevents stagger from attacks while carving."
    }
-  ]
+  ],
+  "used_by": "armour (1), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 76,
@@ -1933,7 +2182,10 @@
     "level": 1,
     "description": "High chance of increased capture rewards. (No effect when joining mid-quest.)"
    }
-  ]
+  ],
+  "used_by": "armour (1), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 109,
@@ -1955,7 +2207,10 @@
     "level": 3,
     "description": "Carves are guaranteed to remain."
    }
-  ]
+  ],
+  "used_by": "armour (3), set bonus, weapon awakening, decoration (4)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 110,
@@ -1977,7 +2232,10 @@
     "level": 3,
     "description": "Reduces max health by 60%. Damage +9%."
    }
-  ]
+  ],
+  "used_by": "armour (3), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 53,
@@ -1991,7 +2249,10 @@
     "level": 1,
     "description": "When 3 pieces of radiant armor are equipped, maximum health decreases by {SkillB_One_20781_01}. After 5s with no damage taken, critical damage +{SkillB_One_20781_02} and elemental critical damage +{SkillB_One_20781_03}."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – only on unused or test items (unfinished text)",
+  "debug": "yes"
  },
  {
   "id": 54,
@@ -2005,7 +2266,10 @@
     "level": 1,
     "description": "Increases stamina cap."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 38,
@@ -2035,7 +2299,10 @@
     "level": 5,
     "description": "While the monster still has fortitude, your attacks reduce its fire resistance by 50%."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 39,
@@ -2065,7 +2332,10 @@
     "level": 5,
     "description": "Increases fortitude depletion efficiency against monsters by 25%, and by an additional 10% while the monster is enraged."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 40,
@@ -2095,7 +2365,10 @@
     "level": 5,
     "description": "When the monster's fortitude is depleted, it takes 100% more damage."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 41,
@@ -2125,7 +2398,10 @@
     "level": 5,
     "description": "When the monster's fortitude is depleted, your attacks apply a 40% armor reduction for 8s."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 55,
@@ -2139,7 +2415,10 @@
     "level": 1,
     "description": "Attack +3."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 56,
@@ -2153,7 +2432,10 @@
     "level": 1,
     "description": "Defense +5."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 113,
@@ -2175,7 +2457,10 @@
     "level": 3,
     "description": "When the Resonance Ultimate's charge is triggered, there is a 20% chance to double its effect."
    }
-  ]
+  ],
+  "used_by": "decoration (1)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 114,
@@ -2205,7 +2490,10 @@
     "level": 5,
     "description": "75% chance to activate, dealing additional damage equal to 25%."
    }
-  ]
+  ],
+  "used_by": "armour (8), weapon awakening, decoration (1)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 115,
@@ -2227,7 +2515,10 @@
     "level": 3,
     "description": "While active, damage +11% for 15s."
    }
-  ]
+  ],
+  "used_by": "armour (10), set bonus, weapon awakening, decoration (2)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 116,
@@ -2249,7 +2540,10 @@
     "level": 3,
     "description": "Increases damage against monsters toppled by Co-op Skills by 15%."
    }
-  ]
+  ],
+  "used_by": "decoration (1)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 117,
@@ -2271,7 +2565,10 @@
     "level": 3,
     "description": "Increases healing received by squad members by 100%."
    }
-  ]
+  ],
+  "used_by": "decoration (1)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 118,
@@ -2309,7 +2606,10 @@
     "level": 7,
     "description": "Elemental attack +50. Upon activation, increases damage by 31% for 20s."
    }
-  ]
+  ],
+  "used_by": "armour (7), weapon awakening, decoration (2)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 119,
@@ -2323,7 +2623,10 @@
     "level": 1,
     "description": "Within {SkillB_One_20071_01}s of a perfect evade, extends the window for triggering another perfect evade by {SkillB_One_20071_02}s."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – only on unused or test items (unfinished text)",
+  "debug": "yes"
  },
  {
   "id": 120,
@@ -2345,7 +2648,10 @@
     "level": 3,
     "description": "While active, increases deployed Buddy's Ultimate charge rate by 30%."
    }
-  ]
+  ],
+  "used_by": "decoration (18)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 121,
@@ -2367,7 +2673,10 @@
     "level": 3,
     "description": "While active, increases defense by 50."
    }
-  ]
+  ],
+  "used_by": "decoration (18)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 122,
@@ -2389,7 +2698,10 @@
     "level": 3,
     "description": "Reduces stamina depletion by 50%."
    }
-  ]
+  ],
+  "used_by": "decoration (18)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 123,
@@ -2411,7 +2723,10 @@
     "level": 3,
     "description": "Increases damage by 15% for each ailment."
    }
-  ]
+  ],
+  "used_by": "decoration (1)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 124,
@@ -2441,7 +2756,10 @@
     "level": 5,
     "description": "While active, damage +25%."
    }
-  ]
+  ],
+  "used_by": "armour (7), set bonus, weapon awakening, decoration (2)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 125,
@@ -2463,7 +2781,10 @@
     "level": 3,
     "description": "While active, increases damage by 15%."
    }
-  ]
+  ],
+  "used_by": "decoration (1)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 126,
@@ -2493,7 +2814,10 @@
     "level": 5,
     "description": "When moving more than {SkillB_One_20141_01}m in a short period, increases damage by {SkillB_One_20141_02} for {SkillB_One_20141_03}s."
    }
-  ]
+  ],
+  "used_by": "decoration (1)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 127,
@@ -2507,7 +2831,10 @@
     "level": 1,
     "description": "Prevents stagger from attacks while rescuing."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – only on unused or test items",
+  "debug": "yes"
  },
  {
   "id": 128,
@@ -2529,7 +2856,10 @@
     "level": 3,
     "description": "Increases rescue speed by 100%."
    }
-  ]
+  ],
+  "used_by": "decoration (1)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 129,
@@ -2551,7 +2881,10 @@
     "level": 3,
     "description": "After a rescue, increases healing received by squad members by 50% and defense by 50 for 20s."
    }
-  ]
+  ],
+  "used_by": "decoration (1)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 130,
@@ -2573,7 +2906,10 @@
     "level": 3,
     "description": "After a rescue, squad members recover 100 health."
    }
-  ]
+  ],
+  "used_by": "decoration (18)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 131,
@@ -2603,7 +2939,10 @@
     "level": 5,
     "description": "While active, increases damage dealt by {SkillB_One_20191_01} for {SkillB_One_20191_02}s."
    }
-  ]
+  ],
+  "used_by": "decoration (1)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 132,
@@ -2633,7 +2972,10 @@
     "level": 5,
     "description": "While active, increases damage dealt by {SkillB_One_20201_01}."
    }
-  ]
+  ],
+  "used_by": "decoration (1)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 133,
@@ -2655,7 +2997,10 @@
     "level": 3,
     "description": "Recovers 4 health. Can only trigger once every 8s."
    }
-  ]
+  ],
+  "used_by": "armour (7), weapon awakening, decoration (18)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 134,
@@ -2669,7 +3014,10 @@
     "level": 1,
     "description": "When using a recovery move, gray health will not disappear."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – only on unused or test items",
+  "debug": "yes"
  },
  {
   "id": 135,
@@ -2699,7 +3047,10 @@
     "level": 5,
     "description": "While active, increases damage dealt by {SkillB_One_20231_01}."
    }
-  ]
+  ],
+  "used_by": "decoration (1)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 21,
@@ -2721,7 +3072,10 @@
     "level": 3,
     "description": "Increases non-elemental damage of airborne attacks by {SkillB_One_20761_01}."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – only on unused or test items (unfinished text)",
+  "debug": "yes"
  },
  {
   "id": 111,
@@ -2759,7 +3113,10 @@
     "level": 7,
     "description": "Elemental attack +50. Airborne attack damage +37%."
    }
-  ]
+  ],
+  "used_by": "armour (7), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 145,
@@ -2773,7 +3130,10 @@
     "level": 1,
     "description": "Negates all wind pressure."
    }
-  ]
+  ],
+  "used_by": "weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 37,
@@ -2787,7 +3147,10 @@
     "level": 1,
     "description": "Reduces stamina depletion by 25%."
    }
-  ]
+  ],
+  "used_by": "armour (3), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 104,
@@ -2809,7 +3172,10 @@
     "level": 3,
     "description": "Increases effect duration by 1.5x."
    }
-  ]
+  ],
+  "used_by": "armour (13), weapon awakening, decoration (1)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 136,
@@ -2823,7 +3189,10 @@
     "level": 1,
     "description": "While affected by radiant particles, damage +10% for 30s. After it ends, damage -10% and maximum stamina -50 for 30s."
    }
-  ]
+  ],
+  "used_by": "set bonus",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 137,
@@ -2841,7 +3210,10 @@
     "level": 2,
     "description": "Radiant Frenzy's damage reduction duration is decreased by {SkillB_One_20811_01}. After recovery, crit damage and elemental damage are increased by {SkillB_One_20811_02}."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item (unfinished text)",
+  "debug": "yes"
  },
  {
   "id": 138,
@@ -2879,7 +3251,10 @@
     "level": 7,
     "description": "Elemental attack +50. Landing 5 hits within 3s increases damage by 31% for 12s."
    }
-  ]
+  ],
+  "used_by": "armour (6), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 142,
@@ -2893,7 +3268,10 @@
     "level": 1,
     "description": "Multiplies buddy damage by 1.1x."
    }
-  ]
+  ],
+  "used_by": "armour (1), set bonus, weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 143,
@@ -2931,7 +3309,10 @@
     "level": 7,
     "description": "Elemental attack +50. Upon activation, damage +31% for 30s."
    }
-  ]
+  ],
+  "used_by": "armour (8), weapon awakening, decoration (1)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 139,
@@ -2969,7 +3350,10 @@
     "level": 7,
     "description": "Elemental attack +50. Upon activation, damage +31% for 15s."
    }
-  ]
+  ],
+  "used_by": "armour (7), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 140,
@@ -2999,7 +3383,10 @@
     "level": 5,
     "description": "While active, increases damage dealt by {SkillB_One_21011_01}."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item (unfinished text)",
+  "debug": "yes"
  },
  {
   "id": 141,
@@ -3013,7 +3400,10 @@
     "level": 1,
     "description": "After sliding, increases damage dealt by 4% for 60s."
    }
-  ]
+  ],
+  "used_by": "weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 144,
@@ -3035,7 +3425,10 @@
     "level": 3,
     "description": "While active, increases damage by 12% for 120s."
    }
-  ]
+  ],
+  "used_by": "armour (12), set bonus, weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 30,
@@ -3073,7 +3466,10 @@
     "level": 7,
     "description": "Elemental attack +50. Upon activation, damage +31% for 30s."
    }
-  ]
+  ],
+  "used_by": "armour (7), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 152,
@@ -3099,7 +3495,10 @@
     "level": 4,
     "description": "Elemental attack +25. Upon activation, damage +16% for 30s."
    }
-  ]
+  ],
+  "used_by": "armour (5), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 153,
@@ -3125,7 +3524,10 @@
     "level": 4,
     "description": "Elemental attack +25. While active, damage +20%."
    }
-  ]
+  ],
+  "used_by": "armour (5), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 154,
@@ -3163,7 +3565,10 @@
     "level": 7,
     "description": "Elemental attack +50. Upon activation, damage +37%."
    }
-  ]
+  ],
+  "used_by": "armour (8), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 155,
@@ -3177,7 +3582,10 @@
     "level": 1,
     "description": "Main Adventurer's damage +10%."
    }
-  ]
+  ],
+  "used_by": "weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 156,
@@ -3215,7 +3623,10 @@
     "level": 7,
     "description": "Elemental attack +50. While active, damage +37%."
    }
-  ]
+  ],
+  "used_by": "armour (7), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 157,
@@ -3253,7 +3664,10 @@
     "level": 7,
     "description": "Elemental attack +50. After triggering Ferocity, damage +31% for 30s."
    }
-  ]
+  ],
+  "used_by": "armour (8), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 158,
@@ -3291,7 +3705,10 @@
     "level": 7,
     "description": "Elemental attack +50. Upon activation, the triggering attack's damage +37%."
    }
-  ]
+  ],
+  "used_by": "armour (6), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 159,
@@ -3329,7 +3746,10 @@
     "level": 7,
     "description": "Elemental attack +50. After reloading, damage +31% for 30s."
    }
-  ]
+  ],
+  "used_by": "armour (7), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 160,
@@ -3355,7 +3775,10 @@
     "level": 4,
     "description": "While active, damage +16%, elemental attack +25 for 60s."
    }
-  ]
+  ],
+  "used_by": "armour (5), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 161,
@@ -3381,7 +3804,10 @@
     "level": 4,
     "description": "Elemental attack +25. After hitting the same part 3 times within 8s, damage +16% for 30s."
    }
-  ]
+  ],
+  "used_by": "armour (5), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 162,
@@ -3407,7 +3833,10 @@
     "level": 4,
     "description": "Elemental attack +25. Upon activation, damage +16% for 15s."
    }
-  ]
+  ],
+  "used_by": "armour (5), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 163,
@@ -3433,7 +3862,10 @@
     "level": 4,
     "description": "Elemental attack +25. Damage +16% for Normal Ammo, Spread Ammo, and Pierce Ammo."
    }
-  ]
+  ],
+  "used_by": "armour (5)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 164,
@@ -3455,7 +3887,10 @@
     "level": 3,
     "description": "While active, damage +12%. Eliminates Radiant Frenzy's negative effect duration."
    }
-  ]
+  ],
+  "used_by": "armour (3)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 165,
@@ -3477,7 +3912,10 @@
     "level": 3,
     "description": "While active, increases defense by 60."
    }
-  ]
+  ],
+  "used_by": "armour (8), set bonus",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 166,
@@ -3499,7 +3937,10 @@
     "level": 3,
     "description": "While active, recovers 15 health, with a minimum interval of 3s."
    }
-  ]
+  ],
+  "used_by": "armour (10)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 167,
@@ -3525,7 +3966,10 @@
     "level": 4,
     "description": "Upon activation, damage +16%, elemental attack +25 for 60s."
    }
-  ]
+  ],
+  "used_by": "armour (4)",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 60001,
@@ -3539,7 +3983,10 @@
     "level": 1,
     "description": "Reduces the damage BH takes by 20% and increases the damage dealt by 10%."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – Boss Hunt mode skill",
+  "debug": "yes"
  },
  {
   "id": 60002,
@@ -3553,7 +4000,10 @@
     "level": 1,
     "description": "After a BH evades, increases defense by 30% for 10s."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – Boss Hunt mode skill",
+  "debug": "yes"
  },
  {
   "id": 60003,
@@ -3567,7 +4017,10 @@
     "level": 1,
     "description": "Increases all elemental damage from BH by 10%."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – Boss Hunt mode skill",
+  "debug": "yes"
  },
  {
   "id": 60004,
@@ -3581,7 +4034,10 @@
     "level": 1,
     "description": "When BH monsters are staggered, hits that land reduce defense by 50% for 8s."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – Boss Hunt mode skill",
+  "debug": "yes"
  },
  {
   "id": 60005,
@@ -3595,7 +4051,10 @@
     "level": 1,
     "description": "After a BH Ultimate hits a monster, squad members within 20m of it are healed for 6x the current spore level."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – Boss Hunt mode skill",
+  "debug": "yes"
  },
  {
   "id": 60006,
@@ -3609,7 +4068,10 @@
     "level": 1,
     "description": "After a BH Ultimate is charged, squad members within 15m of it are healed for 0.5x the current spore level. The Ultimate's charge speed also increases by 5%."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – Boss Hunt mode skill",
+  "debug": "yes"
  },
  {
   "id": 60007,
@@ -3623,7 +4085,10 @@
     "level": 1,
     "description": "BH greatly increases invulnerability window."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – Boss Hunt mode skill",
+  "debug": "yes"
  },
  {
   "id": 60008,
@@ -3637,7 +4102,10 @@
     "level": 1,
     "description": "Increases BH's max health by 18%."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – Boss Hunt mode skill",
+  "debug": "yes"
  },
  {
   "id": 60009,
@@ -3651,7 +4119,10 @@
     "level": 1,
     "description": "Reduces incoming elemental damage by 18% when BH is afflicted with ailments."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – Boss Hunt mode skill",
+  "debug": "yes"
  },
  {
   "id": 60010,
@@ -3665,7 +4136,10 @@
     "level": 1,
     "description": "Increases BH's Ultimate charge rate by 15%."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – Boss Hunt mode skill",
+  "debug": "yes"
  },
  {
   "id": 8025101,
@@ -3679,7 +4153,10 @@
     "level": 1,
     "description": "While hunting radiant monsters, dealing combo damage increases affinity by 1%, gaining up to 1 stack per second, up to 20 stacks, for the rest of the hunt. (Season 0 only)"
    }
-  ]
+  ],
+  "used_by": "weapon (12), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 802510,
@@ -3693,7 +4170,10 @@
     "level": 1,
     "description": "Each stack of this weapon's affinity boost increases damage dealt to radiant monsters by 0.5%. (Season 0 only)"
    }
-  ]
+  ],
+  "used_by": "weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 802511,
@@ -3707,7 +4187,10 @@
     "level": 1,
     "description": "After a successful perfect evade or parry, Demon Gauge consumption speed is reduced by 10% and damage dealt to Radiant monsters is increased by 8.25% for 20s. (Season 0 only)"
    }
-  ]
+  ],
+  "used_by": "weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 802512,
@@ -3721,7 +4204,10 @@
     "level": 1,
     "description": "Upon taking a hit that would deal more than 60% of the max health in damage, negates that damage and increases movement speed by 10% for 10s. Activates only once every 60s. Active in select high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 8025301,
@@ -3735,7 +4221,10 @@
     "level": 1,
     "description": "While this weapon is equipped, damage dealt to radiant monsters increases by 8%. For each 1 Spirit Gauge level gained, damage dealt to radiant monsters increases by an additional 1.4% for the rest of the hunt, up to 3 stacks. (Season 0 only)"
    }
-  ]
+  ],
+  "used_by": "weapon (12), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 802530,
@@ -3749,7 +4238,10 @@
     "level": 1,
     "description": "Consuming 1 Spirit Gauge level increases damage dealt to radiant monsters by 9% for 10s. (Season 0 only)"
    }
-  ]
+  ],
+  "used_by": "weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 802531,
@@ -3763,7 +4255,10 @@
     "level": 1,
     "description": "After breaking a part on a radiant monster, the character gains 1 spirit gauge level and increases damage by 12% for 30s. (Season 0 only)"
    }
-  ]
+  ],
+  "used_by": "weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 802532,
@@ -3777,7 +4272,10 @@
     "level": 1,
     "description": "Gains Unwavering and reduces damage taken by an additional 15% for 10s when the Spirit Gauge becomes red. Active in select high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 8025501,
@@ -3791,7 +4289,10 @@
     "level": 1,
     "description": "While this weapon is equipped, damage dealt to radiant monsters increases by 8%; after unleashing the ultimate, damage increases to 12% for 10s. (Season 0 only)"
    }
-  ]
+  ],
+  "used_by": "weapon (12), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 802550,
@@ -3805,7 +4306,10 @@
     "level": 1,
     "description": "Hitting a radiant monster's weak point increases damage by 9% for 15s. (Season 0 only)"
    }
-  ]
+  ],
+  "used_by": "weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 802551,
@@ -3819,7 +4323,10 @@
     "level": 1,
     "description": "When the 3rd round in the bowgun's magazine lands, damage dealt to radiant monsters increases by 2% for the rest of the hunt, up to 8 stacks. (Season 0 only)"
    }
-  ]
+  ],
+  "used_by": "weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 802552,
@@ -3833,7 +4340,10 @@
     "level": 1,
     "description": "Reduces damage taken by an additional 8% for you and all squad members after unleashing the ultimate. Active in select high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 8025701,
@@ -3847,7 +4357,10 @@
     "level": 1,
     "description": "While this weapon is equipped, damage dealt to radiant monsters increases by 8%. When a skill's Charge reaches optimal timing, affinity of Draw Weapon attacks against radiant monsters increases by 12%. (Season 0 only)"
    }
-  ]
+  ],
+  "used_by": "weapon (12), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 802570,
@@ -3861,7 +4374,10 @@
     "level": 1,
     "description": "Landing hits at different Charge levels (Yellow/Orange) increases damage dealt to radiant monsters by 7.5%/10.5% for 20s. (Season 0 only)"
    }
-  ]
+  ],
+  "used_by": "weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 802571,
@@ -3875,7 +4391,10 @@
     "level": 1,
     "description": "Increases damage dealt to radiant monsters by 9% for 20s after unleashing the ultimate. (Season 0 only)"
    }
-  ]
+  ],
+  "used_by": "weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 802572,
@@ -3889,7 +4408,10 @@
     "level": 1,
     "description": "Reduces damage taken by an additional 25% for 3s while charging. Activates once every 8s. Active in select high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 8025901,
@@ -3903,7 +4425,10 @@
     "level": 1,
     "description": "While this weapon is equipped, stamina consumption in hunt decreases by an additional 5%, and damage dealt to radiant monsters increases by an additional 8%; squad members' Ultimate charge rate increases by 6% while affected by an Ultimate. (Season 0 only)"
    }
-  ]
+  ],
+  "used_by": "weapon (12), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 802590,
@@ -3917,7 +4442,10 @@
     "level": 1,
     "description": "Increases damage by 10.5% for 20s after a charged skill hits a radiant monster. (Season 0 only)"
    }
-  ]
+  ],
+  "used_by": "weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 802591,
@@ -3931,7 +4459,10 @@
     "level": 1,
     "description": "Perfect Guard increases damage dealt to radiant monsters by 10.5% for 15s. (Season 0 only)"
    }
-  ]
+  ],
+  "used_by": "weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 802592,
@@ -3945,7 +4476,10 @@
     "level": 1,
     "description": "Recovers 3 health per second for 10s when dropping below 30% health. Can be triggered at most once every 45s. Active in select high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 8026101,
@@ -3959,7 +4493,10 @@
     "level": 1,
     "description": "While this weapon is equipped, damage dealt to radiant monsters increases by 8%. Each time bow energy is consumed, additional damage dealt to radiant monsters increases by 1% for the rest of the hunt, up to 3 stacks. (Season 0 only)"
    }
-  ]
+  ],
+  "used_by": "weapon (12), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 802610,
@@ -3973,7 +4510,10 @@
     "level": 1,
     "description": "20% chance to increase damage by 0.9% after hitting radiant monsters. Stacks up to 10 times and lasts until the hunt ends. (Season 0 only)"
    }
-  ]
+  ],
+  "used_by": "weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 802611,
@@ -3987,7 +4527,10 @@
     "level": 1,
     "description": "After hitting a radiant monster's weak point, energy gain efficiency increases by 7.5%, and damage increases by 7.5% for 10s. (Season 0 only)"
    }
-  ]
+  ],
+  "used_by": "weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 802612,
@@ -4001,7 +4544,10 @@
     "level": 1,
     "description": "Immediately recovers 10 health for every 5 coatings applied. Activates up to once every 25s. Active in select high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 8026301,
@@ -4015,7 +4561,10 @@
     "level": 1,
     "description": "While this weapon is equipped, damage against radiant monsters increases by an additional 8%. Hitting a radiant monster's head deals an additional 3% damage and increases stun buildup. (Season 0 only)"
    }
-  ]
+  ],
+  "used_by": "weapon (12), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 802630,
@@ -4029,7 +4578,10 @@
     "level": 1,
     "description": "Increases damage by 9% for 20s after hitting a radiant monster at the perfect charge timing. (Season 0 only)"
    }
-  ]
+  ],
+  "used_by": "weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 802631,
@@ -4043,7 +4595,10 @@
     "level": 1,
     "description": "After stunning a radiant monster, damage increases by 12% for 30s. (Season 0 only)"
    }
-  ]
+  ],
+  "used_by": "weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 802632,
@@ -4057,7 +4612,10 @@
     "level": 1,
     "description": "Reduces damage taken while charging by an additional 20% for 5s. Can be triggered at most once every 10s. Active in select high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 8026501,
@@ -4071,7 +4629,10 @@
     "level": 1,
     "description": "While this weapon is equipped, damage dealt to radiant monsters increases by 8%. After building up Phial Energy, damage dealt to radiant monsters increases by an additional 12% for 8s. (Season 0 only)"
    }
-  ]
+  ],
+  "used_by": "weapon (6), weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 802650,
@@ -4085,7 +4646,10 @@
     "level": 1,
     "description": "After a successful Parry or Guard, damage dealt to radiant monsters increases by 9% for 20s; in Sword Mode, Sword Energy charge speed increases by 7.5%. (Season 0 only)"
    }
-  ]
+  ],
+  "used_by": "weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 802651,
@@ -4099,13 +4663,16 @@
     "level": 1,
     "description": "Spending all phials at once increases damage against radiant monsters by 9% and accumulates 2 phials. (Season 0 only)"
    }
-  ]
+  ],
+  "used_by": "weapon awakening",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 900,
   "name": "Guild Might - Weapon",
   "category": "Weapon-specific",
-  "max_level": 12,
+  "max_level": 11,
   "description": "Equipment issued by the Crimson Crest Adventurers. Its rarity scales up alongside your Adventurer Rank.",
   "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_03.png",
   "levels": [
@@ -4152,18 +4719,17 @@
    {
     "level": 11,
     "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 11."
-   },
-   {
-    "level": 12,
-    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 12."
    }
-  ]
+  ],
+  "used_by": "Guild Might",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 901,
   "name": "Guild Might - Helm",
   "category": "Weapon-specific",
-  "max_level": 12,
+  "max_level": 11,
   "description": "Equipment issued by the Crimson Crest Adventurers. Its rarity scales up alongside your Adventurer Rank.",
   "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_03.png",
   "levels": [
@@ -4210,18 +4776,17 @@
    {
     "level": 11,
     "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 11."
-   },
-   {
-    "level": 12,
-    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 12."
    }
-  ]
+  ],
+  "used_by": "Guild Might",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 902,
   "name": "Guild Might - Mail",
   "category": "Weapon-specific",
-  "max_level": 12,
+  "max_level": 11,
   "description": "Equipment issued by the Crimson Crest Adventurers. Its rarity scales up alongside your Adventurer Rank.",
   "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_03.png",
   "levels": [
@@ -4268,18 +4833,17 @@
    {
     "level": 11,
     "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 11."
-   },
-   {
-    "level": 12,
-    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 12."
    }
-  ]
+  ],
+  "used_by": "Guild Might",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 903,
   "name": "Guild Might - Gauntlets",
   "category": "Weapon-specific",
-  "max_level": 12,
+  "max_level": 11,
   "description": "Equipment issued by the Crimson Crest Adventurers. Its rarity scales up alongside your Adventurer Rank.",
   "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_03.png",
   "levels": [
@@ -4326,18 +4890,17 @@
    {
     "level": 11,
     "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 11."
-   },
-   {
-    "level": 12,
-    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 12."
    }
-  ]
+  ],
+  "used_by": "Guild Might",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 904,
   "name": "Guild Might - Coil",
   "category": "Weapon-specific",
-  "max_level": 12,
+  "max_level": 11,
   "description": "Equipment issued by the Crimson Crest Adventurers. Its rarity scales up alongside your Adventurer Rank.",
   "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_03.png",
   "levels": [
@@ -4384,18 +4947,17 @@
    {
     "level": 11,
     "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 11."
-   },
-   {
-    "level": 12,
-    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 12."
    }
-  ]
+  ],
+  "used_by": "Guild Might",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 905,
   "name": "Guild Might - Greaves",
   "category": "Weapon-specific",
-  "max_level": 12,
+  "max_level": 11,
   "description": "Equipment issued by the Crimson Crest Adventurers. Its rarity scales up alongside your Adventurer Rank.",
   "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_RGArmor_03.png",
   "levels": [
@@ -4442,12 +5004,11 @@
    {
     "level": 11,
     "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 11."
-   },
-   {
-    "level": 12,
-    "description": "When the corresponding Adventurer Rank is reached, this equipment is upgraded to Rarity 12."
    }
-  ]
+  ],
+  "used_by": "Guild Might",
+  "game_status": "In game",
+  "debug": ""
  },
  {
   "id": 900001,
@@ -4461,7 +5022,10 @@
     "level": 1,
     "description": "Each stack of this weapon's affinity boost increases damage dealt to radiant monsters by 0.5%. Active in select high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900002,
@@ -4475,7 +5039,10 @@
     "level": 1,
     "description": "After a successful Perfect Evade or Parry, Demon Gauge consumption rate decreases by 10%, and damage dealt to radiant monsters increases by 8.25% for 20s. Active in select high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900003,
@@ -4489,7 +5056,10 @@
     "level": 1,
     "description": "Consuming 1 Spirit Gauge level increases damage dealt to radiant monsters by 9% for 10s. Active in select high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900004,
@@ -4503,7 +5073,10 @@
     "level": 1,
     "description": "After breaking a part on a radiant monster, the character gains 1 spirit gauge level and increases damage by 12% for 30s. Active in select high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900005,
@@ -4517,7 +5090,10 @@
     "level": 1,
     "description": "Hitting a radiant monster's weak point increases damage by 9% for 15s. Active in select high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900006,
@@ -4531,7 +5107,10 @@
     "level": 1,
     "description": "When the 3rd round in the bowgun's magazine lands, damage dealt to radiant monsters increases by 2% for the rest of the hunt, up to 8 stacks. Active in select high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900007,
@@ -4545,7 +5124,10 @@
     "level": 1,
     "description": "Landing hits at different Charge levels (Yellow/Orange) increases damage dealt to radiant monsters by 7.5%/10.5% for 20s. Active in select high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900008,
@@ -4559,7 +5141,10 @@
     "level": 1,
     "description": "After unleashing the Ultimate, damage dealt to radiant monsters increases by 9% for 20s. Active in select high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900009,
@@ -4573,7 +5158,10 @@
     "level": 1,
     "description": "Increases damage by 10.5% for 20s after a charged skill hits a radiant monster. Active in select high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900010,
@@ -4587,7 +5175,10 @@
     "level": 1,
     "description": "Perfect Guard increases damage dealt to radiant monsters by 10.5% for 15s. Active in select high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900011,
@@ -4601,7 +5192,10 @@
     "level": 1,
     "description": "20% chance to increase damage by 0.9% after hitting radiant monsters, up to 10 stacks, and lasts until the hunt ends. Active in select high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900012,
@@ -4615,7 +5209,10 @@
     "level": 1,
     "description": "After hitting a radiant monster's weak point, energy gain efficiency increases by 7.5%, and damage increases by 7.5% for 10s. Active in select high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900013,
@@ -4629,7 +5226,10 @@
     "level": 1,
     "description": "Increases damage by 9% for 20s after hitting a radiant monster at the perfect charge timing. Active in select high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900014,
@@ -4643,7 +5243,10 @@
     "level": 1,
     "description": "After stunning a radiant monster, damage increases by 12% for 30s. Active in select high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900015,
@@ -4657,7 +5260,10 @@
     "level": 1,
     "description": "After a successful Parry or Guard, damage dealt to radiant monsters increases by 9% for 20s; in Sword Mode, Sword Energy charge speed increases by 7.5%. Active in select high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900016,
@@ -4671,7 +5277,10 @@
     "level": 1,
     "description": "Spending all phials at once increases damage against radiant monsters by 9% and accumulates 2 phials. Active in select high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900017,
@@ -4685,7 +5294,10 @@
     "level": 1,
     "description": "Water damage +7%.  is active in certain high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900018,
@@ -4699,7 +5311,10 @@
     "level": 1,
     "description": "Fire damage +7%.  is active in certain high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900019,
@@ -4713,7 +5328,10 @@
     "level": 1,
     "description": "Ice damage +7%.  is active in certain high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900020,
@@ -4727,7 +5345,10 @@
     "level": 1,
     "description": "Thunder damage +7%.  is active in certain high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900021,
@@ -4741,7 +5362,10 @@
     "level": 1,
     "description": "Dragon damage +7%.  is active in certain high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900022,
@@ -4755,7 +5379,10 @@
     "level": 1,
     "description": "Physical damage +7%.  is active in certain high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900023,
@@ -4769,7 +5396,10 @@
     "level": 1,
     "description": "Affinity +4%.  is active in certain high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900024,
@@ -4783,7 +5413,10 @@
     "level": 1,
     "description": "Ultimate charge efficiency +3%.  is active in certain high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900025,
@@ -4797,7 +5430,10 @@
     "level": 1,
     "description": "Water damage +7%.  is active in certain high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900026,
@@ -4811,7 +5447,10 @@
     "level": 1,
     "description": "Fire damage +7%.  is active in certain high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900027,
@@ -4825,7 +5464,10 @@
     "level": 1,
     "description": "Ice damage +7%.  is active in certain high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900028,
@@ -4839,7 +5481,10 @@
     "level": 1,
     "description": "Thunder damage +7%.  is active in certain high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900029,
@@ -4853,7 +5498,10 @@
     "level": 1,
     "description": "Dragon damage +7%.  is active in certain high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900030,
@@ -4867,7 +5515,10 @@
     "level": 1,
     "description": "Physical damage +7%.  is active in certain high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900031,
@@ -4881,7 +5532,10 @@
     "level": 1,
     "description": "Affinity +4%.  is active in certain high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  },
  {
   "id": 900032,
@@ -4895,6 +5549,9 @@
     "level": 1,
     "description": "Ultimate charge efficiency +3%.  is active in certain high-difficulty challenges."
    }
-  ]
+  ],
+  "used_by": "",
+  "game_status": "Debug – not used by any item",
+  "debug": "yes"
  }
 ]

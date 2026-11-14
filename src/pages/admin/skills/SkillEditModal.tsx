@@ -70,6 +70,9 @@ function emptyForm(): SkillUpsert {
     sort_orders: {},
     description: null,
     notes: null,
+    skill_type_id: null,
+    game_status: 'In game',
+    is_debug: false,
   };
 }
 
@@ -113,6 +116,9 @@ export default function SkillEditModal({ skill, open, onClose }: Props) {
           sort_orders: skill.sort_orders ?? {},
           description: skill.description ?? null,
           notes: skill.notes ?? null,
+          skill_type_id: skill.skill_type_id ?? null,
+          game_status: skill.game_status ?? 'In game',
+          is_debug: skill.is_debug ?? false,
         });
         setIdTouched(true);
       } else {
@@ -559,6 +565,46 @@ export default function SkillEditModal({ skill, open, onClose }: Props) {
                   className="w-16 rounded border border-mh-slate-700 bg-mh-slate-800 px-2 py-1 text-center text-xs font-bold text-mh-slate-100 outline-none focus:border-mh-gold-500/50"
                 />
               </label>
+            </div>
+          </div>
+
+          {/* Game Metadata: Skill Type ID & Status */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label className="block text-xs font-medium text-mh-slate-400 mb-1.5">
+                Game Skill Type ID
+              </label>
+              <input
+                type="number"
+                value={form.skill_type_id ?? ''}
+                onChange={(e) =>
+                  setForm((p) => ({
+                    ...p,
+                    skill_type_id: e.target.value ? parseInt(e.target.value, 10) : null,
+                  }))
+                }
+                placeholder="e.g. 43"
+                className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-100 placeholder-mh-slate-600 outline-none focus:border-mh-gold-500/50"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-mh-slate-400 mb-1.5">
+                Game Status
+              </label>
+              <input
+                type="text"
+                value={form.game_status}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setForm((p) => ({
+                    ...p,
+                    game_status: val,
+                    is_debug: val.toLowerCase().includes('debug') || val !== 'In game',
+                  }));
+                }}
+                placeholder="In game"
+                className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-100 placeholder-mh-slate-600 outline-none focus:border-mh-gold-500/50"
+              />
             </div>
           </div>
 

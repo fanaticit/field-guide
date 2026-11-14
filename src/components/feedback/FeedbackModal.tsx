@@ -149,7 +149,14 @@ export default function FeedbackModal({ open, onClose }: FeedbackModalProps) {
 
       setIsSubmitted(true);
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'An unexpected error occurred while sending feedback.';
+      let msg = 'An unexpected error occurred while sending feedback.';
+      if (err instanceof Error && err.message) {
+        msg = err.message;
+      } else if (typeof err === 'object' && err !== null && 'message' in err && typeof (err as { message: unknown }).message === 'string') {
+        msg = (err as { message: string }).message;
+      } else if (typeof err === 'string') {
+        msg = err;
+      }
       setErrorMsg(msg);
     } finally {
       setIsSubmitting(false);
