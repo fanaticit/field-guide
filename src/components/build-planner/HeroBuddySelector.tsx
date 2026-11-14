@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { ChevronDown, Lock, User, Swords, PawPrint, Check, Search } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
@@ -55,6 +56,7 @@ const BUDDY_TIER_THEMES: Record<string, {
 const getBuddyTheme = (tier?: string) => BUDDY_TIER_THEMES[tier || 'R'] || BUDDY_TIER_THEMES.R;
 
 export function HeroBuddySelector() {
+  const navigate = useNavigate();
   const { adventurer, setAdventurer, weaponType, setWeaponType, buddy, setBuddy } = useBuildPlannerStore();
   const { isOwned } = useUserBuddyCollection();
   const [showAdvList, setShowAdvList] = useState(false);
@@ -299,22 +301,26 @@ export function HeroBuddySelector() {
         <button
           type="button"
           onClick={() => {
-            if (isWeaponLocked) return;
+            if (isWeaponLocked) {
+              if (activeWeaponType?.id) {
+                navigate(`/challenges/weapons?type=${activeWeaponType.id}`);
+              }
+              return;
+            }
             setShowWtList(prev => !prev);
             setShowAdvList(false);
             setShowBuddyList(false);
           }}
-          disabled={isWeaponLocked}
-          className={`h-[54px] w-[54px] rounded-xl flex items-center justify-center relative border transition-all shadow-sm group ${
+          className={`h-[54px] w-[54px] rounded-xl flex items-center justify-center relative border transition-all shadow-sm group cursor-pointer ${
             isWeaponLocked
-              ? 'opacity-90 cursor-default border-mh-slate-800 bg-mh-slate-900/60'
+              ? 'border-mh-slate-800 bg-mh-slate-900/60 hover:border-amber-500/50 hover:bg-mh-slate-850'
               : showWtList
-              ? 'border-rarity-3/80 ring-2 ring-rarity-3/30 bg-mh-slate-800 cursor-pointer'
-              : 'bg-mh-slate-850 hover:bg-mh-slate-800 border-mh-slate-750/80 hover:border-mh-slate-650 cursor-pointer'
+              ? 'border-rarity-3/80 ring-2 ring-rarity-3/30 bg-mh-slate-800'
+              : 'bg-mh-slate-850 hover:bg-mh-slate-800 border-mh-slate-750/80 hover:border-mh-slate-650'
           }`}
           title={
             isWeaponLocked
-              ? `Weapon: ${activeWeaponType?.name || 'Weapon'} (Locked to ${adventurer?.name})`
+              ? `Weapon: ${activeWeaponType?.name || 'Weapon'} (Locked to ${adventurer?.name} — Click to view in Weapons Guide)`
               : `Weapon: ${activeWeaponType?.name || 'Select Weapon'} (Click to change)`
           }
         >
@@ -345,7 +351,17 @@ export function HeroBuddySelector() {
           <div data-dropdown-open="true" className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 z-50 w-72 sm:w-84 bg-mh-slate-900 border border-mh-slate-700 rounded-xl shadow-2xl p-2.5 backdrop-blur-md animate-in fade-in zoom-in-95 duration-150">
             <div className="flex items-center justify-between pb-2 mb-2 border-b border-mh-slate-800 text-xs font-bold text-mh-slate-300 px-1">
               <span>Select Weapon Type</span>
-              <span className="text-[10px] font-normal text-mh-slate-500">{availableWeaponTypes.length} available</span>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => navigate(activeWeaponType?.id ? `/challenges/weapons?type=${activeWeaponType.id}` : '/challenges/weapons')}
+                  className="text-[10px] text-[var(--theme-accent)] hover:underline font-medium cursor-pointer"
+                  title="View in Weapons Guide"
+                >
+                  Weapons Guide &rarr;
+                </button>
+                <span className="text-[10px] font-normal text-mh-slate-500">{availableWeaponTypes.length} available</span>
+              </div>
             </div>
 
             <div className="grid grid-cols-2 gap-1.5 max-h-64 overflow-y-auto pr-1">

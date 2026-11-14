@@ -205,11 +205,15 @@ interface SearchableDropdownProps {
   footerButton?: DropdownFooterButton;
   footerButtons?: DropdownFooterButton[];
   tooltipContent?: React.ReactNode;
+  onImageClick?: () => void;
+  imageTitle?: string;
+  onPlaceholderClick?: () => void;
+  placeholderTitle?: string;
   onChange: (id: string | null) => void;
 }
 
 function SearchableDropdown({
-  label, items, selectedId, selectedImage, placeholderIcon, placeholder, isLoading, highlightClasses, emptyMessage, footerButton, footerButtons, tooltipContent, onChange,
+  label, items, selectedId, selectedImage, placeholderIcon, placeholder, isLoading, highlightClasses, emptyMessage, footerButton, footerButtons, tooltipContent, onImageClick, imageTitle, onPlaceholderClick, placeholderTitle, onChange,
 }: SearchableDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -245,9 +249,20 @@ function SearchableDropdown({
     <div className="flex items-center gap-3 w-full">
       {/* Left: Placeholder Icon */}
       {placeholderIcon ? (
-        <div className="w-8 h-8 shrink-0 opacity-60">
-          <img src={placeholderIcon} alt={label} className="w-full h-full object-contain filter grayscale invert opacity-70 brightness-200" />
-        </div>
+        onPlaceholderClick ? (
+          <button
+            type="button"
+            onClick={onPlaceholderClick}
+            title={placeholderTitle || 'View details'}
+            className="w-8 h-8 shrink-0 opacity-70 hover:opacity-100 transition-all cursor-pointer flex items-center justify-center hover:scale-110 active:scale-95"
+          >
+            <img src={placeholderIcon} alt={label} className="w-full h-full object-contain filter grayscale invert opacity-70 brightness-200" />
+          </button>
+        ) : (
+          <div className="w-8 h-8 shrink-0 opacity-60">
+            <img src={placeholderIcon} alt={label} className="w-full h-full object-contain filter grayscale invert opacity-70 brightness-200" />
+          </div>
+        )
       ) : (
         <div className="w-8 h-8 shrink-0" /> // spacer for weapon if it doesn't have one
       )}
@@ -371,13 +386,28 @@ function SearchableDropdown({
       </div>
 
       {/* Right: Selected image preview */}
-      <div className="w-[50px] h-[50px] rounded bg-mh-slate-900 border border-mh-slate-800 flex-shrink-0 flex items-center justify-center overflow-hidden p-0">
-        {selectedImage ? (
-          <img src={selectedImage} alt={selected?.primaryLabel || 'Selected'} className="w-[46px] h-[46px] object-contain drop-shadow-md" />
-        ) : (
-          <div className="w-4 h-4 bg-mh-slate-800 rounded-full" />
-        )}
-      </div>
+      {onImageClick ? (
+        <button
+          type="button"
+          onClick={onImageClick}
+          title={imageTitle || 'View details in Weapons Guide'}
+          className="w-[50px] h-[50px] rounded bg-mh-slate-900 border border-mh-slate-800 hover:border-rarity-3/80 hover:bg-mh-slate-800/90 flex-shrink-0 flex items-center justify-center overflow-hidden p-0 transition-all cursor-pointer group shadow-sm hover:scale-105 active:scale-95"
+        >
+          {selectedImage ? (
+            <img src={selectedImage} alt={selected?.primaryLabel || 'Selected'} className="w-[46px] h-[46px] object-contain drop-shadow-md group-hover:brightness-110 transition-all" />
+          ) : (
+            <div className="w-4 h-4 bg-mh-slate-800 rounded-full group-hover:bg-rarity-3/60 transition-colors" />
+          )}
+        </button>
+      ) : (
+        <div className="w-[50px] h-[50px] rounded bg-mh-slate-900 border border-mh-slate-800 flex-shrink-0 flex items-center justify-center overflow-hidden p-0">
+          {selectedImage ? (
+            <img src={selectedImage} alt={selected?.primaryLabel || 'Selected'} className="w-[46px] h-[46px] object-contain drop-shadow-md" />
+          ) : (
+            <div className="w-4 h-4 bg-mh-slate-800 rounded-full" />
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -435,6 +465,18 @@ export function EquipmentSelector() {
     }
     if (weapon?.id) {
       params.set('compare', weapon.id);
+    }
+    const query = params.toString();
+    navigate(`/challenges/weapons${query ? `?${query}` : ''}`);
+  };
+
+  const handleGoToWeaponDetails = () => {
+    const params = new URLSearchParams();
+    if (activeWeaponTypeId) {
+      params.set('type', activeWeaponTypeId);
+    }
+    if (weapon?.id) {
+      params.set('weapon', weapon.id);
     }
     const query = params.toString();
     navigate(`/challenges/weapons${query ? `?${query}` : ''}`);
@@ -596,9 +638,13 @@ export function EquipmentSelector() {
         <SearchableDropdown
           label="Weapon"
           placeholderIcon={weaponType?.icon || (activeWeaponTypeId ? `/images/weapons/${activeWeaponTypeId}.svg` : '/images/weapons/great_sword.png')}
+          onPlaceholderClick={handleGoToWeaponDetails}
+          placeholderTitle={activeWeaponTypeId ? `View ${weaponType?.name || 'weapon'} details in Weapons Guide` : 'View Weapons Guide'}
           items={weaponItems}
           selectedId={weapon?.id}
           selectedImage={weapon?.image ?? undefined}
+          onImageClick={handleGoToWeaponDetails}
+          imageTitle={weapon ? `View details for ${weapon.name} in Weapons Guide` : 'View weapon details in Weapons Guide'}
           isLoading={isWepLoading}
           emptyMessage={isOnlyCrafted ? 'No crafted weapons found for this type.' : undefined}
           footerButtons={[

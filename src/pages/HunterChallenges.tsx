@@ -33,6 +33,8 @@ import {
   useUpdateChallengeMaterial,
   useDeleteChallenge,
   groupChallengesByMonster,
+  getChallengeMonsterId,
+  getChallengeMonsterName,
   challengeStatusLabel,
   challengeMaxRarity,
   type HunterChallenge,
@@ -42,7 +44,7 @@ import LoginModal from '../components/auth/LoginModal';
 import { cn } from '../lib/utils';
 import { adventurerInsightLabel } from '../data/schemas/adventurer';
 import { usePublicAdventurers } from '../hooks/useAdminAdventurers';
-import { usePublicMonsters } from '../hooks/useAdminMonsters';
+import { usePublicMonsters, type DBMonster } from '../hooks/useAdminMonsters';
 import PageTitlePanel from '../components/layout/PageTitlePanel';
 import VisageIcon from '../components/visage/VisageIcon';
 import ArtBackdrop from '../components/ArtBackdrop';
@@ -50,6 +52,12 @@ import { VISAGE_RARITY_OPTIONS, type VisageRarity } from '../data/schemas/visage
 import { WEAPON_RARITY_NAMES } from '../data/core/weapon-names';
 import { getWeaponDisplayName, type DBWeapon } from '../data/schemas/weapon';
 import { useAdminWeapons } from '../hooks/useAdminWeapons';
+import { useArmourSetUpgrades } from '../hooks/useArmourPieces';
+import {
+  getMonsterRanksFromMaterials,
+  getChallengeRequiredMaterials,
+  type GearMaterialRequirement,
+} from '../data/core/gear-materials';
 
 // ── Slot display helpers ──────────────────────────────────────
 
@@ -230,6 +238,8 @@ interface ChallengeCardProps {
   sketchImage?: string | null;
   compact?: boolean;
   weaponsMap?: Map<string, DBWeapon>;
+  monstersMap?: Map<string, DBMonster>;
+  armourUpgradesMap?: Map<string, Map<number, GearMaterialRequirement[]>>;
 }
 
 /** The rarity of the visage card being searched for: Fine -> Rare -> Epic -> Superior. */
@@ -248,7 +258,18 @@ function visageArt(c: HunterChallenge, className: string) {
   );
 }
 
-function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, backgroundImage, sketchImage, compact = false, weaponsMap }: ChallengeCardProps) {
+function ChallengeCard({
+  challenge: c,
+  onIncrement,
+  onUpdateMaterial,
+  onDelete,
+  backgroundImage,
+  sketchImage,
+  compact = false,
+  weaponsMap,
+  monstersMap,
+  armourUpgradesMap,
+}: ChallengeCardProps) {
   const [isEditingMaterial, setIsEditingMaterial] = useState(false);
   const [editMaterial, setEditMaterial] = useState(c.missing_material ?? '');
   const [editActivity, setEditActivity] = useState(c.missing_material_activity ?? '');
@@ -259,10 +280,12 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
   };
 
   const isVisage = c.challenge_type === 'visage_set' || Boolean(c.visage_id);
-  // Armour pieces show the sketch of the monster they are made from
-  const showsSketch = isVisage || c.challenge_type === 'armour_piece';
+  // Armour pieces & weapons show the sketch of the monster they are made from
+  const showsSketch = isVisage || c.challenge_type === 'armour_piece' || c.challenge_type === 'weapon' || Boolean(c.weapon_id);
   const isAdventurer = c.challenge_type === 'adventurer' || Boolean(c.adventurer_id);
   const isBuddy = c.challenge_type === 'buddy' || Boolean(c.buddy_id);
+
+  const challengeMonsterName = getChallengeMonsterName(c, weaponsMap, monstersMap);
 
   const slotLabel = getSlotLabel(c);
   const slotIcon  = SLOT_ICONS[c.armour_slot ?? ''] ?? null;
@@ -271,6 +294,15 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
   const isDone    = c.status === 'completed' || c.status === 'abandoned';
   // Art stays greyed out until the item is collected / recruited
   const isCollected = c.status === 'completed';
+
+  const requiredMaterials = useMemo(
+    () => getChallengeRequiredMaterials(c, armourUpgradesMap),
+    [c, armourUpgradesMap],
+  );
+  const monsterRanks = useMemo(
+    () => getMonsterRanksFromMaterials(requiredMaterials),
+    [requiredMaterials],
+  );
 
   // Rarity progress
   const maxR = challengeMaxRarity(c);
@@ -344,14 +376,22 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
               <p className="text-[10px] text-sky-400 truncate">
                 {!isDone ? 'Recruit Companion' : 'Recruited to Collection'}
               </p>
-            ) : c.monster_name && !isDone ? (
+            ) : challengeMonsterName && !isDone ? (
               <p className="text-[10px] text-sky-400 truncate">
-                Hunt {c.monster_name} at Rank {toRoman((c.current_rarity || 0) + 1)}
+                Hunt {challengeMonsterName} {monsterRanks.length > 0 ? `at Rank ${monsterRanks.join(', ')}` : ''}
               </p>
-            ) : c.monster_name ? (
-              <p className="text-[10px] text-sky-400 truncate">{c.monster_name}</p>
+            ) : challengeMonsterName ? (
+              <p className="text-[10px] text-sky-400 truncate">{challengeMonsterName}</p>
             ) : null}
           </div>
+          {requiredMaterials.length > 0 && !isDone && (
+            <p className="mt-1 text-[10px] text-sky-300 flex items-center gap-1.5 flex-wrap">
+              <Package size={10} className="text-yellow-400 shrink-0" />
+              <span>
+                {requiredMaterials.map((m) => `${m.item} ×${m.count}`).join(', ')}
+              </span>
+            </p>
+          )}
           {c.missing_material && !isDone && (
             <p className="mt-1 text-[10px] text-sky-300 flex items-center gap-1">
               <PackageSearch size={10} className="text-yellow-500/70 shrink-0" />
@@ -423,12 +463,12 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
                   !isDone ? (
                     <span className="text-sky-500"> · Recruit Companion</span>
                   ) : null
-                ) : c.monster_name && !isDone ? (
+                ) : challengeMonsterName && !isDone ? (
                   <span className="text-sky-500">
-                    {' · '}Hunt {c.monster_name} at Rank {toRoman((c.current_rarity || 0) + 1)}
+                    {' · '}Hunt {challengeMonsterName} {monsterRanks.length > 0 ? `at Rank ${monsterRanks.join(', ')}` : ''}
                   </span>
-                ) : c.monster_name ? (
-                  <span className="text-sky-500"> · {c.monster_name}</span>
+                ) : challengeMonsterName ? (
+                  <span className="text-sky-500"> · {challengeMonsterName}</span>
                 ) : null}
               </p>
             </div>
@@ -469,6 +509,44 @@ function ChallengeCard({ challenge: c, onIncrement, onUpdateMaterial, onDelete, 
           </div>
         </div>
       </div>
+
+      {/* Required Monster Materials for this step */}
+      {!isDone && requiredMaterials.length > 0 && (
+        <div className="pt-2 border-t border-sky-800/60 space-y-1.5">
+          <div className="flex items-center justify-between text-[10px]">
+            <span className="font-bold uppercase tracking-wider text-sky-400 flex items-center gap-1.5">
+              <Package size={12} className="text-yellow-400 shrink-0" />
+              {c.status === 'crafting' ? 'Required Materials' : `Upgrade to R${(c.current_rarity || 0) + 1} Materials`}
+            </span>
+            {monsterRanks.length > 0 && (
+              <span className="rounded bg-yellow-500/15 border border-yellow-500/30 px-1.5 py-0.2 text-[9px] font-bold text-yellow-300">
+                Rank {monsterRanks.join(', ')} Monster
+              </span>
+            )}
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {requiredMaterials.map((m, idx) => {
+              const isMonsterPiece = getMonsterRanksFromMaterials([m]).length > 0;
+              return (
+                <span
+                  key={idx}
+                  className={cn(
+                    'inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-medium border transition-colors',
+                    isMonsterPiece
+                      ? 'bg-yellow-500/10 text-yellow-200 border-yellow-500/30 font-semibold'
+                      : 'bg-sky-900/40 text-sky-300 border-sky-700/50',
+                  )}
+                >
+                  <span>{m.item}</span>
+                  <span className={cn('text-[10px]', isMonsterPiece ? 'text-yellow-400 font-bold' : 'text-sky-400')}>
+                    ×{m.count}
+                  </span>
+                </span>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Missing Materials Section */}
       {!isDone && (
@@ -604,18 +682,40 @@ interface HuntingTargetsPanelProps {
   /** Monster ID → sketch, drawn behind visage rows. */
   sketches?: Map<string, string>;
   weaponsMap?: Map<string, DBWeapon>;
+  armourUpgradesMap?: Map<string, Map<number, GearMaterialRequirement[]>>;
 }
 
-function HuntingTargetsPanel({ monsterGroups, selection, onSelect, sketches, weaponsMap }: HuntingTargetsPanelProps) {
+function HuntingTargetsPanel({ monsterGroups, selection, onSelect, sketches, weaponsMap, armourUpgradesMap }: HuntingTargetsPanelProps) {
   const [expandedMonster, setExpandedMonster] = useState<string | null>(null);
   const selectedMonster = selection?.kind === 'monster' ? selection.value : null;
   const selectedActivity = selection?.kind === 'activity' ? selection.value : null;
   const selectedMaterial = selection?.kind === 'material' ? selection.value : null;
 
-  // Sort monster groups by count desc
+  // Sort monster groups: monster with most items needed to hunt at the top, general at the bottom
   const sortedMonsters = useMemo(() => {
-    return Array.from(monsterGroups.entries()).sort((a, b) => b[1].challenges.length - a[1].challenges.length);
-  }, [monsterGroups]);
+    return Array.from(monsterGroups.entries()).sort((a, b) => {
+      // General / Material always at the bottom
+      const isGeneralA = a[0] === '__general__' || a[1].monsterName === 'General / Material';
+      const isGeneralB = b[0] === '__general__' || b[1].monsterName === 'General / Material';
+      if (isGeneralA && !isGeneralB) return 1;
+      if (!isGeneralA && isGeneralB) return -1;
+
+      // Primary: most challenges (items to hunt) desc
+      const countDiff = b[1].challenges.length - a[1].challenges.length;
+      if (countDiff !== 0) return countDiff;
+
+      // Secondary: total materials count needed desc
+      const matsA = a[1].challenges.flatMap(c => getChallengeRequiredMaterials(c, armourUpgradesMap))
+        .reduce((sum, m) => sum + (m.count || 0), 0);
+      const matsB = b[1].challenges.flatMap(c => getChallengeRequiredMaterials(c, armourUpgradesMap))
+        .reduce((sum, m) => sum + (m.count || 0), 0);
+      const matsDiff = matsB - matsA;
+      if (matsDiff !== 0) return matsDiff;
+
+      // Tertiary: alphabetical by monster name
+      return a[1].monsterName.localeCompare(b[1].monsterName);
+    });
+  }, [monsterGroups, armourUpgradesMap]);
 
   // Gather and sort activities
   const sortedActivities = useMemo(() => {
@@ -663,21 +763,28 @@ function HuntingTargetsPanel({ monsterGroups, selection, onSelect, sketches, wea
           const isExpanded = expandedMonster === monsterId;
           const challengeCount = group.challenges.length;
 
-          // Ranks only apply to craftable gear; visage cards are found, not crafted
-          const ranksNeeded = Array.from(new Set(
-            group.challenges
-              .filter(c => getCategory(c) !== 'visage')
-              .map(c => (c.current_rarity || 0) + 1)
-          )).sort((a, b) => a - b).map(r => toRoman(r)).join(', ');
+          // Ranks derived from actual required monster materials
+          const allGroupMaterials = group.challenges.flatMap((c) =>
+            getChallengeRequiredMaterials(c, armourUpgradesMap),
+          );
+          const ranksNeeded = getMonsterRanksFromMaterials(allGroupMaterials).join(', ');
 
           // The monster's sketch is shown on its row when it has a visage challenge, tinted by that card's target rarity
           const sketchVisage = group.challenges.find((c) => getCategory(c) === 'visage');
           const sketch = sketchVisage?.monster_id ? sketches?.get(sketchVisage.monster_id) : null;
 
           const breakdown = HUNT_CATEGORIES
-            .map(cat => ({ cat, n: group.challenges.filter(c => getCategory(c) === cat).length }))
+            .map(cat => {
+              const n = group.challenges.filter(c => getCategory(c) === cat).length;
+              return { cat, n };
+            })
             .filter(x => x.n > 0)
-            .map(x => `${x.n} ${CATEGORY_SINGULAR[x.cat]}`)
+            .map(x => {
+              const label = x.cat === 'armour'
+                ? (x.n === 1 ? 'piece' : 'pieces')
+                : (x.n === 1 ? CATEGORY_SINGULAR[x.cat].toLowerCase() : `${CATEGORY_SINGULAR[x.cat].toLowerCase()}s`);
+              return `${x.n} ${label}`;
+            })
             .join(' · ');
 
           return (
@@ -737,6 +844,8 @@ function HuntingTargetsPanel({ monsterGroups, selection, onSelect, sketches, wea
                     const slotLabel = getSlotLabel(c);
                     const slotIcon = SLOT_ICONS[c.armour_slot ?? ''] ?? null;
                     const isVisageItem = getCategory(c) === 'visage';
+                    const requiredMats = getChallengeRequiredMaterials(c, armourUpgradesMap);
+                    const itemRanks = getMonsterRanksFromMaterials(requiredMats);
 
                     return (
                       <div key={c.id} className="flex flex-col gap-1.5 px-3 py-2.5">
@@ -762,9 +871,41 @@ function HuntingTargetsPanel({ monsterGroups, selection, onSelect, sketches, wea
                             {isVisageItem ? 'Find' : c.status === 'crafting' ? 'Craft' : c.status === 'upgrading' ? `→R${c.max_rarity}` : 'Done'}
                           </span>
                         </div>
+
+                        {/* Monster Pieces / Materials Needed */}
+                        {requiredMats.length > 0 && (
+                          <div className="pl-9 space-y-1">
+                            <div className="flex flex-wrap items-center gap-1.5">
+                              <span className="text-[9px] font-bold uppercase tracking-wider text-sky-400 flex items-center gap-1">
+                                <Package size={10} className="text-yellow-400 shrink-0" />
+                                {itemRanks.length > 0 ? `Rank ${itemRanks.join(', ')}:` : 'Needs:'}
+                              </span>
+                              {requiredMats.map((m, idx) => {
+                                const isMonsterPiece = getMonsterRanksFromMaterials([m]).length > 0;
+                                return (
+                                  <span
+                                    key={idx}
+                                    className={cn(
+                                      'inline-flex items-center gap-0.5 rounded px-1.5 py-0.2 text-[10px]',
+                                      isMonsterPiece
+                                        ? 'bg-yellow-500/15 text-yellow-200 border border-yellow-500/30 font-semibold'
+                                        : 'bg-sky-900/50 text-sky-300 border border-sky-700/50',
+                                    )}
+                                  >
+                                    <span>{m.item}</span>
+                                    <span className={cn('text-[9px]', isMonsterPiece ? 'text-yellow-400 font-bold' : 'text-sky-400')}>
+                                      ×{m.count}
+                                    </span>
+                                  </span>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
+
                         {c.missing_material && (
                           <div className="pl-9 flex items-center gap-1.5 text-[10px] text-sky-400">
-                            <PackageSearch size={10} className="text-yellow-500/70" />
+                            <PackageSearch size={10} className="text-yellow-500/70 shrink-0" />
                             <span className="truncate">{c.missing_material}</span>
                           </div>
                         )}
@@ -926,12 +1067,32 @@ export default function HunterChallenges() {
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const { data: challenges = [], isLoading } = useHunterChallenges(user?.id);
+  const armourPieceIds = useMemo(
+    () => Array.from(new Set(challenges.map((c) => c.armour_piece_id).filter(Boolean) as string[])),
+    [challenges],
+  );
+  const { data: armourUpgrades = [] } = useArmourSetUpgrades(armourPieceIds);
+  const armourUpgradesMap = useMemo(() => {
+    const map = new Map<string, Map<number, GearMaterialRequirement[]>>();
+    for (const u of armourUpgrades) {
+      if (!map.has(u.armour_piece_id)) {
+        map.set(u.armour_piece_id, new Map());
+      }
+      map.get(u.armour_piece_id)!.set(u.rarity, u.materials || []);
+    }
+    return map;
+  }, [armourUpgrades]);
+
   const { data: adventurers = [] } = usePublicAdventurers();
   const adventurerBackgrounds = useMemo(
     () => new Map(adventurers.filter((a) => a.background_image).map((a) => [a.id, a.background_image as string])),
     [adventurers],
   );
   const { data: monsters = [] } = usePublicMonsters();
+  const monstersMap = useMemo(
+    () => new Map(monsters.map((m) => [m.id, m])),
+    [monsters],
+  );
   const monsterSketches = useMemo(
     () => new Map(monsters.filter((m) => m.sketch).map((m) => [m.id, m.sketch as string])),
     [monsters],
@@ -966,14 +1127,15 @@ export default function HunterChallenges() {
     if (target) {
       setCategory('all');
       setShowCollected(!isOpen(target));
+      const monsterName = getChallengeMonsterName(target, weaponsMap, monstersMap) ?? target.monster_name ?? '';
       setSelection(
         isRecruitItem(target)
           ? { kind: 'recruit', value: target.id }
-          : { kind: 'monster', value: target.monster_name ?? '' },
+          : { kind: 'monster', value: monsterName },
       );
     }
     setSearchParams({}, { replace: true });
-  }, [focusId, isLoading, challenges, setSearchParams]);
+  }, [focusId, isLoading, challenges, setSearchParams, weaponsMap, monstersMap]);
 
   // ── Derived data ────────────────────────────────────────────
 
@@ -983,7 +1145,7 @@ export default function HunterChallenges() {
     if (selection) {
       list = list.filter((c) => {
         switch (selection.kind) {
-          case 'monster':  return isHuntItem(c) && c.monster_name === selection.value;
+          case 'monster':  return isHuntItem(c) && getChallengeMonsterName(c, weaponsMap, monstersMap) === selection.value;
           case 'activity': return c.missing_material_activity?.trim() === selection.value;
           case 'material': return c.missing_material?.trim() === selection.value;
           case 'recruit':  return c.id === selection.value;
@@ -992,7 +1154,7 @@ export default function HunterChallenges() {
     }
 
     return list;
-  }, [challenges, category, showCollected, selection]);
+  }, [challenges, category, showCollected, selection, weaponsMap, monstersMap]);
 
   const openChallenges = useMemo(() => challenges.filter(isOpen), [challenges]);
   const completedCount = challenges.filter((c) => c.status === 'completed').length;
@@ -1015,7 +1177,10 @@ export default function HunterChallenges() {
     () => openChallenges.filter((c) => isRecruitItem(c) && matchesCategory(c, category)),
     [openChallenges, category],
   );
-  const monsterGroups = useMemo(() => groupChallengesByMonster(huntChallenges), [huntChallenges]);
+  const monsterGroups = useMemo(
+    () => groupChallengesByMonster(huntChallenges, weaponsMap, monstersMap),
+    [huntChallenges, weaponsMap, monstersMap],
+  );
   const showHuntSection = category === 'all' || HUNT_CATEGORIES.includes(category as ItemCategory);
   const showRecruitSection = category === 'all' || RECRUIT_CATEGORIES.includes(category as ItemCategory);
 
@@ -1174,6 +1339,7 @@ export default function HunterChallenges() {
                   onSelect={setSelection}
                   sketches={monsterSketches}
                   weaponsMap={weaponsMap}
+                  armourUpgradesMap={armourUpgradesMap}
                 />
               </div>
             )}
@@ -1252,35 +1418,45 @@ export default function HunterChallenges() {
                 <>
                   {/* Desktop: full cards */}
                   <div className="hidden sm:grid grid-cols-1 xl:grid-cols-2 gap-3">
-                    {filteredChallenges.map((c) => (
-                      <ChallengeCard
-                        key={c.id}
-                        challenge={c}
-                        onIncrement={(c) => incrementChallenge.mutateAsync(c)}
-                        onUpdateMaterial={(id, material, activity) => updateMaterial.mutateAsync({ id, material, activity })}
-                        onDelete={handleDelete}
-                        backgroundImage={c.adventurer_id ? adventurerBackgrounds.get(c.adventurer_id) : null}
-                        sketchImage={c.monster_id ? monsterSketches.get(c.monster_id) : null}
-                        weaponsMap={weaponsMap}
-                      />
-                    ))}
+                    {filteredChallenges.map((c) => {
+                      const monsterId = getChallengeMonsterId(c, weaponsMap, monstersMap);
+                      return (
+                        <ChallengeCard
+                          key={c.id}
+                          challenge={c}
+                          onIncrement={(c) => incrementChallenge.mutateAsync(c)}
+                          onUpdateMaterial={(id, material, activity) => updateMaterial.mutateAsync({ id, material, activity })}
+                          onDelete={handleDelete}
+                          backgroundImage={c.adventurer_id ? adventurerBackgrounds.get(c.adventurer_id) : null}
+                          sketchImage={monsterId ? monsterSketches.get(monsterId) : null}
+                          weaponsMap={weaponsMap}
+                          monstersMap={monstersMap}
+                          armourUpgradesMap={armourUpgradesMap}
+                        />
+                      );
+                    })}
                   </div>
 
                   {/* Mobile: compact rows */}
                   <div className="sm:hidden space-y-2">
-                    {filteredChallenges.map((c) => (
-                      <ChallengeCard
-                        key={c.id}
-                        challenge={c}
-                        onIncrement={(c) => incrementChallenge.mutateAsync(c)}
-                        onUpdateMaterial={(id, material, activity) => updateMaterial.mutateAsync({ id, material, activity })}
-                        onDelete={handleDelete}
-                        backgroundImage={c.adventurer_id ? adventurerBackgrounds.get(c.adventurer_id) : null}
-                        sketchImage={c.monster_id ? monsterSketches.get(c.monster_id) : null}
-                        weaponsMap={weaponsMap}
-                        compact
-                      />
-                    ))}
+                    {filteredChallenges.map((c) => {
+                      const monsterId = getChallengeMonsterId(c, weaponsMap, monstersMap);
+                      return (
+                        <ChallengeCard
+                          key={c.id}
+                          challenge={c}
+                          onIncrement={(c) => incrementChallenge.mutateAsync(c)}
+                          onUpdateMaterial={(id, material, activity) => updateMaterial.mutateAsync({ id, material, activity })}
+                          onDelete={handleDelete}
+                          backgroundImage={c.adventurer_id ? adventurerBackgrounds.get(c.adventurer_id) : null}
+                          sketchImage={monsterId ? monsterSketches.get(monsterId) : null}
+                          weaponsMap={weaponsMap}
+                          monstersMap={monstersMap}
+                          armourUpgradesMap={armourUpgradesMap}
+                          compact
+                        />
+                      );
+                    })}
                   </div>
 
                   {/* Error state */}

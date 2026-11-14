@@ -177,6 +177,23 @@ export default function BuildPlanner() {
               console.error('Failed to parse saved inks', e);
             }
           }
+          let loadedExceptions: string[] = [];
+          if (Array.isArray(data.build_exceptions)) {
+            loadedExceptions = data.build_exceptions;
+          }
+          const exceptionsMatch = desc.match(/(?:\r?\n\r?\n)?<!-- exceptions:(.*?) -->/);
+          if (exceptionsMatch) {
+            try {
+              const parsed = JSON.parse(exceptionsMatch[1]);
+              if (Array.isArray(parsed) && loadedExceptions.length === 0) {
+                loadedExceptions = parsed;
+              }
+              desc = desc.replace(exceptionsMatch[0], '');
+            } catch (e) {
+              console.error('Failed to parse saved exceptions', e);
+            }
+          }
+          store.setBuildExceptions(loadedExceptions);
           store.setDescription(desc);
           store.setYoutubeUrl(data.youtube_url || '');
           store.setBuildRole(role as 'main' | 'support');
@@ -254,8 +271,11 @@ export default function BuildPlanner() {
     if (Object.keys(activeInks).length > 0) {
       finalDesc += `\n\n<!-- inks:${JSON.stringify(activeInks)} -->`;
     }
+    if (store.buildExceptions.length > 0) {
+      finalDesc += `\n\n<!-- exceptions:${JSON.stringify(store.buildExceptions)} -->`;
+    }
 
-    const buildData = {
+    const buildData: any = {
       author_id: user.id,
       title: store.title.trim(),
       description: finalDesc || null,
@@ -274,32 +294,53 @@ export default function BuildPlanner() {
       visage_4_id: store.visage4?.id || null,
       visage_5_id: store.visage5?.id || null,
       youtube_url: store.youtubeUrl.trim() || null,
+      build_exceptions: store.buildExceptions,
       is_published: true, // Auto-publish for now
+    };
+
+    const executeSave = async (dataPayload: any) => {
+      if (store.buildId && !asNew) {
+        const { error } = await supabase.from('mho_builds').update(dataPayload).eq('id', store.buildId);
+        if (error) throw error;
+        return { isUpdate: true };
+      } else {
+        const { data, error } = await supabase.from('mho_builds').insert(dataPayload).select('id').single();
+        if (error) throw error;
+        return { isUpdate: false, newId: data.id };
+      }
     };
 
     setIsSaving(true);
     try {
-      if (store.buildId && !asNew) {
-        const { error } = await supabase.from('mho_builds').update(buildData).eq('id', store.buildId);
-        if (error) throw error;
+      let saveRes;
+      try {
+        saveRes = await executeSave(buildData);
+      } catch (saveErr: any) {
+        // If column build_exceptions does not exist yet on Supabase, retry without that column
+        if (saveErr?.message?.includes('build_exceptions') || saveErr?.code === '42703' || saveErr?.code === 'PGRST204') {
+          const fallbackData = { ...buildData };
+          delete fallbackData.build_exceptions;
+          saveRes = await executeSave(fallbackData);
+        } else {
+          throw saveErr;
+        }
+      }
+
+      if (saveRes.isUpdate) {
         queryClient.invalidateQueries({ queryKey: ['mho_builds_list'] });
         setIsJustSaved(true);
         triggerFeedback('Changes saved successfully!');
         setTimeout(() => setIsJustSaved(false), 2500);
-      } else {
-        const { data, error } = await supabase.from('mho_builds').insert(buildData).select('id').single();
-        if (error) throw error;
-        if (data) {
-          clearBuildDraft();
-          store.setBuildId(data.id);
-          store.setAuthorId(user.id);
-          store.setUpvotes(0);
-          queryClient.invalidateQueries({ queryKey: ['mho_builds_list'] });
-          setIsJustSaved(true);
-          triggerFeedback('Build created and saved!');
-          setTimeout(() => setIsJustSaved(false), 2500);
-          navigate(`/armory/planner/${data.id}`, { replace: true });
-        }
+      } else if (saveRes.newId) {
+        clearBuildDraft();
+        store.setBuildId(saveRes.newId);
+        store.setAuthorId(user.id);
+        store.setUpvotes(0);
+        queryClient.invalidateQueries({ queryKey: ['mho_builds_list'] });
+        setIsJustSaved(true);
+        triggerFeedback('Build created and saved!');
+        setTimeout(() => setIsJustSaved(false), 2500);
+        navigate(`/armory/planner/${saveRes.newId}`, { replace: true });
       }
     } catch (err: any) {
       console.error(err);

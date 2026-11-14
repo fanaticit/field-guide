@@ -65,6 +65,7 @@ export interface ArmoryBuild {
   visage_3?: BuildVisage | null;
   visage_4?: BuildVisage | null;
   visage_5?: BuildVisage | null;
+  build_exceptions?: string[] | null;
 }
 
 export interface HighestInkResult {

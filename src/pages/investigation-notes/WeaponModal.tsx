@@ -143,6 +143,16 @@ export default function WeaponModal({
     }
 
     setErrorMsg(null);
+    let finalMonster = monsterObj;
+    let resolvedMonsterId = weapon.monster_id ?? null;
+    if (!finalMonster) {
+      const candidate = `${weapon.series || ''} ${weapon.name}`.toLowerCase();
+      finalMonster = monsters.find((m) => candidate.includes(m.name.toLowerCase())) ?? null;
+      if (finalMonster) {
+        resolvedMonsterId = finalMonster.id;
+      }
+    }
+
     try {
       await addChallenge.mutateAsync({
         userId: user.id,
@@ -150,12 +160,12 @@ export default function WeaponModal({
         weaponId: weapon.id,
         weaponName: weapon.name,
         weaponTypeId: weapon.weapon_type_id,
-        monsterId: weapon.monster_id ?? null,
-        monsterName: monsterObj?.name ?? null,
+        monsterId: resolvedMonsterId,
+        monsterName: finalMonster?.name ?? null,
         elementType: weapon.element_type,
         specialSkill: weapon.apex_effect?.name ?? null,
         pieceImage: weapon.image ?? null,
-        setIcon: weapon.image ?? null,
+        setIcon: finalMonster?.icon ?? weapon.image ?? null,
         craftRarity: selectedCraftRarity,
         maxRarity: selectedMaxRarity,
       });

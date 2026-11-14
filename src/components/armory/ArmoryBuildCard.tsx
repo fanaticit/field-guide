@@ -26,6 +26,20 @@ export function ArmoryBuildCard({ build, monsterMap }: ArmoryBuildCardProps) {
   if (inkMatch) {
     desc = desc.replace(inkMatch[0], '');
   }
+  let hasMastery = false;
+  if (Array.isArray(build.build_exceptions) && build.build_exceptions.includes('hunting_master_1')) {
+    hasMastery = true;
+  }
+  const exceptionsMatch = desc.match(/(?:\r?\n\r?\n)?<!-- exceptions:(.*?) -->/);
+  if (exceptionsMatch) {
+    try {
+      const parsed = JSON.parse(exceptionsMatch[1]);
+      if (Array.isArray(parsed) && parsed.includes('hunting_master_1')) {
+        hasMastery = true;
+      }
+    } catch {}
+    desc = desc.replace(exceptionsMatch[0], '');
+  }
   desc = desc.trim();
 
   // Helper to resolve monster icon and name
@@ -168,6 +182,14 @@ export function ArmoryBuildCard({ build, monsterMap }: ArmoryBuildCardProps) {
               ) : (
                 <span className="bg-amber-500/15 text-amber-400 border border-amber-500/30 rounded px-1.5 py-0 text-[8px] font-bold uppercase tracking-wider shrink-0">
                   Support
+                </span>
+              )}
+              {hasMastery && (
+                <span
+                  title="Proof of Mastery — Hunting Master I Active"
+                  className="bg-rarity-5/20 text-rarity-5 border border-rarity-5/40 rounded px-1 py-0 text-[8px] font-bold uppercase tracking-wider flex items-center gap-0.5 shrink-0"
+                >
+                  <span>❖ Mastery I</span>
                 </span>
               )}
             </div>

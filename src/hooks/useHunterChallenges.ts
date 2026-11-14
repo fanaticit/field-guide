@@ -8,6 +8,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '../lib/supabase';
 import { ADVENTURER_MAX_INSIGHT, adventurerInsightLabel } from '../data/schemas/adventurer';
+import { WEAPON_FORGE_MATERIALS } from '../data/core/gear-materials';
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -855,21 +856,131 @@ export function getBuddyChallenge(
   );
 }
 
-/** Group active challenges by monster_id / monsterName for the Hunting Targets panel */
+export interface MonsterLookup {
+  id: string;
+  name: string;
+  icon?: string | null;
+}
+
+export interface WeaponLookup {
+  id: string;
+  monster_id?: string | null;
+  name?: string;
+  image?: string | null;
+  series?: string | null;
+}
+
+/** Resolves the canonical monster ID for any challenge, resolving weapons and unlinked materials where needed */
+export function getChallengeMonsterId(
+  challenge: HunterChallenge,
+  weaponsMap?: Map<string, WeaponLookup>,
+  monstersMap?: Map<string, MonsterLookup>,
+): string | null {
+  // If explicitly stored on the challenge
+  if (challenge.monster_id) return challenge.monster_id;
+
+  // If it's a weapon challenge, look up weapon's monster_id
+  if (challenge.weapon_id && weaponsMap) {
+    const w = weaponsMap.get(challenge.weapon_id);
+    if (w?.monster_id) return w.monster_id;
+  }
+
+  // If monster name is known and monstersMap is provided, look up by name
+  if (challenge.monster_name && monstersMap) {
+    const lower = challenge.monster_name.trim().toLowerCase();
+    for (const m of monstersMap.values()) {
+      if (m.name.toLowerCase() === lower) return m.id;
+    }
+  }
+
+  // Check weapon forge materials if available
+  if (challenge.weapon_id && monstersMap) {
+    const mats = WEAPON_FORGE_MATERIALS[challenge.weapon_id] || [];
+    for (const m of monstersMap.values()) {
+      if (mats.some((mat) => mat.item.toLowerCase().includes(m.name.toLowerCase()))) {
+        return m.id;
+      }
+    }
+  }
+
+  // Check weapon series or name for known monster
+  if (monstersMap && challenge.weapon_id && weaponsMap) {
+    const w = weaponsMap.get(challenge.weapon_id);
+    const candidate = `${w?.series || ''} ${w?.name || ''}`.toLowerCase();
+    for (const m of monstersMap.values()) {
+      if (candidate.includes(m.name.toLowerCase())) {
+        return m.id;
+      }
+    }
+  }
+
+  return null;
+}
+
+/** Resolves the display monster name for a challenge */
+export function getChallengeMonsterName(
+  challenge: HunterChallenge,
+  weaponsMap?: Map<string, WeaponLookup>,
+  monstersMap?: Map<string, MonsterLookup>,
+): string | null {
+  const monsterId = getChallengeMonsterId(challenge, weaponsMap, monstersMap);
+  if (monsterId && monstersMap) {
+    const m = monstersMap.get(monsterId);
+    if (m?.name) return m.name;
+  }
+  if (challenge.monster_name) return challenge.monster_name;
+  if (monsterId && monsterId !== '__general__') return monsterId.replace(/_/g, ' ');
+  return null;
+}
+
+/** Resolves the monster icon for a challenge, guaranteeing weapon images are never used as monster icons */
+export function getChallengeMonsterIcon(
+  challenge: HunterChallenge,
+  weaponsMap?: Map<string, WeaponLookup>,
+  monstersMap?: Map<string, MonsterLookup>,
+): string | null {
+  const monsterId = getChallengeMonsterId(challenge, weaponsMap, monstersMap);
+  if (monsterId && monstersMap) {
+    const m = monstersMap.get(monsterId);
+    if (m?.icon) return m.icon;
+  }
+  // If set_icon is present on the challenge and is NOT a weapon image
+  if (challenge.set_icon && !challenge.set_icon.includes('/weapons/')) {
+    return challenge.set_icon;
+  }
+  return null;
+}
+
+/** Group active challenges by monster for the Hunting Targets panel, grouping weapons under their respective monster */
 export function groupChallengesByMonster(
   challenges: HunterChallenge[],
+  weaponsMap?: Map<string, WeaponLookup>,
+  monstersMap?: Map<string, MonsterLookup>,
 ): Map<string, { monsterName: string; setIcon: string | null; challenges: HunterChallenge[] }> {
   const map = new Map<string, { monsterName: string; setIcon: string | null; challenges: HunterChallenge[] }>();
 
   for (const c of challenges) {
     if (c.status === 'completed' || c.status === 'abandoned') continue;
-    const key = c.monster_id ?? (c.monster_name || '__general__');
+
+    const monsterId = getChallengeMonsterId(c, weaponsMap, monstersMap);
+    const monsterName = getChallengeMonsterName(c, weaponsMap, monstersMap);
+    const monsterIcon = getChallengeMonsterIcon(c, weaponsMap, monstersMap);
+
+    const key = monsterId ?? (monsterName || '__general__');
+    const displayName = monsterName ?? (monsterId ? monsterId.replace(/_/g, ' ') : 'General / Material');
+
     if (!map.has(key)) {
       map.set(key, {
-        monsterName: c.monster_name ?? (c.monster_id ? c.monster_id.replace(/_/g, ' ') : 'General / Material'),
-        setIcon:     c.set_icon ?? null,
+        monsterName: displayName,
+        setIcon:     monsterIcon,
         challenges:  [],
       });
+    } else {
+      const group = map.get(key)!;
+      // Upgrade placeholder/missing icon with the monster icon
+      if (!group.setIcon && monsterIcon) {
+        group.setIcon = monsterIcon;
+      }
     }
     map.get(key)!.challenges.push(c);
   }

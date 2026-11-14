@@ -79,7 +79,9 @@ export function VisageSelector() {
     coreVisage, visage2, visage3, visage4, visage5,
     setVisage, setSlotInkType, selectedInkTypes, getTotalVisagePoints,
     useMine, setUseMine,
+    buildExceptions, toggleBuildException,
   } = useBuildPlannerStore();
+  const hasHuntingMaster = buildExceptions.includes('hunting_master_1');
   const [openSlot, setOpenSlot] = useState<VisageSlot | null>(null);
   const [inkPickSlot, setInkPickSlot] = useState<VisageSlot | null>(null);
   const [filterInk, setFilterInk] = useState<string | null>(null);
@@ -258,8 +260,10 @@ export function VisageSelector() {
     }
   };
 
-  const coreInk = coreVisage ? selectedInkTypes['core'] || coreVisage.ink_types[0] : null;
+  const coreSlotInk = coreVisage ? selectedInkTypes['core'] || coreVisage.ink_types[0] : null;
+  const coreInk = coreSlotInk ? getInkConfig(coreSlotInk).id : null;
   const coreInkCfg = coreInk ? getInkConfig(coreInk) : null;
+  const coreInkConfig = coreInkCfg;
 
   const equippedCards = [coreVisage, visage2, visage3, visage4, visage5].filter(Boolean) as Visage[];
 
@@ -283,6 +287,10 @@ export function VisageSelector() {
     if (ink) inkCounts[ink] = (inkCounts[ink] || 0) + 1;
   });
   const activeInks = Object.entries(inkCounts).filter(([, count]) => count > 0);
+
+  const coreInkCount = coreInk ? (inkCounts[coreInk] || 0) : 0;
+  const secondaryInks = activeInks.filter(([ink]) => getInkConfig(ink).id !== coreInk);
+  const hasTwoSetsConflict = coreInkCount === 3 && secondaryInks.some(([, count]) => count >= 2);
 
   // Auto-enrich any slotted cards missing monster_icon or monster_sketch when the visages query loads
   useEffect(() => {
@@ -860,14 +868,84 @@ export function VisageSelector() {
         </div>
       )}
 
+      {/* Two-set bonus restriction warning / Proof of Mastery prompt */}
+      {!hasHuntingMaster && (hasTwoSetsConflict || (coreInkCount === 3 && secondaryInks.length > 0)) && (
+        <div className="flex flex-col gap-2 p-2.5 rounded-lg border border-amber-500/40 bg-amber-500/10">
+          <div className="flex items-start gap-2">
+            <span className="text-amber-400 text-sm shrink-0 mt-0.5">⚠</span>
+            <div className="flex flex-col gap-1 text-[11px] text-amber-200 leading-snug">
+              <span className="font-bold text-amber-300">
+                Two-Set Bonus Restriction
+              </span>
+              <p className="text-amber-300/90">
+                Under standard rules, you cannot activate both the second bonus of your {coreInkConfig?.name || 'Core'} set (requires 4 cards) and another set's bonus (requires 2 cards), because 6 cards exceed the 5-slot loadout limit.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-2 border-t border-amber-500/20 bg-black/20 -mx-2.5 -mb-2.5 p-2.5 rounded-b-lg">
+            <div className="flex flex-col">
+              <span className="text-[11px] font-bold text-amber-200">
+                Do you have Proof of Mastery — Hunting Master I?
+              </span>
+              <span className="text-[10px] text-amber-400/80">
+                Unlocks your Core set's second bonus with 3 cards, enabling all 3 set bonuses simultaneously.
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={() => toggleBuildException('hunting_master_1')}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/50 hover:border-amber-400 transition-all cursor-pointer shrink-0 self-start sm:self-auto"
+            >
+              <span className="w-3.5 h-3.5 rounded border border-amber-400/80 flex items-center justify-center text-[10px] bg-black/40"></span>
+              <span>Enable Hunting Master I</span>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Proof of Mastery — Hunting Master I Active Banner */}
+      {hasHuntingMaster && (
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 p-2.5 rounded-lg border border-rarity-5/50 bg-rarity-5/10 shadow-sm animate-in fade-in duration-200">
+          <div className="flex items-start sm:items-center gap-2">
+            <span className="text-rarity-5 text-sm shrink-0">❖</span>
+            <div className="flex flex-col">
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <span className="text-xs font-bold text-white">
+                  Proof of Mastery — Hunting Master I
+                </span>
+                <span className="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.2 rounded bg-rarity-5 text-black">
+                  Active
+                </span>
+              </div>
+              <p className="text-[11px] text-mh-slate-200 leading-snug mt-0.5">
+                Core visage set ({coreInkConfig?.name || 'Core'}) second bonus is unlocked with only 3 cards instead of 4. All 3 set bonuses are active!
+              </p>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => toggleBuildException('hunting_master_1')}
+            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-semibold bg-black/40 hover:bg-black/60 text-mh-slate-300 hover:text-white border border-mh-slate-700 hover:border-mh-slate-500 transition-all cursor-pointer shrink-0 self-start sm:self-auto"
+            title="Click to toggle Hunting Master I off"
+          >
+            <span className="w-3.5 h-3.5 rounded border border-emerald-400 flex items-center justify-center text-[10px] bg-emerald-500 text-black font-black">✓</span>
+            <span>Hunting Master I Active</span>
+          </button>
+        </div>
+      )}
+
       {/* Ink Set Progress */}
       {activeInks.length > 0 && (
         <div className="flex flex-col gap-3 pt-2 border-t border-mh-slate-800">
           <span className="text-[10px] font-bold text-mh-slate-500 uppercase tracking-wider">Set Bonuses</span>
           {activeInks.map(([ink, count]) => {
+            const isCoreInk = getInkConfig(ink).id === coreInk;
             const c = getInkConfig(ink);
             const bonuses = INK_SET_BONUSES[ink];
             const MAX_PIPS = 4;
+            const effectiveReq = (bPieces: number) => (isCoreInk && hasHuntingMaster && bPieces === 4) ? 3 : bPieces;
 
             return (
               <div key={ink} className="flex flex-col gap-2">
@@ -914,8 +992,8 @@ export function VisageSelector() {
                     {Array.from({ length: MAX_PIPS }).map((_, i) => {
                       const pipNum = i + 1;
                       const filled = pipNum <= count;
-                      // Milestone pips (2 and 4) are slightly taller
-                      const isMilestone = pipNum === 2 || pipNum === 4;
+                      // Milestone pips (2 and 4, or 3 if Hunting Master I is active for Core ink)
+                      const isMilestone = pipNum === 2 || pipNum === 4 || (isCoreInk && hasHuntingMaster && pipNum === 3);
                       return (
                         <div
                           key={i}
@@ -932,7 +1010,9 @@ export function VisageSelector() {
                 {bonuses && (
                   <div className="flex flex-col gap-1 pl-4 border-l border-mh-slate-700/50 ml-2">
                     {bonuses.map(({ pieces, description }) => {
-                      const achieved = count >= pieces;
+                      const reqPieces = effectiveReq(pieces);
+                      const isMasteryBonus = isCoreInk && hasHuntingMaster && pieces === 4;
+                      const achieved = count >= reqPieces;
                       return (
                         <div
                           key={pieces}
@@ -941,7 +1021,7 @@ export function VisageSelector() {
                           }`}
                         >
                           <span className={`shrink-0 font-black text-[10px] mt-0.5 ${achieved ? c.text : 'text-mh-slate-700'} ${achieved ? c.bg + ' px-1 rounded' : ''}`}>
-                            {pieces}pc
+                            {isMasteryBonus ? '3pc (Mastery I)' : `${pieces}pc`}
                           </span>
                           <span className={achieved ? 'font-semibold' : 'opacity-40'}>
                             {description}
@@ -952,10 +1032,10 @@ export function VisageSelector() {
                     })}
                     {/* Hint for next milestone if not yet at max */}
                     {count < MAX_PIPS && (() => {
-                      const next = bonuses.find(b => b.pieces > count);
+                      const next = bonuses.find(b => effectiveReq(b.pieces) > count);
                       return next ? (
                         <p className="text-[10px] text-mh-slate-600 italic mt-0.5 pl-2">
-                          {next.pieces - count} more card{next.pieces - count > 1 ? 's' : ''} for {next.pieces}-piece bonus
+                          {effectiveReq(next.pieces) - count} more card{effectiveReq(next.pieces) - count > 1 ? 's' : ''} for {isCoreInk && hasHuntingMaster && next.pieces === 4 ? '3-piece (Mastery I)' : `${next.pieces}-piece`} bonus
                         </p>
                       ) : null;
                     })()}

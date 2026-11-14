@@ -69,6 +69,7 @@ export default function WeaponGuide() {
   const [searchParams] = useSearchParams();
   const typeParam = searchParams.get('type');
   const compareParam = searchParams.get('compare');
+  const weaponParam = searchParams.get('weapon') || searchParams.get('id');
 
   const [search, setSearch] = useState('');
   const [filterOwnership, setFilterOwnership] = useState<OwnershipFilter>('all');
@@ -152,6 +153,19 @@ export default function WeaponGuide() {
     }
   }, [compareParam, typeParam, weapons, selectedForCompare]);
 
+  // Pre-select weapon for inspection modal from query param
+  useEffect(() => {
+    if (weaponParam && weapons.length > 0 && !selectedWeapon) {
+      const match = weapons.find((w) => w.id === weaponParam);
+      if (match) {
+        setSelectedWeapon(match);
+        if (!typeParam && match.weapon_type_id) {
+          setFilterWeaponType(match.weapon_type_id);
+        }
+      }
+    }
+  }, [weaponParam, typeParam, weapons, selectedWeapon]);
+
   const monstersMap = useMemo(() => new Map(monsters.map((m) => [m.id, m])), [monsters]);
   const weaponTypesMap = useMemo(() => new Map(WEAPON_TYPES.map((w) => [w.id, w])), []);
 
@@ -206,19 +220,31 @@ export default function WeaponGuide() {
         return;
       }
 
-      const monster = weapon.monster_id ? monstersMap.get(weapon.monster_id) : null;
+      let monster = weapon.monster_id ? monstersMap.get(weapon.monster_id) : null;
+      let resolvedMonsterId = weapon.monster_id ?? null;
+      if (!monster) {
+        const candidate = `${weapon.series || ''} ${weapon.name}`.toLowerCase();
+        for (const m of monstersMap.values()) {
+          if (candidate.includes(m.name.toLowerCase())) {
+            monster = m;
+            resolvedMonsterId = m.id;
+            break;
+          }
+        }
+      }
+
       await addChallenge.mutateAsync({
         userId: user.id,
         game: 'mho',
         weaponId: weapon.id,
         weaponName: weapon.name,
         weaponTypeId: weapon.weapon_type_id,
-        monsterId: weapon.monster_id ?? null,
+        monsterId: resolvedMonsterId,
         monsterName: monster?.name ?? null,
         elementType: weapon.element_type,
         specialSkill: weapon.apex_effect?.name ?? null,
         pieceImage: weapon.image ?? null,
-        setIcon: weapon.image ?? null,
+        setIcon: monster?.icon ?? weapon.image ?? null,
         craftRarity: weapon.rarity || 1,
         maxRarity: weapon.max_rarity,
       });
@@ -1099,7 +1125,16 @@ export default function WeaponGuide() {
         <WeaponModal
           weapon={selectedWeapon}
           open={Boolean(selectedWeapon)}
-          onClose={() => setSelectedWeapon(null)}
+          onClose={() => {
+            setSelectedWeapon(null);
+            if (searchParams.has('weapon') || searchParams.has('id')) {
+              const next = new URLSearchParams(searchParams);
+              next.delete('weapon');
+              next.delete('id');
+              const nextQuery = next.toString();
+              navigate(nextQuery ? `?${nextQuery}` : '/challenges/weapons', { replace: true });
+            }
+          }}
           challenge={getWeaponChallenge(challenges, selectedWeapon.id)}
           onOpenLogin={() => setLoginModalOpen(true)}
           isCrafted={Boolean(selectedWeapon && isCrafted(selectedWeapon.id))}

@@ -138,6 +138,9 @@ interface BuildPlannerState {
   setVisage: (slot: VisageSlot, v: Visage | null) => void;
   setSlotInkType: (slot: VisageSlot, ink: string) => void;
   setSelectedInkTypes: (inks: Record<string, string>) => void;
+  buildExceptions: string[];
+  setBuildExceptions: (exceptions: string[]) => void;
+  toggleBuildException: (exceptionId: string) => void;
   resetBuild: () => void;
   setHoveredSkillId: (id: string | null, category?: string | null) => void;
   setSkillCatalog: (catalog: Map<string, SkillCatalogEntry>) => void;
@@ -235,12 +238,20 @@ export const useBuildPlannerStore = create<BuildPlannerState>((set, get) => ({
   setSlotInkType: (slot, ink) => set((state) => ({
     selectedInkTypes: { ...state.selectedInkTypes, [String(slot)]: ink }
   })),
+  buildExceptions: [],
+  setBuildExceptions: (buildExceptions) => set({ buildExceptions }),
+  toggleBuildException: (exceptionId) => set((state) => ({
+    buildExceptions: state.buildExceptions.includes(exceptionId)
+      ? state.buildExceptions.filter((id) => id !== exceptionId)
+      : [...state.buildExceptions, exceptionId],
+  })),
   resetBuild: () => set({
     buildId: null,
     title: '',
     description: '',
     youtubeUrl: '',
     buildRole: 'main',
+    buildExceptions: [],
     author_id: null,
     is_published: false,
     upvotes: 0,
