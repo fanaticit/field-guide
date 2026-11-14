@@ -179,7 +179,7 @@ export default function WeaponCompareModal({
         <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-4 border-b border-mh-slate-800 bg-mh-slate-950/70 p-3 sm:p-4 shrink-0">
           {/* Left Weapon 1 Header */}
           <div className="flex items-center gap-3 min-w-0 bg-mh-slate-900/90 rounded-2xl border border-mh-slate-750 p-2.5 sm:p-3">
-            <div className="flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-xl bg-mh-slate-800 border border-mh-slate-750 p-1">
+            <div className="flex h-24 w-24 sm:h-28 sm:w-28 shrink-0 items-center justify-center p-0">
               {weapon1.image ? (
                 <img
                   src={weapon1.image}
@@ -187,7 +187,7 @@ export default function WeaponCompareModal({
                   className="h-full w-full object-contain filter drop-shadow"
                 />
               ) : (
-                <Sword size={22} className="text-mh-slate-500" />
+                <Sword size={36} className="text-mh-slate-500" />
               )}
             </div>
             <div className="min-w-0 flex-1">
@@ -251,7 +251,7 @@ export default function WeaponCompareModal({
                 )}
               </div>
             </div>
-            <div className="flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-xl bg-mh-slate-800 border border-mh-slate-750 p-1">
+            <div className="flex h-24 w-24 sm:h-28 sm:w-28 shrink-0 items-center justify-center p-0">
               {weapon2.image ? (
                 <img
                   src={weapon2.image}
@@ -259,7 +259,7 @@ export default function WeaponCompareModal({
                   className="h-full w-full object-contain filter drop-shadow"
                 />
               ) : (
-                <Sword size={22} className="text-mh-slate-500" />
+                <Sword size={36} className="text-mh-slate-500" />
               )}
             </div>
           </div>
@@ -320,7 +320,7 @@ export default function WeaponCompareModal({
                     {u1 ? (
                       <div className="flex items-center gap-2.5 sm:gap-3">
                         {/* Weapon 1 Image Thumbnail */}
-                        <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl bg-mh-slate-800 border border-mh-slate-750 p-1">
+                        <div className="flex h-18 w-18 sm:h-20 sm:w-20 shrink-0 items-center justify-center p-0">
                           {weapon1.image ? (
                             <img
                               src={weapon1.image}
@@ -328,7 +328,7 @@ export default function WeaponCompareModal({
                               className="h-full w-full object-contain filter drop-shadow"
                             />
                           ) : (
-                            <Sword size={16} className="text-mh-slate-500" />
+                            <Sword size={26} className="text-mh-slate-500" />
                           )}
                         </div>
 
@@ -543,7 +543,7 @@ export default function WeaponCompareModal({
                         </div>
 
                         {/* Weapon 2 Image Thumbnail */}
-                        <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl bg-mh-slate-800 border border-mh-slate-750 p-1">
+                        <div className="flex h-18 w-18 sm:h-20 sm:w-20 shrink-0 items-center justify-center p-0">
                           {weapon2.image ? (
                             <img
                               src={weapon2.image}
@@ -551,7 +551,7 @@ export default function WeaponCompareModal({
                               className="h-full w-full object-contain filter drop-shadow"
                             />
                           ) : (
-                            <Sword size={16} className="text-mh-slate-500" />
+                            <Sword size={26} className="text-mh-slate-500" />
                           )}
                         </div>
                       </div>

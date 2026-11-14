@@ -224,7 +224,7 @@ export default function WeaponModal({
            ═══════════════════════════════════════════════════════ */}
         <div
           className={cn(
-            'hidden md:flex md:w-[44%] lg:w-[46%] shrink-0 flex-col justify-between p-6 sm:p-7 md:p-8 relative overflow-hidden border-r border-mh-slate-750 bg-gradient-to-b',
+            'hidden md:flex md:w-[44%] lg:w-[46%] shrink-0 flex-col justify-between p-6 sm:p-7 md:p-8 relative overflow-hidden bg-gradient-to-b',
             glowTheme,
           )}
         >
@@ -254,12 +254,12 @@ export default function WeaponModal({
           </div>
 
           {/* Full Hero Weapon Image Stage */}
-          <div className="relative z-10 flex-1 my-6 min-h-[220px] sm:min-h-[280px] md:min-h-[340px] flex items-center justify-center p-2 group">
+          <div className="relative z-10 flex-1 my-6 min-h-[280px] sm:min-h-[360px] md:min-h-[440px] flex items-center justify-center p-2 group">
             {weapon.image ? (
               <img
                 src={weapon.image}
                 alt={weapon.name}
-                className="max-h-[260px] sm:max-h-[320px] md:max-h-[380px] w-full object-contain filter drop-shadow-[0_20px_35px_rgba(0,0,0,0.85)] group-hover:scale-105 transition-transform duration-300 ease-out"
+                className="max-h-[360px] sm:max-h-[440px] md:max-h-[500px] w-full object-contain filter drop-shadow-[0_20px_35px_rgba(0,0,0,0.85)] group-hover:scale-105 transition-transform duration-300 ease-out"
                 onError={(e) => {
                   (e.target as HTMLElement).style.display = 'none';
                 }}
@@ -366,16 +366,16 @@ export default function WeaponModal({
             {/* ── Mobile Compact Artwork Showcase (Mobile only) ── */}
             <div
               className={cn(
-                'md:hidden rounded-2xl border border-mh-slate-750 bg-gradient-to-b p-3.5 relative overflow-hidden flex flex-col items-center justify-center text-center shadow-lg',
+                'md:hidden rounded-2xl bg-gradient-to-b p-3.5 relative overflow-hidden flex flex-col items-center justify-center text-center shadow-lg',
                 glowTheme,
               )}
             >
-              <div className="relative z-10 w-full flex items-center justify-center my-1.5 min-h-[130px] max-h-[170px]">
+              <div className="relative z-10 w-full flex items-center justify-center my-2 min-h-[160px] sm:min-h-[200px]">
                 {weapon.image ? (
                   <img
                     src={weapon.image}
                     alt={weapon.name}
-                    className="max-h-36 sm:max-h-40 w-full object-contain filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)]"
+                    className="max-h-56 sm:max-h-64 w-full object-contain filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)]"
                     onError={(e) => {
                       (e.target as HTMLElement).style.display = 'none';
                     }}
@@ -813,8 +813,19 @@ export default function WeaponModal({
                             <td className="py-1.5 pr-2">
                               <span className={cn('rounded border px-1.5 py-0.5 text-[10px] font-bold font-mono', rs.badge)}>{rs.label}</span>
                             </td>
-                            <td className="py-1.5 pr-2 font-medium text-mh-slate-200 whitespace-nowrap">
-                              {stepName}
+                            <td className="py-2 pr-2 font-medium text-mh-slate-200 whitespace-nowrap">
+                              <div className="flex items-center gap-2 sm:gap-2.5">
+                                {weapon.image ? (
+                                  <img
+                                    src={weapon.image}
+                                    alt={stepName}
+                                    className="h-12 w-12 sm:h-14 sm:w-14 object-contain shrink-0 filter drop-shadow"
+                                  />
+                                ) : (
+                                  <Sword size={20} className="text-mh-slate-500 shrink-0" />
+                                )}
+                                <span>{stepName}</span>
+                              </div>
                             </td>
                             <td className="py-1.5 pr-2 text-mh-slate-100">
                               {u.attack ?? '—'}

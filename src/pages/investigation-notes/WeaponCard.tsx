@@ -144,7 +144,7 @@ export default function WeaponCard({
          ═══════════════════════════════════════════════════════ */}
       <div
         className={cn(
-          'w-full sm:w-[40%] md:w-[42%] shrink-0 min-h-[180px] sm:min-h-[220px] flex flex-col items-center justify-between p-3.5 relative rounded-t-2xl sm:rounded-t-none sm:rounded-l-2xl overflow-hidden bg-gradient-to-b border-b sm:border-b-0 sm:border-r border-mh-slate-750/80',
+          'w-full sm:w-[40%] md:w-[42%] shrink-0 min-h-[220px] sm:min-h-[260px] flex flex-col items-center justify-between p-3.5 relative rounded-t-2xl sm:rounded-t-none sm:rounded-l-2xl overflow-hidden bg-gradient-to-b',
           glowTheme,
         )}
       >
@@ -213,18 +213,18 @@ export default function WeaponCard({
         </div>
 
         {/* Hero Artwork Centered */}
-        <div className="relative z-10 flex-1 w-full my-2 flex items-center justify-center min-h-[100px] sm:min-h-[120px]">
+        <div className="relative z-10 flex-1 w-full my-2 flex items-center justify-center min-h-[140px] sm:min-h-[180px]">
           {weapon.image ? (
             <img
               src={weapon.image}
               alt={weapon.name}
-              className="max-h-28 sm:max-h-36 w-full object-contain filter drop-shadow-[0_10px_16px_rgba(0,0,0,0.7)] brightness-95 group-hover:scale-108 transition-transform duration-300 ease-out"
+              className="max-h-48 sm:max-h-56 w-full object-contain filter drop-shadow-[0_12px_20px_rgba(0,0,0,0.75)] brightness-95 group-hover:scale-108 transition-transform duration-300 ease-out"
               onError={(e) => {
                 (e.target as HTMLElement).style.display = 'none';
               }}
             />
           ) : (
-            <Sword size={36} className="text-mh-slate-600" />
+            <Sword size={48} className="text-mh-slate-600" />
           )}
         </div>
 

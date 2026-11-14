@@ -845,15 +845,15 @@ export default function WeaponGuide() {
                     {/* 1. Weapon Info (Icon + Name) */}
                     <td className="py-2.5 sm:py-3.5 pl-3 sm:pl-5 pr-2 sm:pr-3">
                       <div className="flex items-center gap-2 sm:gap-3">
-                        <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-lg sm:rounded-xl bg-mh-slate-800 border border-mh-slate-750 p-1">
+                        <div className="flex h-16 w-16 sm:h-20 sm:w-20 shrink-0 items-center justify-center p-0">
                           {weapon.image ? (
                             <img
                               src={weapon.image}
                               alt={displayName}
-                              className="h-full w-full object-contain"
+                              className="h-full w-full object-contain filter drop-shadow"
                             />
                           ) : (
-                            <Sword size={15} className="text-mh-slate-500" />
+                            <Sword size={28} className="text-mh-slate-500" />
                           )}
                         </div>
                         <div className="min-w-0 max-w-[120px] xs:max-w-[150px] sm:max-w-[200px]">
@@ -1076,7 +1076,7 @@ export default function WeaponGuide() {
       {selectedForCompare && !isCompareOpen && (
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-3 rounded-2xl border border-amber-500/60 bg-mh-slate-900/95 px-4 py-2.5 shadow-2xl backdrop-blur-md animate-fade-in">
           <div className="flex items-center gap-2.5">
-            <div className="h-9 w-9 rounded-xl bg-mh-slate-800 border border-mh-slate-750 p-1 flex items-center justify-center shrink-0">
+            <div className="h-16 w-16 flex items-center justify-center shrink-0 p-0">
               {selectedForCompare.image ? (
                 <img
                   src={selectedForCompare.image}
@@ -1084,7 +1084,7 @@ export default function WeaponGuide() {
                   className="h-full w-full object-contain filter drop-shadow"
                 />
               ) : (
-                <Sword size={16} className="text-mh-gold-400" />
+                <Sword size={26} className="text-mh-gold-400" />
               )}
             </div>
             <div className="min-w-0">
