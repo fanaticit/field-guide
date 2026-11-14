@@ -16,6 +16,7 @@ import { getWeaponMaxName, type DBWeapon } from '../data/schemas/weapon';
 import PageTitlePanel from '../components/layout/PageTitlePanel';
 import { useUIStore } from '../store/uiStore';
 import { DEFAULT_SECTION_THEMES } from '../config/themes';
+import RoleIcon from '../components/RoleIcon';
 const INTRO_HIDDEN_KEY = 'armory-builds-intro-hidden';
 
 function getCookie(name: string): string | null {
@@ -50,6 +51,7 @@ export default function Armory() {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [roleFilter, setRoleFilter] = useState<'all' | 'main' | 'support'>('all');
+  const [selectedClass, setSelectedClass] = useState<string>('all');
   const [selectedWeaponType, setSelectedWeaponType] = useState<string>('all');
   const [selectedInk, setSelectedInk] = useState<string>('all');
   const [sortBy, setSortBy] = useState<'upvotes' | 'newest' | 'oldest' | 'title'>('upvotes');
@@ -171,6 +173,15 @@ export default function Armory() {
       if (roleFilter === 'main' && isSupport) return false;
       if (roleFilter === 'support' && !isSupport) return false;
 
+      // Class / Tactical Role filter
+      if (selectedClass !== 'all') {
+        const buildClass =
+          build.tactical_role ||
+          (desc ? (desc.match(/<!-- class:(.*?) -->/)?.[1] as any) : null) ||
+          (build.adventurer?.role === 'Disruptor' ? 'Disrupter' : build.adventurer?.role);
+        if (buildClass !== selectedClass) return false;
+      }
+
       // Weapon type filter
       if (selectedWeaponType !== 'all' && build.weapon_type?.id !== selectedWeaponType) {
         return false;
@@ -225,7 +236,7 @@ export default function Armory() {
       }
       return 0;
     });
-  }, [builds, roleFilter, selectedWeaponType, selectedInk, searchQuery, sortBy]);
+  }, [builds, roleFilter, selectedClass, selectedWeaponType, selectedInk, searchQuery, sortBy]);
 
   const isLoading = isBuildsLoading || isMonstersLoading;
 
@@ -332,8 +343,35 @@ export default function Armory() {
                   : 'text-[var(--text-secondary)] hover:text-[var(--rarity-superior)]'
               }`}
             >
-              Support
+              Non-Main
             </button>
+          </div>
+
+          {/* Class / Tactical Role Filter */}
+          <div className="flex items-center gap-1.5 bg-black/30 px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] text-xs">
+            {selectedClass !== 'all' ? (
+              <RoleIcon role={selectedClass} size={15} className="shrink-0 object-contain" />
+            ) : (
+              <Shield size={13} className="text-[var(--text-secondary)]" />
+            )}
+            <select
+              value={selectedClass}
+              onChange={(e) => setSelectedClass(e.target.value)}
+              className="bg-transparent text-xs text-white focus:outline-none cursor-pointer pr-1"
+            >
+              <option value="all" className="bg-mh-slate-900 text-mh-slate-200">
+                All Classes
+              </option>
+              <option value="Assault" className="bg-mh-slate-900 text-red-400">
+                Assault
+              </option>
+              <option value="Disrupter" className="bg-mh-slate-900 text-purple-400">
+                Disrupter
+              </option>
+              <option value="Support" className="bg-mh-slate-900 text-emerald-400">
+                Support
+              </option>
+            </select>
           </div>
 
           {/* Weapon Type Filter */}
@@ -408,11 +446,12 @@ export default function Armory() {
             Showing <strong className="text-white">{filteredBuilds.length}</strong> {filteredBuilds.length === 1 ? 'build' : 'builds'}
             {builds && filteredBuilds.length !== builds.length && ` (filtered from ${builds.length})`}
           </span>
-          {(searchQuery || roleFilter !== 'all' || selectedWeaponType !== 'all' || selectedInk !== 'all' || sortBy !== 'upvotes') && (
+          {(searchQuery || roleFilter !== 'all' || selectedClass !== 'all' || selectedWeaponType !== 'all' || selectedInk !== 'all' || sortBy !== 'upvotes') && (
             <button
               onClick={() => {
                 setSearchQuery('');
                 setRoleFilter('all');
+                setSelectedClass('all');
                 setSelectedWeaponType('all');
                 setSelectedInk('all');
                 setSortBy('upvotes');

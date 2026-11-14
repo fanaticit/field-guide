@@ -6,6 +6,8 @@ import { supabase } from '../../lib/supabase';
 import { useBuildPlannerStore, type Adventurer, type WeaponType, type Buddy } from '../../store/buildPlannerStore';
 import { useUserBuddyCollection } from '../../hooks/useUserBuddyCollection';
 import { useAdminWeaponTypes } from '../../hooks/useAdminWeapons';
+import RoleIcon from '../RoleIcon';
+import { ADVENTURER_ROLE_CONFIG } from '../../data/schemas/adventurer';
 
 const BUDDY_TIER_THEMES: Record<string, {
   border: string;
@@ -57,11 +59,12 @@ const getBuddyTheme = (tier?: string) => BUDDY_TIER_THEMES[tier || 'R'] || BUDDY
 
 export function HeroBuddySelector() {
   const navigate = useNavigate();
-  const { adventurer, setAdventurer, weaponType, setWeaponType, buddy, setBuddy } = useBuildPlannerStore();
+  const { adventurer, setAdventurer, weaponType, setWeaponType, buddy, setBuddy, tacticalRole, setTacticalRole } = useBuildPlannerStore();
   const { isOwned } = useUserBuddyCollection();
   const [showAdvList, setShowAdvList] = useState(false);
   const [showBuddyList, setShowBuddyList] = useState(false);
   const [showWtList, setShowWtList] = useState(false);
+  const [showRoleList, setShowRoleList] = useState(false);
   const [buddySearch, setBuddySearch] = useState('');
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -107,6 +110,7 @@ export function HeroBuddySelector() {
         setShowAdvList(false);
         setShowBuddyList(false);
         setShowWtList(false);
+        setShowRoleList(false);
         setBuddySearch('');
       }
     };
@@ -115,6 +119,7 @@ export function HeroBuddySelector() {
         setShowAdvList(false);
         setShowBuddyList(false);
         setShowWtList(false);
+        setShowRoleList(false);
         setBuddySearch('');
       }
     };
@@ -125,6 +130,11 @@ export function HeroBuddySelector() {
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
+
+  const isRoleLocked = !adventurer?.is_default;
+  const activeTacticalRole: 'Assault' | 'Disrupter' | 'Support' = isRoleLocked
+    ? ((adventurer?.role === 'Disruptor' ? 'Disrupter' : adventurer?.role) as any || 'Assault')
+    : (tacticalRole || 'Assault');
 
   const isWeaponLocked = !adventurer?.is_default && !!adventurer?.allowed_weapon_types?.[0];
   const forcedWeaponType = isWeaponLocked 
@@ -204,6 +214,7 @@ export function HeroBuddySelector() {
             setShowAdvList(prev => !prev);
             setShowBuddyList(false);
             setShowWtList(false);
+            setShowRoleList(false);
           }}
           className={`w-full h-[54px] flex items-center gap-3 bg-mh-slate-850 hover:bg-mh-slate-800 border rounded-xl p-2 sm:px-3 transition-all cursor-pointer text-left shadow-sm group relative isolate overflow-hidden ${
             showAdvList
@@ -296,7 +307,95 @@ export function HeroBuddySelector() {
         )}
       </div>
 
-      {/* 2. Weapon Type Icon Tile */}
+      {/* 2. Tactical Role / Class Tile */}
+      <div className="relative shrink-0">
+        <button
+          type="button"
+          onClick={() => {
+            if (isRoleLocked) return;
+            setShowRoleList(prev => !prev);
+            setShowAdvList(false);
+            setShowBuddyList(false);
+            setShowWtList(false);
+          }}
+          className={`h-[54px] w-[54px] rounded-xl flex items-center justify-center relative border transition-all shadow-sm group ${
+            isRoleLocked
+              ? 'border-mh-slate-800 bg-mh-slate-900/60 cursor-default'
+              : showRoleList
+              ? 'border-rarity-3/80 ring-2 ring-rarity-3/30 bg-mh-slate-800 cursor-pointer'
+              : 'bg-mh-slate-850 hover:bg-mh-slate-800 border-mh-slate-750/80 hover:border-mh-slate-650 cursor-pointer'
+          }`}
+          title={
+            isRoleLocked
+              ? `Class: ${activeTacticalRole} (Fixed for ${adventurer?.name || 'Hunter'})`
+              : `Class: ${activeTacticalRole} (Click to change)`
+          }
+        >
+          {/* Role Icon */}
+          <RoleIcon
+            role={activeTacticalRole}
+            size={28}
+            className="transition-transform group-hover:scale-110 object-contain drop-shadow"
+          />
+
+          {/* Lock badge if role is fixed for this adventurer */}
+          {isRoleLocked && (
+            <span
+              className="absolute -top-1 -right-1 bg-amber-500/20 text-amber-400 border border-amber-500/40 rounded-full p-1 shadow-sm"
+              title={`Class locked to ${adventurer?.name || 'Hunter'}`}
+            >
+              <Lock size={9} />
+            </span>
+          )}
+        </button>
+
+        {/* Tactical Role Dropdown Popover */}
+        {showRoleList && !isRoleLocked && (
+          <div data-dropdown-open="true" className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 z-50 w-64 bg-mh-slate-900 border border-mh-slate-700 rounded-xl shadow-2xl p-2.5 backdrop-blur-md animate-in fade-in zoom-in-95 duration-150">
+            <div className="flex items-center justify-between pb-2 mb-2 border-b border-mh-slate-800 text-xs font-bold text-mh-slate-300 px-1">
+              <span>Select Class / Role</span>
+              <span className="text-[10px] font-normal text-mh-slate-500">Fated Adventurer</span>
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              {(['Assault', 'Disrupter', 'Support'] as const).map((r) => {
+                const cfg = ADVENTURER_ROLE_CONFIG[r];
+                const isSelected = activeTacticalRole === r;
+                return (
+                  <button
+                    key={r}
+                    type="button"
+                    onClick={() => {
+                      setTacticalRole(r);
+                      setShowRoleList(false);
+                    }}
+                    className={`flex items-center gap-2.5 p-2 rounded-lg border text-left transition-all ${
+                      isSelected
+                        ? 'border-rarity-3 bg-rarity-3/15 ring-1 ring-rarity-3/40 text-white'
+                        : 'border-mh-slate-800 bg-mh-slate-850 hover:bg-mh-slate-800 hover:border-mh-slate-650 text-mh-slate-300'
+                    }`}
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-mh-slate-900/90 border border-mh-slate-750 flex items-center justify-center shrink-0">
+                      <RoleIcon role={r} size={22} className="object-contain" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-xs font-bold truncate flex items-center gap-1.5">
+                        <span className={cfg.text}>{cfg.label}</span>
+                      </div>
+                      <div className="text-[10px] text-mh-slate-400 line-clamp-1">
+                        {cfg.description}
+                      </div>
+                    </div>
+                    {isSelected && <Check size={14} className="text-rarity-3 shrink-0" />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* 3. Weapon Type Icon Tile */}
       <div className="relative shrink-0">
         <button
           type="button"
@@ -310,6 +409,7 @@ export function HeroBuddySelector() {
             setShowWtList(prev => !prev);
             setShowAdvList(false);
             setShowBuddyList(false);
+            setShowRoleList(false);
           }}
           className={`h-[54px] w-[54px] rounded-xl flex items-center justify-center relative border transition-all shadow-sm group cursor-pointer ${
             isWeaponLocked
@@ -403,6 +503,7 @@ export function HeroBuddySelector() {
             setShowBuddyList(prev => !prev);
             setShowAdvList(false);
             setShowWtList(false);
+            setShowRoleList(false);
           }}
           className={`w-full h-[54px] flex items-center gap-3 bg-mh-slate-850 hover:bg-mh-slate-800 border rounded-xl p-2 sm:px-3 transition-all cursor-pointer text-left shadow-sm group relative isolate overflow-hidden ${
             showBuddyList

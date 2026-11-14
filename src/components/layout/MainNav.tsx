@@ -12,7 +12,6 @@ import type React from 'react';
 import {
   Sword,
   Shield,
-  ShieldAlert,
   Sparkles,
   Target,
   UserCheck,
@@ -197,7 +196,7 @@ export default function MainNav() {
 
   // Track page views on unique route changes; show feedback popover on 10th page (or next target if 'Later' chosen)
   useEffect(() => {
-    if (getCookie(COOKIE_FEEDBACK_PROMPT_DISMISSED) === '1') {
+    if (isAdmin || getCookie(COOKIE_FEEDBACK_PROMPT_DISMISSED) === '1') {
       return;
     }
 
@@ -217,7 +216,7 @@ export default function MainNav() {
         return () => window.clearTimeout(timer);
       }
     }
-  }, [pathname]);
+  }, [pathname, isAdmin]);
 
   const dismissPermanently = () => {
     setShowFeedbackPrompt(false);
@@ -291,7 +290,7 @@ export default function MainNav() {
   const challengesActive = pathname.startsWith('/challenges') && !isChallengesChildSpilledAndActive;
   const galleryActive = pathname.startsWith('/gallery') && !isGalleryChildSpilledAndActive;
   const armoryActive = (pathname.startsWith('/armory') || pathname.startsWith('/build-planner')) && !isArmoryChildSpilledAndActive;
-  const homeActive = (pathname === '/' || pathname === '/updates' || pathname === '/settings' || pathname === '/spoilers' || pathname.startsWith('/admin')) && !(isUpdatesSpilled && isUpdatesActive);
+  const homeActive = (pathname === '/' || pathname === '/updates' || pathname === '/settings' || pathname === '/spoilers') && !(isUpdatesSpilled && isUpdatesActive);
 
   const homeSection: NavSection = {
     id: 'home',
@@ -311,17 +310,6 @@ export default function MainNav() {
         : [{ id: 'home-login', label: 'Login', icon: LogIn, iconSrc: '/img/ui/logout.png', active: false, onSelect: () => setLoginModalOpen(true) }]),
       ...(isLoggedIn && profile?.show_spoilers
         ? [{ id: 'home-spoilers', label: 'Spoilers', icon: Eye, iconSrc: '/img/ui/AggPageIcon_Recruit.png', iconZoom: 0.85, active: pathname === '/spoilers', onSelect: go('/spoilers') }]
-        : []),
-      ...(isAdmin
-        ? [{
-            id: 'home-admin',
-            label: 'Admin Panel',
-            icon: ShieldAlert,
-            iconSrc: '/img/ui/adminpanel.png',
-            active: pathname.startsWith('/admin'),
-            onSelect: go('/admin/feedback'),
-            badge: unreadCount > 0 ? unreadCount : undefined,
-          }]
         : []),
       ...(isLoggedIn
         ? [{ id: 'home-logout', label: 'Logout', icon: LogOut, iconSrc: '/img/ui/logout.png', active: false, onSelect: () => signOut() }]
@@ -653,14 +641,6 @@ export default function MainNav() {
                         style={{ transform: `scale(${item.iconZoom ?? 1})` }}
                       />
                     </span>
-                    {item.id === 'home' && isAdmin && unreadCount > 0 && (
-                      <span
-                        className="absolute -top-1 -right-1 z-20 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-red-500 px-1 text-[9px] font-bold text-white shadow-md ring-2 ring-[#232328] animate-pulse"
-                        title={`${unreadCount} new feedback message${unreadCount > 1 ? 's' : ''}`}
-                      >
-                        {unreadCount > 99 ? '99+' : unreadCount}
-                      </span>
-                    )}
                     {hasSubmenu && (item.active || openId === item.section!.id) && (
                       <ChevronUp
                         size={10}
@@ -682,32 +662,66 @@ export default function MainNav() {
         {/* Footer / Utility action: Bottom on desktop rail, far right on mobile bottom bar */}
         <div className="main-nav__footer">
           <div className="main-nav__footer-divider" aria-hidden="true" />
-          <button
-            type="button"
-            id="nav-feedback"
-            className="main-nav__btn"
-            data-active={feedbackModalOpen}
-            data-accent="rare"
-            aria-label="Send Feedback & Bug Reports"
-            onClick={handleFeedbackButtonClick}
-          >
-            <span className="main-nav__bubble">
-              <span className="main-nav__icon">
-                <img
-                  src="/img/ui/BtnIcon_Chat.png"
-                  alt="Feedback"
-                  draggable={false}
-                  style={{ transform: 'scale(0.85)' }}
-                />
+          {isAdmin ? (
+            <button
+              type="button"
+              id="nav-admin"
+              className="main-nav__btn"
+              data-active={pathname.startsWith('/admin')}
+              data-accent="rare"
+              aria-label="Admin Panel"
+              onClick={go('/admin/feedback')}
+            >
+              <span className="main-nav__bubble">
+                <span className="main-nav__icon">
+                  <img
+                    src="/img/ui/adminpanel.png"
+                    alt="Admin Panel"
+                    draggable={false}
+                    style={{ transform: 'scale(0.85)' }}
+                  />
+                </span>
+                {unreadCount > 0 && (
+                  <span
+                    className="absolute -top-1 -right-1 z-20 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-red-500 px-1 text-[9px] font-bold text-white shadow-md ring-2 ring-[#232328] animate-pulse"
+                    title={`${unreadCount} new feedback message${unreadCount > 1 ? 's' : ''}`}
+                  >
+                    {unreadCount > 99 ? '99+' : unreadCount}
+                  </span>
+                )}
               </span>
-            </span>
-            <span className="main-nav__tip" role="tooltip">
-              Feedback & Bugs
-            </span>
-          </button>
+              <span className="main-nav__tip" role="tooltip">
+                Admin Panel
+              </span>
+            </button>
+          ) : (
+            <button
+              type="button"
+              id="nav-feedback"
+              className="main-nav__btn"
+              data-active={feedbackModalOpen}
+              data-accent="rare"
+              aria-label="Send Feedback & Bug Reports"
+              onClick={handleFeedbackButtonClick}
+            >
+              <span className="main-nav__bubble">
+                <span className="main-nav__icon">
+                  <img
+                    src="/img/ui/BtnIcon_Chat.png"
+                    alt="Feedback"
+                    draggable={false}
+                    style={{ transform: 'scale(0.85)' }}
+                  />
+                </span>
+              </span>
+              <span className="main-nav__tip" role="tooltip">
+                Feedback & Bugs
+              </span>
+            </button>
+          )}
 
           {/* Feedback callout popup */}
-          {showFeedbackPrompt && !feedbackModalOpen && (
+          {!isAdmin && showFeedbackPrompt && !feedbackModalOpen && (
             <div
               role="dialog"
               aria-label="Feedback prompt"

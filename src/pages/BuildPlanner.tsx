@@ -193,6 +193,17 @@ export default function BuildPlanner() {
               console.error('Failed to parse saved exceptions', e);
             }
           }
+          let loadedTacticalRole: 'Assault' | 'Disrupter' | 'Support' | null = (data as any).tactical_role || null;
+          const classMatch = desc.match(/(?:\r?\n\r?\n)?<!-- class:(.*?) -->/);
+          if (classMatch) {
+            const parsedRole = classMatch[1].trim();
+            if (['Assault', 'Disrupter', 'Disruptor', 'Support'].includes(parsedRole)) {
+              if (!loadedTacticalRole) {
+                loadedTacticalRole = (parsedRole === 'Disruptor' ? 'Disrupter' : parsedRole) as any;
+              }
+            }
+            desc = desc.replace(classMatch[0], '');
+          }
           store.setBuildExceptions(loadedExceptions);
           store.setDescription(desc);
           store.setYoutubeUrl(data.youtube_url || '');
@@ -202,7 +213,14 @@ export default function BuildPlanner() {
           store.setIsPublished(data.is_published);
           store.setUpvotes(data.upvotes || 0);
           
-          if (data.adventurer) store.setAdventurer(data.adventurer as any);
+          if (data.adventurer) {
+            store.setAdventurer(data.adventurer as any);
+            if (loadedTacticalRole) {
+              store.setTacticalRole(loadedTacticalRole);
+            }
+          } else if (loadedTacticalRole) {
+            store.setTacticalRole(loadedTacticalRole);
+          }
           if (data.weapon_type) store.setWeaponType(data.weapon_type as any);
           if (data.weapon) store.setWeapon(data.weapon as any);
           
@@ -274,12 +292,15 @@ export default function BuildPlanner() {
     if (store.buildExceptions.length > 0) {
       finalDesc += `\n\n<!-- exceptions:${JSON.stringify(store.buildExceptions)} -->`;
     }
+    const currentTacticalRole = store.tacticalRole || (store.adventurer?.role === 'Disruptor' ? 'Disrupter' : store.adventurer?.role) || 'Assault';
+    finalDesc += `\n\n<!-- class:${currentTacticalRole} -->`;
 
     const buildData: any = {
       author_id: user.id,
       title: store.title.trim(),
       description: finalDesc || null,
       adventurer_id: store.adventurer.id,
+      tactical_role: currentTacticalRole,
       weapon_type_id: store.adventurer.is_default ? store.weaponType?.id : store.adventurer.allowed_weapon_types?.[0],
       weapon_id: store.weapon?.id || null,
       helm_piece_id: store.helm?.id || null,
@@ -316,10 +337,22 @@ export default function BuildPlanner() {
       try {
         saveRes = await executeSave(buildData);
       } catch (saveErr: any) {
-        // If column build_exceptions does not exist yet on Supabase, retry without that column
-        if (saveErr?.message?.includes('build_exceptions') || saveErr?.code === '42703' || saveErr?.code === 'PGRST204') {
+        // If column tactical_role or build_exceptions does not exist yet on Supabase, retry without them
+        const isColumnMissing = (col: string) =>
+          saveErr?.message?.includes(col) || saveErr?.code === '42703' || saveErr?.code === 'PGRST204';
+        if (isColumnMissing('tactical_role') || isColumnMissing('build_exceptions')) {
           const fallbackData = { ...buildData };
-          delete fallbackData.build_exceptions;
+          if (isColumnMissing('tactical_role') || saveErr?.message?.includes('tactical_role')) {
+            delete fallbackData.tactical_role;
+          }
+          if (isColumnMissing('build_exceptions') || saveErr?.message?.includes('build_exceptions')) {
+            delete fallbackData.build_exceptions;
+          }
+          // If error was generic 42703 / PGRST204 without specific column name, strip both safely
+          if (!saveErr?.message?.includes('tactical_role') && !saveErr?.message?.includes('build_exceptions')) {
+            delete fallbackData.tactical_role;
+            delete fallbackData.build_exceptions;
+          }
           saveRes = await executeSave(fallbackData);
         } else {
           throw saveErr;
@@ -566,12 +599,12 @@ export default function BuildPlanner() {
               </button>
               <button
                 type="button"
-                onClick={() => { store.setBuildRole('support'); triggerFeedback('Build role set to: Support'); }}
+                onClick={() => { store.setBuildRole('support'); triggerFeedback('Build role set to: Non-Main'); }}
                 className={`rounded px-2.5 py-1 text-[10px] font-bold uppercase transition-all ${
                   store.buildRole === 'support' ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30' : 'text-mh-slate-500 hover:text-mh-slate-300 border border-transparent'
                 }`}
               >
-                Support
+                Non-Main
               </button>
             </div>
 

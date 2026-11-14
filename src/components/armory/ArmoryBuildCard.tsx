@@ -181,7 +181,7 @@ export function ArmoryBuildCard({ build, monsterMap }: ArmoryBuildCardProps) {
                 </span>
               ) : (
                 <span className="bg-amber-500/15 text-amber-400 border border-amber-500/30 rounded px-1.5 py-0 text-[8px] font-bold uppercase tracking-wider shrink-0">
-                  Support
+                  Non-Main
                 </span>
               )}
               {hasMastery && (

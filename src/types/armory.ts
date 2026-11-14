@@ -66,6 +66,7 @@ export interface ArmoryBuild {
   visage_4?: BuildVisage | null;
   visage_5?: BuildVisage | null;
   build_exceptions?: string[] | null;
+  tactical_role?: 'Assault' | 'Disrupter' | 'Support' | null;
 }
 
 export interface HighestInkResult {

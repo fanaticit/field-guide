@@ -9,6 +9,7 @@ export interface Adventurer {
   allowed_weapon_types: string[];
   image?: string;
   background_image?: string | null;
+  role?: string | null;
 }
 
 export interface WeaponType {
@@ -141,6 +142,8 @@ interface BuildPlannerState {
   buildExceptions: string[];
   setBuildExceptions: (exceptions: string[]) => void;
   toggleBuildException: (exceptionId: string) => void;
+  tacticalRole: 'Assault' | 'Disrupter' | 'Support' | null;
+  setTacticalRole: (role: 'Assault' | 'Disrupter' | 'Support' | null) => void;
   resetBuild: () => void;
   setHoveredSkillId: (id: string | null, category?: string | null) => void;
   setSkillCatalog: (catalog: Map<string, SkillCatalogEntry>) => void;
@@ -167,6 +170,7 @@ export const useBuildPlannerStore = create<BuildPlannerState>((set, get) => ({
   hoveredSkillCategory: null,
   skillCatalog: new Map(),
   adventurer: null,
+  tacticalRole: null,
   weaponType: null,
   weapon: null,
   helm: null,
@@ -193,6 +197,7 @@ export const useBuildPlannerStore = create<BuildPlannerState>((set, get) => ({
   setAuthorId: (id) => set({ author_id: id }),
   setIsPublished: (pub) => set({ is_published: pub }),
   setUpvotes: (upvotes) => set({ upvotes }),
+  setTacticalRole: (role) => set({ tacticalRole: role }),
   setAdventurer: (adv) => set((state) => {
     let newWeapon = state.weapon;
     if (adv && !adv.is_default && newWeapon) {
@@ -200,7 +205,15 @@ export const useBuildPlannerStore = create<BuildPlannerState>((set, get) => ({
         newWeapon = null;
       }
     }
-    return { adventurer: adv, weapon: newWeapon };
+    let newTacticalRole = state.tacticalRole;
+    if (adv) {
+      if (!adv.is_default && adv.role) {
+        newTacticalRole = (adv.role === 'Disruptor' ? 'Disrupter' : adv.role) as any;
+      } else if (adv.is_default && !newTacticalRole) {
+        newTacticalRole = 'Assault';
+      }
+    }
+    return { adventurer: adv, weapon: newWeapon, tacticalRole: newTacticalRole };
   }),
   setWeaponType: (type) => set({ weaponType: type, weapon: null }),
   setWeapon: (w) => set((state) => {
@@ -257,6 +270,7 @@ export const useBuildPlannerStore = create<BuildPlannerState>((set, get) => ({
     upvotes: 0,
     hoveredSkillId: null,
     adventurer: null,
+    tacticalRole: null,
     weaponType: null,
     weapon: null,
     helm: null,
