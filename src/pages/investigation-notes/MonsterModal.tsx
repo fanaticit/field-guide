@@ -5,10 +5,7 @@ import { useState, useMemo, useEffect } from 'react';
 import {
   X,
   Footprints,
-  Camera,
-  Eye,
   Crosshair,
-  CheckCircle2,
   Plus,
   Trash2,
   Target,
@@ -181,6 +178,10 @@ export default function MonsterModal({ monster, open, onClose }: Props) {
   const tierCfg = TIER_CONFIG[monster.tier] ?? { label: monster.tier, cls: 'rarity-1' };
   const speciesLabel = (monster.species && SPECIES_LABELS[monster.species]) || monster.species || 'Unknown Species';
 
+  const isSmall = monster.tier === 'small';
+  const isElder = monster.tier === 'elder' || monster.species === 'elder_dragon';
+  const isFinished = isElder ? (study.unlocked || study.finished) : study.finished;
+
   // Active monster challenges for this monster
   const monsterChallenges = challenges.filter(
     (c) => c.challenge_type === 'monster' && c.monster_id === monster.id,
@@ -197,13 +198,29 @@ export default function MonsterModal({ monster, open, onClose }: Props) {
     taskLabel: string,
   ) => {
     const isCompletedNow = !study[taskKey];
-    await toggleStandardTask(monster.id, taskKey);
+    await toggleStandardTask(monster.id, taskKey, isElder);
 
     // If there's an active challenge in /challenges for this task, sync it!
-    const c = getChallengeForTask(taskLabel);
-    if (c) {
-      if (isCompletedNow && c.status !== 'completed') {
-        await incrementChallenge.mutateAsync(c);
+    if (taskKey === 'finished' && isCompletedNow) {
+      // User clicked finished -> all tasks are finished! Sync all active monster challenges
+      for (const t of standardTasksList) {
+        const c = getChallengeForTask(t.label);
+        if (c && c.status !== 'completed') {
+          await incrementChallenge.mutateAsync(c);
+        }
+      }
+      for (const ct of study.custom_tasks) {
+        const c = getChallengeForTask(ct.label);
+        if (c && c.status !== 'completed') {
+          await incrementChallenge.mutateAsync(c);
+        }
+      }
+    } else {
+      const c = getChallengeForTask(taskLabel);
+      if (c) {
+        if (isCompletedNow && c.status !== 'completed') {
+          await incrementChallenge.mutateAsync(c);
+        }
       }
     }
   };
@@ -258,22 +275,80 @@ export default function MonsterModal({ monster, open, onClose }: Props) {
   };
 
   // Study progress metrics
-  const standardTasksList: { key: StandardStudyKey; label: string; icon: typeof Footprints; desc: string }[] = [
-    { key: 'unlocked', label: 'Unlocked', icon: Footprints, desc: 'Encountered and registered in Field Guide' },
-    { key: 'photo_taken', label: 'Photo Taken', icon: Camera, desc: 'Captured in-game photographic evidence' },
-    { key: 'witnessed_behavior', label: 'Witness ecological behavior', icon: Eye, desc: 'Observed natural habits and feeding/resting behavior' },
-    { key: 'hunted_10_plus', label: 'Hunted 10+', icon: Crosshair, desc: 'Successfully hunted at least 10 times' },
-    { key: 'finished', label: 'Finished', icon: CheckCircle2, desc: 'Complete monster field research mastered' },
-  ];
+  const standardTasksList: {
+    key: StandardStudyKey;
+    label: string;
+    icon?: typeof Footprints;
+    imgIcon?: string;
+    desc: string;
+    badge?: string;
+  }[] = isElder
+    ? [
+        {
+          key: 'unlocked',
+          label: 'Unlocked',
+          imgIcon: '/img/ui/lock.png',
+          desc: 'Encountered and registered in Field Guide',
+        },
+      ]
+    : [
+        {
+          key: 'unlocked',
+          label: 'Unlocked',
+          imgIcon: '/img/ui/lock.png',
+          desc: 'Encountered and registered in Field Guide',
+        },
+        {
+          key: 'photo_taken',
+          label: 'Photo Taken',
+          imgIcon: '/img/ui/camera.png',
+          desc: 'Captured in-game photographic evidence',
+        },
+        {
+          key: 'witnessed_behavior',
+          label: 'Witness ecological behavior',
+          imgIcon: '/img/ui/eye.png',
+          desc: 'Observed natural habits and feeding/resting behavior',
+        },
+        {
+          key: 'hunted_10_plus',
+          label: 'Hunted 10+',
+          icon: Crosshair,
+          desc: 'Successfully hunted at least 10 times',
+        },
+        {
+          key: 'miniature_crown',
+          label: 'Miniature Gold Crown',
+          imgIcon: '/img/ui/Crown_Miniature_Gold.png',
+          desc: 'Recorded smallest possible gold crown size specimen',
+          badge: 'Mini Crown',
+        },
+        {
+          key: 'giant_crown',
+          label: 'Giant Gold Crown',
+          imgIcon: '/img/ui/Crown_Giant_Gold.png',
+          desc: 'Recorded largest possible giant gold crown size specimen',
+          badge: 'Giant Crown',
+        },
+        {
+          key: 'finished',
+          label: 'Finished',
+          imgIcon: '/img/ui/my_challenges_selected.png',
+          desc: 'Complete monster field research mastered — marks all study tasks finished',
+          badge: 'Complete All',
+        },
+      ];
 
-  const totalPoints = standardTasksList.length + study.custom_tasks.length;
+  const totalPoints = isSmall ? 0 : standardTasksList.length + study.custom_tasks.length;
   let completedPoints = 0;
-  standardTasksList.forEach((t) => {
-    if (study[t.key]) completedPoints++;
-  });
-  study.custom_tasks.forEach((ct) => {
-    if (ct.completed) completedPoints++;
-  });
+  if (!isSmall) {
+    standardTasksList.forEach((t) => {
+      if (study[t.key]) completedPoints++;
+    });
+    study.custom_tasks.forEach((ct) => {
+      if (ct.completed) completedPoints++;
+    });
+  }
   const progressPct = totalPoints > 0 ? Math.round((completedPoints / totalPoints) * 100) : 0;
 
   return (
@@ -429,19 +504,21 @@ export default function MonsterModal({ monster, open, onClose }: Props) {
               >
                 All Info
               </button>
-              <button
-                type="button"
-                onClick={() => setActiveTab('study')}
-                className={cn(
-                  'px-3 py-1.5 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5',
-                  activeTab === 'study'
-                    ? 'bg-mh-gold-500 text-slate-950 shadow-md'
-                    : 'text-mh-slate-400 hover:text-white hover:bg-mh-slate-800',
-                )}
-              >
-                <Target size={13} />
-                <span>Study Progress</span>
-              </button>
+              {!isSmall && (
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('study')}
+                  className={cn(
+                    'px-3 py-1.5 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5',
+                    activeTab === 'study'
+                      ? 'bg-mh-gold-500 text-slate-950 shadow-md'
+                      : 'text-mh-slate-400 hover:text-white hover:bg-mh-slate-800',
+                  )}
+                >
+                  <Target size={13} />
+                  <span>Study Progress</span>
+                </button>
+              )}
               <button
                 type="button"
                 onClick={() => setActiveTab('hitzones')}
@@ -485,8 +562,8 @@ export default function MonsterModal({ monster, open, onClose }: Props) {
               )}
             </div>
 
-            {/* ── Study Progress Section ── */}
-            {(activeTab === 'all' || activeTab === 'study') && (
+            {/* ── Study Progress Section (Hidden for Small Monsters) ── */}
+            {!isSmall && (activeTab === 'all' || activeTab === 'study') && (
             <div className="rounded-2xl border border-mh-gold-500/30 bg-mh-slate-950/80 p-4 sm:p-5 space-y-4 shadow-xl">
               <div className="flex flex-wrap items-center justify-between gap-3 border-b border-mh-slate-800/80 pb-3">
                 <div className="flex items-center gap-2">
@@ -503,22 +580,68 @@ export default function MonsterModal({ monster, open, onClose }: Props) {
                   </div>
                 </div>
 
-                {/* Progress bar pill */}
-                <div className="flex items-center gap-2.5 bg-mh-slate-900 border border-mh-slate-800 rounded-xl px-3 py-1.5">
-                  <div className="text-right">
-                    <span className="text-xs font-black text-mh-gold-300">{completedPoints}</span>
-                    <span className="text-[10px] text-mh-slate-500"> / {totalPoints}</span>
-                  </div>
-                  <div className="h-2 w-20 sm:w-28 rounded-full bg-mh-slate-800 overflow-hidden">
-                    <div
-                      className={cn(
-                        'h-full rounded-full transition-all duration-300',
-                        progressPct === 100 ? 'bg-emerald-400' : 'bg-mh-gold-400',
-                      )}
-                      style={{ width: `${progressPct}%` }}
+                {/* Progress bar pill & Quick Mark Finished action */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleToggleTaskWithChallengeSync(
+                        isElder ? 'unlocked' : 'finished',
+                        isElder ? 'Unlocked' : 'Finished',
+                      )
+                    }
+                    className={cn(
+                      'flex items-center gap-1.5 rounded-xl border px-2.5 py-1 text-xs font-bold transition-all shadow-sm',
+                      isFinished
+                        ? 'border-emerald-500 bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30'
+                        : 'border-mh-slate-700 bg-mh-slate-800 text-mh-slate-300 hover:border-emerald-500/50 hover:bg-emerald-950/20 hover:text-emerald-300',
+                    )}
+                    title={
+                      isFinished
+                        ? isElder
+                          ? 'Elder Dragon is unlocked and finished'
+                          : 'Monster is marked as finished'
+                        : isElder
+                        ? 'Mark Elder Dragon as unlocked'
+                        : 'Mark all tasks as finished'
+                    }
+                  >
+                    <img
+                      src={
+                        isFinished
+                          ? '/img/ui/my_challenges_selected.png'
+                          : '/img/ui/my_challenges.png'
+                      }
+                      alt=""
+                      className="w-4 h-4 object-contain filter drop-shadow-xs"
                     />
+                    <span>
+                      {isFinished
+                        ? isElder
+                          ? 'Unlocked ✓'
+                          : 'Monster Finished ✓'
+                        : isElder
+                        ? 'Mark Unlocked'
+                        : 'Mark Finished'}
+                    </span>
+                  </button>
+
+                  <div className="flex items-center gap-2.5 bg-mh-slate-900 border border-mh-slate-800 rounded-xl px-3 py-1.5">
+                    <div className="text-right">
+                      <span className="text-xs font-black text-mh-gold-300">{completedPoints}</span>
+                      <span className="text-[10px] text-mh-slate-500"> / {totalPoints}</span>
+                    </div>
+                    <div className="h-2 w-20 sm:w-28 rounded-full bg-mh-slate-800 overflow-hidden">
+                      <div
+                        className={cn(
+                          'h-full rounded-full transition-all duration-300',
+                          progressPct === 100 ? 'bg-emerald-400' : 'bg-mh-gold-400',
+                        )}
+                        style={{ width: `${progressPct}%` }}
+                      />
+                    </div>
+                    <span className="text-[10px] font-bold text-mh-slate-300">{progressPct}%</span>
                   </div>
-                  <span className="text-[10px] font-bold text-mh-slate-300">{progressPct}%</span>
                 </div>
               </div>
 
@@ -558,8 +681,32 @@ export default function MonsterModal({ monster, open, onClose }: Props) {
                         </div>
 
                         <div className="min-w-0">
-                          <div className="flex items-center gap-1.5">
-                            <TaskIcon size={12} className={isChecked ? 'text-emerald-400' : 'text-mh-gold-400/80'} />
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            {task.imgIcon ? (
+                              <img
+                                src={
+                                  task.key === 'finished'
+                                    ? isChecked
+                                      ? '/img/ui/my_challenges_selected.png'
+                                      : '/img/ui/my_challenges.png'
+                                    : task.imgIcon
+                                }
+                                alt=""
+                                className={cn(
+                                  'w-4 h-4 object-contain shrink-0 filter drop-shadow-xs transition-opacity',
+                                  isChecked ? 'opacity-100' : 'opacity-85',
+                                )}
+                              />
+                            ) : TaskIcon ? (
+                              <TaskIcon
+                                size={13}
+                                className={cn(
+                                  isChecked
+                                    ? 'text-emerald-400'
+                                    : 'text-mh-gold-400/80',
+                                )}
+                              />
+                            ) : null}
                             <p
                               className={cn(
                                 'text-xs font-bold leading-tight',
@@ -568,6 +715,18 @@ export default function MonsterModal({ monster, open, onClose }: Props) {
                             >
                               {task.label}
                             </p>
+                            {task.badge && (
+                              <span
+                                className={cn(
+                                  'rounded px-1.5 py-px text-[9px] font-bold uppercase tracking-wider',
+                                  task.key === 'finished'
+                                    ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                                    : 'bg-amber-500/15 text-amber-300 border border-amber-500/30',
+                                )}
+                              >
+                                {task.badge}
+                              </span>
+                            )}
                           </div>
                           <p className="text-[10px] text-mh-slate-400 leading-normal mt-0.5">
                             {task.desc}

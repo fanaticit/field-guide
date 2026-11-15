@@ -11,7 +11,6 @@ import {
   List,
   Shield,
   Bookmark,
-  CheckCircle2,
   ChevronDown,
   Check,
   Footprints,
@@ -32,6 +31,7 @@ import { useUIStore } from '../../store/uiStore';
 import { DEFAULT_SECTION_THEMES } from '../../config/themes';
 import PageTitlePanel from '../../components/layout/PageTitlePanel';
 import MonsterModal from './MonsterModal';
+import MonsterGridCard from './MonsterGridCard';
 import ElementIcon from '../../components/ElementIcon';
 import { cn } from '../../lib/utils';
 import { useSearchParams } from 'react-router-dom';
@@ -130,9 +130,10 @@ export default function MonsterGuide() {
   const [filterTier, setFilterTier] = useState<string>('all');
   const [filterWeakness, setFilterWeakness] = useState<string>('all');
   const [filterStudy, setFilterStudy] = useState<StudyFilter>('all');
-  const [sortOrder, setSortOrder] = useState<SortOrder>('name-asc');
-  // Default is list/table view as requested
-  const [viewMode, setViewMode] = useState<ViewMode>('table');
+  // Default is Game Order
+  const [sortOrder, setSortOrder] = useState<SortOrder>('default');
+  // Default is grid view of monster icons as requested
+  const [viewMode, setViewMode] = useState<ViewMode>('grid');
 
   // Custom Dropdowns open state
   const [speciesOpen, setSpeciesOpen] = useState(false);
@@ -162,7 +163,12 @@ export default function MonsterGuide() {
 
   // Queries & Hooks
   const { data: monsters = [], isLoading } = useAdminMonsters({ isActive: true });
-  const { studyMap, getMonsterStudy } = useUserMonsterStudy();
+  const {
+    studyMap,
+    getMonsterStudy,
+    toggleStandardTask,
+    toggleCustomTask,
+  } = useUserMonsterStudy();
   const { data: challenges = [] } = useHunterChallenges(user?.id);
 
   // Available Species list with monster count
@@ -189,22 +195,28 @@ export default function MonsterGuide() {
     return challenges.filter((c) => c.challenge_type === 'monster' && c.status !== 'abandoned');
   }, [challenges]);
 
-  // Overall Statistics
+  // Overall Statistics (only large monsters and elder dragons that have Study Progress)
   const stats = useMemo(() => {
-    const total = monsters.length;
+    const studyableMonsters = monsters.filter((m) => m.tier !== 'small');
+    const total = studyableMonsters.length;
     let finishedCount = 0;
     let studiedCount = 0;
 
-    for (const m of monsters) {
+    for (const m of studyableMonsters) {
       const study = studyMap[m.id];
+      const isElder = m.tier === 'elder' || m.species === 'elder_dragon';
       if (study) {
-        if (study.finished) finishedCount++;
+        const isDone = isElder ? (study.unlocked || study.finished) : study.finished;
+        if (isDone) finishedCount++;
         if (
           study.unlocked ||
-          study.photo_taken ||
-          study.witnessed_behavior ||
-          study.hunted_10_plus ||
-          study.finished ||
+          (!isElder &&
+            (study.photo_taken ||
+              study.witnessed_behavior ||
+              study.hunted_10_plus ||
+              study.miniature_crown ||
+              study.giant_crown ||
+              study.finished)) ||
           study.custom_tasks.some((t) => t.completed)
         ) {
           studiedCount++;
@@ -256,19 +268,26 @@ export default function MonsterGuide() {
       list = list.filter((m) => m.weaknesses.includes(filterWeakness));
     }
 
-    // Study filter
+    // Study filter (small monsters don't have study progress)
     if (filterStudy !== 'all') {
       list = list.filter((m) => {
+        if (m.tier === 'small') return false;
         const s = studyMap[m.id];
-        if (filterStudy === 'finished') return Boolean(s?.finished);
+        const isElder = m.tier === 'elder' || m.species === 'elder_dragon';
+        const isDone = isElder ? Boolean(s?.unlocked || s?.finished) : Boolean(s?.finished);
+
+        if (filterStudy === 'finished') return isDone;
         if (filterStudy === 'studied') {
           return Boolean(
             s &&
               (s.unlocked ||
-                s.photo_taken ||
-                s.witnessed_behavior ||
-                s.hunted_10_plus ||
-                s.finished ||
+                (!isElder &&
+                  (s.photo_taken ||
+                    s.witnessed_behavior ||
+                    s.hunted_10_plus ||
+                    s.miniature_crown ||
+                    s.giant_crown ||
+                    s.finished)) ||
                 s.custom_tasks.some((t) => t.completed)),
           );
         }
@@ -276,10 +295,14 @@ export default function MonsterGuide() {
           return (
             !s ||
             (!s.unlocked &&
-              !s.photo_taken &&
-              !s.witnessed_behavior &&
-              !s.hunted_10_plus &&
-              !s.finished &&
+              (!isElder
+                ? !s.photo_taken &&
+                  !s.witnessed_behavior &&
+                  !s.hunted_10_plus &&
+                  !s.miniature_crown &&
+                  !s.giant_crown &&
+                  !s.finished
+                : !s.finished) &&
               !s.custom_tasks.some((t) => t.completed))
           );
         }
@@ -287,14 +310,21 @@ export default function MonsterGuide() {
       });
     }
 
-    // Sorting
+    // Sorting (Game Order as default)
     list.sort((a, b) => {
+      if (sortOrder === 'default') {
+        const orderA = a.sort_order ?? 9999;
+        const orderB = b.sort_order ?? 9999;
+        if (orderA !== orderB) return orderA - orderB;
+        const isSmallA = a.tier === 'small';
+        const isSmallB = b.tier === 'small';
+        if (isSmallA !== isSmallB) return isSmallA ? 1 : -1;
+        return a.name.localeCompare(b.name);
+      }
       if (sortOrder === 'name-asc') {
         const isSmallA = a.tier === 'small';
         const isSmallB = b.tier === 'small';
-        if (isSmallA !== isSmallB) {
-          return isSmallA ? 1 : -1;
-        }
+        if (isSmallA !== isSmallB) return isSmallA ? 1 : -1;
         return a.name.localeCompare(b.name);
       }
       if (sortOrder === 'tier-desc') {
@@ -303,15 +333,7 @@ export default function MonsterGuide() {
         if (orderB !== orderA) return orderB - orderA;
         return a.name.localeCompare(b.name);
       }
-      if (a.sort_order !== null && b.sort_order !== null && a.sort_order !== b.sort_order) {
-        return a.sort_order - b.sort_order;
-      }
-      const isSmallA = a.tier === 'small';
-      const isSmallB = b.tier === 'small';
-      if (isSmallA !== isSmallB) {
-        return isSmallA ? 1 : -1;
-      }
-      return a.name.localeCompare(b.name);
+      return 0;
     });
 
     return list;
@@ -603,30 +625,17 @@ export default function MonsterGuide() {
             onChange={(e) => setSortOrder(e.target.value as SortOrder)}
             className="rounded-xl border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-300 focus:border-mh-gold-500/50 focus:outline-none"
           >
+            <option value="default">Game Order (Default)</option>
             <option value="name-asc">Large First, Then Small (A to Z)</option>
             <option value="tier-desc">Threat: High to Low</option>
-            <option value="default">Game Order</option>
           </select>
 
           {/* View Mode Toggle */}
           <div className="flex items-center rounded-xl border border-mh-slate-750 bg-mh-slate-900 p-0.5">
             <button
               type="button"
-              onClick={() => setViewMode('table')}
-              title="List / Table View (Default)"
-              className={cn(
-                'rounded-lg p-1.5 transition-colors',
-                viewMode === 'table'
-                  ? 'bg-mh-gold-500 text-slate-950 font-bold'
-                  : 'text-mh-slate-400 hover:text-white',
-              )}
-            >
-              <List size={15} />
-            </button>
-            <button
-              type="button"
               onClick={() => setViewMode('grid')}
-              title="Grid View"
+              title="Grid View (Default)"
               className={cn(
                 'rounded-lg p-1.5 transition-colors',
                 viewMode === 'grid'
@@ -635,6 +644,19 @@ export default function MonsterGuide() {
               )}
             >
               <LayoutGrid size={15} />
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode('table')}
+              title="List / Table View"
+              className={cn(
+                'rounded-lg p-1.5 transition-colors',
+                viewMode === 'table'
+                  ? 'bg-mh-gold-500 text-slate-950 font-bold'
+                  : 'text-mh-slate-400 hover:text-white',
+              )}
+            >
+              <List size={15} />
             </button>
           </div>
         </div>
@@ -678,16 +700,30 @@ export default function MonsterGuide() {
                 const speciesLabel = (monster.species && SPECIES_CONFIG[monster.species]?.label) || monster.species || '—';
                 const study = getMonsterStudy(monster.id);
 
+                const isSmall = monster.tier === 'small';
+                const isElder = monster.tier === 'elder' || monster.species === 'elder_dragon';
+                const isFinished = isElder ? (study.unlocked || study.finished) : study.finished;
+
                 let completedCount = 0;
-                if (study.unlocked) completedCount++;
-                if (study.photo_taken) completedCount++;
-                if (study.witnessed_behavior) completedCount++;
-                if (study.hunted_10_plus) completedCount++;
-                if (study.finished) completedCount++;
+                if (isElder) {
+                  if (study.unlocked) completedCount++;
+                } else if (!isSmall) {
+                  if (study.unlocked) completedCount++;
+                  if (study.photo_taken) completedCount++;
+                  if (study.witnessed_behavior) completedCount++;
+                  if (study.hunted_10_plus) completedCount++;
+                  if (study.miniature_crown) completedCount++;
+                  if (study.giant_crown) completedCount++;
+                  if (study.finished) completedCount++;
+                }
                 study.custom_tasks.forEach((t) => {
                   if (t.completed) completedCount++;
                 });
-                const totalTasks = 5 + study.custom_tasks.length;
+                const totalTasks = isSmall
+                  ? 0
+                  : isElder
+                  ? 1 + study.custom_tasks.length
+                  : 7 + study.custom_tasks.length;
 
                 return (
                   <tr
@@ -792,9 +828,11 @@ export default function MonsterGuide() {
 
                     {/* Study Progress Indicator */}
                     <td className="px-2 sm:px-3 py-2.5 sm:py-3.5 text-center">
-                      {study.finished ? (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 px-2.5 py-0.5 text-[10px] font-bold text-emerald-300">
-                          <CheckCircle2 size={11} />
+                      {isSmall ? (
+                        <span className="text-[11px] text-mh-slate-600 font-semibold">—</span>
+                      ) : isFinished ? (
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 px-2.5 py-0.5 text-[10px] font-bold text-emerald-300">
+                          <img src="/img/ui/my_challenges_selected.png" alt="" className="w-3.5 h-3.5 object-contain" />
                           <span>Finished</span>
                         </span>
                       ) : completedCount > 0 ? (
@@ -827,129 +865,20 @@ export default function MonsterGuide() {
           </table>
         </div>
       ) : (
-        /* ── Grid View ── */
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        /* ── Grid View (Default) ── */
+        <div className="grid grid-cols-3 min-[380px]:grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 xl:grid-cols-12 2xl:grid-cols-14 gap-1 sm:gap-1.5">
           {filteredMonsters.map((monster) => {
-            const tierCfg = TIER_CONFIG[monster.tier] ?? { label: monster.tier, cls: 'rarity-1' };
-            const speciesLabel = (monster.species && SPECIES_CONFIG[monster.species]?.label) || monster.species || '—';
             const study = getMonsterStudy(monster.id);
 
-            let completedCount = 0;
-            if (study.unlocked) completedCount++;
-            if (study.photo_taken) completedCount++;
-            if (study.witnessed_behavior) completedCount++;
-            if (study.hunted_10_plus) completedCount++;
-            if (study.finished) completedCount++;
-            study.custom_tasks.forEach((t) => {
-              if (t.completed) completedCount++;
-            });
-            const totalTasks = 5 + study.custom_tasks.length;
-
             return (
-              <div
+              <MonsterGridCard
                 key={monster.id}
-                onClick={() => setSelectedMonster(monster)}
-                className="relative isolate overflow-hidden rounded-2xl border border-mh-slate-800 bg-mh-slate-900/90 p-4 hover:border-mh-gold-500/50 hover:bg-mh-slate-850 cursor-pointer transition-all duration-200 group flex flex-col justify-between shadow-lg"
-              >
-                {/* Monster sketch in background if available */}
-                {monster.sketch && (
-                  <div className="pointer-events-none absolute inset-0 -z-10 opacity-15 overflow-hidden">
-                    <img
-                      src={monster.sketch}
-                      alt=""
-                      className="h-full w-full object-cover object-right filter brightness-125"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-mh-slate-950 via-mh-slate-950/60 to-transparent" />
-                  </div>
-                )}
-
-                <div className="space-y-3">
-                  {/* Top line: icon + details */}
-                  <div className="flex items-start gap-3">
-                    <div className="flex h-20 w-20 sm:h-24 sm:w-24 shrink-0 items-center justify-center">
-                      {monster.icon ? (
-                        <img
-                          src={monster.icon}
-                          alt={monster.name}
-                          className="h-full w-full object-contain filter drop-shadow transition-transform duration-200 group-hover:scale-105"
-                          onError={(e) => {
-                            (e.currentTarget as HTMLImageElement).style.display = 'none';
-                          }}
-                        />
-                      ) : (
-                        <Footprints size={40} className="text-mh-slate-500" />
-                      )}
-                    </div>
-
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-1.5 flex-wrap">
-                        <span className={`rarity-badge ${tierCfg.cls}`}>{tierCfg.label}</span>
-                        {monster.is_variant && (
-                          <span className="rounded bg-purple-500/20 px-1 py-px text-[8px] font-bold uppercase tracking-wider text-purple-300">
-                            Variant
-                          </span>
-                        )}
-                        {monster.is_radiant && (
-                          <span className="rounded bg-amber-500/20 px-1 py-px text-[8px] font-bold uppercase tracking-wider text-amber-400">
-                            Radiant
-                          </span>
-                        )}
-                      </div>
-                      <h4 className="font-display font-bold text-sm text-white group-hover:text-mh-gold-300 transition-colors truncate mt-1">
-                        {monster.name}
-                      </h4>
-                      <p className="text-[11px] text-mh-slate-400 truncate">
-                        {speciesLabel}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Weaknesses */}
-                  {monster.weaknesses && monster.weaknesses.length > 0 && (
-                    <div className="space-y-1">
-                      <p className="text-[9px] font-bold uppercase tracking-widest text-mh-slate-500">
-                        Weak To
-                      </p>
-                      <div className="flex flex-wrap gap-1">
-                        {monster.weaknesses.map((el) => (
-                          <span
-                            key={el}
-                            className={cn(
-                              'inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[9px] font-semibold leading-none',
-                              ELEMENT_COLOURS[el] ?? 'bg-mh-slate-800 text-mh-slate-400 border border-mh-slate-700',
-                            )}
-                          >
-                            <ElementIcon element={el} size={11} />
-                            <span>{ELEMENT_LABELS[el] ?? el}</span>
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Footer: Study progress status */}
-                <div className="mt-4 pt-3 border-t border-mh-slate-800/80 flex items-center justify-between">
-                  <div className="text-[10px]">
-                    {study.finished ? (
-                      <span className="inline-flex items-center gap-1 font-bold text-emerald-400">
-                        <CheckCircle2 size={12} />
-                        Finished
-                      </span>
-                    ) : completedCount > 0 ? (
-                      <span className="font-bold text-mh-gold-300">
-                        {completedCount}/{totalTasks} Studied
-                      </span>
-                    ) : (
-                      <span className="text-mh-slate-500">Not studied</span>
-                    )}
-                  </div>
-
-                  <span className="text-[10px] font-semibold text-mh-gold-400 group-hover:translate-x-0.5 transition-transform">
-                    Inspect &rarr;
-                  </span>
-                </div>
-              </div>
+                monster={monster}
+                study={study}
+                onSelect={() => setSelectedMonster(monster)}
+                onToggleStandardTask={toggleStandardTask}
+                onToggleCustomTask={toggleCustomTask}
+              />
             );
           })}
         </div>

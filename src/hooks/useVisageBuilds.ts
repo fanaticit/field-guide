@@ -122,7 +122,12 @@ export function useUserVisageVotes() {
         const { error } = await supabase
           .from('user_visage_build_votes')
           .insert({ user_id: user.id, visage_build_id: buildId });
-        if (error && error.code !== '23505') throw error;
+        if (error && error.code !== '23505') {
+          if (error.code === '42501') {
+            throw new Error("You cannot upvote your own set or an unpublished set.");
+          }
+          throw error;
+        }
       } else {
         const { error } = await supabase
           .from('user_visage_build_votes')

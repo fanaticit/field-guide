@@ -331,12 +331,12 @@ export default function MainNav() {
     path: '/armory',
     label: 'Armory',
     description: 'Builds, Planner & Armour',
-    iconSrc: '/img/ui/Equipment%20Icon.png',
-    iconZoom: 0.85,
+    iconSrc: '/img/ui/community_builds.png',
+    iconZoom: 1.275,
     accent: themeToNavAccent(armoryTheme),
     active: armoryActive,
     subItems: [
-      { id: 'armory-builds', label: 'Community Builds', icon: LayoutGrid, iconSrc: '/img/ui/community_builds.png', active: pathname === '/armory' || pathname === '/armory/builds', onSelect: go('/armory') },
+      { id: 'armory-builds', label: 'Community Builds', icon: LayoutGrid, iconSrc: '/img/ui/community_builds.png', iconZoom: 1.275, active: pathname === '/armory' || pathname === '/armory/builds', onSelect: go('/armory') },
       ...(!isBuildPlannerSpilled
         ? [{
             id: 'armory-planner',
@@ -381,7 +381,7 @@ export default function MainNav() {
           }]
         : []),
       ...(!isVisageSpilled
-        ? [{ id: 'gallery-collection', label: 'Visage Collection', icon: BookMarked, iconSrc: '/img/ui/visage_collection.png', active: isVisageActive, onSelect: go('/gallery/collection') }]
+        ? [{ id: 'gallery-collection', label: 'Visage Collection', icon: BookMarked, iconSrc: '/img/ui/visage_collection.png', iconZoom: 1.275, active: isVisageActive, onSelect: go('/gallery/collection') }]
         : []),
     ],
   };
@@ -440,8 +440,8 @@ export default function MainNav() {
     {
       id: 'armory',
       label: 'Armory',
-      iconSrc: '/img/ui/Equipment%20Icon.png',
-      iconZoom: 0.85,
+      iconSrc: '/img/ui/community_builds.png',
+      iconZoom: 1.275,
       accent: themeToNavAccent(armoryTheme),
       active: armoryActive,
       section: armorySection,
@@ -506,7 +506,7 @@ export default function MainNav() {
             id: 'gallery-collection-spill',
             label: 'Visage Collection',
             iconSrc: '/img/ui/visage_collection.png',
-            iconZoom: 0.85,
+            iconZoom: 1.275,
             accent: themeToNavAccent(galleryTheme),
             active: isVisageActive,
             onSelect: go('/gallery/collection'),

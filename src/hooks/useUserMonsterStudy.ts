@@ -21,6 +21,8 @@ export interface MonsterStudyRecord {
   photo_taken: boolean;
   witnessed_behavior: boolean;
   hunted_10_plus: boolean;
+  miniature_crown: boolean;
+  giant_crown: boolean;
   finished: boolean;
   custom_tasks: CustomStudyTask[];
 }
@@ -30,6 +32,8 @@ export type StandardStudyKey =
   | 'photo_taken'
   | 'witnessed_behavior'
   | 'hunted_10_plus'
+  | 'miniature_crown'
+  | 'giant_crown'
   | 'finished';
 
 const DEFAULT_RECORD = (monsterId: string): MonsterStudyRecord => ({
@@ -38,6 +42,8 @@ const DEFAULT_RECORD = (monsterId: string): MonsterStudyRecord => ({
   photo_taken: false,
   witnessed_behavior: false,
   hunted_10_plus: false,
+  miniature_crown: false,
+  giant_crown: false,
   finished: false,
   custom_tasks: [],
 });
@@ -99,6 +105,8 @@ export function useUserMonsterStudy() {
           photo_taken: Boolean(row.photo_taken),
           witnessed_behavior: Boolean(row.witnessed_behavior),
           hunted_10_plus: Boolean(row.hunted_10_plus),
+          miniature_crown: Boolean(row.miniature_crown),
+          giant_crown: Boolean(row.giant_crown),
           finished: Boolean(row.finished),
           custom_tasks: Array.isArray(row.custom_tasks) ? row.custom_tasks : [],
         };
@@ -121,6 +129,8 @@ export function useUserMonsterStudy() {
             photo_taken: record.photo_taken,
             witnessed_behavior: record.witnessed_behavior,
             hunted_10_plus: record.hunted_10_plus,
+            miniature_crown: record.miniature_crown,
+            giant_crown: record.giant_crown,
             finished: record.finished,
             custom_tasks: record.custom_tasks,
             updated_at: new Date().toISOString(),
@@ -144,17 +154,64 @@ export function useUserMonsterStudy() {
   );
 
   const toggleStandardTask = useCallback(
-    async (monsterId: string, taskKey: StandardStudyKey) => {
+    async (monsterId: string, taskKey: StandardStudyKey, isElder: boolean = false) => {
       const current = getMonsterStudy(monsterId);
-      const updated: MonsterStudyRecord = {
-        ...current,
-        [taskKey]: !current[taskKey],
-      };
+      let updated: MonsterStudyRecord;
 
-      // If finished is toggled on, or if all items are complete
-      if (taskKey === 'finished' && updated.finished) {
-        // Auto-mark standard items if user explicitly marks Finished
-        updated.unlocked = true;
+      if (taskKey === 'finished') {
+        const nextFinished = !current.finished;
+        if (nextFinished) {
+          // If user clicks Finished, all applicable tasks are finished!
+          updated = {
+            ...current,
+            unlocked: true,
+            photo_taken: !isElder,
+            witnessed_behavior: !isElder,
+            hunted_10_plus: !isElder,
+            miniature_crown: !isElder,
+            giant_crown: !isElder,
+            finished: true,
+            custom_tasks: current.custom_tasks.map((t) => ({ ...t, completed: true })),
+          };
+        } else {
+          updated = {
+            ...current,
+            finished: false,
+            ...(isElder ? { unlocked: false } : {}),
+          };
+        }
+      } else {
+        const nextVal = !current[taskKey];
+        updated = {
+          ...current,
+          [taskKey]: nextVal,
+        };
+
+        if (isElder) {
+          // Elder dragons only have Unlocked study progress
+          const allCustom = updated.custom_tasks.every((t) => t.completed);
+          if (taskKey === 'unlocked') {
+            updated.finished = nextVal && allCustom;
+          } else if (!nextVal && current.finished) {
+            updated.finished = false;
+          }
+        } else {
+          // Standard large monsters
+          const allStandard =
+            (taskKey === 'unlocked' ? nextVal : updated.unlocked) &&
+            (taskKey === 'photo_taken' ? nextVal : updated.photo_taken) &&
+            (taskKey === 'witnessed_behavior' ? nextVal : updated.witnessed_behavior) &&
+            (taskKey === 'hunted_10_plus' ? nextVal : updated.hunted_10_plus) &&
+            (taskKey === 'miniature_crown' ? nextVal : updated.miniature_crown) &&
+            (taskKey === 'giant_crown' ? nextVal : updated.giant_crown);
+          const allCustom = updated.custom_tasks.every((t) => t.completed);
+
+          if (allStandard && allCustom) {
+            updated.finished = true;
+          } else if (!nextVal && current.finished) {
+            updated.finished = false;
+          }
+        }
       }
 
       const nextMap = { ...studyMap, [monsterId]: updated };
@@ -167,12 +224,28 @@ export function useUserMonsterStudy() {
   );
 
   const setFinished = useCallback(
-    async (monsterId: string, finished: boolean) => {
+    async (monsterId: string, finished: boolean, isElder: boolean = false) => {
       const current = getMonsterStudy(monsterId);
-      const updated: MonsterStudyRecord = {
-        ...current,
-        finished,
-      };
+      let updated: MonsterStudyRecord;
+      if (finished) {
+        updated = {
+          ...current,
+          unlocked: true,
+          photo_taken: !isElder,
+          witnessed_behavior: !isElder,
+          hunted_10_plus: !isElder,
+          miniature_crown: !isElder,
+          giant_crown: !isElder,
+          finished: true,
+          custom_tasks: current.custom_tasks.map((t) => ({ ...t, completed: true })),
+        };
+      } else {
+        updated = {
+          ...current,
+          finished: false,
+          ...(isElder ? { unlocked: false } : {}),
+        };
+      }
       const nextMap = { ...studyMap, [monsterId]: updated };
       saveLocal(nextMap);
       if (user) {
@@ -195,6 +268,8 @@ export function useUserMonsterStudy() {
       const updated: MonsterStudyRecord = {
         ...current,
         custom_tasks: [...current.custom_tasks, newTask],
+        // New uncompleted task means monster is no longer finished
+        finished: false,
       };
       const nextMap = { ...studyMap, [monsterId]: updated };
       saveLocal(nextMap);
@@ -208,11 +283,23 @@ export function useUserMonsterStudy() {
   const toggleCustomTask = useCallback(
     async (monsterId: string, taskId: string) => {
       const current = getMonsterStudy(monsterId);
+      const updatedTasks = current.custom_tasks.map((t) =>
+        t.id === taskId ? { ...t, completed: !t.completed } : t,
+      );
+      const allStandard =
+        current.unlocked &&
+        current.photo_taken &&
+        current.witnessed_behavior &&
+        current.hunted_10_plus &&
+        current.miniature_crown &&
+        current.giant_crown;
+      const allCustom = updatedTasks.every((t) => t.completed);
+      const isUnchecking = !updatedTasks.find((t) => t.id === taskId)?.completed;
+
       const updated: MonsterStudyRecord = {
         ...current,
-        custom_tasks: current.custom_tasks.map((t) =>
-          t.id === taskId ? { ...t, completed: !t.completed } : t,
-        ),
+        custom_tasks: updatedTasks,
+        finished: allStandard && allCustom ? true : isUnchecking && current.finished ? false : current.finished,
       };
       const nextMap = { ...studyMap, [monsterId]: updated };
       saveLocal(nextMap);

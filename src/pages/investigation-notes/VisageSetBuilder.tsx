@@ -135,6 +135,12 @@ export default function VisageSetBuilder() {
   const filled = Object.values(loadout).some((e) => e.visage);
   const isOwner = !builder.buildId || builder.authorId === user?.id;
   const isSavedBuild = Boolean(builder.buildId);
+  const voteDisabledReason: string | null = useMemo(() => {
+    if (!user) return 'Sign in to upvote';
+    if (!builder.isPublished) return 'Only published sets can be upvoted';
+    if (builder.authorId && user.id === builder.authorId) return "You can't upvote your own set";
+    return null;
+  }, [user, builder.isPublished, builder.authorId]);
   const [copied, setCopied] = useState(false);
 
   const handleCopyLink = async () => {
@@ -192,7 +198,7 @@ export default function VisageSetBuilder() {
   };
 
   const handleUpvote = async () => {
-    if (!builder.buildId || isVoting) return;
+    if (!builder.buildId || isVoting || voteDisabledReason) return;
     if (!user) {
       setLoginModalOpen(true);
       return;
@@ -507,13 +513,15 @@ export default function VisageSetBuilder() {
             <button
               type="button"
               onClick={handleUpvote}
-              disabled={isVoting}
+              disabled={isVoting || Boolean(voteDisabledReason)}
               className={`relative whitespace-nowrap text-xs sm:text-sm py-1.5 px-2 sm:px-2.5 rounded-lg flex items-center gap-1.5 transition-all font-medium border shadow-sm ${
                 hasUpvoted
                   ? 'bg-[var(--bg-superior)] text-[var(--theme-accent)] border-[var(--border-active)] cursor-pointer'
+                  : voteDisabledReason
+                  ? 'bg-black/20 text-white/40 border-[var(--border-subtle)] opacity-60 cursor-not-allowed'
                   : 'bg-black/30 hover:bg-white/10 text-white border-[var(--border-subtle)] hover:border-[var(--theme-accent)] active:scale-95 cursor-pointer'
               }`}
-              title={hasUpvoted ? 'Remove your upvote' : 'Upvote this set'}
+              title={voteDisabledReason ?? (hasUpvoted ? 'Remove your upvote' : 'Upvote this set')}
             >
               {isUpvoteAnimating && (
                 <span className="absolute -top-3.5 right-1 text-xs font-black text-amber-300 pointer-events-none animate-bounce drop-shadow-[0_0_6px_rgba(251,191,36,0.9)]">
