@@ -4,6 +4,7 @@ import { Shield, ChevronRight, Sparkles, Flame, Settings, LogIn, ScrollText } fr
 import { useAuthStore, getLandingPagePath } from '../store/authStore';
 import LoginModal from '../components/auth/LoginModal';
 import FeatureShowcase from '../components/home/FeatureShowcase';
+import SiteUpdatesSection from '../components/home/SiteUpdatesSection';
 import { useUIStore } from '../store/uiStore';
 import { resolveSectionTheme } from '../config/themes';
 
@@ -134,10 +135,10 @@ export default function LandingPage() {
                 </Link>
               </div>
 
-              {/* Build a Visage Set (Gallery theme) */}
+              {/* Visage Collection Updates (Gallery theme) */}
               <div data-rarity-theme={galleryTheme} className="section-theme">
                 <Link
-                  to="/gallery/set"
+                  to="/gallery/collection"
                   className="btn-mho-gold w-full flex items-center justify-between !py-3.5 !px-5 rounded-xl shadow-lg group transition-all"
                 >
                   <div className="flex items-center gap-3 min-w-0">
@@ -148,10 +149,10 @@ export default function LandingPage() {
                     />
                     <div className="text-left min-w-0">
                       <div className="font-display font-bold text-sm tracking-wide leading-tight">
-                        Build a Visage Set
+                        Visage Collection Updates
                       </div>
                       <div className="text-[11px] opacity-80 font-sans font-medium truncate">
-                        Gallery &middot; Card synergy builder
+                        Gallery &middot; Progression &amp; card tracking
                       </div>
                     </div>
                   </div>
@@ -308,6 +309,9 @@ export default function LandingPage() {
           </div>
         </div>
       </div>
+
+      {/* ── Latest Site Updates (from METADATA.json) ── */}
+      <SiteUpdatesSection />
 
       {/* ── What you can do (Armory, Gallery, Challenges) ── */}
       <FeatureShowcase />

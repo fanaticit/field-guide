@@ -1,9 +1,41 @@
 {
   "name": "monster_hunter_field_guide",
-  "version": "1.1.0"
-}
-{
+  "version": "1.1.0",
   "update": "1.1.0",
   "date": "2024-06-05",
-  "description": "Added changes to the Visage section."
+  "title": "Visage Collection: Weekly Reset & Hunt Planner Updates",
+  "description": "Visage Collection: Weekly Reset & Hunt Planner Updates",
+  "youtube_url": "",
+  "changes": [
+    {
+      "title": "New \"By Monster\" Progression View",
+      "description": "Added a dedicated By Monster view to the Visage Collection, laying out all monsters (Large Monsters in game order, Small Monsters alphabetically) with both of their potential Ink types displayed in a single column.",
+      "page_url": "/gallery/collection",
+      "page_label": "Visage Collection"
+    },
+    {
+      "title": "Instant Card Tracking",
+      "description": "Mark cards as owned, update rarity tiers (Fine, Rare, Epic, Superior), and adjust quantities directly on each monster's card without switching screens.",
+      "page_url": "/gallery/collection",
+      "page_label": "Visage Collection"
+    },
+    {
+      "title": "Targeted Rarity Hunting Filters",
+      "description": "Filter by rarity goal (Fine, Rare, Epic, or Superior). Selecting a target immediately filters out any monster where you already have a card at that tier or higher, highlighting only the monsters you still need to hunt before the reset.",
+      "page_url": "/gallery/collection",
+      "page_label": "Visage Collection"
+    },
+    {
+      "title": "Direct Field Guide Links",
+      "description": "Clicking any monster's icon instantly opens their details and drop tables in the Monster Field Guide.",
+      "page_url": "/challenges/monsters",
+      "page_label": "Monster Field Guide"
+    },
+    {
+      "title": "Polished In-Game UI Locks",
+      "description": "Replaced placeholder lock emojis with the official in-game lock icon (/img/ui/lock.png) across cards, loadout strips, and builds to clearly signal missing cards.",
+      "page_url": "/gallery/collection",
+      "page_label": "Visage Collection"
+    }
+  ]
 }
