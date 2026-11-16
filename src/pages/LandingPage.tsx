@@ -160,6 +160,19 @@ export default function LandingPage() {
               </div>
             </div>
 
+            {/* General Site Guide Video */}
+            <div className="flex justify-center pt-1 pb-1">
+              <div className="w-full max-w-[600px] aspect-video rounded-xl overflow-hidden border border-white/15 bg-black/60 shadow-2xl relative">
+                <iframe
+                  src="https://www.youtube-nocookie.com/embed/W5borfBl0_A?rel=0"
+                  title="Monster Hunter Outlanders Field Guide - Site Walkthrough & Guide"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  className="absolute inset-0 h-full w-full border-0"
+                />
+              </div>
+            </div>
+
             {/* Row 2: Secondary Hub Features (Armory + Challenges) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
               {/* Browse Community Builds (Armory theme) */}

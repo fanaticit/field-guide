@@ -1,4 +1,9 @@
 {
   "name": "monster_hunter_field_guide",
-  "version": "1.0.0"
+  "version": "1.1.0"
+}
+{
+  "update": "1.1.0",
+  "date": "2024-06-05",
+  "description": "Added changes to the Visage section."
 }

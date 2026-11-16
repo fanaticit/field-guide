@@ -1,0 +1,1583 @@
+{
+ "Rare": {
+  "slots": [
+   {
+    "unlocks_at_level": 2,
+    "item_id": 70070,
+    "item": "Pure Brush",
+    "count": 2,
+    "zenny": 4000
+   },
+   {
+    "unlocks_at_level": 4,
+    "item_id": 70070,
+    "item": "Pure Brush",
+    "count": 2,
+    "zenny": 4000
+   },
+   {
+    "unlocks_at_level": 6,
+    "item_id": 70070,
+    "item": "Pure Brush",
+    "count": 2,
+    "zenny": 4000
+   },
+   {
+    "unlocks_at_level": 8,
+    "item_id": 70070,
+    "item": "Pure Brush",
+    "count": 2,
+    "zenny": 4000
+   },
+   {
+    "unlocks_at_level": 10,
+    "item_id": 70070,
+    "item": "Pure Brush",
+    "count": 2,
+    "zenny": 4000
+   }
+  ],
+  "pool": [
+   {
+    "entry_id": 2001,
+    "effect": "Damage",
+    "roll_quality": "Rare",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "89%",
+    "overall_chance": "9.89%",
+    "values": [
+     "0.51%",
+     "0.68%",
+     "0.84%"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2002,
+    "effect": "Damage",
+    "roll_quality": "Epic",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "10%",
+    "overall_chance": "1.11%",
+    "values": [
+     "1.01%",
+     "1.18%",
+     "1.35%"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2003,
+    "effect": "Damage",
+    "roll_quality": "Superior",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "1%",
+    "overall_chance": "0.11%",
+    "values": [
+     "1.43%",
+     "1.52%",
+     "1.69%"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2004,
+    "effect": "Elemental Critical Damage",
+    "roll_quality": "Rare",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "89%",
+    "overall_chance": "9.89%",
+    "values": [
+     "0.76%",
+     "1.01%",
+     "1.27%"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2005,
+    "effect": "Elemental Critical Damage",
+    "roll_quality": "Epic",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "10%",
+    "overall_chance": "1.11%",
+    "values": [
+     "1.52%",
+     "1.77%",
+     "2.03%"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2006,
+    "effect": "Elemental Critical Damage",
+    "roll_quality": "Superior",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "1%",
+    "overall_chance": "0.11%",
+    "values": [
+     "2.15%",
+     "2.28%",
+     "2.53%"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2007,
+    "effect": "Defense",
+    "roll_quality": "Rare",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "89%",
+    "overall_chance": "9.89%",
+    "values": [
+     "2",
+     "2",
+     "3"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2008,
+    "effect": "Defense",
+    "roll_quality": "Epic",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "10%",
+    "overall_chance": "1.11%",
+    "values": [
+     "4",
+     "4",
+     "5"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2009,
+    "effect": "Defense",
+    "roll_quality": "Superior",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "1%",
+    "overall_chance": "0.11%",
+    "values": [
+     "6",
+     "6",
+     "6"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2010,
+    "effect": "Physical Attack",
+    "roll_quality": "Rare",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "89%",
+    "overall_chance": "9.89%",
+    "values": [
+     "10",
+     "12",
+     "15"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2011,
+    "effect": "Physical Attack",
+    "roll_quality": "Epic",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "10%",
+    "overall_chance": "1.11%",
+    "values": [
+     "18",
+     "21",
+     "24"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2012,
+    "effect": "Physical Attack",
+    "roll_quality": "Superior",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "1%",
+    "overall_chance": "0.11%",
+    "values": [
+     "26",
+     "27",
+     "30"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2013,
+    "effect": "Water Attack",
+    "roll_quality": "Rare",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "89%",
+    "overall_chance": "9.89%",
+    "values": [
+     "10",
+     "12",
+     "15"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2014,
+    "effect": "Water Attack",
+    "roll_quality": "Epic",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "10%",
+    "overall_chance": "1.11%",
+    "values": [
+     "18",
+     "21",
+     "24"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2015,
+    "effect": "Water Attack",
+    "roll_quality": "Superior",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "1%",
+    "overall_chance": "0.11%",
+    "values": [
+     "26",
+     "27",
+     "30"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2016,
+    "effect": "Fire Attack",
+    "roll_quality": "Rare",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "89%",
+    "overall_chance": "9.89%",
+    "values": [
+     "10",
+     "12",
+     "15"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2017,
+    "effect": "Fire Attack",
+    "roll_quality": "Epic",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "10%",
+    "overall_chance": "1.11%",
+    "values": [
+     "18",
+     "21",
+     "24"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2018,
+    "effect": "Fire Attack",
+    "roll_quality": "Superior",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "1%",
+    "overall_chance": "0.11%",
+    "values": [
+     "26",
+     "27",
+     "30"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2019,
+    "effect": "Ice Attack",
+    "roll_quality": "Rare",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "89%",
+    "overall_chance": "9.89%",
+    "values": [
+     "10",
+     "12",
+     "15"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2020,
+    "effect": "Ice Attack",
+    "roll_quality": "Epic",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "10%",
+    "overall_chance": "1.11%",
+    "values": [
+     "18",
+     "21",
+     "24"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2021,
+    "effect": "Ice Attack",
+    "roll_quality": "Superior",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "1%",
+    "overall_chance": "0.11%",
+    "values": [
+     "26",
+     "27",
+     "30"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2022,
+    "effect": "Thunder Attack",
+    "roll_quality": "Rare",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "89%",
+    "overall_chance": "9.89%",
+    "values": [
+     "10",
+     "12",
+     "15"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2023,
+    "effect": "Thunder Attack",
+    "roll_quality": "Epic",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "10%",
+    "overall_chance": "1.11%",
+    "values": [
+     "18",
+     "21",
+     "24"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2024,
+    "effect": "Thunder Attack",
+    "roll_quality": "Superior",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "1%",
+    "overall_chance": "0.11%",
+    "values": [
+     "26",
+     "27",
+     "30"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2025,
+    "effect": "Dragon Attack",
+    "roll_quality": "Rare",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "89%",
+    "overall_chance": "9.89%",
+    "values": [
+     "10",
+     "12",
+     "15"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2026,
+    "effect": "Dragon Attack",
+    "roll_quality": "Epic",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "10%",
+    "overall_chance": "1.11%",
+    "values": [
+     "18",
+     "21",
+     "24"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2027,
+    "effect": "Dragon Attack",
+    "roll_quality": "Superior",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "1%",
+    "overall_chance": "0.11%",
+    "values": [
+     "26",
+     "27",
+     "30"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   }
+  ]
+ },
+ "Epic": {
+  "slots": [
+   {
+    "unlocks_at_level": 2,
+    "item_id": 70040,
+    "item": "Unusual Brush",
+    "count": 2,
+    "zenny": 8000
+   },
+   {
+    "unlocks_at_level": 4,
+    "item_id": 70040,
+    "item": "Unusual Brush",
+    "count": 2,
+    "zenny": 8000
+   },
+   {
+    "unlocks_at_level": 6,
+    "item_id": 70040,
+    "item": "Unusual Brush",
+    "count": 2,
+    "zenny": 8000
+   },
+   {
+    "unlocks_at_level": 8,
+    "item_id": 70040,
+    "item": "Unusual Brush",
+    "count": 2,
+    "zenny": 8000
+   },
+   {
+    "unlocks_at_level": 10,
+    "item_id": 70040,
+    "item": "Unusual Brush",
+    "count": 2,
+    "zenny": 8000
+   }
+  ],
+  "pool": [
+   {
+    "entry_id": 2028,
+    "effect": "Damage",
+    "roll_quality": "Rare",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "89%",
+    "overall_chance": "9.89%",
+    "values": [
+     "0.76%",
+     "1.01%",
+     "1.27%"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2029,
+    "effect": "Damage",
+    "roll_quality": "Epic",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "10%",
+    "overall_chance": "1.11%",
+    "values": [
+     "1.52%",
+     "1.77%",
+     "2.03%"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2030,
+    "effect": "Damage",
+    "roll_quality": "Superior",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "1%",
+    "overall_chance": "0.11%",
+    "values": [
+     "2.15%",
+     "2.28%",
+     "2.53%"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2031,
+    "effect": "Elemental Critical Damage",
+    "roll_quality": "Rare",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "89%",
+    "overall_chance": "9.89%",
+    "values": [
+     "1.14%",
+     "1.52%",
+     "1.9%"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2032,
+    "effect": "Elemental Critical Damage",
+    "roll_quality": "Epic",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "10%",
+    "overall_chance": "1.11%",
+    "values": [
+     "2.28%",
+     "2.66%",
+     "3.04%"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2033,
+    "effect": "Elemental Critical Damage",
+    "roll_quality": "Superior",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "1%",
+    "overall_chance": "0.11%",
+    "values": [
+     "3.23%",
+     "3.42%",
+     "3.8%"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2034,
+    "effect": "Defense",
+    "roll_quality": "Rare",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "89%",
+    "overall_chance": "9.89%",
+    "values": [
+     "3",
+     "3",
+     "4"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2035,
+    "effect": "Defense",
+    "roll_quality": "Epic",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "10%",
+    "overall_chance": "1.11%",
+    "values": [
+     "5",
+     "6",
+     "7"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2036,
+    "effect": "Defense",
+    "roll_quality": "Superior",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "1%",
+    "overall_chance": "0.11%",
+    "values": [
+     "8",
+     "8",
+     "9"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2037,
+    "effect": "Physical Attack",
+    "roll_quality": "Rare",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "89%",
+    "overall_chance": "9.89%",
+    "values": [
+     "15",
+     "18",
+     "23"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2038,
+    "effect": "Physical Attack",
+    "roll_quality": "Epic",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "10%",
+    "overall_chance": "1.11%",
+    "values": [
+     "27",
+     "32",
+     "36"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2039,
+    "effect": "Physical Attack",
+    "roll_quality": "Superior",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "1%",
+    "overall_chance": "0.11%",
+    "values": [
+     "38",
+     "41",
+     "45"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2040,
+    "effect": "Water Attack",
+    "roll_quality": "Rare",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "89%",
+    "overall_chance": "9.89%",
+    "values": [
+     "15",
+     "18",
+     "23"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2041,
+    "effect": "Water Attack",
+    "roll_quality": "Epic",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "10%",
+    "overall_chance": "1.11%",
+    "values": [
+     "27",
+     "32",
+     "36"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2042,
+    "effect": "Water Attack",
+    "roll_quality": "Superior",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "1%",
+    "overall_chance": "0.11%",
+    "values": [
+     "38",
+     "41",
+     "45"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2043,
+    "effect": "Fire Attack",
+    "roll_quality": "Rare",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "89%",
+    "overall_chance": "9.89%",
+    "values": [
+     "15",
+     "18",
+     "23"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2044,
+    "effect": "Fire Attack",
+    "roll_quality": "Epic",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "10%",
+    "overall_chance": "1.11%",
+    "values": [
+     "27",
+     "32",
+     "36"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2045,
+    "effect": "Fire Attack",
+    "roll_quality": "Superior",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "1%",
+    "overall_chance": "0.11%",
+    "values": [
+     "38",
+     "41",
+     "45"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2046,
+    "effect": "Ice Attack",
+    "roll_quality": "Rare",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "89%",
+    "overall_chance": "9.89%",
+    "values": [
+     "15",
+     "18",
+     "23"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2047,
+    "effect": "Ice Attack",
+    "roll_quality": "Epic",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "10%",
+    "overall_chance": "1.11%",
+    "values": [
+     "27",
+     "32",
+     "36"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2048,
+    "effect": "Ice Attack",
+    "roll_quality": "Superior",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "1%",
+    "overall_chance": "0.11%",
+    "values": [
+     "38",
+     "41",
+     "45"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2049,
+    "effect": "Thunder Attack",
+    "roll_quality": "Rare",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "89%",
+    "overall_chance": "9.89%",
+    "values": [
+     "15",
+     "18",
+     "23"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2050,
+    "effect": "Thunder Attack",
+    "roll_quality": "Epic",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "10%",
+    "overall_chance": "1.11%",
+    "values": [
+     "27",
+     "32",
+     "36"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2051,
+    "effect": "Thunder Attack",
+    "roll_quality": "Superior",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "1%",
+    "overall_chance": "0.11%",
+    "values": [
+     "38",
+     "41",
+     "45"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2052,
+    "effect": "Dragon Attack",
+    "roll_quality": "Rare",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "89%",
+    "overall_chance": "9.89%",
+    "values": [
+     "15",
+     "18",
+     "23"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2053,
+    "effect": "Dragon Attack",
+    "roll_quality": "Epic",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "10%",
+    "overall_chance": "1.11%",
+    "values": [
+     "27",
+     "32",
+     "36"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2054,
+    "effect": "Dragon Attack",
+    "roll_quality": "Superior",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "1%",
+    "overall_chance": "0.11%",
+    "values": [
+     "38",
+     "41",
+     "45"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   }
+  ]
+ },
+ "Superior": {
+  "slots": [
+   {
+    "unlocks_at_level": 2,
+    "item_id": 70041,
+    "item": "Radiant Brush",
+    "count": 2,
+    "zenny": 16000
+   },
+   {
+    "unlocks_at_level": 4,
+    "item_id": 70041,
+    "item": "Radiant Brush",
+    "count": 2,
+    "zenny": 16000
+   },
+   {
+    "unlocks_at_level": 6,
+    "item_id": 70041,
+    "item": "Radiant Brush",
+    "count": 2,
+    "zenny": 16000
+   },
+   {
+    "unlocks_at_level": 8,
+    "item_id": 70041,
+    "item": "Radiant Brush",
+    "count": 2,
+    "zenny": 16000
+   },
+   {
+    "unlocks_at_level": 10,
+    "item_id": 70041,
+    "item": "Radiant Brush",
+    "count": 2,
+    "zenny": 16000
+   }
+  ],
+  "pool": [
+   {
+    "entry_id": 2055,
+    "effect": "Damage",
+    "roll_quality": "Rare",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "89%",
+    "overall_chance": "9.89%",
+    "values": [
+     "1.01%",
+     "1.35%",
+     "1.69%"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2056,
+    "effect": "Damage",
+    "roll_quality": "Epic",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "10%",
+    "overall_chance": "1.11%",
+    "values": [
+     "2.03%",
+     "2.36%",
+     "2.7%"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2057,
+    "effect": "Damage",
+    "roll_quality": "Superior",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "1%",
+    "overall_chance": "0.11%",
+    "values": [
+     "2.87%",
+     "3.04%",
+     "3.38%"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2058,
+    "effect": "Elemental Critical Damage",
+    "roll_quality": "Rare",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "89%",
+    "overall_chance": "9.89%",
+    "values": [
+     "1.52%",
+     "2.03%",
+     "2.53%"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2059,
+    "effect": "Elemental Critical Damage",
+    "roll_quality": "Epic",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "10%",
+    "overall_chance": "1.11%",
+    "values": [
+     "3.04%",
+     "3.54%",
+     "4.05%"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2060,
+    "effect": "Elemental Critical Damage",
+    "roll_quality": "Superior",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "1%",
+    "overall_chance": "0.11%",
+    "values": [
+     "4.3%",
+     "4.56%",
+     "5.06%"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2061,
+    "effect": "Defense",
+    "roll_quality": "Rare",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "89%",
+    "overall_chance": "9.89%",
+    "values": [
+     "4",
+     "5",
+     "6"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2062,
+    "effect": "Defense",
+    "roll_quality": "Epic",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "10%",
+    "overall_chance": "1.11%",
+    "values": [
+     "7",
+     "8",
+     "9"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2063,
+    "effect": "Defense",
+    "roll_quality": "Superior",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "1%",
+    "overall_chance": "0.11%",
+    "values": [
+     "10",
+     "11",
+     "12"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2064,
+    "effect": "Physical Attack",
+    "roll_quality": "Rare",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "89%",
+    "overall_chance": "9.89%",
+    "values": [
+     "20",
+     "24",
+     "30"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2065,
+    "effect": "Physical Attack",
+    "roll_quality": "Epic",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "10%",
+    "overall_chance": "1.11%",
+    "values": [
+     "36",
+     "42",
+     "48"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2066,
+    "effect": "Physical Attack",
+    "roll_quality": "Superior",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "1%",
+    "overall_chance": "0.11%",
+    "values": [
+     "51",
+     "54",
+     "60"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2067,
+    "effect": "Water Attack",
+    "roll_quality": "Rare",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "89%",
+    "overall_chance": "9.89%",
+    "values": [
+     "20",
+     "24",
+     "30"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2068,
+    "effect": "Water Attack",
+    "roll_quality": "Epic",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "10%",
+    "overall_chance": "1.11%",
+    "values": [
+     "36",
+     "42",
+     "48"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2069,
+    "effect": "Water Attack",
+    "roll_quality": "Superior",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "1%",
+    "overall_chance": "0.11%",
+    "values": [
+     "51",
+     "54",
+     "60"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2070,
+    "effect": "Fire Attack",
+    "roll_quality": "Rare",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "89%",
+    "overall_chance": "9.89%",
+    "values": [
+     "20",
+     "24",
+     "30"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2071,
+    "effect": "Fire Attack",
+    "roll_quality": "Epic",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "10%",
+    "overall_chance": "1.11%",
+    "values": [
+     "36",
+     "42",
+     "48"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2072,
+    "effect": "Fire Attack",
+    "roll_quality": "Superior",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "1%",
+    "overall_chance": "0.11%",
+    "values": [
+     "51",
+     "54",
+     "60"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2073,
+    "effect": "Ice Attack",
+    "roll_quality": "Rare",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "89%",
+    "overall_chance": "9.89%",
+    "values": [
+     "20",
+     "24",
+     "30"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2074,
+    "effect": "Ice Attack",
+    "roll_quality": "Epic",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "10%",
+    "overall_chance": "1.11%",
+    "values": [
+     "36",
+     "42",
+     "48"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2075,
+    "effect": "Ice Attack",
+    "roll_quality": "Superior",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "1%",
+    "overall_chance": "0.11%",
+    "values": [
+     "51",
+     "54",
+     "60"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2076,
+    "effect": "Thunder Attack",
+    "roll_quality": "Rare",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "89%",
+    "overall_chance": "9.89%",
+    "values": [
+     "20",
+     "24",
+     "30"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2077,
+    "effect": "Thunder Attack",
+    "roll_quality": "Epic",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "10%",
+    "overall_chance": "1.11%",
+    "values": [
+     "36",
+     "42",
+     "48"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2078,
+    "effect": "Thunder Attack",
+    "roll_quality": "Superior",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "1%",
+    "overall_chance": "0.11%",
+    "values": [
+     "51",
+     "54",
+     "60"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2079,
+    "effect": "Dragon Attack",
+    "roll_quality": "Rare",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "89%",
+    "overall_chance": "9.89%",
+    "values": [
+     "20",
+     "24",
+     "30"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2080,
+    "effect": "Dragon Attack",
+    "roll_quality": "Epic",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "10%",
+    "overall_chance": "1.11%",
+    "values": [
+     "36",
+     "42",
+     "48"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   },
+   {
+    "entry_id": 2081,
+    "effect": "Dragon Attack",
+    "roll_quality": "Superior",
+    "effect_chance": "11.1%",
+    "roll_quality_chance": "1%",
+    "overall_chance": "0.11%",
+    "values": [
+     "51",
+     "54",
+     "60"
+    ],
+    "value_chances": [
+     "33%",
+     "33%",
+     "33%"
+    ]
+   }
+  ]
+ }
+}

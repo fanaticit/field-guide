@@ -1,0 +1,82 @@
+﻿Visage quality,Effect,Roll quality,Chance of this effect,Chance of this roll quality,Overall chance,Possible values,Chance of each value,Entry ID
+Rare,Damage,Rare,11.1%,89%,9.89%,0.51% / 0.68% / 0.84%,33% / 33% / 33%,2001
+Rare,Damage,Epic,11.1%,10%,1.11%,1.01% / 1.18% / 1.35%,33% / 33% / 33%,2002
+Rare,Damage,Superior,11.1%,1%,0.11%,1.43% / 1.52% / 1.69%,33% / 33% / 33%,2003
+Rare,Elemental Critical Damage,Rare,11.1%,89%,9.89%,0.76% / 1.01% / 1.27%,33% / 33% / 33%,2004
+Rare,Elemental Critical Damage,Epic,11.1%,10%,1.11%,1.52% / 1.77% / 2.03%,33% / 33% / 33%,2005
+Rare,Elemental Critical Damage,Superior,11.1%,1%,0.11%,2.15% / 2.28% / 2.53%,33% / 33% / 33%,2006
+Rare,Defense,Rare,11.1%,89%,9.89%,2 / 2 / 3,33% / 33% / 33%,2007
+Rare,Defense,Epic,11.1%,10%,1.11%,4 / 4 / 5,33% / 33% / 33%,2008
+Rare,Defense,Superior,11.1%,1%,0.11%,6 / 6 / 6,33% / 33% / 33%,2009
+Rare,Physical Attack,Rare,11.1%,89%,9.89%,10 / 12 / 15,33% / 33% / 33%,2010
+Rare,Physical Attack,Epic,11.1%,10%,1.11%,18 / 21 / 24,33% / 33% / 33%,2011
+Rare,Physical Attack,Superior,11.1%,1%,0.11%,26 / 27 / 30,33% / 33% / 33%,2012
+Rare,Water Attack,Rare,11.1%,89%,9.89%,10 / 12 / 15,33% / 33% / 33%,2013
+Rare,Water Attack,Epic,11.1%,10%,1.11%,18 / 21 / 24,33% / 33% / 33%,2014
+Rare,Water Attack,Superior,11.1%,1%,0.11%,26 / 27 / 30,33% / 33% / 33%,2015
+Rare,Fire Attack,Rare,11.1%,89%,9.89%,10 / 12 / 15,33% / 33% / 33%,2016
+Rare,Fire Attack,Epic,11.1%,10%,1.11%,18 / 21 / 24,33% / 33% / 33%,2017
+Rare,Fire Attack,Superior,11.1%,1%,0.11%,26 / 27 / 30,33% / 33% / 33%,2018
+Rare,Ice Attack,Rare,11.1%,89%,9.89%,10 / 12 / 15,33% / 33% / 33%,2019
+Rare,Ice Attack,Epic,11.1%,10%,1.11%,18 / 21 / 24,33% / 33% / 33%,2020
+Rare,Ice Attack,Superior,11.1%,1%,0.11%,26 / 27 / 30,33% / 33% / 33%,2021
+Rare,Thunder Attack,Rare,11.1%,89%,9.89%,10 / 12 / 15,33% / 33% / 33%,2022
+Rare,Thunder Attack,Epic,11.1%,10%,1.11%,18 / 21 / 24,33% / 33% / 33%,2023
+Rare,Thunder Attack,Superior,11.1%,1%,0.11%,26 / 27 / 30,33% / 33% / 33%,2024
+Rare,Dragon Attack,Rare,11.1%,89%,9.89%,10 / 12 / 15,33% / 33% / 33%,2025
+Rare,Dragon Attack,Epic,11.1%,10%,1.11%,18 / 21 / 24,33% / 33% / 33%,2026
+Rare,Dragon Attack,Superior,11.1%,1%,0.11%,26 / 27 / 30,33% / 33% / 33%,2027
+Epic,Damage,Rare,11.1%,89%,9.89%,0.76% / 1.01% / 1.27%,33% / 33% / 33%,2028
+Epic,Damage,Epic,11.1%,10%,1.11%,1.52% / 1.77% / 2.03%,33% / 33% / 33%,2029
+Epic,Damage,Superior,11.1%,1%,0.11%,2.15% / 2.28% / 2.53%,33% / 33% / 33%,2030
+Epic,Elemental Critical Damage,Rare,11.1%,89%,9.89%,1.14% / 1.52% / 1.9%,33% / 33% / 33%,2031
+Epic,Elemental Critical Damage,Epic,11.1%,10%,1.11%,2.28% / 2.66% / 3.04%,33% / 33% / 33%,2032
+Epic,Elemental Critical Damage,Superior,11.1%,1%,0.11%,3.23% / 3.42% / 3.8%,33% / 33% / 33%,2033
+Epic,Defense,Rare,11.1%,89%,9.89%,3 / 3 / 4,33% / 33% / 33%,2034
+Epic,Defense,Epic,11.1%,10%,1.11%,5 / 6 / 7,33% / 33% / 33%,2035
+Epic,Defense,Superior,11.1%,1%,0.11%,8 / 8 / 9,33% / 33% / 33%,2036
+Epic,Physical Attack,Rare,11.1%,89%,9.89%,15 / 18 / 23,33% / 33% / 33%,2037
+Epic,Physical Attack,Epic,11.1%,10%,1.11%,27 / 32 / 36,33% / 33% / 33%,2038
+Epic,Physical Attack,Superior,11.1%,1%,0.11%,38 / 41 / 45,33% / 33% / 33%,2039
+Epic,Water Attack,Rare,11.1%,89%,9.89%,15 / 18 / 23,33% / 33% / 33%,2040
+Epic,Water Attack,Epic,11.1%,10%,1.11%,27 / 32 / 36,33% / 33% / 33%,2041
+Epic,Water Attack,Superior,11.1%,1%,0.11%,38 / 41 / 45,33% / 33% / 33%,2042
+Epic,Fire Attack,Rare,11.1%,89%,9.89%,15 / 18 / 23,33% / 33% / 33%,2043
+Epic,Fire Attack,Epic,11.1%,10%,1.11%,27 / 32 / 36,33% / 33% / 33%,2044
+Epic,Fire Attack,Superior,11.1%,1%,0.11%,38 / 41 / 45,33% / 33% / 33%,2045
+Epic,Ice Attack,Rare,11.1%,89%,9.89%,15 / 18 / 23,33% / 33% / 33%,2046
+Epic,Ice Attack,Epic,11.1%,10%,1.11%,27 / 32 / 36,33% / 33% / 33%,2047
+Epic,Ice Attack,Superior,11.1%,1%,0.11%,38 / 41 / 45,33% / 33% / 33%,2048
+Epic,Thunder Attack,Rare,11.1%,89%,9.89%,15 / 18 / 23,33% / 33% / 33%,2049
+Epic,Thunder Attack,Epic,11.1%,10%,1.11%,27 / 32 / 36,33% / 33% / 33%,2050
+Epic,Thunder Attack,Superior,11.1%,1%,0.11%,38 / 41 / 45,33% / 33% / 33%,2051
+Epic,Dragon Attack,Rare,11.1%,89%,9.89%,15 / 18 / 23,33% / 33% / 33%,2052
+Epic,Dragon Attack,Epic,11.1%,10%,1.11%,27 / 32 / 36,33% / 33% / 33%,2053
+Epic,Dragon Attack,Superior,11.1%,1%,0.11%,38 / 41 / 45,33% / 33% / 33%,2054
+Superior,Damage,Rare,11.1%,89%,9.89%,1.01% / 1.35% / 1.69%,33% / 33% / 33%,2055
+Superior,Damage,Epic,11.1%,10%,1.11%,2.03% / 2.36% / 2.7%,33% / 33% / 33%,2056
+Superior,Damage,Superior,11.1%,1%,0.11%,2.87% / 3.04% / 3.38%,33% / 33% / 33%,2057
+Superior,Elemental Critical Damage,Rare,11.1%,89%,9.89%,1.52% / 2.03% / 2.53%,33% / 33% / 33%,2058
+Superior,Elemental Critical Damage,Epic,11.1%,10%,1.11%,3.04% / 3.54% / 4.05%,33% / 33% / 33%,2059
+Superior,Elemental Critical Damage,Superior,11.1%,1%,0.11%,4.3% / 4.56% / 5.06%,33% / 33% / 33%,2060
+Superior,Defense,Rare,11.1%,89%,9.89%,4 / 5 / 6,33% / 33% / 33%,2061
+Superior,Defense,Epic,11.1%,10%,1.11%,7 / 8 / 9,33% / 33% / 33%,2062
+Superior,Defense,Superior,11.1%,1%,0.11%,10 / 11 / 12,33% / 33% / 33%,2063
+Superior,Physical Attack,Rare,11.1%,89%,9.89%,20 / 24 / 30,33% / 33% / 33%,2064
+Superior,Physical Attack,Epic,11.1%,10%,1.11%,36 / 42 / 48,33% / 33% / 33%,2065
+Superior,Physical Attack,Superior,11.1%,1%,0.11%,51 / 54 / 60,33% / 33% / 33%,2066
+Superior,Water Attack,Rare,11.1%,89%,9.89%,20 / 24 / 30,33% / 33% / 33%,2067
+Superior,Water Attack,Epic,11.1%,10%,1.11%,36 / 42 / 48,33% / 33% / 33%,2068
+Superior,Water Attack,Superior,11.1%,1%,0.11%,51 / 54 / 60,33% / 33% / 33%,2069
+Superior,Fire Attack,Rare,11.1%,89%,9.89%,20 / 24 / 30,33% / 33% / 33%,2070
+Superior,Fire Attack,Epic,11.1%,10%,1.11%,36 / 42 / 48,33% / 33% / 33%,2071
+Superior,Fire Attack,Superior,11.1%,1%,0.11%,51 / 54 / 60,33% / 33% / 33%,2072
+Superior,Ice Attack,Rare,11.1%,89%,9.89%,20 / 24 / 30,33% / 33% / 33%,2073
+Superior,Ice Attack,Epic,11.1%,10%,1.11%,36 / 42 / 48,33% / 33% / 33%,2074
+Superior,Ice Attack,Superior,11.1%,1%,0.11%,51 / 54 / 60,33% / 33% / 33%,2075
+Superior,Thunder Attack,Rare,11.1%,89%,9.89%,20 / 24 / 30,33% / 33% / 33%,2076
+Superior,Thunder Attack,Epic,11.1%,10%,1.11%,36 / 42 / 48,33% / 33% / 33%,2077
+Superior,Thunder Attack,Superior,11.1%,1%,0.11%,51 / 54 / 60,33% / 33% / 33%,2078
+Superior,Dragon Attack,Rare,11.1%,89%,9.89%,20 / 24 / 30,33% / 33% / 33%,2079
+Superior,Dragon Attack,Epic,11.1%,10%,1.11%,36 / 42 / 48,33% / 33% / 33%,2080
+Superior,Dragon Attack,Superior,11.1%,1%,0.11%,51 / 54 / 60,33% / 33% / 33%,2081
