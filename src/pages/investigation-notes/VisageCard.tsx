@@ -293,7 +293,17 @@ export default function VisageCard({
                       : 'bg-mh-gold-400 text-slate-950',
                 )}
               >
-                {isInBuild ? (isCoreCard ? '− Remove Core' : '− Remove') : buildDisabled ? '🔒' : '+ Add'}
+                {isInBuild ? (
+                  isCoreCard ? '− Remove Core' : '− Remove'
+                ) : buildDisabled ? (
+                  <img
+                    src="/img/ui/lock.png"
+                    alt="Locked"
+                    className="w-3 h-3 object-contain inline-block"
+                  />
+                ) : (
+                  '+ Add'
+                )}
               </span>
             </div>
           </>

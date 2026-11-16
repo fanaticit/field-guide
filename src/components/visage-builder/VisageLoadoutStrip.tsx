@@ -41,7 +41,15 @@ export default function VisageLoadoutStrip({ loadout, missingKeys }: Props) {
                   {visage.points}
                 </div>
               )}
-              {missing && <div className="absolute inset-0 flex items-center justify-center text-xs">🔒</div>}
+              {missing && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/40">
+                  <img
+                    src="/img/ui/lock.png"
+                    alt="Not owned"
+                    className="w-4 h-4 object-contain drop-shadow"
+                  />
+                </div>
+              )}
             </div>
             {visage && ink ? (
               <div className="w-4 h-4 flex items-center justify-center drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">

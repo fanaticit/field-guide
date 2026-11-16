@@ -159,10 +159,26 @@ export default function MonsterGuide() {
   }, []);
 
   // Selected Monster for Detail Modal
+  // Selected Monster for Detail Modal
   const [selectedMonster, setSelectedMonster] = useState<DBMonster | null>(null);
 
   // Queries & Hooks
   const { data: monsters = [], isLoading } = useAdminMonsters({ isActive: true });
+
+  // Auto-open monster detail modal if navigated with ?monster=... or ?id=...
+  const initialMonsterParam = searchParams.get('monster') || searchParams.get('id');
+  useEffect(() => {
+    if (initialMonsterParam && monsters.length > 0) {
+      const match = monsters.find(
+        (m) =>
+          m.id === initialMonsterParam ||
+          m.name.toLowerCase() === initialMonsterParam.toLowerCase(),
+      );
+      if (match) {
+        setSelectedMonster(match);
+      }
+    }
+  }, [initialMonsterParam, monsters]);
   const {
     studyMap,
     getMonsterStudy,

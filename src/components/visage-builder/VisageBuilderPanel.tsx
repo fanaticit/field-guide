@@ -122,8 +122,12 @@ export default function VisageBuilderPanel({
             <VisageIcon visage={visage} rarity={DEFAULT_VISAGE_RARITY} className={cn(notOwned && 'opacity-60')} />
             <div className="absolute top-0.5 right-0.5 bg-black/80 px-1 rounded text-[10px] font-bold text-white leading-tight">{visage.points}</div>
             {notOwned && (
-              <div className="absolute bottom-0.5 left-0.5 text-[10px]" title="You don't own this card + ink">
-                🔒
+              <div className="absolute bottom-0.5 left-0.5" title="You don't own this card + ink">
+                <img
+                  src="/img/ui/lock.png"
+                  alt="Not owned"
+                  className="w-3.5 h-3.5 object-contain drop-shadow"
+                />
               </div>
             )}
           </div>
@@ -208,7 +212,13 @@ export default function VisageBuilderPanel({
                         <InkIconComponent iconName={c.iconName} size={10} />
                       </div>
                       {c.shortName}
-                      {!owned && <span className="ml-auto">🔒</span>}
+                      {!owned && (
+                        <img
+                          src="/img/ui/lock.png"
+                          alt="Not owned"
+                          className="w-3.5 h-3.5 object-contain ml-auto shrink-0"
+                        />
+                      )}
                     </button>
                   );
                 })}
@@ -301,7 +311,15 @@ export default function VisageBuilderPanel({
                   <InkIconComponent iconName={firstInk.iconName} size={9} />
                 </div>
                 <div className="absolute bottom-0 right-0 bg-black/80 px-0.5 text-[8px] font-bold text-white">{v.points}</div>
-                {!owned && <div className="absolute bottom-0 left-0 text-[8px]">🔒</div>}
+                {!owned && (
+                  <div className="absolute bottom-0.5 left-0.5" title="Not owned">
+                    <img
+                      src="/img/ui/lock.png"
+                      alt="Not owned"
+                      className="w-2.5 h-2.5 object-contain drop-shadow"
+                    />
+                  </div>
+                )}
               </button>
             );
           })}

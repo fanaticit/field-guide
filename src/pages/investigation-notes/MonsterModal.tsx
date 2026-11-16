@@ -15,6 +15,7 @@ import {
   Shield,
   ExternalLink,
   Activity,
+  BookMarked,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import type { DBMonster } from '../../hooks/useAdminMonsters';
@@ -26,8 +27,11 @@ import {
 import {
   useHunterChallenges,
   useAddMonsterChallenge,
+  useAddVisageChallenge,
   useDeleteChallenge,
   useIncrementChallenge,
+  getVisageChallenge,
+  VISAGE_RARITY_INDEX,
   type HunterChallenge,
 } from '../../hooks/useHunterChallenges';
 import { useAdminWeapons } from '../../hooks/useAdminWeapons';
@@ -35,6 +39,14 @@ import {
   useMonsterLevels,
   useMonsterHitzones,
 } from '../../hooks/useMonsterDetails';
+import { useVisageSetsData } from '../../hooks/useVisageSets';
+import {
+  type DBVisage,
+  type VisageRarity,
+  getInkConfig,
+} from '../../data/schemas/visage';
+import VisageCard, { InkIconComponent } from './VisageCard';
+import VisageModal from './VisageModal';
 import ElementIcon from '../../components/ElementIcon';
 import { cn } from '../../lib/utils';
 import LoginModal from '../../components/auth/LoginModal';
@@ -99,7 +111,7 @@ const ELEMENT_LABELS: Record<string, string> = {
 
 export default function MonsterModal({ monster, open, onClose }: Props) {
   const navigate = useNavigate();
-  const { user } = useAuthStore();
+  const { user, profile } = useAuthStore();
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [customTaskInput, setCustomTaskInput] = useState('');
   const [isAddingTask, setIsAddingTask] = useState(false);
@@ -114,10 +126,55 @@ export default function MonsterModal({ monster, open, onClose }: Props) {
 
   const { data: challenges = [] } = useHunterChallenges(user?.id);
   const addMonsterChallenge = useAddMonsterChallenge();
+  const addVisageChallenge = useAddVisageChallenge();
   const deleteChallenge = useDeleteChallenge();
   const incrementChallenge = useIncrementChallenge();
 
   const { data: allWeapons = [] } = useAdminWeapons({ isActive: true });
+
+  // Visage sets data & user collection tracking
+  const {
+    dbVisages = [],
+    getCardCollection,
+    setCardRarity,
+    setCardQuantity,
+    removeCardFromCollection,
+    isCollected,
+  } = useVisageSetsData({ showSpoilers: Boolean(profile?.show_spoilers) });
+
+  const [inspectedCard, setInspectedCard] = useState<DBVisage | null>(null);
+  const [inspectedInk, setInspectedInk] = useState<string | null>(null);
+
+  const handleAddVisageChallenge = async (
+    card: DBVisage,
+    inkType: string,
+    currentRarity?: VisageRarity | null,
+  ) => {
+    if (!user) {
+      setLoginModalOpen(true);
+      return;
+    }
+
+    const rarityIdx = currentRarity ? VISAGE_RARITY_INDEX[currentRarity] ?? 0 : 0;
+    try {
+      await addVisageChallenge.mutateAsync({
+        userId: user.id,
+        game: 'mho',
+        visageId: card.id,
+        visageName: card.name,
+        inkType: (inkType || 'flames').toLowerCase(),
+        monsterId: card.monster_id ?? null,
+        monsterName: card.name,
+        pieceImage: card.monster_icon ?? null,
+        setIcon: card.monster_icon ?? null,
+        currentRarity: rarityIdx,
+        craftRarity: 1, // Fine
+        maxRarity: 4, // Superior
+      });
+    } catch (e) {
+      console.error('Failed to add visage challenge', e);
+    }
+  };
 
   // Weapons originating from this monster
   const linkedWeapons = useMemo(() => {
@@ -130,8 +187,38 @@ export default function MonsterModal({ monster, open, onClose }: Props) {
     );
   }, [allWeapons, monster]);
 
+  // Visages originating from or depicting this monster
+  const linkedVisageItems = useMemo(() => {
+    if (!monster) return [];
+    const monsterNameLower = (monster.name || '').toLowerCase().trim();
+    const matched = dbVisages.filter(
+      (v) =>
+        (v.monster_id && v.monster_id === monster.id) ||
+        (monsterNameLower && (
+          (v.name && v.name.toLowerCase().trim() === monsterNameLower) ||
+          (v.monster_name && v.monster_name.toLowerCase().trim() === monsterNameLower)
+        )),
+    );
+
+    const items: { card: DBVisage; ink: string }[] = [];
+    for (const card of matched) {
+      const inks = card.ink_types && card.ink_types.length > 0 ? card.ink_types : ['flames'];
+      for (const ink of inks) {
+        items.push({
+          card,
+          ink: ink === 'fire' ? 'flames' : ink,
+        });
+      }
+    }
+    return items;
+  }, [dbVisages, monster]);
+
+  const collectedVisagesCount = useMemo(() => {
+    return linkedVisageItems.filter((item) => isCollected(item.card.id, item.ink)).length;
+  }, [linkedVisageItems, isCollected]);
+
   // Section tab navigation & filters
-  const [activeTab, setActiveTab] = useState<'all' | 'study' | 'hitzones' | 'stats' | 'weapons'>('all');
+  const [activeTab, setActiveTab] = useState<'all' | 'study' | 'hitzones' | 'stats' | 'weapons' | 'visages'>('all');
   const [contentFilter, setContentFilter] = useState<string>('all');
 
   // Hitzones & Levels queries
@@ -558,6 +645,21 @@ export default function MonsterModal({ monster, open, onClose }: Props) {
                 >
                   <Sword size={13} />
                   <span>Weapons ({linkedWeapons.length})</span>
+                </button>
+              )}
+              {linkedVisageItems.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('visages')}
+                  className={cn(
+                    'px-3 py-1.5 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5',
+                    activeTab === 'visages'
+                      ? 'bg-mh-gold-500 text-slate-950 shadow-md'
+                      : 'text-mh-slate-400 hover:text-white hover:bg-mh-slate-800',
+                  )}
+                >
+                  <BookMarked size={13} />
+                  <span>Visages ({collectedVisagesCount}/{linkedVisageItems.length})</span>
                 </button>
               )}
             </div>
@@ -1180,11 +1282,116 @@ export default function MonsterModal({ monster, open, onClose }: Props) {
                 </div>
               </div>
             )}
+
+            {/* ── Linked Visages Section ── */}
+            {linkedVisageItems.length > 0 && (activeTab === 'all' || activeTab === 'visages') && (
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-mh-slate-300 flex items-center gap-1.5">
+                    <BookMarked size={13} className="text-mh-gold-400" />
+                    <span>Visages ({collectedVisagesCount}/{linkedVisageItems.length})</span>
+                  </h4>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onClose();
+                      navigate('/gallery/collection');
+                    }}
+                    className="flex items-center gap-1 text-[11px] font-semibold text-mh-gold-400 hover:text-mh-gold-300 transition-colors"
+                  >
+                    <span>View in Visage Collection</span>
+                    <ExternalLink size={11} />
+                  </button>
+                </div>
+
+                <div className="flex flex-wrap gap-4 items-start pt-1">
+                  {linkedVisageItems.map(({ card, ink }) => {
+                    const inkCfg = getInkConfig(ink);
+                    const entry = getCardCollection(card.id, ink);
+                    const challenge = getVisageChallenge(challenges, card.id, ink);
+                    return (
+                      <div
+                        key={`${card.id}:${ink}`}
+                        className="flex flex-col items-center gap-1.5"
+                      >
+                        <div
+                          className={cn(
+                            'flex items-center gap-1 px-2 py-0.5 rounded-full border text-[10px] font-bold shadow-sm',
+                            inkCfg.bg,
+                            inkCfg.border,
+                            inkCfg.text,
+                          )}
+                        >
+                          <InkIconComponent iconName={inkCfg.iconName} size={11} />
+                          <span className="truncate max-w-[85px]">{inkCfg.shortName}</span>
+                        </div>
+                        <VisageCard
+                          card={card}
+                          currentInk={ink}
+                          collectionEntry={entry}
+                          challenge={challenge}
+                          onSetRarity={(rarity, qty) => setCardRarity(card.id, ink, rarity, qty)}
+                          onSetQuantity={(qty) => setCardQuantity(card.id, ink, qty)}
+                          onRemoveFromCollection={() => removeCardFromCollection(card.id, ink)}
+                          onAddChallenge={handleAddVisageChallenge}
+                          onClick={() => {
+                            setInspectedCard(card);
+                            setInspectedInk(ink);
+                          }}
+                          buildMode={false}
+                          onInspect={() => {
+                            setInspectedCard(card);
+                            setInspectedInk(ink);
+                          }}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
 
       <LoginModal open={loginModalOpen} onClose={() => setLoginModalOpen(false)} />
+      {inspectedCard && (
+        <VisageModal
+          card={inspectedCard}
+          currentInk={inspectedInk || undefined}
+          open={inspectedCard !== null}
+          onClose={() => {
+            setInspectedCard(null);
+            setInspectedInk(null);
+          }}
+          collectionEntry={
+            inspectedCard
+              ? getCardCollection(inspectedCard.id, inspectedInk || 'flames')
+              : null
+          }
+          challenge={
+            inspectedCard
+              ? getVisageChallenge(challenges, inspectedCard.id, inspectedInk || 'flames')
+              : undefined
+          }
+          onSetRarity={(rarity, qty) => {
+            if (inspectedCard) {
+              setCardRarity(inspectedCard.id, inspectedInk || 'flames', rarity, qty);
+            }
+          }}
+          onSetQuantity={(qty) => {
+            if (inspectedCard) {
+              setCardQuantity(inspectedCard.id, inspectedInk || 'flames', qty);
+            }
+          }}
+          onRemoveFromCollection={() => {
+            if (inspectedCard) {
+              removeCardFromCollection(inspectedCard.id, inspectedInk || 'flames');
+            }
+          }}
+          onAddChallenge={handleAddVisageChallenge}
+        />
+      )}
     </>
   );
 }

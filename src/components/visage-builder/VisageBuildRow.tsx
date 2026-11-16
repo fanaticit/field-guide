@@ -186,8 +186,12 @@ export default function VisageBuildRow({
                 )}
 
                 {isMissing && (
-                  <div className="absolute inset-0 flex items-center justify-center text-[10px] bg-black/40">
-                    🔒
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/40">
+                    <img
+                      src="/img/ui/lock.png"
+                      alt="Not owned"
+                      className="w-3.5 h-3.5 object-contain drop-shadow"
+                    />
                   </div>
                 )}
               </div>
