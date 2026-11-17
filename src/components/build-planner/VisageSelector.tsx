@@ -13,7 +13,7 @@ import { useUserVisageCollection } from '../../hooks/useVisageSets';
 import { cn } from '../../lib/utils';
 
 
-const INK_SET_BONUSES: Record<string, { pieces: number; description: string }[]> = {
+export const INK_SET_BONUSES: Record<string, { pieces: number; description: string }[]> = {
   fire:       [ { pieces: 2, description: 'Fire Attack +1. Attacks have a chance to apply Fireblight.' }, { pieces: 4, description: 'Fire Attack +2. Fireblight damage over time increased.' } ],
   flames:     [ { pieces: 2, description: 'Fire Attack +1. Attacks have a chance to apply Fireblight.' }, { pieces: 4, description: 'Fire Attack +2. Fireblight damage over time increased.' } ],
   water:      [ { pieces: 2, description: 'Water Attack +1. Attacks have a chance to apply Waterblight.' }, { pieces: 4, description: 'Water Attack +2. Waterblight stamina drain increased.' } ],

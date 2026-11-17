@@ -11,6 +11,7 @@ import { HeroBuddySelector } from '../components/build-planner/HeroBuddySelector
 import { EquipmentSelector } from '../components/build-planner/EquipmentSelector';
 import { VisageSelector } from '../components/build-planner/VisageSelector';
 import { SkillSummaryPanel } from '../components/build-planner/SkillSummaryPanel';
+import { ExportBuildImageButton } from '../components/build-planner/ExportBuildImageButton';
 import { clearBuildDraft } from '../store/buildDraftCookie';
 import { supabase } from '../lib/supabase';
 import { useSkillCatalogLoader } from '../hooks/useSkillCatalog';
@@ -557,6 +558,9 @@ export default function BuildPlanner() {
               <span className="hidden sm:inline">Clone</span>
             </button>
           )}
+
+          {/* Export the build as a shareable image */}
+          <ExportBuildImageButton />
 
           {/* Clear / Start New Button */}
           <button
