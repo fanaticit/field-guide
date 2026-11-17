@@ -26,6 +26,7 @@ import HunterChallenges from './pages/HunterChallenges';
 import ArmourGuide from './pages/investigation-notes/ArmourGuide';
 import VisageSetsGuide from './pages/investigation-notes/VisageSetsGuide';
 import VisageSetBuilder from './pages/investigation-notes/VisageSetBuilder';
+import VisageCardChecker from './pages/investigation-notes/VisageCardChecker';
 import AdventurerGuide from './pages/investigation-notes/AdventurerGuide';
 import BuddyGuide from './pages/investigation-notes/BuddyGuide';
 import MonsterGuide from './pages/investigation-notes/MonsterGuide';
@@ -57,6 +58,7 @@ export const router = createBrowserRouter([
       { path: 'gallery/set', element: <div className="p-0 sm:p-2 lg:p-4 flex-1 flex flex-col min-h-0"><VisageSetBuilder /></div> },
       { path: 'gallery/set/:buildId', element: <div className="p-0 sm:p-2 lg:p-4 flex-1 flex flex-col min-h-0"><VisageSetBuilder /></div> },
       { path: 'gallery/collection', element: <div className="p-0 sm:p-2 lg:p-4 flex-1 flex flex-col min-h-0"><VisageSetsGuide /></div> },
+      { path: 'gallery/check', element: <div className="px-1 sm:px-6 pb-6 pt-2 sm:pt-3 lg:px-8 lg:pb-8 lg:pt-4 min-h-full"><VisageCardChecker /></div> },
 
       // ── 3. Challenges ──
       { path: 'challenges', element: <HunterChallenges /> },

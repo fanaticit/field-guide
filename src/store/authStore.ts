@@ -21,6 +21,8 @@ export const pageToPath: Record<string, string> = {
   'visage-set': '/gallery/set',
   'visage-builder': '/gallery/set',
   'visage-collection': '/gallery/collection',
+  'visage-check': '/gallery/check',
+  'check-card': '/gallery/check',
   'challenges': '/challenges',
   'adventurers': '/challenges/adventurers',
   'buddies': '/challenges/buddies',

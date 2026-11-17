@@ -345,6 +345,8 @@ export interface DBVisage {
   monster_sketch?: string | null;
   /** Inherent / Core Effect of this Visage card */
   core_effect: string | null;
+  /** Mapping of card quality to base effect pool ID, e.g. { rare: 102, epic: 105, superior: 108 } */
+  base_effect_pools?: Record<'rare' | 'epic' | 'superior', number> | null;
   status: VisageStatus;
   status_reason: string | null;
   is_spoiler: boolean;
@@ -353,6 +355,44 @@ export interface DBVisage {
   sort_order: number;
   created_at: string;
   updated_at: string;
+}
+
+export interface DBVisageBaseEffect {
+  entry_id: number;
+  pool_id: number;
+  quality: string;
+  monsters: string[];
+  effect: string;
+  tier: number;
+  effect_chance: string;
+  tier_chance: string;
+  overall_chance: string;
+  values_by_level: string[];
+  created_at?: string;
+}
+
+export interface DBVisageResketchSlot {
+  id: number;
+  quality: 'Rare' | 'Epic' | 'Superior';
+  slot: number;
+  unlock_level: number;
+  item_name: string;
+  item_count: number;
+  zenny: number;
+  created_at?: string;
+}
+
+export interface DBVisageResketchPoolEntry {
+  entry_id: number;
+  quality: 'Rare' | 'Epic' | 'Superior';
+  effect: string;
+  roll_quality: 'Rare' | 'Epic' | 'Superior';
+  effect_chance: string;
+  roll_quality_chance: string;
+  overall_chance: string;
+  values: string[];
+  value_chances: string[];
+  created_at?: string;
 }
 
 export type VisageUpsert = Omit<DBVisage, 'created_at' | 'updated_at' | 'monster_name' | 'monster_icon' | 'monster_sketch'>;
@@ -370,6 +410,7 @@ export function normalizeVisageRow(row: Record<string, unknown>): DBVisage {
     points: typeof rest.points === 'number' ? rest.points : 1,
     max_levels: Array.isArray(rest.max_levels) ? (rest.max_levels as number[]) : [],
     ink_types: (Array.isArray(rest.ink_types) ? rest.ink_types : []) as InkType[],
+    base_effect_pools: (rest.base_effect_pools as Record<'rare' | 'epic' | 'superior', number>) || null,
     status: ((rest.status as string) || 'in_game') as VisageStatus,
     status_reason: (rest.status_reason as string) || null,
     is_spoiler: Boolean(rest.is_spoiler),

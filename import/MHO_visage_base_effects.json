@@ -1,0 +1,1964 @@
+[
+ {
+  "pool_id": 101,
+  "qualities": "Rare",
+  "monsters": [
+   "Barroth",
+   "Black Diablos",
+   "Diablos",
+   "Great Girros",
+   "Jyuratodus",
+   "Legiana",
+   "Paolumu",
+   "Pink Rathian",
+   "Radiant Great Jagras",
+   "Radiant Kulu-Ya-Ku",
+   "Radiant Odogaron",
+   "Radiant Pink Rathian",
+   "Radiant Rathian",
+   "Tobi-Kadachi"
+  ],
+  "effects": [
+   {
+    "entry_id": 1001,
+    "effect": "Affinity",
+    "tier": 1,
+    "effect_chance": "50.0%",
+    "tier_chance": "40%",
+    "overall_chance": "20.00%",
+    "values_by_level": [
+     "0.88%",
+     "0.98%",
+     "1.08%",
+     "1.18%",
+     "1.28%",
+     "1.38%",
+     "1.48%",
+     "1.58%",
+     "1.68%",
+     "1.78%"
+    ]
+   },
+   {
+    "entry_id": 1003,
+    "effect": "Ultimate Charge Rate",
+    "tier": 1,
+    "effect_chance": "50.0%",
+    "tier_chance": "40%",
+    "overall_chance": "20.00%",
+    "values_by_level": [
+     "0.9%",
+     "1%",
+     "1.1%",
+     "1.2%",
+     "1.3%",
+     "1.4%",
+     "1.5%",
+     "1.6%",
+     "1.7%",
+     "1.8%"
+    ]
+   },
+   {
+    "entry_id": 1008,
+    "effect": "Affinity",
+    "tier": 2,
+    "effect_chance": "50.0%",
+    "tier_chance": "30%",
+    "overall_chance": "15.00%",
+    "values_by_level": [
+     "1.13%",
+     "1.26%",
+     "1.39%",
+     "1.52%",
+     "1.65%",
+     "1.78%",
+     "1.91%",
+     "2.04%",
+     "2.17%",
+     "2.3%"
+    ]
+   },
+   {
+    "entry_id": 1010,
+    "effect": "Ultimate Charge Rate",
+    "tier": 2,
+    "effect_chance": "50.0%",
+    "tier_chance": "30%",
+    "overall_chance": "15.00%",
+    "values_by_level": [
+     "1.16%",
+     "1.29%",
+     "1.42%",
+     "1.55%",
+     "1.68%",
+     "1.81%",
+     "1.94%",
+     "2.07%",
+     "2.2%",
+     "2.33%"
+    ]
+   },
+   {
+    "entry_id": 1015,
+    "effect": "Affinity",
+    "tier": 3,
+    "effect_chance": "50.0%",
+    "tier_chance": "20%",
+    "overall_chance": "10.00%",
+    "values_by_level": [
+     "1.38%",
+     "1.53%",
+     "1.68%",
+     "1.83%",
+     "1.98%",
+     "2.13%",
+     "2.28%",
+     "2.43%",
+     "2.58%",
+     "2.73%"
+    ]
+   },
+   {
+    "entry_id": 1017,
+    "effect": "Ultimate Charge Rate",
+    "tier": 3,
+    "effect_chance": "50.0%",
+    "tier_chance": "20%",
+    "overall_chance": "10.00%",
+    "values_by_level": [
+     "1.42%",
+     "1.58%",
+     "1.74%",
+     "1.9%",
+     "2.06%",
+     "2.22%",
+     "2.38%",
+     "2.54%",
+     "2.7%",
+     "2.86%"
+    ]
+   },
+   {
+    "entry_id": 1022,
+    "effect": "Affinity",
+    "tier": 4,
+    "effect_chance": "50.0%",
+    "tier_chance": "10%",
+    "overall_chance": "5.00%",
+    "values_by_level": [
+     "1.75%",
+     "1.94%",
+     "2.13%",
+     "2.32%",
+     "2.51%",
+     "2.7%",
+     "2.89%",
+     "3.08%",
+     "3.27%",
+     "3.46%"
+    ]
+   },
+   {
+    "entry_id": 1024,
+    "effect": "Ultimate Charge Rate",
+    "tier": 4,
+    "effect_chance": "50.0%",
+    "tier_chance": "10%",
+    "overall_chance": "5.00%",
+    "values_by_level": [
+     "1.81%",
+     "2.01%",
+     "2.21%",
+     "2.41%",
+     "2.61%",
+     "2.81%",
+     "3.01%",
+     "3.21%",
+     "3.41%",
+     "3.61%"
+    ]
+   }
+  ]
+ },
+ {
+  "pool_id": 102,
+  "qualities": "Rare",
+  "monsters": [
+   "Anjanath",
+   "Great Jagras",
+   "Kulu-Ya-Ku",
+   "Odogaron",
+   "Pukei-Pukei",
+   "Radiant Anjanath",
+   "Radiant Barroth",
+   "Radiant Black Diablos",
+   "Radiant Diablos",
+   "Radiant Great Girros",
+   "Radiant Jyuratodus",
+   "Radiant Legiana",
+   "Radiant Paolumu",
+   "Radiant Pukei-Pukei",
+   "Radiant Radobaan",
+   "Radiant Rathalos",
+   "Radiant Tobi-Kadachi",
+   "Radiant Tzitzi-Ya-Ku",
+   "Radobaan",
+   "Rathalos",
+   "Rathian",
+   "Tzitzi-Ya-Ku"
+  ],
+  "effects": [
+   {
+    "entry_id": 1004,
+    "effect": "Ultimate Charge Rate",
+    "tier": 1,
+    "effect_chance": "50.0%",
+    "tier_chance": "40%",
+    "overall_chance": "20.00%",
+    "values_by_level": [
+     "0.84%",
+     "0.93%",
+     "1.02%",
+     "1.11%",
+     "1.2%",
+     "1.29%",
+     "1.38%",
+     "1.47%",
+     "1.56%",
+     "1.65%"
+    ]
+   },
+   {
+    "entry_id": 1006,
+    "effect": "Elemental damage",
+    "tier": 1,
+    "effect_chance": "50.0%",
+    "tier_chance": "40%",
+    "overall_chance": "20.00%",
+    "values_by_level": [
+     "1.22%",
+     "1.36%",
+     "1.5%",
+     "1.64%",
+     "1.78%",
+     "1.92%",
+     "2.06%",
+     "2.2%",
+     "2.34%",
+     "2.48%"
+    ]
+   },
+   {
+    "entry_id": 1011,
+    "effect": "Ultimate Charge Rate",
+    "tier": 2,
+    "effect_chance": "50.0%",
+    "tier_chance": "30%",
+    "overall_chance": "15.00%",
+    "values_by_level": [
+     "1.07%",
+     "1.19%",
+     "1.31%",
+     "1.43%",
+     "1.55%",
+     "1.67%",
+     "1.79%",
+     "1.91%",
+     "2.03%",
+     "2.15%"
+    ]
+   },
+   {
+    "entry_id": 1013,
+    "effect": "Elemental damage",
+    "tier": 2,
+    "effect_chance": "50.0%",
+    "tier_chance": "30%",
+    "overall_chance": "15.00%",
+    "values_by_level": [
+     "1.57%",
+     "1.74%",
+     "1.91%",
+     "2.08%",
+     "2.25%",
+     "2.42%",
+     "2.59%",
+     "2.76%",
+     "2.93%",
+     "3.1%"
+    ]
+   },
+   {
+    "entry_id": 1018,
+    "effect": "Ultimate Charge Rate",
+    "tier": 3,
+    "effect_chance": "50.0%",
+    "tier_chance": "20%",
+    "overall_chance": "10.00%",
+    "values_by_level": [
+     "1.31%",
+     "1.46%",
+     "1.61%",
+     "1.76%",
+     "1.91%",
+     "2.06%",
+     "2.21%",
+     "2.36%",
+     "2.51%",
+     "2.66%"
+    ]
+   },
+   {
+    "entry_id": 1020,
+    "effect": "Elemental damage",
+    "tier": 3,
+    "effect_chance": "50.0%",
+    "tier_chance": "20%",
+    "overall_chance": "10.00%",
+    "values_by_level": [
+     "1.92%",
+     "2.13%",
+     "2.34%",
+     "2.55%",
+     "2.76%",
+     "2.97%",
+     "3.18%",
+     "3.39%",
+     "3.6%",
+     "3.81%"
+    ]
+   },
+   {
+    "entry_id": 1025,
+    "effect": "Ultimate Charge Rate",
+    "tier": 4,
+    "effect_chance": "50.0%",
+    "tier_chance": "10%",
+    "overall_chance": "5.00%",
+    "values_by_level": [
+     "1.67%",
+     "1.86%",
+     "2.05%",
+     "2.24%",
+     "2.43%",
+     "2.62%",
+     "2.81%",
+     "3%",
+     "3.19%",
+     "3.38%"
+    ]
+   },
+   {
+    "entry_id": 1027,
+    "effect": "Elemental damage",
+    "tier": 4,
+    "effect_chance": "50.0%",
+    "tier_chance": "10%",
+    "overall_chance": "5.00%",
+    "values_by_level": [
+     "2.44%",
+     "2.71%",
+     "2.98%",
+     "3.25%",
+     "3.52%",
+     "3.79%",
+     "4.06%",
+     "4.33%",
+     "4.6%",
+     "4.87%"
+    ]
+   }
+  ]
+ },
+ {
+  "pool_id": 103,
+  "qualities": "Rare",
+  "monsters": [
+   "Apceros",
+   "Aptonoth",
+   "Barnos",
+   "Gajau",
+   "Gastodon",
+   "Girros",
+   "Hornetaur",
+   "Jagras",
+   "Kelbi",
+   "Kestodon",
+   "Mernos",
+   "Noios",
+   "Pitcher Atecoli",
+   "Raphinos",
+   "Shamos",
+   "Vespoid",
+   "Warrior Atecoli"
+  ],
+  "effects": [
+   {
+    "entry_id": 1002,
+    "effect": "Affinity",
+    "tier": 1,
+    "effect_chance": "33.3%",
+    "tier_chance": "40%",
+    "overall_chance": "13.33%",
+    "values_by_level": [
+     "0.46%",
+     "0.51%",
+     "0.56%",
+     "0.61%",
+     "0.66%",
+     "0.71%",
+     "0.76%",
+     "0.81%",
+     "0.86%",
+     "0.91%"
+    ]
+   },
+   {
+    "entry_id": 1005,
+    "effect": "Ultimate Charge Rate",
+    "tier": 1,
+    "effect_chance": "33.3%",
+    "tier_chance": "40%",
+    "overall_chance": "13.33%",
+    "values_by_level": [
+     "0.45%",
+     "0.5%",
+     "0.55%",
+     "0.6%",
+     "0.65%",
+     "0.7%",
+     "0.75%",
+     "0.8%",
+     "0.85%",
+     "0.9%"
+    ]
+   },
+   {
+    "entry_id": 1007,
+    "effect": "Elemental damage",
+    "tier": 1,
+    "effect_chance": "33.3%",
+    "tier_chance": "40%",
+    "overall_chance": "13.33%",
+    "values_by_level": [
+     "0.78%",
+     "0.87%",
+     "0.96%",
+     "1.05%",
+     "1.14%",
+     "1.23%",
+     "1.32%",
+     "1.41%",
+     "1.5%",
+     "1.59%"
+    ]
+   },
+   {
+    "entry_id": 1009,
+    "effect": "Affinity",
+    "tier": 2,
+    "effect_chance": "33.3%",
+    "tier_chance": "30%",
+    "overall_chance": "10.00%",
+    "values_by_level": [
+     "0.59%",
+     "0.66%",
+     "0.73%",
+     "0.8%",
+     "0.87%",
+     "0.94%",
+     "1.01%",
+     "1.08%",
+     "1.15%",
+     "1.22%"
+    ]
+   },
+   {
+    "entry_id": 1012,
+    "effect": "Ultimate Charge Rate",
+    "tier": 2,
+    "effect_chance": "33.3%",
+    "tier_chance": "30%",
+    "overall_chance": "10.00%",
+    "values_by_level": [
+     "0.58%",
+     "0.64%",
+     "0.7%",
+     "0.76%",
+     "0.82%",
+     "0.88%",
+     "0.94%",
+     "1%",
+     "1.06%",
+     "1.12%"
+    ]
+   },
+   {
+    "entry_id": 1014,
+    "effect": "Elemental damage",
+    "tier": 2,
+    "effect_chance": "33.3%",
+    "tier_chance": "30%",
+    "overall_chance": "10.00%",
+    "values_by_level": [
+     "1%",
+     "1.11%",
+     "1.22%",
+     "1.33%",
+     "1.44%",
+     "1.55%",
+     "1.66%",
+     "1.77%",
+     "1.88%",
+     "1.99%"
+    ]
+   },
+   {
+    "entry_id": 1016,
+    "effect": "Affinity",
+    "tier": 3,
+    "effect_chance": "33.3%",
+    "tier_chance": "20%",
+    "overall_chance": "6.67%",
+    "values_by_level": [
+     "0.72%",
+     "0.8%",
+     "0.88%",
+     "0.96%",
+     "1.04%",
+     "1.12%",
+     "1.2%",
+     "1.28%",
+     "1.36%",
+     "1.44%"
+    ]
+   },
+   {
+    "entry_id": 1019,
+    "effect": "Ultimate Charge Rate",
+    "tier": 3,
+    "effect_chance": "33.3%",
+    "tier_chance": "20%",
+    "overall_chance": "6.67%",
+    "values_by_level": [
+     "0.71%",
+     "0.79%",
+     "0.87%",
+     "0.95%",
+     "1.03%",
+     "1.11%",
+     "1.19%",
+     "1.27%",
+     "1.35%",
+     "1.43%"
+    ]
+   },
+   {
+    "entry_id": 1021,
+    "effect": "Elemental damage",
+    "tier": 3,
+    "effect_chance": "33.3%",
+    "tier_chance": "20%",
+    "overall_chance": "6.67%",
+    "values_by_level": [
+     "1.22%",
+     "1.36%",
+     "1.5%",
+     "1.64%",
+     "1.78%",
+     "1.92%",
+     "2.06%",
+     "2.2%",
+     "2.34%",
+     "2.48%"
+    ]
+   },
+   {
+    "entry_id": 1023,
+    "effect": "Affinity",
+    "tier": 4,
+    "effect_chance": "33.3%",
+    "tier_chance": "10%",
+    "overall_chance": "3.33%",
+    "values_by_level": [
+     "0.92%",
+     "1.02%",
+     "1.12%",
+     "1.22%",
+     "1.32%",
+     "1.42%",
+     "1.52%",
+     "1.62%",
+     "1.72%",
+     "1.82%"
+    ]
+   },
+   {
+    "entry_id": 1026,
+    "effect": "Ultimate Charge Rate",
+    "tier": 4,
+    "effect_chance": "33.3%",
+    "tier_chance": "10%",
+    "overall_chance": "3.33%",
+    "values_by_level": [
+     "0.9%",
+     "1%",
+     "1.1%",
+     "1.2%",
+     "1.3%",
+     "1.4%",
+     "1.5%",
+     "1.6%",
+     "1.7%",
+     "1.8%"
+    ]
+   },
+   {
+    "entry_id": 1028,
+    "effect": "Elemental damage",
+    "tier": 4,
+    "effect_chance": "33.3%",
+    "tier_chance": "10%",
+    "overall_chance": "3.33%",
+    "values_by_level": [
+     "1.55%",
+     "1.72%",
+     "1.89%",
+     "2.06%",
+     "2.23%",
+     "2.4%",
+     "2.57%",
+     "2.74%",
+     "2.91%",
+     "3.08%"
+    ]
+   }
+  ]
+ },
+ {
+  "pool_id": 104,
+  "qualities": "Epic",
+  "monsters": [
+   "Barroth",
+   "Black Diablos",
+   "Diablos",
+   "Great Girros",
+   "Jyuratodus",
+   "Legiana",
+   "Paolumu",
+   "Pink Rathian",
+   "Radiant Great Jagras",
+   "Radiant Kulu-Ya-Ku",
+   "Radiant Odogaron",
+   "Radiant Pink Rathian",
+   "Radiant Rathian",
+   "Tobi-Kadachi"
+  ],
+  "effects": [
+   {
+    "entry_id": 1029,
+    "effect": "Affinity",
+    "tier": 1,
+    "effect_chance": "50.0%",
+    "tier_chance": "40%",
+    "overall_chance": "20.00%",
+    "values_by_level": [
+     "0.88%",
+     "0.98%",
+     "1.08%",
+     "1.18%",
+     "1.28%",
+     "1.38%",
+     "1.48%",
+     "1.58%",
+     "1.68%",
+     "1.78%"
+    ]
+   },
+   {
+    "entry_id": 1031,
+    "effect": "Ultimate Charge Rate",
+    "tier": 1,
+    "effect_chance": "50.0%",
+    "tier_chance": "40%",
+    "overall_chance": "20.00%",
+    "values_by_level": [
+     "0.9%",
+     "1%",
+     "1.1%",
+     "1.2%",
+     "1.3%",
+     "1.4%",
+     "1.5%",
+     "1.6%",
+     "1.7%",
+     "1.8%"
+    ]
+   },
+   {
+    "entry_id": 1036,
+    "effect": "Affinity",
+    "tier": 2,
+    "effect_chance": "50.0%",
+    "tier_chance": "30%",
+    "overall_chance": "15.00%",
+    "values_by_level": [
+     "1.13%",
+     "1.26%",
+     "1.39%",
+     "1.52%",
+     "1.65%",
+     "1.78%",
+     "1.91%",
+     "2.04%",
+     "2.17%",
+     "2.3%"
+    ]
+   },
+   {
+    "entry_id": 1038,
+    "effect": "Ultimate Charge Rate",
+    "tier": 2,
+    "effect_chance": "50.0%",
+    "tier_chance": "30%",
+    "overall_chance": "15.00%",
+    "values_by_level": [
+     "1.16%",
+     "1.29%",
+     "1.42%",
+     "1.55%",
+     "1.68%",
+     "1.81%",
+     "1.94%",
+     "2.07%",
+     "2.2%",
+     "2.33%"
+    ]
+   },
+   {
+    "entry_id": 1043,
+    "effect": "Affinity",
+    "tier": 3,
+    "effect_chance": "50.0%",
+    "tier_chance": "20%",
+    "overall_chance": "10.00%",
+    "values_by_level": [
+     "1.38%",
+     "1.53%",
+     "1.68%",
+     "1.83%",
+     "1.98%",
+     "2.13%",
+     "2.28%",
+     "2.43%",
+     "2.58%",
+     "2.73%"
+    ]
+   },
+   {
+    "entry_id": 1045,
+    "effect": "Ultimate Charge Rate",
+    "tier": 3,
+    "effect_chance": "50.0%",
+    "tier_chance": "20%",
+    "overall_chance": "10.00%",
+    "values_by_level": [
+     "1.42%",
+     "1.58%",
+     "1.74%",
+     "1.9%",
+     "2.06%",
+     "2.22%",
+     "2.38%",
+     "2.54%",
+     "2.7%",
+     "2.86%"
+    ]
+   },
+   {
+    "entry_id": 1050,
+    "effect": "Affinity",
+    "tier": 4,
+    "effect_chance": "50.0%",
+    "tier_chance": "10%",
+    "overall_chance": "5.00%",
+    "values_by_level": [
+     "1.75%",
+     "1.94%",
+     "2.13%",
+     "2.32%",
+     "2.51%",
+     "2.7%",
+     "2.89%",
+     "3.08%",
+     "3.27%",
+     "3.46%"
+    ]
+   },
+   {
+    "entry_id": 1052,
+    "effect": "Ultimate Charge Rate",
+    "tier": 4,
+    "effect_chance": "50.0%",
+    "tier_chance": "10%",
+    "overall_chance": "5.00%",
+    "values_by_level": [
+     "1.81%",
+     "2.01%",
+     "2.21%",
+     "2.41%",
+     "2.61%",
+     "2.81%",
+     "3.01%",
+     "3.21%",
+     "3.41%",
+     "3.61%"
+    ]
+   }
+  ]
+ },
+ {
+  "pool_id": 105,
+  "qualities": "Epic",
+  "monsters": [
+   "Anjanath",
+   "Great Jagras",
+   "Kulu-Ya-Ku",
+   "Odogaron",
+   "Pukei-Pukei",
+   "Radiant Anjanath",
+   "Radiant Barroth",
+   "Radiant Black Diablos",
+   "Radiant Diablos",
+   "Radiant Great Girros",
+   "Radiant Jyuratodus",
+   "Radiant Legiana",
+   "Radiant Paolumu",
+   "Radiant Pukei-Pukei",
+   "Radiant Radobaan",
+   "Radiant Rathalos",
+   "Radiant Tobi-Kadachi",
+   "Radiant Tzitzi-Ya-Ku",
+   "Radobaan",
+   "Rathalos",
+   "Rathian",
+   "Tzitzi-Ya-Ku"
+  ],
+  "effects": [
+   {
+    "entry_id": 1032,
+    "effect": "Ultimate Charge Rate",
+    "tier": 1,
+    "effect_chance": "50.0%",
+    "tier_chance": "40%",
+    "overall_chance": "20.00%",
+    "values_by_level": [
+     "0.84%",
+     "0.93%",
+     "1.02%",
+     "1.11%",
+     "1.2%",
+     "1.29%",
+     "1.38%",
+     "1.47%",
+     "1.56%",
+     "1.65%"
+    ]
+   },
+   {
+    "entry_id": 1034,
+    "effect": "Elemental damage",
+    "tier": 1,
+    "effect_chance": "50.0%",
+    "tier_chance": "40%",
+    "overall_chance": "20.00%",
+    "values_by_level": [
+     "1.22%",
+     "1.36%",
+     "1.5%",
+     "1.64%",
+     "1.78%",
+     "1.92%",
+     "2.06%",
+     "2.2%",
+     "2.34%",
+     "2.48%"
+    ]
+   },
+   {
+    "entry_id": 1039,
+    "effect": "Ultimate Charge Rate",
+    "tier": 2,
+    "effect_chance": "50.0%",
+    "tier_chance": "30%",
+    "overall_chance": "15.00%",
+    "values_by_level": [
+     "1.07%",
+     "1.19%",
+     "1.31%",
+     "1.43%",
+     "1.55%",
+     "1.67%",
+     "1.79%",
+     "1.91%",
+     "2.03%",
+     "2.15%"
+    ]
+   },
+   {
+    "entry_id": 1041,
+    "effect": "Elemental damage",
+    "tier": 2,
+    "effect_chance": "50.0%",
+    "tier_chance": "30%",
+    "overall_chance": "15.00%",
+    "values_by_level": [
+     "1.57%",
+     "1.74%",
+     "1.91%",
+     "2.08%",
+     "2.25%",
+     "2.42%",
+     "2.59%",
+     "2.76%",
+     "2.93%",
+     "3.1%"
+    ]
+   },
+   {
+    "entry_id": 1046,
+    "effect": "Ultimate Charge Rate",
+    "tier": 3,
+    "effect_chance": "50.0%",
+    "tier_chance": "20%",
+    "overall_chance": "10.00%",
+    "values_by_level": [
+     "1.31%",
+     "1.46%",
+     "1.61%",
+     "1.76%",
+     "1.91%",
+     "2.06%",
+     "2.21%",
+     "2.36%",
+     "2.51%",
+     "2.66%"
+    ]
+   },
+   {
+    "entry_id": 1048,
+    "effect": "Elemental damage",
+    "tier": 3,
+    "effect_chance": "50.0%",
+    "tier_chance": "20%",
+    "overall_chance": "10.00%",
+    "values_by_level": [
+     "1.92%",
+     "2.13%",
+     "2.34%",
+     "2.55%",
+     "2.76%",
+     "2.97%",
+     "3.18%",
+     "3.39%",
+     "3.6%",
+     "3.81%"
+    ]
+   },
+   {
+    "entry_id": 1053,
+    "effect": "Ultimate Charge Rate",
+    "tier": 4,
+    "effect_chance": "50.0%",
+    "tier_chance": "10%",
+    "overall_chance": "5.00%",
+    "values_by_level": [
+     "1.67%",
+     "1.86%",
+     "2.05%",
+     "2.24%",
+     "2.43%",
+     "2.62%",
+     "2.81%",
+     "3%",
+     "3.19%",
+     "3.38%"
+    ]
+   },
+   {
+    "entry_id": 1055,
+    "effect": "Elemental damage",
+    "tier": 4,
+    "effect_chance": "50.0%",
+    "tier_chance": "10%",
+    "overall_chance": "5.00%",
+    "values_by_level": [
+     "2.44%",
+     "2.71%",
+     "2.98%",
+     "3.25%",
+     "3.52%",
+     "3.79%",
+     "4.06%",
+     "4.33%",
+     "4.6%",
+     "4.87%"
+    ]
+   }
+  ]
+ },
+ {
+  "pool_id": 106,
+  "qualities": "Epic",
+  "monsters": [
+   "Apceros",
+   "Aptonoth",
+   "Barnos",
+   "Gajau",
+   "Gastodon",
+   "Girros",
+   "Hornetaur",
+   "Jagras",
+   "Kelbi",
+   "Kestodon",
+   "Mernos",
+   "Noios",
+   "Pitcher Atecoli",
+   "Raphinos",
+   "Shamos",
+   "Vespoid",
+   "Warrior Atecoli"
+  ],
+  "effects": [
+   {
+    "entry_id": 1030,
+    "effect": "Affinity",
+    "tier": 1,
+    "effect_chance": "33.3%",
+    "tier_chance": "40%",
+    "overall_chance": "13.33%",
+    "values_by_level": [
+     "0.46%",
+     "0.51%",
+     "0.56%",
+     "0.61%",
+     "0.66%",
+     "0.71%",
+     "0.76%",
+     "0.81%",
+     "0.86%",
+     "0.91%"
+    ]
+   },
+   {
+    "entry_id": 1033,
+    "effect": "Ultimate Charge Rate",
+    "tier": 1,
+    "effect_chance": "33.3%",
+    "tier_chance": "40%",
+    "overall_chance": "13.33%",
+    "values_by_level": [
+     "0.45%",
+     "0.5%",
+     "0.55%",
+     "0.6%",
+     "0.65%",
+     "0.7%",
+     "0.75%",
+     "0.8%",
+     "0.85%",
+     "0.9%"
+    ]
+   },
+   {
+    "entry_id": 1035,
+    "effect": "Elemental damage",
+    "tier": 1,
+    "effect_chance": "33.3%",
+    "tier_chance": "40%",
+    "overall_chance": "13.33%",
+    "values_by_level": [
+     "0.78%",
+     "0.87%",
+     "0.96%",
+     "1.05%",
+     "1.14%",
+     "1.23%",
+     "1.32%",
+     "1.41%",
+     "1.5%",
+     "1.59%"
+    ]
+   },
+   {
+    "entry_id": 1037,
+    "effect": "Affinity",
+    "tier": 2,
+    "effect_chance": "33.3%",
+    "tier_chance": "30%",
+    "overall_chance": "10.00%",
+    "values_by_level": [
+     "0.59%",
+     "0.66%",
+     "0.73%",
+     "0.8%",
+     "0.87%",
+     "0.94%",
+     "1.01%",
+     "1.08%",
+     "1.15%",
+     "1.22%"
+    ]
+   },
+   {
+    "entry_id": 1040,
+    "effect": "Ultimate Charge Rate",
+    "tier": 2,
+    "effect_chance": "33.3%",
+    "tier_chance": "30%",
+    "overall_chance": "10.00%",
+    "values_by_level": [
+     "0.58%",
+     "0.64%",
+     "0.7%",
+     "0.76%",
+     "0.82%",
+     "0.88%",
+     "0.94%",
+     "1%",
+     "1.06%",
+     "1.12%"
+    ]
+   },
+   {
+    "entry_id": 1042,
+    "effect": "Elemental damage",
+    "tier": 2,
+    "effect_chance": "33.3%",
+    "tier_chance": "30%",
+    "overall_chance": "10.00%",
+    "values_by_level": [
+     "1%",
+     "1.11%",
+     "1.22%",
+     "1.33%",
+     "1.44%",
+     "1.55%",
+     "1.66%",
+     "1.77%",
+     "1.88%",
+     "1.99%"
+    ]
+   },
+   {
+    "entry_id": 1044,
+    "effect": "Affinity",
+    "tier": 3,
+    "effect_chance": "33.3%",
+    "tier_chance": "20%",
+    "overall_chance": "6.67%",
+    "values_by_level": [
+     "0.72%",
+     "0.8%",
+     "0.88%",
+     "0.96%",
+     "1.04%",
+     "1.12%",
+     "1.2%",
+     "1.28%",
+     "1.36%",
+     "1.44%"
+    ]
+   },
+   {
+    "entry_id": 1047,
+    "effect": "Ultimate Charge Rate",
+    "tier": 3,
+    "effect_chance": "33.3%",
+    "tier_chance": "20%",
+    "overall_chance": "6.67%",
+    "values_by_level": [
+     "0.71%",
+     "0.79%",
+     "0.87%",
+     "0.95%",
+     "1.03%",
+     "1.11%",
+     "1.19%",
+     "1.27%",
+     "1.35%",
+     "1.43%"
+    ]
+   },
+   {
+    "entry_id": 1049,
+    "effect": "Elemental damage",
+    "tier": 3,
+    "effect_chance": "33.3%",
+    "tier_chance": "20%",
+    "overall_chance": "6.67%",
+    "values_by_level": [
+     "1.22%",
+     "1.36%",
+     "1.5%",
+     "1.64%",
+     "1.78%",
+     "1.92%",
+     "2.06%",
+     "2.2%",
+     "2.34%",
+     "2.48%"
+    ]
+   },
+   {
+    "entry_id": 1051,
+    "effect": "Affinity",
+    "tier": 4,
+    "effect_chance": "33.3%",
+    "tier_chance": "10%",
+    "overall_chance": "3.33%",
+    "values_by_level": [
+     "0.92%",
+     "1.02%",
+     "1.12%",
+     "1.22%",
+     "1.32%",
+     "1.42%",
+     "1.52%",
+     "1.62%",
+     "1.72%",
+     "1.82%"
+    ]
+   },
+   {
+    "entry_id": 1054,
+    "effect": "Ultimate Charge Rate",
+    "tier": 4,
+    "effect_chance": "33.3%",
+    "tier_chance": "10%",
+    "overall_chance": "3.33%",
+    "values_by_level": [
+     "0.9%",
+     "1%",
+     "1.1%",
+     "1.2%",
+     "1.3%",
+     "1.4%",
+     "1.5%",
+     "1.6%",
+     "1.7%",
+     "1.8%"
+    ]
+   },
+   {
+    "entry_id": 1056,
+    "effect": "Elemental damage",
+    "tier": 4,
+    "effect_chance": "33.3%",
+    "tier_chance": "10%",
+    "overall_chance": "3.33%",
+    "values_by_level": [
+     "1.55%",
+     "1.72%",
+     "1.89%",
+     "2.06%",
+     "2.23%",
+     "2.4%",
+     "2.57%",
+     "2.74%",
+     "2.91%",
+     "3.08%"
+    ]
+   }
+  ]
+ },
+ {
+  "pool_id": 107,
+  "qualities": "Superior",
+  "monsters": [
+   "Barroth",
+   "Black Diablos",
+   "Diablos",
+   "Great Girros",
+   "Jyuratodus",
+   "Legiana",
+   "Paolumu",
+   "Pink Rathian",
+   "Radiant Great Jagras",
+   "Radiant Kulu-Ya-Ku",
+   "Radiant Odogaron",
+   "Radiant Pink Rathian",
+   "Radiant Rathian",
+   "Tobi-Kadachi"
+  ],
+  "effects": [
+   {
+    "entry_id": 1057,
+    "effect": "Affinity",
+    "tier": 1,
+    "effect_chance": "50.0%",
+    "tier_chance": "40%",
+    "overall_chance": "20.00%",
+    "values_by_level": [
+     "1.75%",
+     "1.94%",
+     "2.13%",
+     "2.32%",
+     "2.51%",
+     "2.7%",
+     "2.89%",
+     "3.08%",
+     "3.27%",
+     "3.46%"
+    ]
+   },
+   {
+    "entry_id": 1059,
+    "effect": "Ultimate Charge Rate",
+    "tier": 1,
+    "effect_chance": "50.0%",
+    "tier_chance": "40%",
+    "overall_chance": "20.00%",
+    "values_by_level": [
+     "1.81%",
+     "2.01%",
+     "2.21%",
+     "2.41%",
+     "2.61%",
+     "2.81%",
+     "3.01%",
+     "3.21%",
+     "3.41%",
+     "3.61%"
+    ]
+   },
+   {
+    "entry_id": 1064,
+    "effect": "Affinity",
+    "tier": 2,
+    "effect_chance": "50.0%",
+    "tier_chance": "30%",
+    "overall_chance": "15.00%",
+    "values_by_level": [
+     "2.34%",
+     "2.6%",
+     "2.86%",
+     "3.12%",
+     "3.38%",
+     "3.64%",
+     "3.9%",
+     "4.16%",
+     "4.42%",
+     "4.68%"
+    ]
+   },
+   {
+    "entry_id": 1066,
+    "effect": "Ultimate Charge Rate",
+    "tier": 2,
+    "effect_chance": "50.0%",
+    "tier_chance": "30%",
+    "overall_chance": "15.00%",
+    "values_by_level": [
+     "2.41%",
+     "2.68%",
+     "2.95%",
+     "3.22%",
+     "3.49%",
+     "3.76%",
+     "4.03%",
+     "4.3%",
+     "4.57%",
+     "4.84%"
+    ]
+   },
+   {
+    "entry_id": 1071,
+    "effect": "Affinity",
+    "tier": 3,
+    "effect_chance": "50.0%",
+    "tier_chance": "20%",
+    "overall_chance": "10.00%",
+    "values_by_level": [
+     "2.8%",
+     "3.11%",
+     "3.42%",
+     "3.73%",
+     "4.04%",
+     "4.35%",
+     "4.66%",
+     "4.97%",
+     "5.28%",
+     "5.59%"
+    ]
+   },
+   {
+    "entry_id": 1073,
+    "effect": "Ultimate Charge Rate",
+    "tier": 3,
+    "effect_chance": "50.0%",
+    "tier_chance": "20%",
+    "overall_chance": "10.00%",
+    "values_by_level": [
+     "2.89%",
+     "3.21%",
+     "3.53%",
+     "3.85%",
+     "4.17%",
+     "4.49%",
+     "4.81%",
+     "5.13%",
+     "5.45%",
+     "5.77%"
+    ]
+   },
+   {
+    "entry_id": 1078,
+    "effect": "Affinity",
+    "tier": 4,
+    "effect_chance": "50.0%",
+    "tier_chance": "10%",
+    "overall_chance": "5.00%",
+    "values_by_level": [
+     "3.51%",
+     "3.9%",
+     "4.29%",
+     "4.68%",
+     "5.07%",
+     "5.46%",
+     "5.85%",
+     "6.24%",
+     "6.63%",
+     "7.02%"
+    ]
+   },
+   {
+    "entry_id": 1080,
+    "effect": "Ultimate Charge Rate",
+    "tier": 4,
+    "effect_chance": "50.0%",
+    "tier_chance": "10%",
+    "overall_chance": "5.00%",
+    "values_by_level": [
+     "3.62%",
+     "4.02%",
+     "4.42%",
+     "4.82%",
+     "5.22%",
+     "5.62%",
+     "6.02%",
+     "6.42%",
+     "6.82%",
+     "7.22%"
+    ]
+   }
+  ]
+ },
+ {
+  "pool_id": 108,
+  "qualities": "Superior",
+  "monsters": [
+   "Anjanath",
+   "Great Jagras",
+   "Kulu-Ya-Ku",
+   "Odogaron",
+   "Pukei-Pukei",
+   "Radiant Anjanath",
+   "Radiant Barroth",
+   "Radiant Black Diablos",
+   "Radiant Diablos",
+   "Radiant Great Girros",
+   "Radiant Jyuratodus",
+   "Radiant Legiana",
+   "Radiant Paolumu",
+   "Radiant Pukei-Pukei",
+   "Radiant Radobaan",
+   "Radiant Rathalos",
+   "Radiant Tobi-Kadachi",
+   "Radiant Tzitzi-Ya-Ku",
+   "Radobaan",
+   "Rathalos",
+   "Rathian",
+   "Tzitzi-Ya-Ku"
+  ],
+  "effects": [
+   {
+    "entry_id": 1060,
+    "effect": "Ultimate Charge Rate",
+    "tier": 1,
+    "effect_chance": "50.0%",
+    "tier_chance": "40%",
+    "overall_chance": "20.00%",
+    "values_by_level": [
+     "1.67%",
+     "1.86%",
+     "2.05%",
+     "2.24%",
+     "2.43%",
+     "2.62%",
+     "2.81%",
+     "3%",
+     "3.19%",
+     "3.38%"
+    ]
+   },
+   {
+    "entry_id": 1062,
+    "effect": "Elemental damage",
+    "tier": 1,
+    "effect_chance": "50.0%",
+    "tier_chance": "40%",
+    "overall_chance": "20.00%",
+    "values_by_level": [
+     "2.44%",
+     "2.71%",
+     "2.98%",
+     "3.25%",
+     "3.52%",
+     "3.79%",
+     "4.06%",
+     "4.33%",
+     "4.6%",
+     "4.87%"
+    ]
+   },
+   {
+    "entry_id": 1067,
+    "effect": "Ultimate Charge Rate",
+    "tier": 2,
+    "effect_chance": "50.0%",
+    "tier_chance": "30%",
+    "overall_chance": "15.00%",
+    "values_by_level": [
+     "2.23%",
+     "2.48%",
+     "2.73%",
+     "2.98%",
+     "3.23%",
+     "3.48%",
+     "3.73%",
+     "3.98%",
+     "4.23%",
+     "4.48%"
+    ]
+   },
+   {
+    "entry_id": 1069,
+    "effect": "Elemental damage",
+    "tier": 2,
+    "effect_chance": "50.0%",
+    "tier_chance": "30%",
+    "overall_chance": "15.00%",
+    "values_by_level": [
+     "3.26%",
+     "3.62%",
+     "3.98%",
+     "4.34%",
+     "4.7%",
+     "5.06%",
+     "5.42%",
+     "5.78%",
+     "6.14%",
+     "6.5%"
+    ]
+   },
+   {
+    "entry_id": 1074,
+    "effect": "Ultimate Charge Rate",
+    "tier": 3,
+    "effect_chance": "50.0%",
+    "tier_chance": "20%",
+    "overall_chance": "10.00%",
+    "values_by_level": [
+     "2.67%",
+     "2.97%",
+     "3.27%",
+     "3.57%",
+     "3.87%",
+     "4.17%",
+     "4.47%",
+     "4.77%",
+     "5.07%",
+     "5.37%"
+    ]
+   },
+   {
+    "entry_id": 1076,
+    "effect": "Elemental damage",
+    "tier": 3,
+    "effect_chance": "50.0%",
+    "tier_chance": "20%",
+    "overall_chance": "10.00%",
+    "values_by_level": [
+     "3.91%",
+     "4.34%",
+     "4.77%",
+     "5.2%",
+     "5.63%",
+     "6.06%",
+     "6.49%",
+     "6.92%",
+     "7.35%",
+     "7.78%"
+    ]
+   },
+   {
+    "entry_id": 1081,
+    "effect": "Ultimate Charge Rate",
+    "tier": 4,
+    "effect_chance": "50.0%",
+    "tier_chance": "10%",
+    "overall_chance": "5.00%",
+    "values_by_level": [
+     "3.34%",
+     "3.71%",
+     "4.08%",
+     "4.45%",
+     "4.82%",
+     "5.19%",
+     "5.56%",
+     "5.93%",
+     "6.3%",
+     "6.67%"
+    ]
+   },
+   {
+    "entry_id": 1083,
+    "effect": "Elemental damage",
+    "tier": 4,
+    "effect_chance": "50.0%",
+    "tier_chance": "10%",
+    "overall_chance": "5.00%",
+    "values_by_level": [
+     "4.88%",
+     "5.42%",
+     "5.96%",
+     "6.5%",
+     "7.04%",
+     "7.58%",
+     "8.12%",
+     "8.66%",
+     "9.2%",
+     "9.74%"
+    ]
+   }
+  ]
+ },
+ {
+  "pool_id": 109,
+  "qualities": "Superior",
+  "monsters": [
+   "Apceros",
+   "Aptonoth",
+   "Barnos",
+   "Gajau",
+   "Gastodon",
+   "Girros",
+   "Hornetaur",
+   "Jagras",
+   "Kelbi",
+   "Kestodon",
+   "Mernos",
+   "Noios",
+   "Pitcher Atecoli",
+   "Raphinos",
+   "Shamos",
+   "Vespoid",
+   "Warrior Atecoli"
+  ],
+  "effects": [
+   {
+    "entry_id": 1058,
+    "effect": "Affinity",
+    "tier": 1,
+    "effect_chance": "33.3%",
+    "tier_chance": "40%",
+    "overall_chance": "13.33%",
+    "values_by_level": [
+     "0.92%",
+     "1.02%",
+     "1.12%",
+     "1.22%",
+     "1.32%",
+     "1.42%",
+     "1.52%",
+     "1.62%",
+     "1.72%",
+     "1.82%"
+    ]
+   },
+   {
+    "entry_id": 1061,
+    "effect": "Ultimate Charge Rate",
+    "tier": 1,
+    "effect_chance": "33.3%",
+    "tier_chance": "40%",
+    "overall_chance": "13.33%",
+    "values_by_level": [
+     "0.91%",
+     "1.01%",
+     "1.11%",
+     "1.21%",
+     "1.31%",
+     "1.41%",
+     "1.51%",
+     "1.61%",
+     "1.71%",
+     "1.81%"
+    ]
+   },
+   {
+    "entry_id": 1063,
+    "effect": "Elemental damage",
+    "tier": 1,
+    "effect_chance": "33.3%",
+    "tier_chance": "40%",
+    "overall_chance": "13.33%",
+    "values_by_level": [
+     "1.56%",
+     "1.73%",
+     "1.9%",
+     "2.07%",
+     "2.24%",
+     "2.41%",
+     "2.58%",
+     "2.75%",
+     "2.92%",
+     "3.09%"
+    ]
+   },
+   {
+    "entry_id": 1065,
+    "effect": "Affinity",
+    "tier": 2,
+    "effect_chance": "33.3%",
+    "tier_chance": "30%",
+    "overall_chance": "10.00%",
+    "values_by_level": [
+     "1.23%",
+     "1.37%",
+     "1.51%",
+     "1.65%",
+     "1.79%",
+     "1.93%",
+     "2.07%",
+     "2.21%",
+     "2.35%",
+     "2.49%"
+    ]
+   },
+   {
+    "entry_id": 1068,
+    "effect": "Ultimate Charge Rate",
+    "tier": 2,
+    "effect_chance": "33.3%",
+    "tier_chance": "30%",
+    "overall_chance": "10.00%",
+    "values_by_level": [
+     "1.21%",
+     "1.34%",
+     "1.47%",
+     "1.6%",
+     "1.73%",
+     "1.86%",
+     "1.99%",
+     "2.12%",
+     "2.25%",
+     "2.38%"
+    ]
+   },
+   {
+    "entry_id": 1070,
+    "effect": "Elemental damage",
+    "tier": 2,
+    "effect_chance": "33.3%",
+    "tier_chance": "30%",
+    "overall_chance": "10.00%",
+    "values_by_level": [
+     "2.07%",
+     "2.3%",
+     "2.53%",
+     "2.76%",
+     "2.99%",
+     "3.22%",
+     "3.45%",
+     "3.68%",
+     "3.91%",
+     "4.14%"
+    ]
+   },
+   {
+    "entry_id": 1072,
+    "effect": "Affinity",
+    "tier": 3,
+    "effect_chance": "33.3%",
+    "tier_chance": "20%",
+    "overall_chance": "6.67%",
+    "values_by_level": [
+     "1.47%",
+     "1.63%",
+     "1.79%",
+     "1.95%",
+     "2.11%",
+     "2.27%",
+     "2.43%",
+     "2.59%",
+     "2.75%",
+     "2.91%"
+    ]
+   },
+   {
+    "entry_id": 1075,
+    "effect": "Ultimate Charge Rate",
+    "tier": 3,
+    "effect_chance": "33.3%",
+    "tier_chance": "20%",
+    "overall_chance": "6.67%",
+    "values_by_level": [
+     "1.45%",
+     "1.61%",
+     "1.77%",
+     "1.93%",
+     "2.09%",
+     "2.25%",
+     "2.41%",
+     "2.57%",
+     "2.73%",
+     "2.89%"
+    ]
+   },
+   {
+    "entry_id": 1077,
+    "effect": "Elemental damage",
+    "tier": 3,
+    "effect_chance": "33.3%",
+    "tier_chance": "20%",
+    "overall_chance": "6.67%",
+    "values_by_level": [
+     "2.49%",
+     "2.77%",
+     "3.05%",
+     "3.33%",
+     "3.61%",
+     "3.89%",
+     "4.17%",
+     "4.45%",
+     "4.73%",
+     "5.01%"
+    ]
+   },
+   {
+    "entry_id": 1079,
+    "effect": "Affinity",
+    "tier": 4,
+    "effect_chance": "33.3%",
+    "tier_chance": "10%",
+    "overall_chance": "3.33%",
+    "values_by_level": [
+     "1.84%",
+     "2.04%",
+     "2.24%",
+     "2.44%",
+     "2.64%",
+     "2.84%",
+     "3.04%",
+     "3.24%",
+     "3.44%",
+     "3.64%"
+    ]
+   },
+   {
+    "entry_id": 1082,
+    "effect": "Ultimate Charge Rate",
+    "tier": 4,
+    "effect_chance": "33.3%",
+    "tier_chance": "10%",
+    "overall_chance": "3.33%",
+    "values_by_level": [
+     "1.81%",
+     "2.01%",
+     "2.21%",
+     "2.41%",
+     "2.61%",
+     "2.81%",
+     "3.01%",
+     "3.21%",
+     "3.41%",
+     "3.61%"
+    ]
+   },
+   {
+    "entry_id": 1084,
+    "effect": "Elemental damage",
+    "tier": 4,
+    "effect_chance": "33.3%",
+    "tier_chance": "10%",
+    "overall_chance": "3.33%",
+    "values_by_level": [
+     "3.11%",
+     "3.46%",
+     "3.81%",
+     "4.16%",
+     "4.51%",
+     "4.86%",
+     "5.21%",
+     "5.56%",
+     "5.91%",
+     "6.26%"
+    ]
+   }
+  ]
+ },
+ {
+  "pool_id": 111,
+  "qualities": "Rare / Epic / Superior",
+  "monsters": [
+   "Kushala Daora",
+   "Nergigante",
+   "Ruger Aidal"
+  ],
+  "effects": [
+   {
+    "entry_id": 1088,
+    "effect": "Ultimate Charge Rate",
+    "tier": 1,
+    "effect_chance": "50.0%",
+    "tier_chance": "100%",
+    "overall_chance": "50.00%",
+    "values_by_level": [
+     "2.92%",
+     "3.24%",
+     "3.56%",
+     "3.88%",
+     "4.2%",
+     "4.52%",
+     "4.84%",
+     "5.16%",
+     "5.48%",
+     "5.8%"
+    ]
+   },
+   {
+    "entry_id": 1090,
+    "effect": "Elemental damage",
+    "tier": 1,
+    "effect_chance": "50.0%",
+    "tier_chance": "100%",
+    "overall_chance": "50.00%",
+    "values_by_level": [
+     "4.27%",
+     "4.74%",
+     "5.21%",
+     "5.68%",
+     "6.15%",
+     "6.62%",
+     "7.09%",
+     "7.56%",
+     "8.03%",
+     "8.5%"
+    ]
+   }
+  ]
+ }
+]

@@ -27,6 +27,7 @@ import {
   X,
   ScrollText,
   Eye,
+  ScanSearch,
   type LucideIcon,
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -383,6 +384,14 @@ export default function MainNav() {
       ...(!isVisageSpilled
         ? [{ id: 'gallery-collection', label: 'Visage Collection', icon: BookMarked, iconSrc: '/img/ui/visage_collection.png', iconZoom: 1.275, active: isVisageActive, onSelect: go('/gallery/collection') }]
         : []),
+      {
+        id: 'gallery-check',
+        label: 'Check my Card',
+        icon: ScanSearch,
+        iconSrc: '/img/ui/study.png',
+        active: pathname === '/gallery/check',
+        onSelect: go('/gallery/check'),
+      },
     ],
   };
 
