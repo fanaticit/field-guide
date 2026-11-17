@@ -91,7 +91,11 @@ export interface SlotDescription {
 export interface BaseEffectEvaluation {
   effect: string;
   tier: number;
+  /** Highest tier this effect can roll in this pool (1 = fixed roll, e.g. Elder cards). */
+  maxTier: number;
   tierChance: string;
+  /** Chance of one base slot rolling exactly this effect AND tier. */
+  overallChance: string;
   level1: string;
   atLevel: string;
   level10: string;
@@ -111,6 +115,18 @@ export interface CardAnalysisResult {
   chanceWithin: (k: number) => number;
   slots: SlotDescription[];
   base: (BaseEffectEvaluation | null)[];
+}
+
+export type RollRarity = 'Superior' | 'Epic' | 'Rare';
+
+/**
+ * Colour/rarity band for a base-effect tier relative to the best tier in its pool.
+ * Best tier (or a fixed single-tier roll) = Superior, one below = Epic, anything lower = Rare.
+ */
+export function baseTierRarity(tier: number, maxTier: number): RollRarity {
+  if (maxTier <= 1 || tier >= maxTier) return 'Superior';
+  if (tier === maxTier - 1) return 'Epic';
+  return 'Rare';
 }
 
 export interface Outcome {
@@ -198,6 +214,32 @@ export function createVisageCalc(resketch: ResketchDataset, baseEffects: BaseEff
     };
   }
 
+  function evaluateBaseEntry(
+    candidates: BaseEffectPoolEntry[],
+    e: BaseEffectPoolEntry,
+    level?: number,
+  ): BaseEffectEvaluation {
+    const top = [...candidates].sort((a, b) => b.tier - a.tier)[0];
+    const lvl = Math.min(10, Math.max(1, level || 10));
+    return {
+      effect: e.effect,
+      tier: e.tier,
+      maxTier: top.tier,
+      tierChance: e.tier_chance,
+      overallChance: e.overall_chance,
+      level1: e.values_by_level[0],
+      atLevel: e.values_by_level[lvl - 1],
+      level10: e.values_by_level[9],
+      bestPossibleLevel10: top.values_by_level[9],
+    };
+  }
+
+  /**
+   * Identify a base effect's tier from the value shown on the card.
+   * The value is matched at the card's CURRENT level first: values of different tiers
+   * overlap across levels (e.g. a Tier 4 at Lv 1 equals a Tier 2 at a higher level),
+   * so matching against every level misidentifies the tier.
+   */
   function baseValue(
     poolId: number | undefined,
     effect: string,
@@ -207,20 +249,31 @@ export function createVisageCalc(resketch: ResketchDataset, baseEffects: BaseEff
     if (!poolId) return null;
     const pool = baseEffects.find((p) => p.pool_id === poolId);
     if (!pool) return null;
-    const e = pool.effects.find(
-      (x) => x.effect === effect && x.values_by_level.some((v) => near(num(v), num(startValue))),
-    );
+    const candidates = pool.effects.filter((x) => x.effect === effect);
+    if (!candidates.length) return null;
+    const lvlIdx = Math.min(10, Math.max(1, level || 10)) - 1;
+    const v = num(startValue);
+    const e =
+      candidates.find((x) => x.values_by_level[lvlIdx] !== undefined && near(num(x.values_by_level[lvlIdx]), v)) ??
+      (level === undefined ? candidates.find((x) => x.values_by_level.some((w) => near(num(w), v))) : undefined);
     if (!e) return null;
-    const top = pool.effects.filter((x) => x.effect === effect).sort((a, b) => b.tier - a.tier)[0];
-    return {
-      effect,
-      tier: e.tier,
-      tierChance: e.tier_chance,
-      level1: e.values_by_level[0],
-      atLevel: e.values_by_level[(level || 10) - 1],
-      level10: e.values_by_level[9],
-      bestPossibleLevel10: top.values_by_level[9],
-    };
+    return evaluateBaseEntry(candidates, e, level);
+  }
+
+  /** Evaluate a base effect when the tier is already known (e.g. picked from a dropdown). */
+  function baseByTier(
+    poolId: number | undefined,
+    effect: string,
+    tier: number,
+    level?: number,
+  ): BaseEffectEvaluation | null {
+    if (!poolId) return null;
+    const pool = baseEffects.find((p) => p.pool_id === poolId);
+    if (!pool) return null;
+    const candidates = pool.effects.filter((x) => x.effect === effect);
+    const e = candidates.find((x) => x.tier === tier);
+    if (!e) return null;
+    return evaluateBaseEntry(candidates, e, level);
   }
 
   function analyseCard(card: AnalyseCardParams): CardAnalysisResult {
@@ -245,7 +298,10 @@ export function createVisageCalc(resketch: ResketchDataset, baseEffects: BaseEff
         : slots.length;
     const n = Math.max(1, card.unlockedSlots ?? card.totalSlots ?? defaultSlotsByLevel);
 
-    const score = slots.reduce((s, x) => s + (weights[x.effect] || 0) * num(x.value), 0);
+    // Round each slot exactly like setScoreDistribution does, so a set that ties with the
+    // current one lands on the same distribution key (matters for fractional weights).
+    const r4 = (x: number) => Math.round(x * 1e4) / 1e4;
+    const score = slots.reduce((s, x) => r4(s + r4((weights[x.effect] || 0) * num(x.value))), 0);
     const dist = setScoreDistribution(card.quality, n, weights);
 
     let pBetter = 0;
@@ -285,6 +341,7 @@ export function createVisageCalc(resketch: ResketchDataset, baseEffects: BaseEff
     setScoreDistribution,
     costPerResketch,
     baseValue,
+    baseByTier,
     analyseCard,
     pct,
     num,
