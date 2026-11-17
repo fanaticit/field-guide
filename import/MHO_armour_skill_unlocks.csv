@@ -561,19 +561,20 @@
 210001204,Baan Coil III,Waist,Baan Set III,7,10,Immovable Stance,3,Level up (Lv2 > Lv3),"After triggering ferocity, damage +12% for 30s."
 210001205,Baan Greaves III,Legs,Baan Set III,7,7,Iron Skin,2,New skill,Shortens the duration of Defense Down by 75%.
 210001205,Baan Greaves III,Legs,Baan Set III,7,7,Bleeding Resistance,1,New skill,Reduces damage while bleeding.
-210001301,Legiana Helm III,Head,Legiana Set IV,9,9,Ice Resistance,2,New skill,Ice resistance +12.
-210001301,Legiana Helm III,Head,Legiana Set IV,9,9,Blessing,1,New skill,"When taking damage, has a 25% chance to reduce that damage by 15%."
-210001302,Legiana Mail III,Chest,Legiana Set IV,9,9,Flash Draw,2,New skill,"While active, damage +8% for 30s."
-210001302,Legiana Mail III,Chest,Legiana Set IV,9,9,Weakspot Exploit,1,New skill,"When attacking weak points, affinity +4%."
-210001302,Legiana Mail III,Chest,Legiana Set IV,9,9,Windproof,1,New skill,Reduces the effects of minor wind pressure.
-210001303,Legiana Vambraces III,Arms,Legiana Set IV,9,9,Ice Damage Up,2,New skill,"Ice damage +6%; against Radiant monsters, ice damage +15% instead."
-210001303,Legiana Vambraces III,Arms,Legiana Set IV,9,9,Weakspot Exploit,1,New skill,"When attacking weak points, affinity +4%."
-210001303,Legiana Vambraces III,Arms,Legiana Set IV,9,9,Blessing,1,New skill,"When taking damage, has a 25% chance to reduce that damage by 15%."
-210001304,Legiana Coil III,Waist,Legiana Set IV,9,9,Blessing,2,New skill,"When taking damage, has a 25% chance to reduce that damage by 30%."
-210001304,Legiana Coil III,Waist,Legiana Set IV,9,9,Ice Damage Up,1,New skill,"Ice damage +3%; against Radiant monsters, ice damage +8% instead."
-210001305,Legiana Greaves III,Legs,Legiana Set IV,9,9,Ammo Enhancement,2,New skill,"Damage +7% for Normal Ammo, Spread Ammo, and Pierce Ammo."
-210001305,Legiana Greaves III,Legs,Legiana Set IV,9,9,Suppression Recovery,1,New skill,"While active, recovers 5 health, with a minimum interval of 3s."
-210001305,Legiana Greaves III,Legs,Legiana Set IV,9,9,Critical Element,1,New skill,Increases elemental damage by 5% when landing critical hits.
+210001301,Legiana Helm III,Head,Legiana Set III,8,8,Ice Resistance,2,New skill,Ice resistance +12.
+210001301,Legiana Helm III,Head,Legiana Set III,8,8,Blessing,1,New skill,"When taking damage, has a 25% chance to reduce that damage by 15%."
+210001302,Legiana Mail III,Chest,Legiana Set III,8,8,Flash Draw,2,New skill,"While active, damage +8% for 30s."
+210001302,Legiana Mail III,Chest,Legiana Set III,8,8,Weakspot Exploit,1,New skill,"When attacking weak points, affinity +4%."
+210001302,Legiana Mail III,Chest,Legiana Set III,8,10,Windproof,1,New skill,Reduces the effects of minor wind pressure.
+210001303,Legiana Vambraces III,Arms,Legiana Set III,8,8,Ice Damage Up,1,New skill,"Ice damage +3%; against Radiant monsters, ice damage +8% instead."
+210001303,Legiana Vambraces III,Arms,Legiana Set III,8,8,Weakspot Exploit,1,New skill,"When attacking weak points, affinity +4%."
+210001303,Legiana Vambraces III,Arms,Legiana Set III,8,8,Blessing,1,New skill,"When taking damage, has a 25% chance to reduce that damage by 15%."
+210001303,Legiana Vambraces III,Arms,Legiana Set III,8,10,Ice Damage Up,2,Level up (Lv1 > Lv2),"Ice damage +6%; against Radiant monsters, ice damage +15% instead."
+210001304,Legiana Coil III,Waist,Legiana Set III,8,8,Blessing,2,New skill,"When taking damage, has a 25% chance to reduce that damage by 30%."
+210001304,Legiana Coil III,Waist,Legiana Set III,8,8,Ice Damage Up,1,New skill,"Ice damage +3%; against Radiant monsters, ice damage +8% instead."
+210001305,Legiana Greaves III,Legs,Legiana Set III,8,8,Ammo Enhancement,2,New skill,"Damage +7% for Normal Ammo, Spread Ammo, and Pierce Ammo."
+210001305,Legiana Greaves III,Legs,Legiana Set III,8,8,Suppression Recovery,1,New skill,"While active, recovers 5 health, with a minimum interval of 3s."
+210001305,Legiana Greaves III,Legs,Legiana Set III,8,10,Critical Element,1,New skill,Increases elemental damage by 5% when landing critical hits.
 210011201,Radiant Baan Helm IV,Head,Radiant Baan Set V,12,12,Tremor Resistance,1,New skill,Nullifies minor ground tremors.
 210011201,Radiant Baan Helm IV,Head,Radiant Baan Set V,12,12,Grace Under Pressure,2,New skill,"While active, increases defense by 40."
 210011202,Radiant Baan Mail IV,Chest,Radiant Baan Set V,12,12,Immovable Stance,3,New skill,"After triggering ferocity, damage +12% for 30s."

@@ -14298,7 +14298,7 @@
       "pieces": 3,
       "skill": "Relentless Pursuit +1",
       "level": 1,
-      "description": "After a monster is staggered or suppressed, adventurer damage increases by 4 for 15s."
+      "description": "After a monster is staggered or suppressed, adventurer damage increases by 4% for 15s."
      }
     ]
    }
@@ -14377,7 +14377,7 @@
       "pieces": 3,
       "skill": "Relentless Pursuit +1",
       "level": 1,
-      "description": "After a monster is staggered or suppressed, adventurer damage increases by 4 for 15s."
+      "description": "After a monster is staggered or suppressed, adventurer damage increases by 4% for 15s."
      }
     ]
    }
@@ -14456,7 +14456,7 @@
       "pieces": 3,
       "skill": "Relentless Pursuit +1",
       "level": 1,
-      "description": "After a monster is staggered or suppressed, adventurer damage increases by 4 for 15s."
+      "description": "After a monster is staggered or suppressed, adventurer damage increases by 4% for 15s."
      }
     ]
    }
@@ -14547,7 +14547,7 @@
       "pieces": 3,
       "skill": "Relentless Pursuit +1",
       "level": 1,
-      "description": "After a monster is staggered or suppressed, adventurer damage increases by 4 for 15s."
+      "description": "After a monster is staggered or suppressed, adventurer damage increases by 4% for 15s."
      }
     ]
    }
@@ -14615,7 +14615,7 @@
       "pieces": 3,
       "skill": "Relentless Pursuit +1",
       "level": 1,
-      "description": "After a monster is staggered or suppressed, adventurer damage increases by 4 for 15s."
+      "description": "After a monster is staggered or suppressed, adventurer damage increases by 4% for 15s."
      }
     ]
    }
@@ -16279,11 +16279,11 @@
   "id": 210001301,
   "name": "Legiana Helm III",
   "slot": "Head",
-  "rarity": 9,
+  "rarity": 8,
   "set_id": 2100013,
-  "set_name": "Legiana Set IV",
+  "set_name": "Legiana Set III",
   "series": "Legiana Set",
-  "defence": 123.0,
+  "defence": 110.0,
   "max_health": 0,
   "water_res": 0,
   "fire_res": 0,
@@ -16296,7 +16296,7 @@
   ],
   "skills_by_rarity": [
    {
-    "unlocks_at_rarity": 9,
+    "unlocks_at_rarity": 8,
     "skills": [
      {
       "id": 15102,
@@ -16333,7 +16333,7 @@
   "icon_female": "MHMobile/Content/UI/Dynamic/ArmourIcon/ArmourIcon_Legiana_Head_F_1.png",
   "description": "Legiana head armor worn by proven masters of the wind. Its azure brilliance exudes a dazzling light.",
   "how_to_obtain": "Equipment Forging",
-  "forge_materials": "Hunter's Jade IV x2, Legiana Scale IV x3, Legiana Hide IV x3",
+  "forge_materials": "Hunter's Jade III x2, Legiana Scale III x3, Legiana Hide III x3",
   "game_status": "In game",
   "debug": ""
  },
@@ -16341,11 +16341,11 @@
   "id": 210001302,
   "name": "Legiana Mail III",
   "slot": "Chest",
-  "rarity": 9,
+  "rarity": 8,
   "set_id": 2100013,
-  "set_name": "Legiana Set IV",
+  "set_name": "Legiana Set III",
   "series": "Legiana Set",
-  "defence": 123.0,
+  "defence": 110.0,
   "max_health": 0,
   "water_res": 0,
   "fire_res": 0,
@@ -16358,7 +16358,24 @@
   ],
   "skills_by_rarity": [
    {
-    "unlocks_at_rarity": 9,
+    "unlocks_at_rarity": 8,
+    "skills": [
+     {
+      "id": 12072,
+      "skill": "Flash Draw",
+      "level": 2,
+      "description": "While active, damage +8% for 30s."
+     },
+     {
+      "id": 12101,
+      "skill": "Weakspot Exploit",
+      "level": 1,
+      "description": "When attacking <Term id=\"weakpart\">weak points</>, affinity +4%."
+     }
+    ]
+   },
+   {
+    "unlocks_at_rarity": 10,
     "skills": [
      {
       "id": 12072,
@@ -16401,7 +16418,7 @@
   "icon_female": "MHMobile/Content/UI/Dynamic/ArmourIcon/ArmourIcon_Legiana_Chest_F_1.png",
   "description": "Legiana chest armor worn by proven masters of the wind. Its azure brilliance exudes a chilling presence.",
   "how_to_obtain": "Equipment Forging",
-  "forge_materials": "Hunter's Jade IV x2, Legiana Hide IV x3, Legiana Claw IV x3",
+  "forge_materials": "Hunter's Jade III x2, Legiana Hide III x3, Legiana Claw III x3",
   "game_status": "In game",
   "debug": ""
  },
@@ -16409,11 +16426,11 @@
   "id": 210001303,
   "name": "Legiana Vambraces III",
   "slot": "Arms",
-  "rarity": 9,
+  "rarity": 8,
   "set_id": 2100013,
-  "set_name": "Legiana Set IV",
+  "set_name": "Legiana Set III",
   "series": "Legiana Set",
-  "defence": 123.0,
+  "defence": 110.0,
   "max_health": 0,
   "water_res": 0,
   "fire_res": 0,
@@ -16426,7 +16443,30 @@
   ],
   "skills_by_rarity": [
    {
-    "unlocks_at_rarity": 9,
+    "unlocks_at_rarity": 8,
+    "skills": [
+     {
+      "id": 15031,
+      "skill": "Ice Damage Up",
+      "level": 1,
+      "description": "Ice damage +3%; against Radiant monsters, ice damage +8% instead."
+     },
+     {
+      "id": 12101,
+      "skill": "Weakspot Exploit",
+      "level": 1,
+      "description": "When attacking <Term id=\"weakpart\">weak points</>, affinity +4%."
+     },
+     {
+      "id": 13011,
+      "skill": "Blessing",
+      "level": 1,
+      "description": "When taking damage, has a 25% chance to reduce that damage by 15%."
+     }
+    ]
+   },
+   {
+    "unlocks_at_rarity": 10,
     "skills": [
      {
       "id": 15032,
@@ -16469,7 +16509,7 @@
   "icon_female": "MHMobile/Content/UI/Dynamic/ArmourIcon/ArmourIcon_Legiana_Arms_F_1.png",
   "description": "Legiana armguards worn by proven masters of the wind. Their azure brilliance exudes cold animosity.",
   "how_to_obtain": "Equipment Forging",
-  "forge_materials": "Hunter's Jade IV x2, Legiana Scale IV x3, Legiana Claw IV x3, Legiana Webbing IV x3, Legiana Plate IV x3",
+  "forge_materials": "Hunter's Jade III x2, Legiana Scale III x3, Legiana Claw III x3, Legiana Webbing III x3, Legiana Plate III x3",
   "game_status": "In game",
   "debug": ""
  },
@@ -16477,11 +16517,11 @@
   "id": 210001304,
   "name": "Legiana Coil III",
   "slot": "Waist",
-  "rarity": 9,
+  "rarity": 8,
   "set_id": 2100013,
-  "set_name": "Legiana Set IV",
+  "set_name": "Legiana Set III",
   "series": "Legiana Set",
-  "defence": 123.0,
+  "defence": 110.0,
   "max_health": 0,
   "water_res": 0,
   "fire_res": 0,
@@ -16494,7 +16534,7 @@
   ],
   "skills_by_rarity": [
    {
-    "unlocks_at_rarity": 9,
+    "unlocks_at_rarity": 8,
     "skills": [
      {
       "id": 13012,
@@ -16531,7 +16571,7 @@
   "icon_female": "MHMobile/Content/UI/Dynamic/ArmourIcon/ArmourIcon_Legiana_Waist_F_1.png",
   "description": "Legiana waist armor worn by proven masters of the wind. Its azure brilliance exudes tranquil dignity.",
   "how_to_obtain": "Equipment Forging",
-  "forge_materials": "Hunter's Jade IV x2, Legiana Scale IV x3, Legiana Hide IV x3",
+  "forge_materials": "Hunter's Jade III x2, Legiana Scale III x3, Legiana Hide III x3",
   "game_status": "In game",
   "debug": ""
  },
@@ -16539,11 +16579,11 @@
   "id": 210001305,
   "name": "Legiana Greaves III",
   "slot": "Legs",
-  "rarity": 9,
+  "rarity": 8,
   "set_id": 2100013,
-  "set_name": "Legiana Set IV",
+  "set_name": "Legiana Set III",
   "series": "Legiana Set",
-  "defence": 123.0,
+  "defence": 110.0,
   "max_health": 0,
   "water_res": 0,
   "fire_res": 0,
@@ -16556,7 +16596,24 @@
   ],
   "skills_by_rarity": [
    {
-    "unlocks_at_rarity": 9,
+    "unlocks_at_rarity": 8,
+    "skills": [
+     {
+      "id": 21152,
+      "skill": "Ammo Enhancement",
+      "level": 2,
+      "description": "Damage +7% for Normal Ammo, Spread Ammo, and Pierce Ammo."
+     },
+     {
+      "id": 21181,
+      "skill": "Suppression Recovery",
+      "level": 1,
+      "description": "While active, recovers 5 health, with a minimum interval of 3s."
+     }
+    ]
+   },
+   {
+    "unlocks_at_rarity": 10,
     "skills": [
      {
       "id": 21152,
@@ -16599,7 +16656,7 @@
   "icon_female": "MHMobile/Content/UI/Dynamic/ArmourIcon/ArmourIcon_Legiana_Leg_F_1.png",
   "description": "Legiana leg armor worn by proven masters of the wind. Its azure brilliance exudes a chilling presence.",
   "how_to_obtain": "Equipment Forging",
-  "forge_materials": "Hunter's Jade IV x2, Legiana Scale IV x3, Legiana Claw IV x3, Legiana Tail Webbing IV x3",
+  "forge_materials": "Hunter's Jade III x2, Legiana Scale III x3, Legiana Claw III x3, Legiana Tail Webbing III x3",
   "game_status": "In game",
   "debug": ""
  },

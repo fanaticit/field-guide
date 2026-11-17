@@ -90725,12 +90725,12 @@
   "id": 210001301,
   "name": "Legiana Helm III",
   "slot": "Head",
-  "set_name": "Legiana Set IV",
-  "starting_rarity": 9,
+  "set_name": "Legiana Set III",
+  "starting_rarity": 8,
   "max_rarity": 14,
   "skill_unlocks": [
    {
-    "rarity": 9,
+    "rarity": 8,
     "changes": [
      {
       "change": "New skill",
@@ -90765,8 +90765,49 @@
   ],
   "upgrade_path": [
    {
+    "rarity": 8,
+    "defence": 110,
+    "skills": [
+     {
+      "id": 15102,
+      "skill": "Ice Resistance",
+      "level": 2,
+      "description": "Ice resistance +12."
+     },
+     {
+      "id": 13011,
+      "skill": "Blessing",
+      "level": 1,
+      "description": "When taking damage, has a 25% chance to reduce that damage by 15%."
+     }
+    ]
+   },
+   {
     "rarity": 9,
     "defence": 123,
+    "materials": [
+     {
+      "item_id": 71004,
+      "item": "Hunter's Jade IV",
+      "count": 2
+     },
+     {
+      "item_id": 630131,
+      "item": "Legiana Scale III",
+      "count": 3
+     },
+     {
+      "item_id": 630133,
+      "item": "Legiana Hide III",
+      "count": 3
+     }
+    ],
+    "money": 0,
+    "growth_points": 84,
+    "required_level": 38,
+    "progression_level": 0,
+    "defence_gain": 13,
+    "other_gains": {},
     "skills": [
      {
       "id": 15102,
@@ -90993,12 +91034,12 @@
   "id": 210001302,
   "name": "Legiana Mail III",
   "slot": "Chest",
-  "set_name": "Legiana Set IV",
-  "starting_rarity": 9,
+  "set_name": "Legiana Set III",
+  "starting_rarity": 8,
   "max_rarity": 14,
   "skill_unlocks": [
    {
-    "rarity": 9,
+    "rarity": 8,
     "changes": [
      {
       "change": "New skill",
@@ -91013,7 +91054,26 @@
       "skill": "Weakspot Exploit",
       "level": 1,
       "description": "When attacking <Term id=\"weakpart\">weak points</>, affinity +4%."
+     }
+    ],
+    "skills": [
+     {
+      "id": 12072,
+      "skill": "Flash Draw",
+      "level": 2,
+      "description": "While active, damage +8% for 30s."
      },
+     {
+      "id": 12101,
+      "skill": "Weakspot Exploit",
+      "level": 1,
+      "description": "When attacking <Term id=\"weakpart\">weak points</>, affinity +4%."
+     }
+    ]
+   },
+   {
+    "rarity": 10,
+    "changes": [
      {
       "change": "New skill",
       "id": 13031,
@@ -91046,8 +91106,8 @@
   ],
   "upgrade_path": [
    {
-    "rarity": 9,
-    "defence": 123,
+    "rarity": 8,
+    "defence": 110,
     "skills": [
      {
       "id": 12072,
@@ -91060,12 +91120,47 @@
       "skill": "Weakspot Exploit",
       "level": 1,
       "description": "When attacking <Term id=\"weakpart\">weak points</>, affinity +4%."
+     }
+    ]
+   },
+   {
+    "rarity": 9,
+    "defence": 123,
+    "materials": [
+     {
+      "item_id": 71004,
+      "item": "Hunter's Jade IV",
+      "count": 2
      },
      {
-      "id": 13031,
-      "skill": "Windproof",
+      "item_id": 630133,
+      "item": "Legiana Hide III",
+      "count": 3
+     },
+     {
+      "item_id": 630132,
+      "item": "Legiana Claw III",
+      "count": 3
+     }
+    ],
+    "money": 0,
+    "growth_points": 84,
+    "required_level": 38,
+    "progression_level": 0,
+    "defence_gain": 13,
+    "other_gains": {},
+    "skills": [
+     {
+      "id": 12072,
+      "skill": "Flash Draw",
+      "level": 2,
+      "description": "While active, damage +8% for 30s."
+     },
+     {
+      "id": 12101,
+      "skill": "Weakspot Exploit",
       "level": 1,
-      "description": "Reduces the effects of minor wind pressure."
+      "description": "When attacking <Term id=\"weakpart\">weak points</>, affinity +4%."
      }
     ]
    },
@@ -91310,19 +91405,19 @@
   "id": 210001303,
   "name": "Legiana Vambraces III",
   "slot": "Arms",
-  "set_name": "Legiana Set IV",
-  "starting_rarity": 9,
+  "set_name": "Legiana Set III",
+  "starting_rarity": 8,
   "max_rarity": 14,
   "skill_unlocks": [
    {
-    "rarity": 9,
+    "rarity": 8,
     "changes": [
      {
       "change": "New skill",
-      "id": 15032,
+      "id": 15031,
       "skill": "Ice Damage Up",
-      "level": 2,
-      "description": "Ice damage +6%; against Radiant monsters, ice damage +15% instead."
+      "level": 1,
+      "description": "Ice damage +3%; against Radiant monsters, ice damage +8% instead."
      },
      {
       "change": "New skill",
@@ -91337,6 +91432,38 @@
       "skill": "Blessing",
       "level": 1,
       "description": "When taking damage, has a 25% chance to reduce that damage by 15%."
+     }
+    ],
+    "skills": [
+     {
+      "id": 15031,
+      "skill": "Ice Damage Up",
+      "level": 1,
+      "description": "Ice damage +3%; against Radiant monsters, ice damage +8% instead."
+     },
+     {
+      "id": 12101,
+      "skill": "Weakspot Exploit",
+      "level": 1,
+      "description": "When attacking <Term id=\"weakpart\">weak points</>, affinity +4%."
+     },
+     {
+      "id": 13011,
+      "skill": "Blessing",
+      "level": 1,
+      "description": "When taking damage, has a 25% chance to reduce that damage by 15%."
+     }
+    ]
+   },
+   {
+    "rarity": 10,
+    "changes": [
+     {
+      "change": "Level up (Lv1 > Lv2)",
+      "id": 15032,
+      "skill": "Ice Damage Up",
+      "level": 2,
+      "description": "Ice damage +6%; against Radiant monsters, ice damage +15% instead."
      }
     ],
     "skills": [
@@ -91363,14 +91490,71 @@
   ],
   "upgrade_path": [
    {
-    "rarity": 9,
-    "defence": 123,
+    "rarity": 8,
+    "defence": 110,
     "skills": [
      {
-      "id": 15032,
+      "id": 15031,
       "skill": "Ice Damage Up",
-      "level": 2,
-      "description": "Ice damage +6%; against Radiant monsters, ice damage +15% instead."
+      "level": 1,
+      "description": "Ice damage +3%; against Radiant monsters, ice damage +8% instead."
+     },
+     {
+      "id": 12101,
+      "skill": "Weakspot Exploit",
+      "level": 1,
+      "description": "When attacking <Term id=\"weakpart\">weak points</>, affinity +4%."
+     },
+     {
+      "id": 13011,
+      "skill": "Blessing",
+      "level": 1,
+      "description": "When taking damage, has a 25% chance to reduce that damage by 15%."
+     }
+    ]
+   },
+   {
+    "rarity": 9,
+    "defence": 123,
+    "materials": [
+     {
+      "item_id": 71004,
+      "item": "Hunter's Jade IV",
+      "count": 2
+     },
+     {
+      "item_id": 630131,
+      "item": "Legiana Scale III",
+      "count": 3
+     },
+     {
+      "item_id": 630132,
+      "item": "Legiana Claw III",
+      "count": 3
+     },
+     {
+      "item_id": 630135,
+      "item": "Legiana Webbing III",
+      "count": 3
+     },
+     {
+      "item_id": 630137,
+      "item": "Legiana Plate III",
+      "count": 3
+     }
+    ],
+    "money": 0,
+    "growth_points": 84,
+    "required_level": 38,
+    "progression_level": 0,
+    "defence_gain": 13,
+    "other_gains": {},
+    "skills": [
+     {
+      "id": 15031,
+      "skill": "Ice Damage Up",
+      "level": 1,
+      "description": "Ice damage +3%; against Radiant monsters, ice damage +8% instead."
      },
      {
       "id": 12101,
@@ -91677,12 +91861,12 @@
   "id": 210001304,
   "name": "Legiana Coil III",
   "slot": "Waist",
-  "set_name": "Legiana Set IV",
-  "starting_rarity": 9,
+  "set_name": "Legiana Set III",
+  "starting_rarity": 8,
   "max_rarity": 14,
   "skill_unlocks": [
    {
-    "rarity": 9,
+    "rarity": 8,
     "changes": [
      {
       "change": "New skill",
@@ -91717,8 +91901,49 @@
   ],
   "upgrade_path": [
    {
+    "rarity": 8,
+    "defence": 110,
+    "skills": [
+     {
+      "id": 13012,
+      "skill": "Blessing",
+      "level": 2,
+      "description": "When taking damage, has a 25% chance to reduce that damage by 30%."
+     },
+     {
+      "id": 15031,
+      "skill": "Ice Damage Up",
+      "level": 1,
+      "description": "Ice damage +3%; against Radiant monsters, ice damage +8% instead."
+     }
+    ]
+   },
+   {
     "rarity": 9,
     "defence": 123,
+    "materials": [
+     {
+      "item_id": 71004,
+      "item": "Hunter's Jade IV",
+      "count": 2
+     },
+     {
+      "item_id": 630131,
+      "item": "Legiana Scale III",
+      "count": 3
+     },
+     {
+      "item_id": 630133,
+      "item": "Legiana Hide III",
+      "count": 3
+     }
+    ],
+    "money": 0,
+    "growth_points": 84,
+    "required_level": 38,
+    "progression_level": 0,
+    "defence_gain": 13,
+    "other_gains": {},
     "skills": [
      {
       "id": 13012,
@@ -91945,12 +92170,12 @@
   "id": 210001305,
   "name": "Legiana Greaves III",
   "slot": "Legs",
-  "set_name": "Legiana Set IV",
-  "starting_rarity": 9,
+  "set_name": "Legiana Set III",
+  "starting_rarity": 8,
   "max_rarity": 14,
   "skill_unlocks": [
    {
-    "rarity": 9,
+    "rarity": 8,
     "changes": [
      {
       "change": "New skill",
@@ -91965,7 +92190,26 @@
       "skill": "Suppression Recovery",
       "level": 1,
       "description": "While active, recovers 5 health, with a minimum interval of 3s."
+     }
+    ],
+    "skills": [
+     {
+      "id": 21152,
+      "skill": "Ammo Enhancement",
+      "level": 2,
+      "description": "Damage +7% for Normal Ammo, Spread Ammo, and Pierce Ammo."
      },
+     {
+      "id": 21181,
+      "skill": "Suppression Recovery",
+      "level": 1,
+      "description": "While active, recovers 5 health, with a minimum interval of 3s."
+     }
+    ]
+   },
+   {
+    "rarity": 10,
+    "changes": [
      {
       "change": "New skill",
       "id": 15071,
@@ -91998,8 +92242,8 @@
   ],
   "upgrade_path": [
    {
-    "rarity": 9,
-    "defence": 123,
+    "rarity": 8,
+    "defence": 110,
     "skills": [
      {
       "id": 21152,
@@ -92012,12 +92256,52 @@
       "skill": "Suppression Recovery",
       "level": 1,
       "description": "While active, recovers 5 health, with a minimum interval of 3s."
+     }
+    ]
+   },
+   {
+    "rarity": 9,
+    "defence": 123,
+    "materials": [
+     {
+      "item_id": 71004,
+      "item": "Hunter's Jade IV",
+      "count": 2
      },
      {
-      "id": 15071,
-      "skill": "Critical Element",
+      "item_id": 630131,
+      "item": "Legiana Scale III",
+      "count": 3
+     },
+     {
+      "item_id": 630132,
+      "item": "Legiana Claw III",
+      "count": 3
+     },
+     {
+      "item_id": 630136,
+      "item": "Legiana Tail Webbing III",
+      "count": 3
+     }
+    ],
+    "money": 0,
+    "growth_points": 84,
+    "required_level": 38,
+    "progression_level": 0,
+    "defence_gain": 13,
+    "other_gains": {},
+    "skills": [
+     {
+      "id": 21152,
+      "skill": "Ammo Enhancement",
+      "level": 2,
+      "description": "Damage +7% for Normal Ammo, Spread Ammo, and Pierce Ammo."
+     },
+     {
+      "id": 21181,
+      "skill": "Suppression Recovery",
       "level": 1,
-      "description": "Increases elemental damage by 5% when landing critical hits."
+      "description": "While active, recovers 5 health, with a minimum interval of 3s."
      }
     ]
    },

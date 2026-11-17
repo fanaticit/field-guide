@@ -1894,36 +1894,41 @@
 210001205,Baan Greaves III,Legs,Baan Set III,12,165,14,"Hunter's Jade V x4, Radobaan Scale V x4, Radobaan Oilshell V x4, Wyvern Bonemass V x4",52,Iron Skin Lv2; Bleeding Resistance Lv1,
 210001205,Baan Greaves III,Legs,Baan Set III,13,178,13,"Hunter's Jade VI x4, Radobaan Scale V x4, Radobaan Oilshell V x4, Wyvern Bonemass V x4",54,Iron Skin Lv2; Bleeding Resistance Lv1,
 210001205,Baan Greaves III,Legs,Baan Set III,14,192,14,"Hunter's Jade VI x4, Radobaan Scale VI x4, Radobaan Oilshell VI x4, Wyvern Bonemass VI x4",56,Iron Skin Lv2; Bleeding Resistance Lv1,
-210001301,Legiana Helm III,Head,Legiana Set IV,9,123,,,,Ice Resistance Lv2; Blessing Lv1,New skill: Ice Resistance Lv2; New skill: Blessing Lv1
-210001301,Legiana Helm III,Head,Legiana Set IV,10,137,14,"Hunter's Jade IV x2, Legiana Scale IV x3, Legiana Hide IV x3",48,Ice Resistance Lv2; Blessing Lv1,
-210001301,Legiana Helm III,Head,Legiana Set IV,11,151,14,"Hunter's Jade V x4, Legiana Scale IV x4, Legiana Hide IV x4",49,Ice Resistance Lv2; Blessing Lv1,
-210001301,Legiana Helm III,Head,Legiana Set IV,12,165,14,"Hunter's Jade V x4, Legiana Scale V x4, Legiana Hide V x4",53,Ice Resistance Lv2; Blessing Lv1,
-210001301,Legiana Helm III,Head,Legiana Set IV,13,178,13,"Hunter's Jade VI x4, Legiana Scale V x4, Legiana Hide V x4",54,Ice Resistance Lv2; Blessing Lv1,
-210001301,Legiana Helm III,Head,Legiana Set IV,14,192,14,"Hunter's Jade VI x4, Legiana Scale VI x4, Legiana Hide VI x4",56,Ice Resistance Lv2; Blessing Lv1,
-210001302,Legiana Mail III,Chest,Legiana Set IV,9,123,,,,Flash Draw Lv2; Weakspot Exploit Lv1; Windproof Lv1,New skill: Flash Draw Lv2; New skill: Weakspot Exploit Lv1; New skill: Windproof Lv1
-210001302,Legiana Mail III,Chest,Legiana Set IV,10,137,14,"Hunter's Jade IV x2, Legiana Hide IV x3, Legiana Claw IV x3",48,Flash Draw Lv2; Weakspot Exploit Lv1; Windproof Lv1,
-210001302,Legiana Mail III,Chest,Legiana Set IV,11,151,14,"Hunter's Jade V x4, Legiana Hide IV x4, Legiana Claw IV x4",49,Flash Draw Lv2; Weakspot Exploit Lv1; Windproof Lv1,
-210001302,Legiana Mail III,Chest,Legiana Set IV,12,165,14,"Hunter's Jade V x4, Legiana Hide V x4, Legiana Claw V x4",53,Flash Draw Lv2; Weakspot Exploit Lv1; Windproof Lv1,
-210001302,Legiana Mail III,Chest,Legiana Set IV,13,178,13,"Hunter's Jade VI x4, Legiana Hide V x4, Legiana Claw V x4",54,Flash Draw Lv2; Weakspot Exploit Lv1; Windproof Lv1,
-210001302,Legiana Mail III,Chest,Legiana Set IV,14,192,14,"Hunter's Jade VI x4, Legiana Hide VI x4, Legiana Claw VI x4",56,Flash Draw Lv2; Weakspot Exploit Lv1; Windproof Lv1,
-210001303,Legiana Vambraces III,Arms,Legiana Set IV,9,123,,,,Ice Damage Up Lv2; Weakspot Exploit Lv1; Blessing Lv1,New skill: Ice Damage Up Lv2; New skill: Weakspot Exploit Lv1; New skill: Blessing Lv1
-210001303,Legiana Vambraces III,Arms,Legiana Set IV,10,137,14,"Hunter's Jade IV x2, Legiana Scale IV x3, Legiana Claw IV x3, Legiana Webbing IV x3, Legiana Plate IV x3",48,Ice Damage Up Lv2; Weakspot Exploit Lv1; Blessing Lv1,
-210001303,Legiana Vambraces III,Arms,Legiana Set IV,11,151,14,"Hunter's Jade V x4, Legiana Scale IV x4, Legiana Claw IV x4, Legiana Webbing IV x4, Legiana Plate IV x4",49,Ice Damage Up Lv2; Weakspot Exploit Lv1; Blessing Lv1,
-210001303,Legiana Vambraces III,Arms,Legiana Set IV,12,165,14,"Hunter's Jade V x4, Legiana Scale V x4, Legiana Claw V x4, Legiana Webbing V x4, Legiana Plate V x4",53,Ice Damage Up Lv2; Weakspot Exploit Lv1; Blessing Lv1,
-210001303,Legiana Vambraces III,Arms,Legiana Set IV,13,178,13,"Hunter's Jade VI x4, Legiana Scale V x4, Legiana Claw V x4, Legiana Webbing V x4, Legiana Plate V x4",54,Ice Damage Up Lv2; Weakspot Exploit Lv1; Blessing Lv1,
-210001303,Legiana Vambraces III,Arms,Legiana Set IV,14,192,14,"Hunter's Jade VI x4, Legiana Scale VI x4, Legiana Claw VI x4, Legiana Webbing VI x4, Legiana Plate VI x4",56,Ice Damage Up Lv2; Weakspot Exploit Lv1; Blessing Lv1,
-210001304,Legiana Coil III,Waist,Legiana Set IV,9,123,,,,Blessing Lv2; Ice Damage Up Lv1,New skill: Blessing Lv2; New skill: Ice Damage Up Lv1
-210001304,Legiana Coil III,Waist,Legiana Set IV,10,137,14,"Hunter's Jade IV x2, Legiana Scale IV x3, Legiana Hide IV x3",48,Blessing Lv2; Ice Damage Up Lv1,
-210001304,Legiana Coil III,Waist,Legiana Set IV,11,151,14,"Hunter's Jade V x4, Legiana Scale IV x4, Legiana Hide IV x4",49,Blessing Lv2; Ice Damage Up Lv1,
-210001304,Legiana Coil III,Waist,Legiana Set IV,12,165,14,"Hunter's Jade V x4, Legiana Scale V x4, Legiana Hide V x4",53,Blessing Lv2; Ice Damage Up Lv1,
-210001304,Legiana Coil III,Waist,Legiana Set IV,13,178,13,"Hunter's Jade VI x4, Legiana Scale V x4, Legiana Hide V x4",54,Blessing Lv2; Ice Damage Up Lv1,
-210001304,Legiana Coil III,Waist,Legiana Set IV,14,192,14,"Hunter's Jade VI x4, Legiana Scale VI x4, Legiana Hide VI x4",56,Blessing Lv2; Ice Damage Up Lv1,
-210001305,Legiana Greaves III,Legs,Legiana Set IV,9,123,,,,Ammo Enhancement Lv2; Suppression Recovery Lv1; Critical Element Lv1,New skill: Ammo Enhancement Lv2; New skill: Suppression Recovery Lv1; New skill: Critical Element Lv1
-210001305,Legiana Greaves III,Legs,Legiana Set IV,10,137,14,"Hunter's Jade IV x2, Legiana Scale IV x3, Legiana Claw IV x3, Legiana Tail Webbing IV x3",48,Ammo Enhancement Lv2; Suppression Recovery Lv1; Critical Element Lv1,
-210001305,Legiana Greaves III,Legs,Legiana Set IV,11,151,14,"Hunter's Jade V x4, Legiana Scale IV x4, Legiana Claw IV x4, Legiana Tail Webbing IV x4",49,Ammo Enhancement Lv2; Suppression Recovery Lv1; Critical Element Lv1,
-210001305,Legiana Greaves III,Legs,Legiana Set IV,12,165,14,"Hunter's Jade V x4, Legiana Scale V x4, Legiana Claw V x4, Legiana Tail Webbing V x4",53,Ammo Enhancement Lv2; Suppression Recovery Lv1; Critical Element Lv1,
-210001305,Legiana Greaves III,Legs,Legiana Set IV,13,178,13,"Hunter's Jade VI x4, Legiana Scale V x4, Legiana Claw V x4, Legiana Tail Webbing V x4",54,Ammo Enhancement Lv2; Suppression Recovery Lv1; Critical Element Lv1,
-210001305,Legiana Greaves III,Legs,Legiana Set IV,14,192,14,"Hunter's Jade VI x4, Legiana Scale VI x4, Legiana Claw VI x4, Legiana Tail Webbing VI x4",56,Ammo Enhancement Lv2; Suppression Recovery Lv1; Critical Element Lv1,
+210001301,Legiana Helm III,Head,Legiana Set III,8,110,,,,Ice Resistance Lv2; Blessing Lv1,New skill: Ice Resistance Lv2; New skill: Blessing Lv1
+210001301,Legiana Helm III,Head,Legiana Set III,9,123,13,"Hunter's Jade IV x2, Legiana Scale III x3, Legiana Hide III x3",38,Ice Resistance Lv2; Blessing Lv1,
+210001301,Legiana Helm III,Head,Legiana Set III,10,137,14,"Hunter's Jade IV x2, Legiana Scale IV x3, Legiana Hide IV x3",48,Ice Resistance Lv2; Blessing Lv1,
+210001301,Legiana Helm III,Head,Legiana Set III,11,151,14,"Hunter's Jade V x4, Legiana Scale IV x4, Legiana Hide IV x4",49,Ice Resistance Lv2; Blessing Lv1,
+210001301,Legiana Helm III,Head,Legiana Set III,12,165,14,"Hunter's Jade V x4, Legiana Scale V x4, Legiana Hide V x4",53,Ice Resistance Lv2; Blessing Lv1,
+210001301,Legiana Helm III,Head,Legiana Set III,13,178,13,"Hunter's Jade VI x4, Legiana Scale V x4, Legiana Hide V x4",54,Ice Resistance Lv2; Blessing Lv1,
+210001301,Legiana Helm III,Head,Legiana Set III,14,192,14,"Hunter's Jade VI x4, Legiana Scale VI x4, Legiana Hide VI x4",56,Ice Resistance Lv2; Blessing Lv1,
+210001302,Legiana Mail III,Chest,Legiana Set III,8,110,,,,Flash Draw Lv2; Weakspot Exploit Lv1,New skill: Flash Draw Lv2; New skill: Weakspot Exploit Lv1
+210001302,Legiana Mail III,Chest,Legiana Set III,9,123,13,"Hunter's Jade IV x2, Legiana Hide III x3, Legiana Claw III x3",38,Flash Draw Lv2; Weakspot Exploit Lv1,
+210001302,Legiana Mail III,Chest,Legiana Set III,10,137,14,"Hunter's Jade IV x2, Legiana Hide IV x3, Legiana Claw IV x3",48,Flash Draw Lv2; Weakspot Exploit Lv1; Windproof Lv1,New skill: Windproof Lv1
+210001302,Legiana Mail III,Chest,Legiana Set III,11,151,14,"Hunter's Jade V x4, Legiana Hide IV x4, Legiana Claw IV x4",49,Flash Draw Lv2; Weakspot Exploit Lv1; Windproof Lv1,
+210001302,Legiana Mail III,Chest,Legiana Set III,12,165,14,"Hunter's Jade V x4, Legiana Hide V x4, Legiana Claw V x4",53,Flash Draw Lv2; Weakspot Exploit Lv1; Windproof Lv1,
+210001302,Legiana Mail III,Chest,Legiana Set III,13,178,13,"Hunter's Jade VI x4, Legiana Hide V x4, Legiana Claw V x4",54,Flash Draw Lv2; Weakspot Exploit Lv1; Windproof Lv1,
+210001302,Legiana Mail III,Chest,Legiana Set III,14,192,14,"Hunter's Jade VI x4, Legiana Hide VI x4, Legiana Claw VI x4",56,Flash Draw Lv2; Weakspot Exploit Lv1; Windproof Lv1,
+210001303,Legiana Vambraces III,Arms,Legiana Set III,8,110,,,,Ice Damage Up Lv1; Weakspot Exploit Lv1; Blessing Lv1,New skill: Ice Damage Up Lv1; New skill: Weakspot Exploit Lv1; New skill: Blessing Lv1
+210001303,Legiana Vambraces III,Arms,Legiana Set III,9,123,13,"Hunter's Jade IV x2, Legiana Scale III x3, Legiana Claw III x3, Legiana Webbing III x3, Legiana Plate III x3",38,Ice Damage Up Lv1; Weakspot Exploit Lv1; Blessing Lv1,
+210001303,Legiana Vambraces III,Arms,Legiana Set III,10,137,14,"Hunter's Jade IV x2, Legiana Scale IV x3, Legiana Claw IV x3, Legiana Webbing IV x3, Legiana Plate IV x3",48,Ice Damage Up Lv2; Weakspot Exploit Lv1; Blessing Lv1,Level up (Lv1 > Lv2): Ice Damage Up Lv2
+210001303,Legiana Vambraces III,Arms,Legiana Set III,11,151,14,"Hunter's Jade V x4, Legiana Scale IV x4, Legiana Claw IV x4, Legiana Webbing IV x4, Legiana Plate IV x4",49,Ice Damage Up Lv2; Weakspot Exploit Lv1; Blessing Lv1,
+210001303,Legiana Vambraces III,Arms,Legiana Set III,12,165,14,"Hunter's Jade V x4, Legiana Scale V x4, Legiana Claw V x4, Legiana Webbing V x4, Legiana Plate V x4",53,Ice Damage Up Lv2; Weakspot Exploit Lv1; Blessing Lv1,
+210001303,Legiana Vambraces III,Arms,Legiana Set III,13,178,13,"Hunter's Jade VI x4, Legiana Scale V x4, Legiana Claw V x4, Legiana Webbing V x4, Legiana Plate V x4",54,Ice Damage Up Lv2; Weakspot Exploit Lv1; Blessing Lv1,
+210001303,Legiana Vambraces III,Arms,Legiana Set III,14,192,14,"Hunter's Jade VI x4, Legiana Scale VI x4, Legiana Claw VI x4, Legiana Webbing VI x4, Legiana Plate VI x4",56,Ice Damage Up Lv2; Weakspot Exploit Lv1; Blessing Lv1,
+210001304,Legiana Coil III,Waist,Legiana Set III,8,110,,,,Blessing Lv2; Ice Damage Up Lv1,New skill: Blessing Lv2; New skill: Ice Damage Up Lv1
+210001304,Legiana Coil III,Waist,Legiana Set III,9,123,13,"Hunter's Jade IV x2, Legiana Scale III x3, Legiana Hide III x3",38,Blessing Lv2; Ice Damage Up Lv1,
+210001304,Legiana Coil III,Waist,Legiana Set III,10,137,14,"Hunter's Jade IV x2, Legiana Scale IV x3, Legiana Hide IV x3",48,Blessing Lv2; Ice Damage Up Lv1,
+210001304,Legiana Coil III,Waist,Legiana Set III,11,151,14,"Hunter's Jade V x4, Legiana Scale IV x4, Legiana Hide IV x4",49,Blessing Lv2; Ice Damage Up Lv1,
+210001304,Legiana Coil III,Waist,Legiana Set III,12,165,14,"Hunter's Jade V x4, Legiana Scale V x4, Legiana Hide V x4",53,Blessing Lv2; Ice Damage Up Lv1,
+210001304,Legiana Coil III,Waist,Legiana Set III,13,178,13,"Hunter's Jade VI x4, Legiana Scale V x4, Legiana Hide V x4",54,Blessing Lv2; Ice Damage Up Lv1,
+210001304,Legiana Coil III,Waist,Legiana Set III,14,192,14,"Hunter's Jade VI x4, Legiana Scale VI x4, Legiana Hide VI x4",56,Blessing Lv2; Ice Damage Up Lv1,
+210001305,Legiana Greaves III,Legs,Legiana Set III,8,110,,,,Ammo Enhancement Lv2; Suppression Recovery Lv1,New skill: Ammo Enhancement Lv2; New skill: Suppression Recovery Lv1
+210001305,Legiana Greaves III,Legs,Legiana Set III,9,123,13,"Hunter's Jade IV x2, Legiana Scale III x3, Legiana Claw III x3, Legiana Tail Webbing III x3",38,Ammo Enhancement Lv2; Suppression Recovery Lv1,
+210001305,Legiana Greaves III,Legs,Legiana Set III,10,137,14,"Hunter's Jade IV x2, Legiana Scale IV x3, Legiana Claw IV x3, Legiana Tail Webbing IV x3",48,Ammo Enhancement Lv2; Suppression Recovery Lv1; Critical Element Lv1,New skill: Critical Element Lv1
+210001305,Legiana Greaves III,Legs,Legiana Set III,11,151,14,"Hunter's Jade V x4, Legiana Scale IV x4, Legiana Claw IV x4, Legiana Tail Webbing IV x4",49,Ammo Enhancement Lv2; Suppression Recovery Lv1; Critical Element Lv1,
+210001305,Legiana Greaves III,Legs,Legiana Set III,12,165,14,"Hunter's Jade V x4, Legiana Scale V x4, Legiana Claw V x4, Legiana Tail Webbing V x4",53,Ammo Enhancement Lv2; Suppression Recovery Lv1; Critical Element Lv1,
+210001305,Legiana Greaves III,Legs,Legiana Set III,13,178,13,"Hunter's Jade VI x4, Legiana Scale V x4, Legiana Claw V x4, Legiana Tail Webbing V x4",54,Ammo Enhancement Lv2; Suppression Recovery Lv1; Critical Element Lv1,
+210001305,Legiana Greaves III,Legs,Legiana Set III,14,192,14,"Hunter's Jade VI x4, Legiana Scale VI x4, Legiana Claw VI x4, Legiana Tail Webbing VI x4",56,Ammo Enhancement Lv2; Suppression Recovery Lv1; Critical Element Lv1,
 210011201,Radiant Baan Helm IV,Head,Radiant Baan Set V,12,166,,,,Tremor Resistance Lv1; Grace Under Pressure Lv2,New skill: Tremor Resistance Lv1; New skill: Grace Under Pressure Lv2
 210011201,Radiant Baan Helm IV,Head,Radiant Baan Set V,13,180,14,"Hunter's Jade VI x4, Radiant Radobaan Scale V x4, Radiant Radobaan Shell V x4",54,Tremor Resistance Lv1; Grace Under Pressure Lv2,
 210011201,Radiant Baan Helm IV,Head,Radiant Baan Set V,14,194,14,"Hunter's Jade VI x4, Radiant Radobaan Scale VI x4, Radiant Radobaan Shell VI x4",56,Tremor Resistance Lv1; Grace Under Pressure Lv2,
