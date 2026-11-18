@@ -1,20 +1,19 @@
-// ─────────────────────────────────────────────────────────────
-// BuddyCard — Presentation card for MHO Companions with Collection Tracking
-// ─────────────────────────────────────────────────────────────
 import { useState } from 'react';
-import { Cat, Sparkles, Plus, Check, Target } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Cat, Sparkles, Plus, Check } from 'lucide-react';
 import {
   type DBBuddy,
   type BuddyCollectionEntry,
   TIER_CONFIG,
   ROLE_CONFIG,
   buddyTierBorder,
+  BUDDY_MAX_TIER_LEVEL,
 } from '../../data/schemas/buddy';
 import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
 import ArtBackdrop from '../../components/ArtBackdrop';
 import { ROLE_ICONS } from '../../components/RoleIcon';
-import { BuddyTierPicker } from './BuddyTierLevel';
+import { BuddyTierPicker, BuddyChallengeGoalMenu } from './BuddyTierLevel';
 
 interface BuddyCardProps {
   buddy: DBBuddy;
@@ -22,7 +21,7 @@ interface BuddyCardProps {
   challenge?: HunterChallenge;
   onToggleOwned: () => void;
   onSetTierLevel: (tierLevel: number) => void;
-  onAddChallenge?: (buddy: DBBuddy) => void;
+  onAddChallenge?: (buddy: DBBuddy, targetGoal?: number) => void;
   onClick: () => void;
 }
 
@@ -35,10 +34,13 @@ export default function BuddyCard({
   onAddChallenge,
   onClick,
 }: BuddyCardProps) {
+  const navigate = useNavigate();
   const [imageError, setImageError] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const isOwned = Boolean(collectionEntry);
   const currentTierLevel = collectionEntry?.tier_level ?? 0;
+  const currentTier = isOwned ? currentTierLevel : -1;
   const isTracked = Boolean(challenge && challenge.status !== 'abandoned');
   const isChallengeDone = challenge?.status === 'completed';
 
@@ -58,6 +60,7 @@ export default function BuddyCard({
       style={buddyTierBorder(buddy.tier, isOwned)}
       className={cn(
         'group relative isolate overflow-hidden flex flex-col justify-between rounded-2xl border cursor-pointer select-none transition-all duration-200',
+        menuOpen && 'z-40',
         'p-3.5 sm:p-4 shadow-md hover:scale-[1.01] hover:shadow-xl hover:z-10 w-full min-w-0 max-w-full box-border',
         isOwned
           ? isSSR
@@ -163,26 +166,29 @@ export default function BuddyCard({
             className="relative z-20 flex items-center gap-1.5 flex-wrap pt-0.5 min-w-0"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Challenge Button if not already owned */}
-            {!isOwned && (
-              isTracked && !isChallengeDone ? (
-                <span className="inline-flex h-6 items-center gap-1 rounded-full bg-blue-500/15 border border-blue-500/35 px-2 text-[10px] font-bold text-blue-300 shadow-xs whitespace-nowrap">
-                  <Target size={11} className="text-blue-400" />
-                  <span>In Challenges</span>
-                </span>
-              ) : (
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onAddChallenge?.(buddy);
-                  }}
-                  title="Add recruitment challenge to Hunter's Challenges"
-                  className="inline-flex h-6 items-center gap-1 rounded-full px-2 text-[10px] font-bold border border-sky-600/50 bg-transparent text-sky-400 hover:bg-sky-900 hover:border-sky-500 hover:text-sky-200 shadow-xs transition-all hover:scale-105 whitespace-nowrap"
-                >
-                  <Target size={11} />
-                  <span>+ Challenge</span>
-                </button>
+            {/* Challenge Button / Menu */}
+            {isTracked && !isChallengeDone ? (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate('/challenges');
+                }}
+                className="flex h-6 items-center gap-1 rounded-full border border-emerald-500/50 bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25 px-2 text-[10px] font-bold shadow-xs transition-all shrink-0 whitespace-nowrap"
+              >
+                <Check size={11} className="text-emerald-400" />
+                <span>Challenge ➔</span>
+              </button>
+            ) : (
+              currentTier < BUDDY_MAX_TIER_LEVEL && (
+                <BuddyChallengeGoalMenu
+                  currentLevel={currentTier}
+                  onSelect={(targetGoal) => onAddChallenge?.(buddy, targetGoal)}
+                  placement="top"
+                  align="left"
+                  onOpenChange={setMenuOpen}
+                  className="h-6 rounded-full px-2 text-[10px] hover:scale-105 shrink-0"
+                />
               )
             )}
 

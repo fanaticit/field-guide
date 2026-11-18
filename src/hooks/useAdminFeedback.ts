@@ -22,6 +22,9 @@ export interface SiteFeedback {
   status: FeedbackStatus;
   is_read: boolean;
   admin_notes: string | null;
+  admin_reply: string | null;
+  admin_reply_at: string | null;
+  is_user_read: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -46,6 +49,8 @@ export interface FeedbackFilters {
 
 export const ADMIN_FEEDBACK_COUNT_KEY = 'admin-feedback-count';
 export const ADMIN_FEEDBACK_LIST_KEY = 'admin-feedback-list';
+export const USER_FEEDBACK_COUNT_KEY = 'user-feedback-count';
+export const USER_FEEDBACK_LIST_KEY = 'user-feedback-list';
 
 /**
  * Submit feedback from any player (guest or authenticated)
@@ -148,7 +153,7 @@ export function useUpdateFeedback() {
       updates,
     }: {
       id: string;
-      updates: Partial<Pick<SiteFeedback, 'status' | 'is_read' | 'admin_notes'>>;
+      updates: Partial<Pick<SiteFeedback, 'status' | 'is_read' | 'admin_notes' | 'admin_reply' | 'admin_reply_at' | 'is_user_read'>>;
     }) => {
       const { data, error } = await supabase
         .from('site_feedback')
@@ -163,6 +168,8 @@ export function useUpdateFeedback() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [ADMIN_FEEDBACK_LIST_KEY] });
       queryClient.invalidateQueries({ queryKey: [ADMIN_FEEDBACK_COUNT_KEY] });
+      queryClient.invalidateQueries({ queryKey: [USER_FEEDBACK_LIST_KEY] });
+      queryClient.invalidateQueries({ queryKey: [USER_FEEDBACK_COUNT_KEY] });
     },
   });
 }
@@ -210,3 +217,116 @@ export function useMarkAllFeedbackRead() {
     },
   });
 }
+
+/**
+ * Hook to retrieve number of unread feedback replies or status updates for the logged-in user.
+ */
+export function useUserFeedbackCount() {
+  const user = useAuthStore((s) => s.user);
+
+  return useQuery({
+    queryKey: [USER_FEEDBACK_COUNT_KEY, user?.id],
+    queryFn: async () => {
+      if (!user) return 0;
+      try {
+        const { count, error } = await supabase
+          .from('site_feedback')
+          .select('id', { count: 'exact', head: true })
+          .eq('user_id', user.id)
+          .eq('is_user_read', false);
+
+        if (error) return 0;
+        return count ?? 0;
+      } catch {
+        return 0;
+      }
+    },
+    enabled: !!user,
+    refetchInterval: 30000, // Poll every 30 seconds
+    refetchOnWindowFocus: true,
+  });
+}
+
+/**
+ * Hook to retrieve the list of feedback submitted by the logged-in user.
+ */
+export function useUserFeedbackList() {
+  const user = useAuthStore((s) => s.user);
+
+  return useQuery({
+    queryKey: [USER_FEEDBACK_LIST_KEY, user?.id],
+    queryFn: async () => {
+      if (!user) return [];
+      const { data, error } = await supabase
+        .from('site_feedback')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      return (data ?? []) as SiteFeedback[];
+    },
+    enabled: !!user,
+  });
+}
+
+/**
+ * Mutation to mark a single feedback item as read by the user
+ */
+export function useMarkUserFeedbackRead() {
+  const queryClient = useQueryClient();
+  const user = useAuthStore((s) => s.user);
+
+  return useMutation({
+    mutationFn: async (feedbackId: string) => {
+      if (!user) return;
+      // Try RPC first
+      const { error: rpcError } = await supabase.rpc('mark_user_feedback_read', {
+        p_feedback_id: feedbackId,
+      });
+
+      if (rpcError) {
+        // Fallback to direct update if RPC is not present
+        await supabase
+          .from('site_feedback')
+          .update({ is_user_read: true })
+          .eq('id', feedbackId)
+          .eq('user_id', user.id);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [USER_FEEDBACK_COUNT_KEY] });
+      queryClient.invalidateQueries({ queryKey: [USER_FEEDBACK_LIST_KEY] });
+    },
+  });
+}
+
+/**
+ * Mutation to mark all feedback items as read for the current user
+ */
+export function useMarkAllUserFeedbackRead() {
+  const queryClient = useQueryClient();
+  const user = useAuthStore((s) => s.user);
+
+  return useMutation({
+    mutationFn: async () => {
+      if (!user) return;
+      // Try RPC first
+      const { error: rpcError } = await supabase.rpc('mark_all_user_feedback_read');
+
+      if (rpcError) {
+        // Fallback to direct update
+        await supabase
+          .from('site_feedback')
+          .update({ is_user_read: true })
+          .eq('user_id', user.id)
+          .eq('is_user_read', false);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [USER_FEEDBACK_COUNT_KEY] });
+      queryClient.invalidateQueries({ queryKey: [USER_FEEDBACK_LIST_KEY] });
+    },
+  });
+}
+

@@ -48,19 +48,31 @@ export function InsightPill({ level, className }: { level: number; className?: s
 interface PickerProps {
   level: number;
   onChange: (level: number) => void;
+  onOpenChange?: (open: boolean) => void;
 }
 
 /** Card control: pill that opens a 1-7 menu (7 = Max), like the visage rarity selector. */
-export function InsightPicker({ level, onChange }: PickerProps) {
+export function InsightPicker({ level, onChange, onOpenChange }: PickerProps) {
   const [open, setOpen] = useState(false);
-  const ref = useDismissable(open, () => setOpen(false));
+  const ref = useDismissable(open, () => {
+    setOpen(false);
+    onOpenChange?.(false);
+  });
   const isMax = level >= ADVENTURER_MAX_INSIGHT;
+
+  const handleToggle = () => {
+    setOpen((v) => {
+      const next = !v;
+      onOpenChange?.(next);
+      return next;
+    });
+  };
 
   return (
     <div ref={ref} className="relative" onClick={(e) => e.stopPropagation()}>
       <button
         type="button"
-        onClick={() => setOpen((v) => !v)}
+        onClick={handleToggle}
         title="Set insight level"
         className={cn(
           'flex h-6 items-center gap-1 rounded-full border px-2 text-[10px] font-black leading-none transition-transform hover:scale-105 active:scale-95',
@@ -73,8 +85,8 @@ export function InsightPicker({ level, onChange }: PickerProps) {
       </button>
 
       {open && (
-        <div className="absolute bottom-full right-0 z-50 mb-2 w-36 overflow-hidden rounded-xl border border-mh-slate-700 bg-mh-slate-950 p-1 shadow-2xl">
-          <p className="px-2 pb-1 pt-1 text-[10px] font-bold uppercase tracking-wider text-mh-slate-400">
+        <div className="absolute bottom-full right-0 z-50 mb-2 w-36 overflow-hidden rounded-xl border border-mh-slate-700 bg-mh-slate-950 p-1 shadow-2xl animate-in fade-in zoom-in-95 duration-100">
+          <p className="px-2 pb-1 pt-1 text-[10px] font-bold uppercase tracking-wider text-mh-slate-400 border-b border-mh-slate-800">
             Insight Level
           </p>
           {[...ADVENTURER_INSIGHT_LEVELS].reverse().map((lvl) => (
@@ -84,16 +96,17 @@ export function InsightPicker({ level, onChange }: PickerProps) {
               onClick={() => {
                 onChange(lvl);
                 setOpen(false);
+                onOpenChange?.(false);
               }}
               className={cn(
-                'flex w-full items-center justify-between rounded-lg px-2 py-1 text-xs font-semibold transition-colors',
+                'flex w-full items-center justify-between rounded-lg px-2 py-1 text-xs font-semibold transition-colors mt-0.5',
                 lvl === level
-                  ? 'bg-mh-gold-500/20 text-mh-gold-300'
+                  ? 'bg-mh-gold-500/20 text-mh-gold-300 font-bold'
                   : 'text-mh-slate-300 hover:bg-mh-slate-800 hover:text-white',
               )}
             >
               <span>{lvl === ADVENTURER_MAX_INSIGHT ? 'Max (7)' : `Insight Lv ${lvl}`}</span>
-              {lvl === level && <Check size={12} />}
+              {lvl === level && <Check size={12} className="text-mh-gold-400" />}
             </button>
           ))}
         </div>
@@ -139,22 +152,43 @@ interface GoalMenuProps {
   className?: string;
   children?: ReactNode;
   align?: 'left' | 'right';
+  placement?: 'top' | 'bottom';
+  onOpenChange?: (open: boolean) => void;
 }
 
 /** "+ Challenge" button that lets the hunter pick the goal: recruit, or reach an insight level. */
-export function ChallengeGoalMenu({ currentLevel, onSelect, className, children, align = 'right' }: GoalMenuProps) {
+export function ChallengeGoalMenu({
+  currentLevel,
+  onSelect,
+  className,
+  children,
+  align = 'left',
+  placement = 'top',
+  onOpenChange,
+}: GoalMenuProps) {
   const [open, setOpen] = useState(false);
-  const ref = useDismissable(open, () => setOpen(false));
+  const ref = useDismissable(open, () => {
+    setOpen(false);
+    onOpenChange?.(false);
+  });
 
   const goals = ADVENTURER_INSIGHT_LEVELS.filter((lvl) => lvl > Math.max(1, currentLevel) || (lvl === 1 && currentLevel === 0));
 
   if (goals.length === 0) return null;
 
+  const handleToggle = () => {
+    setOpen((v) => {
+      const next = !v;
+      onOpenChange?.(next);
+      return next;
+    });
+  };
+
   return (
     <div ref={ref} className="relative" onClick={(e) => e.stopPropagation()}>
       <button
         type="button"
-        onClick={() => setOpen((v) => !v)}
+        onClick={handleToggle}
         title="Set a recruitment / insight challenge"
         className={cn(
           'flex items-center gap-1 border border-sky-600/50 bg-transparent text-sky-400 font-bold shadow-xs transition-all hover:bg-sky-900 hover:border-sky-500 hover:text-sky-200',
@@ -172,26 +206,31 @@ export function ChallengeGoalMenu({ currentLevel, onSelect, className, children,
       {open && (
         <div
           className={cn(
-            'absolute top-full z-50 mt-2 w-48 overflow-hidden rounded-xl border border-sky-700 bg-mh-slate-950 p-1 shadow-2xl',
+            'absolute z-50 w-52 overflow-hidden rounded-xl border border-sky-700 bg-mh-slate-950 p-1 shadow-2xl animate-in fade-in zoom-in-95 duration-100',
+            placement === 'top' ? 'bottom-full mb-2' : 'top-full mt-2',
             align === 'right' ? 'right-0' : 'left-0',
           )}
         >
-          <p className="px-2 pb-1 pt-1 text-[10px] font-bold uppercase tracking-wider text-sky-400">
+          <p className="px-2 pb-1 pt-1 text-[10px] font-bold uppercase tracking-wider text-sky-400 border-b border-mh-slate-800">
             Challenge goal
           </p>
-          {goals.map((lvl) => (
-            <button
-              key={lvl}
-              type="button"
-              onClick={() => {
-                onSelect(lvl);
-                setOpen(false);
-              }}
-              className="flex w-full items-center rounded-lg px-2 py-1.5 text-left text-xs font-semibold text-mh-slate-200 transition-colors hover:bg-sky-900 hover:text-white"
-            >
-              {lvl === 1 ? 'Recruit only' : `Reach Insight ${adventurerInsightLabel(lvl)}`}
-            </button>
-          ))}
+          <div className="py-0.5 space-y-0.5">
+            {goals.map((lvl) => (
+              <button
+                key={lvl}
+                type="button"
+                onClick={() => {
+                  onSelect(lvl);
+                  setOpen(false);
+                  onOpenChange?.(false);
+                }}
+                className="flex w-full items-center justify-between rounded-lg px-2 py-1.5 text-left text-xs font-semibold text-mh-slate-200 transition-colors hover:bg-sky-900 hover:text-white"
+              >
+                <span>{lvl === 1 ? 'Recruit only' : `Reach Insight ${adventurerInsightLabel(lvl)}`}</span>
+                <span className="text-[10px] font-bold text-sky-400">Lv {lvl}</span>
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </div>

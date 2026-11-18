@@ -39,7 +39,7 @@ import { DEFAULT_SECTION_THEMES, themeToNavAccent } from '../../config/themes';
 import { cn } from '../../lib/utils';
 import LoginModal from '../auth/LoginModal';
 import FeedbackModal from '../feedback/FeedbackModal';
-import { useAdminFeedbackCount } from '../../hooks/useAdminFeedback';
+import { useAdminFeedbackCount, useUserFeedbackCount } from '../../hooks/useAdminFeedback';
 
 interface SubNavItem {
   id: string;
@@ -194,6 +194,7 @@ export default function MainNav() {
   const [showFeedbackPrompt, setShowFeedbackPrompt] = useState(false);
   const lastPathRef = useRef<string | null>(null);
   const { data: unreadCount = 0 } = useAdminFeedbackCount();
+  const { data: userUnreadCount = 0 } = useUserFeedbackCount();
   const [openId, setOpenId] = useState<string | null>(null);
   const [anchorY, setAnchorY] = useState(0);
   const buttonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
@@ -747,6 +748,14 @@ export default function MainNav() {
                     style={{ transform: 'scale(0.85)' }}
                   />
                 </span>
+                {userUnreadCount > 0 && (
+                  <span
+                    className="absolute -top-1 -right-1 z-20 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-red-500 px-1 text-[9px] font-bold text-white shadow-md ring-2 ring-[#232328] animate-pulse"
+                    title={`${userUnreadCount} update${userUnreadCount > 1 ? 's' : ''} on your feedback`}
+                  >
+                    {userUnreadCount > 99 ? '99+' : userUnreadCount}
+                  </span>
+                )}
               </span>
               <span className="main-nav__tip" role="tooltip">
                 Feedback & Bugs

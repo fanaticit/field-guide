@@ -8,6 +8,7 @@ import {
   TIER_CONFIG,
   ROLE_CONFIG,
   buddyTierBorder,
+  BUDDY_MAX_TIER_LEVEL,
 } from '../../data/schemas/buddy';
 import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
@@ -16,7 +17,7 @@ import { useBuddySkills } from '../../hooks/useAdminBuddies';
 import { usePublicAdventurers } from '../../hooks/useAdminAdventurers';
 import { useAuthStore } from '../../store/authStore';
 import { ROLE_ICONS } from '../../components/RoleIcon';
-import { BuddyTierRow, BuddyTierLevelPill } from './BuddyTierLevel';
+import { BuddyTierRow, BuddyTierLevelPill, BuddyChallengeGoalMenu } from './BuddyTierLevel';
 
 const ROLE_DESCRIPTIONS: Record<BuddyRole, string> = {
   Assault: 'Direct damage specialist focused on dealing burst and sustained offensive damage to monsters.',
@@ -33,7 +34,7 @@ interface BuddyModalProps {
   onToggleOwned: () => void;
   onSetTierLevel: (tierLevel: number) => void;
   onRemoveFromCollection?: () => void;
-  onAddChallenge?: (buddy: DBBuddy) => void;
+  onAddChallenge?: (buddy: DBBuddy, targetGoal?: number) => void;
 }
 
 export default function BuddyModal({
@@ -233,25 +234,27 @@ export default function BuddyModal({
               </p>
 
               <div className="flex items-center gap-2">
-                {!isOwned && (
-                  challenge && challenge.status !== 'abandoned' && challenge.status !== 'completed' ? (
-                    <button
-                      type="button"
-                      onClick={() => navigate('/challenges')}
-                      className="flex items-center gap-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25 px-3 py-1.5 text-xs font-bold transition-all shadow-sm"
-                    >
-                      <CheckCircle2 size={13} className="text-emerald-400" />
-                      <span>Go to Challenge ➔</span>
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => onAddChallenge?.(buddy)}
-                      className="flex items-center gap-1.5 rounded-lg border border-sky-600/50 bg-transparent text-sky-400 hover:bg-sky-900 hover:border-sky-500 hover:text-sky-200 px-3 py-1.5 text-xs font-bold transition-all shadow-sm"
+                {challenge && challenge.status !== 'abandoned' && challenge.status !== 'completed' ? (
+                  <button
+                    type="button"
+                    onClick={() => navigate('/challenges')}
+                    className="flex items-center gap-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25 px-3 py-1.5 text-xs font-bold transition-all shadow-sm"
+                  >
+                    <CheckCircle2 size={13} className="text-emerald-400" />
+                    <span>Go to Challenge ➔</span>
+                  </button>
+                ) : (
+                  (isOwned ? currentTierLevel : -1) < BUDDY_MAX_TIER_LEVEL && (
+                    <BuddyChallengeGoalMenu
+                      currentLevel={isOwned ? currentTierLevel : -1}
+                      onSelect={(targetGoal) => onAddChallenge?.(buddy, targetGoal)}
+                      placement="top"
+                      align="right"
+                      className="rounded-lg px-3 py-1.5 text-xs"
                     >
                       <Target size={13} />
-                      <span>+ Add Challenge</span>
-                    </button>
+                      <span>+ Challenge</span>
+                    </BuddyChallengeGoalMenu>
                   )
                 )}
 

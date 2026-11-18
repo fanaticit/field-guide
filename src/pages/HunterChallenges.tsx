@@ -23,6 +23,7 @@ import {
   PackageSearch,
   Package,
   ArrowRight,
+  ExternalLink,
 } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import { useUIStore } from '../store/uiStore';
@@ -149,6 +150,29 @@ const CATEGORY_COLLECTION_PATH: Record<ItemCategory, string> = {
   visage: '/gallery/collection',
   monster: '/challenges/monsters',
 };
+
+/** Deep-link URL to open the specific item's guide and inspection modal */
+export function getChallengeDetailUrl(c: HunterChallenge): string {
+  if (c.challenge_type === 'adventurer' || c.adventurer_id) {
+    const id = c.adventurer_id ?? c.set_name;
+    return `/challenges/adventurers${id ? `?id=${encodeURIComponent(id)}` : ''}`;
+  }
+  if (c.challenge_type === 'buddy' || c.buddy_id) {
+    const id = c.buddy_id ?? c.set_name;
+    return `/challenges/buddies${id ? `?id=${encodeURIComponent(id)}` : ''}`;
+  }
+  if (c.challenge_type === 'monster' || c.monster_id) {
+    const id = c.monster_id;
+    return `/challenges/monsters${id ? `?monster=${encodeURIComponent(id)}` : ''}`;
+  }
+  if (c.challenge_type === 'weapon' || c.weapon_id) {
+    return '/challenges/weapons';
+  }
+  if (c.challenge_type === 'visage_set' || c.visage_id) {
+    return '/gallery/collection';
+  }
+  return '/armory/armour';
+}
 
 /** Weapons, armour, visage cards and monster study come from monsters; adventurers and buddies come from recruitment. */
 const HUNT_CATEGORIES: ItemCategory[] = ['weapon', 'armour', 'visage', 'monster'];
@@ -315,6 +339,7 @@ function ChallengeCard({
   // Rarity progress
   const maxR = challengeMaxRarity(c);
   const insightGoal = isAdventurer && maxR > 1;
+  const buddyTierGoal = isBuddy && maxR > 1;
   const progressPct = maxR > 0
     ? Math.round((c.current_rarity / maxR) * 100)
     : 0;
@@ -326,7 +351,7 @@ function ChallengeCard({
     : isAdventurer
     ? c.current_rarity === 0 ? 'Not Recruited' : insightGoal ? `Insight ${adventurerInsightLabel(c.current_rarity)}` : 'Recruited'
     : isBuddy
-    ? c.current_rarity === 0 ? 'Not Recruited' : 'Recruited'
+    ? c.current_rarity === 0 ? 'Not Recruited' : buddyTierGoal ? (c.current_rarity === 1 ? 'Tier 0' : c.current_rarity === 2 ? 'Tier 1' : 'Tier Max (2)') : 'Recruited'
     : `R${c.current_rarity} crafted`;
   const targetRarityName = isMonster
     ? 'Complete Study Goal'
@@ -335,10 +360,11 @@ function ChallengeCard({
     : isAdventurer
     ? insightGoal ? `Target: Insight ${adventurerInsightLabel(maxR)}` : 'Recruit to Roster'
     : isBuddy
-    ? 'Recruit to Roster'
+    ? buddyTierGoal ? (maxR === 2 ? 'Target: Tier 1' : 'Target: Tier Max (2)') : 'Recruit Companion'
     : `Target: R${c.max_rarity}`;
   const style = statusStyle(c.status);
   const label = challengeStatusLabel(c);
+  const detailUrl = getChallengeDetailUrl(c);
 
   if (compact) {
     // ── Compact mobile row ─────────────────────────────────────
@@ -364,7 +390,17 @@ function ChallengeCard({
 
         {/* Info */}
         <div className="flex-1 min-w-0">
-          <p className="text-xs font-bold text-sky-100 truncate">{getChallengeDisplayName(c, weaponsMap)}</p>
+          <div className="flex items-center justify-between gap-1.5">
+            <p className="text-xs font-bold text-sky-100 truncate">{getChallengeDisplayName(c, weaponsMap)}</p>
+            <a
+              href={detailUrl}
+              className="inline-flex items-center gap-0.5 text-[10px] font-bold text-sky-400 hover:text-sky-200 transition-colors shrink-0"
+              title="View details in guide"
+            >
+              <span>Details</span>
+              <ExternalLink size={10} />
+            </a>
+          </div>
           <div className="flex flex-col gap-0.5 mt-0.5">
             <div className="flex items-center gap-2">
               <p className="text-[10px] text-sky-400 truncate">{slotLabel}</p>
@@ -390,7 +426,15 @@ function ChallengeCard({
               </p>
             ) : isBuddy ? (
               <p className="text-[10px] text-sky-400 truncate">
-                {!isDone ? 'Recruit Companion' : 'Recruited to Collection'}
+                {!isDone
+                  ? c.current_rarity === 0
+                    ? 'Recruit Companion'
+                    : c.current_rarity === 1
+                    ? 'Raise to Tier 1'
+                    : 'Raise to Tier Max (2)'
+                  : buddyTierGoal
+                  ? (maxR === 2 ? 'Tier 1 reached' : 'Tier Max (2) reached')
+                  : 'Recruited to Collection'}
               </p>
             ) : challengeMonsterName && !isDone ? (
               <p className="text-[10px] text-sky-400 truncate">
@@ -496,6 +540,14 @@ function ChallengeCard({
             </div>
 
             <div className="flex items-center gap-1.5 shrink-0">
+              <a
+                href={detailUrl}
+                className="inline-flex items-center gap-1 rounded-lg border border-sky-700/60 bg-sky-900/40 px-2 py-0.5 text-[10px] font-bold text-sky-300 hover:bg-sky-800 hover:text-white hover:border-sky-500 transition-colors"
+                title="View details in guide"
+              >
+                <span>Details</span>
+                <ExternalLink size={10} />
+              </a>
               <span className={cn('rounded px-2 py-0.5 text-[10px] font-bold border', style.badge)}>
                 {label}
               </span>
@@ -673,7 +725,11 @@ function ChallengeCard({
               ? 'Mark as Recruited'
               : `Raise Insight to ${adventurerInsightLabel(c.current_rarity + 1)}`
             : isBuddy
-            ? 'Mark as Recruited'
+            ? c.current_rarity === 0
+              ? 'Mark as Recruited'
+              : c.current_rarity === 1
+              ? 'Raise to Tier 1'
+              : 'Raise to Tier Max (2)'
             : isMonster
             ? 'Complete Study Task'
             : c.status === 'crafting'
@@ -1081,9 +1137,18 @@ function RecruitmentPanel({ recruits, selection, onSelect, backgrounds }: Recrui
                   <span className="flex-1 min-w-0 text-xs font-semibold text-sky-200 truncate">
                     {c.set_name ?? 'Unknown'}
                   </span>
-                  <span className="shrink-0 text-[10px] font-bold text-sky-500">
-                    {getCategory(c) === 'adventurer' ? challengeStatusLabel(c) : 'Recruit'}
-                  </span>
+                  <div className="shrink-0 flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
+                    <span className="text-[10px] font-bold text-sky-400">
+                      {challengeStatusLabel(c)}
+                    </span>
+                    <a
+                      href={getChallengeDetailUrl(c)}
+                      className="p-1 rounded text-sky-400 hover:text-sky-200 hover:bg-sky-700/50 transition-colors"
+                      title="View details in guide"
+                    >
+                      <ExternalLink size={11} />
+                    </a>
+                  </div>
                 </button>
               );
             })}

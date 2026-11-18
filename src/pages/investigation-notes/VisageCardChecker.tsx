@@ -16,6 +16,8 @@ import {
   Sliders,
   TrendingUp,
   HelpCircle,
+  Plus,
+  X,
 } from 'lucide-react';
 import { useAdminVisages } from '../../hooks/useAdminVisages';
 import { useVisageCalculatorEngine } from '../../hooks/useVisageCalculatorData';
@@ -257,7 +259,7 @@ export default function VisageCardChecker() {
   const [selectedMonsterId, setSelectedMonsterId] = useState<string>(initialCookie?.m || '');
   const [selectedInk, setSelectedInk] = useState<string>(initialCookie?.i || '');
   const [cardQuality, setCardQuality] = useState<QualityOption>(initialCookie?.q || 'Superior');
-  const [cardLevel, setCardLevel] = useState<number>(initialCookie?.l ?? 10);
+  const [cardLevel, setCardLevel] = useState<number>(initialCookie?.l ?? 1);
 
   // Selected base rolls (by tier)
   const [baseRolls, setBaseRolls] = useState<BaseRollInput[]>(initialCookie?.b || EMPTY_BASE_ROLLS());
@@ -414,6 +416,38 @@ export default function VisageCardChecker() {
     const found = WEIGHT_PRESETS.find((p) => p.id === presetId);
     if (found) {
       setCustomWeights(found.weights);
+    }
+  };
+
+  // Quick-add an effect (and optional tier) from the pool table into the first empty base slot
+  const handleAddBaseEffect = (effName: string, tier?: number) => {
+    // Look for the first empty slot within maxBaseSlots
+    const emptyIdx = baseRolls.slice(0, maxBaseSlots).findIndex((r) => !r || !r.effect);
+
+    if (emptyIdx !== -1) {
+      let chosenTier: number | '' = tier !== undefined ? tier : '';
+      if (chosenTier === '' && currentBasePool) {
+        const matchingEntries = currentBasePool.effects.filter((e) => e.effect === effName);
+        if (matchingEntries.length === 1) {
+          chosenTier = matchingEntries[0].tier;
+        }
+      }
+      const next = [...baseRolls];
+      next[emptyIdx] = { effect: effName, tier: chosenTier };
+      setBaseRolls(next);
+      return;
+    }
+
+    // If all slots are filled, but an existing slot matches effName and has no tier, set its tier
+    if (tier !== undefined) {
+      const unfilledTierIdx = baseRolls
+        .slice(0, maxBaseSlots)
+        .findIndex((r) => r && r.effect === effName && (r.tier === '' || r.tier === undefined));
+      if (unfilledTierIdx !== -1) {
+        const next = [...baseRolls];
+        next[unfilledTierIdx] = { ...next[unfilledTierIdx], tier };
+        setBaseRolls(next);
+      }
     }
   };
 
@@ -581,7 +615,7 @@ export default function VisageCardChecker() {
     clearCheckerCookie();
     setBaseRolls(EMPTY_BASE_ROLLS());
     setResketchSlots(EMPTY_SLOTS());
-    setCardLevel(10);
+    setCardLevel(1);
     setCardQuality('Superior');
     setActivePreset('physical');
     const found = WEIGHT_PRESETS.find((p) => p.id === 'physical');
@@ -923,6 +957,7 @@ export default function VisageCardChecker() {
                 const tiers = Array.from(new Set(currentBasePool.effects.map((e) => e.tier))).sort((a, b) => a - b);
                 const maxTier = tiers[tiers.length - 1];
                 const isFixed = maxTier <= 1;
+                const hasEmptyBaseSlot = baseRolls.slice(0, maxBaseSlots).some((r) => !r || !r.effect);
                 return (
                   <div className="p-3 rounded-xl bg-mh-slate-900/60 border border-white/10 space-y-2">
                     <div className="flex items-center justify-between gap-2 text-xs font-semibold text-mh-slate-300 flex-wrap">
@@ -937,7 +972,10 @@ export default function VisageCardChecker() {
                     <p className="text-[10px] text-mh-slate-400 leading-relaxed">
                       {isFixed
                         ? 'Elder visage: each base slot picks one of these effects, and the value is fixed — there is no tier roll.'
-                        : 'Each base slot rolls an effect, then a tier. The % in each cell is the chance of one base slot landing on exactly that effect and tier.'}
+                        : 'Each base slot rolls an effect, then a tier. The % in each cell is the chance of one base slot landing on exactly that effect and tier.'}{' '}
+                      <span className="text-amber-300 font-medium">
+                        Click any effect or tier box to quickly add it to an empty base slot below.
+                      </span>
                     </p>
                     <div className="overflow-x-auto">
                       <table className="w-full text-[11px] border-separate border-spacing-1">
@@ -959,8 +997,27 @@ export default function VisageCardChecker() {
                         <tbody>
                           {effectNames.map((effName) => (
                             <tr key={effName}>
-                              <td className="px-1 align-middle">
-                                <div className="font-bold text-white">{effName}</div>
+                              <td
+                                onClick={() => handleAddBaseEffect(effName)}
+                                className={cn(
+                                  'px-1.5 py-1 align-middle rounded-lg transition-colors group/eff select-none',
+                                  hasEmptyBaseSlot ? 'cursor-pointer hover:bg-white/10' : 'cursor-default',
+                                )}
+                                title={
+                                  hasEmptyBaseSlot
+                                    ? `Click to add ${effName} to empty base slot`
+                                    : 'Base slots full (clear a slot below first)'
+                                }
+                              >
+                                <div className="font-bold text-white group-hover/eff:text-amber-300 transition-colors flex items-center justify-between gap-1">
+                                  <span>{effName}</span>
+                                  {hasEmptyBaseSlot && (
+                                    <Plus
+                                      size={11}
+                                      className="opacity-0 group-hover/eff:opacity-100 text-amber-400 transition-opacity shrink-0"
+                                    />
+                                  )}
+                                </div>
                                 <div className="text-[9px] text-mh-slate-500 font-mono">
                                   {currentBasePool.effects.find((e) => e.effect === effName)?.effect_chance} effect chance
                                 </div>
@@ -970,12 +1027,30 @@ export default function VisageCardChecker() {
                                 if (!entry) return <td key={t} />;
                                 const theme = getRarityTheme(baseTierRarity(t, maxTier));
                                 return (
-                                  <td key={t} className={cn('p-1.5 rounded-lg border text-center', theme.bg, theme.border)}>
+                                  <td
+                                    key={t}
+                                    onClick={() => handleAddBaseEffect(effName, t)}
+                                    className={cn(
+                                      'p-1.5 rounded-lg border text-center transition-all select-none',
+                                      theme.bg,
+                                      theme.border,
+                                      hasEmptyBaseSlot
+                                        ? 'cursor-pointer hover:scale-[1.03] hover:ring-2 hover:ring-amber-400/60 hover:shadow-lg active:scale-95'
+                                        : 'cursor-default',
+                                    )}
+                                    title={
+                                      hasEmptyBaseSlot
+                                        ? `Click to add ${effName} (${isFixed ? 'Fixed' : `Tier ${t}`}) to empty base slot`
+                                        : 'Base slots full (clear a slot below first)'
+                                    }
+                                  >
                                     <div className={cn('font-mono font-bold', theme.text)}>
                                       {entry.values_by_level[cardLevel - 1] ?? entry.values_by_level[0]}
                                     </div>
                                     {cardLevel < 10 && (
-                                      <div className="text-[9px] text-mh-slate-400 font-mono">Lv10 {entry.values_by_level[9]}</div>
+                                      <div className="text-[9px] text-mh-slate-400 font-mono">
+                                        Lv10 {entry.values_by_level[9]}
+                                      </div>
                                     )}
                                     <div className="text-[9px] text-mh-slate-300 font-mono">{entry.overall_chance}</div>
                                   </td>
@@ -1024,7 +1099,24 @@ export default function VisageCardChecker() {
                       )}
                     >
                       <div className="flex items-center justify-between text-xs font-bold text-mh-slate-300">
-                        <span className={baseTheme.text}>Base Slot #{slotIdx + 1}</span>
+                        <div className="flex items-center gap-2">
+                          <span className={baseTheme.text}>Base Slot #{slotIdx + 1}</span>
+                          {currentRoll.effect && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const next = [...baseRolls];
+                                next[slotIdx] = { effect: '', tier: '' };
+                                setBaseRolls(next);
+                              }}
+                              className="text-[10px] text-mh-slate-400 hover:text-red-300 transition-colors flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-white/5 hover:bg-white/10"
+                              title="Clear this slot"
+                            >
+                              <X size={10} />
+                              <span>Clear</span>
+                            </button>
+                          )}
+                        </div>
                         {evalResult && (
                           <span
                             className={cn('text-[10px] font-mono px-2 py-0.5 rounded font-bold uppercase', baseTheme.badge)}

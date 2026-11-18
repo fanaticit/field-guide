@@ -20,6 +20,7 @@ import {
   AlertCircle,
   User,
   Loader2,
+  Send,
 } from 'lucide-react';
 import {
   useAdminFeedbackList,
@@ -144,15 +145,20 @@ export default function FeedbackManager() {
   };
 
   const handleStatusChange = (item: SiteFeedback, newStatus: FeedbackStatus) => {
+    const updates: Partial<SiteFeedback> = {
+      status: newStatus,
+      is_read: true,
+    };
+    if (newStatus === 'resolved' && item.user_id) {
+      updates.is_user_read = false;
+    }
+
     updateMutation.mutate({
       id: item.id,
-      updates: {
-        status: newStatus,
-        is_read: true,
-      },
+      updates,
     });
     if (selectedFeedback?.id === item.id) {
-      setSelectedFeedback({ ...selectedFeedback, status: newStatus, is_read: true });
+      setSelectedFeedback({ ...selectedFeedback, ...updates });
     }
   };
 
@@ -413,6 +419,8 @@ function FeedbackDetailModal({
 }) {
   const [adminNotes, setAdminNotes] = useState(feedback.admin_notes || '');
   const [savedNotesMsg, setSavedNotesMsg] = useState(false);
+  const [adminReply, setAdminReply] = useState(feedback.admin_reply || '');
+  const [savedReplyMsg, setSavedReplyMsg] = useState(false);
   const updateMutation = useUpdateFeedback();
 
   const typeConf = TYPE_CONFIG[feedback.feedback_type] ?? TYPE_CONFIG.general;
@@ -426,6 +434,24 @@ function FeedbackDetailModal({
     setSavedNotesMsg(true);
     setTimeout(() => setSavedNotesMsg(false), 2000);
   };
+
+  const handleSaveReply = async (replyText?: string) => {
+    const textToSend = (replyText !== undefined ? replyText : adminReply).trim();
+    await updateMutation.mutateAsync({
+      id: feedback.id,
+      updates: {
+        admin_reply: textToSend || null,
+        admin_reply_at: textToSend ? new Date().toISOString() : null,
+        is_user_read: false,
+      },
+    });
+    if (replyText !== undefined) {
+      setAdminReply(replyText);
+    }
+    setSavedReplyMsg(true);
+    setTimeout(() => setSavedReplyMsg(false), 2500);
+  };
+
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
@@ -539,6 +565,85 @@ function FeedbackDetailModal({
                 );
               })}
             </div>
+          </div>
+
+          {/* Admin Reply to Submitter */}
+          <div className="rounded-xl border border-mh-gold-500/30 bg-mh-gold-500/5 p-3.5 space-y-2">
+            <div className="flex items-center justify-between">
+              <label className="font-semibold text-mh-gold-400 flex items-center gap-1.5">
+                <Send size={13} className="text-mh-gold-400" />
+                Reply to Submitter {feedback.user_id ? '(In-App Notification)' : '(Guest - No Account)'}
+              </label>
+              {savedReplyMsg && (
+                <span className="text-[11px] text-emerald-400 font-semibold flex items-center gap-1 animate-fade-in">
+                  <CheckCircle2 size={12} /> Sent &amp; Notified!
+                </span>
+              )}
+            </div>
+
+            {feedback.user_id ? (
+              <>
+                <p className="text-[11px] text-mh-slate-400">
+                  Sending a reply will notify this player with an in-app badge next time they visit.
+                </p>
+
+                {/* Quick Templates */}
+                <div className="flex flex-wrap gap-1.5">
+                  {[
+                    'This bug has been fixed in the latest update! Thank you for reporting.',
+                    'Thanks for the report! We have updated the data accordingly.',
+                    "We're looking into this issue and working on a fix.",
+                  ].map((preset) => (
+                    <button
+                      key={preset}
+                      type="button"
+                      onClick={() => setAdminReply(preset)}
+                      className="rounded-md border border-mh-slate-700 bg-mh-slate-800/80 px-2 py-0.5 text-[10px] text-mh-slate-300 hover:border-mh-gold-500/50 hover:text-mh-gold-400 transition-colors text-left"
+                    >
+                      &quot;{preset.slice(0, 32)}...&quot;
+                    </button>
+                  ))}
+                </div>
+
+                <textarea
+                  rows={2}
+                  value={adminReply}
+                  onChange={(e) => setAdminReply(e.target.value)}
+                  placeholder="Type a message to let the player know it's fixed..."
+                  className="w-full rounded-xl border border-mh-slate-700 bg-mh-slate-950 p-2.5 text-xs text-white placeholder-mh-slate-500 focus:border-mh-gold-500 focus:outline-none"
+                />
+
+                <div className="flex items-center justify-between pt-1">
+                  <span className="text-[10px] text-mh-slate-500">
+                    {feedback.admin_reply_at
+                      ? `Last replied: ${new Date(feedback.admin_reply_at).toLocaleString()}`
+                      : 'No reply sent yet'}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => handleSaveReply()}
+                    disabled={updateMutation.isPending || !adminReply.trim()}
+                    className="flex items-center gap-1.5 rounded-lg bg-mh-gold-500 px-3 py-1.5 text-xs font-bold text-mh-slate-950 hover:bg-mh-gold-400 transition-colors disabled:opacity-50"
+                  >
+                    {updateMutation.isPending ? (
+                      <Loader2 size={12} className="animate-spin" />
+                    ) : (
+                      <Send size={12} />
+                    )}
+                    Send Reply
+                  </button>
+                </div>
+              </>
+            ) : (
+              <p className="text-[11px] text-mh-slate-400 py-1">
+                The submitter was not signed in when submitting this feedback, so in-app notifications cannot be delivered to them.
+                {feedback.contact_info ? (
+                  <span className="block mt-1 text-mh-gold-400">
+                    Contact info provided: {feedback.contact_info}
+                  </span>
+                ) : null}
+              </p>
+            )}
           </div>
 
           {/* Admin Notes */}
