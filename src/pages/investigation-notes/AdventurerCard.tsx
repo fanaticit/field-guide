@@ -67,6 +67,7 @@ export default function AdventurerCard({
 }: AdventurerCardProps) {
   const [imageError, setImageError] = useState(false);
   const [backgroundError, setBackgroundError] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const isPlayerCharacter = adventurer.is_default;
   const navigate = useNavigate();
@@ -94,7 +95,8 @@ export default function AdventurerCard({
       title={`${adventurer.name} — Click to inspect`}
       style={adventurerRarityBorder(adventurer.rarity, activeRecruited)}
       className={cn(
-        'group relative isolate overflow-hidden flex flex-col justify-between rounded-2xl border cursor-pointer select-none transition-all duration-200 p-3.5 sm:p-4 shadow-md hover:scale-[1.01] hover:shadow-xl hover:z-10 min-w-0 max-w-full',
+        'group relative flex flex-col justify-between rounded-2xl border cursor-pointer select-none transition-all duration-200 p-3.5 sm:p-4 shadow-md hover:scale-[1.01] hover:shadow-xl hover:z-20 focus-within:z-30 min-w-0 max-w-full',
+        menuOpen && 'z-40',
         activeRecruited
           ? isPlayerCharacter
             ? 'border-mh-gold-500/60 bg-gradient-to-b from-[#241e15] via-[#161926] to-[#121520] hover:border-mh-gold-400 shadow-mh-gold-500/10'
@@ -254,6 +256,9 @@ export default function AdventurerCard({
               <ChallengeGoalMenu
                 currentLevel={currentInsight}
                 onSelect={(target) => onAddChallenge?.(adventurer, target)}
+                placement="top"
+                align="left"
+                onOpenChange={setMenuOpen}
                 className="h-6 rounded-full px-2 text-[10px] hover:scale-105 shrink-0"
               />
             )
@@ -266,6 +271,7 @@ export default function AdventurerCard({
             <InsightPicker
               level={currentInsight}
               onChange={(lvl) => onSetInsight?.(lvl)}
+              onOpenChange={setMenuOpen}
             />
           )}
 

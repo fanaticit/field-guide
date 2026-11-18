@@ -282,6 +282,8 @@ export default function AdventurerModal({
                       <ChallengeGoalMenu
                         currentLevel={currentInsight}
                         onSelect={(target) => onAddChallenge?.(adventurer, target)}
+                        placement="top"
+                        align="right"
                         className="rounded-lg px-3 py-1.5 text-xs"
                       >
                         <Target size={13} />

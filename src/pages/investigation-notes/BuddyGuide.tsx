@@ -1,7 +1,8 @@
 // ─────────────────────────────────────────────────────────────
 // BuddyGuide — Investigation Notes view for MHO Companions (Buddies) with Collection
 // ─────────────────────────────────────────────────────────────
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
   Search,
   Cat,
@@ -30,6 +31,7 @@ import { useUserBuddyCollection } from '../../hooks/useUserBuddyCollection';
 import {
   useHunterChallenges,
   useAddBuddyChallenge,
+  useUpdateChallengeStatus,
   getBuddyChallenge,
 } from '../../hooks/useHunterChallenges';
 import { useAuthStore } from '../../store/authStore';
@@ -72,10 +74,25 @@ export default function BuddyGuide() {
     localStorage.setItem(INTRO_HIDDEN_KEY, next ? '1' : '0');
   };
 
+  const [searchParams] = useSearchParams();
   const { data: buddies = [], isLoading } = usePublicBuddies({
     showSpoilers: Boolean(profile?.show_spoilers),
   });
   const { data: allSkills = [] } = useAllBuddySkills();
+
+  // Open buddy detail modal if specified in URL (?buddy=... or ?id=...)
+  useEffect(() => {
+    const buddyParam = searchParams.get('buddy') || searchParams.get('id');
+    if (!buddyParam || buddies.length === 0) return;
+
+    const query = buddyParam.trim().toLowerCase();
+    const matched = buddies.find(
+      (b) => b.id.toLowerCase() === query || b.name.toLowerCase() === query,
+    );
+    if (matched) {
+      setInspectedBuddy(matched);
+    }
+  }, [searchParams, buddies]);
 
   // Group skills by buddy_id for quick search lookup
   const skillsByBuddyId = useMemo(() => {
@@ -99,12 +116,42 @@ export default function BuddyGuide() {
 
   const { data: challenges = [] } = useHunterChallenges(user?.id);
   const addBuddyChallenge = useAddBuddyChallenge();
+  const updateChallenge = useUpdateChallengeStatus();
 
-  const handleAddChallenge = async (buddy: DBBuddy) => {
+  // Keep an open buddy challenge in sync when tier level or collection changes
+  // tierLevel: -1 = unowned, 0 = Tier 0, 1 = Tier 1, 2 = Tier 2 (Max)
+  const syncChallenge = (buddy: DBBuddy, tierLevel: number) => {
+    const challenge = getBuddyChallenge(challenges, buddy.id);
+    if (!challenge || (challenge.status !== 'crafting' && challenge.status !== 'upgrading')) return;
+    const curRarity = tierLevel >= 0 ? Math.min(3, tierLevel + 1) : 0;
+    const target = Math.max(1, Math.min(3, challenge.max_rarity || 1));
+    const done = curRarity >= target;
+    updateChallenge.mutate({
+      challengeId: challenge.id,
+      status: done ? 'completed' : curRarity > 0 ? 'upgrading' : 'crafting',
+      currentRarity: curRarity,
+      completedAt: done ? new Date().toISOString() : null,
+    });
+  };
+
+  const handleToggleCollected = (buddy: DBBuddy) => {
+    const isCurrentlyOwned = Boolean(collectionMap[buddy.id]);
+    toggleBuddyCollected(buddy.id);
+    // If was owned, it's being removed (-1); if was not owned, it starts at Tier 0
+    syncChallenge(buddy, isCurrentlyOwned ? -1 : 0);
+  };
+
+  const handleSetTier = (buddy: DBBuddy, level: number) => {
+    setBuddyTierLevel(buddy.id, level);
+    syncChallenge(buddy, level);
+  };
+
+  const handleAddChallenge = async (buddy: DBBuddy, targetGoal = 1) => {
     if (!user) {
       setLoginModalOpen(true);
       return;
     }
+    const currentTier = collectionMap[buddy.id] ? getTierLevel(buddy.id) : -1;
     await addBuddyChallenge.mutateAsync({
       userId: user.id,
       buddyId: buddy.id,
@@ -112,6 +159,8 @@ export default function BuddyGuide() {
       pieceImage: buddy.image,
       tier: buddy.tier,
       role: buddy.role,
+      currentTierLevel: currentTier,
+      targetTierLevel: targetGoal,
     });
   };
 
@@ -432,8 +481,8 @@ export default function BuddyGuide() {
               buddy={buddy}
               collectionEntry={collectionMap[buddy.id]}
               challenge={getBuddyChallenge(challenges, buddy.id)}
-              onToggleOwned={() => toggleBuddyCollected(buddy.id)}
-              onSetTierLevel={(lvl) => setBuddyTierLevel(buddy.id, lvl)}
+              onToggleOwned={() => handleToggleCollected(buddy)}
+              onSetTierLevel={(lvl) => handleSetTier(buddy, lvl)}
               onAddChallenge={handleAddChallenge}
               onClick={() => setInspectedBuddy(buddy)}
             />
@@ -537,7 +586,7 @@ export default function BuddyGuide() {
                       <div className="flex items-center gap-1.5">
                         <button
                           type="button"
-                          onClick={() => toggleBuddyCollected(buddy.id)}
+                          onClick={() => handleToggleCollected(buddy)}
                           className={cn(
                             'inline-flex items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-bold transition-all shadow-sm border',
                             isOwned
@@ -553,7 +602,7 @@ export default function BuddyGuide() {
                         {isOwned && (
                           <BuddyTierPicker
                             level={tierLevel}
-                            onChange={(lvl) => setBuddyTierLevel(buddy.id, lvl)}
+                            onChange={(lvl) => handleSetTier(buddy, lvl)}
                           />
                         )}
                       </div>
@@ -586,9 +635,13 @@ export default function BuddyGuide() {
         open={inspectedBuddy !== null}
         collectionEntry={inspectedBuddy ? collectionMap[inspectedBuddy.id] : undefined}
         challenge={inspectedBuddy ? getBuddyChallenge(challenges, inspectedBuddy.id) : undefined}
-        onToggleOwned={() => inspectedBuddy && toggleBuddyCollected(inspectedBuddy.id)}
-        onSetTierLevel={(lvl) => inspectedBuddy && setBuddyTierLevel(inspectedBuddy.id, lvl)}
-        onRemoveFromCollection={() => inspectedBuddy && removeBuddyFromCollection(inspectedBuddy.id)}
+        onToggleOwned={() => inspectedBuddy && handleToggleCollected(inspectedBuddy)}
+        onSetTierLevel={(lvl) => inspectedBuddy && handleSetTier(inspectedBuddy, lvl)}
+        onRemoveFromCollection={() => {
+          if (!inspectedBuddy) return;
+          removeBuddyFromCollection(inspectedBuddy.id);
+          syncChallenge(inspectedBuddy, -1);
+        }}
         onAddChallenge={handleAddChallenge}
         onClose={() => setInspectedBuddy(null)}
       />

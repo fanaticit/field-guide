@@ -137,6 +137,10 @@ export interface AddBuddyChallengePayload {
   tier?:           string | null;
   role?:           string | null;
   notes?:          string | null;
+  /** Current tier level of the buddy: -1 = not collected/owned, 0 = Tier 0, 1 = Tier 1, 2 = Tier 2 (Max). */
+  currentTierLevel?: number;
+  /** Goal: 1 = just recruit (Tier 0+), 2 = Tier 1, 3 = Tier 2 (Max). */
+  targetTierLevel?:  number;
 }
 
 export interface AddMonsterChallengePayload {
@@ -433,18 +437,25 @@ export function useAddBuddyChallenge() {
 
   return useMutation({
     mutationFn: async (payload: AddBuddyChallengePayload) => {
-      // Check if an active challenge already exists for this buddy
+      // Check if an existing challenge exists for this buddy
       const { data: existing } = await supabase
         .from('hunter_challenges')
         .select('id, status, created_at')
         .eq('user_id', payload.userId)
         .eq('buddy_id', payload.buddyId)
-        .in('status', ['crafting', 'upgrading'])
         .maybeSingle();
 
-      if (existing) {
+      if (existing && (existing.status === 'crafting' || existing.status === 'upgrading')) {
         return { challenge: existing as unknown as HunterChallenge, wasAlreadyTracked: true };
       }
+
+      // Convert buddy tier level (-1 = unowned, 0 = Tier 0, 1 = Tier 1, 2 = Tier 2) to challenge current_rarity (0..3)
+      const curTierLevel = payload.currentTierLevel ?? -1;
+      const curRarity = curTierLevel >= 0 ? Math.min(3, curTierLevel + 1) : 0;
+      // targetTierLevel: 1 = recruit (Tier 0+), 2 = Tier 1, 3 = Tier 2 (Max)
+      const target = Math.max(1, Math.min(3, payload.targetTierLevel ?? 1));
+      const isComplete = curRarity >= target;
+      const status: ChallengeStatus = isComplete ? 'completed' : curRarity > 0 ? 'upgrading' : 'crafting';
 
       const row = {
         user_id:         payload.userId,
@@ -456,17 +467,18 @@ export function useAddBuddyChallenge() {
         set_icon:        payload.pieceImage,
         monster_name:    payload.buddyName,
         craft_rarity:    1,
-        current_rarity:  0,
-        max_rarity:      1,
-        status:          'crafting' as ChallengeStatus,
+        current_rarity:  curRarity,
+        max_rarity:      target,
+        status,
+        completed_at:    isComplete ? new Date().toISOString() : null,
         notes:           payload.notes || null,
       };
 
-      const { data, error } = await supabase
-        .from('hunter_challenges')
-        .insert(row)
-        .select()
-        .single();
+      const query = existing
+        ? supabase.from('hunter_challenges').update(row).eq('id', existing.id)
+        : supabase.from('hunter_challenges').insert(row);
+
+      const { data, error } = await query.select().single();
 
       if (error) throw error;
       return { challenge: data as HunterChallenge, wasAlreadyTracked: false };
@@ -535,12 +547,14 @@ export function useAddMonsterChallenge() {
   });
 }
 
-/** Highest rarity / level a challenge can reach: adventurer insight goal, 1 for buddies and monsters, 4 for visages. */
+/** Highest rarity / level a challenge can reach: adventurer insight goal, 1-3 for buddy tier goals, 1 for monsters, 4 for visages. */
 export function challengeMaxRarity(c: HunterChallenge): number {
   if (c.challenge_type === 'adventurer' || c.adventurer_id) {
     return Math.min(ADVENTURER_MAX_INSIGHT, Math.max(1, c.max_rarity || 1));
   }
-  if (c.challenge_type === 'buddy' || c.buddy_id) return 1;
+  if (c.challenge_type === 'buddy' || c.buddy_id) {
+    return Math.min(3, Math.max(1, c.max_rarity || 1));
+  }
   if (c.challenge_type === 'monster') return 1;
   if (c.challenge_type === 'visage_set' || c.visage_id) return 4;
   return c.max_rarity || 16;
@@ -613,10 +627,12 @@ export function useIncrementChallenge() {
 
       // When stepping a buddy challenge, automatically sync user_buddy_collection
       if (isBuddy && challenge.buddy_id) {
+        const newTier = Math.max(0, Math.min(2, newRarity - 1));
         await supabase.from('user_buddy_collection').upsert(
           {
             user_id:    challenge.user_id,
             buddy_id:   challenge.buddy_id,
+            tier_level: newTier,
             quantity:   1,
             updated_at: new Date().toISOString(),
           },
@@ -1083,8 +1099,15 @@ export function challengeStatusLabel(c: HunterChallenge): string {
 
   const isBuddy = c.challenge_type === 'buddy' || Boolean(c.buddy_id);
   if (isBuddy) {
-    if (c.status === 'completed') return 'Recruited';
-    return 'Recruit';
+    const target = challengeMaxRarity(c);
+    const targetLabel = target === 1 ? 'Recruit' : target === 2 ? 'Tier 1' : 'Tier Max (2)';
+    if (target <= 1) return c.status === 'completed' ? 'Recruited' : 'Recruit';
+    if (c.status === 'completed') return targetLabel;
+    if (c.status === 'upgrading') {
+      const curTier = Math.max(0, (c.current_rarity || 1) - 1);
+      return `Tier ${curTier} → ${targetLabel}`;
+    }
+    return `Recruit → ${targetLabel}`;
   }
 
   if (c.challenge_type === 'monster') {
