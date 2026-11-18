@@ -1222,7 +1222,7 @@
    "Stylia"
   ],
   "item_id": 320128,
-  "how_to_obtain": "Comes with Stylia (default buddy); Recruitment",
+  "how_to_obtain": "Comes with Stylia (default buddy); Recruitment – Heart of the Thaw banner (2026-11-27 to 2026-12-24)",
   "debug": "",
   "game_status": "Upcoming – Recruitment banner starts 2026-11-27"
  },
@@ -1542,7 +1542,7 @@
   "profile_icon": "MHMobile/Content/UI/Dynamic/PetProfileIcon/PCat/PetProfileIcon_PCat03.png",
   "side_icon": "MHMobile/Content/UI/Dynamic/PetSideIcon/PCat/PetSideIcon_PCat03.png",
   "item_id": 320037,
-  "how_to_obtain": "Featured in limited Recruitment: Sakura Samurai (2026-03-26 to 2026-05-29); Rutaco's Rumbling Furnace; Rumbling Furnace Exchange; Advanced",
+  "how_to_obtain": "Featured in limited Recruitment: Sakura Samurai (2026-03-26 to 2026-05-29); Rutaco's Rumbling Furnace; Rumbling Furnace Exchange",
   "debug": "",
   "game_status": "In game"
  },
@@ -2118,7 +2118,7 @@
   "other_skills": [
    {
     "name": "Crimson Fang Resonance",
-    "description": "Pheasant soars into the sky and chants, granting all adventurers Paralytic Edge for 10s. While Paralytic Edge is active, hitting a monster builds up 0.8% extra paralysis value; once the paralysis value is filled, the monster is inflicted with paralysis.",
+    "description": "Pheasant soars into the sky and chants, granting all adventurers Paralytic Edge for 10s. While Paralytic Edge is active, hitting a monster builds up 1.2% extra paralysis value; once the paralysis value is filled, the monster is inflicted with paralysis.",
     "icon": "MHMobile/Content/UI/Dynamic/SkillIcon/Lan/SkillIcon_MLanA02_EpicSolo.png"
    },
    {
