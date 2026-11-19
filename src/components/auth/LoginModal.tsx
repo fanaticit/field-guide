@@ -113,7 +113,7 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm"
+        className="fixed inset-0 z-[120] bg-black/70 backdrop-blur-sm"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -123,7 +123,7 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="login-title"
-        className="fixed left-1/2 top-1/2 z-50 w-full max-w-sm -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-mh-slate-700 bg-mh-slate-900 shadow-2xl"
+        className="fixed left-1/2 top-1/2 z-[120] w-full max-w-sm -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-mh-slate-700 bg-mh-slate-900 shadow-2xl"
       >
         {/* Close */}
         <button

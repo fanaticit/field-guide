@@ -2,6 +2,7 @@
 // MonsterModal — Detailed Monster View & Study Progress Tracker
 // ─────────────────────────────────────────────────────────────
 import { useState, useMemo, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import {
   X,
   Footprints,
@@ -438,12 +439,18 @@ export default function MonsterModal({ monster, open, onClose }: Props) {
   }
   const progressPct = totalPoints > 0 ? Math.round((completedPoints / totalPoints) * 100) : 0;
 
-  return (
+  return createPortal(
     <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/80 backdrop-blur-md animate-fade-in">
+      <div
+        className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/80 backdrop-blur-md animate-fade-in"
+        onClick={(e) => {
+          if (e.target === e.currentTarget) onClose();
+        }}
+      >
         <div
           role="dialog"
           aria-modal="true"
+          onClick={(e) => e.stopPropagation()}
           className="relative flex flex-col w-full max-w-5xl max-h-[92vh] overflow-hidden rounded-2xl border border-mh-slate-750 bg-mh-slate-900 shadow-2xl"
         >
           {/* Header Banner with sketch backdrop */}
@@ -1392,6 +1399,7 @@ export default function MonsterModal({ monster, open, onClose }: Props) {
           onAddChallenge={handleAddVisageChallenge}
         />
       )}
-    </>
+    </>,
+    document.body,
   );
 }

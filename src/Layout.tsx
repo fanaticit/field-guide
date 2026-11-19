@@ -38,7 +38,7 @@ export default function Layout() {
       <div
         id="main-content"
         className={cn(
-          'app-content relative z-10 flex min-h-screen flex-col',
+          'app-content relative flex min-h-screen flex-col',
           `rarity-theme-${activeTheme}`,
         )}
       >

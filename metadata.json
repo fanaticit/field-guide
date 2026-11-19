@@ -1,41 +1,135 @@
 {
   "name": "monster_hunter_field_guide",
-  "version": "1.1.0",
-  "update": "1.1.0",
-  "date": "2024-06-05",
-  "title": "Visage Collection: Weekly Reset & Hunt Planner Updates",
-  "description": "Visage Collection: Weekly Reset & Hunt Planner Updates",
-  "youtube_url": "",
+  "version": "1.2.0",
+  "update": "1.2.0",
+  "date": "2026-11-19",
+  "title": "Monster Study, Card Checker & In-App Feedback Updates",
+  "description": "Monster Study & Hitzone Stats, Visage Card Checker, Build Image Export, and In-App Feedback Notifications",
+  "youtube_url": "https://youtu.be/ibcOroqMjdc",
+  "video_aspect": "shorts",
   "changes": [
     {
-      "title": "New \"By Monster\" Progression View",
-      "description": "Added a dedicated By Monster view to the Visage Collection, laying out all monsters (Large Monsters in game order, Small Monsters alphabetically) with both of their potential Ink types displayed in a single column.",
+      "title": "Visage Card Checker & Stat Verification",
+      "description": "Evaluate and compare your Visage Cards with refined percentage calculations, roll analysis, and stat benchmarks to fine-tune your loadouts.",
+      "page_url": "/gallery/check",
+      "page_label": "Card Checker"
+    },
+    {
+      "title": "Targeted Monster Hunts & In-Game Roster View",
+      "description": "Quickly identify which monsters to hunt to upgrade your Visage collection. Includes an in-game roster layout and search that scans through all card skills.",
       "page_url": "/gallery/collection",
       "page_label": "Visage Collection"
     },
     {
-      "title": "Instant Card Tracking",
-      "description": "Mark cards as owned, update rarity tiers (Fine, Rare, Epic, Superior), and adjust quantities directly on each monster's card without switching screens.",
-      "page_url": "/gallery/collection",
-      "page_label": "Visage Collection"
-    },
-    {
-      "title": "Targeted Rarity Hunting Filters",
-      "description": "Filter by rarity goal (Fine, Rare, Epic, or Superior). Selecting a target immediately filters out any monster where you already have a card at that tier or higher, highlighting only the monsters you still need to hunt before the reset.",
-      "page_url": "/gallery/collection",
-      "page_label": "Visage Collection"
-    },
-    {
-      "title": "Direct Field Guide Links",
-      "description": "Clicking any monster's icon instantly opens their details and drop tables in the Monster Field Guide.",
+      "title": "Monster Study Tracker, Hitboxes & Stats",
+      "description": "Track your Monster Study completion directly in the Field Guide, with detailed hitboxes, element effectiveness, and monster combat stats.",
       "page_url": "/challenges/monsters",
       "page_label": "Monster Field Guide"
     },
     {
-      "title": "Polished In-Game UI Locks",
-      "description": "Replaced placeholder lock emojis with the official in-game lock icon (/img/ui/lock.png) across cards, loadout strips, and builds to clearly signal missing cards.",
-      "page_url": "/gallery/collection",
-      "page_label": "Visage Collection"
+      "title": "Target Visage Cards on Monsters",
+      "description": "See the exact Visage cards you are hunting for directly on each monster's profile to streamline your hunt planning.",
+      "page_url": "/challenges/monsters",
+      "page_label": "Monster Field Guide"
+    },
+    {
+      "title": "Build Planner: Export to Image",
+      "description": "Generate clean, high-resolution graphic cards of your custom builds, complete with equipped armour, weapon stats, and active visage synergy to share with other hunters.",
+      "page_url": "/armory/planner",
+      "page_label": "Build Planner"
+    },
+    {
+      "title": "In-App Feedback & Bug Resolution Messages",
+      "description": "Receive direct in-app messages and status updates from the team when your bug report or feedback is resolved. Check the new My Reports tab to see replies.",
+      "page_url": "/settings",
+      "page_label": "Feedback & Support"
+    }
+  ],
+  "releases": [
+    {
+      "version": "1.2.0",
+      "date": "2026-11-19",
+      "title": "Monster Study, Card Checker & In-App Feedback Updates",
+      "description": "Monster Study & Hitzone Stats, Visage Card Checker, Build Image Export, and In-App Feedback Notifications",
+      "youtube_url": "https://youtu.be/ibcOroqMjdc",
+      "video_aspect": "shorts",
+      "changes": [
+        {
+          "title": "Visage Card Checker & Stat Verification",
+          "description": "Evaluate and compare your Visage Cards with refined percentage calculations, roll analysis, and stat benchmarks to fine-tune your loadouts.",
+          "page_url": "/gallery/check",
+          "page_label": "Card Checker"
+        },
+        {
+          "title": "Targeted Monster Hunts & In-Game Roster View",
+          "description": "Quickly identify which monsters to hunt to upgrade your Visage collection. Includes an in-game roster layout and search that scans through all card skills.",
+          "page_url": "/gallery/collection",
+          "page_label": "Visage Collection"
+        },
+        {
+          "title": "Monster Study Tracker, Hitboxes & Stats",
+          "description": "Track your Monster Study completion directly in the Field Guide, with detailed hitboxes, element effectiveness, and monster combat stats.",
+          "page_url": "/challenges/monsters",
+          "page_label": "Monster Field Guide"
+        },
+        {
+          "title": "Target Visage Cards on Monsters",
+          "description": "See the exact Visage cards you are hunting for directly on each monster's profile to streamline your hunt planning.",
+          "page_url": "/challenges/monsters",
+          "page_label": "Monster Field Guide"
+        },
+        {
+          "title": "Build Planner: Export to Image",
+          "description": "Generate clean, high-resolution graphic cards of your custom builds, complete with equipped armour, weapon stats, and active visage synergy to share with other hunters.",
+          "page_url": "/armory/planner",
+          "page_label": "Build Planner"
+        },
+        {
+          "title": "In-App Feedback & Bug Resolution Messages",
+          "description": "Receive direct in-app messages and status updates from the team when your bug report or feedback is resolved. Check the new My Reports tab to see replies.",
+          "page_url": "/settings",
+          "page_label": "Feedback & Support"
+        }
+      ]
+    },
+    {
+      "version": "1.1.0",
+      "date": "2026-11-15",
+      "title": "Visage Collection: Weekly Reset & Hunt Planner Updates",
+      "description": "Visage Collection: Weekly Reset & Hunt Planner Updates",
+      "youtube_url": "",
+      "changes": [
+        {
+          "title": "New \"By Monster\" Progression View",
+          "description": "Added a dedicated By Monster view to the Visage Collection, laying out all monsters (Large Monsters in game order, Small Monsters alphabetically) with both of their potential Ink types displayed in a single column.",
+          "page_url": "/gallery/collection",
+          "page_label": "Visage Collection"
+        },
+        {
+          "title": "Instant Card Tracking",
+          "description": "Mark cards as owned, update rarity tiers (Fine, Rare, Epic, Superior), and adjust quantities directly on each monster's card without switching screens.",
+          "page_url": "/gallery/collection",
+          "page_label": "Visage Collection"
+        },
+        {
+          "title": "Targeted Rarity Hunting Filters",
+          "description": "Filter by rarity goal (Fine, Rare, Epic, or Superior). Selecting a target immediately filters out any monster where you already have a card at that tier or higher, highlighting only the monsters you still need to hunt before the reset.",
+          "page_url": "/gallery/collection",
+          "page_label": "Visage Collection"
+        },
+        {
+          "title": "Direct Field Guide Links",
+          "description": "Clicking any monster's icon instantly opens their details and drop tables in the Monster Field Guide.",
+          "page_url": "/challenges/monsters",
+          "page_label": "Monster Field Guide"
+        },
+        {
+          "title": "Polished In-Game UI Locks",
+          "description": "Replaced placeholder lock emojis with the official in-game lock icon (/img/ui/lock.png) across cards, loadout strips, and builds to clearly signal missing cards.",
+          "page_url": "/gallery/collection",
+          "page_label": "Visage Collection"
+        }
+      ]
     }
   ]
 }
