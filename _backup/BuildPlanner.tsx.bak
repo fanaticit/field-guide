@@ -1,0 +1,751 @@
+import { Save, Copy, ArrowLeft, ThumbsUp, RotateCcw, CheckCircle2, Package, Globe, Video, ExternalLink } from 'lucide-react';
+import { getYouTubeEmbedUrl } from '../lib/youtube';
+import { useEffect, useState, useRef } from 'react';
+import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
+import { useAuthStore } from '../store/authStore';
+import { useBuildPlannerStore } from '../store/buildPlannerStore';
+import { useUIStore } from '../store/uiStore';
+import { DEFAULT_SECTION_THEMES } from '../config/themes';
+import { HeroBuddySelector } from '../components/build-planner/HeroBuddySelector';
+import { EquipmentSelector } from '../components/build-planner/EquipmentSelector';
+import { VisageSelector } from '../components/build-planner/VisageSelector';
+import { SkillSummaryPanel } from '../components/build-planner/SkillSummaryPanel';
+import { ExportBuildImageButton } from '../components/build-planner/ExportBuildImageButton';
+import { clearBuildDraft } from '../store/buildDraftCookie';
+import { supabase } from '../lib/supabase';
+import { useSkillCatalogLoader } from '../hooks/useSkillCatalog';
+import { normalizeVisageRow } from '../data/schemas/visage';
+import { getWeaponMaxName, type DBWeapon } from '../data/schemas/weapon';
+
+export default function BuildPlanner() {
+  const { user } = useAuthStore();
+  const theme = useUIStore((s) => s.sectionThemes['/armory'] ?? DEFAULT_SECTION_THEMES['/armory']);
+  const store = useBuildPlannerStore();
+  const { buildId } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const queryClient = useQueryClient();
+  const titleInputRef = useRef<HTMLInputElement>(null);
+  useSkillCatalogLoader();
+
+  const [isLoading, setIsLoading] = useState(!!buildId);
+  const [hasUpvoted, setHasUpvoted] = useState(false);
+  const [isVoting, setIsVoting] = useState(false);
+  const [isUpvoteAnimating, setIsUpvoteAnimating] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isJustSaved, setIsJustSaved] = useState(false);
+
+  // Selection Feedback Toast
+  const [selectionFeedback, setSelectionFeedback] = useState<string | null>(null);
+  const feedbackTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const triggerFeedback = (message: string) => {
+    if (feedbackTimeoutRef.current) clearTimeout(feedbackTimeoutRef.current);
+    setSelectionFeedback(message);
+    feedbackTimeoutRef.current = setTimeout(() => {
+      setSelectionFeedback(null);
+    }, 2200);
+  };
+
+  useEffect(() => {
+    if (location.state?.sentVisages) {
+      triggerFeedback('Equipped Visage Set from Gallery!');
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
+
+  // Track previous selections for feedback
+  const prevSelectionsRef = useRef({
+    adv: store.adventurer?.id,
+    buddy: store.buddy?.id,
+    wep: store.weapon?.id,
+    helm: store.helm?.id,
+    chest: store.chest?.id,
+    gloves: store.gloves?.id,
+    waist: store.waist?.id,
+    greaves: store.greaves?.id,
+    coreVisage: store.coreVisage?.id,
+  });
+
+  useEffect(() => {
+    const prev = prevSelectionsRef.current;
+    if (store.adventurer && store.adventurer.id !== prev.adv) {
+      triggerFeedback(`Equipped Adventurer: ${store.adventurer.name}`);
+    } else if (store.buddy && store.buddy.id !== prev.buddy) {
+      triggerFeedback(`Equipped Buddy: ${store.buddy.name}`);
+    } else if (store.weapon && store.weapon.id !== prev.wep) {
+      triggerFeedback(`Equipped Weapon: ${getWeaponMaxName(store.weapon as DBWeapon)}`);
+    } else if (store.helm && store.helm.id !== prev.helm) {
+      triggerFeedback(`Equipped Helm: ${store.helm.set_name || 'Helm'}`);
+    } else if (store.chest && store.chest.id !== prev.chest) {
+      triggerFeedback(`Equipped Chest: ${store.chest.set_name || 'Chest'}`);
+    } else if (store.gloves && store.gloves.id !== prev.gloves) {
+      triggerFeedback(`Equipped Gloves: ${store.gloves.set_name || 'Gloves'}`);
+    } else if (store.waist && store.waist.id !== prev.waist) {
+      triggerFeedback(`Equipped Waist: ${store.waist.set_name || 'Waist'}`);
+    } else if (store.greaves && store.greaves.id !== prev.greaves) {
+      triggerFeedback(`Equipped Greaves: ${store.greaves.set_name || 'Greaves'}`);
+    } else if (store.coreVisage && store.coreVisage.id !== prev.coreVisage) {
+      triggerFeedback(`Equipped Core Visage: ${store.coreVisage.name}`);
+    }
+
+    prevSelectionsRef.current = {
+      adv: store.adventurer?.id,
+      buddy: store.buddy?.id,
+      wep: store.weapon?.id,
+      helm: store.helm?.id,
+      chest: store.chest?.id,
+      gloves: store.gloves?.id,
+      waist: store.waist?.id,
+      greaves: store.greaves?.id,
+      coreVisage: store.coreVisage?.id,
+    };
+  }, [
+    store.adventurer,
+    store.buddy,
+    store.weapon,
+    store.helm,
+    store.chest,
+    store.gloves,
+    store.waist,
+    store.greaves,
+    store.coreVisage,
+  ]);
+
+  // Check if current user/device already upvoted this build
+  useEffect(() => {
+    if (store.buildId) {
+      const voted = localStorage.getItem(`mho_build_upvoted_${store.buildId}`) === 'true';
+      setHasUpvoted(voted);
+    } else {
+      setHasUpvoted(false);
+    }
+  }, [store.buildId]);
+
+  // Load build if buildId is present
+  useEffect(() => {
+    if (!buildId) {
+      // If we navigate from /armory/planner/123 to /armory/planner, reset the store
+      if (store.buildId) store.resetBuild();
+      return;
+    }
+
+    async function fetchBuild() {
+      setIsLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from('mho_builds')
+          .select(`
+            *,
+            adventurer:adventurers(*),
+            weapon_type:weapon_types(*),
+            weapon:weapons(*),
+            helm:armour_pieces!mho_builds_helm_piece_id_fkey(*),
+            chest:armour_pieces!mho_builds_chest_piece_id_fkey(*),
+            gloves:armour_pieces!mho_builds_gloves_piece_id_fkey(*),
+            waist:armour_pieces!mho_builds_waist_piece_id_fkey(*),
+            greaves:armour_pieces!mho_builds_greaves_piece_id_fkey(*),
+            buddy:buddies(*),
+            coreVisage:visages!mho_builds_core_visage_id_fkey(*, monster:monsters(icon)),
+            visage2:visages!mho_builds_visage_2_id_fkey(*, monster:monsters(icon)),
+            visage3:visages!mho_builds_visage_3_id_fkey(*, monster:monsters(icon)),
+            visage4:visages!mho_builds_visage_4_id_fkey(*, monster:monsters(icon)),
+            visage5:visages!mho_builds_visage_5_id_fkey(*, monster:monsters(icon))
+          `)
+          .eq('id', buildId)
+          .single();
+
+        if (error) throw error;
+        if (data) {
+          store.resetBuild();
+          store.setBuildId(data.id);
+          store.setTitle(data.title || '');
+          
+          let desc = data.description || '';
+          let role = 'main';
+          if (/<!-- role:support -->/.test(desc)) {
+            role = 'support';
+            desc = desc.replace(/(?:\r?\n\r?\n)?<!-- role:support -->/, '');
+          }
+          let savedInks: Record<string, string> = {};
+          const inkMatch = desc.match(/(?:\r?\n\r?\n)?<!-- inks:(.*?) -->/);
+          if (inkMatch) {
+            try {
+              savedInks = JSON.parse(inkMatch[1]);
+              desc = desc.replace(inkMatch[0], '');
+            } catch (e) {
+              console.error('Failed to parse saved inks', e);
+            }
+          }
+          let loadedExceptions: string[] = [];
+          if (Array.isArray(data.build_exceptions)) {
+            loadedExceptions = data.build_exceptions;
+          }
+          const exceptionsMatch = desc.match(/(?:\r?\n\r?\n)?<!-- exceptions:(.*?) -->/);
+          if (exceptionsMatch) {
+            try {
+              const parsed = JSON.parse(exceptionsMatch[1]);
+              if (Array.isArray(parsed) && loadedExceptions.length === 0) {
+                loadedExceptions = parsed;
+              }
+              desc = desc.replace(exceptionsMatch[0], '');
+            } catch (e) {
+              console.error('Failed to parse saved exceptions', e);
+            }
+          }
+          let loadedTacticalRole: 'Assault' | 'Disrupter' | 'Support' | null = (data as any).tactical_role || null;
+          const classMatch = desc.match(/(?:\r?\n\r?\n)?<!-- class:(.*?) -->/);
+          if (classMatch) {
+            const parsedRole = classMatch[1].trim();
+            if (['Assault', 'Disrupter', 'Disruptor', 'Support'].includes(parsedRole)) {
+              if (!loadedTacticalRole) {
+                loadedTacticalRole = (parsedRole === 'Disruptor' ? 'Disrupter' : parsedRole) as any;
+              }
+            }
+            desc = desc.replace(classMatch[0], '');
+          }
+          store.setBuildExceptions(loadedExceptions);
+          store.setDescription(desc);
+          store.setYoutubeUrl(data.youtube_url || '');
+          store.setBuildRole(role as 'main' | 'support');
+          
+          store.setAuthorId(data.author_id);
+          store.setIsPublished(data.is_published);
+          store.setUpvotes(data.upvotes || 0);
+          
+          if (data.adventurer) {
+            store.setAdventurer(data.adventurer as any);
+            if (loadedTacticalRole) {
+              store.setTacticalRole(loadedTacticalRole);
+            }
+          } else if (loadedTacticalRole) {
+            store.setTacticalRole(loadedTacticalRole);
+          }
+          if (data.weapon_type) store.setWeaponType(data.weapon_type as any);
+          if (data.weapon) store.setWeapon(data.weapon as any);
+          
+          if (data.helm) store.setArmour('helm', data.helm as any);
+          if (data.chest) store.setArmour('chest', data.chest as any);
+          if (data.gloves) store.setArmour('gloves', data.gloves as any);
+          if (data.waist) store.setArmour('waist', data.waist as any);
+          if (data.greaves) store.setArmour('greaves', data.greaves as any);
+          
+          if (data.buddy) store.setBuddy(data.buddy as any);
+          
+          if (data.coreVisage) store.setVisage('core', normalizeVisageRow(data.coreVisage as any) as any);
+          if (data.visage2) store.setVisage(2, normalizeVisageRow(data.visage2 as any) as any);
+          if (data.visage3) store.setVisage(3, normalizeVisageRow(data.visage3 as any) as any);
+          if (data.visage4) store.setVisage(4, normalizeVisageRow(data.visage4 as any) as any);
+          if (data.visage5) store.setVisage(5, normalizeVisageRow(data.visage5 as any) as any);
+          
+          if (Object.keys(savedInks).length > 0) {
+            // Because setVisage overrides the inks with auto-selection, we must apply saved inks after
+            store.setSelectedInkTypes(savedInks);
+          }
+        }
+      } catch (err: any) {
+        console.error('Failed to load build:', err);
+        alert('Failed to load build. It may have been deleted or is private.');
+        navigate('/armory/planner');
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    if (buildId !== store.buildId) {
+      fetchBuild();
+    } else {
+      setIsLoading(false);
+    }
+  }, [buildId]);
+
+  const handleSaveBuild = async (asNew = false) => {
+    if (!user) {
+      alert('Please sign in to save a build.');
+      return;
+    }
+    if (!store.title.trim()) {
+      alert('Please enter a title for your build.');
+      titleInputRef.current?.focus();
+      return;
+    }
+    if (!store.adventurer) {
+      alert('Please select an adventurer.');
+      return;
+    }
+    if (store.adventurer.is_default && !store.weaponType) {
+      alert('Please select a weapon type for the default adventurer.');
+      return;
+    }
+
+    let finalDesc = store.description.trim();
+    if (store.buildRole === 'support') {
+      finalDesc += '\n\n<!-- role:support -->';
+    }
+    const activeInks = Object.entries(store.selectedInkTypes).reduce((acc, [k, v]) => {
+      if (v) acc[k] = v;
+      return acc;
+    }, {} as Record<string, string>);
+    if (Object.keys(activeInks).length > 0) {
+      finalDesc += `\n\n<!-- inks:${JSON.stringify(activeInks)} -->`;
+    }
+    if (store.buildExceptions.length > 0) {
+      finalDesc += `\n\n<!-- exceptions:${JSON.stringify(store.buildExceptions)} -->`;
+    }
+    const currentTacticalRole = store.tacticalRole || (store.adventurer?.role === 'Disruptor' ? 'Disrupter' : store.adventurer?.role) || 'Assault';
+    finalDesc += `\n\n<!-- class:${currentTacticalRole} -->`;
+
+    const buildData: any = {
+      author_id: user.id,
+      title: store.title.trim(),
+      description: finalDesc || null,
+      adventurer_id: store.adventurer.id,
+      tactical_role: currentTacticalRole,
+      weapon_type_id: store.adventurer.is_default ? store.weaponType?.id : store.adventurer.allowed_weapon_types?.[0],
+      weapon_id: store.weapon?.id || null,
+      helm_piece_id: store.helm?.id || null,
+      chest_piece_id: store.chest?.id || null,
+      gloves_piece_id: store.gloves?.id || null,
+      waist_piece_id: store.waist?.id || null,
+      greaves_piece_id: store.greaves?.id || null,
+      buddy_id: store.buddy?.id || null,
+      core_visage_id: store.coreVisage?.id || null,
+      visage_2_id: store.visage2?.id || null,
+      visage_3_id: store.visage3?.id || null,
+      visage_4_id: store.visage4?.id || null,
+      visage_5_id: store.visage5?.id || null,
+      youtube_url: store.youtubeUrl.trim() || null,
+      build_exceptions: store.buildExceptions,
+      is_published: true, // Auto-publish for now
+    };
+
+    const executeSave = async (dataPayload: any) => {
+      if (store.buildId && !asNew) {
+        const { error } = await supabase.from('mho_builds').update(dataPayload).eq('id', store.buildId);
+        if (error) throw error;
+        return { isUpdate: true };
+      } else {
+        const { data, error } = await supabase.from('mho_builds').insert(dataPayload).select('id').single();
+        if (error) throw error;
+        return { isUpdate: false, newId: data.id };
+      }
+    };
+
+    setIsSaving(true);
+    try {
+      let saveRes;
+      try {
+        saveRes = await executeSave(buildData);
+      } catch (saveErr: any) {
+        // If column tactical_role or build_exceptions does not exist yet on Supabase, retry without them
+        const isColumnMissing = (col: string) =>
+          saveErr?.message?.includes(col) || saveErr?.code === '42703' || saveErr?.code === 'PGRST204';
+        if (isColumnMissing('tactical_role') || isColumnMissing('build_exceptions')) {
+          const fallbackData = { ...buildData };
+          if (isColumnMissing('tactical_role') || saveErr?.message?.includes('tactical_role')) {
+            delete fallbackData.tactical_role;
+          }
+          if (isColumnMissing('build_exceptions') || saveErr?.message?.includes('build_exceptions')) {
+            delete fallbackData.build_exceptions;
+          }
+          // If error was generic 42703 / PGRST204 without specific column name, strip both safely
+          if (!saveErr?.message?.includes('tactical_role') && !saveErr?.message?.includes('build_exceptions')) {
+            delete fallbackData.tactical_role;
+            delete fallbackData.build_exceptions;
+          }
+          saveRes = await executeSave(fallbackData);
+        } else {
+          throw saveErr;
+        }
+      }
+
+      if (saveRes.isUpdate) {
+        queryClient.invalidateQueries({ queryKey: ['mho_builds_list'] });
+        setIsJustSaved(true);
+        triggerFeedback('Changes saved successfully!');
+        setTimeout(() => setIsJustSaved(false), 2500);
+      } else if (saveRes.newId) {
+        clearBuildDraft();
+        store.setBuildId(saveRes.newId);
+        store.setAuthorId(user.id);
+        store.setUpvotes(0);
+        queryClient.invalidateQueries({ queryKey: ['mho_builds_list'] });
+        setIsJustSaved(true);
+        triggerFeedback('Build created and saved!');
+        setTimeout(() => setIsJustSaved(false), 2500);
+        navigate(`/armory/planner/${saveRes.newId}`, { replace: true });
+      }
+    } catch (err: any) {
+      console.error(err);
+      alert(`Failed to save build: ${err.message}`);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleUpvote = async () => {
+    if (!store.buildId || hasUpvoted || isVoting) return;
+
+    setIsVoting(true);
+    setIsUpvoteAnimating(true);
+    try {
+      const { error } = await supabase.rpc('vote_on_mho_build', {
+        p_build_id: store.buildId,
+        p_vote_type: 'up',
+      });
+      if (error) throw error;
+
+      store.setUpvotes(store.upvotes + 1);
+      setHasUpvoted(true);
+      localStorage.setItem(`mho_build_upvoted_${store.buildId}`, 'true');
+      queryClient.invalidateQueries({ queryKey: ['mho_builds_list'] });
+      triggerFeedback('Upvoted build! +1');
+    } catch (err: any) {
+      console.error('Failed to upvote build:', err);
+      alert('Failed to register upvote. Please try again.');
+    } finally {
+      setIsVoting(false);
+      setTimeout(() => setIsUpvoteAnimating(false), 1200);
+    }
+  };
+
+  const handleClone = () => {
+    const currentTitle = store.title.trim();
+    const clonedTitle = currentTitle.startsWith('Clone - ')
+      ? currentTitle
+      : `Clone - ${currentTitle || 'Untitled Build'}`;
+    store.setTitle(clonedTitle);
+    store.setBuildId(null);
+    store.setAuthorId(user?.id || null);
+    store.setUpvotes(0);
+    setHasUpvoted(false);
+    navigate('/armory/planner', { replace: true });
+    triggerFeedback('Cloned build. Edit title & save when ready!');
+    setTimeout(() => {
+      if (titleInputRef.current) {
+        titleInputRef.current.focus();
+        titleInputRef.current.select();
+      }
+    }, 80);
+  };
+
+  const handleClearStartNew = () => {
+    store.resetBuild();
+    setHasUpvoted(false);
+    navigate('/armory/planner', { replace: true });
+    triggerFeedback('Started new build. Enter a title to begin!');
+    setTimeout(() => {
+      if (titleInputRef.current) {
+        titleInputRef.current.focus();
+      }
+    }, 80);
+  };
+
+  const isAuthor = user && store.author_id === user.id;
+  const isSavedBuild = !!store.buildId;
+
+
+
+  if (isLoading) {
+    return <div className="p-8 text-center text-[var(--text-secondary)]">Loading build...</div>;
+  }
+
+  return (
+    <div data-rarity-theme={theme} className="section-theme flex flex-col gap-4 p-4 lg:p-6 max-w-[1600px] mx-auto w-full">
+      
+      {/* 1. Very Top Row: Back to Community Collections (Left), Centered Title (Center), Action Buttons (Right) */}
+      <div className="mho-panel mho-card-rarity grid grid-cols-[auto_1fr_auto] items-center gap-2 sm:gap-4 px-3 sm:px-5 py-3 shadow-xl">
+        {/* Left: Back to Community Collections */}
+        <div className="flex items-center">
+          <Link
+            to="/armory"
+            className="btn-mho-panel group !px-2.5 sm:!px-3 !py-1.5 !text-xs shrink-0"
+            title="Back to Community Collections"
+          >
+            <ArrowLeft size={14} className="text-[var(--text-secondary)] group-hover:text-white transition-colors" />
+            <span>Community Collections</span>
+          </Link>
+        </div>
+
+        {/* Center: Build Planner Title */}
+        <div className="flex items-center justify-center">
+          <h1 className="inline-flex items-center gap-2 font-display text-sm sm:text-lg font-bold tracking-wide text-white uppercase whitespace-nowrap">
+            <img
+              src="/img/ui/Equipment%20Icon.png"
+              alt=""
+              draggable={false}
+              className="h-8 w-8 sm:h-10 sm:w-10 shrink-0 object-contain"
+            />
+            Build Planner
+          </h1>
+        </div>
+
+        {/* Right: Action Buttons (Upvote, Save Changes, Clone, Clear/Start New) */}
+        <div className="flex items-center gap-1.5 sm:gap-2 justify-end">
+          {/* Upvote Button (only if saved build) */}
+          {isSavedBuild && (
+            <button
+              type="button"
+              onClick={handleUpvote}
+              disabled={hasUpvoted || isVoting}
+              className={`relative whitespace-nowrap text-xs sm:text-sm py-1.5 px-2.5 sm:px-3 rounded-lg flex items-center gap-1.5 transition-all font-medium border shadow-sm ${
+                hasUpvoted
+                  ? 'bg-[var(--bg-superior)] text-[var(--theme-accent)] border-[var(--border-active)] cursor-default'
+                  : 'bg-black/30 hover:bg-white/10 text-white border-[var(--border-subtle)] hover:border-[var(--theme-accent)] active:scale-95 cursor-pointer'
+              }`}
+              title={hasUpvoted ? 'You have upvoted this build' : 'Upvote this build'}
+            >
+              {isUpvoteAnimating && (
+                <span className="absolute -top-3.5 right-1 text-xs font-black text-amber-300 pointer-events-none animate-bounce drop-shadow-[0_0_6px_rgba(251,191,36,0.9)]">
+                  +1
+                </span>
+              )}
+              <ThumbsUp
+                size={14}
+                className={`transition-transform duration-300 ${
+                  isUpvoteAnimating ? 'scale-125 rotate-[-12deg]' : ''
+                } ${hasUpvoted ? 'text-amber-400 fill-amber-400/40' : 'text-[var(--text-secondary)]'}`}
+              />
+              <span className="hidden md:inline">{hasUpvoted ? 'Upvoted' : 'Upvote'}</span>
+              <span
+                className={`rounded px-1.5 py-0.2 text-[11px] font-bold transition-all duration-300 ${
+                  isUpvoteAnimating ? 'scale-125 text-amber-200 bg-amber-500/40' : ''
+                } ${
+                  hasUpvoted
+                    ? 'bg-amber-500/25 text-amber-200 border border-amber-500/40'
+                    : 'bg-black/30 text-[var(--rarity-rare)] border border-[var(--border-subtle)]'
+                }`}
+              >
+                {store.upvotes}
+              </span>
+            </button>
+          )}
+
+          {/* Save Changes / Save Build (only if creator or unsaved draft) */}
+          {(!isSavedBuild || isAuthor) && (
+            <button
+              type="button"
+              onClick={() => handleSaveBuild(false)}
+              disabled={isSaving}
+              className={`whitespace-nowrap text-xs sm:text-sm py-1.5 px-2.5 sm:px-3.5 flex items-center gap-1.5 rounded-lg font-bold transition-all shadow-sm ${
+                isJustSaved
+                  ? 'bg-emerald-600/30 text-emerald-300 border border-emerald-500/50 shadow-[0_0_12px_rgba(16,185,129,0.3)] scale-105'
+                  : 'btn-mho-gold !px-2.5 sm:!px-3.5 !py-1.5 !text-xs sm:!text-sm'
+              }`}
+              title={isSavedBuild ? 'Save Changes' : 'Save Build'}
+            >
+              {isJustSaved ? (
+                <CheckCircle2 size={14} className="text-emerald-400 animate-pulse" />
+              ) : (
+                <Save size={14} />
+              )}
+              <span className="hidden sm:inline">
+                {isJustSaved ? 'Saved!' : isSavedBuild ? 'Save Changes' : 'Save Build'}
+              </span>
+            </button>
+          )}
+
+          {/* Clone Button (only if saved build) */}
+          {isSavedBuild && (
+            <button
+              type="button"
+              onClick={handleClone}
+              className="btn-mho-panel whitespace-nowrap !text-xs sm:!text-sm !py-1.5 !px-2.5 sm:!px-3"
+              title="Clone build to create a new copy"
+            >
+              <Copy size={14} />
+              <span className="hidden sm:inline">Clone</span>
+            </button>
+          )}
+
+          {/* Export the build as a shareable image */}
+          <ExportBuildImageButton />
+
+          {/* Clear / Start New Button */}
+          <button
+            type="button"
+            onClick={handleClearStartNew}
+            className="btn-mho-panel whitespace-nowrap !text-xs sm:!text-sm !py-1.5 !px-2.5 sm:!px-3"
+            title="Clear all selections and start a new build"
+          >
+            <RotateCcw size={14} />
+            <span className="hidden md:inline">Clear / Start New</span>
+            <span className="hidden sm:inline md:hidden">New</span>
+          </button>
+        </div>
+      </div>
+
+      {/* 2. Second Row: Build Meta & Tactical Loadout Dock */}
+      <div className="mho-panel has-[[data-dropdown-open]]:relative has-[[data-dropdown-open]]:z-30 flex flex-col gap-3.5 p-3.5 shadow-md">
+        {/* Top: Title, Role Toggle, and Description in a tight row */}
+        <div className="flex flex-col landscape:flex-row md:flex-row gap-3 items-stretch landscape:items-center md:items-center justify-between">
+          {/* Title & Role */}
+          <div className="flex items-center gap-2.5 flex-1 min-w-0">
+            <input 
+              ref={titleInputRef}
+              type="text" 
+              placeholder="Build Title (e.g. Thunder Dual Blades Burst)"
+              className="w-full bg-transparent border-b border-[var(--border-subtle)] hover:border-white/30 focus:border-[#FFD700] font-display text-lg sm:text-xl font-bold text-white focus:ring-0 px-1 py-1 placeholder-[var(--text-secondary)] transition-colors"
+              value={store.title}
+              onChange={(e) => store.setTitle(e.target.value)}
+            />
+            {/* Build Role Toggle */}
+            <div className="flex rounded-md bg-black/30 p-0.5 border border-[var(--border-subtle)] shrink-0">
+              <button
+                type="button"
+                onClick={() => { store.setBuildRole('main'); triggerFeedback('Build role set to: Main'); }}
+                className={`rounded px-2.5 py-1 text-[10px] font-bold uppercase transition-all ${
+                  store.buildRole === 'main' ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'text-mh-slate-500 hover:text-mh-slate-300 border border-transparent'
+                }`}
+              >
+                Main
+              </button>
+              <button
+                type="button"
+                onClick={() => { store.setBuildRole('support'); triggerFeedback('Build role set to: Non-Main'); }}
+                className={`rounded px-2.5 py-1 text-[10px] font-bold uppercase transition-all ${
+                  store.buildRole === 'support' ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30' : 'text-mh-slate-500 hover:text-mh-slate-300 border border-transparent'
+                }`}
+              >
+                Non-Main
+              </button>
+            </div>
+
+            {/* Use Mine / Use All Toggle */}
+            <div className="flex items-center bg-black/40 p-0.5 rounded-md border border-[var(--border-subtle)] shrink-0">
+              <button
+                type="button"
+                onClick={() => {
+                  store.setUseMine(true);
+                  triggerFeedback('Using your cards & crafted weapons');
+                }}
+                className={`rounded px-2.5 py-1 text-[10px] font-bold uppercase transition-all flex items-center gap-1.5 cursor-pointer ${
+                  store.useMine
+                    ? 'bg-rarity-5/20 text-rarity-5 border border-rarity-5/40 shadow-sm'
+                    : 'text-mh-slate-400 hover:text-white border border-transparent'
+                }`}
+                title="Only use your collection & crafted weapons"
+              >
+                <Package size={12} className={store.useMine ? 'text-rarity-5' : 'text-mh-slate-400'} />
+                <span>My Collection</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  store.setUseMine(false);
+                  triggerFeedback('Using all cards & weapons');
+                }}
+                className={`rounded px-2.5 py-1 text-[10px] font-bold uppercase transition-all flex items-center gap-1.5 cursor-pointer ${
+                  !store.useMine
+                    ? 'bg-rarity-5/20 text-rarity-5 border border-rarity-5/40 shadow-sm'
+                    : 'text-mh-slate-400 hover:text-white border border-transparent'
+                }`}
+                title="Use all cards and weapons in the database"
+              >
+                <Globe size={12} className={!store.useMine ? 'text-rarity-5' : 'text-mh-slate-400'} />
+                <span>All Cards</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Notes & YouTube link fields */}
+          <div className="flex flex-col sm:flex-row gap-2 w-full landscape:w-auto md:w-auto shrink-0">
+            {/* Compact Notes field */}
+            <div className="w-full sm:w-[200px] md:w-[220px] lg:w-[260px] xl:w-[280px]">
+              <input 
+                type="text"
+                placeholder="Notes or strategy description (optional)..."
+                className="w-full bg-black/30 border border-[var(--border-subtle)] hover:border-white/30 rounded-lg text-xs text-white focus:border-[#FFD700]/70 focus:ring-0 px-3 py-1.5 placeholder-[var(--text-secondary)] transition-colors"
+                value={store.description}
+                onChange={(e) => store.setDescription(e.target.value)}
+              />
+            </div>
+            {/* YouTube Guide URL field */}
+            <div className="w-full sm:w-[200px] md:w-[220px] lg:w-[260px] xl:w-[280px] relative">
+              <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none text-red-400">
+                <Video size={13} />
+              </div>
+              <input 
+                type="url"
+                placeholder="YouTube video link (optional)..."
+                className="w-full bg-black/30 border border-[var(--border-subtle)] hover:border-white/30 rounded-lg text-xs text-white focus:border-red-500/70 focus:ring-0 pl-8 pr-3 py-1.5 placeholder-[var(--text-secondary)] transition-colors"
+                value={store.youtubeUrl}
+                onChange={(e) => store.setYoutubeUrl(e.target.value)}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom: Tactical Loadout Dock (Adventurer, Weapon Type, Buddy) */}
+        <HeroBuddySelector />
+      </div>
+
+
+      {/* 3. Main Layout: Equipment + Visage stacked on the left, Skills on the right so a long skill list scrolls past the visage cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start w-full">
+        <div className="flex flex-col gap-4 w-full min-w-0">
+          <EquipmentSelector />
+          <VisageSelector />
+        </div>
+
+        <div className="w-full min-w-0">
+          <SkillSummaryPanel />
+        </div>
+      </div>
+
+      {/* 4. YouTube Video Showcase Panel (When a valid video URL is present) */}
+      {getYouTubeEmbedUrl(store.youtubeUrl) && (
+        <div className="w-full mho-panel p-4 flex flex-col gap-3 rounded-xl border border-red-500/30 bg-gradient-to-b from-red-950/20 via-black/40 to-black/60 shadow-xl overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-2">
+            <div className="flex items-center gap-2 text-sm font-bold text-white tracking-wide">
+              <span className="p-1 rounded bg-red-600/30 text-red-400 border border-red-500/40">
+                <Video size={16} />
+              </span>
+              <span>Video Guide / Showcase</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <a
+                href={store.youtubeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-xs text-mh-slate-400 hover:text-white transition-colors"
+              >
+                <span>Watch on YouTube</span>
+                <ExternalLink size={12} />
+              </a>
+              {store.youtubeUrl && (
+                <button
+                  type="button"
+                  onClick={() => store.setYoutubeUrl('')}
+                  className="text-[11px] text-mh-slate-500 hover:text-red-400 transition-colors ml-2 cursor-pointer"
+                  title="Clear video link"
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-black/60 border border-white/10 shadow-inner max-w-4xl mx-auto">
+            <iframe
+              src={getYouTubeEmbedUrl(store.youtubeUrl)!}
+              title="YouTube video player for build"
+              className="absolute inset-0 w-full h-full border-0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Selection Feedback Notification Toast */}
+      {selectionFeedback && (
+        <div className="fixed bottom-24 lg:bottom-6 right-6 z-50 flex items-center gap-2 mho-panel-deep !border-[var(--border-active)] text-white text-xs font-semibold px-4 py-2.5 shadow-2xl animate-in fade-in slide-in-from-bottom-2 duration-200">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping shrink-0" />
+          <span>{selectionFeedback}</span>
+        </div>
+      )}
+    </div>
+  );
+}

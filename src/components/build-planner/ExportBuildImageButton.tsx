@@ -247,7 +247,7 @@ export function ExportBuildImageButton() {
         title="Export this build as an image to share"
       >
         <ImageDown size={14} />
-        <span className="hidden sm:inline">Export Image</span>
+        <span className="hidden @3xl:inline">Export Image</span>
       </button>
 
       {open && createPortal(

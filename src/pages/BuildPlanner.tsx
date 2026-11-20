@@ -455,22 +455,24 @@ export default function BuildPlanner() {
     <div data-rarity-theme={theme} className="section-theme flex flex-col gap-4 p-4 lg:p-6 max-w-[1600px] mx-auto w-full">
       
       {/* 1. Very Top Row: Back to Community Collections (Left), Centered Title (Center), Action Buttons (Right) */}
-      <div className="mho-panel mho-card-rarity grid grid-cols-[auto_1fr_auto] items-center gap-2 sm:gap-4 px-3 sm:px-5 py-3 shadow-xl">
+      <div className="mho-panel mho-card-rarity @container px-3 sm:px-5 py-3 shadow-xl">
+        <div className="flex flex-wrap items-center gap-2 @2xl:gap-4">
         {/* Left: Back to Community Collections */}
-        <div className="flex items-center">
+        <div className="flex items-center shrink-0">
           <Link
             to="/armory"
             className="btn-mho-panel group !px-2.5 sm:!px-3 !py-1.5 !text-xs shrink-0"
             title="Back to Community Collections"
           >
             <ArrowLeft size={14} className="text-[var(--text-secondary)] group-hover:text-white transition-colors" />
-            <span>Community Collections</span>
+            <span className="hidden @4xl:inline">Community Collections</span>
+            <span className="@4xl:hidden">Back</span>
           </Link>
         </div>
 
         {/* Center: Build Planner Title */}
-        <div className="flex items-center justify-center">
-          <h1 className="inline-flex items-center gap-2 font-display text-sm sm:text-lg font-bold tracking-wide text-white uppercase whitespace-nowrap">
+        <div className="flex flex-1 min-w-0 items-center justify-center">
+          <h1 className="inline-flex items-center gap-2 font-display text-sm @2xl:text-lg font-bold tracking-wide text-white uppercase whitespace-nowrap">
             <img
               src="/img/ui/Equipment%20Icon.png"
               alt=""
@@ -482,7 +484,7 @@ export default function BuildPlanner() {
         </div>
 
         {/* Right: Action Buttons (Upvote, Save Changes, Clone, Clear/Start New) */}
-        <div className="flex items-center gap-1.5 sm:gap-2 justify-end">
+        <div className="flex flex-wrap items-center gap-1.5 @2xl:gap-2 justify-center @lg:justify-end basis-full @lg:basis-auto">
           {/* Upvote Button (only if saved build) */}
           {isSavedBuild && (
             <button
@@ -507,7 +509,7 @@ export default function BuildPlanner() {
                   isUpvoteAnimating ? 'scale-125 rotate-[-12deg]' : ''
                 } ${hasUpvoted ? 'text-amber-400 fill-amber-400/40' : 'text-[var(--text-secondary)]'}`}
               />
-              <span className="hidden md:inline">{hasUpvoted ? 'Upvoted' : 'Upvote'}</span>
+              <span className="hidden @5xl:inline">{hasUpvoted ? 'Upvoted' : 'Upvote'}</span>
               <span
                 className={`rounded px-1.5 py-0.2 text-[11px] font-bold transition-all duration-300 ${
                   isUpvoteAnimating ? 'scale-125 text-amber-200 bg-amber-500/40' : ''
@@ -540,7 +542,7 @@ export default function BuildPlanner() {
               ) : (
                 <Save size={14} />
               )}
-              <span className="hidden sm:inline">
+              <span className="hidden @2xl:inline">
                 {isJustSaved ? 'Saved!' : isSavedBuild ? 'Save Changes' : 'Save Build'}
               </span>
             </button>
@@ -555,7 +557,7 @@ export default function BuildPlanner() {
               title="Clone build to create a new copy"
             >
               <Copy size={14} />
-              <span className="hidden sm:inline">Clone</span>
+              <span className="hidden @3xl:inline">Clone</span>
             </button>
           )}
 
@@ -570,23 +572,24 @@ export default function BuildPlanner() {
             title="Clear all selections and start a new build"
           >
             <RotateCcw size={14} />
-            <span className="hidden md:inline">Clear / Start New</span>
-            <span className="hidden sm:inline md:hidden">New</span>
+            <span className="hidden @5xl:inline">Clear / Start New</span>
+            <span className="hidden @2xl:inline @5xl:hidden">New</span>
           </button>
+        </div>
         </div>
       </div>
 
       {/* 2. Second Row: Build Meta & Tactical Loadout Dock */}
       <div className="mho-panel has-[[data-dropdown-open]]:relative has-[[data-dropdown-open]]:z-30 flex flex-col gap-3.5 p-3.5 shadow-md">
         {/* Top: Title, Role Toggle, and Description in a tight row */}
-        <div className="flex flex-col landscape:flex-row md:flex-row gap-3 items-stretch landscape:items-center md:items-center justify-between">
+        <div className="flex flex-wrap gap-3 items-center justify-between">
           {/* Title & Role */}
-          <div className="flex items-center gap-2.5 flex-1 min-w-0">
+          <div className="flex flex-wrap items-center gap-2.5 flex-[1_1_34rem] min-w-0">
             <input 
               ref={titleInputRef}
               type="text" 
               placeholder="Build Title (e.g. Thunder Dual Blades Burst)"
-              className="w-full bg-transparent border-b border-[var(--border-subtle)] hover:border-white/30 focus:border-[#FFD700] font-display text-lg sm:text-xl font-bold text-white focus:ring-0 px-1 py-1 placeholder-[var(--text-secondary)] transition-colors"
+              className="flex-[1_1_14rem] min-w-[10rem] bg-transparent border-b border-[var(--border-subtle)] hover:border-white/30 focus:border-[#FFD700] font-display text-lg sm:text-xl font-bold text-white focus:ring-0 px-1 py-1 placeholder-[var(--text-secondary)] transition-colors"
               value={store.title}
               onChange={(e) => store.setTitle(e.target.value)}
             />
@@ -650,9 +653,9 @@ export default function BuildPlanner() {
           </div>
 
           {/* Notes & YouTube link fields */}
-          <div className="flex flex-col sm:flex-row gap-2 w-full landscape:w-auto md:w-auto shrink-0">
+          <div className="flex flex-wrap gap-2 flex-[1_1_22rem] min-w-0 2xl:flex-[0_1_36rem]">
             {/* Compact Notes field */}
-            <div className="w-full sm:w-[200px] md:w-[220px] lg:w-[260px] xl:w-[280px]">
+            <div className="flex-[1_1_10rem] min-w-0">
               <input 
                 type="text"
                 placeholder="Notes or strategy description (optional)..."
@@ -662,7 +665,7 @@ export default function BuildPlanner() {
               />
             </div>
             {/* YouTube Guide URL field */}
-            <div className="w-full sm:w-[200px] md:w-[220px] lg:w-[260px] xl:w-[280px] relative">
+            <div className="flex-[1_1_10rem] min-w-0 relative">
               <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none text-red-400">
                 <Video size={13} />
               </div>

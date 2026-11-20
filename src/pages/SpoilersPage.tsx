@@ -178,11 +178,25 @@ function computeDateStatus(startIso: string, endIso: string): DateStatus {
   return { state: 'current', label: 'Current' };
 }
 
+const IMPENDING_STORM_EVENT = {
+  name: 'Impending Storm — Kushala Daora',
+  startDate: '13 Nov 2026',
+  endDate: '26 Nov 2026, 23:59 UTC',
+  startIso: '2026-11-13T00:00:00Z',
+  endIso: '2026-11-26T23:59:59Z',
+};
+
 export default function SpoilersPage() {
   const { user, profile, updateProfile, authLoading } = useAuthStore();
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [modalImage, setModalImage] = useState<{ src: string; alt: string } | null>(null);
   const [enablingSpoilers, setEnablingSpoilers] = useState(false);
+
+  const impendingStormStatus = computeDateStatus(
+    IMPENDING_STORM_EVENT.startIso,
+    IMPENDING_STORM_EVENT.endIso,
+  );
+  const showImpendingStorm = impendingStormStatus.state !== 'ended';
 
   const isLoggedIn = !!user;
   const showSpoilers = Boolean(profile?.show_spoilers);
@@ -348,7 +362,7 @@ export default function SpoilersPage() {
                 Spoilers & Recruitment Schedule
               </h1>
               <p className="text-xs sm:text-sm text-mh-slate-400 mt-1 max-w-2xl">
-                Upcoming banner timeline, rotating pools, unreleased Kushala Daora event details, and pity mechanics breakdown.
+                Upcoming banner timeline, rotating pools, {showImpendingStorm ? 'Kushala Daora event details, ' : ''}and pity mechanics breakdown.
               </p>
             </div>
           </div>
@@ -659,36 +673,60 @@ export default function SpoilersPage() {
       </section>
 
       {/* ── TOP SECTION 3: Limited-Time Event: Impending Storm (Kushala Daora) ── */}
-      <section className="space-y-6 pt-4">
-        <div className="flex items-center gap-2.5 border-b border-mh-slate-700/80 pb-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/10 text-purple-400 border border-purple-500/20">
-            <Sparkles size={18} />
-          </div>
-          <div>
-            <h2 className="text-lg font-bold text-white font-display">Limited-Time Event: Impending Storm</h2>
-            <p className="text-xs text-mh-slate-400">
-              Kushala Daora arrival, challenge quests, Omens modifiers, point rewards, and gear leaks.
-            </p>
-          </div>
-        </div>
-
-        {/* Event Main Banner & Overview */}
-        <div className="rounded-2xl border border-purple-500/40 bg-gradient-to-b from-mh-slate-900/95 via-mh-slate-900/90 to-mh-slate-950 p-5 sm:p-7 shadow-xl space-y-6">
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
-            <div className="flex items-center gap-2.5">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/40">
-                <Clock size={12} />
-                Coming Soon
-              </span>
-              <h3 className="font-display text-xl sm:text-2xl font-bold text-white">
-                Impending Storm — Kushala Daora
-              </h3>
+      {showImpendingStorm && (
+        <section className="space-y-6 pt-4">
+          <div className="flex items-center gap-2.5 border-b border-mh-slate-700/80 pb-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/10 text-purple-400 border border-purple-500/20">
+              <Sparkles size={18} />
             </div>
-            <span className="text-xs text-mh-slate-400 font-mono">Event Hunt & Challenge Roster</span>
+            <div>
+              <div className="flex items-center gap-2">
+                <h2 className="text-lg font-bold text-white font-display">Limited-Time Event: Impending Storm</h2>
+                {impendingStormStatus.state === 'current' && (
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 shadow-sm animate-pulse">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                    Happening Now
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-mh-slate-400">
+                {impendingStormStatus.state === 'current' ? 'Active event: ' : ''}Kushala Daora arrival, challenge quests, Omens modifiers, point rewards, and gear leaks.
+              </p>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-            <div className="lg:col-span-5">
+          {/* Event Main Banner & Overview */}
+          <div className={cn(
+            'rounded-2xl border p-5 sm:p-7 shadow-xl space-y-6 transition-all',
+            impendingStormStatus.state === 'current'
+              ? 'border-purple-500/50 bg-gradient-to-b from-mh-slate-900/95 via-purple-950/20 to-mh-slate-950 ring-1 ring-purple-500/30'
+              : 'border-purple-500/40 bg-gradient-to-b from-mh-slate-900/95 via-mh-slate-900/90 to-mh-slate-950',
+          )}>
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
+              <div className="flex flex-wrap items-center gap-2.5">
+                {impendingStormStatus.state === 'current' ? (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 shadow-sm animate-pulse">
+                    <span className="h-2 w-2 rounded-full bg-emerald-400" />
+                    Happening Now
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/40">
+                    <Clock size={12} />
+                    Coming Soon
+                  </span>
+                )}
+                <h3 className="font-display text-xl sm:text-2xl font-bold text-white">
+                  Impending Storm — Kushala Daora
+                </h3>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-mh-slate-300 font-mono bg-black/40 px-3 py-1.5 rounded-lg border border-white/5">
+                <Calendar size={13} className="text-mh-gold-400" />
+                <span>November 13, 2026 → November 26, 2026</span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+              <div className="lg:col-span-5">
               <div
                 className="group relative aspect-[16/10] sm:aspect-[16/9] w-full rounded-xl overflow-hidden border border-white/10 bg-black/60 cursor-pointer shadow-lg"
                 onClick={() => setModalImage({ src: '/images/events/Impending Storm.png', alt: 'Impending Storm Event Banner' })}
@@ -879,6 +917,7 @@ export default function SpoilersPage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* ── BOTTOM SECTION 4: Recruitment Rules & Pity Mechanics ── */}
       <section className="space-y-6 pt-4">
