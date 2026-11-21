@@ -175,98 +175,99 @@ export default function WeaponCompareModal({
           </div>
         </div>
 
-        {/* ── Weapon Overview Cards (Sticky Header) ── */}
-        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-4 border-b border-mh-slate-800 bg-mh-slate-950/70 p-3 sm:p-4 shrink-0">
-          {/* Left Weapon 1 Header */}
-          <div className="flex items-center gap-3 min-w-0 bg-mh-slate-900/90 rounded-2xl border border-mh-slate-750 p-2.5 sm:p-3">
-            <div className="flex h-24 w-24 sm:h-28 sm:w-28 shrink-0 items-center justify-center p-0">
-              {weapon1.image ? (
-                <img
-                  src={weapon1.image}
-                  alt={weapon1.name}
-                  className="h-full w-full object-contain filter drop-shadow"
-                />
-              ) : (
-                <Sword size={36} className="text-mh-slate-500" />
-              )}
-            </div>
-            <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-1.5 flex-wrap">
-                <span className="rounded bg-mh-slate-800 border border-mh-slate-750 px-1.5 py-0.5 text-[9px] font-bold text-mh-slate-300">
-                  {wt1?.name || weapon1.weapon_type_id}
-                </span>
-                <span className="font-mono text-[9px] font-bold text-mh-gold-400">
-                  R{weapon1.rarity || 1} &rarr; R{weapon1.max_rarity || 14}
-                </span>
-              </div>
-              <h3 className="font-display text-xs sm:text-sm font-bold text-white truncate mt-0.5">
-                {weapon1.name}
-              </h3>
-              <div className="flex items-center gap-1.5 text-[10px] text-mh-slate-400 truncate mt-0.5">
-                {monster1 ? (
-                  <span className="text-orange-400 font-semibold truncate">{monster1.name}</span>
+        {/* ── Main Scrollable Body: Overview Cards & Comparison Rows ── */}
+        <div className="flex-1 overflow-y-auto p-3 sm:p-5 space-y-3 sm:space-y-4">
+          {/* ── Weapon Overview Cards (Scrolls off screen with comparisons) ── */}
+          <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-4 rounded-2xl border border-mh-slate-800 bg-mh-slate-950/70 p-2.5 sm:p-4">
+            {/* Left Weapon 1 Header */}
+            <div className="flex items-center gap-3 min-w-0 bg-mh-slate-900/90 rounded-2xl border border-mh-slate-750 p-2.5 sm:p-3">
+              <div className="flex h-24 w-24 sm:h-28 sm:w-28 shrink-0 items-center justify-center p-0">
+                {weapon1.image ? (
+                  <img
+                    src={weapon1.image}
+                    alt={weapon1.name}
+                    className="h-full w-full object-contain filter drop-shadow"
+                  />
                 ) : (
-                  <span className={cn('truncate', src1.text)}>{src1.label}</span>
-                )}
-                <span>&bull;</span>
-                <span className={cn('inline-flex items-center gap-1', elemCfg1.text)}>
-                  <ElementIcon element={weapon1.element_type} size={11} />
-                  <span>{elemCfg1.label}</span>
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Central VS Badge */}
-          <div className="flex flex-col items-center justify-center px-1 sm:px-2">
-            <span className="rounded-full bg-mh-gold-500/20 border border-mh-gold-500/40 px-2 py-1 text-[11px] font-black uppercase tracking-wider text-mh-gold-400 shadow-sm">
-              VS
-            </span>
-          </div>
-
-          {/* Right Weapon 2 Header */}
-          <div className="flex items-center gap-3 min-w-0 bg-mh-slate-900/90 rounded-2xl border border-mh-slate-750 p-2.5 sm:p-3">
-            <div className="min-w-0 flex-1 text-right">
-              <div className="flex items-center justify-end gap-1.5 flex-wrap">
-                <span className="font-mono text-[9px] font-bold text-mh-gold-400">
-                  R{weapon2.rarity || 1} &rarr; R{weapon2.max_rarity || 14}
-                </span>
-                <span className="rounded bg-mh-slate-800 border border-mh-slate-750 px-1.5 py-0.5 text-[9px] font-bold text-mh-slate-300">
-                  {wt2?.name || weapon2.weapon_type_id}
-                </span>
-              </div>
-              <h3 className="font-display text-xs sm:text-sm font-bold text-white truncate mt-0.5">
-                {weapon2.name}
-              </h3>
-              <div className="flex items-center justify-end gap-1.5 text-[10px] text-mh-slate-400 truncate mt-0.5">
-                <span className={cn('inline-flex items-center gap-1', elemCfg2.text)}>
-                  <ElementIcon element={weapon2.element_type} size={11} />
-                  <span>{elemCfg2.label}</span>
-                </span>
-                <span>&bull;</span>
-                {monster2 ? (
-                  <span className="text-orange-400 font-semibold truncate">{monster2.name}</span>
-                ) : (
-                  <span className={cn('truncate', src2.text)}>{src2.label}</span>
+                  <Sword size={36} className="text-mh-slate-500" />
                 )}
               </div>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <span className="rounded bg-mh-slate-800 border border-mh-slate-750 px-1.5 py-0.5 text-[9px] font-bold text-mh-slate-300">
+                    {wt1?.name || weapon1.weapon_type_id}
+                  </span>
+                  <span className="font-mono text-[9px] font-bold text-mh-gold-400">
+                    R{weapon1.rarity || 1} &rarr; R{weapon1.max_rarity || 14}
+                  </span>
+                </div>
+                <h3 className="font-display text-xs sm:text-sm font-bold text-white truncate mt-0.5">
+                  {weapon1.name}
+                </h3>
+                <div className="flex items-center gap-1.5 text-[10px] text-mh-slate-400 truncate mt-0.5">
+                  {monster1 ? (
+                    <span className="text-orange-400 font-semibold truncate">{monster1.name}</span>
+                  ) : (
+                    <span className={cn('truncate', src1.text)}>{src1.label}</span>
+                  )}
+                  <span>&bull;</span>
+                  <span className={cn('inline-flex items-center gap-1', elemCfg1.text)}>
+                    <ElementIcon element={weapon1.element_type} size={11} />
+                    <span>{elemCfg1.label}</span>
+                  </span>
+                </div>
+              </div>
             </div>
-            <div className="flex h-24 w-24 sm:h-28 sm:w-28 shrink-0 items-center justify-center p-0">
-              {weapon2.image ? (
-                <img
-                  src={weapon2.image}
-                  alt={weapon2.name}
-                  className="h-full w-full object-contain filter drop-shadow"
-                />
-              ) : (
-                <Sword size={36} className="text-mh-slate-500" />
-              )}
+
+            {/* Central VS Badge */}
+            <div className="flex flex-col items-center justify-center px-1 sm:px-2">
+              <span className="rounded-full bg-mh-gold-500/20 border border-mh-gold-500/40 px-2 py-1 text-[11px] font-black uppercase tracking-wider text-mh-gold-400 shadow-sm">
+                VS
+              </span>
+            </div>
+
+            {/* Right Weapon 2 Header */}
+            <div className="flex items-center gap-3 min-w-0 bg-mh-slate-900/90 rounded-2xl border border-mh-slate-750 p-2.5 sm:p-3">
+              <div className="min-w-0 flex-1 text-right">
+                <div className="flex items-center justify-end gap-1.5 flex-wrap">
+                  <span className="font-mono text-[9px] font-bold text-mh-gold-400">
+                    R{weapon2.rarity || 1} &rarr; R{weapon2.max_rarity || 14}
+                  </span>
+                  <span className="rounded bg-mh-slate-800 border border-mh-slate-750 px-1.5 py-0.5 text-[9px] font-bold text-mh-slate-300">
+                    {wt2?.name || weapon2.weapon_type_id}
+                  </span>
+                </div>
+                <h3 className="font-display text-xs sm:text-sm font-bold text-white truncate mt-0.5">
+                  {weapon2.name}
+                </h3>
+                <div className="flex items-center justify-end gap-1.5 text-[10px] text-mh-slate-400 truncate mt-0.5">
+                  <span className={cn('inline-flex items-center gap-1', elemCfg2.text)}>
+                    <ElementIcon element={weapon2.element_type} size={11} />
+                    <span>{elemCfg2.label}</span>
+                  </span>
+                  <span>&bull;</span>
+                  {monster2 ? (
+                    <span className="text-orange-400 font-semibold truncate">{monster2.name}</span>
+                  ) : (
+                    <span className={cn('truncate', src2.text)}>{src2.label}</span>
+                  )}
+                </div>
+              </div>
+              <div className="flex h-24 w-24 sm:h-28 sm:w-28 shrink-0 items-center justify-center p-0">
+                {weapon2.image ? (
+                  <img
+                    src={weapon2.image}
+                    alt={weapon2.name}
+                    className="h-full w-full object-contain filter drop-shadow"
+                  />
+                ) : (
+                  <Sword size={36} className="text-mh-slate-500" />
+                )}
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* ── Main Comparison Table / Rows ── */}
-        <div className="flex-1 overflow-y-auto p-3 sm:p-5 space-y-3">
+          {/* ── Main Comparison Table / Rows ── */}
           {isLoading ? (
             <div className="flex h-48 items-center justify-center">
               <div className="h-8 w-8 animate-spin rounded-full border-2 border-mh-gold-400 border-t-transparent" />

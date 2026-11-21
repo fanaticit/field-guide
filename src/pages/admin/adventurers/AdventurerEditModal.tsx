@@ -48,7 +48,7 @@ function ImageUploadField({
   value: string | null;
   onChange: (url: string | null) => void;
   slug: string;
-  kind?: 'portrait' | 'background';
+  kind?: 'portrait' | 'background' | 'bond';
 }) {
   const [uploading, setUploading] = useState(false);
   const [showUrlInput, setShowUrlInput] = useState(false);
@@ -260,6 +260,7 @@ export default function AdventurerEditModal({
   const [weaponType, setWeaponType] = useState(adventurer?.weapon_type ?? 'great_sword');
   const [image, setImage] = useState<string | null>(adventurer?.image ?? null);
   const [backgroundImage, setBackgroundImage] = useState<string | null>(adventurer?.background_image ?? null);
+  const [bondImage, setBondImage] = useState<string | null>(adventurer?.bond_image ?? null);
   const [description, setDescription] = useState(adventurer?.description ?? '');
   const [notes, setNotes] = useState(adventurer?.notes ?? '');
   const [sortOrder, setSortOrder] = useState(adventurer?.sort_order ?? nextSortOrder);
@@ -288,6 +289,7 @@ export default function AdventurerEditModal({
       setWeaponType(adventurer.weapon_type ?? 'great_sword');
       setImage(adventurer.image ?? null);
       setBackgroundImage(adventurer.background_image ?? null);
+      setBondImage(adventurer.bond_image ?? null);
       setDescription(adventurer.description ?? '');
       setNotes(adventurer.notes ?? '');
       setSortOrder(adventurer.sort_order);
@@ -308,6 +310,7 @@ export default function AdventurerEditModal({
       setWeaponType('great_sword');
       setImage(null);
       setBackgroundImage(null);
+      setBondImage(null);
       setDescription('');
       setNotes('');
       setSortOrder(nextSortOrder);
@@ -369,6 +372,8 @@ export default function AdventurerEditModal({
       ...(rarity !== (adventurer?.rarity ?? null) ? { rarity } : {}),
       // Same for the background image (column added in 20261101000001)
       ...(backgroundImage !== (adventurer?.background_image ?? null) ? { background_image: backgroundImage } : {}),
+      // RoleBond illustrated background image
+      ...(bondImage !== (adventurer?.bond_image ?? null) ? { bond_image: bondImage } : {}),
       // YouTube guide video URL
       ...(youtubeUrl.trim() !== (adventurer?.youtube_url ?? '') ? { youtube_url: youtubeUrl.trim() || null } : {}),
     };
@@ -664,6 +669,16 @@ export default function AdventurerEditModal({
             onChange={setBackgroundImage}
             slug={id || name}
             kind="background"
+          />
+
+          {/* RoleBond Background Image */}
+          <ImageUploadField
+            label="RoleBond Artwork"
+            subLabel="Bond illustration displayed on cards and modal when the adventurer has insight levels"
+            value={bondImage}
+            onChange={setBondImage}
+            slug={id || name}
+            kind="bond"
           />
 
           {/* Description */}

@@ -11,6 +11,7 @@ import { getWeaponMaxName, type DBWeapon } from '../../data/schemas/weapon';
 import { getRoleIconSrc } from '../RoleIcon';
 import { renderBuildImage, solidInkColor, type ExportBuildData, type ExportInk, type ExportInkSet } from '../../lib/exportBuildImage';
 import { INK_SET_BONUSES } from './VisageSelector';
+import { resolveAdventurerMedia } from '../../data/schemas/adventurer';
 
 // Same colours as the Skills panel categories
 const CATEGORY_HEX: Record<string, string> = {
@@ -64,7 +65,8 @@ export function ExportBuildImageButton() {
 
   const collect = (): ExportBuildData => {
     const s = useBuildPlannerStore.getState();
-    const adv = s.adventurer;
+    const rawAdv = s.adventurer;
+    const adv = rawAdv ? resolveAdventurerMedia(rawAdv, gender) ?? rawAdv : null;
 
     const isRoleLocked = !!adv && !adv.is_default;
     const role = isRoleLocked

@@ -17,7 +17,6 @@ import {
   Plus,
   Trash2,
   X,
-  User,
   Crosshair,
   ChevronDown,
   ChevronUp,
@@ -26,6 +25,7 @@ import {
   Sliders,
   Heart,
 } from 'lucide-react';
+import { FATED_ADVENTURER_MEDIA } from '../../data/schemas/adventurer';
 import {
   type ArmourSlot,
   type ArmourSkill,
@@ -2181,23 +2181,17 @@ export default function ArmourGuide() {
               {!buildCollapsed && (<>
               {/* The 6 Blocks: Profile Avatar + 5 Armour Slots */}
               <div className="grid grid-cols-6 gap-1.5">
-                {/* Block 1: Profile Icon (Hunter) */}
+                {/* Block 1: Fated Adventurer Head (Hunter) */}
                 <div
-                  title={profile?.display_name || 'Hunter Profile'}
+                  title={profile?.display_name ? `${profile.display_name} (Fated Adventurer)` : 'Fated Adventurer'}
                   className="group relative flex flex-col items-center justify-center rounded-xl border border-amber-500/40 bg-mh-slate-950 p-1 aspect-square shadow-inner"
                 >
                   <div className="relative w-full flex-1 min-h-0 flex items-center justify-center p-0.5">
-                    {user && (profile?.avatar_url || (user.user_metadata as Record<string, unknown>)?.avatar_url) ? (
-                      <img
-                        src={profile?.avatar_url || ((user.user_metadata as Record<string, unknown>)?.avatar_url as string)}
-                        alt={profile?.display_name || 'Hunter'}
-                        className="max-h-full max-w-full aspect-square rounded-full object-cover ring-1 ring-amber-400/60"
-                      />
-                    ) : (
-                      <div className="flex h-full w-full max-h-12 max-w-12 items-center justify-center rounded-full bg-amber-500/15 ring-1 ring-amber-400/40">
-                        <User className="h-2/3 w-2/3 text-amber-400" />
-                      </div>
-                    )}
+                    <img
+                      src={FATED_ADVENTURER_MEDIA[gender].head}
+                      alt={profile?.display_name ?? 'Fated Adventurer'}
+                      className="max-h-full max-w-full object-contain filter drop-shadow"
+                    />
                   </div>
                   <span className="mt-0.5 text-[9px] font-black uppercase tracking-wider text-amber-400 leading-none truncate max-w-full">
                     {profile?.display_name ?? profile?.username ?? 'HUNTER'}

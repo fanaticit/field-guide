@@ -3,7 +3,7 @@
 // Horizontal split design with full-height left-side weapon image showcase.
 // Supports User Weapon Crafting & Rarity Level tracking (Visage Card style).
 // ─────────────────────────────────────────────────────────────
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import {
   Sword,
@@ -84,7 +84,51 @@ export default function WeaponCard({
   const menuRef = useRef<HTMLDivElement>(null);
 
   const weaponTypeObj = WEAPON_TYPES.find((w) => w.id === weapon.weapon_type_id);
-  const monsterObj = weapon.monster_id ? monsters.find((m) => m.id === weapon.monster_id) : null;
+
+  // Match the monster that builds the weapon parts (by ID or fallback to name/series/description)
+  const monsterObj = useMemo(() => {
+    if (weapon.monster_id) {
+      const byId = monsters.find((m) => m.id === weapon.monster_id);
+      if (byId) return byId;
+    }
+    return (
+      monsters.find((m) => {
+        if (!m.name) return false;
+        const mName = m.name.toLowerCase();
+        return (
+          weapon.name.toLowerCase().includes(mName) ||
+          (weapon.series && weapon.series.toLowerCase().includes(mName)) ||
+          (weapon.description && weapon.description.toLowerCase().includes(mName))
+        );
+      }) || null
+    );
+  }, [weapon, monsters]);
+
+  // Sketch image URL of the crafting monster
+  const monsterSketch = useMemo(() => {
+    if (!monsterObj) return null;
+    const rawSketch =
+      monsterObj.sketch ||
+      (monsterObj.parent_id
+        ? monsters.find((m) => m.id === monsterObj.parent_id)?.sketch
+        : null);
+    if (!rawSketch) return null;
+    if (
+      rawSketch.startsWith('/') ||
+      rawSketch.startsWith('http://') ||
+      rawSketch.startsWith('https://')
+    ) {
+      return rawSketch;
+    }
+    if (rawSketch.includes('Sketch/')) {
+      const subPath = rawSketch.slice(
+        rawSketch.indexOf('Sketch/') + 'Sketch/'.length
+      );
+      return `/images/sketch/${subPath}`;
+    }
+    return `/images/sketch/${rawSketch}`;
+  }, [monsterObj, monsters]);
+
   const srcCfg = WEAPON_SOURCE_CONFIG[weapon.source_type] || WEAPON_SOURCE_CONFIG.unknown;
   const elemCfg = WEAPON_ELEMENT_CONFIG[weapon.element_type] || WEAPON_ELEMENT_CONFIG.raw;
   const glowTheme = ELEMENT_GLOWS[weapon.element_type] || ELEMENT_GLOWS.raw;
@@ -129,14 +173,14 @@ export default function WeaponCard({
         'group relative flex flex-col sm:flex-row rounded-2xl border transition-all duration-200 cursor-pointer shadow-sm hover:shadow-xl hover:shadow-mh-gold-500/10',
         showRarityMenu ? 'z-50' : 'hover:z-20',
         isSelectedForCompare
-          ? 'border-amber-400 ring-2 ring-amber-400/80 bg-mh-slate-850 shadow-xl shadow-amber-500/10 opacity-100 grayscale-0'
+          ? 'border-amber-400 ring-2 ring-amber-400/80 bg-mh-slate-850 shadow-xl shadow-amber-500/10'
           : isUserCrafted && craftedBadgeStyle
-          ? cn('bg-mh-slate-900 opacity-100 grayscale-0 ring-1', craftedBadgeStyle.border, 'hover:border-mh-gold-400')
+          ? cn('bg-mh-slate-900 ring-1', craftedBadgeStyle.border, 'hover:border-mh-gold-400')
           : isTracked
           ? isCompleted
-            ? 'border-emerald-500/40 bg-mh-slate-900 opacity-100 grayscale-0 hover:border-emerald-500/60'
-            : 'border-yellow-500/40 bg-mh-slate-900 opacity-100 grayscale-0 hover:border-yellow-500/60'
-          : 'border-mh-slate-800 bg-mh-slate-900/90 opacity-65 grayscale hover:opacity-100 hover:grayscale-0 hover:border-mh-slate-600',
+            ? 'border-emerald-500/40 bg-mh-slate-900 hover:border-emerald-500/60'
+            : 'border-yellow-500/40 bg-mh-slate-900 hover:border-yellow-500/60'
+          : 'border-mh-slate-800 bg-mh-slate-900 hover:border-mh-slate-600',
       )}
     >
       {/* ═══════════════════════════════════════════════════════
@@ -218,7 +262,7 @@ export default function WeaponCard({
             <img
               src={weapon.image}
               alt={weapon.name}
-              className="max-h-48 sm:max-h-56 w-full object-contain filter drop-shadow-[0_12px_20px_rgba(0,0,0,0.75)] brightness-95 group-hover:scale-108 transition-transform duration-300 ease-out"
+              className="max-h-48 sm:max-h-56 w-full object-contain filter drop-shadow-[0_12px_20px_rgba(0,0,0,0.75)] brightness-100 group-hover:scale-108 transition-transform duration-300 ease-out"
               onError={(e) => {
                 (e.target as HTMLElement).style.display = 'none';
               }}
@@ -260,8 +304,22 @@ export default function WeaponCard({
       {/* ═══════════════════════════════════════════════════════
           RIGHT SIDE: Details, Skills & Challenge Action Buttons
          ═══════════════════════════════════════════════════════ */}
-      <div className="flex-1 flex flex-col justify-between p-3.5 sm:p-4 min-w-0 bg-mh-slate-850/90 rounded-b-2xl sm:rounded-b-none sm:rounded-r-2xl">
-        <div className="space-y-2">
+      <div className="relative flex-1 flex flex-col justify-between p-3.5 sm:p-4 min-w-0 bg-mh-slate-850/90 rounded-b-2xl sm:rounded-b-none sm:rounded-r-2xl overflow-hidden">
+        {/* Monster Sketch Background behind text in Grid view (only when crafted) */}
+        {isUserCrafted && monsterSketch && (
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 overflow-hidden select-none flex items-center justify-center p-3 sm:p-4">
+            <img
+              src={monsterSketch}
+              alt=""
+              className="w-full h-full max-w-[85%] max-h-[85%] object-contain object-center opacity-[0.16] group-hover:opacity-[0.25] group-hover:scale-105 transition-all duration-300 filter brightness-125 contrast-125"
+              onError={(e) => {
+                (e.target as HTMLElement).style.display = 'none';
+              }}
+            />
+          </div>
+        )}
+
+        <div className="relative z-10 space-y-2">
           {/* Wrapped Weapon Title */}
           <div>
             <h3 className="font-display text-sm sm:text-base font-bold text-mh-slate-100 group-hover:text-mh-gold-300 transition-colors break-words leading-tight">
@@ -344,7 +402,7 @@ export default function WeaponCard({
         </div>
 
         {/* Card Footer: Craft Button, Challenge Action Buttons & Compare Button */}
-        <div className="mt-3 pt-2.5 border-t border-mh-slate-800 space-y-2">
+        <div className="relative z-10 mt-3 pt-2.5 border-t border-mh-slate-800 space-y-2">
           <div className="flex items-center justify-between gap-1.5 flex-wrap">
             <div className="flex items-center gap-1.5">
               {/* Interactive Craft Button */}

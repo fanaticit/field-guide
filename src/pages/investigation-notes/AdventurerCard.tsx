@@ -2,7 +2,7 @@
 // AdventurerCard — Streamlined card for MHO Playable Adventurers
 // Displays icon, name, rarity, role, with element & weapon as compact icons
 // ─────────────────────────────────────────────────────────────
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import {
   User,
@@ -16,7 +16,9 @@ import {
   ADVENTURER_ROLE_CONFIG,
   adventurerRarityBorder,
   ELEMENT_OPTIONS,
+  resolveAdventurerMedia,
 } from '../../data/schemas/adventurer';
+import { useAuthStore } from '../../store/authStore';
 import { WEAPON_TYPES } from '../../data/core/weapon-types';
 import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
@@ -25,6 +27,8 @@ import { ChallengeGoalMenu, InsightPicker } from './AdventurerInsight';
 import { ROLE_ICONS } from '../../components/RoleIcon';
 import ElementIcon from '../../components/ElementIcon';
 import YouTubeIcon from '../../components/YouTubeIcon';
+import { FavouriteGiftIcons } from './AdventurerGifts';
+import type { FavouriteGift } from '../../hooks/useAdminAdventurers';
 
 export const WEAPON_ICON_MAP: Record<string, string> = {
   great_sword: '/images/weapons/ArmsIcon/ArmsIcon_Sword.png',
@@ -54,10 +58,12 @@ interface AdventurerCardProps {
   onAddChallenge?: (adventurer: DBAdventurer, targetInsight: number) => void;
   onClick?: () => void;
   onSelectWeapon?: (weaponType: string) => void;
+  /** Favourite gifts shown as small icons for quick reference */
+  favouriteGifts?: FavouriteGift[];
 }
 
 export default function AdventurerCard({
-  adventurer,
+  adventurer: rawAdventurer,
   isRecruited = false,
   insightLevel = 0,
   challenge,
@@ -65,9 +71,14 @@ export default function AdventurerCard({
   onSetInsight,
   onAddChallenge,
   onClick,
+  favouriteGifts = [],
 }: AdventurerCardProps) {
+  const gender = useAuthStore((s) => s.profile?.equipment_gender ?? 'male');
+  const adventurer = useMemo(
+    () => (rawAdventurer ? resolveAdventurerMedia(rawAdventurer, gender) ?? rawAdventurer : rawAdventurer),
+    [rawAdventurer, gender],
+  );
   const [imageError, setImageError] = useState(false);
-  const [backgroundError, setBackgroundError] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const isPlayerCharacter = adventurer.is_default;
@@ -77,7 +88,6 @@ export default function AdventurerCard({
   const isTracked = Boolean(challenge && challenge.status !== 'abandoned');
   const isChallengeDone = challenge?.status === 'completed';
   const currentInsight = activeRecruited ? Math.max(1, insightLevel) : 0;
-  const showBackground = Boolean(adventurer.background_image) && !backgroundError;
 
   const roleKey = (adventurer.role === 'Disruptor' ? 'Disrupter' : adventurer.role) as 'Assault' | 'Disrupter' | 'Support';
   const roleCfg = ADVENTURER_ROLE_CONFIG[roleKey] || ADVENTURER_ROLE_CONFIG.Assault;
@@ -87,6 +97,13 @@ export default function AdventurerCard({
   const activeWeaponId = adventurer.weapon_type || 'sword_shield';
   const activeWeaponObj = WEAPON_TYPES.find((w) => w.id === activeWeaponId);
   const weaponIconSrc = WEAPON_ICON_MAP[activeWeaponId];
+
+  const bondImage = adventurer.bond_image || (adventurer.id ? `/images/adventurers/${adventurer.id}_bond.png` : null);
+  const hasInsight = activeRecruited && currentInsight >= 1;
+  const insightProgress = Math.max(0, Math.min(1, (currentInsight - 1) / (ADVENTURER_MAX_INSIGHT - 1)));
+  // Lv 1: 0.35 brightness, 0.35 opacity -> Lv 7 (Max): 1.0 brightness, 0.75 opacity
+  const bondBrightness = 0.35 + 0.65 * insightProgress;
+  const bondOpacity = 0.35 + 0.40 * insightProgress;
 
   return (
     <div
@@ -110,21 +127,24 @@ export default function AdventurerCard({
         isTracked && !isChallengeDone && 'ring-2 ring-blue-400/80 ring-offset-1 ring-offset-black',
       )}
     >
-      {/* Panel background art — on when recruited, off when not */}
-      {showBackground && activeRecruited && (
-        <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl -z-10">
+      {/* Background Bond Art: Shown when character has >= 1 insight level, brightness scales with level */}
+      {hasInsight && bondImage && (
+        <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl z-0">
           <img
-            src={adventurer.background_image!}
+            src={bondImage}
             alt=""
-            onError={() => setBackgroundError(true)}
-            className="h-full w-full object-cover opacity-35"
+            style={{
+              filter: `brightness(${bondBrightness}) contrast(1.05)`,
+              opacity: bondOpacity,
+            }}
+            className="h-full w-full object-cover object-right transition-all duration-300"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0b0d14] via-[#0b0d14]/70 to-[#0b0d14]/40" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#121520]/95 via-[#121520]/75 to-[#121520]/25" />
         </div>
       )}
 
       {/* Main Content: Portrait Icon on Left, Name & Compact Badges on Right */}
-      <div className="flex items-center gap-3 min-w-0">
+      <div className="relative z-10 flex items-center gap-3 min-w-0">
         {/* Adventurer Icon / Portrait */}
         <div className="relative h-18 w-18 sm:h-22 sm:w-22 shrink-0 flex items-center justify-center">
           {adventurer.image && !imageError ? (
@@ -167,9 +187,9 @@ export default function AdventurerCard({
             {Boolean(adventurer.youtube_url) && (
               <span
                 title="Character Guide Video Available"
-                className="shrink-0 inline-flex items-center justify-center rounded bg-red-500/20 border border-red-500/40 p-0.5 text-red-400"
+                className="shrink-0 inline-flex items-center justify-center text-red-500 hover:text-red-400"
               >
-                <YouTubeIcon size={12} className="text-red-500 fill-red-500" />
+                <YouTubeIcon size={18} className="text-red-500 fill-red-500" />
               </span>
             )}
 
@@ -229,6 +249,9 @@ export default function AdventurerCard({
               )}
             </span>
           </div>
+
+          {/* Favourite gifts: icons only (hover for name and bond) */}
+          <FavouriteGiftIcons gifts={favouriteGifts} size="sm" />
         </div>
       </div>
 

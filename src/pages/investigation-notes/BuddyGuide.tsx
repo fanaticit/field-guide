@@ -519,19 +519,19 @@ export default function BuddyGuide() {
                       !isOwned && 'opacity-60',
                     )}
                   >
-                    <td className="px-5 py-3.5">
+                    <td className="px-5 py-3">
                       <div className="flex items-center gap-3">
-                        {buddy.image ? (
-                          <img
-                            src={buddy.image}
-                            alt={buddy.name}
-                            className="h-10 w-10 rounded-xl object-cover shadow-sm shrink-0 border border-mh-slate-750"
-                          />
-                        ) : (
-                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-mh-slate-800 text-mh-gold-400">
-                            <Cat size={16} />
-                          </div>
-                        )}
+                        <div className="relative h-[60px] w-[60px] shrink-0 flex items-center justify-center">
+                          {buddy.image ? (
+                            <img
+                              src={buddy.image}
+                              alt={buddy.name}
+                              className="h-full w-full object-contain drop-shadow-md"
+                            />
+                          ) : (
+                            <Cat size={32} className="text-mh-gold-400" />
+                          )}
+                        </div>
                         <div>
                           <div className="flex items-center gap-1.5 flex-wrap">
                             <span className="font-bold text-mh-slate-100">

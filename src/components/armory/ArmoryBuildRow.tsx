@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { Link } from 'react-router';
 import { getInkConfig } from '../../data/schemas/visage';
 import { InkIconComponent } from '../../pages/investigation-notes/VisageCard';
@@ -9,6 +10,8 @@ import {
   type MonsterLookup,
 } from '../../types/armory';
 import { getWeaponMaxName, type DBWeapon } from '../../data/schemas/weapon';
+import { useAuthStore } from '../../store/authStore';
+import { resolveAdventurerMedia } from '../../data/schemas/adventurer';
 
 interface ArmoryBuildRowProps {
   build: ArmoryBuild;
@@ -16,6 +19,11 @@ interface ArmoryBuildRowProps {
 }
 
 export function ArmoryBuildRow({ build, monsterMap }: ArmoryBuildRowProps) {
+  const gender = useAuthStore((s) => s.profile?.equipment_gender ?? 'male');
+  const adventurer = useMemo(
+    () => (build.adventurer ? resolveAdventurerMedia(build.adventurer, gender) ?? build.adventurer : null),
+    [build.adventurer, gender]
+  );
   let role = 'main';
   if (build.description && /<!-- role:support -->/.test(build.description)) {
     role = 'support';
@@ -109,13 +117,13 @@ export function ArmoryBuildRow({ build, monsterMap }: ArmoryBuildRowProps) {
         <div className="flex items-center gap-1 shrink-0">
           {/* Adventurer Icon */}
           <div
-            title={`Adventurer: ${build.adventurer?.name || 'Default'}`}
+            title={`Adventurer: ${adventurer?.name || 'Default'}`}
             className="w-7 h-7 sm:w-8 sm:h-8 landscape:w-8 landscape:h-8 rounded-md bg-mh-slate-800 border border-mh-slate-700/80 overflow-hidden flex items-center justify-center shrink-0 shadow-sm"
           >
-            {build.adventurer?.image ? (
+            {adventurer?.image ? (
               <img
-                src={build.adventurer.image}
-                alt={build.adventurer?.name || 'Adventurer'}
+                src={adventurer.image}
+                alt={adventurer?.name || 'Adventurer'}
                 className="w-full h-full object-cover"
               />
             ) : (

@@ -83,7 +83,7 @@ export default function WeaponGuide() {
   const [filterElement, setFilterElement] = useState<WeaponElementType | 'all'>('all');
   const [filterMaxRarity, setFilterMaxRarity] = useState<string>('all');
   const [sortOrder, setSortOrder] = useState<SortOrder>('rarity-desc');
-  const [viewMode, setViewMode] = useState<ViewMode>('grid');
+  const [viewMode, setViewMode] = useState<ViewMode>('table');
 
   // Custom Dropdown Open States & Refs
   const [weaponTypeOpen, setWeaponTypeOpen] = useState(false);

@@ -122,6 +122,8 @@ export interface DBAdventurer {
   image: string | null;
   /** Large image used as the background of the information panel. Null until uploaded. */
   background_image?: string | null;
+  /** RoleBond illustrated artwork unlocked with insight/bond */
+  bond_image?: string | null;
   is_default: boolean;
   weapon_type: string | null;
   allowed_weapon_types: string[];
@@ -170,3 +172,51 @@ export interface AdventurerSkill {
 }
 
 export type AdventurerUpsert = Omit<DBAdventurer, 'created_at' | 'updated_at'>;
+
+export const FATED_ADVENTURER_MEDIA = {
+  male: {
+    head: '/images/adventurers/RoleHeadIcon_MCO.png',
+    bust: '/images/adventurers/RoleBust_MCO.png',
+    bond: '/images/adventurers/RoleBond_MCO.png',
+  },
+  female: {
+    head: '/images/adventurers/RoleHeadIcon_FCO.png',
+    bust: '/images/adventurers/RoleBust_FCO.png',
+    bond: '/images/adventurers/RoleBond_FCO.png',
+  },
+} as const;
+
+/**
+ * Returns the adventurer with gender-specific media for the customizable player character
+ * ("Fated Adventurer" / is_default). Non-default adventurers are returned unchanged.
+ */
+export function resolveAdventurerMedia<
+  T extends {
+    id?: string | null;
+    name?: string | null;
+    is_default?: boolean | null;
+    image?: string | null;
+    background_image?: string | null;
+    bond_image?: string | null;
+    gender?: string | null;
+  }
+>(adventurer: T | null | undefined, gender: 'male' | 'female' = 'male'): T | null {
+  if (!adventurer) return null as any;
+  const isDefault =
+    Boolean(adventurer.is_default) ||
+    adventurer.id === 'default_adventurer' ||
+    adventurer.id === 'main_character' ||
+    adventurer.name === 'Fated Adventurer';
+
+  if (isDefault) {
+    const media = gender === 'female' ? FATED_ADVENTURER_MEDIA.female : FATED_ADVENTURER_MEDIA.male;
+    return {
+      ...adventurer,
+      image: media.head,
+      background_image: media.bust,
+      bond_image: media.bond,
+      gender,
+    };
+  }
+  return adventurer;
+}

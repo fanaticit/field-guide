@@ -81,10 +81,14 @@
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_MTwoA01.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Two/RoleProfileIcon_MTwoA01.png",
   "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MTwoA01_ElementUnact.png",
+  "keepsake": "Crimson Howl",
+  "keepsake_description": "Once a blade meant for a disciple, it became the only thing Pyro took with him the day he left and never looked back. After every powerful foe that falls, he carves another mark into it, a tally of victories that belong to him alone. As long as that worn scabbard rests against his hip, the fire in him never goes out, driving him ever forward to face something stronger.",
+  "keepsake_token": "MHMobile/Content/UI/Dynamic/RoleToken/RoleToken_MTwoA01.png",
   "item_id": 230018,
   "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool",
   "game_status": "In game",
-  "debug": ""
+  "debug": "",
+  "bond_image": "/images/adventurers/101001_bond.png"
  },
  {
   "id": 101003,
@@ -179,10 +183,14 @@
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_FTwoA03.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Two/RoleProfileIcon_FTwoA03.png",
   "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FTwoA03_ElementUnact.png",
+  "keepsake": "Broken Blade",
+  "keepsake_description": "A broken sword left behind by the previous Leader—Freya's most treasured keepsake. Years ago, he fought to the very last moment, refusing to retreat even as the blade snapped in two. As long as she carries it close, that unbreakable will ignites within her once more.",
+  "keepsake_token": "MHMobile/Content/UI/Dynamic/RoleToken/RoleToken_FTwoA03.png",
   "item_id": 230020,
   "how_to_obtain": "Featured in limited Recruitment: Crimson Authority (2026-05-13 to 2026-06-12); Featured in limited Recruitment: Crimson Authority (2026-11-27 to 2027-01-22)",
   "game_status": "In game",
-  "debug": ""
+  "debug": "",
+  "bond_image": "/images/adventurers/101003_bond.png"
  },
  {
   "id": 101002,
@@ -261,10 +269,14 @@
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_MTwoA02.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Two/RoleProfileIcon_MTwoA02.png",
   "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MTwoA02_ElementUnact.png",
+  "keepsake": "Flashing Light",
+  "keepsake_description": "A lens ground to a special polish, scattering harsh light into shimmering halos of color. When held before the eye, those fragments gather into the brilliant spectacle Luxheart cherishes above all else. As long as light still falls through the glass, he believes wherever he stands, the stage is already set.",
+  "keepsake_token": "MHMobile/Content/UI/Dynamic/RoleToken/RoleToken_MTwoA02.png",
   "item_id": 230027,
   "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool",
   "game_status": "In game",
-  "debug": ""
+  "debug": "",
+  "bond_image": "/images/adventurers/101002_bond.png"
  },
  {
   "id": 102002,
@@ -353,10 +365,14 @@
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_FSwoA01.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Swo/RoleProfileIcon_FSwoA01.png",
   "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FSwoA01_ElementUnact.png",
+  "keepsake": "Drifting Petals",
+  "keepsake_description": "Midori never imagined she would be reunited with her family's lost heirloom. As long as she carries it, her depleted inspiration flows anew like a spring, pushing her abilities to new heights.",
+  "keepsake_token": "MHMobile/Content/UI/Dynamic/RoleToken/RoleToken_FSwoA01.png",
   "item_id": 230005,
   "how_to_obtain": "Featured in limited Recruitment: Autumn Refrain (2026-03-26 to 2026-05-29); Featured in limited Recruitment: Autumn Refrain (2026-09-01 to 2026-11-27)",
   "game_status": "In game",
-  "debug": ""
+  "debug": "",
+  "bond_image": "/images/adventurers/102002_bond.png"
  },
  {
   "id": 102004,
@@ -456,10 +472,14 @@
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_MSwoA04.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Swo/RoleProfileIcon_MSwoA04.png",
   "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MSwoA04_ElementUnact.png",
+  "keepsake": "Windgrass Reed",
+  "keepsake_description": "A small bundle of dried reeds, bound with Great Jagras sinew cord. Ryunosuke always claims he just picked it up, but the knot is tied in the old way, unique to the fishing village where he was born. The moment one touches his lips, the damp sea breeze stirs again somewhere deep in memory.",
+  "keepsake_token": "MHMobile/Content/UI/Dynamic/RoleToken/RoleToken_MSwoA04.png",
   "item_id": 230013,
   "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool",
   "game_status": "In game",
-  "debug": ""
+  "debug": "",
+  "bond_image": "/images/adventurers/102004_bond.png"
  },
  {
   "id": 104001,
@@ -554,10 +574,14 @@
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_FSouA01.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Sou/RoleProfileIcon_FSouA01.png",
   "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FSouA01_ElementUnact.png",
+  "keepsake": "Crisp Claw",
+  "keepsake_description": "Cold and darkness no longer hold any fear for Keres. The cookies are kept carefully tucked away, as if it still holds the warmth of the oven. As long as she carries it close, the soft sweetness from memory quietly melts through her, guiding her through even the longest nights.",
+  "keepsake_token": "MHMobile/Content/UI/Dynamic/RoleToken/RoleToken_FSouA01.png",
   "item_id": 230006,
   "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool",
   "game_status": "In game",
-  "debug": ""
+  "debug": "",
+  "bond_image": "/images/adventurers/104001_bond.png"
  },
  {
   "id": 104002,
@@ -652,10 +676,14 @@
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_FSouA03.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Sou/RoleProfileIcon_FSouA03.png",
   "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FSouA03_ElementUnact.png",
+  "keepsake": "Sandfeather Pendant",
+  "keepsake_description": "A precious keepsake given to Raya by her dance troupe companions. Whenever she wears it, the dazzling days of dancing together under the spotlight vividly flicker before her eyes.",
+  "keepsake_token": "MHMobile/Content/UI/Dynamic/RoleToken/RoleToken_FSouA03.png",
   "item_id": 230008,
   "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool",
   "game_status": "In game",
-  "debug": ""
+  "debug": "",
+  "bond_image": "/images/adventurers/104002_bond.png"
  },
  {
   "id": 104004,
@@ -755,10 +783,14 @@
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_FSouA04.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Sou/RoleProfileIcon_FSouA04.png",
   "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FSouA04_ElementUnact.png",
+  "keepsake": "Throwing Fang",
+  "keepsake_description": "Six throwing blades etched with marks of an old bond, capable of slicing the night into shards of faint light. Each throw is like a streak of light cutting through the darkness, a silent vow that she will guide the ones she cherishes through the shadows toward a brighter future.",
+  "keepsake_token": "MHMobile/Content/UI/Dynamic/RoleToken/RoleToken_FSouA04.png",
   "item_id": 230015,
   "how_to_obtain": "Guild Shop",
   "game_status": "In game",
-  "debug": ""
+  "debug": "",
+  "bond_image": "/images/adventurers/104004_bond.png"
  },
  {
   "id": 107001,
@@ -859,10 +891,14 @@
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_MLanA01.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Lan/RoleProfileIcon_MLanA01.png",
   "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MLanA01_ElementUnact.png",
+  "keepsake": "Sandstorm Token",
+  "keepsake_description": "Ouyang Varen once used this as proof of his duty as a guardian. Though he has since left his post, carrying it ensures his oath to protect remains etched in his heart—forever unshaken.",
+  "keepsake_token": "MHMobile/Content/UI/Dynamic/RoleToken/RoleToken_MLanA01.png",
   "item_id": 230016,
   "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool",
   "game_status": "In game",
-  "debug": ""
+  "debug": "",
+  "bond_image": "/images/adventurers/107001_bond.png"
  },
  {
   "id": 113001,
@@ -952,10 +988,14 @@
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_FHbgA01.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Hbg/RoleProfileIcon_FHbgA01.png",
   "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FHbgA01_ElementUnact.png",
+  "keepsake": "Sweet Dreams Locket",
+  "keepsake_description": "Pepper carefully keeps her parents' letters within it. Carried close to her heart, the love between the lines transforms into an endless stream of courage that fuels her spirit.",
+  "keepsake_token": "MHMobile/Content/UI/Dynamic/RoleToken/RoleToken_FHbgA01.png",
   "item_id": 230009,
   "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool",
   "game_status": "In game",
-  "debug": ""
+  "debug": "",
+  "bond_image": "/images/adventurers/113001_bond.png"
  },
  {
   "id": 114002,
@@ -1050,10 +1090,14 @@
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_FBowA02.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Bow/RoleProfileIcon_FBowA02.png",
   "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FBowA02_ElementUnact.png",
+  "keepsake": "Herbalist's Handbook",
+  "keepsake_description": "Madelyn always keeps a record of the herbs she encounters. With this item, she can always review past observations or jot down new findings.",
+  "keepsake_token": "MHMobile/Content/UI/Dynamic/RoleToken/RoleToken_FBowA02.png",
   "item_id": 230007,
   "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool",
   "game_status": "In game",
-  "debug": ""
+  "debug": "",
+  "bond_image": "/images/adventurers/114002_bond.png"
  },
  {
   "id": 114003,
@@ -1153,10 +1197,14 @@
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_FBowA03.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Bow/RoleProfileIcon_FBowA03.png",
   "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MBowA03_ElementUnact.png",
+  "keepsake": "Electrified Sight",
+  "keepsake_description": "A lens that holds the eye steady even as speed and lightning blur the world around it. Luka has always charged headlong into danger without a second thought. With this before his eyes, the world seems to slow for just a heartbeat—yet he's already gone, racing toward his mark on a trail of thunder.",
+  "keepsake_token": "MHMobile/Content/UI/Dynamic/RoleToken/RoleToken_MBowA03.png",
   "item_id": 230014,
   "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool",
   "game_status": "In game",
-  "debug": ""
+  "debug": "",
+  "bond_image": "/images/adventurers/114003_bond.png"
  },
  {
   "id": 114004,
@@ -1251,10 +1299,14 @@
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_FBowA04.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Bow/RoleProfileIcon_FBowA04.png",
   "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_FBowA04_ElementUnact.png",
+  "keepsake": "Crown of Wind",
+  "keepsake_description": "A crown that waited long years to finally meet its crystal, capable of folding deadly wingbeats into graceful steps. Whenever Stylia dons it to dance, it holds within the crystal's depths the very steps she long sought. As long as the wind's reflection lingers in the crystal, she believes that no matter how long the wait, the answer will one day come to her feet.",
+  "keepsake_token": "MHMobile/Content/UI/Dynamic/RoleToken/RoleToken_FBowA04.png",
   "item_id": 230021,
   "how_to_obtain": "Featured in limited Recruitment: Heart of the Thaw (2026-11-27 to 2026-12-24)",
   "game_status": "Upcoming – Recruitment banner starts 2026-11-27",
-  "debug": ""
+  "debug": "",
+  "bond_image": "/images/adventurers/114004_bond.png"
  },
  {
   "id": 107002,
@@ -1349,10 +1401,14 @@
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_MLanA02.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Lan/RoleProfileIcon_MLanA02.png",
   "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MLanA02_ElementUnact.png",
+  "keepsake": "Desert Horn",
+  "keepsake_description": "Even on the harshest missions, Arkaya never parts with the horn flask the village children made for him. Each time he feels its desert-dry touch, his shield seems to grow sturdier still.",
+  "keepsake_token": "MHMobile/Content/UI/Dynamic/RoleToken/RoleToken_MLanA02.png",
   "item_id": 230017,
   "how_to_obtain": "Beginner's Recruitment pool; Standard Recruitment pool",
   "game_status": "In game",
-  "debug": ""
+  "debug": "",
+  "bond_image": "/images/adventurers/107002_bond.png"
  },
  {
   "id": 105001,
@@ -1442,9 +1498,13 @@
   "bust": "MHMobile/Content/UI/Dynamic/RoleBust/RoleBust_MHamA01.png",
   "profile_icon": "MHMobile/Content/UI/Dynamic/RoleProfileIcon/Ham/RoleProfileIcon_MHamA01.png",
   "element_icon": "MHMobile/Content/UI/Dynamic/RoleAttributeIcon/RoleAttributeIcon_MHamA03_ElementUnact.png",
+  "keepsake": "Heart of Steam",
+  "keepsake_description": "A core forged from countless failures, capable of turning the restless hiss of steam into a steady heartbeat. Whenever fitted into a machine, it echoes Rhodes' most beloved rhythm among the gears. As long as this core keeps beating, he believes every crooked dream can still find its way to reality.",
+  "keepsake_token": "MHMobile/Content/UI/Dynamic/RoleToken/RoleToken_MHamA01.png",
   "item_id": 230026,
   "how_to_obtain": "Featured in limited Recruitment: Thunder Smith (2026-09-01 to 2026-11-27); Beginner's Recruitment pool; Standard Recruitment pool",
   "game_status": "In game",
-  "debug": ""
+  "debug": "",
+  "bond_image": "/images/adventurers/105001_bond.png"
  }
 ]

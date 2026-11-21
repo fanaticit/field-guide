@@ -29,7 +29,7 @@ import {
   ELEMENT_OPTIONS,
 } from '../../data/schemas/adventurer';
 import { WEAPON_TYPES } from '../../data/core/weapon-types';
-import { usePublicAdventurers, useUpdateAdventurerWeapon } from '../../hooks/useAdminAdventurers';
+import { useAllFavouriteGifts, usePublicAdventurers, useUpdateAdventurerWeapon } from '../../hooks/useAdminAdventurers';
 import { useUserAdventurerCollection } from '../../hooks/useUserAdventurerCollection';
 import { usePageGuide } from '../../hooks/usePageGuide';
 import { getYouTubeEmbedUrl } from '../../lib/youtube';
@@ -65,6 +65,7 @@ export default function AdventurerGuide() {
   const [weaponFilter, setWeaponFilter] = useState<string>('all');
   const [ownershipFilter, setOwnershipFilter] = useState<OwnershipFilter>('all');
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
+  const { data: favouriteGiftsByAdventurer } = useAllFavouriteGifts();
   const [inspectedAdventurer, setInspectedAdventurer] = useState<DBAdventurer | null>(null);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
 
@@ -490,6 +491,7 @@ export default function AdventurerGuide() {
                 onSetInsight={(level) => handleSetInsight(adv, level)}
                 onAddChallenge={handleAddChallenge}
                 onClick={() => setInspectedAdventurer(adv)}
+                favouriteGifts={favouriteGiftsByAdventurer?.get(adv.id)}
               />
             ))}
           </div>
@@ -554,9 +556,9 @@ export default function AdventurerGuide() {
                               {Boolean(adv.youtube_url) && (
                                 <span
                                   title="Character Guide Video Available"
-                                  className="shrink-0 inline-flex items-center justify-center rounded bg-red-500/20 border border-red-500/40 p-0.5 text-red-400"
+                                  className="shrink-0 inline-flex items-center justify-center text-red-500 hover:text-red-400"
                                 >
-                                  <YouTubeIcon size={12} className="text-red-500 fill-red-500" />
+                                  <YouTubeIcon size={18} className="text-red-500 fill-red-500" />
                                 </span>
                               )}
                               {(adv.status === 'not_in_game' || adv.is_spoiler) && (

@@ -22,11 +22,12 @@ import {
   ADVENTURER_ROLE_CONFIG,
   adventurerRarityBorder,
   ELEMENT_OPTIONS,
+  resolveAdventurerMedia,
 } from '../../data/schemas/adventurer';
 import { WEAPON_TYPES } from '../../data/core/weapon-types';
 import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
-import { useAdventurerSkills } from '../../hooks/useAdminAdventurers';
+import { useAdventurerGifts, useAdventurerSkills, type FavouriteGift } from '../../hooks/useAdminAdventurers';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
 import AdventurerRarityBadge from './AdventurerRarityBadge';
 import { ChallengeGoalMenu, InsightPill, InsightRow } from './AdventurerInsight';
@@ -34,6 +35,7 @@ import { ROLE_ICONS } from '../../components/RoleIcon';
 import { getYouTubeEmbedUrl } from '../../lib/youtube';
 import YouTubeIcon from '../../components/YouTubeIcon';
 import FeedbackModal from '../../components/feedback/FeedbackModal';
+import AdventurerGifts, { FavouriteGiftIcons } from './AdventurerGifts';
 
 interface AdventurerModalProps {
   adventurer: DBAdventurer | null;
@@ -50,7 +52,7 @@ interface AdventurerModalProps {
 }
 
 export default function AdventurerModal({
-  adventurer,
+  adventurer: rawAdventurer,
   open,
   onClose,
   isRecruited = false,
@@ -63,10 +65,20 @@ export default function AdventurerModal({
 }: AdventurerModalProps) {
   const navigate = useNavigate();
   const isAdmin = useAuthStore(selectIsAdmin);
+  const gender = useAuthStore((s) => s.profile?.equipment_gender ?? 'male');
+  const adventurer = useMemo(
+    () => (rawAdventurer ? resolveAdventurerMedia(rawAdventurer, gender) ?? rawAdventurer : null),
+    [rawAdventurer, gender],
+  );
   const [imageError, setImageError] = useState(false);
   const [backgroundError, setBackgroundError] = useState(false);
   const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
   const { data: skills = [] } = useAdventurerSkills(open ? adventurer?.id : null);
+  // Same request the Bond Gifts table uses (shared cache), filtered to favourites for the quick reference.
+  const { data: gifts = [] } = useAdventurerGifts(open ? adventurer?.id : null);
+  const favouriteGifts: FavouriteGift[] = gifts
+    .filter((g) => g.preference === 'favourite')
+    .map(({ gift_id, name, icon, bond_gained, multiplier }) => ({ gift_id, name, icon, bond_gained, multiplier }));
   const { data: allWeaponTypes = [] } = useAdminWeaponTypes({ isActive: true });
 
   const availableWeaponTypes = useMemo(() => {
@@ -91,7 +103,15 @@ export default function AdventurerModal({
   const hasOpenChallenge = Boolean(
     challenge && challenge.status !== 'abandoned' && challenge.status !== 'completed',
   );
-  const showBackground = Boolean(adventurer.background_image) && !backgroundError;
+  const bondImage = adventurer.bond_image || (adventurer.id ? `/images/adventurers/${adventurer.id}_bond.png` : null);
+  const hasInsight = isRecruited && currentInsight >= 1;
+  const activeBgImage = (hasInsight && bondImage) ? bondImage : (adventurer.background_image ?? null);
+  const showBackground = Boolean(activeBgImage) && !backgroundError;
+
+  const insightProgress = Math.max(0, Math.min(1, (currentInsight - 1) / (ADVENTURER_MAX_INSIGHT - 1)));
+  // Lv 1: 0.35 brightness, 0.35 opacity -> Lv 7 (Max): 1.0 brightness, 0.75 opacity
+  const bondBrightness = hasInsight ? (0.35 + 0.65 * insightProgress) : 0.4;
+  const bondOpacity = hasInsight ? (0.35 + 0.40 * insightProgress) : 0.25;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -114,14 +134,18 @@ export default function AdventurerModal({
         )}
         style={adventurerRarityBorder(adventurer.rarity)}
       >
-        {/* Panel background art, dimmed so text stays readable */}
+        {/* Panel background art, dimmed so text stays readable, brightness scales with insight when recruited */}
         {showBackground && (
-          <div className="pointer-events-none absolute inset-0">
+          <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
             <img
-              src={adventurer.background_image!}
+              src={activeBgImage!}
               alt=""
               onError={() => setBackgroundError(true)}
-              className={cn('h-full w-full object-cover', isRecruited ? 'opacity-50' : 'opacity-30 grayscale')}
+              style={hasInsight ? {
+                filter: `brightness(${bondBrightness}) contrast(1.05)`,
+                opacity: bondOpacity,
+              } : undefined}
+              className={cn('h-full w-full object-cover transition-all duration-300', !hasInsight && 'opacity-25 grayscale')}
             />
             <div className="absolute inset-0 bg-gradient-to-b from-[#0f121a]/60 via-[#0f121a]/80 to-[#0f121a]/95" />
           </div>
@@ -251,6 +275,17 @@ export default function AdventurerModal({
                     .filter(Boolean)
                     .join(' • ')}
                 </p>
+              )}
+
+              {/* Favourite gifts — highlighted on the character sheet for quick reference */}
+              {favouriteGifts.length > 0 && (
+                <div className="mt-2.5">
+                  <div className="mb-1 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-mh-gold-300">
+                    <img src="/img/ui/Common_Icon_Recommend1.png" alt="" className="h-4 w-4 object-contain" />
+                    <span>Favourite Gifts</span>
+                  </div>
+                  <FavouriteGiftIcons gifts={favouriteGifts} size="md" />
+                </div>
               )}
 
               {(adventurer.status === 'not_in_game' || adventurer.is_spoiler) && (
@@ -613,6 +648,9 @@ export default function AdventurerModal({
               </p>
             </div>
           )}
+
+          {/* Bond gifts */}
+          <AdventurerGifts adventurerId={adventurer.id} open={open} />
         </div>
 
         {/* Footer */}
