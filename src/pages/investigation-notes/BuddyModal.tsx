@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { X, Cat, Zap, Sparkles, Info, Check, Target, CheckCircle2, Plus } from 'lucide-react';
 import {
   type DBBuddy,

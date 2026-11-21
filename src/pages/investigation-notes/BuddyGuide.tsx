@@ -2,7 +2,7 @@
 // BuddyGuide — Investigation Notes view for MHO Companions (Buddies) with Collection
 // ─────────────────────────────────────────────────────────────
 import { useState, useMemo, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import {
   Search,
   Cat,

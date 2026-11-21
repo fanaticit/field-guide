@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useLocation, useSearchParams } from 'react-router';
 import { Shield, ChevronRight, Sparkles, Flame, Settings, LogIn, ScrollText } from 'lucide-react';
 import { useAuthStore, getLandingPagePath } from '../store/authStore';
 import LoginModal from '../components/auth/LoginModal';
@@ -32,8 +32,9 @@ export default function LandingPage() {
     }
   }, [shouldRedirect, targetPath, navigate]);
 
-  // While auth state is initializing or when actively redirecting, avoid flashing the home page
-  if (loading || shouldRedirect) {
+  // While redirecting a logged-in user to their chosen start page, render nothing.
+  // (The page is still rendered while auth loads so it can be pre-rendered for search engines.)
+  if (shouldRedirect) {
     return null;
   }
 
@@ -68,7 +69,7 @@ export default function LandingPage() {
           {/* Quality Tier / Section Indicator */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-4 shadow-sm border border-[var(--border-rarity-current)] bg-[var(--bg-rarity-current)] text-[var(--rarity-current)]">
             <span>❖</span>
-            <span>Monster Hunters Outlanders - Field Guide</span>
+            <span>Monster Hunter Outlanders - Field Guide</span>
           </div>
 
           {/* Featured Field Guide Banner */}
@@ -85,7 +86,7 @@ export default function LandingPage() {
             <div className="relative w-full overflow-hidden rounded-xl sm:rounded-2xl border border-white/15 shadow-2xl bg-black/40 group">
               <img
                 src="/images/ui/banner_small.jpeg"
-                alt="Monster Hunter Field Guide"
+                alt="Monster Hunter Outlanders Field Guide banner"
                 className="w-full h-auto object-cover select-none transition-transform duration-700 group-hover:scale-[1.02]"
               />
               <div className="pointer-events-none absolute inset-0 rounded-xl sm:rounded-2xl ring-1 ring-inset ring-white/10" />
@@ -94,7 +95,7 @@ export default function LandingPage() {
 
           {/* Title */}
           <h1 className="font-display text-4xl sm:text-6xl font-black tracking-tight text-white drop-shadow-md">
-            Monster Hunter{' '}
+            Monster Hunter Outlanders{' '}
             <span className="text-[#FFD700] drop-shadow-[0_0_14px_rgba(255,215,0,0.35)]">
               Field Guide
             </span>

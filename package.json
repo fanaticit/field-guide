@@ -4,32 +4,38 @@
   "version": "1.2.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "react-router dev",
+    "build": "tsc -b && react-router build",
+    "typecheck": "tsc -b",
     "lint": "oxlint",
-    "preview": "vite preview",
-    "deploy": "npm run build && npx wrangler pages deploy dist --project-name mhfg-field-guide"
+    "preview": "npx wrangler pages dev dist/client",
+    "deploy": "npm run build && npx wrangler pages deploy dist/client --project-name mhfg-field-guide"
   },
   "dependencies": {
+    "@react-router/node": "^8.5.2",
     "@supabase/supabase-js": "^2.112.3",
     "@tailwindcss/vite": "^4.3.3",
     "@tanstack/react-query": "^5.101.4",
     "clsx": "^2.1.1",
+    "isbot": "^5.2.3",
     "lucide-react": "^1.31.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "react-router-dom": "^7.18.3",
+    "react-router": "^8.5.2",
     "tailwind-merge": "^3.6.0",
     "tailwindcss": "^4.3.3",
     "zustand": "^5.0.15"
   },
   "devDependencies": {
+    "@react-router/dev": "^8.5.2",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.4",
     "oxlint": "^1.75.0",
     "typescript": "~6.0.2",
     "vite": "^8.2.0"
+  },
+  "engines": {
+    "node": ">=22.22.0"
   }
 }

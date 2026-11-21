@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { getInkConfig } from '../../data/schemas/visage';
 import { InkIconComponent } from '../../pages/investigation-notes/VisageCard';
 import { Sparkles, Sword, Video } from 'lucide-react';

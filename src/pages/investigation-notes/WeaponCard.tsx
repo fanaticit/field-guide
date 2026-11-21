@@ -4,7 +4,7 @@
 // Supports User Weapon Crafting & Rarity Level tracking (Visage Card style).
 // ─────────────────────────────────────────────────────────────
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import {
   Sword,
   Sparkles,

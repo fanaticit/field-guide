@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────
 // VisageModal — Detailed card inspect view for MHO Visage Cards
 // ─────────────────────────────────────────────────────────────
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { X, Sparkles, Trash2, Target, CheckCircle2, Plus } from 'lucide-react';
 import type { DBVisage, VisageRarity } from '../../data/schemas/visage';
 import {

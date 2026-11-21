@@ -6,8 +6,13 @@
 //   • Mobile portrait            → floating bar at the BOTTOM
 // The active item is lifted out of the bar in a notched bubble.
 // Click any item to open its sub-menu.
+//
+// Every item that leads to a page is a real link (<a href>), so search
+// engines and AI crawlers can follow the navigation. Section icons link to
+// their main page; a plain click opens the sub-menu instead, while
+// Ctrl/Cmd/middle-click opens the page in a new tab as usual.
 // ─────────────────────────────────────────────────────────────
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type React from 'react';
 import {
   Sword,
@@ -30,13 +35,15 @@ import {
   ScanSearch,
   type LucideIcon,
 } from 'lucide-react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router';
+import type { MouseEvent as ReactMouseEvent } from 'react';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
 import { useBuildPlannerStore } from '../../store/buildPlannerStore';
 import { useVisageBuilderStore } from '../../store/visageBuilderStore';
 import { useUIStore } from '../../store/uiStore';
 import { DEFAULT_SECTION_THEMES, themeToNavAccent } from '../../config/themes';
 import { cn } from '../../lib/utils';
+import { linkPath } from '../../seo/site';
 import LoginModal from '../auth/LoginModal';
 import FeedbackModal from '../feedback/FeedbackModal';
 import { useAdminFeedbackCount, useUserFeedbackCount } from '../../hooks/useAdminFeedback';
@@ -49,7 +56,10 @@ interface SubNavItem {
   iconSrc?: string;
   iconZoom?: number;
   active: boolean;
-  onSelect: () => void;
+  /** Page this item links to */
+  to?: string;
+  /** Action for items that are not links (login, logout…) */
+  onSelect?: () => void;
   badge?: number;
 }
 
@@ -74,42 +84,22 @@ interface BarNavItem {
   accent: 'superior' | 'epic' | 'fine' | 'rare';
   active: boolean;
   section?: NavSection;
-  onSelect?: () => void;
+  /** Page this item links to */
+  to?: string;
   badge?: number;
 }
 
-function useNavCapacity(navRef: React.RefObject<HTMLElement | null>): number {
-  const [capacity, setCapacity] = useState<number>(() => {
-    if (typeof window === 'undefined') return 0;
-    const isPortrait = window.matchMedia('(max-width: 1023px) and (orientation: portrait)').matches;
-    if (isPortrait) {
-      const w = window.innerWidth;
-      if (w >= 920) return 9;
-      if (w >= 860) return 8;
-      if (w >= 800) return 7;
-      if (w >= 740) return 6;
-      if (w >= 680) return 5;
-      if (w >= 620) return 4;
-      if (w >= 560) return 3;
-      if (w >= 500) return 2;
-      if (w >= 440) return 1;
-      return 0;
-    } else {
-      const h = window.innerHeight;
-      if (h >= 940) return 9;
-      if (h >= 880) return 8;
-      if (h >= 820) return 7;
-      if (h >= 760) return 6;
-      if (h >= 700) return 5;
-      if (h >= 640) return 4;
-      if (h >= 580) return 3;
-      if (h >= 520) return 2;
-      if (h >= 460) return 1;
-      return 0;
-    }
-  });
+/** True for clicks that should keep the browser's default link behaviour (new tab, etc.). */
+function isModifiedClick(e: ReactMouseEvent) {
+  return e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey;
+}
 
-  useEffect(() => {
+function useNavCapacity(navRef: React.RefObject<HTMLElement | null>): number {
+  // Starts at 0 so the pre-rendered HTML and the first render in the browser
+  // match; the real capacity is measured before the first paint below.
+  const [capacity, setCapacity] = useState<number>(0);
+
+  useLayoutEffect(() => {
     const update = () => {
       if (typeof window === 'undefined') return;
       const isPortrait = window.matchMedia('(max-width: 1023px) and (orientation: portrait)').matches;
@@ -181,7 +171,6 @@ function setCookie(name: string, value: string, days = 365) {
 }
 
 export default function MainNav() {
-  const navigate = useNavigate();
   const { pathname } = useLocation();
   const { user, profile, signOut } = useAuthStore();
   const isAdmin = useAuthStore(selectIsAdmin);
@@ -197,7 +186,7 @@ export default function MainNav() {
   const { data: userUnreadCount = 0 } = useUserFeedbackCount();
   const [openId, setOpenId] = useState<string | null>(null);
   const [anchorY, setAnchorY] = useState(0);
-  const buttonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const buttonRefs = useRef<Record<string, HTMLElement | null>>({});
   const navRef = useRef<HTMLElement | null>(null);
   const capacity = useNavCapacity(navRef);
 
@@ -252,7 +241,11 @@ export default function MainNav() {
   const isLoggedIn = !!user;
   const displayName = profile?.display_name ?? profile?.username ?? user?.email?.split('@')[0] ?? 'Hunter';
 
-  const go = (path: string) => () => navigate(path);
+  // Return to the build the hunter is working on, if any.
+  const plannerBuildId = useBuildPlannerStore((s) => s.buildId);
+  const plannerPath = plannerBuildId ? `/armory/planner/${plannerBuildId}` : '/armory/planner';
+  const visageSetBuildId = useVisageBuilderStore((s) => s.buildId);
+  const visageSetPath = visageSetBuildId ? `/gallery/set?build=${visageSetBuildId}` : '/gallery/set';
 
   // Priority order for spill-out items:
   // 1 - Weapons (/challenges/weapons) — spills out first, returns last.
@@ -314,13 +307,13 @@ export default function MainNav() {
     active: homeActive,
     subItems: [
       ...(!isUpdatesSpilled
-        ? [{ id: 'home-updates', label: 'Game Updates', icon: ScrollText, iconSrc: '/img/ui/game_updates.png', active: isUpdatesActive, onSelect: go('/updates') }]
+        ? [{ id: 'home-updates', label: 'Game Updates', icon: ScrollText, iconSrc: '/img/ui/game_updates.png', active: isUpdatesActive, to: '/updates' }]
         : []),
       ...(isLoggedIn
-        ? [{ id: 'home-settings', label: 'Profile & Settings', icon: Settings, iconSrc: '/img/ui/profile_and_settings.png', active: pathname === '/settings', onSelect: go('/settings') }]
+        ? [{ id: 'home-settings', label: 'Profile & Settings', icon: Settings, iconSrc: '/img/ui/profile_and_settings.png', active: pathname === '/settings', to: '/settings' }]
         : [{ id: 'home-login', label: 'Login', icon: LogIn, iconSrc: '/img/ui/logout.png', active: false, onSelect: () => setLoginModalOpen(true) }]),
       ...(isLoggedIn && profile?.show_spoilers
-        ? [{ id: 'home-spoilers', label: 'Spoilers', icon: Eye, iconSrc: '/img/ui/AggPageIcon_Recruit.png', iconZoom: 0.85, active: pathname === '/spoilers', onSelect: go('/spoilers') }]
+        ? [{ id: 'home-spoilers', label: 'Spoilers', icon: Eye, iconSrc: '/img/ui/AggPageIcon_Recruit.png', iconZoom: 0.85, active: pathname === '/spoilers', to: '/spoilers' }]
         : []),
       ...(isLoggedIn
         ? [{ id: 'home-logout', label: 'Logout', icon: LogOut, iconSrc: '/img/ui/logout.png', active: false, onSelect: () => signOut() }]
@@ -338,7 +331,7 @@ export default function MainNav() {
     accent: themeToNavAccent(armoryTheme),
     active: armoryActive,
     subItems: [
-      { id: 'armory-builds', label: 'Community Builds', icon: LayoutGrid, iconSrc: '/img/ui/community_builds.png', iconZoom: 1.275, active: pathname === '/armory' || pathname === '/armory/builds', onSelect: go('/armory') },
+      { id: 'armory-builds', label: 'Community Builds', icon: LayoutGrid, iconSrc: '/img/ui/community_builds.png', iconZoom: 1.275, active: pathname === '/armory' || pathname === '/armory/builds', to: '/armory' },
       ...(!isBuildPlannerSpilled
         ? [{
             id: 'armory-planner',
@@ -346,14 +339,11 @@ export default function MainNav() {
             icon: Sword,
             iconSrc: '/img/ui/build_planner.png',
             active: isBuildPlannerActive,
-            onSelect: () => {
-              const { buildId } = useBuildPlannerStore.getState();
-              navigate(buildId ? `/armory/planner/${buildId}` : '/armory/planner');
-            },
+            to: plannerPath,
           }]
         : []),
       ...(!isArmourSpilled
-        ? [{ id: 'armory-armour', label: 'Armour', icon: Shield, iconSrc: '/img/ui/Equipment%20Icon.png', iconZoom: 0.75, active: isArmourActive, onSelect: go('/armory/armour') }]
+        ? [{ id: 'armory-armour', label: 'Armour', icon: Shield, iconSrc: '/img/ui/Equipment%20Icon.png', iconZoom: 0.75, active: isArmourActive, to: '/armory/armour' }]
         : []),
     ],
   };
@@ -368,7 +358,7 @@ export default function MainNav() {
     accent: themeToNavAccent(galleryTheme),
     active: galleryActive,
     subItems: [
-      { id: 'gallery-sets', label: 'Visage Sets', icon: Sparkles, iconSrc: '/img/ui/visage_sets.png', active: pathname === '/gallery' || pathname === '/gallery/sets', onSelect: go('/gallery') },
+      { id: 'gallery-sets', label: 'Visage Sets', icon: Sparkles, iconSrc: '/img/ui/visage_sets.png', active: pathname === '/gallery' || pathname === '/gallery/sets', to: '/gallery' },
       ...(!isBuildSetSpilled
         ? [{
             id: 'gallery-builder',
@@ -376,14 +366,11 @@ export default function MainNav() {
             icon: Layers,
             iconSrc: '/img/ui/build_set.png',
             active: isBuildSetActive,
-            onSelect: () => {
-              const { buildId } = useVisageBuilderStore.getState();
-              navigate(buildId ? `/gallery/set?build=${buildId}` : '/gallery/set');
-            },
+            to: visageSetPath,
           }]
         : []),
       ...(!isVisageSpilled
-        ? [{ id: 'gallery-collection', label: 'Visage Collection', icon: BookMarked, iconSrc: '/img/ui/visage_collection.png', iconZoom: 1.275, active: isVisageActive, onSelect: go('/gallery/collection') }]
+        ? [{ id: 'gallery-collection', label: 'Visage Collection', icon: BookMarked, iconSrc: '/img/ui/visage_collection.png', iconZoom: 1.275, active: isVisageActive, to: '/gallery/collection' }]
         : []),
       {
         id: 'gallery-check',
@@ -391,7 +378,7 @@ export default function MainNav() {
         icon: ScanSearch,
         iconSrc: '/img/ui/study.png',
         active: pathname === '/gallery/check',
-        onSelect: go('/gallery/check'),
+        to: '/gallery/check',
       },
     ],
   };
@@ -406,18 +393,18 @@ export default function MainNav() {
     accent: themeToNavAccent(challengesTheme),
     active: challengesActive,
     subItems: [
-      { id: 'challenges-my', label: 'My Challenges', icon: Target, iconSrc: '/img/ui/my_challenges.png', active: pathname === '/challenges', onSelect: go('/challenges') },
+      { id: 'challenges-my', label: 'My Challenges', icon: Target, iconSrc: '/img/ui/my_challenges.png', active: pathname === '/challenges', to: '/challenges' },
       ...(!isAdventurerSpilled
-        ? [{ id: 'challenges-adventurers', label: 'Adventurer', icon: UserCheck, iconSrc: '/img/ui/Adventurer%20Icon.png', active: isAdventurerActive, onSelect: go('/challenges/adventurers') }]
+        ? [{ id: 'challenges-adventurers', label: 'Adventurer', icon: UserCheck, iconSrc: '/img/ui/Adventurer%20Icon.png', active: isAdventurerActive, to: '/challenges/adventurers' }]
         : []),
       ...(!isBuddiesSpilled
-        ? [{ id: 'challenges-buddies', label: 'Buddies', icon: Cat, iconSrc: '/img/ui/Buddy%20Icon.png', iconZoom: 0.75, active: isBuddiesActive, onSelect: go('/challenges/buddies') }]
+        ? [{ id: 'challenges-buddies', label: 'Buddies', icon: Cat, iconSrc: '/img/ui/Buddy%20Icon.png', iconZoom: 0.75, active: isBuddiesActive, to: '/challenges/buddies' }]
         : []),
       ...(!isMonstersSpilled
-        ? [{ id: 'challenges-monsters', label: 'Monsters', icon: Footprints, iconSrc: '/img/ui/monster.png', iconZoom: 0.85, active: isMonstersActive, onSelect: go('/challenges/monsters') }]
+        ? [{ id: 'challenges-monsters', label: 'Monsters', icon: Footprints, iconSrc: '/img/ui/monster.png', iconZoom: 0.85, active: isMonstersActive, to: '/challenges/monsters' }]
         : []),
       ...(!isWeaponsSpilled
-        ? [{ id: 'challenges-weapons', label: 'Weapons', icon: Sword, iconSrc: '/img/ui/Weapons%20Icon.png', iconZoom: 0.75, active: isWeaponsActive, onSelect: go('/challenges/weapons') }]
+        ? [{ id: 'challenges-weapons', label: 'Weapons', icon: Sword, iconSrc: '/img/ui/Weapons%20Icon.png', iconZoom: 0.75, active: isWeaponsActive, to: '/challenges/weapons' }]
         : []),
     ],
   };
@@ -443,7 +430,7 @@ export default function MainNav() {
             iconZoom: 0.85,
             accent: 'superior' as const,
             active: isUpdatesActive,
-            onSelect: go('/updates'),
+            to: '/updates',
           },
         ]
       : []),
@@ -465,10 +452,7 @@ export default function MainNav() {
             iconZoom: 0.85,
             accent: themeToNavAccent(armoryTheme),
             active: isBuildPlannerActive,
-            onSelect: () => {
-              const { buildId } = useBuildPlannerStore.getState();
-              navigate(buildId ? `/armory/planner/${buildId}` : '/armory/planner');
-            },
+            to: plannerPath,
           },
         ]
       : []),
@@ -481,7 +465,7 @@ export default function MainNav() {
             iconZoom: 0.75,
             accent: themeToNavAccent(armoryTheme),
             active: isArmourActive,
-            onSelect: go('/armory/armour'),
+            to: '/armory/armour',
           },
         ]
       : []),
@@ -503,10 +487,7 @@ export default function MainNav() {
             iconZoom: 0.85,
             accent: themeToNavAccent(galleryTheme),
             active: isBuildSetActive,
-            onSelect: () => {
-              const { buildId } = useVisageBuilderStore.getState();
-              navigate(buildId ? `/gallery/set?build=${buildId}` : '/gallery/set');
-            },
+            to: visageSetPath,
           },
         ]
       : []),
@@ -519,7 +500,7 @@ export default function MainNav() {
             iconZoom: 1.275,
             accent: themeToNavAccent(galleryTheme),
             active: isVisageActive,
-            onSelect: go('/gallery/collection'),
+            to: '/gallery/collection',
           },
         ]
       : []),
@@ -541,7 +522,7 @@ export default function MainNav() {
             iconZoom: 0.85,
             accent: themeToNavAccent(challengesTheme),
             active: isAdventurerActive,
-            onSelect: go('/challenges/adventurers'),
+            to: '/challenges/adventurers',
           },
         ]
       : []),
@@ -554,7 +535,7 @@ export default function MainNav() {
             iconZoom: 0.75,
             accent: themeToNavAccent(challengesTheme),
             active: isBuddiesActive,
-            onSelect: go('/challenges/buddies'),
+            to: '/challenges/buddies',
           },
         ]
       : []),
@@ -567,7 +548,7 @@ export default function MainNav() {
             iconZoom: 0.85,
             accent: themeToNavAccent(challengesTheme),
             active: isMonstersActive,
-            onSelect: go('/challenges/monsters'),
+            to: '/challenges/monsters',
           },
         ]
       : []),
@@ -580,7 +561,7 @@ export default function MainNav() {
             iconZoom: 0.75,
             accent: themeToNavAccent(challengesTheme),
             active: isWeaponsActive,
-            onSelect: go('/challenges/weapons'),
+            to: '/challenges/weapons',
           },
         ]
       : []),
@@ -623,72 +604,93 @@ export default function MainNav() {
       <nav ref={navRef} className="main-nav" aria-label="Main navigation">
         <span className="main-nav__surface" aria-hidden="true" />
 
-        <button
-          type="button"
+        <Link
+          to="/"
+          state={{ fromNav: true }}
           className="main-nav__brand"
-          onClick={() => navigate('/?home=true', { state: { fromNav: true } })}
           aria-label="Field Guide home"
+          onClick={() => setOpenId(null)}
         >
           <img
             src="/images/ui/field-guide-icon-removebg-preview.png"
             alt="Field Guide"
             className="h-10 w-10 object-contain drop-shadow-md transition-transform duration-200 hover:scale-110 active:scale-95"
           />
-        </button>
+        </Link>
 
         <ul className="main-nav__items">
           {barItems.map((item) => {
             const hasSubmenu = Boolean(item.section && item.section.subItems.length > 1);
+            const single = item.section && item.section.subItems.length === 1 ? item.section.subItems[0] : null;
+            const href = hasSubmenu ? item.section!.path : single ? single.to : item.to;
+            const content = (
+              <>
+                <span className="main-nav__bubble">
+                  <span className="main-nav__icon">
+                    <img
+                      src={item.iconSrc}
+                      alt=""
+                      draggable={false}
+                      style={{ transform: `scale(${item.iconZoom ?? 1})` }}
+                    />
+                  </span>
+                  {hasSubmenu && (item.active || openId === item.section!.id) && (
+                    <ChevronUp
+                      size={10}
+                      strokeWidth={3}
+                      className={cn('main-nav__more', openId === item.section!.id && 'is-open')}
+                      aria-hidden="true"
+                    />
+                  )}
+                </span>
+                <span className="main-nav__tip" role="tooltip">
+                  {item.label}
+                </span>
+              </>
+            );
+            const common = {
+              id: `nav-${item.id}`,
+              className: 'main-nav__btn',
+              'data-active': item.active,
+              'data-accent': item.accent,
+              'aria-label': item.label,
+              'aria-current': item.active ? ('page' as const) : undefined,
+              onContextMenu: (e: ReactMouseEvent) => e.preventDefault(),
+            };
             return (
               <li key={item.id}>
-                <button
-                  type="button"
-                  id={`nav-${item.id}`}
-                  ref={hasSubmenu && item.section ? (el) => { buttonRefs.current[item.section!.id] = el; } : undefined}
-                  className="main-nav__btn"
-                  data-active={item.active}
-                  data-accent={item.accent}
-                  aria-label={item.label}
-                  aria-current={item.active ? 'page' : undefined}
-                  aria-haspopup={hasSubmenu ? 'menu' : undefined}
-                  aria-expanded={hasSubmenu ? openId === item.section!.id : undefined}
-                  onClick={
-                    item.section
-                      ? item.section.subItems.length === 1
-                        ? () => {
-                            setOpenId(null);
-                            item.section!.subItems[0].onSelect();
-                          }
-                        : () => handleSectionClick(item.section!)
-                      : () => {
-                          setOpenId(null);
-                          item.onSelect?.();
-                        }
-                  }
-                  onContextMenu={(e) => e.preventDefault()}
-                >
-                  <span className="main-nav__bubble">
-                    <span className="main-nav__icon">
-                      <img
-                        src={item.iconSrc}
-                        alt=""
-                        draggable={false}
-                        style={{ transform: `scale(${item.iconZoom ?? 1})` }}
-                      />
-                    </span>
-                    {hasSubmenu && (item.active || openId === item.section!.id) && (
-                      <ChevronUp
-                        size={10}
-                        strokeWidth={3}
-                        className={cn('main-nav__more', openId === item.section!.id && 'is-open')}
-                        aria-hidden="true"
-                      />
-                    )}
-                  </span>
-                  <span className="main-nav__tip" role="tooltip">
-                    {item.label}
-                  </span>
-                </button>
+                {href ? (
+                  <Link
+                    {...common}
+                    to={linkPath(href)}
+                    ref={hasSubmenu ? (el) => { buttonRefs.current[item.section!.id] = el; } : undefined}
+                    aria-haspopup={hasSubmenu ? 'menu' : undefined}
+                    aria-expanded={hasSubmenu ? openId === item.section!.id : undefined}
+                    onClick={(e) => {
+                      if (isModifiedClick(e)) return;
+                      if (hasSubmenu) {
+                        // A plain click opens the sub-menu; the link itself is for crawlers and new tabs.
+                        e.preventDefault();
+                        handleSectionClick(item.section!);
+                        return;
+                      }
+                      setOpenId(null);
+                    }}
+                  >
+                    {content}
+                  </Link>
+                ) : (
+                  <button
+                    {...common}
+                    type="button"
+                    onClick={() => {
+                      setOpenId(null);
+                      single?.onSelect?.();
+                    }}
+                  >
+                    {content}
+                  </button>
+                )}
               </li>
             );
           })}
@@ -698,14 +700,13 @@ export default function MainNav() {
         <div className="main-nav__footer">
           <div className="main-nav__footer-divider" aria-hidden="true" />
           {isAdmin ? (
-            <button
-              type="button"
+            <Link
+              to="/admin/feedback"
               id="nav-admin"
               className="main-nav__btn"
               data-active={pathname.startsWith('/admin')}
               data-accent="rare"
               aria-label="Admin Panel"
-              onClick={go('/admin/feedback')}
             >
               <span className="main-nav__bubble">
                 <span className="main-nav__icon">
@@ -728,7 +729,7 @@ export default function MainNav() {
               <span className="main-nav__tip" role="tooltip">
                 Admin Panel
               </span>
-            </button>
+            </Link>
           ) : (
             <button
               type="button"
@@ -839,22 +840,14 @@ export default function MainNav() {
           <div className="flex flex-col gap-0.5">
             {openSection.subItems.map((sub) => {
               const SubIcon = sub.icon;
-              return (
-                <button
-                  key={sub.id}
-                  type="button"
-                  role="menuitem"
-                  onClick={() => {
-                    setOpenId(null);
-                    sub.onSelect();
-                  }}
-                  className={cn(
-                    'flex w-full items-center gap-2.5 rounded-lg border px-2 py-1 text-left text-sm transition-colors cursor-pointer',
-                    sub.active
-                      ? 'border-[var(--nav-accent)]/50 bg-[var(--bg-panel-primary)] font-bold text-[var(--nav-accent)]'
-                      : 'border-transparent text-[#A3A3A3] hover:bg-white/5 hover:text-white',
-                  )}
-                >
+              const className = cn(
+                'flex w-full items-center gap-2.5 rounded-lg border px-2 py-1 text-left text-sm transition-colors cursor-pointer',
+                sub.active
+                  ? 'border-[var(--nav-accent)]/50 bg-[var(--bg-panel-primary)] font-bold text-[var(--nav-accent)]'
+                  : 'border-transparent text-[#A3A3A3] hover:bg-white/5 hover:text-white',
+              );
+              const content = (
+                <>
                   <div className="relative flex h-10 w-10 shrink-0 items-center justify-center">
                     {sub.iconSrc ? (
                       <img
@@ -874,6 +867,31 @@ export default function MainNav() {
                       {sub.badge > 99 ? '99+' : sub.badge}
                     </span>
                   )}
+                </>
+              );
+              return sub.to ? (
+                <Link
+                  key={sub.id}
+                  to={linkPath(sub.to)}
+                  role="menuitem"
+                  aria-current={sub.active ? 'page' : undefined}
+                  onClick={() => setOpenId(null)}
+                  className={className}
+                >
+                  {content}
+                </Link>
+              ) : (
+                <button
+                  key={sub.id}
+                  type="button"
+                  role="menuitem"
+                  onClick={() => {
+                    setOpenId(null);
+                    sub.onSelect?.();
+                  }}
+                  className={className}
+                >
+                  {content}
                 </button>
               );
             })}

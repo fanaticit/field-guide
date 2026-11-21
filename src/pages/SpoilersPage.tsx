@@ -6,7 +6,7 @@
 // and recruitment pity mechanics breakdown.
 // ─────────────────────────────────────────────────────────────
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import {
   Eye,
   EyeOff,

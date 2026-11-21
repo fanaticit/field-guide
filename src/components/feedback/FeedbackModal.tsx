@@ -5,7 +5,7 @@
 // ticket status and admin resolution replies.
 // ─────────────────────────────────────────────────────────────
 import { useState, useEffect, useId } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import {
   X,
   Bug,
@@ -41,6 +41,7 @@ import { cn } from '../../lib/utils';
 interface FeedbackModalProps {
   open: boolean;
   onClose: () => void;
+  defaultType?: FeedbackType;
 }
 
 interface TypeOption {
@@ -92,7 +93,7 @@ const STATUS_CONFIG: Record<
   dismissed: { label: 'Dismissed', colorClass: 'bg-mh-slate-800 text-mh-slate-400 ring-mh-slate-700', icon: Archive },
 };
 
-export default function FeedbackModal({ open, onClose }: FeedbackModalProps) {
+export default function FeedbackModal({ open, onClose, defaultType }: FeedbackModalProps) {
   const { pathname } = useLocation();
   const { user, profile } = useAuthStore();
   const defaultGame = useUIStore((s) => s.defaultGame);
@@ -102,7 +103,7 @@ export default function FeedbackModal({ open, onClose }: FeedbackModalProps) {
   const contactId = useId();
 
   const [activeTab, setActiveTab] = useState<'new' | 'my-reports'>('new');
-  const [feedbackType, setFeedbackType] = useState<FeedbackType>('bug');
+  const [feedbackType, setFeedbackType] = useState<FeedbackType>(defaultType ?? 'bug');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [contactInfo, setContactInfo] = useState('');
@@ -124,6 +125,7 @@ export default function FeedbackModal({ open, onClose }: FeedbackModalProps) {
       setTitle('');
       setDescription('');
       setContactInfo('');
+      setFeedbackType(defaultType ?? 'bug');
       setErrorMsg(null);
       setIsSubmitted(false);
       setIsSubmitting(false);
@@ -136,7 +138,7 @@ export default function FeedbackModal({ open, onClose }: FeedbackModalProps) {
         setActiveTab('new');
       }
     }
-  }, [open, user, userUnreadCount, resetHumanCheck]);
+  }, [open, user, userUnreadCount, resetHumanCheck, defaultType]);
 
   // Handle ESC key
   useEffect(() => {

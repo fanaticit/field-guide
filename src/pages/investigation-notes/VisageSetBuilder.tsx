@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { useVisageSetsData } from '../../hooks/useVisageSets';
 import { type DBVisage, type VisageRarity, getInkConfig, normalizeVisageRow } from '../../data/schemas/visage';
-import { useNavigate, useParams, useSearchParams, Link } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams, Link } from 'react-router';
 import { useAuthStore } from '../../store/authStore';
 import {
   useHunterChallenges,

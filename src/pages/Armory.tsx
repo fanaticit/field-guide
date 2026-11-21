@@ -1,8 +1,8 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '../lib/supabase';
-import { Shield, Search, Filter, Plus, LayoutGrid, List, Sparkles, ArrowUpDown } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Shield, Search, Filter, Plus, LayoutGrid, List, Sparkles, ArrowUpDown, User, X } from 'lucide-react';
+import { Link, useSearchParams } from 'react-router';
 import { ArmoryBuildCard } from '../components/armory/ArmoryBuildCard';
 import { ArmoryBuildRow } from '../components/armory/ArmoryBuildRow';
 import {
@@ -49,12 +49,22 @@ export default function Armory() {
     localStorage.setItem(INTRO_HIDDEN_KEY, next ? '1' : '0');
   };
 
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlAdventurer = searchParams.get('adventurer') || searchParams.get('hunter') || '';
+
   const [searchQuery, setSearchQuery] = useState('');
   const [roleFilter, setRoleFilter] = useState<'all' | 'main' | 'support'>('all');
   const [selectedClass, setSelectedClass] = useState<string>('all');
   const [selectedWeaponType, setSelectedWeaponType] = useState<string>('all');
   const [selectedInk, setSelectedInk] = useState<string>('all');
+  const [selectedAdventurer, setSelectedAdventurer] = useState<string>(() => urlAdventurer || 'all');
   const [sortBy, setSortBy] = useState<'upvotes' | 'newest' | 'oldest' | 'title'>('upvotes');
+
+  useEffect(() => {
+    if (urlAdventurer) {
+      setSelectedAdventurer(urlAdventurer);
+    }
+  }, [urlAdventurer]);
   const [viewMode, setViewModeState] = useState<'panel' | 'list'>(() => {
     const saved = getCookie('armory_view_mode');
     if (saved === 'panel' || saved === 'list') {
@@ -150,6 +160,37 @@ export default function Armory() {
     return Array.from(map.values()).sort((a, b) => a.name.localeCompare(b.name));
   }, [builds]);
 
+  // Extract unique adventurers from builds for quick filtering
+  const availableAdventurers = useMemo(() => {
+    const map = new Map<string, { id: string; name: string }>();
+    builds?.forEach((b) => {
+      if (b.adventurer?.id && b.adventurer?.name) {
+        map.set(b.adventurer.id, {
+          id: b.adventurer.id,
+          name: b.adventurer.name,
+        });
+      }
+    });
+    return Array.from(map.values()).sort((a, b) => a.name.localeCompare(b.name));
+  }, [builds]);
+
+  const activeAdventurerName = useMemo(() => {
+    if (selectedAdventurer === 'all') return null;
+    const match = availableAdventurers.find(
+      (a) =>
+        a.id.toLowerCase() === selectedAdventurer.toLowerCase() ||
+        a.name.toLowerCase() === selectedAdventurer.toLowerCase(),
+    );
+    if (match) return match.name;
+    const buildMatch = builds?.find(
+      (b) =>
+        b.adventurer?.id?.toLowerCase() === selectedAdventurer.toLowerCase() ||
+        b.adventurer?.name?.toLowerCase() === selectedAdventurer.toLowerCase(),
+    );
+    if (buildMatch?.adventurer?.name) return buildMatch.adventurer.name;
+    return selectedAdventurer;
+  }, [selectedAdventurer, availableAdventurers, builds]);
+
   // Canonical list of ink options for ink filter
   const availableInks = useMemo(() => {
     const canonicalInks = [
@@ -167,6 +208,16 @@ export default function Armory() {
     if (!builds) return [];
 
     const list = builds.filter((build) => {
+      // Adventurer / Hunter filter
+      if (selectedAdventurer !== 'all') {
+        const advId = build.adventurer?.id?.toLowerCase();
+        const advName = build.adventurer?.name?.toLowerCase();
+        const target = selectedAdventurer.toLowerCase();
+        if (advId !== target && advName !== target) {
+          return false;
+        }
+      }
+
       // Role filter
       const desc = build.description || '';
       const isSupport = /<!-- role:support -->/.test(desc);
@@ -374,6 +425,38 @@ export default function Armory() {
             </select>
           </div>
 
+          {/* Hunter / Adventurer Filter */}
+          {availableAdventurers.length > 0 && (
+            <div className="flex items-center gap-1.5 bg-black/30 px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] text-xs">
+              <User size={13} className="text-[var(--text-secondary)]" />
+              <select
+                value={selectedAdventurer}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setSelectedAdventurer(val);
+                  const next = new URLSearchParams(searchParams);
+                  if (val === 'all') {
+                    next.delete('adventurer');
+                    next.delete('hunter');
+                  } else {
+                    next.set('adventurer', val);
+                  }
+                  setSearchParams(next, { replace: true });
+                }}
+                className="bg-transparent text-xs text-white focus:outline-none cursor-pointer pr-1"
+              >
+                <option value="all" className="bg-mh-slate-900 text-mh-slate-200">
+                  All Hunters
+                </option>
+                {availableAdventurers.map((adv) => (
+                  <option key={adv.id} value={adv.id} className="bg-mh-slate-900 text-mh-slate-200">
+                    {adv.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
           {/* Weapon Type Filter */}
           {availableWeaponTypes.length > 0 && (
             <div className="flex items-center gap-1.5 bg-black/30 px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] text-xs">
@@ -439,14 +522,36 @@ export default function Armory() {
         </div>
       </div>
 
-      {/* ── Builds Count Summary ──────────────────────────────────── */}
+      {/* ── Builds Count Summary & Active Filters ───────────────────── */}
       {!isLoading && (
-        <div className="flex items-center justify-between text-xs text-[var(--text-secondary)] px-1 -mt-2">
-          <span>
-            Showing <strong className="text-white">{filteredBuilds.length}</strong> {filteredBuilds.length === 1 ? 'build' : 'builds'}
-            {builds && filteredBuilds.length !== builds.length && ` (filtered from ${builds.length})`}
-          </span>
-          {(searchQuery || roleFilter !== 'all' || selectedClass !== 'all' || selectedWeaponType !== 'all' || selectedInk !== 'all' || sortBy !== 'upvotes') && (
+        <div className="flex items-center justify-between gap-2 flex-wrap text-xs text-[var(--text-secondary)] px-1 -mt-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span>
+              Showing <strong className="text-white">{filteredBuilds.length}</strong> {filteredBuilds.length === 1 ? 'build' : 'builds'}
+              {builds && filteredBuilds.length !== builds.length && ` (filtered from ${builds.length})`}
+            </span>
+            {selectedAdventurer !== 'all' && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-blue-500/20 border border-blue-500/40 px-2 py-0.5 text-[11px] font-semibold text-blue-300">
+                <User size={11} className="text-blue-400" />
+                <span>Hunter: {activeAdventurerName}</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedAdventurer('all');
+                    const next = new URLSearchParams(searchParams);
+                    next.delete('adventurer');
+                    next.delete('hunter');
+                    setSearchParams(next, { replace: true });
+                  }}
+                  className="hover:text-white rounded-full p-0.5 ml-0.5"
+                  title="Remove hunter filter"
+                >
+                  <X size={11} />
+                </button>
+              </span>
+            )}
+          </div>
+          {(searchQuery || roleFilter !== 'all' || selectedClass !== 'all' || selectedWeaponType !== 'all' || selectedInk !== 'all' || selectedAdventurer !== 'all' || sortBy !== 'upvotes') && (
             <button
               onClick={() => {
                 setSearchQuery('');
@@ -454,7 +559,12 @@ export default function Armory() {
                 setSelectedClass('all');
                 setSelectedWeaponType('all');
                 setSelectedInk('all');
+                setSelectedAdventurer('all');
                 setSortBy('upvotes');
+                const next = new URLSearchParams(searchParams);
+                next.delete('adventurer');
+                next.delete('hunter');
+                setSearchParams(next, { replace: true });
               }}
               className="text-[var(--theme-accent)] hover:underline text-[11px] font-bold"
             >
@@ -512,17 +622,26 @@ export default function Armory() {
           <Shield size={36} className="text-[var(--theme-accent)] opacity-40" />
           <h3 className="font-display font-bold text-lg uppercase tracking-wide text-white">No builds found</h3>
           <p className="text-xs text-[var(--text-secondary)] max-w-sm">
-            {searchQuery || roleFilter !== 'all' || selectedWeaponType !== 'all' || selectedInk !== 'all'
-              ? 'No community builds matched your current filters. Try relaxing your search criteria.'
+            {searchQuery || roleFilter !== 'all' || selectedClass !== 'all' || selectedWeaponType !== 'all' || selectedInk !== 'all' || selectedAdventurer !== 'all'
+              ? (selectedAdventurer !== 'all'
+                  ? `No community builds matched your current filters for ${activeAdventurerName}. Try clearing filters or creating a new build!`
+                  : 'No community builds matched your current filters. Try relaxing your search criteria.')
               : 'No builds have been published yet. Be the first hunter to forge and publish a build!'}
           </p>
-          {(searchQuery || roleFilter !== 'all' || selectedWeaponType !== 'all' || selectedInk !== 'all') ? (
+          {(searchQuery || roleFilter !== 'all' || selectedClass !== 'all' || selectedWeaponType !== 'all' || selectedInk !== 'all' || selectedAdventurer !== 'all') ? (
             <button
               onClick={() => {
                 setSearchQuery('');
                 setRoleFilter('all');
+                setSelectedClass('all');
                 setSelectedWeaponType('all');
                 setSelectedInk('all');
+                setSelectedAdventurer('all');
+                setSortBy('upvotes');
+                const next = new URLSearchParams(searchParams);
+                next.delete('adventurer');
+                next.delete('hunter');
+                setSearchParams(next, { replace: true });
               }}
               className="btn-mho-panel !px-3 !py-1.5 !text-xs mt-2"
             >

@@ -3,7 +3,7 @@
 // Displays icon, name, rarity, role, with element & weapon as compact icons
 // ─────────────────────────────────────────────────────────────
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import {
   User,
   Swords,
@@ -24,8 +24,9 @@ import AdventurerRarityBadge from './AdventurerRarityBadge';
 import { ChallengeGoalMenu, InsightPicker } from './AdventurerInsight';
 import { ROLE_ICONS } from '../../components/RoleIcon';
 import ElementIcon from '../../components/ElementIcon';
+import YouTubeIcon from '../../components/YouTubeIcon';
 
-const WEAPON_ICON_MAP: Record<string, string> = {
+export const WEAPON_ICON_MAP: Record<string, string> = {
   great_sword: '/images/weapons/ArmsIcon/ArmsIcon_Sword.png',
   long_sword: '/images/weapons/ArmsIcon/ArmsIcon_Sword.png',
   sword_shield: '/images/weapons/ArmsIcon/ArmsIcon_Knife.png',
@@ -109,17 +110,14 @@ export default function AdventurerCard({
         isTracked && !isChallengeDone && 'ring-2 ring-blue-400/80 ring-offset-1 ring-offset-black',
       )}
     >
-      {/* Panel background art, dimmed so foreground stays clear */}
-      {showBackground && (
+      {/* Panel background art — on when recruited, off when not */}
+      {showBackground && activeRecruited && (
         <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl -z-10">
           <img
             src={adventurer.background_image!}
             alt=""
             onError={() => setBackgroundError(true)}
-            className={cn(
-              'h-full w-full object-cover transition-all duration-300 group-hover:scale-105',
-              activeRecruited ? 'opacity-40' : 'opacity-20 grayscale',
-            )}
+            className="h-full w-full object-cover opacity-35"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0b0d14] via-[#0b0d14]/70 to-[#0b0d14]/40" />
         </div>
@@ -163,6 +161,15 @@ export default function AdventurerCard({
             {isPlayerCharacter && (
               <span className="shrink-0 rounded bg-mh-gold-500/20 border border-mh-gold-500/40 px-1.5 py-0.2 text-[9px] font-bold text-mh-gold-300 uppercase">
                 You
+              </span>
+            )}
+
+            {Boolean(adventurer.youtube_url) && (
+              <span
+                title="Character Guide Video Available"
+                className="shrink-0 inline-flex items-center justify-center rounded bg-red-500/20 border border-red-500/40 p-0.5 text-red-400"
+              >
+                <YouTubeIcon size={12} className="text-red-500 fill-red-500" />
               </span>
             )}
 

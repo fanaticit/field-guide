@@ -18,7 +18,7 @@ import {
   Activity,
   BookMarked,
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import type { DBMonster } from '../../hooks/useAdminMonsters';
 import { useAuthStore } from '../../store/authStore';
 import {

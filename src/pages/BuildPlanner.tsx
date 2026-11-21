@@ -1,7 +1,7 @@
 import { Save, Copy, ArrowLeft, ThumbsUp, RotateCcw, CheckCircle2, Package, Globe, Video, ExternalLink } from 'lucide-react';
 import { getYouTubeEmbedUrl } from '../lib/youtube';
 import { useEffect, useState, useRef } from 'react';
-import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
+import { useParams, useNavigate, useLocation, Link } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '../store/authStore';
 import { useBuildPlannerStore } from '../store/buildPlannerStore';

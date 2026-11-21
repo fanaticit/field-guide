@@ -4,7 +4,7 @@
 // active admin section.
 // ─────────────────────────────────────────────────────────────
 import { Shield, Bug, Sparkles, Layers, Users, FileText, SquareLibrary, Cat, UserCheck, Sword, SlidersHorizontal, MessageSquare } from 'lucide-react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
 import { type AdminSubPage } from '../../store/uiStore';
 import { useAdminFeedbackCount } from '../../hooks/useAdminFeedback';

@@ -2,7 +2,7 @@
 // VisageCard — MHO Visage card with full top-flush artwork and Hunter's Challenge tracking
 // ─────────────────────────────────────────────────────────────
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import {
   Flame,
   Droplets,

@@ -148,6 +148,8 @@ export interface DBAdventurer {
   is_spoiler: boolean;
   /** Debug or test item */
   is_debug?: boolean;
+  /** Optional YouTube overview / guide URL (supports timestamp). */
+  youtube_url?: string | null;
   sort_order: number;
   created_at: string;
   updated_at: string;

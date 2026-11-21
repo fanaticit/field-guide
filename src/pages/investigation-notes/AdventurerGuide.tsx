@@ -2,7 +2,7 @@
 // AdventurerGuide — Investigation Notes view for MHO Playable Adventurers with Roster Recruitment Tracking
 // ─────────────────────────────────────────────────────────────
 import { useState, useMemo, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import {
   User,
   Search,
@@ -16,6 +16,7 @@ import {
   Star,
   Video,
   ExternalLink,
+  Swords,
 } from 'lucide-react';
 import {
   type DBAdventurer,
@@ -41,7 +42,8 @@ import {
 import { useAuthStore } from '../../store/authStore';
 import { useUIStore } from '../../store/uiStore';
 import { DEFAULT_SECTION_THEMES } from '../../config/themes';
-import AdventurerCard from './AdventurerCard';
+import AdventurerCard, { WEAPON_ICON_MAP } from './AdventurerCard';
+import YouTubeIcon from '../../components/YouTubeIcon';
 import AdventurerModal from './AdventurerModal';
 import AdventurerRarityBadge from './AdventurerRarityBadge';
 import { InsightPicker } from './AdventurerInsight';
@@ -513,6 +515,7 @@ export default function AdventurerGuide() {
                   const RoleIcon = ROLE_ICONS[roleKey] || ROLE_ICONS.Assault;
                   const elemCfg = ELEMENT_OPTIONS[adv.element_specialization || 'raw'] || ELEMENT_OPTIONS.raw;
                   const weaponObj = WEAPON_TYPES.find((w) => w.id === adv.weapon_type);
+                  const weaponIconSrc = adv.weapon_type ? WEAPON_ICON_MAP[adv.weapon_type] : null;
                   const recruited = isRecruited(adv);
 
                   return (
@@ -527,15 +530,16 @@ export default function AdventurerGuide() {
                       {/* Character Info */}
                       <td className="py-3 pl-4 pr-2">
                         <div className="flex items-center gap-3">
-                          <div className="relative h-10 w-10 shrink-0 rounded-xl bg-mh-slate-800 border border-mh-slate-700 p-1 flex items-center justify-center overflow-hidden">
+                          {/* Character icon: 25% larger (50px), no border */}
+                          <div className="relative h-[50px] w-[50px] shrink-0 flex items-center justify-center">
                             {adv.image ? (
                               <img
                                 src={adv.image}
                                 alt={adv.name}
-                                className="h-full w-full object-contain"
+                                className="h-full w-full object-contain drop-shadow-md"
                               />
                             ) : (
-                              <User size={18} className="text-mh-slate-500" />
+                              <User size={26} className="text-mh-slate-500" />
                             )}
                           </div>
                           <div>
@@ -545,6 +549,14 @@ export default function AdventurerGuide() {
                               {adv.is_default && (
                                 <span className="rounded bg-mh-gold-500/20 border border-mh-gold-500/40 px-1.5 py-0.2 text-[9px] font-bold text-mh-gold-300 uppercase">
                                   You
+                                </span>
+                              )}
+                              {Boolean(adv.youtube_url) && (
+                                <span
+                                  title="Character Guide Video Available"
+                                  className="shrink-0 inline-flex items-center justify-center rounded bg-red-500/20 border border-red-500/40 p-0.5 text-red-400"
+                                >
+                                  <YouTubeIcon size={12} className="text-red-500 fill-red-500" />
                                 </span>
                               )}
                               {(adv.status === 'not_in_game' || adv.is_spoiler) && (
@@ -578,14 +590,25 @@ export default function AdventurerGuide() {
                         </span>
                       </td>
 
-                      {/* Weapon */}
+                      {/* Weapon Discipline — Icon only */}
                       <td className="px-3 py-3">
                         <div className="flex items-center gap-1.5">
-                          <span className={cn('font-semibold', adv.is_default ? 'text-mh-gold-300 font-bold' : 'text-mh-slate-300')}>
-                            {weaponObj?.name || adv.weapon_type || '—'}
+                          <span
+                            title={`Weapon: ${weaponObj?.name || adv.weapon_type || 'Weapon'}`}
+                            className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-mh-slate-700 bg-mh-slate-900/90 shadow-xs shrink-0"
+                          >
+                            {weaponIconSrc ? (
+                              <img
+                                src={weaponIconSrc}
+                                alt={weaponObj?.name || adv.weapon_type || 'Weapon'}
+                                className="h-5 w-5 object-contain brightness-110"
+                              />
+                            ) : (
+                              <Swords size={13} className="text-mh-gold-400" />
+                            )}
                           </span>
                           {adv.is_default && (
-                            <span className="text-[10px] text-mh-slate-500 font-medium">
+                            <span className="text-[10px] text-mh-gold-400 font-bold">
                               (Active)
                             </span>
                           )}

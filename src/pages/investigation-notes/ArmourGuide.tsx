@@ -3,7 +3,7 @@
 // Left-aligned layout, combined skill levels, highlighted set effects, and clean reference format.
 // ─────────────────────────────────────────────────────────────
 import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import {
   Shield,
   Search,

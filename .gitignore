@@ -26,3 +26,6 @@ dist-ssr
 .env
 
 scripts/card_importer/output_images/
+
+# React Router generated types
+.react-router/

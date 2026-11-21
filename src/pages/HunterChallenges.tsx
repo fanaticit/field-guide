@@ -4,7 +4,7 @@
 // Mobile:  single-column compact list with monster strip at top.
 // ─────────────────────────────────────────────────────────────
 import { useState, useMemo, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router';
 import {
   Target,
   Shield,

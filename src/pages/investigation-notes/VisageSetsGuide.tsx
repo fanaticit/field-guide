@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { useVisageSetsData } from '../../hooks/useVisageSets';
 import { type DBVisage, type VisageRarity, getInkConfig } from '../../data/schemas/visage';
-import { useNavigate, useSearchParams, Link, Navigate } from 'react-router-dom';
+import { useNavigate, useSearchParams, Link, Navigate } from 'react-router';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
 import {
   useHunterChallenges,

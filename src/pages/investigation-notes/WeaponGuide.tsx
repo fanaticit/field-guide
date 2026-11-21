@@ -42,7 +42,7 @@ import { useUIStore } from '../../store/uiStore';
 import { DEFAULT_SECTION_THEMES } from '../../config/themes';
 import ChallengeIcon from '../../components/ChallengeIcon';
 import PageTitlePanel from '../../components/layout/PageTitlePanel';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router';
 import WeaponCard from './WeaponCard';
 import WeaponModal from './WeaponModal';
 import WeaponCompareModal from './WeaponCompareModal';

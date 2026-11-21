@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { ArrowLeft, Scale } from 'lucide-react';
 
 export default function TermsOfService() {
@@ -22,12 +22,12 @@ export default function TermsOfService() {
 
         <div className="prose prose-invert prose-slate max-w-none text-mh-slate-300">
           <p>
-            By accessing and using the Monster Hunter Field Guide ("the Site"), you agree to comply with and be bound by the following Terms of Service. If you do not agree to these terms, please do not use the Site.
+            By accessing and using the Monster Hunter Outlanders Field Guide ("the Site"), you agree to comply with and be bound by the following Terms of Service. If you do not agree to these terms, please do not use the Site.
           </p>
 
           <h2 className="text-xl font-bold text-white mt-8 mb-4">1. Use of the Site</h2>
           <p>
-            The Monster Hunter Field Guide is a community-driven tool created for players of the game Monster Hunter Outlanders. You agree to use this Site only for its intended purpose: tracking your in-game goals, theorycrafting builds, and respectfully engaging with the community.
+            The Monster Hunter Outlanders Field Guide is a community-driven tool created for players of the game Monster Hunter Outlanders. You agree to use this Site only for its intended purpose: tracking your in-game goals, theorycrafting builds, and respectfully engaging with the community.
           </p>
 
           <h2 className="text-xl font-bold text-white mt-8 mb-4">2. User-Generated Content</h2>
@@ -41,7 +41,7 @@ export default function TermsOfService() {
 
           <h2 className="text-xl font-bold text-white mt-8 mb-4">3. Intellectual Property Rights</h2>
           <p>
-            <strong>Disclaimer:</strong> The Monster Hunter Field Guide is an unofficial, community-made project. 
+            <strong>Disclaimer:</strong> The Monster Hunter Outlanders Field Guide is an unofficial, community-made project. 
             "Monster Hunter", "Monster Hunter Outlanders", and all associated assets, logos, and names are the intellectual property of 
             Capcom Co., Ltd. and Niantic, Inc. 
           </p>

@@ -3,10 +3,26 @@
 // Renders the persistent chrome (MainNav, Footer) and
 // an <Outlet /> where the active route's page component renders.
 // ─────────────────────────────────────────────────────────────
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet, Link, useLocation } from 'react-router';
 import { useUIStore } from './store/uiStore';
 import MainNav from './components/layout/MainNav';
 import { cn } from './lib/utils';
+
+// Plain links to every tool page. The side navigation opens sub-menus on
+// click, so this row makes sure every page is one link away for visitors
+// and for search engines.
+const SITE_LINKS = [
+  { to: '/armory/', label: 'Community Builds' },
+  { to: '/armory/planner/', label: 'Build Planner' },
+  { to: '/armory/armour/', label: 'Armour' },
+  { to: '/gallery/', label: 'Visage Sets' },
+  { to: '/gallery/set/', label: 'Build Set' },
+  { to: '/gallery/collection/', label: 'Visage Collection' },
+  { to: '/gallery/check/', label: 'Card Checker' },
+  { to: '/challenges/', label: 'Challenges' },
+  { to: '/challenges/monsters/', label: 'Monster Field Guide' },
+  { to: '/updates/', label: 'Game Updates' },
+];
 
 export default function Layout() {
   const { getThemeForPath } = useUIStore();
@@ -55,9 +71,22 @@ export default function Layout() {
           <p className="text-center text-xs text-mh-slate-600">
             Field Guide &copy; {new Date().getFullYear()} &mdash; Monster Hunter Outlanders Community Tracker
           </p>
+          <nav aria-label="Site pages" className="flex max-w-4xl flex-wrap justify-center gap-x-4 gap-y-1 text-[11px] font-medium text-mh-slate-500">
+            {SITE_LINKS.map((l) => (
+              <Link key={l.to} to={l.to} className="hover:text-mh-slate-300 transition-colors">{l.label}</Link>
+            ))}
+          </nav>
+          <nav aria-label="Game data" className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-[11px] font-medium text-mh-slate-500">
+            <span className="text-mh-slate-600">Game data:</span>
+            <Link to="/monsters/" className="hover:text-mh-slate-300 transition-colors">Monsters</Link>
+            <Link to="/weapons/" className="hover:text-mh-slate-300 transition-colors">Weapons</Link>
+            <Link to="/adventurers/" className="hover:text-mh-slate-300 transition-colors">Adventurers</Link>
+            <Link to="/buddies/" className="hover:text-mh-slate-300 transition-colors">Buddies</Link>
+            <Link to="/visages/" className="hover:text-mh-slate-300 transition-colors">Visage Cards</Link>
+          </nav>
           <div className="flex gap-4 text-[11px] font-medium text-mh-slate-500">
-            <Link to="/privacy" className="hover:text-mh-slate-300 transition-colors">Privacy Policy</Link>
-            <Link to="/terms" className="hover:text-mh-slate-300 transition-colors">Terms of Service</Link>
+            <Link to="/privacy/" className="hover:text-mh-slate-300 transition-colors">Privacy Policy</Link>
+            <Link to="/terms/" className="hover:text-mh-slate-300 transition-colors">Terms of Service</Link>
           </div>
         </footer>
       </div>
