@@ -1,0 +1,580 @@
+{
+ "patch": {
+  "resource_version": "1.0.9.4_4",
+  "app_version": "1.0.9.0",
+  "previous_version": "1.0.9.3_3",
+  "game": "Monster Hunter Outlanders (com.tencent.mhadv, Garena)",
+  "extracted": "2026-11-21",
+  "files": "pakchunk0/1/10001 _1.0.9.4_4_P (+ IoStore .utoc/.ucas patches)",
+  "scope": "Data tables (30 changed), English text (24 strings), assets (249 files). Compared 1.0.9.4 against the 1.0.9.3 state the game layers it on.",
+  "notes_for_page_author": [
+   "Values come straight from the game files, not official patch notes. Where a value's purpose isn't known, the text says 'unclear'.",
+   "Event dates are set by the server and are not in the files.",
+   "Health/attack numbers are the game's internal base values; the in-game fight may scale them for squads."
+  ]
+ },
+ "headlines": [
+  "Nergigante layered gear arrives: 10 armour pieces (α and β sets), 8 weapon skins and a Nergigante Style Crate.",
+  "Rare, Epic and Superior Nergigante, Kushala Daora and Ruger Aidal Visages can now be bought in the Season Shop.",
+  "Elder dragon event fights made easier: 15-minute time limit (was 10), Nergigante health −66%, Kushala Daora health −48%, lower recommended hunt power.",
+  "Big health cuts (27–73%) for level 15–16 high-tier monsters, mostly Radiant.",
+  "Adventurer Rank now gets much harder from AR 56 and stops at AR 60.",
+  "Apex Challenge Orders now refill on Monday at 05:00 (was Friday).",
+  "Freya's Festival Recruitment (from 27 Nov) gets its own pity counters; pity no longer carries over between Featured and Festival recruitments."
+ ],
+ "sections": [
+  {
+   "id": "nergigante_layered",
+   "title": "New: Nergigante layered equipment",
+   "category": "New content",
+   "summary": "Season 1 adds Nergigante appearance (layered) gear. It changes looks only – it is not new armour or weapons with stats, so the weapon and armour lists are unchanged.",
+   "armour": [
+    "Nergigante Helm α",
+    "Nergigante Mail α",
+    "Nergigante Vambraces α",
+    "Nergigante Coil α",
+    "Nergigante Greaves α",
+    "Nergigante Helm β",
+    "Nergigante Mail β",
+    "Nergigante Vambraces β",
+    "Nergigante Coil β",
+    "Nergigante Greaves β"
+   ],
+   "weapon_skins": [
+    {
+     "name": "Nergal Judicator",
+     "was_named": "Nergigante Great Sword"
+    },
+    {
+     "name": "Nergal Reaver"
+    },
+    {
+     "name": "Nergal Gouge",
+     "was_named": "Nergigante Dual Blades Model (Nergal Gouge)"
+    },
+    {
+     "name": "Nergal Impaler"
+    },
+    {
+     "name": "Nergal Roar",
+     "was_named": "Nergigante Heavy Bowgun Model (Nergal Roar)"
+    },
+    {
+     "name": "Nergal Whisper",
+     "was_named": "Nergigante Bow Model (Nergigante Bow)"
+    },
+    {
+     "name": "Nergal Crusher"
+    },
+    {
+     "name": "Nergal Lacerator",
+     "note": "Charge Blade; new icon WeaponIcon_ChargeBlade_Nergigante_2_huiji"
+    }
+   ],
+   "renamed": [
+    {
+     "old": "Annihilation Cannon",
+     "new": "Destruction's Fusillade"
+    },
+    {
+     "old": "Extermination's Claws",
+     "new": "Perdition's Hand"
+    }
+   ],
+   "crate": {
+    "name": "Nergigante Style Crate",
+    "item_id": 4090287,
+    "description": "Layered equipment made from monster materials.",
+    "odds": [
+     {
+      "item": "each of the 10 armour pieces",
+      "chance_pct": 7.0
+     },
+     {
+      "item": "each of the 8 weapon skins",
+      "chance_pct": 3.75
+     }
+    ],
+    "guarantee_rule_id": 128,
+    "guarantee_value": 2,
+    "guarantee_note": "unclear – rule 128 has value 2"
+   },
+   "collection_points": "Each of the new Nergigante layered pieces gives 10 collection points (18 new CollectionScore rows).",
+   "assets": "New 3D models for all 8 weapon skins and the α/β armour (male and female); 10 updated Nergigante armour icons, 1 new Charge Blade icon.",
+   "source": [
+    "PropCfg",
+    "Costume/CostumeChestBaseCfg",
+    "Costume/CostumeChestItemCfg",
+    "Costume/CostumeChestGuaranteeCfg",
+    "Costume/CostumeFeatureAdventurer",
+    "Costume/CostumeFeatureWeaponSkin",
+    "CollectionScore/CollectionScoreCfg",
+    "Game_1.0.9.4.locres"
+   ]
+  },
+  {
+   "id": "elder_visages",
+   "title": "Elder dragon Visages now obtainable",
+   "category": "Items",
+   "summary": "Rare, Epic and Superior Visages of Nergigante, Kushala Daora and Ruger Aidal were 'Not released'. They now list the Season Shop as their source, and their Visage Album entries now list all four qualities (before, the same Visage filled all four slots).",
+   "visages": [
+    {
+     "monster": "Nergigante",
+     "ids": [
+      10126200,
+      10126300,
+      10126400
+     ]
+    },
+    {
+     "monster": "Kushala Daora",
+     "ids": [
+      10127200,
+      10127300,
+      10127400
+     ]
+    },
+    {
+     "monster": "Ruger Aidal",
+     "ids": [
+      10128200,
+      10128300,
+      10128400
+     ]
+    }
+   ],
+   "source": [
+    "PropCfg field 37",
+    "Charm/CharmAlbumCfg"
+   ]
+  },
+  {
+   "id": "elder_events",
+   "title": "Elder dragon event fights rebalanced",
+   "category": "Balance",
+   "events": [
+    {
+     "event": "Nergigante Approaches (100014)",
+     "quests": "Road to the Throne of Thorns – Hunting Trials and Limited-Time Challenge (8000001–8000004)",
+     "time_limit_min": {
+      "old": 10,
+      "new": 15
+     },
+     "monster_level_hunting_trial": {
+      "old": 15,
+      "new": 13
+     },
+     "nergigante_health": {
+      "old": 676202,
+      "new": 231699,
+      "change_pct": -66
+     },
+     "nergigante_attack": {
+      "old": 1480,
+      "new": 1190
+     },
+     "recommended_hunt_power_by_tier": {
+      "old": [
+       15766,
+       16554,
+       17553,
+       18430
+      ],
+      "new": [
+       11457,
+       17553,
+       19800,
+       23500
+      ]
+     },
+     "other": "An unnamed event setting changed 30 → 40."
+    },
+    {
+     "event": "When Steelwing Descends – Kushala Daora (100060)",
+     "quests": "Steel Tremor – Hunting Demos and Limited-Time Challenge (8000005–8000008)",
+     "time_limit_min": {
+      "old": 10,
+      "new": 15
+     },
+     "kushala_health": {
+      "old": 265832,
+      "new": 139210,
+      "change_pct": -48
+     },
+     "kushala_attack": {
+      "old": 1210,
+      "new": 1144
+     },
+     "recommended_hunt_power_by_tier": {
+      "old": [
+       11457,
+       12029,
+       14360,
+       15078
+      ],
+      "new": [
+       8909,
+       14360,
+       16340,
+       18340
+      ]
+     }
+    }
+   ],
+   "source": [
+    "FubenBaseCfg f25/f53",
+    "DragonActivity/DragonActivityFuben",
+    "Fuben/RecommendScore",
+    "Monster/MonsterAttributes",
+    "Monster/EcologicalNicheLevel"
+   ]
+  },
+  {
+   "id": "radiant_health",
+   "title": "Level 15–16 high-tier monsters: health cut",
+   "category": "Balance",
+   "summary": "18 high-level stat rows (mostly Radiant monsters) lose 27–73% health and up to 60 attack. Some monsters appear more than once because they have several high-level tiers; which modes use each tier isn't stated in the data.",
+   "rows": [
+    {
+     "stat_row_id": "11010011212",
+     "monster": "Radiant Anjanath",
+     "monster_level": 15,
+     "health_old": 1068850,
+     "health_new": 739973,
+     "health_change_pct": -31,
+     "attack_old": 1450,
+     "attack_new": 1410
+    },
+    {
+     "stat_row_id": "10010011212",
+     "monster": "Anjanath",
+     "monster_level": 15,
+     "health_old": 217623,
+     "health_new": 158271,
+     "health_change_pct": -27,
+     "attack_old": 1380,
+     "attack_new": 1380
+    },
+    {
+     "stat_row_id": "11010811310",
+     "monster": "Radiant Jyuratodus",
+     "monster_level": 15,
+     "health_old": 566469,
+     "health_new": 398626,
+     "health_change_pct": -30,
+     "attack_old": 1380,
+     "attack_new": 1340
+    },
+    {
+     "stat_row_id": "10010811310",
+     "monster": "Jyuratodus",
+     "monster_level": 15,
+     "health_old": 248629,
+     "health_new": 165753,
+     "health_change_pct": -33,
+     "attack_old": 1380,
+     "attack_new": 1340
+    },
+    {
+     "stat_row_id": "11004411311",
+     "monster": "Radiant Barroth",
+     "monster_level": 16,
+     "health_old": 1135650,
+     "health_new": 799161,
+     "health_change_pct": -30,
+     "attack_old": 1450,
+     "attack_new": 1410
+    },
+    {
+     "stat_row_id": "11010111311",
+     "monster": "Radiant Great Jagras",
+     "monster_level": 16,
+     "health_old": 2119137,
+     "health_new": 1412758,
+     "health_change_pct": -33,
+     "attack_old": 1450,
+     "attack_new": 1410
+    },
+    {
+     "stat_row_id": "11000711312",
+     "monster": "Radiant Diablos",
+     "monster_level": 16,
+     "health_old": 1450702,
+     "health_new": 600291,
+     "health_change_pct": -59,
+     "attack_old": 1590,
+     "attack_new": 1530
+    },
+    {
+     "stat_row_id": "10000711312",
+     "monster": "Diablos",
+     "monster_level": 16,
+     "health_old": 646574,
+     "health_new": 222957,
+     "health_change_pct": -66,
+     "attack_old": 1590,
+     "attack_new": 1530
+    },
+    {
+     "stat_row_id": "11011111313",
+     "monster": "Radiant Legiana",
+     "monster_level": 16,
+     "health_old": 3543035,
+     "health_new": 1181012,
+     "health_change_pct": -67,
+     "attack_old": 1590,
+     "attack_new": 1530
+    },
+    {
+     "stat_row_id": "11011011313",
+     "monster": "Radiant Paolumu",
+     "monster_level": 16,
+     "health_old": 2738635,
+     "health_new": 730303,
+     "health_change_pct": -73,
+     "attack_old": 1590,
+     "attack_new": 1530
+    },
+    {
+     "stat_row_id": "11011011410",
+     "monster": "Radiant Paolumu",
+     "monster_level": 16,
+     "health_old": 1615680,
+     "health_new": 1136960,
+     "health_change_pct": -30,
+     "attack_old": 1590,
+     "attack_new": 1550
+    },
+    {
+     "stat_row_id": "11010111410",
+     "monster": "Radiant Great Jagras",
+     "monster_level": 16,
+     "health_old": 3153688,
+     "health_new": 2102459,
+     "health_change_pct": -33,
+     "attack_old": 1590,
+     "attack_new": 1550
+    },
+    {
+     "stat_row_id": "11000711411",
+     "monster": "Radiant Diablos",
+     "monster_level": 16,
+     "health_old": 1567818,
+     "health_new": 1103279,
+     "health_change_pct": -30,
+     "attack_old": 1590,
+     "attack_new": 1550
+    },
+    {
+     "stat_row_id": "11010811411",
+     "monster": "Radiant Jyuratodus",
+     "monster_level": 16,
+     "health_old": 1406787,
+     "health_new": 937858,
+     "health_change_pct": -33,
+     "attack_old": 1590,
+     "attack_new": 1550
+    },
+    {
+     "stat_row_id": "11011111412",
+     "monster": "Radiant Legiana",
+     "monster_level": 16,
+     "health_old": 3553646,
+     "health_new": 1539913,
+     "health_change_pct": -57,
+     "attack_old": 1590,
+     "attack_new": 1550
+    },
+    {
+     "stat_row_id": "11004411412",
+     "monster": "Radiant Barroth",
+     "monster_level": 16,
+     "health_old": 3078542,
+     "health_new": 1128799,
+     "health_change_pct": -63,
+     "attack_old": 1590,
+     "attack_new": 1550
+    },
+    {
+     "stat_row_id": "11100711413",
+     "monster": "Radiant Black Diablos",
+     "monster_level": 16,
+     "health_old": 3380072,
+     "health_new": 1464698,
+     "health_change_pct": -57,
+     "attack_old": 1605,
+     "attack_new": 1565
+    },
+    {
+     "stat_row_id": "11000711413",
+     "monster": "Radiant Diablos",
+     "monster_level": 16,
+     "health_old": 2101134,
+     "health_new": 770416,
+     "health_change_pct": -63,
+     "attack_old": 1605,
+     "attack_new": 1565
+    }
+   ],
+   "source": [
+    "Monster/MonsterAttributes"
+   ]
+  },
+  {
+   "id": "adventurer_rank",
+   "title": "Adventurer Rank: steep EXP from AR 56, cap at AR 60",
+   "category": "Progression",
+   "summary": "The EXP value per Adventurer Rank is unchanged up to AR 55. From AR 56 it rises sharply, and AR 60 now needs 9,999,999 – a practical cap. Values above AR 60 are placeholders. The UI now shortens 'Adventurer Rank' to 'AR'.",
+   "exp_by_rank": [
+    {
+     "rank": 56,
+     "old": 351600,
+     "new": 407100
+    },
+    {
+     "rank": 57,
+     "old": 370800,
+     "new": 695100
+    },
+    {
+     "rank": 58,
+     "old": 390000,
+     "new": 1775100
+    },
+    {
+     "rank": 59,
+     "old": 409200,
+     "new": 3935100
+    },
+    {
+     "rank": 60,
+     "old": 428400,
+     "new": 9999999
+    },
+    {
+     "rank": 61,
+     "old": 447600,
+     "new": 10000000
+    },
+    {
+     "rank": 100,
+     "old": 1599600,
+     "new": 10000039
+    },
+    {
+     "rank": 999,
+     "old": 99999999,
+     "new": 10000938
+    }
+   ],
+   "also": "InvestigationProgressLevel grew from 37 to 153 levels (each 500 / 10000) – purpose unclear.",
+   "source": [
+    "SurveyExpDegree f3",
+    "Adventure/AdventureShuZhi/InvestigationProgressLevel"
+   ]
+  },
+  {
+   "id": "recruitment",
+   "title": "Recruitment changes",
+   "category": "Recruitment",
+   "items": [
+    "Crimson Authority – Freya (Festival Recruitment 3004, 27 Nov 2026 – 22 Jan 2027) now has its own SR (10) and SSR (90) pity counters instead of sharing the standard featured ones; featured pity stays 120.",
+    "Rules text: SSR pity now carries over only to other recruitments of the same kind (Featured → Featured, Festival → Festival). Before, it carried over between Featured and Festival.",
+    "Rates are now shown with four decimals (0.6000%, 50.0000%)."
+   ],
+   "source": [
+    "Lottery/LotteryBaseCfg",
+    "Lottery/LotteryGuaranteeCfg",
+    "Lottery 700LimitedAdventurerRateText / 700FESAdventurerRateText"
+   ]
+  },
+  {
+   "id": "apex",
+   "title": "Apex Challenge Orders refill day",
+   "category": "Quality of life",
+   "summary": "3 Apex Challenge Orders now refill every Monday at 05:00 (was Friday), up to 6.",
+   "source": [
+    "ItemMisc 2014Description"
+   ]
+  },
+  {
+   "id": "hunt_rewards",
+   "title": "Hunt list reward item",
+   "category": "Rewards",
+   "summary": "On 85 of the 236 hunt-list entries (all that used it), the reward item changed from Hunter's Jade (770002) to Adventurer's Hunting Insights (210002).",
+   "source": [
+    "CommonHuntListCfg f6/f7/f9/f10"
+   ]
+  },
+  {
+   "id": "new_hunts",
+   "title": "New hunt entries",
+   "category": "Content",
+   "summary": "74 new hunt definitions. Player-facing ones: Kushala Daora (level 8), Ruger Aidal (level 14, two versions), Radiant Rathalos (levels 3, 5 and a level 10 Boss Hunt), Radiant Diablos (level 5), Radiant Pukei-Pukei (level 3), Rathian (level 7). The rest are test, training or single-monster level 1 entries. These match 5 new rows in the monster level list (Kushala Daora, Radiant Rathalos, Radiant Diablos, Ruger Aidal ×2).",
+   "unreleased": "An unnamed hunt for monster 140201 (internal name XingLong / 星龙, an elder dragon not in the game yet) – the same monster as one of the planned adventurers.",
+   "source": [
+    "FubenBaseCfg"
+   ]
+  },
+  {
+   "id": "trials",
+   "title": "Trial Expedition",
+   "category": "Quality of life",
+   "items": [
+    "The Path of Expedition reset prompt was reworded and now warns if you still have uncleared Path of Trials stages, with a new 'Go to Path of Trials' button.",
+    "New notice: 'New Path of Trials stage unlocked. Challenge now.'",
+    "Bounty Trial rounds 5–8 now use different stages."
+   ],
+   "source": [
+    "CODE QianCengTa* text",
+    "Fuben/BountyTrialRoundCfg"
+   ]
+  },
+  {
+   "id": "fixes",
+   "title": "Fixes and smaller changes",
+   "category": "Fixes",
+   "items": [
+    "Three Ruger Aidal field entries were tagged as Kushala Daora; now Ruger Aidal.",
+    "Task fix: 'Break the throat of 7★+ Anjanath' → 'Break the head'. Three part-break tasks need fewer breaks (11 → 8, 8 → 6, 8 → 6).",
+    "Photo task fix: 'Wigglers following the Wiggler Queen' → 'Marine Seahorses following the Marshal Seahorse'.",
+    "Midori's Keepsake explanation text tweaked.",
+    "Five preset trial loadouts (try-out adventurer builds) use lower gear levels (e.g. 12 → 10, 14 → 10).",
+    "Heavy Bowgun: aerial shot and perfect-dodge attack hit setting changed (3 → 2); Cluster Ammo and Stylia's ultimate ability files updated. Barroth AI scripts updated.",
+    "Wood, Ore and Plant Gatherer buildings: one value 40 → 20 (meaning unclear, possibly gather time).",
+    "Resonance Crystal, Resonance Shard, the Engraved Gems, Radiant Gem/Crystal and Lucent Crystallite lost two item flags (effect unclear).",
+    "18 new Marathon Hunt loading screens. A reward preview no longer lists Guild Crimson Crest Charge Blade. One new shop link."
+   ],
+   "source": [
+    "Monster/EcologicalNicheLevel",
+    "TaskTargetCfg",
+    "Adventure/PresetAdventureTemplateCfg",
+    "Adventure/AdventureShuZhi/PlayerSkillHitConfig",
+    "FusionOre/FusionOreBuildingDataBaseCfg",
+    "PropCfg",
+    "LoadingTips",
+    "Drop/AwardPreviewCfg",
+    "CommonJumpEntity"
+   ]
+  },
+  {
+   "id": "unchanged",
+   "title": "Not changed",
+   "category": "Info",
+   "summary": "No new or changed weapons, armour (with stats), skills, decorations, adventurers, buddies, adventurer gifts or monster weaknesses."
+  }
+ ],
+ "website_data_changes": {
+  "MHO_visages.csv": "9 rows: elder dragon Visages now 'In game' via Season Shop",
+  "MHO_monster_levels.csv": "5 new rows (Kushala Daora, Radiant Rathalos, Radiant Diablos, Ruger Aidal ×2)",
+  "new files": "MHO_banners, MHO_season_schedule, MHO_upcoming_characters, MHO_events (see those for what's coming)"
+ },
+ "related_upcoming": {
+  "from": "MHO_season_schedule / MHO_banners",
+  "items": [
+   "27 Nov: Crimson Authority (Freya) and Heart of the Thaw (Stylia) banners; Nergigante elder dragon rotation 27 Nov – 17 Dec.",
+   "25 Dec: Season 2 'Molten Sun & Spark of Blue'; new adventurer: Nergigante Charge Blade adventurer.",
+   "22 Jan 2027: new Kushala Daora Lance adventurer."
+  ]
+ }
+}

@@ -1,0 +1,34 @@
+﻿Kind,Item ID,Status,Monster (note),Weapon (note),Name in designer note,Designer note (Chinese),Game text name,"Possible adventurer ID / English name (same weapon, not released)",Evidence,Belongs to
+Adventurer,230021,Upcoming – Recruitment banner starts 2026-11-27,Legiana,Bow,斯蒂莉娅,斯蒂莉娅_风漂龙弓冒险家,Stylia,114004 Stylia – Heart of the Thaw,banner 3005 Heart of the Thaw (2026-11-27 03:00 to 2026-12-24 19:59); season 1 new adventurer id 114004 from 2026-11-27 03:00; season 2 new adventurer id 114004 from 2026-11-27 03:00; bond gift preferences for id 114004,
+Adventurer,230025,Banner prepared (no dates yet),Teostra,Heavy Bowgun,莱恩,莱恩_炎王龙重弩冒险家,,113002 Ryan – Swift Flame King,banner 3008 (no name yet) (no dates yet); bond gift preferences for id 113002,
+Adventurer,230028,Scheduled – season debut 2026-12-25 03:00,Nergigante,Charge Blade,尤米娅,尤米娅_灭尽龙盾斧冒险家,(Test) Nergigante Charge Blade,110001 (Test) Nergigante Charge Blade,banner 3006 (no name yet) (no dates yet); season 2 new adventurer id 110001 from 2026-12-25 03:00; bond gift preferences for id 110001,
+Adventurer,230029,Scheduled – season debut 2027-01-22 03:00,Kushala Daora,Lance,维特兰娜,维特兰娜_钢龙长枪冒险家,,107004 (no English name yet),banner 3007 (no name yet) (no dates yet); season 2 new adventurer id 107004 from 2027-01-22 03:00; season 2 new adventurer id 107004 from 2027-02-19 03:00; bond gift preferences for id 107004,
+Adventurer,230030,Banner prepared (no dates yet),Kirin,Gunlance,,？_麒麟铳枪冒险家,,,banner 3009 (no name yet) (no dates yet),
+Adventurer,230031,Planned – designer roster only,Lunastra,Hammer,,？_炎妃龙大锤冒险家,,,,
+Adventurer,230032,Planned – designer roster only,Deviljho,Dual Blades,戴蒙,戴蒙_恐暴龙双剑冒险家,,,,
+Adventurer,230033,Planned – designer roster only,Zinogre,Long Sword,,？_雷狼龙太刀冒险家,,102003 Drake,,
+Adventurer,230034,Planned – designer roster only,Tigrex,Gunlance,,？_轰龙铳枪冒险家,,,,
+Adventurer,230035,Planned – designer roster only,Brachydios,Heavy Bowgun,,？_碎龙重弩冒险家,,,,
+Adventurer,230036,Planned – designer roster only,Dodogama,Sword & Shield,,？_岩贼龙单手剑冒险家,,,,
+Adventurer,230037,Planned – designer roster only,Glavenus,Great Sword,,？_斩龙大剑冒险家,,,,
+Adventurer,230038,Planned – designer roster only,Velkhana,Charge Blade,,？_冰呪龙盾斧冒险家,,,,
+Adventurer,230039,Planned – designer roster only,星龙,Long Sword,,？_星龙太刀冒险家,,102003 Drake,,
+Adventurer,230040,Planned – designer roster only,Rajang,Hammer,,？_金狮子大锤冒险家,,,,
+Signature buddy,320045,Planned – designer roster only,Nergigante,Charge Blade,,?_SSR灭尽龙盾斧专属,,,,item 230028 (Nergigante Charge Blade adventurer)
+Signature buddy,320046,Planned – designer roster only,Kushala Daora,Lance,,?_SSR钢龙长枪专属,,,,item 230029 (Kushala Daora Lance adventurer)
+Signature buddy,320047,Planned – designer roster only,Lunastra,Hammer,,?_SSR炎妃龙大锤专属,,,,item 230031 (Lunastra Hammer adventurer)
+Signature buddy,320048,Planned – designer roster only,星龙,Long Sword,,?_SSR星龙太刀专属,,,,item 230039 (星龙 Long Sword adventurer)
+Signature buddy,320049,Planned – designer roster only,Deviljho,Dual Blades,,?_SSR恐暴龙双剑专属,,,,item 230032 (Deviljho Dual Blades adventurer)
+Signature buddy,320050,Planned – designer roster only,河狸兽,Charge Blade,,?_SSR河狸兽盾斧专属,,,,
+Signature buddy,320051,Planned – designer roster only,Teostra,Heavy Bowgun,,?_SSR炎王龙重弩专属,,,,item 230025 (Teostra Heavy Bowgun adventurer)
+Signature buddy,320052,Planned – designer roster only,Kirin,Gunlance,,?_SSR麒麟铳枪专属,,,,item 230030 (Kirin Gunlance adventurer)
+Signature buddy,320056,Planned – designer roster only,Dodogama,Gunlance,,?_SSR岩贼龙铳枪专属,,,,
+Default buddy,320118,Planned – designer roster only,Nergigante,Charge Blade,,?_SSR灭尽龙盾斧默认,,,,item 230028 (Nergigante Charge Blade adventurer)
+Default buddy,320119,Planned – designer roster only,Kushala Daora,Lance,,?_SSR钢龙长枪默认,,,,item 230029 (Kushala Daora Lance adventurer)
+Signature buddy,320120,Planned – designer roster only,Lunastra,Hammer,,?_SSR炎妃龙大锤专属,,,,item 230031 (Lunastra Hammer adventurer)
+Default buddy,320121,Planned – designer roster only,星龙,Long Sword,,?_SSR星龙太刀默认,,,,item 230039 (星龙 Long Sword adventurer)
+Default buddy,320122,Planned – designer roster only,Deviljho,Dual Blades,,?_SSR恐暴龙双剑默认,,,,item 230032 (Deviljho Dual Blades adventurer)
+Default buddy,320123,Planned – designer roster only,河狸兽,Charge Blade,,?_SSR河狸兽盾斧默认,,,,
+Default buddy,320124,Planned – designer roster only,Teostra,Heavy Bowgun,,?_SSR炎王龙重弩默认,,,,item 230025 (Teostra Heavy Bowgun adventurer)
+Default buddy,320125,Planned – designer roster only,Kirin,Gunlance,,?_SSR麒麟铳枪默认,,,,item 230030 (Kirin Gunlance adventurer)
+Default buddy,320128,Upcoming – Recruitment banner starts 2026-11-27,Legiana,Bow,,?_SSR风漂龙弓默认,Lynn,,,item 230021 (Legiana Bow adventurer)

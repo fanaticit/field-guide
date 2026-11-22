@@ -34,6 +34,16 @@ The site is still a set of static files with no server. At build time:
 
 Game data in the static HTML is a snapshot from the last build. After importing new game data into Supabase, run `npm run deploy` (or trigger a Cloudflare deploy hook) so search engines see the update.
 
+## Recruitment banners
+
+Banners live in the `banners` table. To update them from a new game export:
+
+1. Put the new `import/MHO_banners.json` and `import/MHO_banner_images.json` in place, and the art in `import/image add/Banners/`.
+2. Run `python3 scripts/import_mho_banners.py` (needs Pillow). It writes a migration in `supabase/migrations/` and converts each banner's key art to WebP in `public/images/banners/`.
+3. Apply the migration, then deploy.
+
+Live / Coming soon / Ended is worked out from the start and end times, so nothing needs updating when a banner starts or finishes. Banners are only shown on the Spoilers page. Upcoming and datamined ones (`Debug = yes` or no dates) are only readable by logged-in hunters with Show Spoilers on, enforced by the database.
+
 ## Where things live
 
 - `src/routes.ts` – the list of routes (replaces `src/router.tsx`)

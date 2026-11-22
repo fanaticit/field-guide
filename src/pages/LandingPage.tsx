@@ -7,6 +7,7 @@ import FeatureShowcase from '../components/home/FeatureShowcase';
 import SiteUpdatesSection from '../components/home/SiteUpdatesSection';
 import { useUIStore } from '../store/uiStore';
 import { resolveSectionTheme } from '../config/themes';
+import { LATEST_PATCH_VERSION } from '../data/patches';
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -303,7 +304,7 @@ export default function LandingPage() {
                 className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-mh-gold-500/10 hover:bg-mh-gold-500/20 border border-mh-gold-500/30 text-xs font-semibold text-mh-gold-300 hover:text-mh-gold-200 transition-all shadow-sm group"
               >
                 <ScrollText size={13} className="text-mh-gold-400 group-hover:scale-110 transition-transform" />
-                <span>Latest Game Updates &middot; Patch 1.0.9.3</span>
+                <span>Latest Game Updates &middot; Patch {LATEST_PATCH_VERSION}</span>
                 <ChevronRight size={13} className="opacity-70 group-hover:translate-x-0.5 transition-transform" />
               </Link>
             </div>
