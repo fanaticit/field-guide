@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { ArrowLeft, Shield } from 'lucide-react';
 
 export default function PrivacyPolicy() {
@@ -22,7 +22,7 @@ export default function PrivacyPolicy() {
 
         <div className="prose prose-invert prose-slate max-w-none text-mh-slate-300">
           <p>
-            Welcome to the Monster Hunter Field Guide ("we", "our", or "us"). We are committed to protecting your personal information and your right to privacy.
+            Welcome to the Monster Hunter Outlanders Field Guide ("we", "our", or "us"). We are committed to protecting your personal information and your right to privacy.
             This Privacy Policy explains what information we collect, how we use it, and your rights regarding your data.
           </p>
 

@@ -23,13 +23,48 @@ export function extractYouTubeId(url: string | null | undefined): string | null 
 }
 
 /**
+ * Extracts start time in seconds from YouTube URLs supporting formats like:
+ * ?t=120, &t=120s, ?t=1m30s, ?t=1h2m3s, ?start=90, #t=45
+ */
+export function extractYouTubeStartTime(url: string | null | undefined): number | null {
+  if (!url) return null;
+  const trimmed = url.trim();
+  if (!trimmed) return null;
+
+  const match = trimmed.match(/[?&#](?:start|t)=([0-9hms]+)/i);
+  if (!match) return null;
+
+  const raw = match[1];
+  // Pure integer seconds (e.g. 120 or 120s)
+  if (/^\d+s?$/i.test(raw)) {
+    return parseInt(raw, 10);
+  }
+
+  // Composite format like 1h2m3s, 2m30s, 45s
+  let totalSeconds = 0;
+  const hours = raw.match(/(\d+)h/i);
+  const minutes = raw.match(/(\d+)m/i);
+  const seconds = raw.match(/(\d+)s/i);
+
+  if (hours) totalSeconds += parseInt(hours[1], 10) * 3600;
+  if (minutes) totalSeconds += parseInt(minutes[1], 10) * 60;
+  if (seconds) totalSeconds += parseInt(seconds[1], 10);
+
+  return totalSeconds > 0 ? totalSeconds : null;
+}
+
+/**
  * Builds a privacy-enhanced YouTube embed URL (youtube-nocookie.com)
- * with recommended player options for field-guide guides.
+ * with recommended player options and optional start timestamp.
  */
 export function getYouTubeEmbedUrl(urlOrId: string | null | undefined): string | null {
   const videoId = extractYouTubeId(urlOrId);
   if (!videoId) return null;
-  return `https://www.youtube-nocookie.com/embed/${videoId}?rel=0`;
+
+  const startTime = extractYouTubeStartTime(urlOrId);
+  const startParam = startTime && startTime > 0 ? `&start=${startTime}` : '';
+
+  return `https://www.youtube-nocookie.com/embed/${videoId}?rel=0${startParam}`;
 }
 
 /**
@@ -38,3 +73,4 @@ export function getYouTubeEmbedUrl(urlOrId: string | null | undefined): string |
 export function isValidYouTubeUrl(url: string | null | undefined): boolean {
   return extractYouTubeId(url) !== null;
 }
+

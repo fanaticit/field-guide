@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import { ChevronDown, Lock, User, Swords, PawPrint, Check, Search } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
@@ -7,7 +7,8 @@ import { useBuildPlannerStore, type Adventurer, type WeaponType, type Buddy } fr
 import { useUserBuddyCollection } from '../../hooks/useUserBuddyCollection';
 import { useAdminWeaponTypes } from '../../hooks/useAdminWeapons';
 import RoleIcon from '../RoleIcon';
-import { ADVENTURER_ROLE_CONFIG } from '../../data/schemas/adventurer';
+import { ADVENTURER_ROLE_CONFIG, resolveAdventurerMedia } from '../../data/schemas/adventurer';
+import { useAuthStore } from '../../store/authStore';
 
 const BUDDY_TIER_THEMES: Record<string, {
   border: string;
@@ -59,7 +60,12 @@ const getBuddyTheme = (tier?: string) => BUDDY_TIER_THEMES[tier || 'R'] || BUDDY
 
 export function HeroBuddySelector() {
   const navigate = useNavigate();
-  const { adventurer, setAdventurer, weaponType, setWeaponType, buddy, setBuddy, tacticalRole, setTacticalRole } = useBuildPlannerStore();
+  const gender = useAuthStore((s) => s.profile?.equipment_gender ?? 'male');
+  const { adventurer: rawAdventurer, setAdventurer, weaponType, setWeaponType, buddy, setBuddy, tacticalRole, setTacticalRole } = useBuildPlannerStore();
+  const adventurer = useMemo(
+    () => (rawAdventurer ? resolveAdventurerMedia(rawAdventurer, gender) ?? rawAdventurer : null),
+    [rawAdventurer, gender]
+  );
   const { isOwned } = useUserBuddyCollection();
   const [showAdvList, setShowAdvList] = useState(false);
   const [showBuddyList, setShowBuddyList] = useState(false);
@@ -68,7 +74,7 @@ export function HeroBuddySelector() {
   const [buddySearch, setBuddySearch] = useState('');
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { data: adventurers } = useQuery({
+  const { data: rawAdventurers } = useQuery({
     queryKey: ['adventurers'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -81,6 +87,11 @@ export function HeroBuddySelector() {
       return data as Adventurer[];
     }
   });
+
+  const adventurers = useMemo(
+    () => rawAdventurers?.map(adv => resolveAdventurerMedia(adv, gender) ?? adv),
+    [rawAdventurers, gender]
+  );
 
   const { data: allWeaponTypes = [] } = useAdminWeaponTypes({ isActive: true });
 
@@ -224,10 +235,10 @@ export function HeroBuddySelector() {
           title="Click to change Hunter"
         >
           {/* Background sketch/artwork */}
-          {adventurer && (adventurer.background_image || adventurer.image) && (
+          {adventurer && (adventurer.bond_image || adventurer.background_image || adventurer.image) && (
             <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
               <img
-                src={adventurer.background_image || adventurer.image}
+                src={adventurer.bond_image || adventurer.background_image || adventurer.image}
                 alt=""
                 className="absolute right-0 top-1/2 -translate-y-1/2 h-[220%] w-auto max-w-none object-cover opacity-25 group-hover:opacity-35 transition-opacity duration-300"
               />

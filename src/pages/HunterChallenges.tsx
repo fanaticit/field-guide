@@ -4,7 +4,7 @@
 // Mobile:  single-column compact list with monster strip at top.
 // ─────────────────────────────────────────────────────────────
 import { useState, useMemo, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router';
 import {
   Target,
   Shield,
@@ -1183,7 +1183,7 @@ export default function HunterChallenges() {
 
   const { data: adventurers = [] } = usePublicAdventurers();
   const adventurerBackgrounds = useMemo(
-    () => new Map(adventurers.filter((a) => a.background_image).map((a) => [a.id, a.background_image as string])),
+    () => new Map(adventurers.filter((a) => a.bond_image || a.background_image).map((a) => [a.id, (a.bond_image || a.background_image) as string])),
     [adventurers],
   );
   const { data: monsters = [] } = usePublicMonsters();

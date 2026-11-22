@@ -7,7 +7,7 @@ import { create } from 'zustand';
 import type { Session, User } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 import { useUIStore } from './uiStore';
-import { router } from '../router';
+import { appNavigate } from '../lib/appNavigate';
 
 // Map the stored Page identifier to a route path
 export const pageToPath: Record<string, string> = {
@@ -154,7 +154,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       const profile = useAuthStore.getState().profile;
       const target = getLandingPagePath(profile);
       if (target !== '/' && window.location.pathname === '/') {
-        router.navigate(target);
+        appNavigate(target);
       }
     }
     return true;
@@ -317,7 +317,7 @@ export function initAuth() {
           const profile = useAuthStore.getState().profile;
           const target = getLandingPagePath(profile);
           if (target !== '/') {
-            router.navigate(target);
+            appNavigate(target);
           }
         }
       }

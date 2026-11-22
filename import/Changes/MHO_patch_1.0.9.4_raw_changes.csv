@@ -1,0 +1,1820 @@
+﻿Table,Row ID,Change,Field,Name (game text),Old value,New value
+AdventureElementAwake/AdventurePolishNodeCoreTraitCfg,124,changed,2,,"['pk[10, 12, 65, 102, 102, 105, 110, 105, 116, 121, 82, 97, 116, 101, 29, 0, 0, 7936, 34, 4]', 'pk[10, 6, 65, 116, 116, 97, 99, 107, 21, 0, 64, 28, 3781, 0, 0, 32, 64, 40, 1]']","['pk[10, 12, 65, 102, 102, 105, 110, 105, 116, 121, 82, 97, 116, 101, 29, 0, 0, 7936, 34, 4]', 'pk[10, 13, 90, 101, 114, 111, 65, 100, 118, 68, 97, 109, 97, 103, 101, 21, 0, 64, 28, 3781]']"
+Adventure/AdventureShuZhi/InvestigationProgressLevel,38,added,,,,1=38 | 2=38 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,39,added,,,,1=39 | 2=39 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,40,added,,,,1=40 | 2=40 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,41,added,,,,1=41 | 2=41 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,42,added,,,,1=42 | 2=42 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,43,added,,,,1=43 | 2=43 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,44,added,,,,1=44 | 2=44 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,45,added,,,,1=45 | 2=45 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,46,added,,,,1=46 | 2=46 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,47,added,,,,1=47 | 2=47 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,48,added,,,,1=48 | 2=48 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,49,added,,,,1=49 | 2=49 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,50,added,,,,1=50 | 2=50 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,51,added,,,,1=51 | 2=51 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,52,added,,,,1=52 | 2=52 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,53,added,,,,1=53 | 2=53 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,54,added,,,,1=54 | 2=54 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,55,added,,,,1=55 | 2=55 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,56,added,,,,1=56 | 2=56 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,57,added,,,,1=57 | 2=57 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,58,added,,,,1=58 | 2=58 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,59,added,,,,1=59 | 2=59 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,60,added,,,,1=60 | 2=60 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,61,added,,,,1=61 | 2=61 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,62,added,,,,1=62 | 2=62 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,63,added,,,,1=63 | 2=63 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,64,added,,,,1=64 | 2=64 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,65,added,,,,1=65 | 2=65 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,66,added,,,,1=66 | 2=66 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,67,added,,,,1=67 | 2=67 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,68,added,,,,1=68 | 2=68 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,69,added,,,,1=69 | 2=69 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,70,added,,,,1=70 | 2=70 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,71,added,,,,1=71 | 2=71 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,72,added,,,,1=72 | 2=72 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,73,added,,,,1=73 | 2=73 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,74,added,,,,1=74 | 2=74 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,75,added,,,,1=75 | 2=75 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,76,added,,,,1=76 | 2=76 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,77,added,,,,1=77 | 2=77 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,78,added,,,,1=78 | 2=78 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,79,added,,,,1=79 | 2=79 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,80,added,,,,1=80 | 2=80 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,81,added,,,,1=81 | 2=81 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,82,added,,,,1=82 | 2=82 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,83,added,,,,1=83 | 2=83 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,84,added,,,,1=84 | 2=84 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,85,added,,,,1=85 | 2=85 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,86,added,,,,1=86 | 2=86 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,87,added,,,,1=87 | 2=87 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,88,added,,,,1=88 | 2=88 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,89,added,,,,1=89 | 2=89 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,90,added,,,,1=90 | 2=90 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,91,added,,,,1=91 | 2=91 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,92,added,,,,1=92 | 2=92 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,93,added,,,,1=93 | 2=93 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,94,added,,,,1=94 | 2=94 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,95,added,,,,1=95 | 2=95 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,96,added,,,,1=96 | 2=96 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,97,added,,,,1=97 | 2=97 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,98,added,,,,1=98 | 2=98 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,99,added,,,,1=99 | 2=99 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,100,added,,,,1=100 | 2=100 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,101,added,,,,1=101 | 2=101 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,102,added,,,,1=102 | 2=102 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,103,added,,,,1=103 | 2=103 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,104,added,,,,1=104 | 2=104 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,105,added,,,,1=105 | 2=105 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,106,added,,,,1=106 | 2=106 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,107,added,,,,1=107 | 2=107 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,108,added,,,,1=108 | 2=108 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,109,added,,,,1=109 | 2=109 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,110,added,,,,1=110 | 2=110 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,111,added,,,,1=111 | 2=111 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,112,added,,,,1=112 | 2=112 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,113,added,,,,1=113 | 2=113 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,114,added,,,,1=114 | 2=114 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,115,added,,,,1=115 | 2=115 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,116,added,,,,1=116 | 2=116 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,117,added,,,,1=117 | 2=117 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,118,added,,,,1=118 | 2=118 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,119,added,,,,1=119 | 2=119 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,120,added,,,,1=120 | 2=120 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,121,added,,,,1=121 | 2=121 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,122,added,,,,1=122 | 2=122 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,123,added,,,,1=123 | 2=123 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,124,added,,,,1=124 | 2=124 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,125,added,,,,1=125 | 2=125 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,126,added,,,,1=126 | 2=126 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,127,added,,,,1=127 | 2=127 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,128,added,,,,1=128 | 2=128 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,129,added,,,,1=129 | 2=129 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,130,added,,,,1=130 | 2=130 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,131,added,,,,1=131 | 2=131 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,132,added,,,,1=132 | 2=132 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,133,added,,,,1=133 | 2=133 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,134,added,,,,1=134 | 2=134 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,135,added,,,,1=135 | 2=135 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,136,added,,,,1=136 | 2=136 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,137,added,,,,1=137 | 2=137 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,138,added,,,,1=138 | 2=138 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,139,added,,,,1=139 | 2=139 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,140,added,,,,1=140 | 2=140 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,141,added,,,,1=141 | 2=141 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,142,added,,,,1=142 | 2=142 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,143,added,,,,1=143 | 2=143 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,144,added,,,,1=144 | 2=144 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,145,added,,,,1=145 | 2=145 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,146,added,,,,1=146 | 2=146 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,147,added,,,,1=147 | 2=147 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,148,added,,,,1=148 | 2=148 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,149,added,,,,1=149 | 2=149 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,150,added,,,,1=150 | 2=150 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,151,added,,,,1=151 | 2=151 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,152,added,,,,1=152 | 2=152 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/InvestigationProgressLevel,153,added,,,,1=153 | 2=153 | 4=500 | 5=10000
+Adventure/AdventureShuZhi/PlayerBulletCombatNumber,1130011006,changed,3,,[3],[2]
+Adventure/AdventureShuZhi/PlayerBulletCombatNumber,1130011007,changed,3,,[3],[2]
+Adventure/AdventureShuZhi/PlayerSkillHitConfig,Ability_HBG_a01_AirBulletShot_Air_3,changed,3,,[3],[2]
+Adventure/AdventureShuZhi/PlayerSkillHitConfig,Ability_HBG_a01_AirBulletShot_Air_0,changed,3,,[3],[2]
+Adventure/AdventureShuZhi/PlayerSkillHitConfig,Ability_HBG_a01__PerfectDodge_Attack_0,changed,3,,[3],[2]
+Adventure/AdventureShuZhi/PlayerSkillHitConfig,Ability_HBG_a01__PerfectDodge_Attack_Yizhandaodi_0,changed,3,,[3],[2]
+Adventure/PresetAdventurePetTemplateCfg,10035,changed,2,,[70],[60]
+Adventure/PresetAdventurePetTemplateCfg,10039,changed,2,,[80],[70]
+Adventure/PresetAdventurePetTemplateCfg,10040,changed,2,,[60],[70]
+Adventure/PresetAdventurePetTemplateCfg,10041,changed,2,,[60],[70]
+Adventure/PresetAdventurePetTemplateCfg,10042,changed,2,,[60],[70]
+Adventure/PresetAdventureTemplateCfg,10035,changed,9,,"[""'203010801,1,10'""]","[""'203010801,1,9'""]"
+Adventure/PresetAdventureTemplateCfg,10035,changed,10,,"[""'210001302,1,10'""]","[""'210001302,1,9'""]"
+Adventure/PresetAdventureTemplateCfg,10035,changed,11,,"[""'207000803,1,10'""]","[""'207000803,1,9'""]"
+Adventure/PresetAdventureTemplateCfg,10035,changed,12,,"[""'207000804,1,10'""]","[""'207000804,1,9'""]"
+Adventure/PresetAdventureTemplateCfg,10035,changed,13,,"[""'211001905,1,10'""]","[""'203010805,1,9'""]"
+Adventure/PresetAdventureTemplateCfg,10035,changed,14,,"[""'101090911,1,11'""]","[""'108001511,1,9'""]"
+Adventure/PresetAdventureTemplateCfg,10039,changed,9,,"[""'203000701,1,14'""]","[""'203000701,1,10'""]"
+Adventure/PresetAdventureTemplateCfg,10039,changed,10,,"[""'203000702,1,14'""]","[""'203000702,1,10'""]"
+Adventure/PresetAdventureTemplateCfg,10039,changed,11,,"[""'204010703,1,14'""]","[""'210001203,1,10'""]"
+Adventure/PresetAdventureTemplateCfg,10039,changed,12,,"[""'211011904,1,14'""]","[""'208001504,1,10'""]"
+Adventure/PresetAdventureTemplateCfg,10039,changed,13,,"[""'204010705,1,14'""]","[""'204010705,1,10'""]"
+Adventure/PresetAdventureTemplateCfg,10039,changed,18,,"[""'101090913,1,14'""]","[""'101090913,1,11'""]"
+Adventure/PresetAdventureTemplateCfg,10040,changed,9,,"[""'201082001,1,12'""]","[""'201082001,1,10'""]"
+Adventure/PresetAdventureTemplateCfg,10040,changed,10,,"[""'201082002,1,12'""]","[""'201082002,1,10'""]"
+Adventure/PresetAdventureTemplateCfg,10040,changed,11,,"[""'201082003,1,12'""]","[""'201082003,1,10'""]"
+Adventure/PresetAdventureTemplateCfg,10040,changed,12,,"[""'201082004,1,12'""]","[""'201082004,1,10'""]"
+Adventure/PresetAdventureTemplateCfg,10040,changed,13,,"[""'201082005,1,12'""]","[""'201082005,1,10'""]"
+Adventure/PresetAdventureTemplateCfg,10040,changed,14,,"[""'101082611,1,12'""]","[""'101082611,1,10'""]"
+Adventure/PresetAdventureTemplateCfg,10041,changed,9,,"[""'201082001,1,12'""]","[""'201082001,1,10'""]"
+Adventure/PresetAdventureTemplateCfg,10041,changed,10,,"[""'201082002,1,12'""]","[""'201082002,1,10'""]"
+Adventure/PresetAdventureTemplateCfg,10041,changed,11,,"[""'201082003,1,12'""]","[""'201082003,1,10'""]"
+Adventure/PresetAdventureTemplateCfg,10041,changed,12,,"[""'201082004,1,12'""]","[""'201082004,1,10'""]"
+Adventure/PresetAdventureTemplateCfg,10041,changed,13,,"[""'201082005,1,12'""]","[""'201082005,1,10'""]"
+Adventure/PresetAdventureTemplateCfg,10041,changed,14,,"[""'101082611,1,12'""]","[""'101082611,1,10'""]"
+Adventure/PresetAdventureTemplateCfg,10042,changed,9,,"[""'201082001,1,12'""]","[""'201082001,1,10'""]"
+Adventure/PresetAdventureTemplateCfg,10042,changed,10,,"[""'201082002,1,12'""]","[""'201082002,1,10'""]"
+Adventure/PresetAdventureTemplateCfg,10042,changed,11,,"[""'201082003,1,12'""]","[""'201082003,1,10'""]"
+Adventure/PresetAdventureTemplateCfg,10042,changed,12,,"[""'201082004,1,12'""]","[""'201082004,1,10'""]"
+Adventure/PresetAdventureTemplateCfg,10042,changed,13,,"[""'201082005,1,12'""]","[""'201082005,1,10'""]"
+Adventure/PresetAdventureTemplateCfg,10042,changed,19,,"[""'101082616,1,12'""]","[""'101082616,1,10'""]"
+Charm/CharmAlbumCfg,102401,changed,2,,"['pk[10127500, 10127500, 10127500, 10127500]']","['pk[10127200, 10127300, 10127400, 10127500]']"
+Charm/CharmAlbumCfg,110301,changed,2,,"['pk[10126500, 10126500, 10126500, 10126500]']","['pk[10126200, 10126300, 10126400, 10126500]']"
+Charm/CharmAlbumCfg,140001,changed,2,,"['pk[10128500, 10128500, 10128500, 10128500]']","['pk[10128200, 10128300, 10128400, 10128500]']"
+CollectionScore/CollectionScoreCfg,1098,added,,,,1='1098' | 2=2050122 | 3=10
+CollectionScore/CollectionScoreCfg,1099,added,,,,1='1099' | 2=2050123 | 3=10
+CollectionScore/CollectionScoreCfg,1100,added,,,,1='1100' | 2=2050124 | 3=10
+CollectionScore/CollectionScoreCfg,1101,added,,,,1='1101' | 2=2050125 | 3=10
+CollectionScore/CollectionScoreCfg,1102,added,,,,1='1102' | 2=2050126 | 3=10
+CollectionScore/CollectionScoreCfg,1103,added,,,,1='1103' | 2=2050698 | 3=10
+CollectionScore/CollectionScoreCfg,1104,added,,,,1='1104' | 2=2050699 | 3=10
+CollectionScore/CollectionScoreCfg,1105,added,,,,1='1105' | 2=2050700 | 3=10
+CollectionScore/CollectionScoreCfg,1106,added,,,,1='1106' | 2=2050701 | 3=10
+CollectionScore/CollectionScoreCfg,1107,added,,,,1='1107' | 2=2050702 | 3=10
+CollectionScore/CollectionScoreCfg,1108,added,,,,1='1108' | 2=2210037 | 3=15
+CollectionScore/CollectionScoreCfg,1109,added,,,,1='1109' | 2=2210069 | 3=15
+CollectionScore/CollectionScoreCfg,1110,added,,,,1='1110' | 2=2210107 | 3=15
+CollectionScore/CollectionScoreCfg,1111,added,,,,1='1111' | 2=2210148 | 3=15
+CollectionScore/CollectionScoreCfg,1112,added,,,,1='1112' | 2=2210194 | 3=15
+CollectionScore/CollectionScoreCfg,1113,added,,,,1='1113' | 2=2210233 | 3=15
+CollectionScore/CollectionScoreCfg,1114,added,,,,1='1114' | 2=2210247 | 3=15
+CollectionScore/CollectionScoreCfg,1115,added,,,,1='1115' | 2=2210375 | 3=15
+CommonHuntListCfg,11440001,changed,6,,[770002],[210002]
+CommonHuntListCfg,11440001,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,11440001,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,11440001,changed,10,,[770002],[210002]
+CommonHuntListCfg,11402401,changed,6,,[770002],[210002]
+CommonHuntListCfg,11402401,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,11402401,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,11402401,changed,10,,[770002],[210002]
+CommonHuntListCfg,10040201,changed,6,,[770002],[210002]
+CommonHuntListCfg,10040201,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,10040201,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,10040201,changed,10,,[770002],[210002]
+CommonHuntListCfg,11540001,changed,6,,[770002],[210002]
+CommonHuntListCfg,11540001,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,11540001,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,11540001,changed,10,,[770002],[210002]
+CommonHuntListCfg,11999990,changed,6,,[770002],[210002]
+CommonHuntListCfg,11999990,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,11999990,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,11999990,changed,10,,[770002],[210002]
+CommonHuntListCfg,11999991,changed,6,,[770002],[210002]
+CommonHuntListCfg,11999991,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,11999991,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,11999991,changed,10,,[770002],[210002]
+CommonHuntListCfg,11999992,changed,6,,[770002],[210002]
+CommonHuntListCfg,11999992,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,11999992,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,11999992,changed,10,,[770002],[210002]
+CommonHuntListCfg,11999993,changed,6,,[770002],[210002]
+CommonHuntListCfg,11999993,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,11999993,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,11999993,changed,10,,[770002],[210002]
+CommonHuntListCfg,11999994,changed,6,,[770002],[210002]
+CommonHuntListCfg,11999994,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,11999994,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,11999994,changed,10,,[770002],[210002]
+CommonHuntListCfg,11999995,changed,6,,[770002],[210002]
+CommonHuntListCfg,11999995,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,11999995,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,11999995,changed,10,,[770002],[210002]
+CommonHuntListCfg,11999996,changed,6,,[770002],[210002]
+CommonHuntListCfg,11999996,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,11999996,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,11999996,changed,10,,[770002],[210002]
+CommonHuntListCfg,10200710,changed,4,,[7777],
+CommonHuntListCfg,10200710,changed,5,,[770001],
+CommonHuntListCfg,10200710,changed,6,,[770002],[210002]
+CommonHuntListCfg,10200710,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,10200710,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,10200710,changed,10,,[770002],[210002]
+CommonHuntListCfg,10200210,changed,4,,[7777],
+CommonHuntListCfg,10200210,changed,5,,[770001],
+CommonHuntListCfg,10200210,changed,6,,[770002],[210002]
+CommonHuntListCfg,10200210,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,10200210,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,10200210,changed,10,,[770002],[210002]
+CommonHuntListCfg,991010,changed,4,,[7777],
+CommonHuntListCfg,991010,changed,5,,[770001],
+CommonHuntListCfg,991010,changed,6,,[770002],[210002]
+CommonHuntListCfg,991010,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,991010,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,991010,changed,10,,[770002],[210002]
+CommonHuntListCfg,991011,changed,4,,[7777],
+CommonHuntListCfg,991011,changed,5,,[770001],
+CommonHuntListCfg,991011,changed,6,,[770002],[210002]
+CommonHuntListCfg,991011,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,991011,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,991011,changed,10,,[770002],[210002]
+CommonHuntListCfg,99021,changed,4,,[7777],
+CommonHuntListCfg,99021,changed,5,,[770001],
+CommonHuntListCfg,99021,changed,6,,[770002],[210002]
+CommonHuntListCfg,99021,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99021,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99021,changed,10,,[770002],[210002]
+CommonHuntListCfg,99022,changed,4,,[7777],
+CommonHuntListCfg,99022,changed,5,,[770001],
+CommonHuntListCfg,99022,changed,6,,[770002],[210002]
+CommonHuntListCfg,99022,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99022,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99022,changed,10,,[770002],[210002]
+CommonHuntListCfg,99023,changed,4,,[7777],
+CommonHuntListCfg,99023,changed,5,,[770001],
+CommonHuntListCfg,99023,changed,6,,[770002],[210002]
+CommonHuntListCfg,99023,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99023,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99023,changed,10,,[770002],[210002]
+CommonHuntListCfg,99024,changed,4,,[7777],
+CommonHuntListCfg,99024,changed,5,,[770001],
+CommonHuntListCfg,99024,changed,6,,[770002],[210002]
+CommonHuntListCfg,99024,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99024,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99024,changed,10,,[770002],[210002]
+CommonHuntListCfg,99029,changed,4,,[7777],
+CommonHuntListCfg,99029,changed,5,,[770001],
+CommonHuntListCfg,99029,changed,6,,[770002],[210002]
+CommonHuntListCfg,99029,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99029,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99029,changed,10,,[770002],[210002]
+CommonHuntListCfg,99030,changed,4,,[7777],
+CommonHuntListCfg,99030,changed,5,,[770001],
+CommonHuntListCfg,99030,changed,6,,[770002],[210002]
+CommonHuntListCfg,99030,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99030,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99030,changed,10,,[770002],[210002]
+CommonHuntListCfg,99031,changed,4,,[7777],
+CommonHuntListCfg,99031,changed,5,,[770001],
+CommonHuntListCfg,99031,changed,6,,[770002],[210002]
+CommonHuntListCfg,99031,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99031,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99031,changed,10,,[770002],[210002]
+CommonHuntListCfg,99032,changed,4,,[7777],
+CommonHuntListCfg,99032,changed,5,,[770001],
+CommonHuntListCfg,99032,changed,6,,[770002],[210002]
+CommonHuntListCfg,99032,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99032,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99032,changed,10,,[770002],[210002]
+CommonHuntListCfg,99033,changed,4,,[7777],
+CommonHuntListCfg,99033,changed,5,,[770001],
+CommonHuntListCfg,99033,changed,6,,[770002],[210002]
+CommonHuntListCfg,99033,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99033,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99033,changed,10,,[770002],[210002]
+CommonHuntListCfg,99034,changed,4,,[7777],
+CommonHuntListCfg,99034,changed,5,,[770001],
+CommonHuntListCfg,99034,changed,6,,[770002],[210002]
+CommonHuntListCfg,99034,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99034,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99034,changed,10,,[770002],[210002]
+CommonHuntListCfg,99035,changed,4,,[7777],
+CommonHuntListCfg,99035,changed,5,,[770001],
+CommonHuntListCfg,99035,changed,6,,[770002],[210002]
+CommonHuntListCfg,99035,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99035,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99035,changed,10,,[770002],[210002]
+CommonHuntListCfg,99036,changed,4,,[7777],
+CommonHuntListCfg,99036,changed,5,,[770001],
+CommonHuntListCfg,99036,changed,6,,[770002],[210002]
+CommonHuntListCfg,99036,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99036,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99036,changed,10,,[770002],[210002]
+CommonHuntListCfg,99037,changed,4,,[7777],
+CommonHuntListCfg,99037,changed,5,,[770001],
+CommonHuntListCfg,99037,changed,6,,[770002],[210002]
+CommonHuntListCfg,99037,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99037,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99037,changed,10,,[770002],[210002]
+CommonHuntListCfg,99068,changed,6,,[770002],[210002]
+CommonHuntListCfg,99068,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99068,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,99068,changed,10,,[770002],[210002]
+CommonHuntListCfg,13001,changed,6,,[770002],[210002]
+CommonHuntListCfg,13001,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,13001,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,13001,changed,10,,[770002],[210002]
+CommonHuntListCfg,13002,changed,6,,[770002],[210002]
+CommonHuntListCfg,13002,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,13002,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,13002,changed,10,,[770002],[210002]
+CommonHuntListCfg,14001,changed,6,,[770002],[210002]
+CommonHuntListCfg,14001,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,14001,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,14001,changed,10,,[770002],[210002]
+CommonHuntListCfg,14002,changed,6,,[770002],[210002]
+CommonHuntListCfg,14002,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,14002,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,14002,changed,10,,[770002],[210002]
+CommonHuntListCfg,1012,changed,4,,[7777],
+CommonHuntListCfg,1012,changed,5,,[770001],
+CommonHuntListCfg,1012,changed,6,,[770002],[210002]
+CommonHuntListCfg,1012,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,1012,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,1012,changed,10,,[770002],[210002]
+CommonHuntListCfg,1020,changed,4,,[7777],
+CommonHuntListCfg,1020,changed,5,,[770001],
+CommonHuntListCfg,1020,changed,6,,[770002],[210002]
+CommonHuntListCfg,1020,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,1020,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,1020,changed,10,,[770002],[210002]
+CommonHuntListCfg,1098,changed,6,,[770002],[210002]
+CommonHuntListCfg,1098,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,1098,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,1098,changed,10,,[770002],[210002]
+CommonHuntListCfg,1099,changed,6,,[770002],[210002]
+CommonHuntListCfg,1099,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,1099,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,1099,changed,10,,[770002],[210002]
+CommonHuntListCfg,110101,changed,6,,[770002],[210002]
+CommonHuntListCfg,110101,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110101,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110101,changed,10,,[770002],[210002]
+CommonHuntListCfg,110701,changed,6,,[770002],[210002]
+CommonHuntListCfg,110701,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110701,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110701,changed,10,,[770002],[210002]
+CommonHuntListCfg,110201,changed,6,,[770002],[210002]
+CommonHuntListCfg,110201,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110201,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110201,changed,10,,[770002],[210002]
+CommonHuntListCfg,111201,changed,6,,[770002],[210002]
+CommonHuntListCfg,111201,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,111201,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,111201,changed,10,,[770002],[210002]
+CommonHuntListCfg,110801,changed,6,,[770002],[210002]
+CommonHuntListCfg,110801,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110801,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110801,changed,10,,[770002],[210002]
+CommonHuntListCfg,104401,changed,6,,[770002],[210002]
+CommonHuntListCfg,104401,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,104401,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,104401,changed,10,,[770002],[210002]
+CommonHuntListCfg,110001,changed,6,,[770002],[210002]
+CommonHuntListCfg,110001,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110001,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110001,changed,10,,[770002],[210002]
+CommonHuntListCfg,199901,changed,6,,[770002],[210002]
+CommonHuntListCfg,199901,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,199901,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,199901,changed,10,,[770002],[210002]
+CommonHuntListCfg,110110,changed,6,,[770002],[210002]
+CommonHuntListCfg,110110,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110110,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110110,changed,10,,[770002],[210002]
+CommonHuntListCfg,110210,changed,6,,[770002],[210002]
+CommonHuntListCfg,110210,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110210,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110210,changed,10,,[770002],[210002]
+CommonHuntListCfg,110901,changed,6,,[770002],[210002]
+CommonHuntListCfg,110901,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110901,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110901,changed,10,,[770002],[210002]
+CommonHuntListCfg,110010,changed,6,,[770002],[210002]
+CommonHuntListCfg,110010,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110010,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110010,changed,10,,[770002],[210002]
+CommonHuntListCfg,110710,changed,6,,[770002],[210002]
+CommonHuntListCfg,110710,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110710,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110710,changed,10,,[770002],[210002]
+CommonHuntListCfg,104410,changed,6,,[770002],[210002]
+CommonHuntListCfg,104410,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,104410,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,104410,changed,10,,[770002],[210002]
+CommonHuntListCfg,110810,changed,6,,[770002],[210002]
+CommonHuntListCfg,110810,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110810,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110810,changed,10,,[770002],[210002]
+CommonHuntListCfg,100101,changed,6,,[770002],[210002]
+CommonHuntListCfg,100101,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100101,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100101,changed,10,,[770002],[210002]
+CommonHuntListCfg,100201,changed,6,,[770002],[210002]
+CommonHuntListCfg,100201,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100201,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100201,changed,10,,[770002],[210002]
+CommonHuntListCfg,100701,changed,6,,[770002],[210002]
+CommonHuntListCfg,100701,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100701,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100701,changed,10,,[770002],[210002]
+CommonHuntListCfg,111210,changed,6,,[770002],[210002]
+CommonHuntListCfg,111210,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,111210,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,111210,changed,10,,[770002],[210002]
+CommonHuntListCfg,111401,changed,6,,[770002],[210002]
+CommonHuntListCfg,111401,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,111401,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,111401,changed,10,,[770002],[210002]
+CommonHuntListCfg,110910,changed,6,,[770002],[210002]
+CommonHuntListCfg,110910,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110910,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110910,changed,10,,[770002],[210002]
+CommonHuntListCfg,111301,changed,6,,[770002],[210002]
+CommonHuntListCfg,111301,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,111301,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,111301,changed,10,,[770002],[210002]
+CommonHuntListCfg,112001,changed,6,,[770002],[210002]
+CommonHuntListCfg,112001,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,112001,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,112001,changed,10,,[770002],[210002]
+CommonHuntListCfg,111001,changed,6,,[770002],[210002]
+CommonHuntListCfg,111001,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,111001,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,111001,changed,10,,[770002],[210002]
+CommonHuntListCfg,111101,changed,6,,[770002],[210002]
+CommonHuntListCfg,111101,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,111101,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,111101,changed,10,,[770002],[210002]
+CommonHuntListCfg,100102,changed,6,,[770002],[210002]
+CommonHuntListCfg,100102,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100102,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100102,changed,10,,[770002],[210002]
+CommonHuntListCfg,111010,changed,6,,[770002],[210002]
+CommonHuntListCfg,111010,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,111010,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,111010,changed,10,,[770002],[210002]
+CommonHuntListCfg,112010,changed,6,,[770002],[210002]
+CommonHuntListCfg,112010,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,112010,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,112010,changed,10,,[770002],[210002]
+CommonHuntListCfg,111310,changed,6,,[770002],[210002]
+CommonHuntListCfg,111310,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,111310,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,111310,changed,10,,[770002],[210002]
+CommonHuntListCfg,100710,changed,6,,[770002],[210002]
+CommonHuntListCfg,100710,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100710,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100710,changed,10,,[770002],[210002]
+CommonHuntListCfg,100210,changed,6,,[770002],[210002]
+CommonHuntListCfg,100210,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100210,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100210,changed,10,,[770002],[210002]
+CommonHuntListCfg,111110,changed,6,,[770002],[210002]
+CommonHuntListCfg,111110,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,111110,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,111110,changed,10,,[770002],[210002]
+CommonHuntListCfg,111410,changed,6,,[770002],[210002]
+CommonHuntListCfg,111410,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,111410,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,111410,changed,10,,[770002],[210002]
+CommonHuntListCfg,100111,changed,6,,[770002],[210002]
+CommonHuntListCfg,100111,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100111,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100111,changed,10,,[770002],[210002]
+CommonHuntListCfg,100702,changed,6,,[770002],[210002]
+CommonHuntListCfg,100702,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100702,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100702,changed,10,,[770002],[210002]
+CommonHuntListCfg,100711,changed,6,,[770002],[210002]
+CommonHuntListCfg,100711,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100711,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100711,changed,10,,[770002],[210002]
+CommonHuntListCfg,102401,changed,6,,[770002],[210002]
+CommonHuntListCfg,102401,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,102401,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,102401,changed,10,,[770002],[210002]
+CommonHuntListCfg,110301,changed,6,,[770002],[210002]
+CommonHuntListCfg,110301,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110301,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110301,changed,10,,[770002],[210002]
+CommonHuntListCfg,100116,changed,6,,[770002],[210002]
+CommonHuntListCfg,100116,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100116,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100116,changed,10,,[770002],[210002]
+CommonHuntListCfg,110116,changed,6,,[770002],[210002]
+CommonHuntListCfg,110116,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110116,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110116,changed,10,,[770002],[210002]
+CommonHuntListCfg,100036,changed,6,,[770002],[210002]
+CommonHuntListCfg,100036,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100036,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100036,changed,10,,[770002],[210002]
+CommonHuntListCfg,110036,changed,6,,[770002],[210002]
+CommonHuntListCfg,110036,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110036,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,110036,changed,10,,[770002],[210002]
+CommonHuntListCfg,100043,changed,6,,[770002],[210002]
+CommonHuntListCfg,100043,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100043,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100043,changed,10,,[770002],[210002]
+CommonHuntListCfg,101002,changed,6,,[770002],[210002]
+CommonHuntListCfg,101002,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,101002,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,101002,changed,10,,[770002],[210002]
+CommonHuntListCfg,100045,changed,6,,[770002],[210002]
+CommonHuntListCfg,100045,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100045,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100045,changed,10,,[770002],[210002]
+CommonHuntListCfg,100057,changed,6,,[770002],[210002]
+CommonHuntListCfg,100057,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100057,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100057,changed,10,,[770002],[210002]
+CommonHuntListCfg,100011,changed,6,,[770002],[210002]
+CommonHuntListCfg,100011,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100011,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100011,changed,10,,[770002],[210002]
+CommonHuntListCfg,100027,changed,6,,[770002],[210002]
+CommonHuntListCfg,100027,changed,7,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100027,changed,9,,"[""'770002'""]","[""'210002'""]"
+CommonHuntListCfg,100027,changed,10,,[770002],[210002]
+CommonJumpEntity,406,added,,,,"1='406' | 2='""' | 3='MallCtrl' | 4='MallCustomJumpTB' | 6=[""'MallId'"", ""'ShopId'""] | 7=[""'101'"", ""'1065'""]"
+Costume/CostumeChestBaseCfg,4090287,added,,,,1='4090287' | 2=4090287 | 4=128 | 10=pk[4090287] | 11='110301'
+Costume/CostumeChestGuaranteeCfg,128,added,,,,1='128' | 2=128 | 4=2
+Costume/CostumeChestItemCfg,5286,changed,5,,,[1]
+Costume/CostumeChestItemCfg,5287,changed,5,,,[1]
+Costume/CostumeChestItemCfg,5571,changed,5,,,[1]
+Costume/CostumeChestItemCfg,5971,added,,,,1='5971' | 2=4090287 | 4=2050122 | 5=1 | 6=700
+Costume/CostumeChestItemCfg,5972,added,,,,1='5972' | 2=4090287 | 4=2050123 | 5=1 | 6=700
+Costume/CostumeChestItemCfg,5973,added,,,,1='5973' | 2=4090287 | 4=2050124 | 5=1 | 6=700
+Costume/CostumeChestItemCfg,5974,added,,,,1='5974' | 2=4090287 | 4=2050125 | 5=1 | 6=700
+Costume/CostumeChestItemCfg,5975,added,,,,1='5975' | 2=4090287 | 4=2050126 | 5=1 | 6=700
+Costume/CostumeChestItemCfg,5976,added,,,,1='5976' | 2=4090287 | 4=2050698 | 5=1 | 6=700
+Costume/CostumeChestItemCfg,5977,added,,,,1='5977' | 2=4090287 | 4=2050699 | 5=1 | 6=700
+Costume/CostumeChestItemCfg,5978,added,,,,1='5978' | 2=4090287 | 4=2050700 | 5=1 | 6=700
+Costume/CostumeChestItemCfg,5979,added,,,,1='5979' | 2=4090287 | 4=2050701 | 5=1 | 6=700
+Costume/CostumeChestItemCfg,5980,added,,,,1='5980' | 2=4090287 | 4=2050702 | 5=1 | 6=700
+Costume/CostumeChestItemCfg,5981,added,,,,1='5981' | 2=4090287 | 4=2210037 | 5=1 | 6=375
+Costume/CostumeChestItemCfg,5982,added,,,,1='5982' | 2=4090287 | 4=2210069 | 5=1 | 6=375
+Costume/CostumeChestItemCfg,5983,added,,,,1='5983' | 2=4090287 | 4=2210107 | 5=1 | 6=375
+Costume/CostumeChestItemCfg,5984,added,,,,1='5984' | 2=4090287 | 4=2210148 | 5=1 | 6=375
+Costume/CostumeChestItemCfg,5985,added,,,,1='5985' | 2=4090287 | 4=2210194 | 5=1 | 6=375
+Costume/CostumeChestItemCfg,5986,added,,,,1='5986' | 2=4090287 | 4=2210233 | 5=1 | 6=375
+Costume/CostumeChestItemCfg,5987,added,,,,1='5987' | 2=4090287 | 4=2210247 | 5=1 | 6=375
+Costume/CostumeChestItemCfg,5988,added,,,,1='5988' | 2=4090287 | 4=2210375 | 5=1 | 6=375
+Costume/CostumeFeatureAdventurer,2050122,changed,22,,"['pk[8, 10246]']","['pk[8, 10376]']"
+Costume/CostumeFeatureAdventurer,2050122,changed,24,,,[1]
+Costume/CostumeFeatureAdventurer,2050123,changed,22,,"['pk[8, 10246]']","['pk[8, 10376]']"
+Costume/CostumeFeatureAdventurer,2050123,changed,24,,,[1]
+Costume/CostumeFeatureAdventurer,2050124,changed,22,,"['pk[8, 10246]']","['pk[8, 10376]']"
+Costume/CostumeFeatureAdventurer,2050124,changed,24,,,[1]
+Costume/CostumeFeatureAdventurer,2050125,changed,22,,"['pk[8, 10246]']","['pk[8, 10376]']"
+Costume/CostumeFeatureAdventurer,2050125,changed,24,,,[1]
+Costume/CostumeFeatureAdventurer,2050126,changed,22,,"['pk[8, 10246]']","['pk[8, 10376]']"
+Costume/CostumeFeatureAdventurer,2050126,changed,24,,,[1]
+Costume/CostumeFeatureAdventurer,2050698,changed,22,,"['pk[8, 10246]']","['pk[8, 10376]']"
+Costume/CostumeFeatureAdventurer,2050698,changed,24,,,[1]
+Costume/CostumeFeatureAdventurer,2050698,changed,25,,"[""'2070-05-31T23:59:59Z'""]","[""'2025-05-31T23:59:59Z'""]"
+Costume/CostumeFeatureAdventurer,2050699,changed,22,,"['pk[8, 10246]']","['pk[8, 10376]']"
+Costume/CostumeFeatureAdventurer,2050699,changed,24,,,[1]
+Costume/CostumeFeatureAdventurer,2050699,changed,25,,"[""'2070-05-31T23:59:59Z'""]","[""'2025-05-31T23:59:59Z'""]"
+Costume/CostumeFeatureAdventurer,2050700,changed,22,,"['pk[8, 10246]']","['pk[8, 10376]']"
+Costume/CostumeFeatureAdventurer,2050700,changed,24,,,[1]
+Costume/CostumeFeatureAdventurer,2050700,changed,25,,"[""'2070-05-31T23:59:59Z'""]","[""'2025-05-31T23:59:59Z'""]"
+Costume/CostumeFeatureAdventurer,2050701,changed,22,,"['pk[8, 10246]']","['pk[8, 10376]']"
+Costume/CostumeFeatureAdventurer,2050701,changed,24,,,[1]
+Costume/CostumeFeatureAdventurer,2050701,changed,25,,"[""'2070-05-31T23:59:59Z'""]","[""'2025-05-31T23:59:59Z'""]"
+Costume/CostumeFeatureAdventurer,2050702,changed,22,,"['pk[8, 10246]']","['pk[8, 10376]']"
+Costume/CostumeFeatureAdventurer,2050702,changed,24,,,[1]
+Costume/CostumeFeatureAdventurer,2050702,changed,25,,"[""'2070-05-31T23:59:59Z'""]","[""'2025-05-31T23:59:59Z'""]"
+Costume/CostumeFeatureWeaponSkin,2210037,changed,23,,"['pk[8, 10246]']","['pk[8, 10376]']"
+Costume/CostumeFeatureWeaponSkin,2210037,changed,25,,,[1]
+Costume/CostumeFeatureWeaponSkin,2210037,changed,26,,"[""'2070-05-31T23:59:59Z'""]","[""'2025-05-31T23:59:59Z'""]"
+Costume/CostumeFeatureWeaponSkin,2210069,changed,23,,"['pk[8, 10246]']","['pk[8, 10376]']"
+Costume/CostumeFeatureWeaponSkin,2210069,changed,25,,,[1]
+Costume/CostumeFeatureWeaponSkin,2210069,changed,26,,"[""'2070-05-31T23:59:59Z'""]","[""'2025-05-31T23:59:59Z'""]"
+Costume/CostumeFeatureWeaponSkin,2210107,changed,23,,"['pk[8, 10246]']","['pk[8, 10376]']"
+Costume/CostumeFeatureWeaponSkin,2210107,changed,25,,,[1]
+Costume/CostumeFeatureWeaponSkin,2210107,changed,26,,"[""'2070-05-31T23:59:59Z'""]","[""'2025-05-31T23:59:59Z'""]"
+Costume/CostumeFeatureWeaponSkin,2210148,changed,23,,"['pk[8, 10246]']","['pk[8, 10376]']"
+Costume/CostumeFeatureWeaponSkin,2210148,changed,25,,,[1]
+Costume/CostumeFeatureWeaponSkin,2210148,changed,26,,"[""'2070-05-31T23:59:59Z'""]","[""'2025-05-31T23:59:59Z'""]"
+Costume/CostumeFeatureWeaponSkin,2210194,changed,18,,"[""'DEV'""]","[""'C_1'""]"
+Costume/CostumeFeatureWeaponSkin,2210194,changed,23,,,"['pk[8, 10376]']"
+Costume/CostumeFeatureWeaponSkin,2210194,changed,25,,,[1]
+Costume/CostumeFeatureWeaponSkin,2210194,changed,26,,"[""'2070-05-31T23:59:59Z'""]","[""'2025-05-31T23:59:59Z'""]"
+Costume/CostumeFeatureWeaponSkin,2210233,changed,18,,"[""'DEV'""]","[""'C_1'""]"
+Costume/CostumeFeatureWeaponSkin,2210233,changed,23,,,"['pk[8, 10376]']"
+Costume/CostumeFeatureWeaponSkin,2210233,changed,25,,,[1]
+Costume/CostumeFeatureWeaponSkin,2210233,changed,26,,"[""'2070-05-31T23:59:59Z'""]","[""'2025-05-31T23:59:59Z'""]"
+Costume/CostumeFeatureWeaponSkin,2210240,changed,23,,"['pk[8, 10246]']","['pk[8, 10376]']"
+Costume/CostumeFeatureWeaponSkin,2210241,changed,23,,"['pk[8, 10246]']","['pk[8, 10376]']"
+Costume/CostumeFeatureWeaponSkin,2210242,changed,23,,"['pk[8, 10246]']","['pk[8, 10376]']"
+Costume/CostumeFeatureWeaponSkin,2210243,changed,23,,"['pk[8, 10246]']","['pk[8, 10376]']"
+Costume/CostumeFeatureWeaponSkin,2210244,changed,23,,"['pk[8, 10246]']","['pk[8, 10376]']"
+Costume/CostumeFeatureWeaponSkin,2210245,changed,23,,"['pk[8, 10246]']","['pk[8, 10376]']"
+Costume/CostumeFeatureWeaponSkin,2210246,changed,23,,"['pk[8, 10246]']","['pk[8, 10376]']"
+Costume/CostumeFeatureWeaponSkin,2210247,changed,23,,"['pk[8, 10246]']","['pk[8, 10376]']"
+Costume/CostumeFeatureWeaponSkin,2210247,changed,25,,,[1]
+Costume/CostumeFeatureWeaponSkin,2210247,changed,26,,"[""'2070-05-31T23:59:59Z'""]","[""'2025-05-31T23:59:59Z'""]"
+Costume/CostumeFeatureWeaponSkin,2210374,changed,23,,"['pk[8, 10246]']","['pk[8, 10376]']"
+Costume/CostumeFeatureWeaponSkin,2210375,changed,23,,"['pk[8, 10246]']","['pk[8, 10376]']"
+Costume/CostumeFeatureWeaponSkin,2210375,changed,25,,,[1]
+Costume/CostumeFeatureWeaponSkin,2210375,changed,26,,"[""'2070-05-31T23:59:59Z'""]","[""'2025-05-31T23:59:59Z'""]"
+Costume/CostumeFeatureWeaponSkinResource,2032001,changed,22,,[1],
+Costume/CostumeFeatureWeaponSkinResource,2032001,changed,23,,"[""'DEV'""]","[""'C_1'""]"
+Costume/CostumeFeatureWeaponSkinResource,4032001,changed,22,,[1],
+Costume/CostumeFeatureWeaponSkinResource,4032001,changed,23,,"[""'DEV'""]","[""'C_1'""]"
+Costume/CostumeFeatureWeaponSkinResource,5032002,changed,22,,[1],
+Costume/CostumeFeatureWeaponSkinResource,5032002,changed,23,,"[""'DEV'""]","[""'C_1'""]"
+Costume/CostumeFeatureWeaponSkinResource,7032001,changed,22,,[1],
+Costume/CostumeFeatureWeaponSkinResource,7032001,changed,23,,"[""'DEV'""]","[""'C_1'""]"
+Costume/CostumeFeatureWeaponSkinResource,10032001,changed,20,,,[1]
+Costume/CostumeFeatureWeaponSkinResource,10032002,changed,20,,,[1]
+Costume/CostumeFeatureWeaponSkinResource,10032002,changed,22,,[1],
+Costume/CostumeFeatureWeaponSkinResource,10032002,changed,23,,"[""'DEV'""]","[""'C_1'""]"
+Costume/CostumeFeatureWeaponSkinResource,13032001,changed,22,,[1],
+Costume/CostumeFeatureWeaponSkinResource,13032001,changed,23,,"[""'DEV'""]","[""'C_1'""]"
+Costume/CostumeFeatureWeaponSkinResource,14032001,changed,22,,[1],
+Costume/CostumeFeatureWeaponSkinResource,14032001,changed,23,,"[""'DEV'""]","[""'C_1'""]"
+DragonActivity/DragonActivityFuben,100014,changed,11,,"['pk[15, 16]']","['pk[13, 16]']"
+DragonActivity/DragonActivityFuben,100014,changed,13,,"['pk[15766, 16554, 17553, 18430]']","['pk[11457, 17553, 19800, 23500]']"
+DragonActivity/DragonActivityFuben,100014,changed,14,,[30],[40]
+DragonActivity/DragonActivityFuben,100060,changed,13,,"['pk[11457, 12029, 14360, 15078]']","['pk[8909, 14360, 16340, 18340]']"
+Drop/AwardPreviewCfg,391013_1,changed,4,,"[""'2050202'"", ""'1|2050203'"", ""'1|2050204'"", ""'1|2050205'"", ""'1|2050206'"", ""'1|2210001'"", ""'1|2210039'"", ""'1|2210070'"", ""'1|2210111'"", ""'1|2210153'"", ""'1|2210196'"", ""'1|2210329'"", ""'1|2210342'"", ""'1'""]","[""'2050202'"", ""'1|2050203'"", ""'1|2050204'"", ""'1|2050205'"", ""'1|2050206'"", ""'1|2210001'"", ""'1|2210039'"", ""'1|2210070'"", ""'1|2210111'"", ""'1|2210153'"", ""'1|2210196'"", ""'1|2210329'"", ""'1'""]"
+FubenBaseCfg,11440001,added,,T<Ruger Aidal>,,1='11440001' | 2=11440001 | 4=2 | 5=T<Ruger Aidal> | 6=T<Radiant Rathalos' flame breath is far more powerful than that of commo> | 7=4 | 8=1 | 14='/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New_GLL_CE.DNG_Hunt_Kill_New_GLL_CE' | 15='GLLTest' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=1012 | 24='101201' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=14 | 40=1 | 41=6 | 42=1 | 46=1 | 50=2087 | 51='11400210' | 52='Dev' | 53=pk[14] | 67=1001 | 68=1 | 69=999999999
+FubenBaseCfg,10040201,added,,"T<?[Monster,140201MonsterName]>",,"1='10040201' | 2=10040201 | 4=2 | 5=T<?[Monster,140201MonsterName]> | 6=T<?[Dungeon,10040201Description]> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='XingLongFuBen' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=1021 | 24='102101' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10011' | 38=1 | 40=1 | 41=6 | 42=1 | 46=1 | 50=14 | 51='1' | 52='Dev' | 53=pk[1] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,11402401,added,,T<Kushala Daora>,,1='11402401' | 2=11402401 | 4=2 | 5=T<Kushala Daora> | 6=T<Kushala Daora can generate powerful tornadoes that envelop their bodie> | 7=4 | 8=1 | 14='/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New_TGS_1.DNG_Hunt_Kill_New_TGS_1' | 15='GangLong' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=1002 | 24='100201' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=8 | 40=1 | 41=6 | 42=1 | 46=1 | 50=14 | 51='1' | 52='Dev' | 53=pk[1] | 54='pochuang_Fuben1' | 67=1001 | 68=1 | 69=999999999
+FubenBaseCfg,11540001,added,,T<Ruger Aidal>,,1='11540001' | 2=11540001 | 4=2 | 5=T<Ruger Aidal> | 6=T<Radiant Rathalos' flame breath is far more powerful than that of commo> | 7=4 | 8=1 | 14='/Game/Maps/DNGMap/DNG_lsland/DNG_Arena_Coral_FinalBattle_1012/FinalBossLepton.FinalBossLepton' | 15='GLLTest' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=1012 | 24='101201' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=14 | 40=1 | 41=6 | 42=1 | 46=1 | 50=2087 | 51='11400210' | 52='Dev' | 53=pk[14] | 67=1001 | 68=1 | 69=999999999
+FubenBaseCfg,10200710,added,,T<Radiant Diablos>,,"1='10200710' | 2=10200710 | 4=2 | 5=T<Radiant Diablos> | 6=T<They only burrow underground once frenzied, bringing up large amounts > | 7=4 | 8=1 | 14='/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New' | 15=[""'RongGuangCiHuoLongFuBen'"", ""'RongGuangJiaoLongFuBen'""] | 16=pk[0, 1] | 17=pk[1, 2] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2012 | 24='201202' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=5 | 40=1 | 41=6 | 42=1 | 46=1 | 50=1 | 51='1' | 52='Dev' | 53=pk[5, 5] | 54=[""'ShanguangchichongFuben1'"", ""'YinbaochongFuben1'"", ""'HhuifumichogFuben1'"", ""'DahuifumichongFuben1'"", ""'dumancao_Fuben1'"", ""'huifulucao_Fuben1'"", ""'mianhuabaozicao_Fuben1'"", ""'Gunshixianjing_Fuben1'"", ""'liushaxianjing_Fuben1'"", ""'luoshixianjing1_Fuben1'"", ""'luoshixianjing_Fuben1'"", ""'Shazhu_Fuben1'""] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,10200210,added,,T<Radiant Rathalos>,,"1='10200210' | 2=10200210 | 4=2 | 5=T<Radiant Rathalos> | 6=T<When frenzied, they unleash a barrage of powerful flame breath attacks> | 7=4 | 8=1 | 14='/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New_TGS_1.DNG_Hunt_Kill_New_TGS_1' | 15='RongGuangHuoLongFuBen' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=1002 | 24='100201' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=5 | 40=1 | 41=6 | 42=1 | 46=1 | 50=1 | 51='1' | 52='Dev' | 53=pk[5] | 54='pochuang_Fuben1' | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,991010,added,,T<Radiant Rathalos>,,"1='991010' | 2=991010 | 4=2 | 5=T<Radiant Rathalos> | 6=T<Since they circle overhead unleashing various attacks, it's best to us> | 7=4 | 8=1 | 14='/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New_TGS_1.DNG_Hunt_Kill_New_TGS_1' | 15='RongGuangHuoLongFuBen' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=1002 | 24='100201' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=3 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='1' | 52='Dev' | 53=pk[3] | 54='pochuang_Fuben1' | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,991011,added,,T<Radiant Pukei-Pukei>,,"1='991011' | 2=991011 | 4=2 | 5=T<Radiant Pukei-Pukei> | 6=T<Their radiant particle-enhanced heads and tails can unleash venom spra> | 7=4 | 8=1 | 14='/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New' | 15='RongGuangDuYaoNiaoFuBen' | 16=pk[1] | 17=pk[2] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2009 | 24='200902' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=3 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='1' | 52='Dev' | 53=pk[3] | 54=[""'ShanguangchichongFuben1'"", ""'HhuifumichogFuben1'"", ""'DahuifumichongFuben1'"", ""'dumancao_Fuben1'"", ""'huifulucao_Fuben1'"", ""'mianhuabaozicao_Fuben1'"", ""'juntai_Fuben1'"", ""'lvpixianjing_Fuben1'"", ""'tengwanxianjing2_Fuben1'""] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,11999990,added,,T<Rathian>,,"1='11999990' | 2=11999990 | 4=2 | 5=T<Rathian> | 6=T<Known as the ""Queens of the Land"", Rathian can unleash powerful flames> | 7=4 | 8=1 | 14='/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New' | 15=[""'CiHuoLongFuBen'"", ""'NiYuLongFuBen'""] | 16=pk[1, 0] | 17=pk[1, 2] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2005 | 24='200501' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=7 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='10700101' | 52='Dev' | 53=pk[7, 7] | 54='tengwanxianjing4_Fuben1' | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,11999991,added,,T<Rathian>,,"1='11999991' | 2=11999991 | 4=2 | 5=T<Rathian> | 6=T<Known as the ""Queens of the Land"", Rathian can unleash powerful flames> | 7=4 | 8=1 | 14='/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New' | 15=[""'CiHuoLongFuBen'"", ""'NiYuLongFuBen'""] | 16=pk[1, 0] | 17=pk[2, 1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=12001 | 24='1200102' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=7 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='10700101' | 52='Dev' | 53=pk[7, 7] | 54='tengwanxianjing4_Fuben1' | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,11999992,added,,"T<?[Dungeon,AutoTest1007WeeklyGuild]>",,"1='11999992' | 2=11999992 | 4=2 | 5=T<?[Dungeon,AutoTest1007WeeklyGuild]> | 6=T<?[Dungeon,AutoTest1007WeeklyGuild]> | 7=4 | 8=1 | 14='/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New' | 15='DaXiongChaiLongFuBen' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=10073 | 24='100301' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 51='1' | 52='Dev' | 53=pk[1] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,11999993,added,,"T<?[Dungeon,AutoTest1005Island]>",,"1='11999993' | 2=11999993 | 4=2 | 5=T<?[Dungeon,AutoTest1005Island]> | 6=T<?[Dungeon,AutoTest1005Island]> | 7=4 | 8=1 | 14='/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New' | 15='NiYuLongFuBen' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=1005 | 24='100501' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=2 | 40=1 | 41=6 | 42=3 | 46=1 | 51='1' | 52='Dev' | 53=pk[2] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,11999994,added,,"T<?[Dungeon,AutoTest1009Island]>",,"1='11999994' | 2=11999994 | 4=2 | 5=T<?[Dungeon,AutoTest1009Island]> | 6=T<?[Dungeon,AutoTest1009Island]> | 7=4 | 8=1 | 14='/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New' | 15='FengPiaoLongFuBen' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=1009 | 24='100901' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=10 | 40=1 | 41=6 | 42=3 | 46=1 | 51='1' | 52='Dev' | 53=pk[10] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,11999995,added,,"T<?[Dungeon,AutoTest12004Dimension]>",,"1='11999995' | 2=11999995 | 4=2 | 5=T<?[Dungeon,AutoTest12004Dimension]> | 6=T<?[Dungeon,AutoTest12004Dimension]> | 7=4 | 8=1 | 14='/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New' | 15='RongGuangCiHuoLongFuBen' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=12004 | 24='1200401' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=3 | 40=1 | 41=6 | 42=3 | 46=1 | 51='1' | 52='Dev' | 53=pk[3] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,11999996,added,,"T<?[Dungeon,AutoTest1011Nergigante]>",,"1='11999996' | 2=11999996 | 4=2 | 5=T<?[Dungeon,AutoTest1011Nergigante]> | 6=T<?[Dungeon,AutoTest1011Nergigante]> | 7=4 | 8=1 | 14='/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New' | 15='MieJinLongFuBen' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=1011 | 24='101101' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=3 | 40=1 | 41=6 | 42=3 | 46=1 | 51='1' | 52='Dev' | 53=pk[3] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,13001,added,,T<Great Jagras>,,"1='13001' | 2=13001 | 4=2 | 5=T<Great Jagras> | 6=T<Once prey is fully swallowed, their stomachs become inflated, and they> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='DaXiongChaiLong' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=13001 | 24='1300101' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'Rongshizhu_Fuben1'"", ""'tengwanxianjing_Fuben1'"", ""'tengwanxianjing1_Fuben1'"", ""'tengwanxianjing2_Fuben1'"", ""'tengwanxianjing3_Fuben1'"", ""'tengwanxianjing4_Fuben1'"", ""'tengwanxianjing3_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,13002,added,,T<Pukei-Pukei>,,"1='13002' | 2=13002 | 4=2 | 5=T<Pukei-Pukei> | 6=T<They mix plants with their internal venom to spit out toxins of varyin> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='DuYaoNiao' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=13002 | 24='1300201' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'ShanguangchichongFuben1'"", ""'HhuifumichogFuben1'"", ""'DahuifumichongFuben1'"", ""'dumancao_Fuben1'"", ""'huifulucao_Fuben1'"", ""'mianhuabaozicao_Fuben1'"", ""'luoshixianjing1_Fuben1'"", ""'luoshixianjing_Fuben1'"", ""'liushaxianjing_Fuben1'"", ""'Shuliuxianjing_Fuben1'"", ""'tengwanxianjing_Fuben1'"", ""'tengwanxianjing1_Fuben1'"", ""'tengwanxianjing2_Fuben1'"", ""'tengwanxianjing3_Fuben1'"", ""'tengwanxianjing4_Fuben1'""] | 55=['pk[8, 600"
+FubenBaseCfg,14001,added,,T<Odogaron>,,"1='14001' | 2=14001 | 4=2 | 5=T<Odogaron> | 6=T<Beware the bleeding status inflicted by their razor-sharp claws. Provo> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='CanZhuaLong' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=14001 | 24='1400101' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54='luoshixianjing_Fuben1' | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,14002,added,,T<Great Girros>,,"1='14002' | 2=14002 | 4=2 | 5=T<Great Girros> | 6=T<They are known to hunt in packs alongside Girros, so when hunting them> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='DaXiongELong' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=14002 | 24='1400201' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'ShanguangchichongFuben1'"", ""'HhuifumichogFuben1'"", ""'DahuifumichongFuben1'"", ""'huifulucao_Fuben1'"", ""'mianhuabaozicao_Fuben1'"", ""'XiongELongFuBen1'"", ""'luoshixianjing1_Fuben1'"", ""'luoshixianjing_Fuben1'"", ""'liushaxianjing_Fuben1'"", ""'Shuliuxianjing_Fuben1'"", ""'tengwanxianjing_Fuben1'"", ""'tengwanxianjing1_Fuben1'"", ""'tengwanxianjing2_Fuben1'"", ""'tengwanxianjing3_Fuben1'"", ""'tengwanxianjing4_Fuben1'""] | 55=['pk[8"
+FubenBaseCfg,1012,added,,"T<?[Dungeon,99037Name]>",,"1='1012' | 2=1012 | 4=2 | 5=T<?[Dungeon,99037Name]> | 6=T<?[Dungeon,99037Description]> | 7=4 | 8=1 | 14='/Game/Maps/DNGMap/DNG_lsland/DNG_Arena_Coral_FinalBattle_1012/FinalBossLepton.FinalBossLepton' | 15='GuangLengLongTest' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 22=25.0 | 23=1012 | 24='101201' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='1' | 52='Dev' | 53=pk[1] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,1020,added,,"T<?[Dungeon,99037Name]>",,"1='1020' | 2=1020 | 4=2 | 5=T<?[Dungeon,99037Name]> | 6=T<?[Dungeon,99037Description]> | 7=4 | 8=1 | 14='/Game/Maps/DNGMap/DNG_lsland/DNG_Arena_Coral_FinalBattle_1012/FinalBossLepton.FinalBossLepton' | 15='GuangLengLongTest' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 22=25.0 | 23=1020 | 24='102001' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='1' | 52='Dev' | 53=pk[1] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,1098,added,,T<Great Jagras>,,"1='1098' | 2=1098 | 4=2 | 5=T<Great Jagras> | 6=T<Once prey is fully swallowed, their stomachs become inflated, and they> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='DaXiongChaiLong' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=1098 | 24='109801' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'Rongshizhu_Fuben1'"", ""'tengwanxianjing_Fuben1'"", ""'tengwanxianjing1_Fuben1'"", ""'tengwanxianjing2_Fuben1'"", ""'tengwanxianjing3_Fuben1'"", ""'tengwanxianjing4_Fuben1'"", ""'tengwanxianjing3_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,1099,added,,T<Great Jagras>,,"1='1099' | 2=1099 | 4=2 | 5=T<Great Jagras> | 6=T<Once prey is fully swallowed, their stomachs become inflated, and they> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='DaXiongChaiLong' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=1098 | 24='109901' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'Rongshizhu_Fuben1'"", ""'tengwanxianjing_Fuben1'"", ""'tengwanxianjing1_Fuben1'"", ""'tengwanxianjing2_Fuben1'"", ""'tengwanxianjing3_Fuben1'"", ""'tengwanxianjing4_Fuben1'"", ""'tengwanxianjing3_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,99024,added,,"T<?[Dungeon,99024Name]>",,"1='99024' | 2=99024 | 4=2 | 5=T<?[Dungeon,99024Name]> | 6=T<?[Dungeon,99024Description]> | 7=4 | 8=1 | 14='/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New' | 15=[""'DaXiongChaiLongFuBen'"", ""'SaoNiaoFuBen'""] | 16=pk[1, 0] | 17=pk[1, 2] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=11001 | 24='1100101' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=5 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='1' | 52='Dev' | 53=pk[5, 5] | 54=[""'tengwanxianjing_Fuben1'"", ""'tengwanxianjing1_Fuben1'"", ""'tengwanxianjing2_Fuben1'"", ""'tengwanxianjing3_Fuben1'"", ""'tengwanxianjing4_Fuben1'""] | 67=1001 | 68=1"
+FubenBaseCfg,99029,added,,"T<?[Dungeon,99029Name]>",,"1='99029' | 2=99029 | 4=2 | 5=T<?[Dungeon,99029Name]> | 6=pk[10, 11, 69, 82, 82, 79, 82, 58, 35, 82, 69, 70, 33] | 7=4 | 8=1 | 14='/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New' | 15=[""'CiHuoLongFuBen'"", ""'NiYuLongFuBen'""] | 16=pk[0, 1] | 17=pk[1, 2] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=12001 | 24='ERROR:#REF!' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=5 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='1' | 52='Dev' | 53=pk[5, 5] | 54='tengwanxianjing4_Fuben1' | 67=1001 | 68=1 | 69=1001080301"
+FubenBaseCfg,99030,added,,"T<?[Dungeon,99030Name]>",,"1='99030' | 2=99030 | 4=2 | 5=T<?[Dungeon,99030Name]> | 6=pk[10, 11, 69, 82, 82, 79, 82, 58, 35, 82, 69, 70, 33] | 7=4 | 8=1 | 14='/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New' | 15=[""'ManELongFuBen'"", ""'FeiLeiLongFuBen'""] | 16=pk[1, 0] | 17=pk[1, 2] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=12002 | 24='ERROR:#REF!' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=7 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='1' | 52='Dev' | 53=pk[7, 7] | 54=[""'luoshixianjing1_Fuben1'"", ""'luoshixianjing_Fuben1'"", ""'tengwanxianjing4_Fuben1'""] | 67=1001 | 68=1 | 69=1101010301"
+FubenBaseCfg,99031,added,,"T<?[Dungeon,99031Name]>",,"1='99031' | 2=99031 | 4=2 | 5=T<?[Dungeon,99031Name]> | 6=pk[10, 11, 69, 82, 82, 79, 82, 58, 35, 82, 69, 70, 33] | 7=4 | 8=1 | 14='/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New' | 15=[""'JiaoLongFuBen'"", ""'CiHuoLongFuBen'""] | 16=pk[1, 0] | 17=pk[1, 2] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=12003 | 24='ERROR:#REF!' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=7 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='1' | 52='Dev' | 53=pk[7, 7] | 54=[""'ShanguangchichongFuben1'"", ""'YinbaochongFuben1'"", ""'HhuifumichogFuben1'"", ""'DahuifumichongFuben1'"", ""'dumancao_Fuben1'"", ""'huifulucao_Fuben1'"", ""'mianhuabaozicao_Fuben1'"", ""'luoshixianjing1_Fuben1'"", ""'luoshixianjing_Fuben1'""] | 67=1001 | 68=1 | 69=1101010301"
+FubenBaseCfg,99032,added,,"T<?[Dungeon,99032Name]>",,"1='99032' | 2=99032 | 4=2 | 5=T<?[Dungeon,99032Name]> | 6=T<?[Dungeon,99032Description]> | 7=4 | 8=1 | 14='/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New' | 15=[""'DuYaoNiaoFuBen'"", ""'DaXiongELongFuBen'"", ""'RongGuangDaXiongChaiLongFuBen'""] | 16=pk[1, 0, 0] | 17=pk[1, 2, 3] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=11002 | 24='1100201' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=5 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='1' | 52='Dev' | 53=pk[5, 5, 5] | 67=1001 | 68=1"
+FubenBaseCfg,99033,added,,"T<?[Dungeon,99033Name]>",,"1='99033' | 2=99033 | 4=2 | 5=T<?[Dungeon,99033Name]> | 6=T<?[Dungeon,99033Description]> | 7=4 | 8=1 | 14='/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New' | 15=[""'ManELongFuBen'"", ""'FeiLeiLongFuBen'""] | 16=pk[0, 1] | 17=pk[1, 2] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=11003 | 24='1100302' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=7 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='1' | 52='Dev' | 53=pk[7, 7] | 67=1001 | 68=1"
+FubenBaseCfg,110101,added,,T<Great Jagras>,,"1='110101' | 2=110101 | 4=2 | 5=T<Great Jagras> | 6=T<Once prey is fully swallowed, their stomachs become inflated, and they> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='DaXiongChaiLong' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2001 | 24='200101' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'Rongshizhu_Fuben1'"", ""'tengwanxianjing_Fuben1'"", ""'tengwanxianjing1_Fuben1'"", ""'tengwanxianjing2_Fuben1'"", ""'tengwanxianjing3_Fuben1'"", ""'tengwanxianjing4_Fuben1'"", ""'tengwanxianjing3_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,110701,added,,T<Kulu-Ya-Ku>,,"1='110701' | 2=110701 | 4=2 | 5=T<Kulu-Ya-Ku> | 6=T<Beyond holding rocks for protection, they also seem to use them as wea> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='SaoNiao' | 16=pk[1] | 17=pk[2] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2001 | 24='200102' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'Rongshizhu_Fuben1'"", ""'tengwanxianjing_Fuben1'"", ""'tengwanxianjing1_Fuben1'"", ""'tengwanxianjing2_Fuben1'"", ""'tengwanxianjing3_Fuben1'"", ""'tengwanxianjing4_Fuben1'"", ""'tengwanxianjing3_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,110201,added,,T<Pukei-Pukei>,,"1='110201' | 2=110201 | 4=2 | 5=T<Pukei-Pukei> | 6=T<They mix plants with their internal venom to spit out toxins of varyin> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='DuYaoNiao' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2003 | 24='200301' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'ShanguangchichongFuben1'"", ""'HhuifumichogFuben1'"", ""'DahuifumichongFuben1'"", ""'dumancao_Fuben1'"", ""'huifulucao_Fuben1'"", ""'mianhuabaozicao_Fuben1'"", ""'luoshixianjing1_Fuben1'"", ""'luoshixianjing_Fuben1'"", ""'liushaxianjing_Fuben1'"", ""'Shuliuxianjing_Fuben1'"", ""'tengwanxianjing_Fuben1'"", ""'tengwanxianjing1_Fuben1'"", ""'tengwanxianjing2_Fuben1'"", ""'tengwanxianjing3_Fuben1'"", ""'tengwanxianjing4_Fuben1'""] | 55=['pk[8, 600"
+FubenBaseCfg,111201,added,,T<Great Girros>,,"1='111201' | 2=111201 | 4=2 | 5=T<Great Girros> | 6=T<They are known to hunt in packs alongside Girros, so when hunting them> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='DaXiongELong' | 16=pk[1] | 17=pk[2] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2003 | 24='200302' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'ShanguangchichongFuben1'"", ""'HhuifumichogFuben1'"", ""'DahuifumichongFuben1'"", ""'huifulucao_Fuben1'"", ""'mianhuabaozicao_Fuben1'"", ""'XiongELongFuBen1'"", ""'luoshixianjing1_Fuben1'"", ""'luoshixianjing_Fuben1'"", ""'liushaxianjing_Fuben1'"", ""'Shuliuxianjing_Fuben1'"", ""'tengwanxianjing_Fuben1'"", ""'tengwanxianjing1_Fuben1'"", ""'tengwanxianjing2_Fuben1'"", ""'tengwanxianjing3_Fuben1'"", ""'tengwanxianjing4_Fuben1'""] | 55=['pk[8"
+FubenBaseCfg,110801,added,,T<Jyuratodus>,,"1='110801' | 2=110801 | 4=2 | 5=T<Jyuratodus> | 6=T<They move swiftly in swamps, so try to lure them onto land if possible> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='NiYuLong' | 16=pk[1] | 17=pk[2] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2008 | 24='200802' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'ShanguangchichongFuben1'"", ""'YinbaochongFuben1'"", ""'HhuifumichogFuben1'"", ""'DahuifumichongFuben1'"", ""'dumancao_Fuben1'"", ""'huifulucao_Fuben1'"", ""'mianhuabaozicao_Fuben1'"", ""'Gunshixianjing_Fuben1'"", ""'tengwanxianjing4_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,104401,added,,T<Barroth>,,"1='104401' | 2=104401 | 4=2 | 5=T<Barroth> | 6=T<The hardened mud caked on their bodies not only boosts their defense, > | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='TuShaLong' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2005 | 24='200501' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'ShanguangchichongFuben1'"", ""'YinbaochongFuben1'"", ""'HhuifumichogFuben1'"", ""'DahuifumichongFuben1'"", ""'dumancao_Fuben1'"", ""'huifulucao_Fuben1'"", ""'mianhuabaozicao_Fuben1'"", ""'tengwanxianjing4_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,110001,added,,T<Anjanath>,,"1='110001' | 2=110001 | 4=2 | 5=T<Anjanath> | 6=T<A specialized organ in their throat allows them to store flame, and th> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='ManELong' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2015 | 24='201501' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'luoshixianjing1_Fuben1'"", ""'luoshixianjing_Fuben1'"", ""'liushaxianjing_Fuben1'"", ""'Rongshizhu_Fuben1'"", ""'tengwanxianjing_Fuben1'"", ""'tengwanxianjing1_Fuben1'"", ""'tengwanxianjing2_Fuben1'"", ""'tengwanxianjing3_Fuben1'"", ""'tengwanxianjing4_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,199901,added,,T<Radiant Rathian>,,"1='199901' | 2=199901 | 4=2 | 5=T<Radiant Rathian> | 6=T<The venom crystals fired from their tails create poison pools on the g> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='RongGuangCiHuoLong' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2012 | 24='201201' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=1 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'Gunshixianjing_Fuben1'"", ""'liushaxianjing_Fuben1'"", ""'luoshixianjing1_Fuben1'"", ""'luoshixianjing_Fuben1'"", ""'Shazhu_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 56=pk[60069] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,110110,added,,T<Radiant Great Jagras>,,"1='110110' | 2=110110 | 4=2 | 5=T<Radiant Great Jagras> | 6=T<Driven by an insatiable hunger, they devour everything in sight until > | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='RongGuangDaXiongChaiLong' | 16=pk[1] | 17=pk[3] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2003 | 24='200303' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=1 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'luoshixianjing1_Fuben1'"", ""'luoshixianjing_Fuben1'"", ""'liushaxianjing_Fuben1'"", ""'Shuliuxianjing_Fuben1'"", ""'tengwanxianjing_Fuben1'"", ""'tengwanxianjing1_Fuben1'"", ""'tengwanxianjing2_Fuben1'"", ""'tengwanxianjing3_Fuben1'"", ""'tengwanxianjing4_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 56=pk[60069] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,110210,added,,T<Radiant Pukei-Pukei>,,"1='110210' | 2=110210 | 4=2 | 5=T<Radiant Pukei-Pukei> | 6=T<Their radiant particle-enhanced heads and tails can unleash venom spra> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='RongGuangDuYaoNiao' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2003 | 24='200301' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=1 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'ShanguangchichongFuben1'"", ""'HhuifumichogFuben1'"", ""'DahuifumichongFuben1'"", ""'dumancao_Fuben1'"", ""'huifulucao_Fuben1'"", ""'mianhuabaozicao_Fuben1'"", ""'luoshixianjing1_Fuben1'"", ""'luoshixianjing_Fuben1'"", ""'liushaxianjing_Fuben1'"", ""'Shuliuxianjing_Fuben1'"", ""'tengwanxianjing_Fuben1'"", ""'tengwanxianjing1_Fuben1'"", ""'tengwanxianjing2_Fuben1'"", ""'tengwanxianjing3_Fuben1'"", ""'tengwanxianjing4_Fuben1'""]"
+FubenBaseCfg,110901,added,,T<Tobi-Kadachi>,,"1='110901' | 2=110901 | 4=2 | 5=T<Tobi-Kadachi> | 6=T<They move freely between the trees and the ground, so adventurers must> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='FeiLeiLongZhanDouYanZheng' | 16=pk[1] | 17=pk[3] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2002 | 24='200203' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'kushuxianjing_Fuben1'"", ""'tengwanxianjing_Fuben1'"", ""'tengwanxianjing1_Fuben1'"", ""'tengwanxianjing2_Fuben1'"", ""'tengwanxianjing3_Fuben1'"", ""'tengwanxianjing4_Fuben1'"", ""'tengwanxianjing1_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,110010,added,,T<Radiant Anjanath>,,"1='110010' | 2=110010 | 4=2 | 5=T<Radiant Anjanath> | 6=T<Their radiant particle-enhanced heads can unleash even more searing br> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='RongGuangManELong' | 16=pk[1] | 17=pk[2] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2002 | 24='200202' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=1 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'kushuxianjing_Fuben1'"", ""'tengwanxianjing_Fuben1'"", ""'tengwanxianjing1_Fuben1'"", ""'tengwanxianjing2_Fuben1'"", ""'tengwanxianjing3_Fuben1'"", ""'tengwanxianjing4_Fuben1'"", ""'tengwanxianjing1_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 56=pk[60069] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,110710,added,,T<Radiant Kulu-Ya-Ku>,,"1='110710' | 2=110710 | 4=2 | 5=T<Radiant Kulu-Ya-Ku> | 6=T<They dig up Radiantite and smash it against foes, triggering explosion> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='RongGuangSaoNiao' | 16=pk[1] | 17=pk[2] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2001 | 24='200102' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=1 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'Rongshizhu_Fuben1'"", ""'tengwanxianjing_Fuben1'"", ""'tengwanxianjing1_Fuben1'"", ""'tengwanxianjing2_Fuben1'"", ""'tengwanxianjing3_Fuben1'"", ""'tengwanxianjing4_Fuben1'"", ""'tengwanxianjing3_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 56=pk[60069] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,104410,added,,T<Radiant Barroth>,,"1='104410' | 2=104410 | 4=2 | 5=T<Radiant Barroth> | 6=T<They charge relentlessly in their fury, and once frenzied, fling harde> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='RongGuangTuShaLong' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2005 | 24='200501' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=1 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'ShanguangchichongFuben1'"", ""'YinbaochongFuben1'"", ""'HhuifumichogFuben1'"", ""'DahuifumichongFuben1'"", ""'dumancao_Fuben1'"", ""'huifulucao_Fuben1'"", ""'mianhuabaozicao_Fuben1'"", ""'tengwanxianjing4_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 56=pk[60069] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,110810,added,,T<Radiant Jyuratodus>,,"1='110810' | 2=110810 | 4=2 | 5=T<Radiant Jyuratodus> | 6=T<While swimming, they generate large muddy pools to hinder adventurers'> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='RongGuangNiYuLong' | 16=pk[1] | 17=pk[2] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2005 | 24='200502' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=1 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'ShanguangchichongFuben1'"", ""'YinbaochongFuben1'"", ""'HhuifumichogFuben1'"", ""'DahuifumichongFuben1'"", ""'dumancao_Fuben1'"", ""'huifulucao_Fuben1'"", ""'mianhuabaozicao_Fuben1'"", ""'tengwanxianjing4_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 56=pk[60069] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,100101,added,,T<Rathian>,,"1='100101' | 2=100101 | 4=2 | 5=T<Rathian> | 6=T<Guard against their poison tail and fire breath attacks—watch for an o> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='CiHuoLongZhanDouYanZheng' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2008 | 24='200801' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'Gunshixianjing_Fuben1'"", ""'tengwanxianjing4_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,100201,added,,T<Rathalos>,,"1='100201' | 2=100201 | 4=2 | 5=T<Rathalos> | 6=T<Since they circle overhead unleashing various attacks, it's best to us> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='HuoLong' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2002 | 24='200201' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'kushuxianjing_Fuben1'"", ""'tengwanxianjing_Fuben1'"", ""'tengwanxianjing1_Fuben1'"", ""'tengwanxianjing2_Fuben1'"", ""'tengwanxianjing3_Fuben1'"", ""'tengwanxianjing4_Fuben1'"", ""'tengwanxianjing1_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,100701,added,,T<Diablos>,,"1='100701' | 2=100701 | 4=2 | 5=T<Diablos> | 6=T<Once they burrow, they become difficult to deal with, so luring them o> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='JiaoLong' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2012 | 24='201201' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'ShanguangchichongFuben1'"", ""'YinbaochongFuben1'"", ""'HhuifumichogFuben1'"", ""'DahuifumichongFuben1'"", ""'dumancao_Fuben1'"", ""'huifulucao_Fuben1'"", ""'mianhuabaozicao_Fuben1'"", ""'Gunshixianjing_Fuben1'"", ""'liushaxianjing_Fuben1'"", ""'luoshixianjing1_Fuben1'"", ""'luoshixianjing_Fuben1'"", ""'Shazhu_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,111210,added,,T<Radiant Great Girros>,,"1='111210' | 2=111210 | 4=2 | 5=T<Radiant Great Girros> | 6=T<Their radiant particle-enhanced vocal organs can call out to Radiant G> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='RongGuangDaXiongELong' | 16=pk[1] | 17=pk[2] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2014 | 24='201402' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=1 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54='luoshixianjing_Fuben1' | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 56=pk[60069] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,111401,added,,T<Radobaan>,,"1='111401' | 2=111401 | 4=2 | 5=T<Radobaan> | 6=T<Taking damage during their rolling attack throws off their balance, an> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='GuChuiLong' | 16=pk[1] | 17=pk[2] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2013 | 24='201301' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'luoshixianjing1_Fuben1'"", ""'luoshixianjing_Fuben1'"", ""'liushaxianjing_Fuben1'"", ""'tengwanxianjing4_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,110910,added,,T<Radiant Tobi-Kadachi>,,"1='110910' | 2=110910 | 4=2 | 5=T<Radiant Tobi-Kadachi> | 6=T<They can remain in an Electric Charge state for extended periods, usin> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='RongGuangFeiLeiLong' | 16=pk[1] | 17=pk[2] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2015 | 24='201502' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=1 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'luoshixianjing1_Fuben1'"", ""'luoshixianjing_Fuben1'"", ""'liushaxianjing_Fuben1'"", ""'Rongshizhu_Fuben1'"", ""'tengwanxianjing_Fuben1'"", ""'tengwanxianjing1_Fuben1'"", ""'tengwanxianjing2_Fuben1'"", ""'tengwanxianjing3_Fuben1'"", ""'tengwanxianjing4_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 56=pk[60069] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,111301,added,,T<Odogaron>,,"1='111301' | 2=111301 | 4=2 | 5=T<Odogaron> | 6=T<Beware the bleeding status inflicted by their razor-sharp claws. Provo> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='CanZhuaLong' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2014 | 24='201401' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54='luoshixianjing_Fuben1' | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,112001,added,,T<Tzitzi-Ya-Ku>,,"1='112001' | 2=112001 | 4=2 | 5=T<Tzitzi-Ya-Ku> | 6=T<Since the intense flash is emitted forward from the head, circling beh> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='XuanNiao' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2009 | 24='200901' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'juntai_Fuben1'"", ""'lvpixianjing_Fuben1'"", ""'tengwanxianjing2_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,111001,added,,T<Paolumu>,,"1='111001' | 2=111001 | 4=2 | 5=T<Paolumu> | 6=T<Without air to expel, their movement becomes restricted, leaving openi> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='FuKongLong' | 16=pk[1] | 17=pk[2] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2009 | 24='200902' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'juntai_Fuben1'"", ""'lvpixianjing_Fuben1'"", ""'tengwanxianjing2_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,111101,added,,T<Legiana>,,"1='111101' | 2=111101 | 4=2 | 5=T<Legiana> | 6=T<They can control their posture through the membranes on various parts > | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='FengPiaoLong' | 16=pk[1] | 17=pk[2] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2010 | 24='201002' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'juntai_Fuben1'"", ""'tengwanxianjing_Fuben1'"", ""'tengwanxianjing1_Fuben1'"", ""'tengwanxianjing2_Fuben1'"", ""'tengwanxianjing3_Fuben1'"", ""'tengwanxianjing4_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,100102,added,,T<Pink Rathian>,,"1='100102' | 2=100102 | 4=2 | 5=T<Pink Rathian> | 6=T<Their tough spots differ from normal Rathian, with the carapace near t> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='YingHuoLong' | 16=pk[1] | 17=pk[2] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2016 | 24='201602' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'ShanguangchichongFuben1'"", ""'YinbaochongFuben1'"", ""'HhuifumichogFuben1'"", ""'DahuifumichongFuben1'"", ""'dumancao_Fuben1'"", ""'huifulucao_Fuben1'"", ""'mianhuabaozicao_Fuben1'"", ""'juntai_Fuben1'"", ""'tengwanxianjing2_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,111010,added,,T<Radiant Paolumu>,,"1='111010' | 2=111010 | 4=2 | 5=T<Radiant Paolumu> | 6=T<When frenzied, they continuously build up air, and have been confirmed> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='RongGuangFuKongLong' | 16=pk[1] | 17=pk[2] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2009 | 24='200902' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=1 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'juntai_Fuben1'"", ""'lvpixianjing_Fuben1'"", ""'tengwanxianjing2_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 56=pk[60069] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,112010,added,,T<Radiant Tzitzi-Ya-Ku>,,"1='112010' | 2=112010 | 4=2 | 5=T<Radiant Tzitzi-Ya-Ku> | 6=T<Their Flash Fins are saturated with radiant particles, allowing their > | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='RongGuangXuanNiao' | 16=pk[1] | 17=pk[2] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2014 | 24='201402' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=1 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54='luoshixianjing_Fuben1' | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 56=pk[60069] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,111310,added,,T<Radiant Odogaron>,,"1='111310' | 2=111310 | 4=2 | 5=T<Radiant Odogaron> | 6=T<Once frenzied, they draw on the radiant particles within their bodies > | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='RongGuangCanZhuaLong' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2014 | 24='201401' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=1 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54='luoshixianjing_Fuben1' | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 56=pk[60069] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,100710,added,,T<Radiant Diablos>,,"1='100710' | 2=100710 | 4=2 | 5=T<Radiant Diablos> | 6=T<They only burrow underground once frenzied, bringing up large amounts > | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='RongGuangJiaoLong' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2012 | 24='201201' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=1 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'ShanguangchichongFuben1'"", ""'YinbaochongFuben1'"", ""'HhuifumichogFuben1'"", ""'DahuifumichongFuben1'"", ""'dumancao_Fuben1'"", ""'huifulucao_Fuben1'"", ""'mianhuabaozicao_Fuben1'"", ""'Gunshixianjing_Fuben1'"", ""'liushaxianjing_Fuben1'"", ""'luoshixianjing1_Fuben1'"", ""'luoshixianjing_Fuben1'"", ""'Shazhu_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 56=pk[60069] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,100210,added,,T<Radiant Rathalos>,,"1='100210' | 2=100210 | 4=2 | 5=T<Radiant Rathalos> | 6=T<When frenzied, they unleash a barrage of powerful flame breath attacks> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='RongGuangHuoLong' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2002 | 24='200201' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=1 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'kushuxianjing_Fuben1'"", ""'tengwanxianjing_Fuben1'"", ""'tengwanxianjing1_Fuben1'"", ""'tengwanxianjing2_Fuben1'"", ""'tengwanxianjing3_Fuben1'"", ""'tengwanxianjing4_Fuben1'"", ""'tengwanxianjing1_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 56=pk[60069] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,111110,added,,T<Radiant Legiana>,,"1='111110' | 2=111110 | 4=2 | 5=T<Radiant Legiana> | 6=T<They excel at consecutive aerial dashes, launching ferocious assaults > | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='RongGuangFengPiaoLong' | 16=pk[1] | 17=pk[2] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2010 | 24='201002' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=1 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'juntai_Fuben1'"", ""'tengwanxianjing_Fuben1'"", ""'tengwanxianjing1_Fuben1'"", ""'tengwanxianjing2_Fuben1'"", ""'tengwanxianjing3_Fuben1'"", ""'tengwanxianjing4_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 56=pk[60069] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,111410,added,,T<Radiant Radobaan>,,"1='111410' | 2=111410 | 4=2 | 5=T<Radiant Radobaan> | 6=T<While rolling, they scatter bone spikes that remain on the ground as t> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='RongGuangGuChuiLong' | 16=pk[1] | 17=pk[2] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2013 | 24='201302' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=1 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'luoshixianjing1_Fuben1'"", ""'luoshixianjing_Fuben1'"", ""'liushaxianjing_Fuben1'"", ""'tengwanxianjing4_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 56=pk[60069] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,100111,added,,T<Radiant Pink Rathian>,,"1='100111' | 2=100111 | 4=2 | 5=T<Radiant Pink Rathian> | 6=T<Venom seeps continuously from their tails. After a short wind-up, they> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='RongGuangYingHuoLong' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2008 | 24='200801' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=1 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'Gunshixianjing_Fuben1'"", ""'tengwanxianjing4_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 56=pk[60069] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,100702,added,,T<Black Diablos>,,"1='100702' | 2=100702 | 4=2 | 5=T<Black Diablos> | 6=T<They are even more hostile toward territorial intruders than normal Di> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='HeiJiaoLong' | 16=pk[1] | 17=pk[3] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=2012 | 24='201203' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'ShanguangchichongFuben1'"", ""'YinbaochongFuben1'"", ""'HhuifumichogFuben1'"", ""'DahuifumichongFuben1'"", ""'dumancao_Fuben1'"", ""'huifulucao_Fuben1'"", ""'mianhuabaozicao_Fuben1'"", ""'Gunshixianjing_Fuben1'"", ""'liushaxianjing_Fuben1'"", ""'luoshixianjing1_Fuben1'"", ""'luoshixianjing_Fuben1'"", ""'Shazhu_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,100711,added,,T<Radiant Black Diablos>,,"1='100711' | 2=100711 | 4=2 | 5=T<Radiant Black Diablos> | 6=T<As they burrow, they sweep up Radiantite and hurl it, then charge with> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='RongGuangHeiJiaoLong' | 16=pk[1] | 17=pk[3] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=12003 | 24='1200303' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=1 | 46=1 | 50=1 | 51='10110101' | 52='Dev' | 53=pk[1] | 54=[""'ShanguangchichongFuben1'"", ""'YinbaochongFuben1'"", ""'HhuifumichogFuben1'"", ""'DahuifumichongFuben1'"", ""'dumancao_Fuben1'"", ""'huifulucao_Fuben1'"", ""'mianhuabaozicao_Fuben2'"", ""'luoshixianjing1_Fuben1'"", ""'luoshixianjing_Fuben1'""] | 55=['pk[8, 60000, 16, 6]', 'pk[8, 60001, 16, 6]'] | 56=pk[60069] | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,102401,added,,T<Kushala Daora>,,"1='102401' | 2=102401 | 4=2 | 5=T<Kushala Daora> | 6=T<When faced with intruders, the winds encircling their bodies gradually> | 7=4 | 8=1 | 14='/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New_TGS_1.DNG_Hunt_Kill_New_TGS_1' | 15='GangLong' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=1002 | 24='100201' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=8 | 40=1 | 41=6 | 42=1 | 46=1 | 50=14 | 51='1' | 52='Dev' | 53=pk[1] | 54='pochuang_Fuben1' | 67=1001 | 68=1 | 69=999999999"
+FubenBaseCfg,110301,added,,T<Nergigante>,,1='110301' | 2=110301 | 4=2 | 5=T<Nergigante> | 6=T<They seem to possess a special ability that allows their wounds to reg> | 7=4 | 8=1 | 14='/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New' | 15='MieJinLong' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=1011 | 24='101101' | 25=5 | 26=3 | 27=2 | 28=3 | 29=4 | 30=18446744073709551615 | 31=18446744073709551615 | 32=18446744073709551615 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=3 | 40=1 | 41=6 | 42=3 | 46=1 | 51='1' | 52='Dev' | 53=pk[3] | 67=1001 | 68=1 | 69=999999999
+FubenBaseCfg,8000001,changed,25,T<Road to the Throne of Thorns - Hunting Trial>,[600],[900]
+FubenBaseCfg,8000001,changed,53,T<Road to the Throne of Thorns - Hunting Trial>,['pk[15]'],['pk[13]']
+FubenBaseCfg,8000002,changed,25,T<Road to the Throne of Thorns - Limited-Time Challenge>,[600],[900]
+FubenBaseCfg,8000003,changed,25,T<Road to the Throne of Thorns - Hunting Trial>,[600],[900]
+FubenBaseCfg,8000003,changed,53,T<Road to the Throne of Thorns - Hunting Trial>,['pk[15]'],['pk[13]']
+FubenBaseCfg,8000004,changed,25,T<Road to the Throne of Thorns - Hunting Trial>,[600],[900]
+FubenBaseCfg,8000004,changed,53,T<Road to the Throne of Thorns - Hunting Trial>,['pk[15]'],['pk[13]']
+FubenBaseCfg,8000005,changed,25,T<Steel Tremor - Hunting Demo>,[600],[900]
+FubenBaseCfg,8000006,changed,25,T<Steel Tremor - Limited-Time Challenge>,[600],[900]
+FubenBaseCfg,8000007,changed,25,T<Steel Tremor - Hunting Demo>,[600],[900]
+FubenBaseCfg,8000008,changed,25,T<Steel Tremor - Hunting Demo>,[600],[900]
+FubenBaseCfg,99001,added,,T<Hunting White Box Test Dungeon>,,1='99001' | 2=99001 | 4=5 | 5=T<Hunting White Box Test Dungeon> | 6=T<Hunting White Box Test Dungeon> | 7=4 | 8=1 | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=9999 | 25=9999 | 26=99 | 27=100 | 28=110 | 29=120 | 31=1 | 32=2 | 34=36781838 | 35=50.0 | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 52='Dev'
+FubenBaseCfg,99002,added,,T<Hunting Training Ground>,,"1='99002' | 2=99002 | 4=5 | 5=T<Hunting Training Ground> | 6=T<Hunting Training Ground> | 7=1 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_TrainingSimple.DNG_TrainingSimple'"" | 15='DaXiongChaiLongJiaoXueFuBen' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=10071 | 25=9999 | 26=99 | 27=100 | 28=110 | 29=120 | 31=1 | 32=2 | 34=36781838 | 35=50.0 | 36='BuildSave_10011' | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 52='Dev' | 53=pk[1]"
+FubenBaseCfg,99015,added,,"T<?[Dungeon,99015Name]>",,"1='99015' | 2=99015 | 4=5 | 5=T<?[Dungeon,99015Name]> | 6=T<Guard against their poison tail and fire breath attacks—watch for an o> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='TuShaLongFuBen' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=9006 | 24='900601' | 25=9999 | 26=99 | 27=250 | 28=320 | 29=380 | 31=1 | 32=2 | 34=36781838 | 35=50.0 | 38=1 | 40=1 | 41=6 | 42=3 | 46=1 | 52='Dev' | 53=pk[1]"
+FubenBaseCfg,99016,added,,"T<?[Dungeon,12093Name]>",,"1='99016' | 2=99016 | 4=5 | 5=T<?[Dungeon,12093Name]> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='CiHuoLongZhanDouYanZheng' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=10071 | 25=9999 | 26=99 | 27=500 | 28=700 | 29=1000 | 31=1 | 32=2 | 34=36781838 | 35=50.0 | 36='BuildSave_10010' | 38=1 | 40=1 | 41=6 | 42=3 | 44=1 | 46=1 | 52='Dev' | 53=pk[1]"
+FubenBaseCfg,99067,added,,"T<?[Dungeon, Boss Hunt Demo]>",,"1='99067' | 2=99067 | 4=5 | 5=T<?[Dungeon, Boss Hunt Demo]> | 6=T<?[Dungeon, Boss Hunt Demo]> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_BossHunt_Kill.DNG_BossHunt_Kill'"" | 15='RongGuangHuoLongBossHunt' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=9067 | 24='906701' | 25=600 | 26=3 | 27=180 | 28=240 | 29=300 | 31=1 | 32=2 | 34=36781838 | 35=100.0 | 38=3 | 40=1 | 41=6 | 42=3 | 46=1 | 52='Dev' | 53=pk[3]"
+FubenBaseCfg,99099,added,,"T<?[Dungeon, Boss Hunt Demo]>",,"1='99099' | 2=99099 | 4=19 | 5=T<?[Dungeon, Boss Hunt Demo]> | 6=T<?[Dungeon, Boss Hunt Demo]> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_BossHunt_Kill.DNG_BossHunt_Kill'"" | 15='RongGuangHuoLongBossHunt' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=9067 | 24='906701' | 25=600 | 26=3 | 27=180 | 28=240 | 29=300 | 31=1 | 32=2 | 34=36781838 | 35=100.0 | 38=3 | 40=1 | 41=6 | 42=3 | 46=1 | 52='Dev' | 53=pk[3]"
+FubenBaseCfg,99068,added,,T<Radiant Rathalos>,,"1='99068' | 2=99068 | 4=30 | 5=T<Radiant Rathalos> | 6=T<Radiant Rathalos' flame breath is far more powerful than that of commo> | 7=4 | 8=1 | 14=""LeptonBlueprint'/Game/Maps/DNGMap/DNG_General_Quest/DNG_Hunt_Kill_New.DNG_Hunt_Kill_New'"" | 15='RongGuangHuoLongBossHunt' | 16=pk[1] | 17=pk[1] | 18=2 | 19=1 | 20=1 | 21=1 | 22=25.0 | 23=9067 | 24='906701' | 25=900 | 26=4 | 27=750 | 28=780 | 29=840 | 31=1 | 32=2 | 34=36781838 | 35=100.0 | 36='BuildSave_10010' | 38=10 | 40=1 | 41=6 | 42=1 | 46=2 | 50=1 | 52='Dev' | 53=pk[10]"
+Fuben/BountyTrialRoundCfg,5,changed,2,,[30100301],[30101001]
+Fuben/BountyTrialRoundCfg,6,changed,2,,[30100401],[30100701]
+Fuben/BountyTrialRoundCfg,7,changed,2,,[30100901],[30101001]
+Fuben/BountyTrialRoundCfg,8,changed,2,,[30100101],[30100701]
+Fuben/RecommendScore,3887,changed,2,,[11457],[8909]
+Fuben/RecommendScore,3887,changed,3,,[10311],[8018]
+Fuben/RecommendScore,3887,changed,4,,[9166],[7127]
+Fuben/RecommendScore,3889,changed,2,,[15766],[11457]
+Fuben/RecommendScore,3889,changed,3,,[14189],[10311]
+Fuben/RecommendScore,3889,changed,4,,[12613],[9166]
+FusionOre/FusionOreBuildingDataBaseCfg,370011,changed,21,T<Wood Gatherer>,"['pk[29, 0, 0, 32, 66]']","['pk[29, 0, 0, 8480]']"
+FusionOre/FusionOreBuildingDataBaseCfg,370012,changed,21,T<Ore Gatherer>,"['pk[29, 0, 0, 32, 66]']","['pk[29, 0, 0, 8480]']"
+FusionOre/FusionOreBuildingDataBaseCfg,370013,changed,21,T<Plant Gatherer>,"['pk[29, 0, 0, 32, 66]']","['pk[29, 0, 0, 8480]']"
+LoadingTips,902260,added,,,,"1='902260' | 2=902260 | 4=2 | 5='200501153' | 6=1 | 7=1 | 17=2 | 18=T<Marathon Hunt> | 20=T<A daily limited-time Marathon Hunt: grab the treasure, storm the leade> | 21='PanelLoadingFuben' | 23=""WidgetBlueprint'/Game/UI/WidgetsBP/Loading/BattleTeach/WB_Loading_Mural.WB_Loading_Mural_C'"" | 35='C_1'"
+LoadingTips,902261,added,,,,"1='902261' | 2=902261 | 4=2 | 5='200101154' | 6=1 | 7=1 | 17=2 | 18=T<Marathon Hunt> | 20=T<A daily limited-time Marathon Hunt: grab the treasure, storm the leade> | 21='PanelLoadingFuben' | 23=""WidgetBlueprint'/Game/UI/WidgetsBP/Loading/BattleTeach/WB_Loading_Mural.WB_Loading_Mural_C'"" | 35='C_1'"
+LoadingTips,902262,added,,,,"1='902262' | 2=902262 | 4=2 | 5='200201155' | 6=1 | 7=1 | 17=2 | 18=T<Marathon Hunt> | 20=T<A daily limited-time Marathon Hunt: grab the treasure, storm the leade> | 21='PanelLoadingFuben' | 23=""WidgetBlueprint'/Game/UI/WidgetsBP/Loading/BattleTeach/WB_Loading_Mural.WB_Loading_Mural_C'"" | 35='C_1'"
+LoadingTips,902263,added,,,,"1='902263' | 2=902263 | 4=2 | 5='200301156' | 6=1 | 7=1 | 17=2 | 18=T<Marathon Hunt> | 20=T<A daily limited-time Marathon Hunt: grab the treasure, storm the leade> | 21='PanelLoadingFuben' | 23=""WidgetBlueprint'/Game/UI/WidgetsBP/Loading/BattleTeach/WB_Loading_Mural.WB_Loading_Mural_C'"" | 35='C_1'"
+LoadingTips,902264,added,,,,"1='902264' | 2=902264 | 4=2 | 5='200401157' | 6=1 | 7=1 | 17=2 | 18=T<Marathon Hunt> | 20=T<A daily limited-time Marathon Hunt: grab the treasure, storm the leade> | 21='PanelLoadingFuben' | 23=""WidgetBlueprint'/Game/UI/WidgetsBP/Loading/BattleTeach/WB_Loading_Mural.WB_Loading_Mural_C'"" | 35='C_1'"
+LoadingTips,902265,added,,,,"1='902265' | 2=902265 | 4=2 | 5='200501158' | 6=1 | 7=1 | 17=2 | 18=T<Marathon Hunt> | 20=T<A daily limited-time Marathon Hunt: grab the treasure, storm the leade> | 21='PanelLoadingFuben' | 23=""WidgetBlueprint'/Game/UI/WidgetsBP/Loading/BattleTeach/WB_Loading_Mural.WB_Loading_Mural_C'"" | 35='C_1'"
+LoadingTips,902266,added,,,,"1='902266' | 2=902266 | 4=2 | 5='200101159' | 6=1 | 7=1 | 17=2 | 18=T<Marathon Hunt> | 20=T<A daily limited-time Marathon Hunt: grab the treasure, storm the leade> | 21='PanelLoadingFuben' | 23=""WidgetBlueprint'/Game/UI/WidgetsBP/Loading/BattleTeach/WB_Loading_Mural.WB_Loading_Mural_C'"" | 35='C_1'"
+LoadingTips,902267,added,,,,"1='902267' | 2=902267 | 4=2 | 5='200201160' | 6=1 | 7=1 | 17=2 | 18=T<Marathon Hunt> | 20=T<A daily limited-time Marathon Hunt: grab the treasure, storm the leade> | 21='PanelLoadingFuben' | 23=""WidgetBlueprint'/Game/UI/WidgetsBP/Loading/BattleTeach/WB_Loading_Mural.WB_Loading_Mural_C'"" | 35='C_1'"
+LoadingTips,902268,added,,,,"1='902268' | 2=902268 | 4=2 | 5='200301161' | 6=1 | 7=1 | 17=2 | 18=T<Marathon Hunt> | 20=T<A daily limited-time Marathon Hunt: grab the treasure, storm the leade> | 21='PanelLoadingFuben' | 23=""WidgetBlueprint'/Game/UI/WidgetsBP/Loading/BattleTeach/WB_Loading_Mural.WB_Loading_Mural_C'"" | 35='C_1'"
+LoadingTips,902269,added,,,,"1='902269' | 2=902269 | 4=2 | 5='200401162' | 6=1 | 7=1 | 17=2 | 18=T<Marathon Hunt> | 20=T<A daily limited-time Marathon Hunt: grab the treasure, storm the leade> | 21='PanelLoadingFuben' | 23=""WidgetBlueprint'/Game/UI/WidgetsBP/Loading/BattleTeach/WB_Loading_Mural.WB_Loading_Mural_C'"" | 35='C_1'"
+LoadingTips,902270,added,,,,"1='902270' | 2=902270 | 4=2 | 5='200501163' | 6=1 | 7=1 | 17=2 | 18=T<Marathon Hunt> | 20=T<A daily limited-time Marathon Hunt: grab the treasure, storm the leade> | 21='PanelLoadingFuben' | 23=""WidgetBlueprint'/Game/UI/WidgetsBP/Loading/BattleTeach/WB_Loading_Mural.WB_Loading_Mural_C'"" | 35='C_1'"
+LoadingTips,902271,added,,,,"1='902271' | 2=902271 | 4=2 | 5='200101164' | 6=1 | 7=1 | 17=2 | 18=T<Marathon Hunt> | 20=T<A daily limited-time Marathon Hunt: grab the treasure, storm the leade> | 21='PanelLoadingFuben' | 23=""WidgetBlueprint'/Game/UI/WidgetsBP/Loading/BattleTeach/WB_Loading_Mural.WB_Loading_Mural_C'"" | 35='C_1'"
+LoadingTips,902272,added,,,,"1='902272' | 2=902272 | 4=2 | 5='200201165' | 6=1 | 7=1 | 17=2 | 18=T<Marathon Hunt> | 20=T<A daily limited-time Marathon Hunt: grab the treasure, storm the leade> | 21='PanelLoadingFuben' | 23=""WidgetBlueprint'/Game/UI/WidgetsBP/Loading/BattleTeach/WB_Loading_Mural.WB_Loading_Mural_C'"" | 35='C_1'"
+LoadingTips,902273,added,,,,"1='902273' | 2=902273 | 4=2 | 5='200301166' | 6=1 | 7=1 | 17=2 | 18=T<Marathon Hunt> | 20=T<A daily limited-time Marathon Hunt: grab the treasure, storm the leade> | 21='PanelLoadingFuben' | 23=""WidgetBlueprint'/Game/UI/WidgetsBP/Loading/BattleTeach/WB_Loading_Mural.WB_Loading_Mural_C'"" | 35='C_1'"
+LoadingTips,902274,added,,,,"1='902274' | 2=902274 | 4=2 | 5='200401167' | 6=1 | 7=1 | 17=2 | 18=T<Marathon Hunt> | 20=T<A daily limited-time Marathon Hunt: grab the treasure, storm the leade> | 21='PanelLoadingFuben' | 23=""WidgetBlueprint'/Game/UI/WidgetsBP/Loading/BattleTeach/WB_Loading_Mural.WB_Loading_Mural_C'"" | 35='C_1'"
+LoadingTips,902275,added,,,,"1='902275' | 2=902275 | 4=2 | 5='200501168' | 6=1 | 7=1 | 17=2 | 18=T<Marathon Hunt> | 20=T<A daily limited-time Marathon Hunt: grab the treasure, storm the leade> | 21='PanelLoadingFuben' | 23=""WidgetBlueprint'/Game/UI/WidgetsBP/Loading/BattleTeach/WB_Loading_Mural.WB_Loading_Mural_C'"" | 35='C_1'"
+LoadingTips,902276,added,,,,"1='902276' | 2=902276 | 4=2 | 5='200101169' | 6=1 | 7=1 | 17=2 | 18=T<Marathon Hunt> | 20=T<A daily limited-time Marathon Hunt: grab the treasure, storm the leade> | 21='PanelLoadingFuben' | 23=""WidgetBlueprint'/Game/UI/WidgetsBP/Loading/BattleTeach/WB_Loading_Mural.WB_Loading_Mural_C'"" | 35='C_1'"
+LoadingTips,902277,added,,,,"1='902277' | 2=902277 | 4=2 | 5='200201170' | 6=1 | 7=1 | 17=2 | 18=T<Marathon Hunt> | 20=T<A daily limited-time Marathon Hunt: grab the treasure, storm the leade> | 21='PanelLoadingFuben' | 23=""WidgetBlueprint'/Game/UI/WidgetsBP/Loading/BattleTeach/WB_Loading_Mural.WB_Loading_Mural_C'"" | 35='C_1'"
+Lottery/LotteryBaseCfg,3004,changed,16,,"['pk[300101, 300102]']","['pk[300401, 300402]']"
+Lottery/LotteryGuaranteeCfg,300401,added,,,,1='300401' | 2=10 | 3=1 | 4=T<<Epic>SR</> guaranteed within: > | 5=10
+Lottery/LotteryGuaranteeCfg,300402,added,,,,1='300402' | 2=73 | 3=2 | 4=T<<Legendary>SSR</> guaranteed within: > | 5=90
+Monster/EcologicalNicheLevel,1001034101,changed,41,,[14],[15]
+Monster/EcologicalNicheLevel,1001034102,changed,41,,[15],[13]
+Monster/EcologicalNicheLevel,1004004901,changed,52,,"[""'102401'""]","[""'140001'""]"
+Monster/EcologicalNicheLevel,1004004902,changed,52,,"[""'102401'""]","[""'140001'""]"
+Monster/EcologicalNicheLevel,1004004903,changed,52,,"[""'102401'""]","[""'140001'""]"
+Monster/MonsterAttributes,11010011212,changed,2,,[1068850.0],[739973.0]
+Monster/MonsterAttributes,11010011212,changed,3,,[1450.0],[1410.0]
+Monster/MonsterAttributes,10010011212,changed,2,,[217623.0],[158271.0]
+Monster/MonsterAttributes,11010811310,changed,2,,[566469.0],[398626.0]
+Monster/MonsterAttributes,11010811310,changed,3,,[1380.0],[1340.0]
+Monster/MonsterAttributes,10010811310,changed,2,,[248629.0],[165753.0]
+Monster/MonsterAttributes,10010811310,changed,3,,[1380.0],[1340.0]
+Monster/MonsterAttributes,11004411311,changed,2,,[1135650.0],[799161.0]
+Monster/MonsterAttributes,11004411311,changed,3,,[1450.0],[1410.0]
+Monster/MonsterAttributes,11010111311,changed,2,,[2119137.0],[1412758.0]
+Monster/MonsterAttributes,11010111311,changed,3,,[1450.0],[1410.0]
+Monster/MonsterAttributes,11000711312,changed,2,,[1450702.0],[600291.0]
+Monster/MonsterAttributes,11000711312,changed,3,,[1590.0],[1530.0]
+Monster/MonsterAttributes,10000711312,changed,2,,[646574.0],[222957.0]
+Monster/MonsterAttributes,10000711312,changed,3,,[1590.0],[1530.0]
+Monster/MonsterAttributes,11011111313,changed,2,,[3543035.0],[1181012.0]
+Monster/MonsterAttributes,11011111313,changed,3,,[1590.0],[1530.0]
+Monster/MonsterAttributes,11011011313,changed,2,,[2738635.0],[730303.0]
+Monster/MonsterAttributes,11011011313,changed,3,,[1590.0],[1530.0]
+Monster/MonsterAttributes,11011011410,changed,2,,[1615680.0],[1136960.0]
+Monster/MonsterAttributes,11011011410,changed,3,,[1590.0],[1550.0]
+Monster/MonsterAttributes,11011011410,changed,176,,[13021.0],[14426.0]
+Monster/MonsterAttributes,11010111410,changed,2,,[3153688.0],[2102459.0]
+Monster/MonsterAttributes,11010111410,changed,3,,[1590.0],[1550.0]
+Monster/MonsterAttributes,11000711411,changed,2,,[1567818.0],[1103279.0]
+Monster/MonsterAttributes,11000711411,changed,3,,[1590.0],[1550.0]
+Monster/MonsterAttributes,11010811411,changed,2,,[1406787.0],[937858.0]
+Monster/MonsterAttributes,11010811411,changed,3,,[1590.0],[1550.0]
+Monster/MonsterAttributes,11011111412,changed,2,,[3553646.0],[1539913.0]
+Monster/MonsterAttributes,11011111412,changed,3,,[1590.0],[1550.0]
+Monster/MonsterAttributes,11004411412,changed,2,,[3078542.0],[1128799.0]
+Monster/MonsterAttributes,11004411412,changed,3,,[1590.0],[1550.0]
+Monster/MonsterAttributes,11100711413,changed,2,,[3380072.0],[1464698.0]
+Monster/MonsterAttributes,11100711413,changed,3,,[1605.0],[1565.0]
+Monster/MonsterAttributes,11000711413,changed,2,,[2101134.0],[770416.0]
+Monster/MonsterAttributes,11000711413,changed,3,,[1605.0],[1565.0]
+Monster/MonsterAttributes,1004001415,changed,183,,[1.0],[0.85]
+Monster/MonsterAttributes,100024140101,changed,2,,[265832.0],[139210.0]
+Monster/MonsterAttributes,100024140101,changed,3,,[1210.0],[1144.0]
+Monster/MonsterAttributes,100024140101,changed,176,,[9166.0],[7127.0]
+Monster/MonsterAttributes,100024140101,changed,177,,[10311.0],[8018.0]
+Monster/MonsterAttributes,100024140101,changed,178,,[11457.0],[8909.0]
+Monster/MonsterAttributes,100103140101,changed,2,,[676202.0],[231699.0]
+Monster/MonsterAttributes,100103140101,changed,3,,[1480.0],[1190.0]
+Monster/MonsterAttributes,100103140101,changed,176,,[12613.0],[9166.0]
+Monster/MonsterAttributes,100103140101,changed,177,,[14189.0],[10311.0]
+Monster/MonsterAttributes,100103140101,changed,178,,[15766.0],[11457.0]
+PropCfg,70063,changed,16,T<Resonance Crystal>,[1],
+PropCfg,70063,changed,40,T<Resonance Crystal>,[1],
+PropCfg,70064,changed,16,T<Primal Engraved Gem>,[1],
+PropCfg,70064,changed,40,T<Primal Engraved Gem>,[1],
+PropCfg,70065,changed,16,T<Torrent Engraved Gem>,[1],
+PropCfg,70065,changed,40,T<Torrent Engraved Gem>,[1],
+PropCfg,70066,changed,16,T<Blazing Engraved Gem>,[1],
+PropCfg,70066,changed,40,T<Blazing Engraved Gem>,[1],
+PropCfg,70067,changed,16,T<Frostbound Engraved Gem>,[1],
+PropCfg,70067,changed,40,T<Frostbound Engraved Gem>,[1],
+PropCfg,70068,changed,16,T<Thunderclap Engraved Gem>,[1],
+PropCfg,70068,changed,40,T<Thunderclap Engraved Gem>,[1],
+PropCfg,70069,changed,16,T<Dragoncursed Engraved Gem>,[1],
+PropCfg,70069,changed,40,T<Dragoncursed Engraved Gem>,[1],
+PropCfg,70073,changed,16,T<Resonance Shard>,[1],
+PropCfg,70073,changed,40,T<Resonance Shard>,[1],
+PropCfg,72001,changed,16,T<Radiant Gem>,[1],
+PropCfg,72001,changed,40,T<Radiant Gem>,[1],
+PropCfg,72002,changed,16,T<Radiant Crystal>,[1],
+PropCfg,72002,changed,40,T<Radiant Crystal>,[1],
+PropCfg,72003,changed,16,T<Lucent Crystallite>,[1],
+PropCfg,72003,changed,40,T<Lucent Crystallite>,[1],
+PropCfg,10126200,changed,37,T<Visage: Nergigante>,,['pk[10394]']
+PropCfg,10126300,changed,37,T<Visage: Nergigante>,,['pk[10394]']
+PropCfg,10126400,changed,37,T<Visage: Nergigante>,,['pk[10394]']
+PropCfg,10127200,changed,37,T<Visage: Kushala Daora>,,['pk[10395]']
+PropCfg,10127300,changed,37,T<Visage: Kushala Daora>,,['pk[10395]']
+PropCfg,10127400,changed,37,T<Visage: Kushala Daora>,,['pk[10395]']
+PropCfg,10128200,changed,37,T<Visage: Ruger Aidal>,,['pk[10396]']
+PropCfg,10128300,changed,37,T<Visage: Ruger Aidal>,,['pk[10396]']
+PropCfg,10128400,changed,37,T<Visage: Ruger Aidal>,,['pk[10396]']
+PropCfg,4090287,added,,T<Nergigante Style Crate>,,"1='4090287' | 2=4090287 | 3=T<Nergigante Style Crate> | 5=""/Script/Engine.Texture2D'/Game/UI/Dynamic/ItemIcon/ItemIcon_AppearanceLottery_Purple.ItemIcon_Appear"" | 6=79 | 7=1 | 8=4 | 11=99 | 13=1 | 15=1 | 18=T<Layered equipment made from monster materials.> | 20=[""'银币'"", ""'999'""] | 25='灭尽龙外观箱4级' | 32=801 | 35=1 | 42=44"
+PropCfg,2210037,changed,3,T<Nergal Judicator>,['T<Nergigante Great Sword>'],['T<Nergal Judicator>']
+PropCfg,2210107,changed,3,T<Nergal Gouge>,['T<Nergigante Dual Blades Model (Nergal Gouge)>'],['T<Nergal Gouge>']
+PropCfg,2210194,changed,3,T<Nergal Roar>,['T<Nergigante Heavy Bowgun Model (Nergal Roar)>'],['T<Nergal Roar>']
+PropCfg,2210233,changed,3,T<Nergal Whisper>,['T<Nergigante Bow Model (Nergigante Bow)>'],['T<Nergal Whisper>']
+PropCfg,2210243,changed,3,T<Destruction's Fusillade>,['T<Annihilation Cannon>'],"[""T<Destruction's Fusillade>""]"
+PropCfg,2210245,changed,3,T<Perdition's Hand>,"[""T<Extermination's Claws>""]","[""T<Perdition's Hand>""]"
+PropCfg,2210374,changed,5,T<Devastation's Thorns>,,"['""/Script/Engine.Texture2D\'/Game/UI/Dynamic/WeaponIcon/ChargeBlade/WeaponIcon_ChargeBlade_Nergigante_2""']"
+PropCfg,2210375,changed,5,T<Nergal Lacerator>,,"['""/Script/Engine.Texture2D\'/Game/UI/Dynamic/WeaponIcon/ChargeBlade/WeaponIcon_ChargeBlade_Nergigante_2""']"
+SurveyExpDegree,56,changed,3,,[351600],[407100]
+SurveyExpDegree,57,changed,3,,[370800],[695100]
+SurveyExpDegree,58,changed,3,,[390000],[1775100]
+SurveyExpDegree,59,changed,3,,[409200],[3935100]
+SurveyExpDegree,60,changed,3,,[428400],[9999999]
+SurveyExpDegree,61,changed,3,,[447600],[10000000]
+SurveyExpDegree,62,changed,3,,[466800],[10000001]
+SurveyExpDegree,63,changed,3,,[486000],[10000002]
+SurveyExpDegree,64,changed,3,,[505200],[10000003]
+SurveyExpDegree,65,changed,3,,[524400],[10000004]
+SurveyExpDegree,66,changed,3,,[543600],[10000005]
+SurveyExpDegree,67,changed,3,,[562800],[10000006]
+SurveyExpDegree,68,changed,3,,[582000],[10000007]
+SurveyExpDegree,69,changed,3,,[601200],[10000008]
+SurveyExpDegree,70,changed,3,,[620400],[10000009]
+SurveyExpDegree,71,changed,3,,[639600],[10000010]
+SurveyExpDegree,72,changed,3,,[658800],[10000011]
+SurveyExpDegree,73,changed,3,,[678000],[10000012]
+SurveyExpDegree,74,changed,3,,[697200],[10000013]
+SurveyExpDegree,75,changed,3,,[716400],[10000014]
+SurveyExpDegree,76,changed,3,,[735600],[10000015]
+SurveyExpDegree,77,changed,3,,[754800],[10000016]
+SurveyExpDegree,78,changed,3,,[774000],[10000017]
+SurveyExpDegree,79,changed,3,,[793200],[10000018]
+SurveyExpDegree,80,changed,3,,[831600],[10000019]
+SurveyExpDegree,81,changed,3,,[870000],[10000020]
+SurveyExpDegree,82,changed,3,,[908400],[10000021]
+SurveyExpDegree,83,changed,3,,[946800],[10000022]
+SurveyExpDegree,84,changed,3,,[985200],[10000023]
+SurveyExpDegree,85,changed,3,,[1023600],[10000024]
+SurveyExpDegree,86,changed,3,,[1062000],[10000025]
+SurveyExpDegree,87,changed,3,,[1100400],[10000026]
+SurveyExpDegree,88,changed,3,,[1138800],[10000027]
+SurveyExpDegree,89,changed,3,,[1177200],[10000028]
+SurveyExpDegree,90,changed,3,,[1215600],[10000029]
+SurveyExpDegree,91,changed,3,,[1254000],[10000030]
+SurveyExpDegree,92,changed,3,,[1292400],[10000031]
+SurveyExpDegree,93,changed,3,,[1330800],[10000032]
+SurveyExpDegree,94,changed,3,,[1369200],[10000033]
+SurveyExpDegree,95,changed,3,,[1407600],[10000034]
+SurveyExpDegree,96,changed,3,,[1446000],[10000035]
+SurveyExpDegree,97,changed,3,,[1484400],[10000036]
+SurveyExpDegree,98,changed,3,,[1522800],[10000037]
+SurveyExpDegree,99,changed,3,,[1561200],[10000038]
+SurveyExpDegree,100,changed,3,,[1599600],[10000039]
+SurveyExpDegree,101,changed,3,,[1638000],[10000040]
+SurveyExpDegree,102,changed,3,,[1676400],[10000041]
+SurveyExpDegree,103,changed,3,,[1714800],[10000042]
+SurveyExpDegree,104,changed,3,,[1753200],[10000043]
+SurveyExpDegree,105,changed,3,,[1791600],[10000044]
+SurveyExpDegree,106,changed,3,,[1830000],[10000045]
+SurveyExpDegree,107,changed,3,,[1868400],[10000046]
+SurveyExpDegree,108,changed,3,,[1906800],[10000047]
+SurveyExpDegree,109,changed,3,,[1945200],[10000048]
+SurveyExpDegree,110,changed,3,,[1983600],[10000049]
+SurveyExpDegree,111,changed,3,,[2022000],[10000050]
+SurveyExpDegree,112,changed,3,,[2060400],[10000051]
+SurveyExpDegree,113,changed,3,,[2098800],[10000052]
+SurveyExpDegree,114,changed,3,,[2137200],[10000053]
+SurveyExpDegree,115,changed,3,,[2175600],[10000054]
+SurveyExpDegree,116,changed,3,,[2214000],[10000055]
+SurveyExpDegree,117,changed,3,,[2252400],[10000056]
+SurveyExpDegree,118,changed,3,,[2290800],[10000057]
+SurveyExpDegree,119,changed,3,,[2329200],[10000058]
+SurveyExpDegree,120,changed,3,,[2367600],[10000059]
+SurveyExpDegree,121,changed,3,,[2406000],[10000060]
+SurveyExpDegree,122,changed,3,,[2444400],[10000061]
+SurveyExpDegree,123,changed,3,,[2482800],[10000062]
+SurveyExpDegree,124,changed,3,,[2521200],[10000063]
+SurveyExpDegree,125,changed,3,,[2559600],[10000064]
+SurveyExpDegree,126,changed,3,,[2598000],[10000065]
+SurveyExpDegree,127,changed,3,,[2636400],[10000066]
+SurveyExpDegree,128,changed,3,,[2674800],[10000067]
+SurveyExpDegree,129,changed,3,,[2713200],[10000068]
+SurveyExpDegree,130,changed,3,,[2751600],[10000069]
+SurveyExpDegree,131,changed,3,,[2790000],[10000070]
+SurveyExpDegree,132,changed,3,,[2828400],[10000071]
+SurveyExpDegree,133,changed,3,,[2866800],[10000072]
+SurveyExpDegree,134,changed,3,,[2905200],[10000073]
+SurveyExpDegree,135,changed,3,,[2943600],[10000074]
+SurveyExpDegree,136,changed,3,,[2982000],[10000075]
+SurveyExpDegree,137,changed,3,,[3020400],[10000076]
+SurveyExpDegree,138,changed,3,,[3058800],[10000077]
+SurveyExpDegree,139,changed,3,,[3097200],[10000078]
+SurveyExpDegree,140,changed,3,,[3135600],[10000079]
+SurveyExpDegree,141,changed,3,,[3174000],[10000080]
+SurveyExpDegree,142,changed,3,,[3212400],[10000081]
+SurveyExpDegree,143,changed,3,,[3250800],[10000082]
+SurveyExpDegree,144,changed,3,,[3289200],[10000083]
+SurveyExpDegree,145,changed,3,,[3327600],[10000084]
+SurveyExpDegree,146,changed,3,,[3366000],[10000085]
+SurveyExpDegree,147,changed,3,,[3404400],[10000086]
+SurveyExpDegree,148,changed,3,,[3442800],[10000087]
+SurveyExpDegree,149,changed,3,,[3481200],[10000088]
+SurveyExpDegree,150,changed,3,,[3519600],[10000089]
+SurveyExpDegree,151,changed,3,,[3558000],[10000090]
+SurveyExpDegree,152,changed,3,,[3596400],[10000091]
+SurveyExpDegree,153,changed,3,,[3634800],[10000092]
+SurveyExpDegree,154,changed,3,,[3673200],[10000093]
+SurveyExpDegree,155,changed,3,,[3711600],[10000094]
+SurveyExpDegree,156,changed,3,,[3750000],[10000095]
+SurveyExpDegree,157,changed,3,,[3788400],[10000096]
+SurveyExpDegree,158,changed,3,,[3826800],[10000097]
+SurveyExpDegree,159,changed,3,,[3865200],[10000098]
+SurveyExpDegree,160,changed,3,,[3903600],[10000099]
+SurveyExpDegree,161,changed,3,,[3942000],[10000100]
+SurveyExpDegree,162,changed,3,,[3980400],[10000101]
+SurveyExpDegree,163,changed,3,,[4018800],[10000102]
+SurveyExpDegree,164,changed,3,,[4057200],[10000103]
+SurveyExpDegree,165,changed,3,,[4095600],[10000104]
+SurveyExpDegree,166,changed,3,,[4134000],[10000105]
+SurveyExpDegree,167,changed,3,,[4172400],[10000106]
+SurveyExpDegree,168,changed,3,,[4210800],[10000107]
+SurveyExpDegree,169,changed,3,,[4249200],[10000108]
+SurveyExpDegree,170,changed,3,,[4287600],[10000109]
+SurveyExpDegree,171,changed,3,,[4326000],[10000110]
+SurveyExpDegree,172,changed,3,,[4364400],[10000111]
+SurveyExpDegree,173,changed,3,,[4402800],[10000112]
+SurveyExpDegree,174,changed,3,,[4441200],[10000113]
+SurveyExpDegree,175,changed,3,,[4479600],[10000114]
+SurveyExpDegree,176,changed,3,,[4518000],[10000115]
+SurveyExpDegree,177,changed,3,,[4556400],[10000116]
+SurveyExpDegree,178,changed,3,,[4594800],[10000117]
+SurveyExpDegree,179,changed,3,,[4633200],[10000118]
+SurveyExpDegree,180,changed,3,,[4671600],[10000119]
+SurveyExpDegree,181,changed,3,,[4710000],[10000120]
+SurveyExpDegree,182,changed,3,,[4748400],[10000121]
+SurveyExpDegree,183,changed,3,,[4786800],[10000122]
+SurveyExpDegree,184,changed,3,,[4825200],[10000123]
+SurveyExpDegree,185,changed,3,,[4863600],[10000124]
+SurveyExpDegree,186,changed,3,,[4902000],[10000125]
+SurveyExpDegree,187,changed,3,,[4940400],[10000126]
+SurveyExpDegree,188,changed,3,,[4978800],[10000127]
+SurveyExpDegree,189,changed,3,,[5017200],[10000128]
+SurveyExpDegree,190,changed,3,,[5055600],[10000129]
+SurveyExpDegree,191,changed,3,,[5094000],[10000130]
+SurveyExpDegree,192,changed,3,,[5132400],[10000131]
+SurveyExpDegree,193,changed,3,,[5170800],[10000132]
+SurveyExpDegree,194,changed,3,,[5209200],[10000133]
+SurveyExpDegree,195,changed,3,,[5247600],[10000134]
+SurveyExpDegree,196,changed,3,,[5286000],[10000135]
+SurveyExpDegree,197,changed,3,,[5324400],[10000136]
+SurveyExpDegree,198,changed,3,,[5362800],[10000137]
+SurveyExpDegree,199,changed,3,,[5401200],[10000138]
+SurveyExpDegree,200,changed,3,,[5439600],[10000139]
+SurveyExpDegree,201,changed,3,,[5478000],[10000140]
+SurveyExpDegree,202,changed,3,,[5516400],[10000141]
+SurveyExpDegree,203,changed,3,,[5554800],[10000142]
+SurveyExpDegree,204,changed,3,,[5593200],[10000143]
+SurveyExpDegree,205,changed,3,,[5631600],[10000144]
+SurveyExpDegree,206,changed,3,,[5670000],[10000145]
+SurveyExpDegree,207,changed,3,,[5708400],[10000146]
+SurveyExpDegree,208,changed,3,,[5746800],[10000147]
+SurveyExpDegree,209,changed,3,,[5785200],[10000148]
+SurveyExpDegree,210,changed,3,,[5823600],[10000149]
+SurveyExpDegree,211,changed,3,,[5862000],[10000150]
+SurveyExpDegree,212,changed,3,,[5900400],[10000151]
+SurveyExpDegree,213,changed,3,,[5938800],[10000152]
+SurveyExpDegree,214,changed,3,,[5977200],[10000153]
+SurveyExpDegree,215,changed,3,,[6015600],[10000154]
+SurveyExpDegree,216,changed,3,,[6054000],[10000155]
+SurveyExpDegree,217,changed,3,,[6092400],[10000156]
+SurveyExpDegree,218,changed,3,,[6130800],[10000157]
+SurveyExpDegree,219,changed,3,,[6169200],[10000158]
+SurveyExpDegree,220,changed,3,,[6207600],[10000159]
+SurveyExpDegree,221,changed,3,,[6246000],[10000160]
+SurveyExpDegree,222,changed,3,,[6284400],[10000161]
+SurveyExpDegree,223,changed,3,,[6322800],[10000162]
+SurveyExpDegree,224,changed,3,,[6361200],[10000163]
+SurveyExpDegree,225,changed,3,,[6399600],[10000164]
+SurveyExpDegree,226,changed,3,,[6438000],[10000165]
+SurveyExpDegree,227,changed,3,,[6476400],[10000166]
+SurveyExpDegree,228,changed,3,,[6514800],[10000167]
+SurveyExpDegree,229,changed,3,,[6553200],[10000168]
+SurveyExpDegree,230,changed,3,,[6591600],[10000169]
+SurveyExpDegree,231,changed,3,,[6630000],[10000170]
+SurveyExpDegree,232,changed,3,,[6668400],[10000171]
+SurveyExpDegree,233,changed,3,,[6706800],[10000172]
+SurveyExpDegree,234,changed,3,,[6745200],[10000173]
+SurveyExpDegree,235,changed,3,,[6783600],[10000174]
+SurveyExpDegree,236,changed,3,,[6822000],[10000175]
+SurveyExpDegree,237,changed,3,,[6860400],[10000176]
+SurveyExpDegree,238,changed,3,,[6898800],[10000177]
+SurveyExpDegree,239,changed,3,,[6937200],[10000178]
+SurveyExpDegree,240,changed,3,,[6975600],[10000179]
+SurveyExpDegree,241,changed,3,,[7014000],[10000180]
+SurveyExpDegree,242,changed,3,,[7052400],[10000181]
+SurveyExpDegree,243,changed,3,,[7090800],[10000182]
+SurveyExpDegree,244,changed,3,,[7129200],[10000183]
+SurveyExpDegree,245,changed,3,,[7167600],[10000184]
+SurveyExpDegree,246,changed,3,,[7206000],[10000185]
+SurveyExpDegree,247,changed,3,,[7244400],[10000186]
+SurveyExpDegree,248,changed,3,,[7282800],[10000187]
+SurveyExpDegree,249,changed,3,,[7321200],[10000188]
+SurveyExpDegree,250,changed,3,,[7359600],[10000189]
+SurveyExpDegree,251,changed,3,,[7398000],[10000190]
+SurveyExpDegree,252,changed,3,,[7436400],[10000191]
+SurveyExpDegree,253,changed,3,,[7474800],[10000192]
+SurveyExpDegree,254,changed,3,,[7513200],[10000193]
+SurveyExpDegree,255,changed,3,,[7551600],[10000194]
+SurveyExpDegree,256,changed,3,,[7590000],[10000195]
+SurveyExpDegree,257,changed,3,,[7628400],[10000196]
+SurveyExpDegree,258,changed,3,,[7666800],[10000197]
+SurveyExpDegree,259,changed,3,,[7705200],[10000198]
+SurveyExpDegree,260,changed,3,,[7743600],[10000199]
+SurveyExpDegree,261,changed,3,,[7782000],[10000200]
+SurveyExpDegree,262,changed,3,,[7820400],[10000201]
+SurveyExpDegree,263,changed,3,,[7858800],[10000202]
+SurveyExpDegree,264,changed,3,,[7897200],[10000203]
+SurveyExpDegree,265,changed,3,,[7935600],[10000204]
+SurveyExpDegree,266,changed,3,,[7974000],[10000205]
+SurveyExpDegree,267,changed,3,,[8012400],[10000206]
+SurveyExpDegree,268,changed,3,,[8050800],[10000207]
+SurveyExpDegree,269,changed,3,,[8089200],[10000208]
+SurveyExpDegree,270,changed,3,,[8127600],[10000209]
+SurveyExpDegree,271,changed,3,,[8166000],[10000210]
+SurveyExpDegree,272,changed,3,,[8204400],[10000211]
+SurveyExpDegree,273,changed,3,,[8242800],[10000212]
+SurveyExpDegree,274,changed,3,,[8281200],[10000213]
+SurveyExpDegree,275,changed,3,,[8319600],[10000214]
+SurveyExpDegree,276,changed,3,,[8358000],[10000215]
+SurveyExpDegree,277,changed,3,,[8396400],[10000216]
+SurveyExpDegree,278,changed,3,,[8434800],[10000217]
+SurveyExpDegree,279,changed,3,,[8473200],[10000218]
+SurveyExpDegree,280,changed,3,,[8511600],[10000219]
+SurveyExpDegree,281,changed,3,,[8550000],[10000220]
+SurveyExpDegree,282,changed,3,,[8588400],[10000221]
+SurveyExpDegree,283,changed,3,,[8626800],[10000222]
+SurveyExpDegree,284,changed,3,,[8665200],[10000223]
+SurveyExpDegree,285,changed,3,,[8703600],[10000224]
+SurveyExpDegree,286,changed,3,,[8742000],[10000225]
+SurveyExpDegree,287,changed,3,,[8780400],[10000226]
+SurveyExpDegree,288,changed,3,,[8818800],[10000227]
+SurveyExpDegree,289,changed,3,,[8857200],[10000228]
+SurveyExpDegree,290,changed,3,,[8895600],[10000229]
+SurveyExpDegree,291,changed,3,,[8934000],[10000230]
+SurveyExpDegree,292,changed,3,,[8972400],[10000231]
+SurveyExpDegree,293,changed,3,,[9010800],[10000232]
+SurveyExpDegree,294,changed,3,,[9049200],[10000233]
+SurveyExpDegree,295,changed,3,,[9087600],[10000234]
+SurveyExpDegree,296,changed,3,,[9126000],[10000235]
+SurveyExpDegree,297,changed,3,,[9164400],[10000236]
+SurveyExpDegree,298,changed,3,,[9202800],[10000237]
+SurveyExpDegree,299,changed,3,,[9241200],[10000238]
+SurveyExpDegree,300,changed,3,,[9279600],[10000239]
+SurveyExpDegree,301,changed,3,,[9318000],[10000240]
+SurveyExpDegree,302,changed,3,,[9356400],[10000241]
+SurveyExpDegree,303,changed,3,,[9394800],[10000242]
+SurveyExpDegree,304,changed,3,,[9433200],[10000243]
+SurveyExpDegree,305,changed,3,,[9471600],[10000244]
+SurveyExpDegree,306,changed,3,,[9510000],[10000245]
+SurveyExpDegree,307,changed,3,,[9548400],[10000246]
+SurveyExpDegree,308,changed,3,,[9586800],[10000247]
+SurveyExpDegree,309,changed,3,,[9625200],[10000248]
+SurveyExpDegree,310,changed,3,,[9663600],[10000249]
+SurveyExpDegree,311,changed,3,,[9702000],[10000250]
+SurveyExpDegree,312,changed,3,,[9740400],[10000251]
+SurveyExpDegree,313,changed,3,,[9778800],[10000252]
+SurveyExpDegree,314,changed,3,,[9817200],[10000253]
+SurveyExpDegree,315,changed,3,,[9855600],[10000254]
+SurveyExpDegree,316,changed,3,,[9894000],[10000255]
+SurveyExpDegree,317,changed,3,,[9932400],[10000256]
+SurveyExpDegree,318,changed,3,,[9970800],[10000257]
+SurveyExpDegree,319,changed,3,,[10009200],[10000258]
+SurveyExpDegree,320,changed,3,,[10047600],[10000259]
+SurveyExpDegree,321,changed,3,,[10086000],[10000260]
+SurveyExpDegree,322,changed,3,,[10124400],[10000261]
+SurveyExpDegree,323,changed,3,,[10162800],[10000262]
+SurveyExpDegree,324,changed,3,,[10201200],[10000263]
+SurveyExpDegree,325,changed,3,,[10239600],[10000264]
+SurveyExpDegree,326,changed,3,,[10278000],[10000265]
+SurveyExpDegree,327,changed,3,,[10316400],[10000266]
+SurveyExpDegree,328,changed,3,,[10354800],[10000267]
+SurveyExpDegree,329,changed,3,,[10393200],[10000268]
+SurveyExpDegree,330,changed,3,,[10431600],[10000269]
+SurveyExpDegree,331,changed,3,,[10470000],[10000270]
+SurveyExpDegree,332,changed,3,,[10508400],[10000271]
+SurveyExpDegree,333,changed,3,,[10546800],[10000272]
+SurveyExpDegree,334,changed,3,,[10585200],[10000273]
+SurveyExpDegree,335,changed,3,,[10623600],[10000274]
+SurveyExpDegree,336,changed,3,,[10662000],[10000275]
+SurveyExpDegree,337,changed,3,,[10700400],[10000276]
+SurveyExpDegree,338,changed,3,,[10738800],[10000277]
+SurveyExpDegree,339,changed,3,,[10777200],[10000278]
+SurveyExpDegree,340,changed,3,,[10815600],[10000279]
+SurveyExpDegree,341,changed,3,,[10854000],[10000280]
+SurveyExpDegree,342,changed,3,,[10892400],[10000281]
+SurveyExpDegree,343,changed,3,,[10930800],[10000282]
+SurveyExpDegree,344,changed,3,,[10969200],[10000283]
+SurveyExpDegree,345,changed,3,,[11007600],[10000284]
+SurveyExpDegree,346,changed,3,,[11046000],[10000285]
+SurveyExpDegree,347,changed,3,,[11084400],[10000286]
+SurveyExpDegree,348,changed,3,,[11122800],[10000287]
+SurveyExpDegree,349,changed,3,,[11161200],[10000288]
+SurveyExpDegree,350,changed,3,,[11199600],[10000289]
+SurveyExpDegree,351,changed,3,,[11238000],[10000290]
+SurveyExpDegree,352,changed,3,,[11276400],[10000291]
+SurveyExpDegree,353,changed,3,,[11314800],[10000292]
+SurveyExpDegree,354,changed,3,,[11353200],[10000293]
+SurveyExpDegree,355,changed,3,,[11391600],[10000294]
+SurveyExpDegree,356,changed,3,,[11430000],[10000295]
+SurveyExpDegree,357,changed,3,,[11468400],[10000296]
+SurveyExpDegree,358,changed,3,,[11506800],[10000297]
+SurveyExpDegree,359,changed,3,,[11545200],[10000298]
+SurveyExpDegree,360,changed,3,,[11583600],[10000299]
+SurveyExpDegree,361,changed,3,,[11622000],[10000300]
+SurveyExpDegree,362,changed,3,,[11660400],[10000301]
+SurveyExpDegree,363,changed,3,,[11698800],[10000302]
+SurveyExpDegree,364,changed,3,,[11737200],[10000303]
+SurveyExpDegree,365,changed,3,,[11775600],[10000304]
+SurveyExpDegree,366,changed,3,,[11814000],[10000305]
+SurveyExpDegree,367,changed,3,,[11852400],[10000306]
+SurveyExpDegree,368,changed,3,,[11890800],[10000307]
+SurveyExpDegree,369,changed,3,,[11929200],[10000308]
+SurveyExpDegree,370,changed,3,,[11967600],[10000309]
+SurveyExpDegree,371,changed,3,,[12006000],[10000310]
+SurveyExpDegree,372,changed,3,,[12044400],[10000311]
+SurveyExpDegree,373,changed,3,,[12082800],[10000312]
+SurveyExpDegree,374,changed,3,,[12121200],[10000313]
+SurveyExpDegree,375,changed,3,,[12159600],[10000314]
+SurveyExpDegree,376,changed,3,,[12198000],[10000315]
+SurveyExpDegree,377,changed,3,,[12236400],[10000316]
+SurveyExpDegree,378,changed,3,,[12274800],[10000317]
+SurveyExpDegree,379,changed,3,,[12313200],[10000318]
+SurveyExpDegree,380,changed,3,,[12351600],[10000319]
+SurveyExpDegree,381,changed,3,,[12390000],[10000320]
+SurveyExpDegree,382,changed,3,,[12428400],[10000321]
+SurveyExpDegree,383,changed,3,,[12466800],[10000322]
+SurveyExpDegree,384,changed,3,,[12505200],[10000323]
+SurveyExpDegree,385,changed,3,,[12543600],[10000324]
+SurveyExpDegree,386,changed,3,,[12582000],[10000325]
+SurveyExpDegree,387,changed,3,,[12620400],[10000326]
+SurveyExpDegree,388,changed,3,,[12658800],[10000327]
+SurveyExpDegree,389,changed,3,,[12697200],[10000328]
+SurveyExpDegree,390,changed,3,,[12735600],[10000329]
+SurveyExpDegree,391,changed,3,,[12774000],[10000330]
+SurveyExpDegree,392,changed,3,,[12812400],[10000331]
+SurveyExpDegree,393,changed,3,,[12850800],[10000332]
+SurveyExpDegree,394,changed,3,,[12889200],[10000333]
+SurveyExpDegree,395,changed,3,,[12927600],[10000334]
+SurveyExpDegree,396,changed,3,,[12966000],[10000335]
+SurveyExpDegree,397,changed,3,,[13004400],[10000336]
+SurveyExpDegree,398,changed,3,,[13042800],[10000337]
+SurveyExpDegree,399,changed,3,,[13081200],[10000338]
+SurveyExpDegree,400,changed,3,,[13119600],[10000339]
+SurveyExpDegree,401,changed,3,,[13158000],[10000340]
+SurveyExpDegree,402,changed,3,,[13196400],[10000341]
+SurveyExpDegree,403,changed,3,,[13234800],[10000342]
+SurveyExpDegree,404,changed,3,,[13273200],[10000343]
+SurveyExpDegree,405,changed,3,,[13311600],[10000344]
+SurveyExpDegree,406,changed,3,,[13350000],[10000345]
+SurveyExpDegree,407,changed,3,,[13388400],[10000346]
+SurveyExpDegree,408,changed,3,,[13426800],[10000347]
+SurveyExpDegree,409,changed,3,,[13465200],[10000348]
+SurveyExpDegree,410,changed,3,,[13503600],[10000349]
+SurveyExpDegree,411,changed,3,,[13542000],[10000350]
+SurveyExpDegree,412,changed,3,,[13580400],[10000351]
+SurveyExpDegree,413,changed,3,,[13618800],[10000352]
+SurveyExpDegree,414,changed,3,,[13657200],[10000353]
+SurveyExpDegree,415,changed,3,,[13695600],[10000354]
+SurveyExpDegree,416,changed,3,,[13734000],[10000355]
+SurveyExpDegree,417,changed,3,,[13772400],[10000356]
+SurveyExpDegree,418,changed,3,,[13810800],[10000357]
+SurveyExpDegree,419,changed,3,,[13849200],[10000358]
+SurveyExpDegree,420,changed,3,,[13887600],[10000359]
+SurveyExpDegree,421,changed,3,,[13926000],[10000360]
+SurveyExpDegree,422,changed,3,,[13964400],[10000361]
+SurveyExpDegree,423,changed,3,,[14002800],[10000362]
+SurveyExpDegree,424,changed,3,,[14041200],[10000363]
+SurveyExpDegree,425,changed,3,,[14079600],[10000364]
+SurveyExpDegree,426,changed,3,,[14118000],[10000365]
+SurveyExpDegree,427,changed,3,,[14156400],[10000366]
+SurveyExpDegree,428,changed,3,,[14194800],[10000367]
+SurveyExpDegree,429,changed,3,,[14233200],[10000368]
+SurveyExpDegree,430,changed,3,,[14271600],[10000369]
+SurveyExpDegree,431,changed,3,,[14310000],[10000370]
+SurveyExpDegree,432,changed,3,,[14348400],[10000371]
+SurveyExpDegree,433,changed,3,,[14386800],[10000372]
+SurveyExpDegree,434,changed,3,,[14425200],[10000373]
+SurveyExpDegree,435,changed,3,,[14463600],[10000374]
+SurveyExpDegree,436,changed,3,,[14502000],[10000375]
+SurveyExpDegree,437,changed,3,,[14540400],[10000376]
+SurveyExpDegree,438,changed,3,,[14578800],[10000377]
+SurveyExpDegree,439,changed,3,,[14617200],[10000378]
+SurveyExpDegree,440,changed,3,,[14655600],[10000379]
+SurveyExpDegree,441,changed,3,,[14694000],[10000380]
+SurveyExpDegree,442,changed,3,,[14732400],[10000381]
+SurveyExpDegree,443,changed,3,,[14770800],[10000382]
+SurveyExpDegree,444,changed,3,,[14809200],[10000383]
+SurveyExpDegree,445,changed,3,,[14847600],[10000384]
+SurveyExpDegree,446,changed,3,,[14886000],[10000385]
+SurveyExpDegree,447,changed,3,,[14924400],[10000386]
+SurveyExpDegree,448,changed,3,,[14962800],[10000387]
+SurveyExpDegree,449,changed,3,,[15001200],[10000388]
+SurveyExpDegree,450,changed,3,,[15039600],[10000389]
+SurveyExpDegree,451,changed,3,,[15078000],[10000390]
+SurveyExpDegree,452,changed,3,,[15116400],[10000391]
+SurveyExpDegree,453,changed,3,,[15154800],[10000392]
+SurveyExpDegree,454,changed,3,,[15193200],[10000393]
+SurveyExpDegree,455,changed,3,,[15231600],[10000394]
+SurveyExpDegree,456,changed,3,,[15270000],[10000395]
+SurveyExpDegree,457,changed,3,,[15308400],[10000396]
+SurveyExpDegree,458,changed,3,,[15346800],[10000397]
+SurveyExpDegree,459,changed,3,,[15385200],[10000398]
+SurveyExpDegree,460,changed,3,,[15423600],[10000399]
+SurveyExpDegree,461,changed,3,,[15462000],[10000400]
+SurveyExpDegree,462,changed,3,,[15500400],[10000401]
+SurveyExpDegree,463,changed,3,,[15538800],[10000402]
+SurveyExpDegree,464,changed,3,,[15577200],[10000403]
+SurveyExpDegree,465,changed,3,,[15615600],[10000404]
+SurveyExpDegree,466,changed,3,,[15654000],[10000405]
+SurveyExpDegree,467,changed,3,,[15692400],[10000406]
+SurveyExpDegree,468,changed,3,,[15730800],[10000407]
+SurveyExpDegree,469,changed,3,,[15769200],[10000408]
+SurveyExpDegree,470,changed,3,,[15807600],[10000409]
+SurveyExpDegree,471,changed,3,,[15846000],[10000410]
+SurveyExpDegree,472,changed,3,,[15884400],[10000411]
+SurveyExpDegree,473,changed,3,,[15922800],[10000412]
+SurveyExpDegree,474,changed,3,,[15961200],[10000413]
+SurveyExpDegree,475,changed,3,,[15999600],[10000414]
+SurveyExpDegree,476,changed,3,,[16038000],[10000415]
+SurveyExpDegree,477,changed,3,,[16076400],[10000416]
+SurveyExpDegree,478,changed,3,,[16114800],[10000417]
+SurveyExpDegree,479,changed,3,,[16153200],[10000418]
+SurveyExpDegree,480,changed,3,,[16191600],[10000419]
+SurveyExpDegree,481,changed,3,,[16230000],[10000420]
+SurveyExpDegree,482,changed,3,,[16268400],[10000421]
+SurveyExpDegree,483,changed,3,,[16306800],[10000422]
+SurveyExpDegree,484,changed,3,,[16345200],[10000423]
+SurveyExpDegree,485,changed,3,,[16383600],[10000424]
+SurveyExpDegree,486,changed,3,,[16422000],[10000425]
+SurveyExpDegree,487,changed,3,,[16460400],[10000426]
+SurveyExpDegree,488,changed,3,,[16498800],[10000427]
+SurveyExpDegree,489,changed,3,,[16537200],[10000428]
+SurveyExpDegree,490,changed,3,,[16575600],[10000429]
+SurveyExpDegree,491,changed,3,,[16614000],[10000430]
+SurveyExpDegree,492,changed,3,,[16652400],[10000431]
+SurveyExpDegree,493,changed,3,,[16690800],[10000432]
+SurveyExpDegree,494,changed,3,,[16729200],[10000433]
+SurveyExpDegree,495,changed,3,,[16767600],[10000434]
+SurveyExpDegree,496,changed,3,,[16806000],[10000435]
+SurveyExpDegree,497,changed,3,,[16844400],[10000436]
+SurveyExpDegree,498,changed,3,,[16882800],[10000437]
+SurveyExpDegree,499,changed,3,,[16921200],[10000438]
+SurveyExpDegree,500,changed,3,,[16959600],[10000439]
+SurveyExpDegree,501,changed,3,,[16998000],[10000440]
+SurveyExpDegree,502,changed,3,,[17036400],[10000441]
+SurveyExpDegree,503,changed,3,,[17074800],[10000442]
+SurveyExpDegree,504,changed,3,,[17113200],[10000443]
+SurveyExpDegree,505,changed,3,,[17151600],[10000444]
+SurveyExpDegree,506,changed,3,,[17190000],[10000445]
+SurveyExpDegree,507,changed,3,,[17228400],[10000446]
+SurveyExpDegree,508,changed,3,,[17266800],[10000447]
+SurveyExpDegree,509,changed,3,,[17305200],[10000448]
+SurveyExpDegree,510,changed,3,,[17343600],[10000449]
+SurveyExpDegree,511,changed,3,,[17382000],[10000450]
+SurveyExpDegree,512,changed,3,,[17420400],[10000451]
+SurveyExpDegree,513,changed,3,,[17458800],[10000452]
+SurveyExpDegree,514,changed,3,,[17497200],[10000453]
+SurveyExpDegree,515,changed,3,,[17535600],[10000454]
+SurveyExpDegree,516,changed,3,,[17574000],[10000455]
+SurveyExpDegree,517,changed,3,,[17612400],[10000456]
+SurveyExpDegree,518,changed,3,,[17650800],[10000457]
+SurveyExpDegree,519,changed,3,,[17689200],[10000458]
+SurveyExpDegree,520,changed,3,,[17727600],[10000459]
+SurveyExpDegree,521,changed,3,,[17766000],[10000460]
+SurveyExpDegree,522,changed,3,,[17804400],[10000461]
+SurveyExpDegree,523,changed,3,,[17842800],[10000462]
+SurveyExpDegree,524,changed,3,,[17881200],[10000463]
+SurveyExpDegree,525,changed,3,,[17919600],[10000464]
+SurveyExpDegree,526,changed,3,,[17958000],[10000465]
+SurveyExpDegree,527,changed,3,,[17996400],[10000466]
+SurveyExpDegree,528,changed,3,,[18034800],[10000467]
+SurveyExpDegree,529,changed,3,,[18073200],[10000468]
+SurveyExpDegree,530,changed,3,,[18111600],[10000469]
+SurveyExpDegree,531,changed,3,,[18150000],[10000470]
+SurveyExpDegree,532,changed,3,,[18188400],[10000471]
+SurveyExpDegree,533,changed,3,,[18226800],[10000472]
+SurveyExpDegree,534,changed,3,,[18265200],[10000473]
+SurveyExpDegree,535,changed,3,,[18303600],[10000474]
+SurveyExpDegree,536,changed,3,,[18342000],[10000475]
+SurveyExpDegree,537,changed,3,,[18380400],[10000476]
+SurveyExpDegree,538,changed,3,,[18418800],[10000477]
+SurveyExpDegree,539,changed,3,,[18457200],[10000478]
+SurveyExpDegree,540,changed,3,,[18495600],[10000479]
+SurveyExpDegree,541,changed,3,,[18534000],[10000480]
+SurveyExpDegree,542,changed,3,,[18572400],[10000481]
+SurveyExpDegree,543,changed,3,,[18610800],[10000482]
+SurveyExpDegree,544,changed,3,,[18649200],[10000483]
+SurveyExpDegree,545,changed,3,,[18687600],[10000484]
+SurveyExpDegree,546,changed,3,,[18726000],[10000485]
+SurveyExpDegree,547,changed,3,,[18764400],[10000486]
+SurveyExpDegree,548,changed,3,,[18802800],[10000487]
+SurveyExpDegree,549,changed,3,,[18841200],[10000488]
+SurveyExpDegree,550,changed,3,,[18879600],[10000489]
+SurveyExpDegree,551,changed,3,,[18918000],[10000490]
+SurveyExpDegree,552,changed,3,,[18956400],[10000491]
+SurveyExpDegree,553,changed,3,,[18994800],[10000492]
+SurveyExpDegree,554,changed,3,,[19033200],[10000493]
+SurveyExpDegree,555,changed,3,,[19071600],[10000494]
+SurveyExpDegree,556,changed,3,,[19110000],[10000495]
+SurveyExpDegree,557,changed,3,,[19148400],[10000496]
+SurveyExpDegree,558,changed,3,,[19186800],[10000497]
+SurveyExpDegree,559,changed,3,,[19225200],[10000498]
+SurveyExpDegree,560,changed,3,,[19263600],[10000499]
+SurveyExpDegree,561,changed,3,,[19302000],[10000500]
+SurveyExpDegree,562,changed,3,,[19340400],[10000501]
+SurveyExpDegree,563,changed,3,,[19378800],[10000502]
+SurveyExpDegree,564,changed,3,,[19417200],[10000503]
+SurveyExpDegree,565,changed,3,,[19455600],[10000504]
+SurveyExpDegree,566,changed,3,,[19494000],[10000505]
+SurveyExpDegree,567,changed,3,,[19532400],[10000506]
+SurveyExpDegree,568,changed,3,,[19570800],[10000507]
+SurveyExpDegree,569,changed,3,,[19609200],[10000508]
+SurveyExpDegree,570,changed,3,,[19647600],[10000509]
+SurveyExpDegree,571,changed,3,,[19686000],[10000510]
+SurveyExpDegree,572,changed,3,,[19724400],[10000511]
+SurveyExpDegree,573,changed,3,,[19762800],[10000512]
+SurveyExpDegree,574,changed,3,,[19801200],[10000513]
+SurveyExpDegree,575,changed,3,,[19839600],[10000514]
+SurveyExpDegree,576,changed,3,,[19878000],[10000515]
+SurveyExpDegree,577,changed,3,,[19916400],[10000516]
+SurveyExpDegree,578,changed,3,,[19954800],[10000517]
+SurveyExpDegree,579,changed,3,,[19993200],[10000518]
+SurveyExpDegree,580,changed,3,,[20031600],[10000519]
+SurveyExpDegree,581,changed,3,,[20070000],[10000520]
+SurveyExpDegree,582,changed,3,,[20108400],[10000521]
+SurveyExpDegree,583,changed,3,,[20146800],[10000522]
+SurveyExpDegree,584,changed,3,,[20185200],[10000523]
+SurveyExpDegree,585,changed,3,,[20223600],[10000524]
+SurveyExpDegree,586,changed,3,,[20262000],[10000525]
+SurveyExpDegree,587,changed,3,,[20300400],[10000526]
+SurveyExpDegree,588,changed,3,,[20338800],[10000527]
+SurveyExpDegree,589,changed,3,,[20377200],[10000528]
+SurveyExpDegree,590,changed,3,,[20415600],[10000529]
+SurveyExpDegree,591,changed,3,,[20454000],[10000530]
+SurveyExpDegree,592,changed,3,,[20492400],[10000531]
+SurveyExpDegree,593,changed,3,,[20530800],[10000532]
+SurveyExpDegree,594,changed,3,,[20569200],[10000533]
+SurveyExpDegree,595,changed,3,,[20607600],[10000534]
+SurveyExpDegree,596,changed,3,,[20646000],[10000535]
+SurveyExpDegree,597,changed,3,,[20684400],[10000536]
+SurveyExpDegree,598,changed,3,,[20722800],[10000537]
+SurveyExpDegree,599,changed,3,,[20761200],[10000538]
+SurveyExpDegree,600,changed,3,,[20799600],[10000539]
+SurveyExpDegree,601,changed,3,,[20838000],[10000540]
+SurveyExpDegree,602,changed,3,,[20876400],[10000541]
+SurveyExpDegree,603,changed,3,,[20914800],[10000542]
+SurveyExpDegree,604,changed,3,,[20953200],[10000543]
+SurveyExpDegree,605,changed,3,,[20991600],[10000544]
+SurveyExpDegree,606,changed,3,,[21030000],[10000545]
+SurveyExpDegree,607,changed,3,,[21068400],[10000546]
+SurveyExpDegree,608,changed,3,,[21106800],[10000547]
+SurveyExpDegree,609,changed,3,,[21145200],[10000548]
+SurveyExpDegree,610,changed,3,,[21183600],[10000549]
+SurveyExpDegree,611,changed,3,,[21222000],[10000550]
+SurveyExpDegree,612,changed,3,,[21260400],[10000551]
+SurveyExpDegree,613,changed,3,,[21298800],[10000552]
+SurveyExpDegree,614,changed,3,,[21337200],[10000553]
+SurveyExpDegree,615,changed,3,,[21375600],[10000554]
+SurveyExpDegree,616,changed,3,,[21414000],[10000555]
+SurveyExpDegree,617,changed,3,,[21452400],[10000556]
+SurveyExpDegree,618,changed,3,,[21490800],[10000557]
+SurveyExpDegree,619,changed,3,,[21529200],[10000558]
+SurveyExpDegree,620,changed,3,,[21567600],[10000559]
+SurveyExpDegree,621,changed,3,,[21606000],[10000560]
+SurveyExpDegree,622,changed,3,,[21644400],[10000561]
+SurveyExpDegree,623,changed,3,,[21682800],[10000562]
+SurveyExpDegree,624,changed,3,,[21721200],[10000563]
+SurveyExpDegree,625,changed,3,,[21759600],[10000564]
+SurveyExpDegree,626,changed,3,,[21798000],[10000565]
+SurveyExpDegree,627,changed,3,,[21836400],[10000566]
+SurveyExpDegree,628,changed,3,,[21874800],[10000567]
+SurveyExpDegree,629,changed,3,,[21913200],[10000568]
+SurveyExpDegree,630,changed,3,,[21951600],[10000569]
+SurveyExpDegree,631,changed,3,,[21990000],[10000570]
+SurveyExpDegree,632,changed,3,,[22028400],[10000571]
+SurveyExpDegree,633,changed,3,,[22066800],[10000572]
+SurveyExpDegree,634,changed,3,,[22105200],[10000573]
+SurveyExpDegree,635,changed,3,,[22143600],[10000574]
+SurveyExpDegree,636,changed,3,,[22182000],[10000575]
+SurveyExpDegree,637,changed,3,,[22220400],[10000576]
+SurveyExpDegree,638,changed,3,,[22258800],[10000577]
+SurveyExpDegree,639,changed,3,,[22297200],[10000578]
+SurveyExpDegree,640,changed,3,,[22335600],[10000579]
+SurveyExpDegree,641,changed,3,,[22374000],[10000580]
+SurveyExpDegree,642,changed,3,,[22412400],[10000581]
+SurveyExpDegree,643,changed,3,,[22450800],[10000582]
+SurveyExpDegree,644,changed,3,,[22489200],[10000583]
+SurveyExpDegree,645,changed,3,,[22527600],[10000584]
+SurveyExpDegree,646,changed,3,,[22566000],[10000585]
+SurveyExpDegree,647,changed,3,,[22604400],[10000586]
+SurveyExpDegree,648,changed,3,,[22642800],[10000587]
+SurveyExpDegree,649,changed,3,,[22681200],[10000588]
+SurveyExpDegree,650,changed,3,,[22719600],[10000589]
+SurveyExpDegree,651,changed,3,,[22758000],[10000590]
+SurveyExpDegree,652,changed,3,,[22796400],[10000591]
+SurveyExpDegree,653,changed,3,,[22834800],[10000592]
+SurveyExpDegree,654,changed,3,,[22873200],[10000593]
+SurveyExpDegree,655,changed,3,,[22911600],[10000594]
+SurveyExpDegree,656,changed,3,,[22950000],[10000595]
+SurveyExpDegree,657,changed,3,,[22988400],[10000596]
+SurveyExpDegree,658,changed,3,,[23026800],[10000597]
+SurveyExpDegree,659,changed,3,,[23065200],[10000598]
+SurveyExpDegree,660,changed,3,,[23103600],[10000599]
+SurveyExpDegree,661,changed,3,,[23142000],[10000600]
+SurveyExpDegree,662,changed,3,,[23180400],[10000601]
+SurveyExpDegree,663,changed,3,,[23218800],[10000602]
+SurveyExpDegree,664,changed,3,,[23257200],[10000603]
+SurveyExpDegree,665,changed,3,,[23295600],[10000604]
+SurveyExpDegree,666,changed,3,,[23334000],[10000605]
+SurveyExpDegree,667,changed,3,,[23372400],[10000606]
+SurveyExpDegree,668,changed,3,,[23410800],[10000607]
+SurveyExpDegree,669,changed,3,,[23449200],[10000608]
+SurveyExpDegree,670,changed,3,,[23487600],[10000609]
+SurveyExpDegree,671,changed,3,,[23526000],[10000610]
+SurveyExpDegree,672,changed,3,,[23564400],[10000611]
+SurveyExpDegree,673,changed,3,,[23602800],[10000612]
+SurveyExpDegree,674,changed,3,,[23641200],[10000613]
+SurveyExpDegree,675,changed,3,,[23679600],[10000614]
+SurveyExpDegree,676,changed,3,,[23718000],[10000615]
+SurveyExpDegree,677,changed,3,,[23756400],[10000616]
+SurveyExpDegree,678,changed,3,,[23794800],[10000617]
+SurveyExpDegree,679,changed,3,,[23833200],[10000618]
+SurveyExpDegree,680,changed,3,,[23871600],[10000619]
+SurveyExpDegree,681,changed,3,,[23910000],[10000620]
+SurveyExpDegree,682,changed,3,,[23948400],[10000621]
+SurveyExpDegree,683,changed,3,,[23986800],[10000622]
+SurveyExpDegree,684,changed,3,,[24025200],[10000623]
+SurveyExpDegree,685,changed,3,,[24063600],[10000624]
+SurveyExpDegree,686,changed,3,,[24102000],[10000625]
+SurveyExpDegree,687,changed,3,,[24140400],[10000626]
+SurveyExpDegree,688,changed,3,,[24178800],[10000627]
+SurveyExpDegree,689,changed,3,,[24217200],[10000628]
+SurveyExpDegree,690,changed,3,,[24255600],[10000629]
+SurveyExpDegree,691,changed,3,,[24294000],[10000630]
+SurveyExpDegree,692,changed,3,,[24332400],[10000631]
+SurveyExpDegree,693,changed,3,,[24370800],[10000632]
+SurveyExpDegree,694,changed,3,,[24409200],[10000633]
+SurveyExpDegree,695,changed,3,,[24447600],[10000634]
+SurveyExpDegree,696,changed,3,,[24486000],[10000635]
+SurveyExpDegree,697,changed,3,,[24524400],[10000636]
+SurveyExpDegree,698,changed,3,,[24562800],[10000637]
+SurveyExpDegree,699,changed,3,,[24601200],[10000638]
+SurveyExpDegree,700,changed,3,,[24639600],[10000639]
+SurveyExpDegree,701,changed,3,,[24678000],[10000640]
+SurveyExpDegree,702,changed,3,,[24716400],[10000641]
+SurveyExpDegree,703,changed,3,,[24754800],[10000642]
+SurveyExpDegree,704,changed,3,,[24793200],[10000643]
+SurveyExpDegree,705,changed,3,,[24831600],[10000644]
+SurveyExpDegree,706,changed,3,,[24870000],[10000645]
+SurveyExpDegree,707,changed,3,,[24908400],[10000646]
+SurveyExpDegree,708,changed,3,,[24946800],[10000647]
+SurveyExpDegree,709,changed,3,,[24985200],[10000648]
+SurveyExpDegree,710,changed,3,,[25023600],[10000649]
+SurveyExpDegree,711,changed,3,,[25062000],[10000650]
+SurveyExpDegree,712,changed,3,,[25100400],[10000651]
+SurveyExpDegree,713,changed,3,,[25138800],[10000652]
+SurveyExpDegree,714,changed,3,,[25177200],[10000653]
+SurveyExpDegree,715,changed,3,,[25215600],[10000654]
+SurveyExpDegree,716,changed,3,,[25254000],[10000655]
+SurveyExpDegree,717,changed,3,,[25292400],[10000656]
+SurveyExpDegree,718,changed,3,,[25330800],[10000657]
+SurveyExpDegree,719,changed,3,,[25369200],[10000658]
+SurveyExpDegree,720,changed,3,,[25407600],[10000659]
+SurveyExpDegree,721,changed,3,,[25446000],[10000660]
+SurveyExpDegree,722,changed,3,,[25484400],[10000661]
+SurveyExpDegree,723,changed,3,,[25522800],[10000662]
+SurveyExpDegree,724,changed,3,,[25561200],[10000663]
+SurveyExpDegree,725,changed,3,,[25599600],[10000664]
+SurveyExpDegree,726,changed,3,,[25638000],[10000665]
+SurveyExpDegree,727,changed,3,,[25676400],[10000666]
+SurveyExpDegree,728,changed,3,,[25714800],[10000667]
+SurveyExpDegree,729,changed,3,,[25753200],[10000668]
+SurveyExpDegree,730,changed,3,,[25791600],[10000669]
+SurveyExpDegree,731,changed,3,,[25830000],[10000670]
+SurveyExpDegree,732,changed,3,,[25868400],[10000671]
+SurveyExpDegree,733,changed,3,,[25906800],[10000672]
+SurveyExpDegree,734,changed,3,,[25945200],[10000673]
+SurveyExpDegree,735,changed,3,,[25983600],[10000674]
+SurveyExpDegree,736,changed,3,,[26022000],[10000675]
+SurveyExpDegree,737,changed,3,,[26060400],[10000676]
+SurveyExpDegree,738,changed,3,,[26098800],[10000677]
+SurveyExpDegree,739,changed,3,,[26137200],[10000678]
+SurveyExpDegree,740,changed,3,,[26175600],[10000679]
+SurveyExpDegree,741,changed,3,,[26214000],[10000680]
+SurveyExpDegree,742,changed,3,,[26252400],[10000681]
+SurveyExpDegree,743,changed,3,,[26290800],[10000682]
+SurveyExpDegree,744,changed,3,,[26329200],[10000683]
+SurveyExpDegree,745,changed,3,,[26367600],[10000684]
+SurveyExpDegree,746,changed,3,,[26406000],[10000685]
+SurveyExpDegree,747,changed,3,,[26444400],[10000686]
+SurveyExpDegree,748,changed,3,,[26482800],[10000687]
+SurveyExpDegree,749,changed,3,,[26521200],[10000688]
+SurveyExpDegree,750,changed,3,,[26559600],[10000689]
+SurveyExpDegree,751,changed,3,,[26598000],[10000690]
+SurveyExpDegree,752,changed,3,,[26636400],[10000691]
+SurveyExpDegree,753,changed,3,,[26674800],[10000692]
+SurveyExpDegree,754,changed,3,,[26713200],[10000693]
+SurveyExpDegree,755,changed,3,,[26751600],[10000694]
+SurveyExpDegree,756,changed,3,,[26790000],[10000695]
+SurveyExpDegree,757,changed,3,,[26828400],[10000696]
+SurveyExpDegree,758,changed,3,,[26866800],[10000697]
+SurveyExpDegree,759,changed,3,,[26905200],[10000698]
+SurveyExpDegree,760,changed,3,,[26943600],[10000699]
+SurveyExpDegree,761,changed,3,,[26982000],[10000700]
+SurveyExpDegree,762,changed,3,,[27020400],[10000701]
+SurveyExpDegree,763,changed,3,,[27058800],[10000702]
+SurveyExpDegree,764,changed,3,,[27097200],[10000703]
+SurveyExpDegree,765,changed,3,,[27135600],[10000704]
+SurveyExpDegree,766,changed,3,,[27174000],[10000705]
+SurveyExpDegree,767,changed,3,,[27212400],[10000706]
+SurveyExpDegree,768,changed,3,,[27250800],[10000707]
+SurveyExpDegree,769,changed,3,,[27289200],[10000708]
+SurveyExpDegree,770,changed,3,,[27327600],[10000709]
+SurveyExpDegree,771,changed,3,,[27366000],[10000710]
+SurveyExpDegree,772,changed,3,,[27404400],[10000711]
+SurveyExpDegree,773,changed,3,,[27442800],[10000712]
+SurveyExpDegree,774,changed,3,,[27481200],[10000713]
+SurveyExpDegree,775,changed,3,,[27519600],[10000714]
+SurveyExpDegree,776,changed,3,,[27558000],[10000715]
+SurveyExpDegree,777,changed,3,,[27596400],[10000716]
+SurveyExpDegree,778,changed,3,,[27634800],[10000717]
+SurveyExpDegree,779,changed,3,,[27673200],[10000718]
+SurveyExpDegree,780,changed,3,,[27711600],[10000719]
+SurveyExpDegree,781,changed,3,,[27750000],[10000720]
+SurveyExpDegree,782,changed,3,,[27788400],[10000721]
+SurveyExpDegree,783,changed,3,,[27826800],[10000722]
+SurveyExpDegree,784,changed,3,,[27865200],[10000723]
+SurveyExpDegree,785,changed,3,,[27903600],[10000724]
+SurveyExpDegree,786,changed,3,,[27942000],[10000725]
+SurveyExpDegree,787,changed,3,,[27980400],[10000726]
+SurveyExpDegree,788,changed,3,,[28018800],[10000727]
+SurveyExpDegree,789,changed,3,,[28057200],[10000728]
+SurveyExpDegree,790,changed,3,,[28095600],[10000729]
+SurveyExpDegree,791,changed,3,,[28134000],[10000730]
+SurveyExpDegree,792,changed,3,,[28172400],[10000731]
+SurveyExpDegree,793,changed,3,,[28210800],[10000732]
+SurveyExpDegree,794,changed,3,,[28249200],[10000733]
+SurveyExpDegree,795,changed,3,,[28287600],[10000734]
+SurveyExpDegree,796,changed,3,,[28326000],[10000735]
+SurveyExpDegree,797,changed,3,,[28364400],[10000736]
+SurveyExpDegree,798,changed,3,,[28402800],[10000737]
+SurveyExpDegree,799,changed,3,,[28441200],[10000738]
+SurveyExpDegree,800,changed,3,,[28479600],[10000739]
+SurveyExpDegree,801,changed,3,,[28518000],[10000740]
+SurveyExpDegree,802,changed,3,,[28556400],[10000741]
+SurveyExpDegree,803,changed,3,,[28594800],[10000742]
+SurveyExpDegree,804,changed,3,,[28633200],[10000743]
+SurveyExpDegree,805,changed,3,,[28671600],[10000744]
+SurveyExpDegree,806,changed,3,,[28710000],[10000745]
+SurveyExpDegree,807,changed,3,,[28748400],[10000746]
+SurveyExpDegree,808,changed,3,,[28786800],[10000747]
+SurveyExpDegree,809,changed,3,,[28825200],[10000748]
+SurveyExpDegree,810,changed,3,,[28863600],[10000749]
+SurveyExpDegree,811,changed,3,,[28902000],[10000750]
+SurveyExpDegree,812,changed,3,,[28940400],[10000751]
+SurveyExpDegree,813,changed,3,,[28978800],[10000752]
+SurveyExpDegree,814,changed,3,,[29017200],[10000753]
+SurveyExpDegree,815,changed,3,,[29055600],[10000754]
+SurveyExpDegree,816,changed,3,,[29094000],[10000755]
+SurveyExpDegree,817,changed,3,,[29132400],[10000756]
+SurveyExpDegree,818,changed,3,,[29170800],[10000757]
+SurveyExpDegree,819,changed,3,,[29209200],[10000758]
+SurveyExpDegree,820,changed,3,,[29247600],[10000759]
+SurveyExpDegree,821,changed,3,,[29286000],[10000760]
+SurveyExpDegree,822,changed,3,,[29324400],[10000761]
+SurveyExpDegree,823,changed,3,,[29362800],[10000762]
+SurveyExpDegree,824,changed,3,,[29401200],[10000763]
+SurveyExpDegree,825,changed,3,,[29439600],[10000764]
+SurveyExpDegree,826,changed,3,,[29478000],[10000765]
+SurveyExpDegree,827,changed,3,,[29516400],[10000766]
+SurveyExpDegree,828,changed,3,,[29554800],[10000767]
+SurveyExpDegree,829,changed,3,,[29593200],[10000768]
+SurveyExpDegree,830,changed,3,,[29631600],[10000769]
+SurveyExpDegree,831,changed,3,,[29670000],[10000770]
+SurveyExpDegree,832,changed,3,,[29708400],[10000771]
+SurveyExpDegree,833,changed,3,,[29746800],[10000772]
+SurveyExpDegree,834,changed,3,,[29785200],[10000773]
+SurveyExpDegree,835,changed,3,,[29823600],[10000774]
+SurveyExpDegree,836,changed,3,,[29862000],[10000775]
+SurveyExpDegree,837,changed,3,,[29900400],[10000776]
+SurveyExpDegree,838,changed,3,,[29938800],[10000777]
+SurveyExpDegree,839,changed,3,,[29977200],[10000778]
+SurveyExpDegree,840,changed,3,,[30015600],[10000779]
+SurveyExpDegree,841,changed,3,,[30054000],[10000780]
+SurveyExpDegree,842,changed,3,,[30092400],[10000781]
+SurveyExpDegree,843,changed,3,,[30130800],[10000782]
+SurveyExpDegree,844,changed,3,,[30169200],[10000783]
+SurveyExpDegree,845,changed,3,,[30207600],[10000784]
+SurveyExpDegree,846,changed,3,,[30246000],[10000785]
+SurveyExpDegree,847,changed,3,,[30284400],[10000786]
+SurveyExpDegree,848,changed,3,,[30322800],[10000787]
+SurveyExpDegree,849,changed,3,,[30361200],[10000788]
+SurveyExpDegree,850,changed,3,,[30399600],[10000789]
+SurveyExpDegree,851,changed,3,,[30438000],[10000790]
+SurveyExpDegree,852,changed,3,,[30476400],[10000791]
+SurveyExpDegree,853,changed,3,,[30514800],[10000792]
+SurveyExpDegree,854,changed,3,,[30553200],[10000793]
+SurveyExpDegree,855,changed,3,,[30591600],[10000794]
+SurveyExpDegree,856,changed,3,,[30630000],[10000795]
+SurveyExpDegree,857,changed,3,,[30668400],[10000796]
+SurveyExpDegree,858,changed,3,,[30706800],[10000797]
+SurveyExpDegree,859,changed,3,,[30745200],[10000798]
+SurveyExpDegree,860,changed,3,,[30783600],[10000799]
+SurveyExpDegree,861,changed,3,,[30822000],[10000800]
+SurveyExpDegree,862,changed,3,,[30860400],[10000801]
+SurveyExpDegree,863,changed,3,,[30898800],[10000802]
+SurveyExpDegree,864,changed,3,,[30937200],[10000803]
+SurveyExpDegree,865,changed,3,,[30975600],[10000804]
+SurveyExpDegree,866,changed,3,,[31014000],[10000805]
+SurveyExpDegree,867,changed,3,,[31052400],[10000806]
+SurveyExpDegree,868,changed,3,,[31090800],[10000807]
+SurveyExpDegree,869,changed,3,,[31129200],[10000808]
+SurveyExpDegree,870,changed,3,,[31167600],[10000809]
+SurveyExpDegree,871,changed,3,,[31206000],[10000810]
+SurveyExpDegree,872,changed,3,,[31244400],[10000811]
+SurveyExpDegree,873,changed,3,,[31282800],[10000812]
+SurveyExpDegree,874,changed,3,,[31321200],[10000813]
+SurveyExpDegree,875,changed,3,,[31359600],[10000814]
+SurveyExpDegree,876,changed,3,,[31398000],[10000815]
+SurveyExpDegree,877,changed,3,,[31436400],[10000816]
+SurveyExpDegree,878,changed,3,,[31474800],[10000817]
+SurveyExpDegree,879,changed,3,,[31513200],[10000818]
+SurveyExpDegree,880,changed,3,,[31551600],[10000819]
+SurveyExpDegree,881,changed,3,,[31590000],[10000820]
+SurveyExpDegree,882,changed,3,,[31628400],[10000821]
+SurveyExpDegree,883,changed,3,,[31666800],[10000822]
+SurveyExpDegree,884,changed,3,,[31705200],[10000823]
+SurveyExpDegree,885,changed,3,,[31743600],[10000824]
+SurveyExpDegree,886,changed,3,,[31782000],[10000825]
+SurveyExpDegree,887,changed,3,,[31820400],[10000826]
+SurveyExpDegree,888,changed,3,,[31858800],[10000827]
+SurveyExpDegree,889,changed,3,,[31897200],[10000828]
+SurveyExpDegree,890,changed,3,,[31935600],[10000829]
+SurveyExpDegree,891,changed,3,,[31974000],[10000830]
+SurveyExpDegree,892,changed,3,,[32012400],[10000831]
+SurveyExpDegree,893,changed,3,,[32050800],[10000832]
+SurveyExpDegree,894,changed,3,,[32089200],[10000833]
+SurveyExpDegree,895,changed,3,,[32127600],[10000834]
+SurveyExpDegree,896,changed,3,,[32166000],[10000835]
+SurveyExpDegree,897,changed,3,,[32204400],[10000836]
+SurveyExpDegree,898,changed,3,,[32242800],[10000837]
+SurveyExpDegree,899,changed,3,,[32281200],[10000838]
+SurveyExpDegree,900,changed,3,,[32319600],[10000839]
+SurveyExpDegree,901,changed,3,,[32358000],[10000840]
+SurveyExpDegree,902,changed,3,,[32396400],[10000841]
+SurveyExpDegree,903,changed,3,,[32434800],[10000842]
+SurveyExpDegree,904,changed,3,,[32473200],[10000843]
+SurveyExpDegree,905,changed,3,,[32511600],[10000844]
+SurveyExpDegree,906,changed,3,,[32550000],[10000845]
+SurveyExpDegree,907,changed,3,,[32588400],[10000846]
+SurveyExpDegree,908,changed,3,,[32626800],[10000847]
+SurveyExpDegree,909,changed,3,,[32665200],[10000848]
+SurveyExpDegree,910,changed,3,,[32703600],[10000849]
+SurveyExpDegree,911,changed,3,,[32742000],[10000850]
+SurveyExpDegree,912,changed,3,,[32780400],[10000851]
+SurveyExpDegree,913,changed,3,,[32818800],[10000852]
+SurveyExpDegree,914,changed,3,,[32857200],[10000853]
+SurveyExpDegree,915,changed,3,,[32895600],[10000854]
+SurveyExpDegree,916,changed,3,,[32934000],[10000855]
+SurveyExpDegree,917,changed,3,,[32972400],[10000856]
+SurveyExpDegree,918,changed,3,,[33010800],[10000857]
+SurveyExpDegree,919,changed,3,,[33049200],[10000858]
+SurveyExpDegree,920,changed,3,,[33087600],[10000859]
+SurveyExpDegree,921,changed,3,,[33126000],[10000860]
+SurveyExpDegree,922,changed,3,,[33164400],[10000861]
+SurveyExpDegree,923,changed,3,,[33202800],[10000862]
+SurveyExpDegree,924,changed,3,,[33241200],[10000863]
+SurveyExpDegree,925,changed,3,,[33279600],[10000864]
+SurveyExpDegree,926,changed,3,,[33318000],[10000865]
+SurveyExpDegree,927,changed,3,,[33356400],[10000866]
+SurveyExpDegree,928,changed,3,,[33394800],[10000867]
+SurveyExpDegree,929,changed,3,,[33433200],[10000868]
+SurveyExpDegree,930,changed,3,,[33471600],[10000869]
+SurveyExpDegree,931,changed,3,,[33510000],[10000870]
+SurveyExpDegree,932,changed,3,,[33548400],[10000871]
+SurveyExpDegree,933,changed,3,,[33586800],[10000872]
+SurveyExpDegree,934,changed,3,,[33625200],[10000873]
+SurveyExpDegree,935,changed,3,,[33663600],[10000874]
+SurveyExpDegree,936,changed,3,,[33702000],[10000875]
+SurveyExpDegree,937,changed,3,,[33740400],[10000876]
+SurveyExpDegree,938,changed,3,,[33778800],[10000877]
+SurveyExpDegree,939,changed,3,,[33817200],[10000878]
+SurveyExpDegree,940,changed,3,,[33855600],[10000879]
+SurveyExpDegree,941,changed,3,,[33894000],[10000880]
+SurveyExpDegree,942,changed,3,,[33932400],[10000881]
+SurveyExpDegree,943,changed,3,,[33970800],[10000882]
+SurveyExpDegree,944,changed,3,,[34009200],[10000883]
+SurveyExpDegree,945,changed,3,,[34047600],[10000884]
+SurveyExpDegree,946,changed,3,,[34086000],[10000885]
+SurveyExpDegree,947,changed,3,,[34124400],[10000886]
+SurveyExpDegree,948,changed,3,,[34162800],[10000887]
+SurveyExpDegree,949,changed,3,,[34201200],[10000888]
+SurveyExpDegree,950,changed,3,,[34239600],[10000889]
+SurveyExpDegree,951,changed,3,,[34278000],[10000890]
+SurveyExpDegree,952,changed,3,,[34316400],[10000891]
+SurveyExpDegree,953,changed,3,,[34354800],[10000892]
+SurveyExpDegree,954,changed,3,,[34393200],[10000893]
+SurveyExpDegree,955,changed,3,,[34431600],[10000894]
+SurveyExpDegree,956,changed,3,,[34470000],[10000895]
+SurveyExpDegree,957,changed,3,,[34508400],[10000896]
+SurveyExpDegree,958,changed,3,,[34546800],[10000897]
+SurveyExpDegree,959,changed,3,,[34585200],[10000898]
+SurveyExpDegree,960,changed,3,,[34623600],[10000899]
+SurveyExpDegree,961,changed,3,,[34662000],[10000900]
+SurveyExpDegree,962,changed,3,,[34700400],[10000901]
+SurveyExpDegree,963,changed,3,,[34738800],[10000902]
+SurveyExpDegree,964,changed,3,,[34777200],[10000903]
+SurveyExpDegree,965,changed,3,,[34815600],[10000904]
+SurveyExpDegree,966,changed,3,,[34854000],[10000905]
+SurveyExpDegree,967,changed,3,,[34892400],[10000906]
+SurveyExpDegree,968,changed,3,,[34930800],[10000907]
+SurveyExpDegree,969,changed,3,,[34969200],[10000908]
+SurveyExpDegree,970,changed,3,,[35007600],[10000909]
+SurveyExpDegree,971,changed,3,,[35046000],[10000910]
+SurveyExpDegree,972,changed,3,,[35084400],[10000911]
+SurveyExpDegree,973,changed,3,,[35122800],[10000912]
+SurveyExpDegree,974,changed,3,,[35161200],[10000913]
+SurveyExpDegree,975,changed,3,,[35199600],[10000914]
+SurveyExpDegree,976,changed,3,,[35238000],[10000915]
+SurveyExpDegree,977,changed,3,,[35276400],[10000916]
+SurveyExpDegree,978,changed,3,,[35314800],[10000917]
+SurveyExpDegree,979,changed,3,,[35353200],[10000918]
+SurveyExpDegree,980,changed,3,,[35391600],[10000919]
+SurveyExpDegree,981,changed,3,,[35430000],[10000920]
+SurveyExpDegree,982,changed,3,,[35468400],[10000921]
+SurveyExpDegree,983,changed,3,,[35506800],[10000922]
+SurveyExpDegree,984,changed,3,,[35545200],[10000923]
+SurveyExpDegree,985,changed,3,,[35583600],[10000924]
+SurveyExpDegree,986,changed,3,,[35622000],[10000925]
+SurveyExpDegree,987,changed,3,,[35660400],[10000926]
+SurveyExpDegree,988,changed,3,,[35698800],[10000927]
+SurveyExpDegree,989,changed,3,,[35737200],[10000928]
+SurveyExpDegree,990,changed,3,,[35775600],[10000929]
+SurveyExpDegree,991,changed,3,,[35814000],[10000930]
+SurveyExpDegree,992,changed,3,,[35852400],[10000931]
+SurveyExpDegree,993,changed,3,,[35890800],[10000932]
+SurveyExpDegree,994,changed,3,,[35929200],[10000933]
+SurveyExpDegree,995,changed,3,,[35967600],[10000934]
+SurveyExpDegree,996,changed,3,,[36006000],[10000935]
+SurveyExpDegree,997,changed,3,,[36044400],[10000936]
+SurveyExpDegree,998,changed,3,,[36082800],[10000937]
+SurveyExpDegree,999,changed,3,,[99999999],[10000938]
+TaskTargetCfg,14000707101,changed,10,,"[""'11'""]","[""'8'""]"
+TaskTargetCfg,14000709101,changed,10,,"[""'8'""]","[""'6'""]"
+TaskTargetCfg,14000734101,changed,10,,"[""'8'""]","[""'6'""]"

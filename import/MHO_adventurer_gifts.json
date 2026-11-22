@@ -1,0 +1,4617 @@
+{
+ "daily_gift_limit": 5,
+ "note": "Gift category names are our labels (the game shows icons only). Reaction lines keep the game markup; {1} = gift name, {0} = count.",
+ "gifts": [
+  {
+   "id": 90001,
+   "base_bond": 100,
+   "category_id": 1,
+   "name": "Prized Matsutake",
+   "description": "A gift for an adventurer that slightly increases Bond. A rare mushroom from Aesoland with an elegant aroma. Gifting it to an adventurer who cherishes it will bring them great joy.",
+   "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_PreciousMatsutake.png",
+   "rarity": 0,
+   "category": "Food"
+  },
+  {
+   "id": 90002,
+   "base_bond": 200,
+   "category_id": 1,
+   "name": "Black Pearl Roe",
+   "description": "A gift for an adventurer that increases Bond. Fine, plump roe lightly cured with low salt, delicate and savory. Gifting it to an adventurer who cherishes it will bring them great joy.",
+   "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_BlackCaviar.png",
+   "rarity": 0,
+   "category": "Food"
+  },
+  {
+   "id": 90003,
+   "base_bond": 1000,
+   "category_id": 1,
+   "name": "Thick-Cut Tail",
+   "description": "A gift for an adventurer that greatly increases Bond. Thick, succulent tail meat from Barroth, a prized delicacy sought after by gourmands. Gifting it to an adventurer who cherishes it will bring them great joy.",
+   "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_DragonTail.png",
+   "rarity": 0,
+   "category": "Food"
+  },
+  {
+   "id": 90004,
+   "base_bond": 100,
+   "category_id": 2,
+   "name": "Journey Cord",
+   "description": "A gift for an adventurer that increases Bond. A common camp rope that many consider a good luck charm for new journeys. Gifting it to an adventurer who cherishes it will bring them great joy.",
+   "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_StartTethering.png",
+   "rarity": 0,
+   "category": "Expedition Gear"
+  },
+  {
+   "id": 90005,
+   "base_bond": 200,
+   "category_id": 2,
+   "name": "Worn Adventurer Badge",
+   "description": "A gift for an adventurer that increases Bond. A small badge engraved with the guild's mark, a reminder of the nerves felt on one's first departure. Gifting it to an adventurer who cherishes it will bring them great joy.",
+   "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_AdventurerBadge_Old.png",
+   "rarity": 0,
+   "category": "Expedition Gear"
+  },
+  {
+   "id": 90006,
+   "base_bond": 1000,
+   "category_id": 2,
+   "name": "Elder Dragon Banner",
+   "description": "A gift for an adventurer that greatly increases Bond. Proof of participation in a large monster slaying, holding tremendous commemorative value. Gifting it to an adventurer who cherishes it will bring them great joy.",
+   "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_Strap.png",
+   "rarity": 0,
+   "category": "Expedition Gear"
+  },
+  {
+   "id": 90007,
+   "base_bond": 100,
+   "category_id": 3,
+   "name": "Wooden Carving",
+   "description": "A gift for an adventurer that slightly increases Bond. A miniature figurine hand-carved from common wood, simple in design yet rustic and charming. Gifting it to an adventurer who cherishes it will bring them great joy.",
+   "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_WoodCarving.png",
+   "rarity": 0,
+   "category": "Models & Carvings"
+  },
+  {
+   "id": 90008,
+   "base_bond": 200,
+   "category_id": 3,
+   "name": "Vista Display",
+   "description": "A gift for an adventurer that increases Bond. A display model themed around cliff vistas, perfect for long-term display and collection. Gifting it to an adventurer who cherishes it will bring them great joy.",
+   "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_Booth.png",
+   "rarity": 0,
+   "category": "Models & Carvings"
+  },
+  {
+   "id": 90009,
+   "base_bond": 1000,
+   "category_id": 3,
+   "name": "Dome Landscape",
+   "description": "A gift for an adventurer that greatly increases Bond. A dome-shaped landscape ornament that shifts and flows with texture as it turns. Gifting it to an adventurer who cherishes it will bring them great joy.",
+   "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_DomedView.png",
+   "rarity": 0,
+   "category": "Models & Carvings"
+  },
+  {
+   "id": 90010,
+   "base_bond": 100,
+   "category_id": 4,
+   "name": "Glowmoss Bottle",
+   "description": "A gift for an adventurer that slightly increases Bond. Glowing moss contained in a small bottle, providing gentle illumination at night. Gifting it to an adventurer who cherishes it will bring them great joy.",
+   "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_LuminousBottle.png",
+   "rarity": 0,
+   "category": "Natural Curios"
+  },
+  {
+   "id": 90011,
+   "base_bond": 200,
+   "category_id": 4,
+   "name": "Forest Amber",
+   "description": "A gift for an adventurer that increases Bond. Amber formed in the depths of ancient forests, with a warm, lustrous surface and subtle glow. Gifting it to an adventurer who cherishes it will bring them great joy.",
+   "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_ForestAmber.png",
+   "rarity": 0,
+   "category": "Natural Curios"
+  },
+  {
+   "id": 90012,
+   "base_bond": 1000,
+   "category_id": 4,
+   "name": "Moonfeather Chime",
+   "description": "A gift for an adventurer that greatly increases Bond. A wind chime crafted from moon feather flowers that bloom briefly in highland passes, ringing with an airy, melodic chime in the wind. Gifting it to an adventurer who cherishes it will bring them great joy.",
+   "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_TsukihaneKarin.png",
+   "rarity": 0,
+   "category": "Natural Curios"
+  },
+  {
+   "id": 90013,
+   "base_bond": 100,
+   "category_id": 5,
+   "name": "Outlands Poetry",
+   "description": "A gift for an adventurer that slightly increases Bond. A collection of short poems and chants passed down in Outlands camps, often recited as a small ritual to ward off fatigue. Gifting it to an adventurer who cherishes it will bring them great joy.",
+   "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_LiteralTranslatio.png",
+   "rarity": 0,
+   "category": "Books & Music"
+  },
+  {
+   "id": 90014,
+   "base_bond": 200,
+   "category_id": 5,
+   "name": "Bonfire Album",
+   "description": "A gift for an adventurer that increases Bond. A photo album capturing moments of people dancing around bonfire gatherings, a keepsake of shared memories. Gifting it to an adventurer who cherishes it will bring them great joy.",
+   "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_BonfireAlbum.png",
+   "rarity": 0,
+   "category": "Books & Music"
+  },
+  {
+   "id": 90015,
+   "base_bond": 1000,
+   "category_id": 5,
+   "name": "Kulune Songbook",
+   "description": "A gift for an adventurer that greatly increases Bond. A collection of song and dance scores compiled in Kulune Village, documenting local melodies and rhythms. Gifting it to an adventurer who cherishes it will bring them great joy.",
+   "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_MusicalScore_KuluneVillage.png",
+   "rarity": 0,
+   "category": "Books & Music"
+  },
+  {
+   "id": 90016,
+   "base_bond": 100,
+   "category_id": 6,
+   "name": "Adventurer's Charm",
+   "description": "A gift for an adventurer that slightly increases Bond. A small protective charm made with traditional braiding techniques, carrying simple yet sincere blessings. A thoughtful gift loved by all adventurers.",
+   "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_AdventurerBodyguard.png",
+   "rarity": 0,
+   "category": "Keepsakes"
+  },
+  {
+   "id": 90017,
+   "base_bond": 200,
+   "category_id": 6,
+   "name": "Exploration Badge",
+   "description": "A gift for an adventurer that increases Bond. A metal badge bearing the guild's mark, solidly crafted with smooth, rounded edges. A thoughtful gift loved by all adventurers.",
+   "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_KeepsakeDadge.png",
+   "rarity": 0,
+   "category": "Keepsakes"
+  },
+  {
+   "id": 90018,
+   "base_bond": 1000,
+   "category_id": 6,
+   "name": "Journey Memento",
+   "description": "A gift for an adventurer that greatly increases Bond. A finely crafted travel photo album that perfectly preserves every memory of the journey. A thoughtful gift loved by all adventurers.",
+   "icon": "MHMobile/Content/UI/Dynamic/ItemIcon/ItemIcon_JourneySouvenirs.png",
+   "rarity": 0,
+   "category": "Keepsakes"
+  }
+ ],
+ "bond_levels": [
+  {
+   "level": 1,
+   "total_bond": 0
+  },
+  {
+   "level": 2,
+   "total_bond": 1000
+  },
+  {
+   "level": 3,
+   "total_bond": 3000
+  },
+  {
+   "level": 4,
+   "total_bond": 7000
+  },
+  {
+   "level": 5,
+   "total_bond": 15000
+  },
+  {
+   "level": 6,
+   "total_bond": 31000
+  },
+  {
+   "level": 7,
+   "total_bond": 55000
+  },
+  {
+   "level": 8,
+   "total_bond": 87000
+  },
+  {
+   "level": 9,
+   "total_bond": 127000
+  },
+  {
+   "level": 10,
+   "total_bond": 175000
+  }
+ ],
+ "adventurers": [
+  {
+   "id": 101001,
+   "name": "Pyro",
+   "game_status": "In game",
+   "debug": "",
+   "tiers": {
+    "favourite": {
+     "multiplier_percent": 150.0,
+     "categories": [
+      "Expedition Gear",
+      "Keepsakes"
+     ],
+     "category_ids": [
+      2,
+      6
+     ],
+     "reaction_lines": [
+      "Ha! The \"<Orange>{1}</> x{0}\" came at just the right time—I'll use it on the next expedition.",
+      "\"<Orange>{1}</> x{0}\"! I love this kind of straightforwardness. Feels great just holding it.",
+      "Got the \"<Orange>{1}</> x{0}.\" I'll thank you properly after I win.",
+      "This \"<Orange>{1}</> x{0}\" isn't bad—I'll keep an eye out for more.",
+      "\"<Orange>{1}</> x{0}\" makes me want to fight even harder. Hurry up and line up an opponent.",
+      "I admit, \"<Orange>{1}</> x{0}\" is pretty solid. Good eye.",
+      "I'll carry \"<Orange>{1}</> x{0}\" with me. Anyone who talks trash will get silenced.",
+      "This \"<Orange>{1}</> x{0}\" hits the spot. I like it!",
+      "The \"<Orange>{1}</> x{0}\" you gave is just like you—no fuss.",
+      "\"<Orange>{1}</> x{0}\" is just right—let's go, I'll use it on the next run."
+     ]
+    },
+    "neutral": {
+     "multiplier_percent": 100.0,
+     "categories": [
+      "Food",
+      "Models & Carvings",
+      "Natural Curios"
+     ],
+     "category_ids": [
+      1,
+      3,
+      4
+     ],
+     "reaction_lines": [
+      "\"<Orange>{1}</> x{0}\" is fine. I'll take it.",
+      "You were quick to send \"<Orange>{1}</> x{0}.\"",
+      "\"<Orange>{1}</> x{0}\" fits better than I expected.",
+      "Just leave \"<Orange>{1}</> x{0}\" here—I've got things to do.",
+      "\"<Orange>{1}</> x{0}\"—that's thoughtful of you.",
+      "\"<Orange>{1}</> x{0}\"—good choice on this one.",
+      "This \"<Orange>{1}</> x{0}\" isn't bad, it'll be useful.",
+      "I'll use \"<Orange>{1}</> x{0}\" when the time is right.",
+      "Bring \"<Orange>{1}</> x{0}\" again next time—I'll still have use for it.",
+      "\"<Orange>{1}</> x{0}\" received."
+     ]
+    },
+    "disliked": {
+     "multiplier_percent": 50.0,
+     "categories": [
+      "Books & Music"
+     ],
+     "category_ids": [
+      5
+     ],
+     "reaction_lines": [
+      "\"<Orange>{1}</> x{0}\"? Sure, I'll take it.",
+      "\"<Orange>{1}</> x{0}\"? Not an eyesore, at least.",
+      "I'll keep this \"<Orange>{1}</> x{0}.\"",
+      "Just set down \"<Orange>{1}</> x{0}.\" I've got stronger foes to find.",
+      "If you really want to win me over, don't play it so safe—that goes for \"<Orange>{1}</> x{0}\" too.",
+      "Noted: \"<Orange>{1}</> x{0}.\"",
+      "I hate dawdling—I'll take the \"<Orange>{1}</> x{0}.\"",
+      "This \"<Orange>{1}</> x{0}\" is pretty ordinary, but I'm not picky.",
+      "\"<Orange>{1}</> x{0}\"? You should know me by now.",
+      "\"<Orange>{1}</> x{0}\" received. Pick better next time."
+     ]
+    }
+   },
+   "gifts": [
+    {
+     "gift_id": 90001,
+     "gift": "Prized Matsutake",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90002,
+     "gift": "Black Pearl Roe",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90003,
+     "gift": "Thick-Cut Tail",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90004,
+     "gift": "Journey Cord",
+     "category": "Expedition Gear",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90005,
+     "gift": "Worn Adventurer Badge",
+     "category": "Expedition Gear",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90006,
+     "gift": "Elder Dragon Banner",
+     "category": "Expedition Gear",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    },
+    {
+     "gift_id": 90007,
+     "gift": "Wooden Carving",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90008,
+     "gift": "Vista Display",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90009,
+     "gift": "Dome Landscape",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90010,
+     "gift": "Glowmoss Bottle",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90011,
+     "gift": "Forest Amber",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90012,
+     "gift": "Moonfeather Chime",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90013,
+     "gift": "Outlands Poetry",
+     "category": "Books & Music",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 100,
+     "bond_gained": 50
+    },
+    {
+     "gift_id": 90014,
+     "gift": "Bonfire Album",
+     "category": "Books & Music",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 200,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90015,
+     "gift": "Kulune Songbook",
+     "category": "Books & Music",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 1000,
+     "bond_gained": 500
+    },
+    {
+     "gift_id": 90016,
+     "gift": "Adventurer's Charm",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90017,
+     "gift": "Exploration Badge",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90018,
+     "gift": "Journey Memento",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    }
+   ],
+   "favourite_gifts": [
+    "Journey Cord",
+    "Worn Adventurer Badge",
+    "Elder Dragon Banner",
+    "Adventurer's Charm",
+    "Exploration Badge",
+    "Journey Memento"
+   ]
+  },
+  {
+   "id": 101002,
+   "name": "Luxheart",
+   "game_status": "In game",
+   "debug": "",
+   "tiers": {
+    "favourite": {
+     "multiplier_percent": 150.0,
+     "categories": [
+      "Books & Music",
+      "Keepsakes"
+     ],
+     "category_ids": [
+      5,
+      6
+     ],
+     "reaction_lines": [
+      "Oh? \"<Orange>{1}</> x{0}\"—I quite like this gloss.",
+      "I'll take \"<Orange>{1}</> x{0}\"—it's dazzling enough to match me!",
+      "\"<Orange>{1}</> x{0}\" received—I'll use it when I take the stage again.",
+      "The \"<Orange>{1}</> x{0}\" you gave has quite a stage presence.",
+      "I'll carry \"<Orange>{1}</> x{0}\" with me—it'll definitely come in handy when it counts.",
+      "This \"<Orange>{1}</> x{0}\"? I'll chalk this up as a big win for you.",
+      "\"<Orange>{1}</> x{0}\" makes even the darkness I hate seem a little less scary.",
+      "I like flashy things, and \"<Orange>{1}</> x{0}\" will make me even flashier!",
+      "I'll keep \"<Orange>{1}</> x{0}\" safe, and admire it properly once I find a place with better light.",
+      "The \"<Orange>{1}</> x{0}\" you brought is cool—I like cool things."
+     ]
+    },
+    "neutral": {
+     "multiplier_percent": 100.0,
+     "categories": [
+      "Food",
+      "Models & Carvings",
+      "Natural Curios"
+     ],
+     "category_ids": [
+      1,
+      3,
+      4
+     ],
+     "reaction_lines": [
+      "\"<Orange>{1}</> x{0}\" isn't bad. I'll take it.",
+      "The \"<Orange>{1}</> x{0}\" you gave shows you know my taste.",
+      "I'll keep \"<Orange>{1}</> x{0}\" somewhere it won't gather dust.",
+      "This \"<Orange>{1}</> x{0}\" brightened my mood a little.",
+      "\"<Orange>{1}</> x{0}\" works, at least it's not gloomy.",
+      "When I'm at my most dazzling, I'll remember the \"<Orange>{1}</> x{0}\" you gave me.",
+      "\"<Orange>{1}</> x{0}\" reminds me of that instant when light cuts through the dark.",
+      "The \"<Orange>{1}</> x{0}\" you brought looks pretty nice.",
+      "Got the \"<Orange>{1}</> x{0}\". Don't let anyone else touch it.",
+      "\"<Orange>{1}</> x{0}\" isn't bad. Bring something shinier next time."
+     ]
+    },
+    "disliked": {
+     "multiplier_percent": 50.0,
+     "categories": [
+      "Expedition Gear"
+     ],
+     "category_ids": [
+      2
+     ],
+     "reaction_lines": [
+      "Got the \"<Orange>{1}</> x{0}\".",
+      "\"<Orange>{1}</> x{0}\" is average, but I'm not picky either.",
+      "I care more about whether it shines. The \"<Orange>{1}</> x{0}\" can wait.",
+      "Just don't make me go searching for \"<Orange>{1}</> x{0}\" in the dark.",
+      "I'll take \"<Orange>{1}</> x{0},\" but don't expect me to give up my flair for the dramatic.",
+      "\"<Orange>{1}</> x{0}\" is fine, at least it's not ugly.",
+      "After getting \"<Orange>{1}</> x{0}\", I'm still me—just a bit cooler.",
+      "I'll just take the \"<Orange>{1}</> x{0}\", whatever.",
+      "This \"<Orange>{1}</> x{0}\" isn't dazzling enough, but it'll do to dress up my gear.",
+      "\"<Orange>{1}</> x{0}\" works, just remember to give it a \"polish\" before sending it next time."
+     ]
+    }
+   },
+   "gifts": [
+    {
+     "gift_id": 90001,
+     "gift": "Prized Matsutake",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90002,
+     "gift": "Black Pearl Roe",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90003,
+     "gift": "Thick-Cut Tail",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90004,
+     "gift": "Journey Cord",
+     "category": "Expedition Gear",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 100,
+     "bond_gained": 50
+    },
+    {
+     "gift_id": 90005,
+     "gift": "Worn Adventurer Badge",
+     "category": "Expedition Gear",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 200,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90006,
+     "gift": "Elder Dragon Banner",
+     "category": "Expedition Gear",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 1000,
+     "bond_gained": 500
+    },
+    {
+     "gift_id": 90007,
+     "gift": "Wooden Carving",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90008,
+     "gift": "Vista Display",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90009,
+     "gift": "Dome Landscape",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90010,
+     "gift": "Glowmoss Bottle",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90011,
+     "gift": "Forest Amber",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90012,
+     "gift": "Moonfeather Chime",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90013,
+     "gift": "Outlands Poetry",
+     "category": "Books & Music",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90014,
+     "gift": "Bonfire Album",
+     "category": "Books & Music",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90015,
+     "gift": "Kulune Songbook",
+     "category": "Books & Music",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    },
+    {
+     "gift_id": 90016,
+     "gift": "Adventurer's Charm",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90017,
+     "gift": "Exploration Badge",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90018,
+     "gift": "Journey Memento",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    }
+   ],
+   "favourite_gifts": [
+    "Outlands Poetry",
+    "Bonfire Album",
+    "Kulune Songbook",
+    "Adventurer's Charm",
+    "Exploration Badge",
+    "Journey Memento"
+   ]
+  },
+  {
+   "id": 101003,
+   "name": "Freya",
+   "game_status": "In game",
+   "debug": "",
+   "tiers": {
+    "favourite": {
+     "multiplier_percent": 150.0,
+     "categories": [
+      "Models & Carvings",
+      "Keepsakes"
+     ],
+     "category_ids": [
+      3,
+      6
+     ],
+     "reaction_lines": [
+      "Got \"<Orange>{1}</> x{0}\". You always plan ahead.",
+      "I like how reliable \"<Orange>{1}</> x{0}\" is—steady, like the evening sun.",
+      "I'll carry this \"<Orange>{1}</> x{0}\" with me, as proof of your trust.",
+      "\"<Orange>{1}</> x{0}\" makes me even more certain—we can withstand whatever crisis comes next.",
+      "I don't waver easily, but \"<Orange>{1}</> x{0}\" steadies my resolve a little more.",
+      "The \"<Orange>{1}</> x{0}\" you gave reminds me of what my mentor once said about \"preparation\".",
+      "I'll put away \"<Orange>{1}</> x{0}\". Afterward, I'll guide you down the safest, most direct path.",
+      "This \"<Orange>{1}</> x{0}\" suits me well—simple and clear.",
+      "I accept \"<Orange>{1}</> x{0}\", and I accept that you're trusting me to watch your back.",
+      "\"<Orange>{1}</> x{0}\" is good—now, let's move as planned."
+     ]
+    },
+    "neutral": {
+     "multiplier_percent": 100.0,
+     "categories": [
+      "Food",
+      "Expedition Gear",
+      "Natural Curios",
+      "Books & Music"
+     ],
+     "category_ids": [
+      1,
+      2,
+      4,
+      5
+     ],
+     "reaction_lines": [
+      "I'll take the \"<Orange>{1}</> x{0}\". Thanks.",
+      "The \"<Orange>{1}</> x{0}\" you gave eases one of my worries.",
+      "I'll keep \"<Orange>{1}</> x{0}\" within easy reach—no wasted time searching when it matters.",
+      "You're steady in your work, and so is this \"<Orange>{1}</> x{0}\".",
+      "\"<Orange>{1}</> x{0}\" is good. Let's keep going.",
+      "I'll remember \"<Orange>{1}</> x{0}\"—it'll come in handy when it counts.",
+      "\"<Orange>{1}</> x{0}\" received—actions speak louder than words.",
+      "Your \"<Orange>{1}</> x{0}\" reminds me of the color of a sunset—beautiful, yet resolute.",
+      "\"<Orange>{1}</> x{0}\" works. Nicely judged.",
+      "\"<Orange>{1}</> x{0}\" received—time to move out."
+     ]
+    },
+    "disliked": {
+     "multiplier_percent": 50.0,
+     "categories": [],
+     "category_ids": [],
+     "reaction_lines": [
+      "Got the \"<Orange>{1}</> x{0}\".",
+      "\"<Orange>{1}</> x{0}\" isn't bad, but don't let it throw off our rhythm.",
+      "I care more about you keeping your word—\"<Orange>{1}</> x{0}\" is just a bonus.",
+      "I'll keep \"<Orange>{1}</> x{0}\" safe. No need to worry.",
+      "\"<Orange>{1}</> x{0}\"! I don't need anything fancy. Just keep it simple.",
+      "This \"<Orange>{1}</> x{0}\" is ordinary, but I'll treat it the right way.",
+      "Set down the \"<Orange>{1}</> x{0}\". We still have a quest to finish.",
+      "I hate unplanned things, so don't startle me by shoving \"<Orange>{1}</> x{0}\" at me out of nowhere.",
+      "Got the \"<Orange>{1}</> x{0}\". Give me a heads-up next time.",
+      "\"<Orange>{1}</> x{0}\" works. Onward."
+     ]
+    }
+   },
+   "gifts": [
+    {
+     "gift_id": 90001,
+     "gift": "Prized Matsutake",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90002,
+     "gift": "Black Pearl Roe",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90003,
+     "gift": "Thick-Cut Tail",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90004,
+     "gift": "Journey Cord",
+     "category": "Expedition Gear",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90005,
+     "gift": "Worn Adventurer Badge",
+     "category": "Expedition Gear",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90006,
+     "gift": "Elder Dragon Banner",
+     "category": "Expedition Gear",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90007,
+     "gift": "Wooden Carving",
+     "category": "Models & Carvings",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90008,
+     "gift": "Vista Display",
+     "category": "Models & Carvings",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90009,
+     "gift": "Dome Landscape",
+     "category": "Models & Carvings",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    },
+    {
+     "gift_id": 90010,
+     "gift": "Glowmoss Bottle",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90011,
+     "gift": "Forest Amber",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90012,
+     "gift": "Moonfeather Chime",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90013,
+     "gift": "Outlands Poetry",
+     "category": "Books & Music",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90014,
+     "gift": "Bonfire Album",
+     "category": "Books & Music",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90015,
+     "gift": "Kulune Songbook",
+     "category": "Books & Music",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90016,
+     "gift": "Adventurer's Charm",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90017,
+     "gift": "Exploration Badge",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90018,
+     "gift": "Journey Memento",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    }
+   ],
+   "favourite_gifts": [
+    "Wooden Carving",
+    "Vista Display",
+    "Dome Landscape",
+    "Adventurer's Charm",
+    "Exploration Badge",
+    "Journey Memento"
+   ]
+  },
+  {
+   "id": 102002,
+   "name": "Midori",
+   "game_status": "In game",
+   "debug": "",
+   "tiers": {
+    "favourite": {
+     "multiplier_percent": 150.0,
+     "categories": [
+      "Books & Music",
+      "Keepsakes"
+     ],
+     "category_ids": [
+      5,
+      6
+     ],
+     "reaction_lines": [
+      "I'll take the \"<Orange>{1}</> x{0}.\" Your taste is worthy of mine.",
+      "\"<Orange>{1}</> x{0}\" won't go to waste in my hands. I know you thought of me when you picked it.",
+      "I'll keep \"<Orange>{1}</> x{0}\" in the most prominent spot, so everyone knows it's mine.",
+      "I like how \"<Orange>{1}</> x{0}\" is just right—not too much, not too little.",
+      "The scent of \"<Orange>{1}</> x{0}\" reminds me of the moment maple leaves fall—clean and swift.",
+      "I'll accept this \"<Orange>{1}</> x{0}.\" Not bad. You get me better than I thought.",
+      "I don't usually accept gifts, but \"<Orange>{1}</> x{0}\" makes me willing to make an exception.",
+      "\"<Orange>{1}</> x{0}\" suits me well—I'll wear it before I take the stage.",
+      "The \"<Orange>{1}</> x{0}\" came at just the right time—I was missing something decent.",
+      "\"<Orange>{1}</> x{0}\" puts me in a great mood. Tonight's melody won't disappoint anyone."
+     ]
+    },
+    "neutral": {
+     "multiplier_percent": 100.0,
+     "categories": [
+      "Food",
+      "Models & Carvings",
+      "Natural Curios"
+     ],
+     "category_ids": [
+      1,
+      3,
+      4
+     ],
+     "reaction_lines": [
+      "\"<Orange>{1}</> x{0}\" isn't bad. I'll take it.",
+      "I'll take \"<Orange>{1}</> x{0}\" with me—if it's useful, it's good.",
+      "\"<Orange>{1}</> x{0}\" will come in handy. Got it.",
+      "The \"<Orange>{1}</> x{0}\" you picked was thoughtful. I can tell.",
+      "You put thought into picking \"<Orange>{1}</> x{0}.\"",
+      "I'll keep the \"<Orange>{1}</> x{0}\" safe and make sure no one else touches it.",
+      "This \"<Orange>{1}</> x{0}\" reminds me of my family's code—I never treat what I'm given lightly.",
+      "\"<Orange>{1}</> x{0}\" suits my colors. Good.",
+      "I admit, \"<Orange>{1}</> x{0}\" puts me a little at ease.",
+      "For the \"<Orange>{1}</> x{0}\" you gave, I'll repay you with an even better performance."
+     ]
+    },
+    "disliked": {
+     "multiplier_percent": 50.0,
+     "categories": [
+      "Expedition Gear"
+     ],
+     "category_ids": [
+      2
+     ],
+     "reaction_lines": [
+      "Got the \"<Orange>{1}</> x{0}.\" That's that.",
+      "I'll treasure the \"<Orange>{1}</> x{0}.\"",
+      "\"<Orange>{1}</> x{0}\"? Hm, got it.",
+      "I'll remember this \"<Orange>{1}</> x{0}.\"",
+      "I'm more used to letting strength do the talking, but there's room in my pack, so I'll bring along \"<Orange>{1}</> x{0}.\"",
+      "Just set \"<Orange>{1}</> x{0}\" down there. I like to sort things myself.",
+      "\"<Orange>{1}</> x{0}\"? Thanks.",
+      "\"<Orange>{1}</> x{0}\" is quite tidy.",
+      "I'll accept the \"<Orange>{1}</> x{0}.\" Pick better next time.",
+      "\"<Orange>{1}</> x{0}\" works. I'll think about it more next time."
+     ]
+    }
+   },
+   "gifts": [
+    {
+     "gift_id": 90001,
+     "gift": "Prized Matsutake",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90002,
+     "gift": "Black Pearl Roe",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90003,
+     "gift": "Thick-Cut Tail",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90004,
+     "gift": "Journey Cord",
+     "category": "Expedition Gear",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 100,
+     "bond_gained": 50
+    },
+    {
+     "gift_id": 90005,
+     "gift": "Worn Adventurer Badge",
+     "category": "Expedition Gear",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 200,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90006,
+     "gift": "Elder Dragon Banner",
+     "category": "Expedition Gear",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 1000,
+     "bond_gained": 500
+    },
+    {
+     "gift_id": 90007,
+     "gift": "Wooden Carving",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90008,
+     "gift": "Vista Display",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90009,
+     "gift": "Dome Landscape",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90010,
+     "gift": "Glowmoss Bottle",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90011,
+     "gift": "Forest Amber",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90012,
+     "gift": "Moonfeather Chime",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90013,
+     "gift": "Outlands Poetry",
+     "category": "Books & Music",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90014,
+     "gift": "Bonfire Album",
+     "category": "Books & Music",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90015,
+     "gift": "Kulune Songbook",
+     "category": "Books & Music",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    },
+    {
+     "gift_id": 90016,
+     "gift": "Adventurer's Charm",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90017,
+     "gift": "Exploration Badge",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90018,
+     "gift": "Journey Memento",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    }
+   ],
+   "favourite_gifts": [
+    "Outlands Poetry",
+    "Bonfire Album",
+    "Kulune Songbook",
+    "Adventurer's Charm",
+    "Exploration Badge",
+    "Journey Memento"
+   ]
+  },
+  {
+   "id": 102004,
+   "name": "Ryunosuke",
+   "game_status": "In game",
+   "debug": "",
+   "tiers": {
+    "favourite": {
+     "multiplier_percent": 150.0,
+     "categories": [
+      "Food",
+      "Keepsakes"
+     ],
+     "category_ids": [
+      1,
+      6
+     ],
+     "reaction_lines": [
+      "Oh—\"<Orange>{1}</> x{0}\"! This one really suits my \"Power Saving Mode.\"",
+      "\"<Orange>{1}</> x{0}\" came at just the right time, I won't even bother being polite.",
+      "I like things like \"<Orange>{1}</> x{0}\" that make my mood feel lighter.",
+      "I'll keep \"<Orange>{1}</> x{0}\" for now, and enjoy it slowly during the feast.",
+      "The \"<Orange>{1}</> x{0}\" you gave suddenly perked me up—rare for me.",
+      "Leave \"<Orange>{1}</> x{0}\" with me—I'll look it over slowly.",
+      "Next time you visit, just bring the \"<Orange>{1}</> x{0}\".",
+      "\"<Orange>{1}</> x{0}\" is great, I've decided to laze around a little less today.",
+      "\"<Orange>{1}</> x{0}\"—even the sunshine feels softer now.",
+      "I'll take \"<Orange>{1}</> x{0}\"—I'll bring it to the next gathering."
+     ]
+    },
+    "neutral": {
+     "multiplier_percent": 100.0,
+     "categories": [
+      "Expedition Gear",
+      "Natural Curios",
+      "Books & Music"
+     ],
+     "category_ids": [
+      2,
+      4,
+      5
+     ],
+     "reaction_lines": [
+      "\"<Orange>{1}</> x{0}\" isn't bad. Thanks.",
+      "\"<Orange>{1}</> x{0}\" makes me want to get moving.",
+      "You're quick to send \"<Orange>{1}</> x{0}\".",
+      "I'll keep \"<Orange>{1}</> x{0}\" safe, so no one else can swipe it.",
+      "This \"<Orange>{1}</> x{0}\" reminds me of that satisfied feeling after a good meal.",
+      "\"<Orange>{1}</> x{0}\" works. I like gifts that don't come with hassle.",
+      "\"<Orange>{1}</> x{0}\" suits my taste perfectly—I don't like complicated things.",
+      "Got \"<Orange>{1}</> x{0}\". I'll treat you to something good later.",
+      "The \"<Orange>{1}</> x{0}\" you gave makes my mood even more laid-back.",
+      "\"<Orange>{1}</> x{0}\" is good, so I won't refuse."
+     ]
+    },
+    "disliked": {
+     "multiplier_percent": 50.0,
+     "categories": [
+      "Models & Carvings"
+     ],
+     "category_ids": [
+      3
+     ],
+     "reaction_lines": [
+      "Got the \"<Orange>{1}</> x{0}\".",
+      "\"<Orange>{1}</> x{0}\" is fine. I'll set it aside for now.",
+      "I'm a bit too lazy to overthink right now, so I'll set aside \"<Orange>{1}</> x{0}\" for now, you know how it is.",
+      "\"<Orange>{1}</> x{0}\"—keep it simple, my brain's not in the mood to think.",
+      "This \"<Orange>{1}</> x{0}\" is ordinary, but I'm not picky.",
+      "Got \"<Orange>{1}</> x{0}\". Don't expect me to act all excited about it.",
+      "I prefer gatherings, but \"<Orange>{1}</> x{0}\" can still get a smile out of me.",
+      "I'll just assume \"<Orange>{1}</> x{0}\" was something you picked up along the way. No complaints here.",
+      "Got \"<Orange>{1}</> x{0}\". I'll thank you once I remember to.",
+      "\"<Orange>{1}</> x{0}\" works, just don't send something that makes me get up for it next time."
+     ]
+    }
+   },
+   "gifts": [
+    {
+     "gift_id": 90001,
+     "gift": "Prized Matsutake",
+     "category": "Food",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90002,
+     "gift": "Black Pearl Roe",
+     "category": "Food",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90003,
+     "gift": "Thick-Cut Tail",
+     "category": "Food",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    },
+    {
+     "gift_id": 90004,
+     "gift": "Journey Cord",
+     "category": "Expedition Gear",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90005,
+     "gift": "Worn Adventurer Badge",
+     "category": "Expedition Gear",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90006,
+     "gift": "Elder Dragon Banner",
+     "category": "Expedition Gear",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90007,
+     "gift": "Wooden Carving",
+     "category": "Models & Carvings",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 100,
+     "bond_gained": 50
+    },
+    {
+     "gift_id": 90008,
+     "gift": "Vista Display",
+     "category": "Models & Carvings",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 200,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90009,
+     "gift": "Dome Landscape",
+     "category": "Models & Carvings",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 1000,
+     "bond_gained": 500
+    },
+    {
+     "gift_id": 90010,
+     "gift": "Glowmoss Bottle",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90011,
+     "gift": "Forest Amber",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90012,
+     "gift": "Moonfeather Chime",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90013,
+     "gift": "Outlands Poetry",
+     "category": "Books & Music",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90014,
+     "gift": "Bonfire Album",
+     "category": "Books & Music",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90015,
+     "gift": "Kulune Songbook",
+     "category": "Books & Music",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90016,
+     "gift": "Adventurer's Charm",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90017,
+     "gift": "Exploration Badge",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90018,
+     "gift": "Journey Memento",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    }
+   ],
+   "favourite_gifts": [
+    "Prized Matsutake",
+    "Black Pearl Roe",
+    "Thick-Cut Tail",
+    "Adventurer's Charm",
+    "Exploration Badge",
+    "Journey Memento"
+   ]
+  },
+  {
+   "id": 104001,
+   "name": "Keres",
+   "game_status": "In game",
+   "debug": "",
+   "tiers": {
+    "favourite": {
+     "multiplier_percent": 150.0,
+     "categories": [
+      "Expedition Gear",
+      "Keepsakes"
+     ],
+     "category_ids": [
+      2,
+      6
+     ],
+     "reaction_lines": [
+      "Hehe, \"<Orange>{1}</> x{0}\"! I like this smell.",
+      "The \"<Orange>{1}</> x{0}\" is mine now. Anyone who tries to take it gets bitten.",
+      "I'll hide \"<Orange>{1}</> x{0}\" somewhere so secret even I might forget where.",
+      "\"<Orange>{1}</> x{0}\" received—that lifted my mood a bit.",
+      "Whoever gave me \"<Orange>{1}</> x{0}\", I'll remember it—for a long, long time.",
+      "I really want to spin \"<Orange>{1}</> x{0}\" around right now, haha.",
+      "I don't like crowds, but I like the way you shove \"<Orange>{1}</> x{0}\" into my hands.",
+      "Sweet or strange, \"<Orange>{1}</> x{0}\"—I'll take it either way.",
+      "Give me \"<Orange>{1}</> x{0},\" and I'll have even more fun for you.",
+      "Got \"<Orange>{1}</> x{0}.\" Today's hunt just got more fun."
+     ]
+    },
+    "neutral": {
+     "multiplier_percent": 100.0,
+     "categories": [
+      "Food",
+      "Natural Curios",
+      "Books & Music"
+     ],
+     "category_ids": [
+      1,
+      4,
+      5
+     ],
+     "reaction_lines": [
+      "\"<Orange>{1}</> x{0}\" isn't bad. I'll take it.",
+      "The \"<Orange>{1}</> x{0}\" you gave makes me a little less eager to avoid people... just a little.",
+      "I'll carry \"<Orange>{1}</> x{0}\" with me—something to look at when I'm feeling down.",
+      "Just set down \"<Orange>{1}</> x{0}.\"",
+      "\"<Orange>{1}</> x{0}\" is pretty fun—I like it when things don't play by the rules.",
+      "I'll keep \"<Orange>{1}</> x{0}\" close, like a small trophy.",
+      "The \"<Orange>{1}</> x{0}\" puts me in a better mood.",
+      "You didn't waste words giving me \"<Orange>{1}</> x{0}.\" I like that.",
+      "\"<Orange>{1}</> x{0}\" received. Maybe I'll share a cookie with you next time.",
+      "\"<Orange>{1}</> x{0}\" is pretty good."
+     ]
+    },
+    "disliked": {
+     "multiplier_percent": 50.0,
+     "categories": [
+      "Models & Carvings"
+     ],
+     "category_ids": [
+      3
+     ],
+     "reaction_lines": [
+      "Got the \"<Orange>{1}</> x{0}.\"",
+      "I'll take the \"<Orange>{1}</> x{0}\".",
+      "\"<Orange>{1}</> x{0}\" is fine, thanks.",
+      "I'll set \"<Orange>{1}</> x{0}\" aside for now.",
+      "\"<Orange>{1}</> x{0}\"? Not too bad.",
+      "\"<Orange>{1}</> x{0}\" received—I owe you one.",
+      "I'll keep the \"<Orange>{1}</> x{0}.\"",
+      "I'll put \"<Orange>{1}</> x{0}\" into my bag.",
+      "Got the \"<Orange>{1}</> x{0}.\" Don't ask me what I think.",
+      "\"<Orange>{1}</> x{0}\" is fine, but next time don't send something so \"normal.\""
+     ]
+    }
+   },
+   "gifts": [
+    {
+     "gift_id": 90001,
+     "gift": "Prized Matsutake",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90002,
+     "gift": "Black Pearl Roe",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90003,
+     "gift": "Thick-Cut Tail",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90004,
+     "gift": "Journey Cord",
+     "category": "Expedition Gear",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90005,
+     "gift": "Worn Adventurer Badge",
+     "category": "Expedition Gear",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90006,
+     "gift": "Elder Dragon Banner",
+     "category": "Expedition Gear",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    },
+    {
+     "gift_id": 90007,
+     "gift": "Wooden Carving",
+     "category": "Models & Carvings",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 100,
+     "bond_gained": 50
+    },
+    {
+     "gift_id": 90008,
+     "gift": "Vista Display",
+     "category": "Models & Carvings",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 200,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90009,
+     "gift": "Dome Landscape",
+     "category": "Models & Carvings",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 1000,
+     "bond_gained": 500
+    },
+    {
+     "gift_id": 90010,
+     "gift": "Glowmoss Bottle",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90011,
+     "gift": "Forest Amber",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90012,
+     "gift": "Moonfeather Chime",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90013,
+     "gift": "Outlands Poetry",
+     "category": "Books & Music",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90014,
+     "gift": "Bonfire Album",
+     "category": "Books & Music",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90015,
+     "gift": "Kulune Songbook",
+     "category": "Books & Music",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90016,
+     "gift": "Adventurer's Charm",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90017,
+     "gift": "Exploration Badge",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90018,
+     "gift": "Journey Memento",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    }
+   ],
+   "favourite_gifts": [
+    "Journey Cord",
+    "Worn Adventurer Badge",
+    "Elder Dragon Banner",
+    "Adventurer's Charm",
+    "Exploration Badge",
+    "Journey Memento"
+   ]
+  },
+  {
+   "id": 104002,
+   "name": "Raya",
+   "game_status": "In game",
+   "debug": "",
+   "tiers": {
+    "favourite": {
+     "multiplier_percent": 150.0,
+     "categories": [
+      "Books & Music",
+      "Keepsakes"
+     ],
+     "category_ids": [
+      5,
+      6
+     ],
+     "reaction_lines": [
+      "Whoa, \"<Orange>{1}</> x{0}\"! You really get me!",
+      "\"<Orange>{1}</> x{0}\" made me happy instantly, really!",
+      "I'll set off with \"<Orange>{1}</> x{0}\"—now I know what's next!",
+      "Holding \"<Orange>{1}</> x{0}\" feels like hearing a drumbeat—makes me want to dance a little.",
+      " \"<Orange>{1}</> x{0}\" received—feeling great today!",
+      "\"<Orange>{1}</> x{0}\" received—I'll deal with it once I'm free!",
+      "The \"<Orange>{1}</> x{0}\" you gave makes me feel like we're in sync.",
+      "\"<Orange>{1}</> x{0}\" is so fun, I already have so many ideas for it!",
+      "I'll treasure this \"<Orange>{1}</> x{0}\" the way I'd treasure something delicious.",
+      "Got \"<Orange>{1}</> x{0}\"! I feel so light and happy right now!"
+     ]
+    },
+    "neutral": {
+     "multiplier_percent": 100.0,
+     "categories": [
+      "Food",
+      "Expedition Gear",
+      "Natural Curios"
+     ],
+     "category_ids": [
+      1,
+      2,
+      4
+     ],
+     "reaction_lines": [
+      "\"<Orange>{1}</> x{0}\" isn't bad, I'll take it!",
+      "The \"<Orange>{1}</> x{0}\" you picked shows some thought.",
+      "I'll put \"<Orange>{1}</> x{0}\" in a scented pouch so it doesn't pick up any weird smells.",
+      "This \"<Orange>{1}</> x{0}\" reminds me of the little surprises along the journey.",
+      "\"<Orange>{1}</> x{0}\" is quite to my taste. Thanks.",
+      "I'm not good at cooking, but I'm great at remembering the \"<Orange>{1}</> x{0}\" people give me.",
+      "Got the \"<Orange>{1}</> x{0}\". Let's get moving again!",
+      "\"<Orange>{1}</> x{0}\" made me laugh right away.",
+      "\"<Orange>{1}</> x{0}\" makes me want to go explore new places even more.",
+      "\"<Orange>{1}</> x{0}\" isn't bad—fits my style well."
+     ]
+    },
+    "disliked": {
+     "multiplier_percent": 50.0,
+     "categories": [
+      "Models & Carvings"
+     ],
+     "category_ids": [
+      3
+     ],
+     "reaction_lines": [
+      "Got the \"<Orange>{1}</> x{0}\". Thanks.",
+      "\"<Orange>{1}</> x{0}\" is fine. I'll keep it safe.",
+      "Don't worry, I won't think less of you over the \"<Orange>{1}</> x{0}\".",
+      "\"<Orange>{1}</> x{0}\" is just okay, but a gift is a gift, right?",
+      "Food's still on my mind more than anything else right now, so \"<Orange>{1}</> x{0}\" will have to wait its turn.",
+      "I'll take \"<Orange>{1}</> x{0}\"—just set it down there.",
+      "I don't like counting things, but I'll remember you gave me \"<Orange>{1}</> x{0}\".",
+      "Got the \"<Orange>{1}</> x{0}\". No need to be so polite.",
+      "The \"<Orange>{1}</> x{0}\" you gave is alright.",
+      "I'll keep \"<Orange>{1}</> x{0}.\""
+     ]
+    }
+   },
+   "gifts": [
+    {
+     "gift_id": 90001,
+     "gift": "Prized Matsutake",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90002,
+     "gift": "Black Pearl Roe",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90003,
+     "gift": "Thick-Cut Tail",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90004,
+     "gift": "Journey Cord",
+     "category": "Expedition Gear",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90005,
+     "gift": "Worn Adventurer Badge",
+     "category": "Expedition Gear",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90006,
+     "gift": "Elder Dragon Banner",
+     "category": "Expedition Gear",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90007,
+     "gift": "Wooden Carving",
+     "category": "Models & Carvings",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 100,
+     "bond_gained": 50
+    },
+    {
+     "gift_id": 90008,
+     "gift": "Vista Display",
+     "category": "Models & Carvings",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 200,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90009,
+     "gift": "Dome Landscape",
+     "category": "Models & Carvings",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 1000,
+     "bond_gained": 500
+    },
+    {
+     "gift_id": 90010,
+     "gift": "Glowmoss Bottle",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90011,
+     "gift": "Forest Amber",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90012,
+     "gift": "Moonfeather Chime",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90013,
+     "gift": "Outlands Poetry",
+     "category": "Books & Music",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90014,
+     "gift": "Bonfire Album",
+     "category": "Books & Music",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90015,
+     "gift": "Kulune Songbook",
+     "category": "Books & Music",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    },
+    {
+     "gift_id": 90016,
+     "gift": "Adventurer's Charm",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90017,
+     "gift": "Exploration Badge",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90018,
+     "gift": "Journey Memento",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    }
+   ],
+   "favourite_gifts": [
+    "Outlands Poetry",
+    "Bonfire Album",
+    "Kulune Songbook",
+    "Adventurer's Charm",
+    "Exploration Badge",
+    "Journey Memento"
+   ]
+  },
+  {
+   "id": 104004,
+   "name": "Haze",
+   "game_status": "In game",
+   "debug": "",
+   "tiers": {
+    "favourite": {
+     "multiplier_percent": 150.0,
+     "categories": [
+      "Books & Music",
+      "Keepsakes"
+     ],
+     "category_ids": [
+      5,
+      6
+     ],
+     "reaction_lines": [
+      "\"<Orange>{1}</> x{0}\"... quite to my liking.",
+      "I'll keep \"<Orange>{1}</> x{0}\" close, like holding onto a bit of warmth.",
+      "\"<Orange>{1}</> x{0}\" warmed my heart a little.",
+      "I'll take \"<Orange>{1}</> x{0}\", and I'll take your unexpected fondness for me too.",
+      "\"<Orange>{1}</> x{0}\"... feels nice to hold.",
+      "Don't worry, I won't let anyone take the \"<Orange>{1}</> x{0}\" away.",
+      "\"<Orange>{1}</> x{0}\" makes me want to hold my squad even closer, tighter than before.",
+      "I hate being alone, so I'll keep checking that this \"<Orange>{1}</> x{0}\" is still here.",
+      "\"<Orange>{1}</> x{0}\" received—and note taken.",
+      "I'll treat \"<Orange>{1}</> x{0}\" as tonight's reward, then get back to making sure everything's in order."
+     ]
+    },
+    "neutral": {
+     "multiplier_percent": 100.0,
+     "categories": [
+      "Food",
+      "Models & Carvings",
+      "Natural Curios"
+     ],
+     "category_ids": [
+      1,
+      3,
+      4
+     ],
+     "reaction_lines": [
+      "I'll take the \"<Orange>{1}</> x{0}\".",
+      "The \"<Orange>{1}</> x{0}\" you gave puts my mind a bit at ease.",
+      "I'll keep \"<Orange>{1}</> x{0}\" close to me.",
+      "I like things done properly, and this \"<Orange>{1}</> x{0}\" fits the standard.",
+      "\"<Orange>{1}</> x{0}\" isn't bad. That's thoughtful of you.",
+      "\"<Orange>{1}</> x{0}\" puts me at ease.",
+      "\"<Orange>{1}</> x{0}\" makes me want to hold it a little tighter... never mind, forget I said that.",
+      "After getting \"<Orange>{1}</> x{0}\", I'll go over the next step of the plan once more.",
+      "I'll keep the \"<Orange>{1}</> x{0}\" safe and make sure the squad doesn't mess with it.",
+      "I'll remember the \"<Orange>{1}</> x{0}\" you brought me."
+     ]
+    },
+    "disliked": {
+     "multiplier_percent": 50.0,
+     "categories": [
+      "Expedition Gear"
+     ],
+     "category_ids": [
+      2
+     ],
+     "reaction_lines": [
+      "Got the \"<Orange>{1}</> x{0}\".",
+      "\"<Orange>{1}</> x{0}\" is average, but I won't turn down what you offer.",
+      "Don't use \"<Orange>{1}</> x{0}\" to test me—I don't like being figured out.",
+      "I hate being alone for too long, but a gift can't replace company—\"<Orange>{1}</> x{0}\" included.",
+      "I'll set \"<Orange>{1}</> x{0}\" aside for now—don't throw off my rhythm.",
+      "I need things planned out, so if you're giving me \"<Orange>{1}</> x{0}\", better tell me ahead of time.",
+      "\"<Orange>{1}</> x{0}\" won't make me lose control, you can rest easy about that.",
+      "I don't like strong sunlight, so don't hold \"<Orange>{1}</> x{0}\" up too high during the day.",
+      "I'll take \"<Orange>{1}</> x{0}\"—consider it a bit of comfort.",
+      "\"<Orange>{1}</> x{0}\" works, just don't spring it on me so suddenly next time."
+     ]
+    }
+   },
+   "gifts": [
+    {
+     "gift_id": 90001,
+     "gift": "Prized Matsutake",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90002,
+     "gift": "Black Pearl Roe",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90003,
+     "gift": "Thick-Cut Tail",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90004,
+     "gift": "Journey Cord",
+     "category": "Expedition Gear",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 100,
+     "bond_gained": 50
+    },
+    {
+     "gift_id": 90005,
+     "gift": "Worn Adventurer Badge",
+     "category": "Expedition Gear",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 200,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90006,
+     "gift": "Elder Dragon Banner",
+     "category": "Expedition Gear",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 1000,
+     "bond_gained": 500
+    },
+    {
+     "gift_id": 90007,
+     "gift": "Wooden Carving",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90008,
+     "gift": "Vista Display",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90009,
+     "gift": "Dome Landscape",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90010,
+     "gift": "Glowmoss Bottle",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90011,
+     "gift": "Forest Amber",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90012,
+     "gift": "Moonfeather Chime",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90013,
+     "gift": "Outlands Poetry",
+     "category": "Books & Music",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90014,
+     "gift": "Bonfire Album",
+     "category": "Books & Music",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90015,
+     "gift": "Kulune Songbook",
+     "category": "Books & Music",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    },
+    {
+     "gift_id": 90016,
+     "gift": "Adventurer's Charm",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90017,
+     "gift": "Exploration Badge",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90018,
+     "gift": "Journey Memento",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    }
+   ],
+   "favourite_gifts": [
+    "Outlands Poetry",
+    "Bonfire Album",
+    "Kulune Songbook",
+    "Adventurer's Charm",
+    "Exploration Badge",
+    "Journey Memento"
+   ]
+  },
+  {
+   "id": 105001,
+   "name": "Rhodes",
+   "game_status": "In game",
+   "debug": "",
+   "tiers": {
+    "favourite": {
+     "multiplier_percent": 150.0,
+     "categories": [
+      "Models & Carvings",
+      "Keepsakes"
+     ],
+     "category_ids": [
+      3,
+      6
+     ],
+     "reaction_lines": [
+      "\"<Orange>{1}</> x{0}\"? Haha, interesting choice. You really know how to capture the \"soul\" of materials.",
+      "I'll take \"<Orange>{1}</> x{0}\"—it instantly sparks a bunch of new ideas in my head.",
+      "I'll take a closer look at \"<Orange>{1}</> x{0}\" first.",
+      "I like this feeling of \"the new born from the old\"—\"<Orange>{1}</> x{0}\" fits perfectly.",
+      "\"<Orange>{1}</> x{0}\" reminds me that decay isn't an end, just another beginning.",
+      "The \"<Orange>{1}</> x{0}\" you gave makes me more certain I'm on the right path.",
+      "I'll put \"<Orange>{1}</> x{0}\" in the handiest slot of my toolbox.",
+      "This \"<Orange>{1}</> x{0}\" feels solid, like a reliable companion.",
+      "I'm not big on meat, but I do love this \"<Orange>{1}</> x{0}.\" It gives me something to fuss over.",
+      "Got \"<Orange>{1}</> x{0}\". Once I've made progress, you'll be the first to see the results."
+     ]
+    },
+    "neutral": {
+     "multiplier_percent": 100.0,
+     "categories": [
+      "Food",
+      "Expedition Gear",
+      "Natural Curios"
+     ],
+     "category_ids": [
+      1,
+      2,
+      4
+     ],
+     "reaction_lines": [
+      "\"<Orange>{1}</> x{0}\" isn't bad. I'll take it.",
+      "The \"<Orange>{1}</> x{0}\" you gave was thoughtful—not like someone who counts every penny.",
+      "I'll keep \"<Orange>{1}</> x{0}\" well-stored, away from any moisture.",
+      "This \"<Orange>{1}</> x{0}\" reminds me of the texture of ore—the more I look, the more I like it.",
+      "\"<Orange>{1}</> x{0}\" works, at least it's not wasted.",
+      "I like steady companions, and your \"<Orange>{1}</> x{0}\" makes me think you qualify.",
+      "Got \"<Orange>{1}</> x{0}\". I'll remember your kindness.",
+      "The \"<Orange>{1}</> x{0}\" you brought makes me want to perfect my movement tools even more.",
+      "\"<Orange>{1}</> x{0}\" is nice, just don't make it too flashy next time.",
+      "After getting \"<Orange>{1}</> x{0}\", I'll work with more peace of mind."
+     ]
+    },
+    "disliked": {
+     "multiplier_percent": 50.0,
+     "categories": [
+      "Books & Music"
+     ],
+     "category_ids": [
+      5
+     ],
+     "reaction_lines": [
+      "Got the \"<Orange>{1}</> x{0}\".",
+      "\"<Orange>{1}</> x{0}\" is average, but I'll keep it safe.",
+      "I care more about you not dawdling—the \"<Orange>{1}</> x{0}\" can wait for now.",
+      "\"<Orange>{1}</> x{0}\" isn't exactly a surprise, but it's not useless either.",
+      "I don't like petty people, so don't try to haggle with \"<Orange>{1}</> x{0}\".",
+      "Got \"<Orange>{1}</> x{0}\". I'll take a look when I have time.",
+      "A gift is a gift, results are results; I'll take the \"<Orange>{1}</> x{0}\", but I won't conflate the two.",
+      "\"<Orange>{1}</> x{0}\" works, at least it doesn't bore me.",
+      "Got the \"<Orange>{1}</> x{0}\". Back to work now.",
+      "\"<Orange>{1}</> x{0}\" is average. Bring something more \"inspiring\" next time."
+     ]
+    }
+   },
+   "gifts": [
+    {
+     "gift_id": 90001,
+     "gift": "Prized Matsutake",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90002,
+     "gift": "Black Pearl Roe",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90003,
+     "gift": "Thick-Cut Tail",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90004,
+     "gift": "Journey Cord",
+     "category": "Expedition Gear",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90005,
+     "gift": "Worn Adventurer Badge",
+     "category": "Expedition Gear",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90006,
+     "gift": "Elder Dragon Banner",
+     "category": "Expedition Gear",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90007,
+     "gift": "Wooden Carving",
+     "category": "Models & Carvings",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90008,
+     "gift": "Vista Display",
+     "category": "Models & Carvings",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90009,
+     "gift": "Dome Landscape",
+     "category": "Models & Carvings",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    },
+    {
+     "gift_id": 90010,
+     "gift": "Glowmoss Bottle",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90011,
+     "gift": "Forest Amber",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90012,
+     "gift": "Moonfeather Chime",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90013,
+     "gift": "Outlands Poetry",
+     "category": "Books & Music",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 100,
+     "bond_gained": 50
+    },
+    {
+     "gift_id": 90014,
+     "gift": "Bonfire Album",
+     "category": "Books & Music",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 200,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90015,
+     "gift": "Kulune Songbook",
+     "category": "Books & Music",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 1000,
+     "bond_gained": 500
+    },
+    {
+     "gift_id": 90016,
+     "gift": "Adventurer's Charm",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90017,
+     "gift": "Exploration Badge",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90018,
+     "gift": "Journey Memento",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    }
+   ],
+   "favourite_gifts": [
+    "Wooden Carving",
+    "Vista Display",
+    "Dome Landscape",
+    "Adventurer's Charm",
+    "Exploration Badge",
+    "Journey Memento"
+   ]
+  },
+  {
+   "id": 107001,
+   "name": "Ouyang Varen",
+   "game_status": "In game",
+   "debug": "",
+   "tiers": {
+    "favourite": {
+     "multiplier_percent": 150.0,
+     "categories": [
+      "Expedition Gear",
+      "Keepsakes"
+     ],
+     "category_ids": [
+      2,
+      6
+     ],
+     "reaction_lines": [
+      "I'll take \"<Orange>{1}</> x{0}\". I'll repay your kindness through action.",
+      "This \"<Orange>{1}</> x{0}\" strengthens my resolve to protect what matters.",
+      "I'll carry \"<Orange>{1}</> x{0}\" with me, as a reminder not to grow complacent.",
+      "The \"<Orange>{1}</> x{0}\" you gave feels solid, like having someone traveling beside me.",
+      "I'll keep \"<Orange>{1}</> x{0}\" safe, and thank you properly once my duties are done.",
+      "I'm not good with pretty words, but \"<Orange>{1}</> x{0}\" warmed my heart a little.",
+      "With the \"<Orange>{1}</> x{0}\" you brought, I won't back down.",
+      "I'll treasure \"<Orange>{1}</> x{0}\" and keep it away from needless conflict.",
+      "This \"<Orange>{1}</> x{0}\" feels like a promise. I'll keep it.",
+      "Got \"<Orange>{1}</> x{0}\". Now it's my turn to protect you."
+     ]
+    },
+    "neutral": {
+     "multiplier_percent": 100.0,
+     "categories": [
+      "Models & Carvings",
+      "Natural Curios",
+      "Books & Music"
+     ],
+     "category_ids": [
+      3,
+      4,
+      5
+     ],
+     "reaction_lines": [
+      "Thanks for the \"<Orange>{1}</> x{0}\". I'll take it.",
+      "The \"<Orange>{1}</> x{0}\" you gave makes me feel like I'm not fighting alone.",
+      "I'll put \"<Orange>{1}</> x{0}\" in the safest spot.",
+      "This \"<Orange>{1}</> x{0}\" really does the trick.",
+      "Got \"<Orange>{1}</> x{0}\". I'll remember your kindness.",
+      "The \"<Orange>{1}</> x{0}\" you gave isn't flashy, but it's sincere.",
+      "\"<Orange>{1}</> x{0}\" puts me a little at ease.",
+      "I'll carry the \"<Orange>{1}</> x{0}\" with me as I go.",
+      "\"<Orange>{1}</> x{0}\" works. I appreciate the thought.",
+      "Got \"<Orange>{1}</> x{0}\". I'll treat you to BBQ once I'm done with work."
+     ]
+    },
+    "disliked": {
+     "multiplier_percent": 50.0,
+     "categories": [
+      "Food"
+     ],
+     "category_ids": [
+      1
+     ],
+     "reaction_lines": [
+      "Got the \"<Orange>{1}</> x{0}\". Much appreciated.",
+      "I'll take the \"<Orange>{1}</> x{0}\".",
+      "I'll take \"<Orange>{1}</> x{0}\"—stay safe out there too.",
+      "I'll take good care of \"<Orange>{1}</> x{0}\". Don't worry.",
+      "\"<Orange>{1}</> x{0}\"? Many thanks.",
+      "Got \"<Orange>{1}</> x{0}\". I'll keep doing what needs to be done.",
+      "I'll take \"<Orange>{1}</> x{0}\"—doesn't change what needs doing.",
+      "Set down \"<Orange>{1}</> x{0}\". We still have a long way to go.",
+      "Got the \"<Orange>{1}</> x{0}\". Don't overdo it next time.",
+      "\"<Orange>{1}</> x{0}\" is fine. May you be protected too."
+     ]
+    }
+   },
+   "gifts": [
+    {
+     "gift_id": 90001,
+     "gift": "Prized Matsutake",
+     "category": "Food",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 100,
+     "bond_gained": 50
+    },
+    {
+     "gift_id": 90002,
+     "gift": "Black Pearl Roe",
+     "category": "Food",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 200,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90003,
+     "gift": "Thick-Cut Tail",
+     "category": "Food",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 1000,
+     "bond_gained": 500
+    },
+    {
+     "gift_id": 90004,
+     "gift": "Journey Cord",
+     "category": "Expedition Gear",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90005,
+     "gift": "Worn Adventurer Badge",
+     "category": "Expedition Gear",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90006,
+     "gift": "Elder Dragon Banner",
+     "category": "Expedition Gear",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    },
+    {
+     "gift_id": 90007,
+     "gift": "Wooden Carving",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90008,
+     "gift": "Vista Display",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90009,
+     "gift": "Dome Landscape",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90010,
+     "gift": "Glowmoss Bottle",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90011,
+     "gift": "Forest Amber",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90012,
+     "gift": "Moonfeather Chime",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90013,
+     "gift": "Outlands Poetry",
+     "category": "Books & Music",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90014,
+     "gift": "Bonfire Album",
+     "category": "Books & Music",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90015,
+     "gift": "Kulune Songbook",
+     "category": "Books & Music",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90016,
+     "gift": "Adventurer's Charm",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90017,
+     "gift": "Exploration Badge",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90018,
+     "gift": "Journey Memento",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    }
+   ],
+   "favourite_gifts": [
+    "Journey Cord",
+    "Worn Adventurer Badge",
+    "Elder Dragon Banner",
+    "Adventurer's Charm",
+    "Exploration Badge",
+    "Journey Memento"
+   ]
+  },
+  {
+   "id": 107002,
+   "name": "Arkaya",
+   "game_status": "In game",
+   "debug": "",
+   "tiers": {
+    "favourite": {
+     "multiplier_percent": 150.0,
+     "categories": [
+      "Food",
+      "Keepsakes"
+     ],
+     "category_ids": [
+      1,
+      6
+     ],
+     "reaction_lines": [
+      "I'll take \"<Orange>{1}</> x{0}\". I'll answer this trust with protection.",
+      "I like the sincerity of \"<Orange>{1}</> x{0}\"—like a sip of clear spring water on parched land.",
+      "\"<Orange>{1}</> x{0}\" reminds me of the people back home. I can't let them down.",
+      "The \"<Orange>{1}</> x{0}\" you brought is sincere, and I'll repay it with sincerity.",
+      "I'll keep \"<Orange>{1}</> x{0}\" with me, as a reminder to look out for everyone.",
+      "Thank you. \"<Orange>{1}</> x{0}\" gives me more courage to face the threats ahead.",
+      "I'll carefully preserve the \"<Orange>{1}</> x{0}\" and never let it be squandered by selfish hands.",
+      "I can feel the kindness in \"<Orange>{1}</> x{0}\"—that means a lot.",
+      "\"<Orange>{1}</> x{0}\" received—I'll put it to good use.",
+      "\"<Orange>{1}</> x{0}\" received. I'll take the front line from here."
+     ]
+    },
+    "neutral": {
+     "multiplier_percent": 100.0,
+     "categories": [
+      "Models & Carvings",
+      "Natural Curios",
+      "Books & Music"
+     ],
+     "category_ids": [
+      3,
+      4,
+      5
+     ],
+     "reaction_lines": [
+      "Thanks for the \"<Orange>{1}</> x{0}.\" I'll take it.",
+      "The \"<Orange>{1}</> x{0}\" you gave makes me feel like we're on the same side.",
+      "\"<Orange>{1}</> x{0}\" puts my mind at ease. That's enough.",
+      "I like people who keep their word, and your \"<Orange>{1}</> x{0}\" shows me you do.",
+      "I'll carry \"<Orange>{1}</> x{0}\" with me, and look after my companions along the way.",
+      "This \"<Orange>{1}</> x{0}\" isn't flashy, but it's dependable.",
+      "Got \"<Orange>{1}</> x{0}\". I'll think of a way to repay you once we're back.",
+      "Your \"<Orange>{1}</> x{0}\" is like fresh vegetables—plain, but honest.",
+      "\"<Orange>{1}</> x{0}\" works. I'll accept it.",
+      "\"<Orange>{1}</> x{0}\" makes me even more eager to get things done."
+     ]
+    },
+    "disliked": {
+     "multiplier_percent": 50.0,
+     "categories": [
+      "Expedition Gear"
+     ],
+     "category_ids": [
+      2
+     ],
+     "reaction_lines": [
+      "\"<Orange>{1}</> x{0}\" received.",
+      "\"<Orange>{1}</> x{0}\" is an ordinary gift, but thank you anyway.",
+      "Don't worry, I won't let \"<Orange>{1}</> x{0}\" affect my judgment.",
+      "I'll keep \"<Orange>{1}</> x{0}\" safe, so it doesn't disrupt the squad.",
+      "I'll take the \"<Orange>{1}</> x{0}\".",
+      "I'll set \"<Orange>{1}</> x{0}\" aside for now, and use it when needed.",
+      "I'll take \"<Orange>{1}</> x{0}\"—doesn't change what needs doing.",
+      "\"<Orange>{1}</> x{0}\" received. No need to make a fuss.",
+      "I'll keep doing what needs to be done. \"<Orange>{1}</> x{0}\" won't change my course.",
+      "\"<Orange>{1}</> x{0}\" works. Next time, feel free to be more straightforward."
+     ]
+    }
+   },
+   "gifts": [
+    {
+     "gift_id": 90001,
+     "gift": "Prized Matsutake",
+     "category": "Food",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90002,
+     "gift": "Black Pearl Roe",
+     "category": "Food",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90003,
+     "gift": "Thick-Cut Tail",
+     "category": "Food",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    },
+    {
+     "gift_id": 90004,
+     "gift": "Journey Cord",
+     "category": "Expedition Gear",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 100,
+     "bond_gained": 50
+    },
+    {
+     "gift_id": 90005,
+     "gift": "Worn Adventurer Badge",
+     "category": "Expedition Gear",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 200,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90006,
+     "gift": "Elder Dragon Banner",
+     "category": "Expedition Gear",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 1000,
+     "bond_gained": 500
+    },
+    {
+     "gift_id": 90007,
+     "gift": "Wooden Carving",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90008,
+     "gift": "Vista Display",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90009,
+     "gift": "Dome Landscape",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90010,
+     "gift": "Glowmoss Bottle",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90011,
+     "gift": "Forest Amber",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90012,
+     "gift": "Moonfeather Chime",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90013,
+     "gift": "Outlands Poetry",
+     "category": "Books & Music",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90014,
+     "gift": "Bonfire Album",
+     "category": "Books & Music",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90015,
+     "gift": "Kulune Songbook",
+     "category": "Books & Music",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90016,
+     "gift": "Adventurer's Charm",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90017,
+     "gift": "Exploration Badge",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90018,
+     "gift": "Journey Memento",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    }
+   ],
+   "favourite_gifts": [
+    "Prized Matsutake",
+    "Black Pearl Roe",
+    "Thick-Cut Tail",
+    "Adventurer's Charm",
+    "Exploration Badge",
+    "Journey Memento"
+   ]
+  },
+  {
+   "id": 107004,
+   "name": "Adventurer 107004",
+   "game_status": "Not released – no adventurer data yet",
+   "debug": "yes",
+   "tiers": {
+    "favourite": {
+     "multiplier_percent": 150.0,
+     "categories": [
+      "Food",
+      "Keepsakes"
+     ],
+     "category_ids": [
+      1,
+      6
+     ],
+     "reaction_lines": []
+    },
+    "neutral": {
+     "multiplier_percent": 100.0,
+     "categories": [
+      "Expedition Gear",
+      "Models & Carvings",
+      "Natural Curios"
+     ],
+     "category_ids": [
+      2,
+      3,
+      4
+     ],
+     "reaction_lines": []
+    },
+    "disliked": {
+     "multiplier_percent": 50.0,
+     "categories": [
+      "Books & Music"
+     ],
+     "category_ids": [
+      5
+     ],
+     "reaction_lines": []
+    }
+   },
+   "gifts": [
+    {
+     "gift_id": 90001,
+     "gift": "Prized Matsutake",
+     "category": "Food",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90002,
+     "gift": "Black Pearl Roe",
+     "category": "Food",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90003,
+     "gift": "Thick-Cut Tail",
+     "category": "Food",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    },
+    {
+     "gift_id": 90004,
+     "gift": "Journey Cord",
+     "category": "Expedition Gear",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90005,
+     "gift": "Worn Adventurer Badge",
+     "category": "Expedition Gear",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90006,
+     "gift": "Elder Dragon Banner",
+     "category": "Expedition Gear",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90007,
+     "gift": "Wooden Carving",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90008,
+     "gift": "Vista Display",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90009,
+     "gift": "Dome Landscape",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90010,
+     "gift": "Glowmoss Bottle",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90011,
+     "gift": "Forest Amber",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90012,
+     "gift": "Moonfeather Chime",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90013,
+     "gift": "Outlands Poetry",
+     "category": "Books & Music",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 100,
+     "bond_gained": 50
+    },
+    {
+     "gift_id": 90014,
+     "gift": "Bonfire Album",
+     "category": "Books & Music",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 200,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90015,
+     "gift": "Kulune Songbook",
+     "category": "Books & Music",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 1000,
+     "bond_gained": 500
+    },
+    {
+     "gift_id": 90016,
+     "gift": "Adventurer's Charm",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90017,
+     "gift": "Exploration Badge",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90018,
+     "gift": "Journey Memento",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    }
+   ],
+   "favourite_gifts": [
+    "Prized Matsutake",
+    "Black Pearl Roe",
+    "Thick-Cut Tail",
+    "Adventurer's Charm",
+    "Exploration Badge",
+    "Journey Memento"
+   ]
+  },
+  {
+   "id": 110001,
+   "name": "(Test) Nergigante Charge Blade",
+   "game_status": "Debug – test adventurer",
+   "debug": "yes",
+   "tiers": {
+    "favourite": {
+     "multiplier_percent": 150.0,
+     "categories": [
+      "Natural Curios",
+      "Keepsakes"
+     ],
+     "category_ids": [
+      4,
+      6
+     ],
+     "reaction_lines": [
+      "I don't need anything else—just \"<Orange>{1}</> x{0}\" and you."
+     ]
+    },
+    "neutral": {
+     "multiplier_percent": 100.0,
+     "categories": [
+      "Food",
+      "Models & Carvings",
+      "Books & Music"
+     ],
+     "category_ids": [
+      1,
+      3,
+      5
+     ],
+     "reaction_lines": []
+    },
+    "disliked": {
+     "multiplier_percent": 50.0,
+     "categories": [
+      "Expedition Gear"
+     ],
+     "category_ids": [
+      2
+     ],
+     "reaction_lines": []
+    }
+   },
+   "gifts": [
+    {
+     "gift_id": 90001,
+     "gift": "Prized Matsutake",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90002,
+     "gift": "Black Pearl Roe",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90003,
+     "gift": "Thick-Cut Tail",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90004,
+     "gift": "Journey Cord",
+     "category": "Expedition Gear",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 100,
+     "bond_gained": 50
+    },
+    {
+     "gift_id": 90005,
+     "gift": "Worn Adventurer Badge",
+     "category": "Expedition Gear",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 200,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90006,
+     "gift": "Elder Dragon Banner",
+     "category": "Expedition Gear",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 1000,
+     "bond_gained": 500
+    },
+    {
+     "gift_id": 90007,
+     "gift": "Wooden Carving",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90008,
+     "gift": "Vista Display",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90009,
+     "gift": "Dome Landscape",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90010,
+     "gift": "Glowmoss Bottle",
+     "category": "Natural Curios",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90011,
+     "gift": "Forest Amber",
+     "category": "Natural Curios",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90012,
+     "gift": "Moonfeather Chime",
+     "category": "Natural Curios",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    },
+    {
+     "gift_id": 90013,
+     "gift": "Outlands Poetry",
+     "category": "Books & Music",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90014,
+     "gift": "Bonfire Album",
+     "category": "Books & Music",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90015,
+     "gift": "Kulune Songbook",
+     "category": "Books & Music",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90016,
+     "gift": "Adventurer's Charm",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90017,
+     "gift": "Exploration Badge",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90018,
+     "gift": "Journey Memento",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    }
+   ],
+   "favourite_gifts": [
+    "Glowmoss Bottle",
+    "Forest Amber",
+    "Moonfeather Chime",
+    "Adventurer's Charm",
+    "Exploration Badge",
+    "Journey Memento"
+   ]
+  },
+  {
+   "id": 113001,
+   "name": "Pepper",
+   "game_status": "In game",
+   "debug": "",
+   "tiers": {
+    "favourite": {
+     "multiplier_percent": 150.0,
+     "categories": [
+      "Natural Curios",
+      "Keepsakes"
+     ],
+     "category_ids": [
+      4,
+      6
+     ],
+     "reaction_lines": [
+      "\"<Orange>{1}</> x{0}\" received—I'll use it for what's next!",
+      "The \"<Orange>{1}</> x{0}\" you gave me—I want to write it into my adventure log right now!",
+      "I'll carry \"<Orange>{1}</> x{0}\" with me, like the opening line of a story.",
+      "This \"<Orange>{1}</> x{0}\" is so cool, I'm already imagining the next chapter.",
+      "\"<Orange>{1}</> x{0}\" received—let's have fewer mishaps this time!",
+      "\"<Orange>{1}</> x{0}\" makes me feel like I'm really becoming a legend.",
+      "I'll keep the \"<Orange>{1}</> x{0}\" you gave me like a good luck charm.",
+      "\"<Orange>{1}</> x{0}\"—great! Let's move out!",
+      "Once I'm famous, I'll write \"<Orange>{1}</> x{0}\" into an amazing story!",
+      "\"<Orange>{1}</> x{0}\" received—my pen's practically burning!"
+     ]
+    },
+    "neutral": {
+     "multiplier_percent": 100.0,
+     "categories": [
+      "Food",
+      "Models & Carvings",
+      "Books & Music"
+     ],
+     "category_ids": [
+      1,
+      3,
+      5
+     ],
+     "reaction_lines": [
+      "\"<Orange>{1}</> x{0}\" is great, I love it!",
+      "I'll keep \"<Orange>{1}</> x{0}\" safe, away from my embarrassing past.",
+      "The \"<Orange>{1}</> x{0}\" you gave did surprise me a bit.",
+      "\"<Orange>{1}</> x{0}\" reminds me of those \"gifts between companions\" from the books.",
+      "I'll set off with \"<Orange>{1}</> x{0}\"—I'll flip through it on the road and keep moving.",
+      "\"<Orange>{1}</> x{0}\" fits well—I think you have a real knack for writing adventurers' stories.",
+      "After getting \"<Orange>{1}</> x{0}\", I suddenly feel less afraid of embarrassing myself.",
+      "I'll treasure \"<Orange>{1}</> x{0}\". Really, truly.",
+      "The \"<Orange>{1}</> x{0}\" you gave makes me feel understood.",
+      "\"<Orange>{1}</> x{0}\" received—next time I'll pick you something worth writing in my notes."
+     ]
+    },
+    "disliked": {
+     "multiplier_percent": 50.0,
+     "categories": [
+      "Expedition Gear"
+     ],
+     "category_ids": [
+      2
+     ],
+     "reaction_lines": [
+      "Got the \"<Orange>{1}</> x{0}\". Thanks!",
+      "I'll take \"<Orange>{1}</> x{0},\" and I'll take good care of it too.",
+      "I'm not picky about gifts, I'll take the \"<Orange>{1}</> x{0}\".",
+      "I'll put \"<Orange>{1}</> x{0}\" in my bag for now, and write it down properly when I journal later.",
+      "Honestly, I care more about whether you're laughing at me... never mind, I still like the \"<Orange>{1}</> x{0}\".",
+      "\"<Orange>{1}</> x{0}\" won't turn me into a legend overnight, but it does make me happy.",
+      "I'll try not to lose \"<Orange>{1}</> x{0}\"—please don't do that.",
+      "Got the \"<Orange>{1}</> x{0}\"! Let's continue our journey!",
+      "The \"<Orange>{1}</> x{0}\" you gave isn't dazzling, but it feels genuine.",
+      "\"<Orange>{1}</> x{0}\" works, but next time I want something more \"legendary\"!"
+     ]
+    }
+   },
+   "gifts": [
+    {
+     "gift_id": 90001,
+     "gift": "Prized Matsutake",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90002,
+     "gift": "Black Pearl Roe",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90003,
+     "gift": "Thick-Cut Tail",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90004,
+     "gift": "Journey Cord",
+     "category": "Expedition Gear",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 100,
+     "bond_gained": 50
+    },
+    {
+     "gift_id": 90005,
+     "gift": "Worn Adventurer Badge",
+     "category": "Expedition Gear",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 200,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90006,
+     "gift": "Elder Dragon Banner",
+     "category": "Expedition Gear",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 1000,
+     "bond_gained": 500
+    },
+    {
+     "gift_id": 90007,
+     "gift": "Wooden Carving",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90008,
+     "gift": "Vista Display",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90009,
+     "gift": "Dome Landscape",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90010,
+     "gift": "Glowmoss Bottle",
+     "category": "Natural Curios",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90011,
+     "gift": "Forest Amber",
+     "category": "Natural Curios",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90012,
+     "gift": "Moonfeather Chime",
+     "category": "Natural Curios",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    },
+    {
+     "gift_id": 90013,
+     "gift": "Outlands Poetry",
+     "category": "Books & Music",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90014,
+     "gift": "Bonfire Album",
+     "category": "Books & Music",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90015,
+     "gift": "Kulune Songbook",
+     "category": "Books & Music",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90016,
+     "gift": "Adventurer's Charm",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90017,
+     "gift": "Exploration Badge",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90018,
+     "gift": "Journey Memento",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    }
+   ],
+   "favourite_gifts": [
+    "Glowmoss Bottle",
+    "Forest Amber",
+    "Moonfeather Chime",
+    "Adventurer's Charm",
+    "Exploration Badge",
+    "Journey Memento"
+   ]
+  },
+  {
+   "id": 113002,
+   "name": "Ryan",
+   "game_status": "Not released – no adventurer data yet",
+   "debug": "yes",
+   "tiers": {
+    "favourite": {
+     "multiplier_percent": 150.0,
+     "categories": [
+      "Models & Carvings",
+      "Keepsakes"
+     ],
+     "category_ids": [
+      3,
+      6
+     ],
+     "reaction_lines": [
+      "\"<Orange>{1}</> x{0}\"—good. That's exactly what my partner would do."
+     ]
+    },
+    "neutral": {
+     "multiplier_percent": 100.0,
+     "categories": [
+      "Food",
+      "Expedition Gear",
+      "Natural Curios"
+     ],
+     "category_ids": [
+      1,
+      2,
+      4
+     ],
+     "reaction_lines": []
+    },
+    "disliked": {
+     "multiplier_percent": 50.0,
+     "categories": [
+      "Books & Music"
+     ],
+     "category_ids": [
+      5
+     ],
+     "reaction_lines": [
+      "I'll remember that you gave me \"<Orange>{1}</> x{0}.\""
+     ]
+    }
+   },
+   "gifts": [
+    {
+     "gift_id": 90001,
+     "gift": "Prized Matsutake",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90002,
+     "gift": "Black Pearl Roe",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90003,
+     "gift": "Thick-Cut Tail",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90004,
+     "gift": "Journey Cord",
+     "category": "Expedition Gear",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90005,
+     "gift": "Worn Adventurer Badge",
+     "category": "Expedition Gear",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90006,
+     "gift": "Elder Dragon Banner",
+     "category": "Expedition Gear",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90007,
+     "gift": "Wooden Carving",
+     "category": "Models & Carvings",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90008,
+     "gift": "Vista Display",
+     "category": "Models & Carvings",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90009,
+     "gift": "Dome Landscape",
+     "category": "Models & Carvings",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    },
+    {
+     "gift_id": 90010,
+     "gift": "Glowmoss Bottle",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90011,
+     "gift": "Forest Amber",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90012,
+     "gift": "Moonfeather Chime",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90013,
+     "gift": "Outlands Poetry",
+     "category": "Books & Music",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 100,
+     "bond_gained": 50
+    },
+    {
+     "gift_id": 90014,
+     "gift": "Bonfire Album",
+     "category": "Books & Music",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 200,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90015,
+     "gift": "Kulune Songbook",
+     "category": "Books & Music",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 1000,
+     "bond_gained": 500
+    },
+    {
+     "gift_id": 90016,
+     "gift": "Adventurer's Charm",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90017,
+     "gift": "Exploration Badge",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90018,
+     "gift": "Journey Memento",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    }
+   ],
+   "favourite_gifts": [
+    "Wooden Carving",
+    "Vista Display",
+    "Dome Landscape",
+    "Adventurer's Charm",
+    "Exploration Badge",
+    "Journey Memento"
+   ]
+  },
+  {
+   "id": 114002,
+   "name": "Madelyn",
+   "game_status": "In game",
+   "debug": "",
+   "tiers": {
+    "favourite": {
+     "multiplier_percent": 150.0,
+     "categories": [
+      "Natural Curios",
+      "Keepsakes"
+     ],
+     "category_ids": [
+      4,
+      6
+     ],
+     "reaction_lines": [
+      "\"<Orange>{1}</> x{0}\"... good, I'll take it—nice eye.",
+      "I'll put \"<Orange>{1}</> x{0}\" into my storage. Don't tell anyone else.",
+      "\"<Orange>{1}</> x{0}\" gives me a rare sense of peace, like the risks have already been calculated.",
+      "\"<Orange>{1}</> x{0}\" suits my taste perfectly.",
+      "I'll store \"<Orange>{1}</> x{0}\" the proper way, so it won't spoil.",
+      "Clever move this time—\"<Orange>{1}</> x{0}\" fits my plan.",
+      "I like things like \"<Orange>{1}</> x{0}\"—clean, simple, no fuss.",
+      "\"<Orange>{1}</> x{0}\" reminds me of the perfect pen from a coloring book—just right.",
+      "I'll remember this \"<Orange>{1}</> x{0}\"—I'll keep it and put it to use.",
+      "\"<Orange>{1}</> x{0}\" received. Good pick, but don't think I'll get all emotional over it."
+     ]
+    },
+    "neutral": {
+     "multiplier_percent": 100.0,
+     "categories": [
+      "Food",
+      "Models & Carvings",
+      "Books & Music"
+     ],
+     "category_ids": [
+      1,
+      3,
+      5
+     ],
+     "reaction_lines": [
+      "\"<Orange>{1}</> x{0}\" isn't bad. I'll take it.",
+      "\"<Orange>{1}</> x{0}\" you sent is practical. Nice.",
+      "I'll keep \"<Orange>{1}</> x{0}\" somewhere within easy reach.",
+      "This \"<Orange>{1}</> x{0}\" is one less thing to worry about. That's a plus.",
+      "\"<Orange>{1}</> x{0}\" left a good impression on me.",
+      "I don't like impulsiveness, but your timing with \"<Orange>{1}</> x{0}\" was just right.",
+      "Got \"<Orange>{1}</> x{0}.\" Stop wearing your stress on your face.",
+      "Don't expect sweet words from me, but I've already taken the \"<Orange>{1}</> x{0}.\"",
+      "\"<Orange>{1}</> x{0}\" works, at least it doesn't make me frown.",
+      "I'll accept \"<Orange>{1}</> x{0}\"—it'll come in handy."
+     ]
+    },
+    "disliked": {
+     "multiplier_percent": 50.0,
+     "categories": [
+      "Expedition Gear"
+     ],
+     "category_ids": [
+      2
+     ],
+     "reaction_lines": [
+      "Got the \"<Orange>{1}</> x{0}\".",
+      "\"<Orange>{1}</> x{0}\" isn't bad, but it's not worth getting excited over.",
+      "I'll take the \"<Orange>{1}</> x{0}\".",
+      "I'll put away \"<Orange>{1}</> x{0}.\" No need to ask further.",
+      "I'll set \"<Orange>{1}</> x{0}\" aside for now.",
+      "I'll note down \"<Orange>{1}</> x{0}\" and deal with it when I have time.",
+      "Don't treat me like someone who needs coaxing. \"<Orange>{1}</> x{0}\" won't change my principles.",
+      "\"<Orange>{1}</> x{0}\" isn't too bad.",
+      "I don't like surprises, so don't suddenly shove \"<Orange>{1}</> x{0}\" at me while I'm busy.",
+      "I'll take \"<Orange>{1}</> x{0}.\" Try to be more thoughtful next time."
+     ]
+    }
+   },
+   "gifts": [
+    {
+     "gift_id": 90001,
+     "gift": "Prized Matsutake",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90002,
+     "gift": "Black Pearl Roe",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90003,
+     "gift": "Thick-Cut Tail",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90004,
+     "gift": "Journey Cord",
+     "category": "Expedition Gear",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 100,
+     "bond_gained": 50
+    },
+    {
+     "gift_id": 90005,
+     "gift": "Worn Adventurer Badge",
+     "category": "Expedition Gear",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 200,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90006,
+     "gift": "Elder Dragon Banner",
+     "category": "Expedition Gear",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 1000,
+     "bond_gained": 500
+    },
+    {
+     "gift_id": 90007,
+     "gift": "Wooden Carving",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90008,
+     "gift": "Vista Display",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90009,
+     "gift": "Dome Landscape",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90010,
+     "gift": "Glowmoss Bottle",
+     "category": "Natural Curios",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90011,
+     "gift": "Forest Amber",
+     "category": "Natural Curios",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90012,
+     "gift": "Moonfeather Chime",
+     "category": "Natural Curios",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    },
+    {
+     "gift_id": 90013,
+     "gift": "Outlands Poetry",
+     "category": "Books & Music",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90014,
+     "gift": "Bonfire Album",
+     "category": "Books & Music",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90015,
+     "gift": "Kulune Songbook",
+     "category": "Books & Music",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90016,
+     "gift": "Adventurer's Charm",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90017,
+     "gift": "Exploration Badge",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90018,
+     "gift": "Journey Memento",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    }
+   ],
+   "favourite_gifts": [
+    "Glowmoss Bottle",
+    "Forest Amber",
+    "Moonfeather Chime",
+    "Adventurer's Charm",
+    "Exploration Badge",
+    "Journey Memento"
+   ]
+  },
+  {
+   "id": 114003,
+   "name": "Luka",
+   "game_status": "In game",
+   "debug": "",
+   "tiers": {
+    "favourite": {
+     "multiplier_percent": 150.0,
+     "categories": [
+      "Expedition Gear",
+      "Keepsakes"
+     ],
+     "category_ids": [
+      2,
+      6
+     ],
+     "reaction_lines": [
+      "Oh! \"<Orange>{1}</> x{0}\"! I feel like I can climb even higher now!",
+      "The \"<Orange>{1}</> x{0}\" you gave arrived like the wind—right on time.",
+      "I'll take \"<Orange>{1}</> x{0}\". Once I reach the summit, you'll be the first to see the view with me.",
+      "I like the lightness of \"<Orange>{1}</> x{0}\"—like breathing at the edge of a cliff.",
+      "\"<Orange>{1}</> x{0}\" gives me something to talk about on the road.",
+      "This \"<Orange>{1}</> x{0}\" is amazing, I can't sit still now.",
+      "I'll keep \"<Orange>{1}</> x{0}\" close to my chest, so I can reach it anytime.",
+      "\"<Orange>{1}</> x{0}\" makes me want to set out even more.",
+      "Got \"<Orange>{1}</> x{0}\"! Let's go, no staying cooped up indoors!",
+      "I'll take \"<Orange>{1}</> x{0}\"—I'll bring it back to show you."
+     ]
+    },
+    "neutral": {
+     "multiplier_percent": 100.0,
+     "categories": [
+      "Food",
+      "Natural Curios",
+      "Books & Music"
+     ],
+     "category_ids": [
+      1,
+      4,
+      5
+     ],
+     "reaction_lines": [
+      "\"<Orange>{1}</> x{0}\" isn't bad. I'll take it!",
+      "The \"<Orange>{1}</> x{0}\" you gave makes me think the road ahead won't be boring.",
+      "Thanks. I'll keep this \"<Orange>{1}</> x{0}\" safe.",
+      "\"<Orange>{1}</> x{0}\" reminds me of the wind on a ridge—refreshing.",
+      "This \"<Orange>{1}</> x{0}\" is quite fitting—not too heavy, not in the way.",
+      "I'll keep \"<Orange>{1}</> x{0}\" safe, and take it out again once I find higher ground.",
+      "You gave me \"<Orange>{1}</> x{0}\" right when I was about to speak—what a coincidence.",
+      "\"<Orange>{1}</> x{0}\" works—makes me want to push my limits even more.",
+      "After getting \"<Orange>{1}</> x{0}\", I feel more fired up.",
+      "\"<Orange>{1}</> x{0}\" is nice. Let's go catch some wind together next time."
+     ]
+    },
+    "disliked": {
+     "multiplier_percent": 50.0,
+     "categories": [
+      "Models & Carvings"
+     ],
+     "category_ids": [
+      3
+     ],
+     "reaction_lines": [
+      "Got the \"<Orange>{1}</> x{0}\". Thanks.",
+      "\"<Orange>{1}</> x{0}\" is fine. I'll hold onto it for now.",
+      "Don't get me wrong, it's not that I dislike \"<Orange>{1}</> x{0}\"—I just prefer setting out.",
+      "I'll tuck \"<Orange>{1}</> x{0}\" into my bag and take it out when it's time to go.",
+      "This \"<Orange>{1}</> x{0}\" is pretty ordinary, but hey, it's the thought that counts.",
+      "\"<Orange>{1}</> x{0}\" won't stop me from moving.",
+      "I don't like silence, so feel free to say more when you give me \"<Orange>{1}</> x{0}\".",
+      "Got \"<Orange>{1}</> x{0}\". Let's go out for a walk.",
+      "\"<Orange>{1}</> x{0}\" isn't bad. Don't make me wait too long next time.",
+      "Got the \"<Orange>{1}</> x{0}\". Onward and upward!"
+     ]
+    }
+   },
+   "gifts": [
+    {
+     "gift_id": 90001,
+     "gift": "Prized Matsutake",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90002,
+     "gift": "Black Pearl Roe",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90003,
+     "gift": "Thick-Cut Tail",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90004,
+     "gift": "Journey Cord",
+     "category": "Expedition Gear",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90005,
+     "gift": "Worn Adventurer Badge",
+     "category": "Expedition Gear",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90006,
+     "gift": "Elder Dragon Banner",
+     "category": "Expedition Gear",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    },
+    {
+     "gift_id": 90007,
+     "gift": "Wooden Carving",
+     "category": "Models & Carvings",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 100,
+     "bond_gained": 50
+    },
+    {
+     "gift_id": 90008,
+     "gift": "Vista Display",
+     "category": "Models & Carvings",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 200,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90009,
+     "gift": "Dome Landscape",
+     "category": "Models & Carvings",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 1000,
+     "bond_gained": 500
+    },
+    {
+     "gift_id": 90010,
+     "gift": "Glowmoss Bottle",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90011,
+     "gift": "Forest Amber",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90012,
+     "gift": "Moonfeather Chime",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90013,
+     "gift": "Outlands Poetry",
+     "category": "Books & Music",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90014,
+     "gift": "Bonfire Album",
+     "category": "Books & Music",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90015,
+     "gift": "Kulune Songbook",
+     "category": "Books & Music",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90016,
+     "gift": "Adventurer's Charm",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90017,
+     "gift": "Exploration Badge",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90018,
+     "gift": "Journey Memento",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    }
+   ],
+   "favourite_gifts": [
+    "Journey Cord",
+    "Worn Adventurer Badge",
+    "Elder Dragon Banner",
+    "Adventurer's Charm",
+    "Exploration Badge",
+    "Journey Memento"
+   ]
+  },
+  {
+   "id": 114004,
+   "name": "Stylia",
+   "game_status": "Upcoming – Recruitment banner starts 2026-11-27",
+   "debug": "",
+   "tiers": {
+    "favourite": {
+     "multiplier_percent": 150.0,
+     "categories": [
+      "Books & Music",
+      "Keepsakes"
+     ],
+     "category_ids": [
+      5,
+      6
+     ],
+     "reaction_lines": [
+      "\"<Orange>{1}</> x{0}\" is lovely, like a perfectly timed dance.",
+      "I'll take \"<Orange>{1}</> x{0}\"—its clarity suits the ice and snow well.",
+      "\"<Orange>{1}</> x{0}\" reminds me of that step on stage.",
+      "I like the coolness it brings—\"<Orange>{1}</> x{0}\" feels like a gift from the snow.",
+      "The \"<Orange>{1}</> x{0}\" you gave makes me want to choreograph my own dance even more.",
+      "I'll treasure \"<Orange>{1}</> x{0}\" like a cherished melody.",
+      "Thank you. \"<Orange>{1}</> x{0}\" makes me feel more like a worthy successor.",
+      "I'll keep \"<Orange>{1}</> x{0}\" in the cleanest place, never letting dust touch it.",
+      "\"<Orange>{1}</> x{0}\" brings a quiet calm to my heart, just the right kind.",
+      "I'll repay this \"<Orange>{1}</> x{0}\" with even better performance."
+     ]
+    },
+    "neutral": {
+     "multiplier_percent": 100.0,
+     "categories": [
+      "Food",
+      "Models & Carvings",
+      "Natural Curios"
+     ],
+     "category_ids": [
+      1,
+      3,
+      4
+     ],
+     "reaction_lines": [
+      "I'll take the \"<Orange>{1}</> x{0}\". Thanks.",
+      "\"<Orange>{1}</> x{0}\" reminds me of footsteps on ice.",
+      "Your \"<Orange>{1}</> x{0}\" shows good judgment. I like that.",
+      "I'm not good at cooking, but I'll treat this \"<Orange>{1}</> x{0}\" with care.",
+      "\"<Orange>{1}</> x{0}\" isn't bad, at least it's quite handy.",
+      "I'll take the \"<Orange>{1}</> x{0}\" and remember to keep it away from heat sources.",
+      "I'll set this \"<Orange>{1}</> x{0}\" aside and take a closer look at it when my mind is calm.",
+      "\"<Orange>{1}</> x{0}\" gives me a bit more to look forward to in today's training.",
+      "I'll remember the \"<Orange>{1}</> x{0}\" you brought.",
+      "\"<Orange>{1}</> x{0}\" is lovely. Please keep up that same elegance next time."
+     ]
+    },
+    "disliked": {
+     "multiplier_percent": 50.0,
+     "categories": [
+      "Expedition Gear"
+     ],
+     "category_ids": [
+      2
+     ],
+     "reaction_lines": [
+      "Got the \"<Orange>{1}</> x{0}\".",
+      "\"<Orange>{1}</> x{0}\"? Thanks for thinking of me.",
+      "No need to try so hard to please me—I'll take \"<Orange>{1}</> x{0}.\"",
+      "I'll hold onto \"<Orange>{1}</> x{0}\" for now, just set it here.",
+      "I don't like noise, so the \"<Orange>{1}</> x{0}\" doesn't need to be flashy either.",
+      "I'll remember \"<Orange>{1}</> x{0}.\"",
+      "I'll treat this \"<Orange>{1}</> x{0}\" as a memento of the journey.",
+      "Set down \"<Orange>{1}</> x{0}\". Let's continue training.",
+      "\"<Orange>{1}</> x{0}\" received. Take care of yourself too.",
+      "\"<Orange>{1}</> x{0}\" is fine. May you also be treated with kindness."
+     ]
+    }
+   },
+   "gifts": [
+    {
+     "gift_id": 90001,
+     "gift": "Prized Matsutake",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90002,
+     "gift": "Black Pearl Roe",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90003,
+     "gift": "Thick-Cut Tail",
+     "category": "Food",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90004,
+     "gift": "Journey Cord",
+     "category": "Expedition Gear",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 100,
+     "bond_gained": 50
+    },
+    {
+     "gift_id": 90005,
+     "gift": "Worn Adventurer Badge",
+     "category": "Expedition Gear",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 200,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90006,
+     "gift": "Elder Dragon Banner",
+     "category": "Expedition Gear",
+     "preference": "Disliked",
+     "multiplier_percent": 50.0,
+     "base_bond": 1000,
+     "bond_gained": 500
+    },
+    {
+     "gift_id": 90007,
+     "gift": "Wooden Carving",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90008,
+     "gift": "Vista Display",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90009,
+     "gift": "Dome Landscape",
+     "category": "Models & Carvings",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90010,
+     "gift": "Glowmoss Bottle",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 100,
+     "bond_gained": 100
+    },
+    {
+     "gift_id": 90011,
+     "gift": "Forest Amber",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 200,
+     "bond_gained": 200
+    },
+    {
+     "gift_id": 90012,
+     "gift": "Moonfeather Chime",
+     "category": "Natural Curios",
+     "preference": "Neutral",
+     "multiplier_percent": 100.0,
+     "base_bond": 1000,
+     "bond_gained": 1000
+    },
+    {
+     "gift_id": 90013,
+     "gift": "Outlands Poetry",
+     "category": "Books & Music",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90014,
+     "gift": "Bonfire Album",
+     "category": "Books & Music",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90015,
+     "gift": "Kulune Songbook",
+     "category": "Books & Music",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    },
+    {
+     "gift_id": 90016,
+     "gift": "Adventurer's Charm",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 100,
+     "bond_gained": 150
+    },
+    {
+     "gift_id": 90017,
+     "gift": "Exploration Badge",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 200,
+     "bond_gained": 300
+    },
+    {
+     "gift_id": 90018,
+     "gift": "Journey Memento",
+     "category": "Keepsakes",
+     "preference": "Favourite",
+     "multiplier_percent": 150.0,
+     "base_bond": 1000,
+     "bond_gained": 1500
+    }
+   ],
+   "favourite_gifts": [
+    "Outlands Poetry",
+    "Bonfire Album",
+    "Kulune Songbook",
+    "Adventurer's Charm",
+    "Exploration Badge",
+    "Journey Memento"
+   ]
+  }
+ ]
+}

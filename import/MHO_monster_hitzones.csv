@@ -244,6 +244,26 @@
 110010,Radiant Anjanath,Tail,,60,60,75,122,149,122,122,122,0
 110010,Radiant Anjanath,LeftLegWounded,,45,45,50,89,167,89,89,89,0
 110010,Radiant Anjanath,RightLegWounded,,45,45,50,89,167,89,89,89,0
+199901,Radiant Rathian,Head,,70,75,65,143,143,169,143,143,3
+199901,Radiant Rathian,Neck,,40,45,35,78,78,210,78,78,0
+199901,Radiant Rathian,Body,,35,30,25,71,71,185,71,71,0
+199901,Radiant Rathian,Back,,35,30,25,71,71,185,71,71,0
+199901,Radiant Rathian,Left Wing,,55,50,45,108,108,177,108,108,0
+199901,Radiant Rathian,Right Wing,,55,50,45,111,111,192,111,111,0
+199901,Radiant Rathian,Left Leg,,40,40,35,78,78,210,78,78,0
+199901,Radiant Rathian,Right Leg,,40,40,35,81,81,220,81,81,0
+199901,Radiant Rathian,Tail,,70,75,65,92,92,169,92,92,3
+199901,Radiant Rathian,TailTip,,70,75,65,92,92,169,92,92,0
+199901,Radiant Rathian,Head,,70,75,65,143,143,169,143,143,3
+199901,Radiant Rathian,Neck_PJ,,40,45,35,78,78,210,78,78,0
+199901,Radiant Rathian,Body_PJ,,35,30,25,71,71,185,71,71,0
+199901,Radiant Rathian,Back_PJ,,35,30,25,71,71,185,71,71,0
+199901,Radiant Rathian,LeftWing_PJ,,55,50,45,108,108,177,108,108,0
+199901,Radiant Rathian,RightWing_PJ,,55,50,45,111,111,192,111,111,0
+199901,Radiant Rathian,LeftLeg_PJ,,40,40,35,78,78,210,78,78,0
+199901,Radiant Rathian,RightLeg_PJ,,40,40,35,81,81,220,81,81,0
+199901,Radiant Rathian,Tail,,70,75,65,92,92,169,92,92,3
+199901,Radiant Rathian,TailTip_PJ,,70,75,65,92,92,169,92,92,0
 100210,Radiant Rathalos,Head,,65,70,60,132,132,134,132,132,2
 100210,Radiant Rathalos,Neck,,35,40,30,71,71,185,71,71,0
 100210,Radiant Rathalos,Body,,25,25,20,51,51,120,51,51,0
@@ -397,26 +417,6 @@
 140001,Ruger Aidal,Wings,,70,70,70,50,50,75,50,25,2
 140001,Ruger Aidal,Wings,,70,70,70,50,50,75,50,25,2
 140001,Ruger Aidal,Tail,,25,25,25,55,55,83,55,28,2
-100110,Rathian,Head,,70,75,65,143,143,169,143,143,3
-100110,Rathian,Neck,,40,45,35,78,78,210,78,78,0
-100110,Rathian,Body,,35,30,25,71,71,185,71,71,0
-100110,Rathian,Back,,35,30,25,71,71,185,71,71,0
-100110,Rathian,Left Wing,,55,50,45,108,108,177,108,108,0
-100110,Rathian,Right Wing,,55,50,45,111,111,192,111,111,0
-100110,Rathian,Left Leg,,40,40,35,78,78,210,78,78,0
-100110,Rathian,Right Leg,,40,40,35,81,81,220,81,81,0
-100110,Rathian,Tail,,70,75,65,92,92,169,92,92,3
-100110,Rathian,TailTip,,70,75,65,92,92,169,92,92,0
-100110,Rathian,Head,,70,75,65,143,143,169,143,143,3
-100110,Rathian,Neck_PJ,,40,45,35,78,78,210,78,78,0
-100110,Rathian,Body_PJ,,35,30,25,71,71,185,71,71,0
-100110,Rathian,Back_PJ,,35,30,25,71,71,185,71,71,0
-100110,Rathian,LeftWing_PJ,,55,50,45,108,108,177,108,108,0
-100110,Rathian,RightWing_PJ,,55,50,45,111,111,192,111,111,0
-100110,Rathian,LeftLeg_PJ,,40,40,35,78,78,210,78,78,0
-100110,Rathian,RightLeg_PJ,,40,40,35,81,81,220,81,81,0
-100110,Rathian,Tail,,70,75,65,92,92,169,92,92,3
-100110,Rathian,TailTip_PJ,,70,75,65,92,92,169,92,92,0
 200101,Aptonoth,Head,,70,70,100,91,70,91,70,49,0
 200101,Aptonoth,Body,,80,80,100,104,80,104,80,56,0
 200201,Apceros,Head,,60,60,60,78,60,78,60,42,0

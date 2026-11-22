@@ -297,6 +297,7 @@
 100702,Black Diablos,Field (open world),,,14,,86602,1300
 100702,Black Diablos,Field (open world),,,15,,114141,1370
 100702,Black Diablos,Field (open world),,,16,,145623,1510
+102401,Kushala Daora,Hunt,11402401,2,8,13026,,
 100102,Pink Rathian,Hunt,11100102,4,11,8346,31297,1057
 100102,Pink Rathian,Hunt,11400102,5,14,14360,107667,1390
 100102,Pink Rathian,Hunt,11600102,6,16,15766,147682,1460
@@ -421,6 +422,7 @@
 199901,Radiant Rathian,Field (open world),,,14,,185244,1300
 199901,Radiant Rathian,Field (open world),,,15,,244150,1370
 199901,Radiant Rathian,Field (open world),,,16,,311489,1510
+100210,Radiant Rathalos,Hunt,10200210,1,5,800,,
 100210,Radiant Rathalos,Hunt,11300210,5,13,13363,156441,1257
 100210,Radiant Rathalos,Hunt,11600210,6,16,15766,317280,1460
 100210,Radiant Rathalos,Extreme Hunt,21600210,,16,22964,4600374,1590
@@ -429,6 +431,7 @@
 100210,Radiant Rathalos,Field (open world),,,14,,153130,1300
 100210,Radiant Rathalos,Field (open world),,,15,,201824,1370
 100210,Radiant Rathalos,Field (open world),,,16,,257490,1510
+100710,Radiant Diablos,Hunt,10200710,1,5,800,,
 100710,Radiant Diablos,Hunt,11300710,5,13,12903,169584,1190
 100710,Radiant Diablos,Hunt,11600710,6,16,15766,399239,1460
 100710,Radiant Diablos,Extreme Hunt,21600710,,16,21351,3461750,1570
@@ -541,3 +544,5 @@
 111310,Radiant Odogaron,Field (open world),,,14,,230162,1300
 111310,Radiant Odogaron,Field (open world),,,15,,303352,1370
 111310,Radiant Odogaron,Field (open world),,,16,,387020,1510
+140001,Ruger Aidal,Hunt,11440001,1,14,744,,
+140001,Ruger Aidal,Hunt,11540001,4,14,744,,

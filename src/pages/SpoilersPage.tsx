@@ -2,11 +2,12 @@
 // SpoilersPage.tsx — Field Guide Spoilers & Recruitment Schedule
 //
 // Gated by user authentication and profile `show_spoilers` preference.
-// Displays upcoming banner schedules, datamined event info (Impending Storm),
-// and recruitment pity mechanics breakdown.
+// Displays the recruitment schedule (read from the banners table, with
+// Live / Coming soon / Ended worked out from the current time), datamined
+// event info (Impending Storm), and recruitment pity mechanics breakdown.
 // ─────────────────────────────────────────────────────────────
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router';
 import {
   Eye,
   EyeOff,
@@ -28,121 +29,17 @@ import {
   Trophy,
   Gift,
   AlertTriangle,
-  UserCheck,
-  ArrowRight,
 } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import LoginModal from '../components/auth/LoginModal';
 import { cn } from '../lib/utils';
+import BannerSchedule from '../components/banners/BannerSchedule';
+import GeneralSpoilers from '../components/spoilers/GeneralSpoilers';
 
-interface BannerItem {
-  id: string;
-  name: string;
-  adventurer: string;
-  adventurerId: string;
-  role: string;
-  weapon: string;
-  type: 'Featured' | 'Festival' | 'Rotating';
-  contractType: 'Featured Contracts' | 'Standard Contracts';
-  startDate: string;
-  endDate: string;
-  startIso: string;
-  endIso: string;
-  badgeText?: string;
-  note?: string;
-  mainImage: string;
-  extraImages: { src: string; caption: string }[];
-  isNew?: boolean;
-  isRerun?: boolean;
-}
-
-const FEATURED_BANNERS: BannerItem[] = [
-  {
-    id: 'autumn-refrain',
-    name: 'Autumn Refrain',
-    adventurer: 'Midori',
-    adventurerId: '102002',
-    role: 'Assault',
-    weapon: 'Long Sword',
-    type: 'Featured',
-    contractType: 'Featured Contracts',
-    startDate: '29 Oct 2026',
-    endDate: '27 Nov 2026, 02:59 UTC',
-    startIso: '2026-10-29T00:00:00Z',
-    endIso: '2026-11-27T02:59:00Z',
-    note: 'Launch featured banner. Midori is the featured SSR adventurer, requiring Featured Contracts.',
-    mainImage: '/images/events/Midori-big.png',
-    extraImages: [
-      { src: '/images/events/Midori.png', caption: 'Midori Artwork' },
-      { src: '/images/events/RolePortrait_FSwoA01.png', caption: 'Midori Role Portrait' },
-    ],
-  },
-  {
-    id: 'heart-of-the-thaw',
-    name: 'Heart of the Thaw',
-    adventurer: 'Stylia',
-    adventurerId: '114004',
-    role: 'Support',
-    weapon: 'Bow',
-    type: 'Featured',
-    contractType: 'Featured Contracts',
-    startDate: '27 Nov 2026, 03:00 UTC',
-    endDate: '24 Dec 2026, 19:59 UTC',
-    startIso: '2026-11-27T03:00:00Z',
-    endIso: '2026-12-24T19:59:00Z',
-    isNew: true,
-    badgeText: 'New Adventurer',
-    note: 'Debuting SSR Support Bow adventurer Stylia. Requires Featured Contracts.',
-    mainImage: '/images/events/Stylia-big.png',
-    extraImages: [
-      { src: '/images/events/Stylia_Preview.png', caption: 'Stylia Preview Portrait' },
-      { src: '/images/events/Stylia_Swimsuit.png', caption: 'Stylia Swimsuit Costume' },
-    ],
-  },
-  {
-    id: 'crimson-authority',
-    name: 'Crimson Authority',
-    adventurer: 'Freya',
-    adventurerId: '101003',
-    role: 'Disruptor',
-    weapon: 'Great Sword',
-    type: 'Festival',
-    contractType: 'Featured Contracts',
-    startDate: '27 Nov 2026, 03:00 UTC',
-    endDate: '22 Jan 2027, 02:59 UTC',
-    startIso: '2026-11-27T03:00:00Z',
-    endIso: '2027-01-22T02:59:00Z',
-    isRerun: true,
-    badgeText: 'Festival Rerun',
-    note: 'A Festival Recruitment follows Featured rules and shares the pity counter with Featured Recruitments.',
-    mainImage: '/images/events/Freya-big.png',
-    extraImages: [
-      { src: '/images/events/Freya_extra.png', caption: 'Freya Full Showcase' },
-    ],
-  },
-];
-
-const ROTATING_BANNERS: BannerItem[] = [
-  {
-    id: 'pounding-smith',
-    name: 'Pounding Smith',
-    adventurer: 'Rhodes',
-    adventurerId: '105001',
-    role: 'Assault',
-    weapon: 'Hammer',
-    type: 'Rotating',
-    contractType: 'Standard Contracts',
-    startDate: '29 Oct 2026',
-    endDate: '27 Nov 2026, 02:59 UTC',
-    startIso: '2026-10-29T00:00:00Z',
-    endIso: '2026-11-27T02:59:00Z',
-    note: 'Highlighted rotating recruitment using Standard Contracts with higher probability for Rhodes. Returns to the normal Standard pool.',
-    // Rhodes has no artwork in import/Events, so we use his Supabase / public adventurer images
-    mainImage: '/images/adventurers/105001_bust.webp',
-    extraImages: [
-      { src: '/images/adventurers/105001_head.webp', caption: 'Rhodes Portrait' },
-    ],
-  },
+type SpoilerTab = 'recruitment' | 'general';
+const SPOILER_TABS: { id: SpoilerTab; label: string }[] = [
+  { id: 'general', label: 'General' },
+  { id: 'recruitment', label: 'Recruitment & Events' },
 ];
 
 const EVENT_REWARDS = [
@@ -190,6 +87,16 @@ export default function SpoilersPage() {
   const { user, profile, updateProfile, authLoading } = useAuthStore();
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [modalImage, setModalImage] = useState<{ src: string; alt: string } | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  // General opens first; ?tab=recruitment links straight to the banners.
+  const activeTab: SpoilerTab = searchParams.get('tab') === 'recruitment' ? 'recruitment' : 'general';
+  const selectTab = (tab: SpoilerTab) =>
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      if (tab === 'general') next.delete('tab');
+      else next.set('tab', tab);
+      return next;
+    }, { replace: true });
   const [enablingSpoilers, setEnablingSpoilers] = useState(false);
 
   const impendingStormStatus = computeDateStatus(
@@ -374,303 +281,33 @@ export default function SpoilersPage() {
         </div>
       </div>
 
-      {/* ── TOP SECTION 1: Featured Recruitment Schedule ── */}
-      <section className="space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-mh-slate-700/80 pb-3">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-500/10 text-red-400 border border-red-500/20">
-              <Calendar size={18} />
-            </div>
-            <div>
-              <h2 className="text-lg font-bold text-white font-display">Featured Recruitment Schedule</h2>
-              <p className="text-xs text-mh-slate-400">
-                Requires Featured Contracts. Pity carries over between Featured and Festival recruitments.
-              </p>
-            </div>
-          </div>
-          <span className="text-xs text-mh-gold-400 font-mono">Current Time: {new Date().toUTCString().slice(17, 22)} UTC</span>
-        </div>
+      {/* ── Tabs ── */}
+      <div role="tablist" aria-label="Spoiler sections" className="flex flex-wrap gap-2 border-b border-mh-slate-700/80 pb-3">
+        {SPOILER_TABS.map((t) => (
+          <button
+            key={t.id}
+            type="button"
+            role="tab"
+            aria-selected={activeTab === t.id}
+            onClick={() => selectTab(t.id)}
+            className={cn(
+              'rounded-xl border px-4 py-2 text-sm font-bold transition-colors',
+              activeTab === t.id
+                ? 'border-mh-gold-500/60 bg-mh-gold-500/15 text-mh-gold-300'
+                : 'border-white/10 bg-mh-slate-900/60 text-mh-slate-400 hover:text-white hover:border-white/25',
+            )}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
 
-        <div className="grid grid-cols-1 gap-6">
-          {FEATURED_BANNERS.map((banner) => {
-            const status = computeDateStatus(banner.startIso, banner.endIso);
+      {activeTab === 'general' && <GeneralSpoilers onImageClick={setModalImage} />}
 
-            return (
-              <div
-                key={banner.id}
-                className={cn(
-                  'rounded-2xl border p-5 sm:p-7 shadow-xl relative overflow-hidden transition-all',
-                  status.state === 'current'
-                    ? 'border-emerald-500/50 bg-gradient-to-b from-mh-slate-900/95 via-mh-slate-900/90 to-mh-slate-950 ring-1 ring-emerald-500/30'
-                    : 'border-white/10 bg-mh-slate-900/80 hover:border-white/20',
-                )}
-              >
-                {/* Header Strip with Dynamic Status */}
-                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4 mb-5">
-                  <div className="flex flex-wrap items-center gap-2.5">
-                    {/* Status Badge */}
-                    {status.state === 'current' ? (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 shadow-sm animate-pulse">
-                        <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                        Current
-                      </span>
-                    ) : status.state === 'upcoming' ? (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40">
-                        <Clock size={12} />
-                        Coming Soon
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-mh-slate-800 text-mh-slate-400 border border-mh-slate-700">
-                        Ended
-                      </span>
-                    )}
-
-                    <h3 className="font-display text-xl sm:text-2xl font-bold text-white">
-                      {banner.name}
-                    </h3>
-
-                    {banner.badgeText && (
-                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-mh-gold-500/20 text-mh-gold-300 border border-mh-gold-500/30">
-                        {banner.badgeText}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Date range display */}
-                  <div className="flex items-center gap-2 text-xs text-mh-slate-300 font-mono bg-black/40 px-3 py-1.5 rounded-lg border border-white/5">
-                    <Calendar size={13} className="text-mh-gold-400" />
-                    <span>{banner.startDate} → {banner.endDate}</span>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                  {/* Left: Main banner visual */}
-                  <div className="lg:col-span-5 space-y-3">
-                    <div
-                      className="group relative aspect-[16/10] sm:aspect-[16/9] w-full rounded-xl overflow-hidden border border-white/10 bg-black/60 cursor-pointer shadow-lg"
-                      onClick={() => setModalImage({ src: banner.mainImage, alt: `${banner.name} Banner Artwork` })}
-                    >
-                      <img
-                        src={banner.mainImage}
-                        alt={`${banner.name} Banner Artwork`}
-                        className="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-between p-3">
-                        <span className="text-xs font-semibold text-white drop-shadow">Click to inspect</span>
-                        <Maximize2 size={16} className="text-white drop-shadow" />
-                      </div>
-                    </div>
-
-                    {/* Extra thumbnails */}
-                    {banner.extraImages.length > 0 && (
-                      <div className="flex items-center gap-3">
-                        {banner.extraImages.map((img, idx) => (
-                          <div
-                            key={idx}
-                            onClick={() => setModalImage({ src: img.src, alt: img.caption })}
-                            className="group relative h-20 w-20 rounded-lg overflow-hidden border border-white/10 bg-black/60 cursor-pointer shrink-0 hover:border-mh-gold-500/60 transition-colors"
-                            title={img.caption}
-                          >
-                            <img
-                              src={img.src}
-                              alt={img.caption}
-                              className="h-full w-full object-cover object-top group-hover:scale-110 transition-transform"
-                              loading="lazy"
-                            />
-                            <div className="absolute inset-0 bg-black/30 group-hover:bg-transparent transition-colors" />
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Right: Adventurer details and banner rules */}
-                  <div className="lg:col-span-7 space-y-4">
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
-                      <div className="p-3 rounded-xl bg-black/30 border border-white/5">
-                        <span className="text-mh-slate-400 block text-[10px] uppercase">Featured Adventurer</span>
-                        <span className="text-base font-bold text-mh-gold-300">{banner.adventurer}</span>
-                      </div>
-                      <div className="p-3 rounded-xl bg-black/30 border border-white/5">
-                        <span className="text-mh-slate-400 block text-[10px] uppercase">Weapon / Role</span>
-                        <span className="text-sm font-semibold text-white">{banner.weapon} ({banner.role})</span>
-                      </div>
-                      <div className="p-3 rounded-xl bg-black/30 border border-white/5 col-span-2 sm:col-span-1">
-                        <span className="text-mh-slate-400 block text-[10px] uppercase">Recruitment Currency</span>
-                        <span className="text-xs font-semibold text-mh-gold-400">{banner.contractType}</span>
-                      </div>
-                    </div>
-
-                    <div className="rounded-xl bg-black/25 p-4 border border-white/5 text-xs text-mh-slate-300 leading-relaxed space-y-2">
-                      <p>{banner.note}</p>
-                      <ul className="list-disc list-inside space-y-1 text-mh-slate-400">
-                        <li>Featured SSR guarantee: within 90 pulls (50% chance of featured on 1st SSR, 100% on 2nd).</li>
-                        <li>Featured banner guarantee: 120 pulls once per banner period.</li>
-                        <li>Pity carryover: Yes, pity counts carry over to the next Featured/Festival banner.</li>
-                      </ul>
-                    </div>
-
-                    <div className="pt-1 flex flex-wrap items-center gap-3">
-                      <Link
-                        to={`/challenges/adventurers?adventurer=${banner.adventurerId}`}
-                        className="inline-flex items-center gap-2 rounded-xl bg-mh-gold-500/15 border border-mh-gold-500/35 px-4 py-2 text-xs font-bold text-mh-gold-300 hover:bg-mh-gold-500 hover:text-mh-slate-950 transition-all shadow-sm group"
-                      >
-                        <UserCheck size={14} className="group-hover:scale-110 transition-transform" />
-                        <span>View {banner.adventurer} in Adventurer Guide</span>
-                        <ArrowRight size={13} className="opacity-70 group-hover:translate-x-0.5 transition-transform" />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* ── TOP SECTION 2: Rotating Recruitment Schedule ── */}
-      <section className="space-y-6 pt-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-mh-slate-700/80 pb-3">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20">
-              <Calendar size={18} />
-            </div>
-            <div>
-              <h2 className="text-lg font-bold text-white font-display">Rotating Recruitment Schedule</h2>
-              <p className="text-xs text-mh-slate-400">
-                Uses Standard Contracts. Highlighted adventurer has an increased pull rate and returns to the normal Standard pool.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 gap-6">
-          {ROTATING_BANNERS.map((banner) => {
-            const status = computeDateStatus(banner.startIso, banner.endIso);
-
-            return (
-              <div
-                key={banner.id}
-                className={cn(
-                  'rounded-2xl border p-5 sm:p-7 shadow-xl relative overflow-hidden transition-all',
-                  status.state === 'current'
-                    ? 'border-emerald-500/50 bg-gradient-to-b from-mh-slate-900/95 via-mh-slate-900/90 to-mh-slate-950 ring-1 ring-emerald-500/30'
-                    : 'border-white/10 bg-mh-slate-900/80 hover:border-white/20',
-                )}
-              >
-                {/* Header Strip with Dynamic Status */}
-                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4 mb-5">
-                  <div className="flex flex-wrap items-center gap-2.5">
-                    {status.state === 'current' ? (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 shadow-sm animate-pulse">
-                        <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                        Current
-                      </span>
-                    ) : status.state === 'upcoming' ? (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40">
-                        <Clock size={12} />
-                        Coming Soon
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-mh-slate-800 text-mh-slate-400 border border-mh-slate-700">
-                        Ended
-                      </span>
-                    )}
-
-                    <h3 className="font-display text-xl sm:text-2xl font-bold text-white">
-                      {banner.name}
-                    </h3>
-                  </div>
-
-                  <div className="flex items-center gap-2 text-xs text-mh-slate-300 font-mono bg-black/40 px-3 py-1.5 rounded-lg border border-white/5">
-                    <Calendar size={13} className="text-mh-gold-400" />
-                    <span>{banner.startDate} → {banner.endDate}</span>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                  {/* Left: Character Portrait from Supabase assets */}
-                  <div className="lg:col-span-5 space-y-3">
-                    <div
-                      className="group relative aspect-[16/10] sm:aspect-[16/9] w-full rounded-xl overflow-hidden border border-white/10 bg-black/60 cursor-pointer shadow-lg flex items-center justify-center p-4"
-                      onClick={() => setModalImage({ src: banner.mainImage, alt: `${banner.adventurer} Bust Artwork` })}
-                    >
-                      <img
-                        src={banner.mainImage}
-                        alt={`${banner.adventurer} Bust`}
-                        className="max-h-full object-contain transition-transform duration-300 group-hover:scale-105"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-between p-3">
-                        <span className="text-xs font-semibold text-white drop-shadow">Click to inspect</span>
-                        <Maximize2 size={16} className="text-white drop-shadow" />
-                      </div>
-                    </div>
-
-                    {banner.extraImages.length > 0 && (
-                      <div className="flex items-center gap-3">
-                        {banner.extraImages.map((img, idx) => (
-                          <div
-                            key={idx}
-                            onClick={() => setModalImage({ src: img.src, alt: img.caption })}
-                            className="group relative h-20 w-20 rounded-lg overflow-hidden border border-white/10 bg-black/60 cursor-pointer shrink-0 hover:border-mh-gold-500/60 transition-colors p-1"
-                            title={img.caption}
-                          >
-                            <img
-                              src={img.src}
-                              alt={img.caption}
-                              className="h-full w-full object-contain group-hover:scale-110 transition-transform"
-                              loading="lazy"
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Right: Adventurer details & schedule info */}
-                  <div className="lg:col-span-7 space-y-4">
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
-                      <div className="p-3 rounded-xl bg-black/30 border border-white/5">
-                        <span className="text-mh-slate-400 block text-[10px] uppercase">Rotating Adventurer</span>
-                        <span className="text-base font-bold text-blue-300">{banner.adventurer}</span>
-                      </div>
-                      <div className="p-3 rounded-xl bg-black/30 border border-white/5">
-                        <span className="text-mh-slate-400 block text-[10px] uppercase">Weapon / Role</span>
-                        <span className="text-sm font-semibold text-white">{banner.weapon} ({banner.role})</span>
-                      </div>
-                      <div className="p-3 rounded-xl bg-black/30 border border-white/5 col-span-2 sm:col-span-1">
-                        <span className="text-mh-slate-400 block text-[10px] uppercase">Recruitment Currency</span>
-                        <span className="text-xs font-semibold text-blue-400">{banner.contractType}</span>
-                      </div>
-                    </div>
-
-                    <div className="rounded-xl bg-black/25 p-4 border border-white/5 text-xs text-mh-slate-300 leading-relaxed space-y-2">
-                      <p>{banner.note}</p>
-                      <div className="p-3 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-200">
-                        <p className="font-semibold text-amber-300 mb-0.5">Upcoming Rotating Schedule Notice:</p>
-                        <p>Nothing is scheduled to start when Rhodes’ Pounding Smith banner ends on 27 Nov at 02:59 UTC.</p>
-                      </div>
-                    </div>
-
-                    <div className="pt-1 flex flex-wrap items-center gap-3">
-                      <Link
-                        to={`/challenges/adventurers?adventurer=${banner.adventurerId}`}
-                        className="inline-flex items-center gap-2 rounded-xl bg-blue-500/15 border border-blue-500/35 px-4 py-2 text-xs font-bold text-blue-300 hover:bg-blue-500 hover:text-white transition-all shadow-sm group"
-                      >
-                        <UserCheck size={14} className="group-hover:scale-110 transition-transform" />
-                        <span>View {banner.adventurer} in Adventurer Guide</span>
-                        <ArrowRight size={13} className="opacity-70 group-hover:translate-x-0.5 transition-transform" />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
+      {activeTab === 'recruitment' && (
+      <>
+      {/* ── TOP SECTION 1: Recruitment schedule (from the banners table; statuses worked out live) ── */}
+      <BannerSchedule onImageClick={(img) => setModalImage({ src: img.src, alt: img.caption })} />
 
       {/* ── TOP SECTION 3: Limited-Time Event: Impending Storm (Kushala Daora) ── */}
       {showImpendingStorm && (
@@ -973,7 +610,7 @@ export default function SpoilersPage() {
                 </tr>
                 <tr className="hover:bg-white/[0.02]">
                   <td className="py-3.5 px-4 sm:px-6 font-semibold text-white">Pity Counter</td>
-                  <td className="py-3.5 px-4 sm:px-6 text-mh-slate-300">Carries over to other Featured and Festival Recruitments</td>
+                  <td className="py-3.5 px-4 sm:px-6 text-mh-slate-300">Carries over only to recruitments of the same kind (Featured → Featured, Festival → Festival)</td>
                   <td className="py-3.5 px-4 sm:px-6 text-mh-slate-300">Counted separately; doesn't affect any other banner</td>
                 </tr>
               </tbody>
@@ -1107,6 +744,9 @@ export default function SpoilersPage() {
           </p>
         </div>
       </section>
+
+      </>
+      )}
 
       {/* ── Image Lightbox Modal ── */}
       {modalImage && (

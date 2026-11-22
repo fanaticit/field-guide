@@ -1,1 +1,35 @@
-/* /index.html 200
+# Cloudflare Pages redirects — first matching rule wins.
+
+# ── Legacy URLs (permanent redirects, so search engines update their links) ──
+/armory/builds                      /armory                    301
+/armory/visages                     /gallery                   301
+/armory/build-planner               /armory/planner            301
+/armory/build-planner/:buildId      /armory/planner/:buildId   301
+/build-planner                      /armory/planner            301
+/build-planner/:buildId             /armory/planner/:buildId   301
+/gallery/sets                       /gallery/set               301
+/investigation-notes/armour         /armory/armour             301
+/investigation-notes/visages        /gallery/collection        301
+/investigation-notes/adventurers    /challenges/adventurers    301
+/investigation-notes/buddies        /challenges/buddies        301
+/investigation-notes/weapons        /challenges/weapons        301
+/investigation-notes/monsters       /challenges/monsters       301
+/investigation-notes                /armory/armour             301
+/investigation-notes/*              /challenges                301
+/community-hub                      /armory                    301
+/home/spoilers                      /spoilers                  301
+/admin                              /admin/feedback            302
+
+# ── Browser-only pages (not pre-rendered) load the app shell ──
+# Note: Cloudflare applies a 200 rewrite even when a real file exists, so
+# there is deliberately no catch-all here — each browser-only route is listed.
+/settings                 /__spa-fallback   200
+/spoilers                 /__spa-fallback   200
+/admin/:subPage           /__spa-fallback   200
+/armory/planner/:buildId  /__spa-fallback   200
+/gallery/set/:buildId     /__spa-fallback   200
+/reset-password           /__spa-fallback   200
+
+# Any other unknown URL gets 404.html (a copy of the app shell, made at the
+# end of the build), so it shows the in-app "Page not found" page with a real
+# 404 status. Reference pages added since the last build also load from there.

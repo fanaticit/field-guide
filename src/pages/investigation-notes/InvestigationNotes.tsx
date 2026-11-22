@@ -4,7 +4,7 @@
 // Add more sub-pages here as they are built.
 // ─────────────────────────────────────────────────────────────
 import { BookMarked, Bug, Sword, Shield, Sparkles, Cat, UserCheck } from 'lucide-react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router';
 import { type InvestigationSubPage } from '../../store/uiStore';
 import MonsterGuide from './MonsterGuide';
 import AdventurerGuide from './AdventurerGuide';

@@ -94,7 +94,7 @@ export function useUserAdventurerCollection() {
     staleTime: 1000 * 60,
   });
 
-  const useDb = Boolean(user) && dbCollection.length > 0;
+  const useDb = Boolean(user);
 
   // Combined collection set
   const collectionSet = useMemo<Set<string>>(() => {
@@ -121,6 +121,7 @@ export function useUserAdventurerCollection() {
         {
           user_id: user.id,
           adventurer_id: adventurerId,
+          insight_level: 1,
           updated_at: new Date().toISOString(),
         },
         { onConflict: 'user_id,adventurer_id' },
@@ -128,7 +129,12 @@ export function useUserAdventurerCollection() {
       if (error) throw error;
     },
     onMutate: async (adventurerId) => {
-      if (!user) return;
+      if (!user) {
+        const next = new Set(localSet);
+        next.add(adventurerId);
+        saveLocal(next);
+        return;
+      }
       await qc.cancelQueries({ queryKey });
       const previous = qc.getQueryData<CollectionRow[]>(queryKey);
 
@@ -171,7 +177,12 @@ export function useUserAdventurerCollection() {
       if (error) throw error;
     },
     onMutate: async (adventurerId) => {
-      if (!user) return;
+      if (!user) {
+        const next = new Set(localSet);
+        next.delete(adventurerId);
+        saveLocal(next);
+        return;
+      }
       await qc.cancelQueries({ queryKey });
       const previous = qc.getQueryData<CollectionRow[]>(queryKey);
 

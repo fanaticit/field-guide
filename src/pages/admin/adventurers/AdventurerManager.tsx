@@ -31,6 +31,7 @@ import AdventurerVideoModal from './AdventurerVideoModal';
 import AdventurerRarityBadge from '../../investigation-notes/AdventurerRarityBadge';
 import { cn } from '../../../lib/utils';
 import RoleIcon, { ROLE_ICONS } from '../../../components/RoleIcon';
+import YouTubeIcon from '../../../components/YouTubeIcon';
 
 type ViewMode = 'grid' | 'table';
 
@@ -402,6 +403,15 @@ export default function AdventurerManager() {
                         <span>{roleCfg.label}</span>
                       </span>
                       <AdventurerRarityBadge rarity={adventurer.rarity} className="!rounded-md !py-0.5 !text-[10px]" />
+                      {Boolean(adventurer.youtube_url) && (
+                        <span
+                          className="inline-flex items-center gap-1 rounded-md bg-red-500/20 border border-red-500/30 px-1.5 py-0.5 text-[10px] font-bold text-red-300"
+                          title={`Video guide: ${adventurer.youtube_url}`}
+                        >
+                          <YouTubeIcon size={11} className="text-red-500 fill-red-500" />
+                          <span>Video</span>
+                        </span>
+                      )}
                     </div>
 
                     <div className="flex items-center gap-2">

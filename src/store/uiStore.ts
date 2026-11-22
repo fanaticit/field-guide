@@ -54,6 +54,10 @@ export const useUIStore = create<UIState>()(
     {
       name: 'field-guide-ui',
       version: 1,
+      // Saved preferences are loaded from localStorage after the page has
+      // hydrated (see lib/clientBoot.ts), so the first render in the browser
+      // matches the pre-rendered HTML.
+      skipHydration: true,
       // v0 stored every section as 'standard' before themes were applied anywhere; pick up the new defaults.
       migrate: (persisted, version) => {
         const state = (persisted ?? {}) as Partial<UIState>;

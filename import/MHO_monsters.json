@@ -7,12 +7,13 @@
   "ecology": "The pack leader of the Jagras. When hungry, Great Jagras are known to attack monsters even stronger than themselves. It balloons to unbelievable proportions after swallowing prey",
   "hunting_tips": "Once prey is fully swallowed, their stomachs become inflated, and they will boldly use their bloated bellies to attack. Focusing attacks on the stomach to force them to disgorge their prey is an efficient way to weaken them.",
   "element_weakness_stars": {
-   "water": 1,
    "fire": 3,
-   "ice": 2,
+   "water": 1,
    "thunder": 2,
+   "ice": 2,
    "dragon": 1
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 56.9,
    "fire": 77.6,
@@ -21,6 +22,13 @@
    "dragon": 61.1
   },
   "best_element": "fire",
+  "ailment_weakness_stars": {
+   "poison": 3,
+   "sleep": 3,
+   "paralysis": 3,
+   "blast": 3,
+   "stun": 3
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -402,12 +410,13 @@
   "ecology": "Odd Bird Wyverns that have developed limbs capable of carrying weapons. They've been spotted stealing eggs from nests of other monsters",
   "hunting_tips": "Beyond holding rocks for protection, they also seem to use them as weapons, smashing them against foes. Flash Pods can startle them, as can cleverly luring them toward natural predators. The key is preventing them from getting the chance to use rocks at all.",
   "element_weakness_stars": {
-   "water": 1,
-   "fire": 3,
-   "ice": 3,
-   "thunder": 3,
-   "dragon": 3
+   "fire": 2,
+   "water": 3,
+   "thunder": 2,
+   "ice": 2,
+   "dragon": 2
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 60.7,
    "fire": 86.6,
@@ -415,7 +424,14 @@
    "thunder": 86.6,
    "dragon": 86.6
   },
-  "best_element": "fire",
+  "best_element": "water",
+  "ailment_weakness_stars": {
+   "poison": 2,
+   "sleep": 2,
+   "paralysis": 2,
+   "blast": 2,
+   "stun": 2
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -784,12 +800,13 @@
   "ecology": "Bird Wyverns known to possess poisonous toxins within their bodies. They have been spotted storing scatternuts in their mouths or tails, coating them with poison before spitting them out at threats",
   "hunting_tips": "They mix plants with their internal venom to spit out toxins of varying properties. After eating a large amounts of plants, they can also expel venom in a massive burst from their tails. Clearing out their favorite plants in the area first can prevent their unpredictable venom breath attacks.",
   "element_weakness_stars": {
-   "water": 1,
    "fire": 2,
-   "ice": 2,
+   "water": 2,
    "thunder": 3,
-   "dragon": 2
+   "ice": 2,
+   "dragon": 1
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 52.1,
    "fire": 59.4,
@@ -798,6 +815,13 @@
    "dragon": 57.3
   },
   "best_element": "thunder",
+  "ailment_weakness_stars": {
+   "poison": 1,
+   "sleep": 3,
+   "paralysis": 3,
+   "blast": 2,
+   "stun": 2
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -1168,12 +1192,13 @@
   "ecology": "Barroth seek out ants, their favorite snack. They attack potential rivals with their devastating charging attack",
   "hunting_tips": "The hardened mud caked on their bodies not only boosts their defense, but can also be flung at foes as an attack. It's best to strip away the mud first with water weapons, which they fear, to gain the upper hand.",
   "element_weakness_stars": {
-   "water": 2,
    "fire": 3,
-   "ice": 2,
+   "water": 1,
    "thunder": 1,
-   "dragon": 2
+   "ice": 2,
+   "dragon": 1
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 44.4,
    "fire": 52.5,
@@ -1182,6 +1207,13 @@
    "dragon": 43.6
   },
   "best_element": "fire",
+  "ailment_weakness_stars": {
+   "poison": 3,
+   "sleep": 2,
+   "paralysis": 3,
+   "blast": 3,
+   "stun": 1
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -1612,12 +1644,13 @@
   "ecology": "Large Piscine Wyverns that inhabit the depths of swamps. They use mud to capture prey, and they're known to battle Barroths over territory",
   "hunting_tips": "They move swiftly in swamps, so try to lure them onto land if possible. Their mud-caked parts boast higher defense, so stripping the mud away with water weapons is the best way to gain the upper hand.",
   "element_weakness_stars": {
-   "water": 2,
-   "fire": 2,
-   "ice": 2,
+   "fire": 1,
+   "water": 1,
    "thunder": 3,
-   "dragon": 2
+   "ice": 1,
+   "dragon": 1
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 39.7,
    "fire": 37.3,
@@ -1625,7 +1658,14 @@
    "thunder": 44.5,
    "dragon": 37.7
   },
-  "best_element": "thunder",
+  "best_element": "water/thunder",
+  "ailment_weakness_stars": {
+   "poison": 2,
+   "sleep": 1,
+   "paralysis": 2,
+   "blast": 1,
+   "stun": 3
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -2068,12 +2108,13 @@
   "ecology": "Fanged Wyverns that fly among the trees. Their penchant to brush against the ground and the trees as they move around builds up static electricity within their fur",
   "hunting_tips": "They move freely between the trees and the ground, so adventurers must stay alert for attacks from blind spots. The key to hunting them is keeping them within view using tactics like \"Lock-On,\" preventing them from moving away or entering their electrified state.",
   "element_weakness_stars": {
-   "water": 3,
    "fire": 2,
-   "ice": 2,
+   "water": 2,
    "thunder": 1,
+   "ice": 2,
    "dragon": 1
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 66.4,
    "fire": 56.4,
@@ -2082,6 +2123,13 @@
    "dragon": 53.0
   },
   "best_element": "water",
+  "ailment_weakness_stars": {
+   "poison": 3,
+   "sleep": 2,
+   "paralysis": 2,
+   "blast": 2,
+   "stun": 2
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -2397,12 +2445,13 @@
   "ecology": "Anjanath patrol densely populated areas looking for their favorite meal, Aptonoths. These belligerent monsters will attack anything without hesitation",
   "hunting_tips": "A specialized organ in their throat allows them to store flame, and they have been confirmed to unleash intense fire breath from it. Aiming for the throat can suppress this buildup, providing a significant advantage.",
   "element_weakness_stars": {
-   "water": 3,
    "fire": 1,
-   "ice": 2,
+   "water": 3,
    "thunder": 2,
+   "ice": 2,
    "dragon": 1
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 65.2,
    "fire": 47.7,
@@ -2411,6 +2460,13 @@
    "dragon": 50.9
   },
   "best_element": "water",
+  "ailment_weakness_stars": {
+   "poison": 2,
+   "sleep": 2,
+   "paralysis": 2,
+   "blast": 1,
+   "stun": 2
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -2794,12 +2850,13 @@
   "ecology": "Wyverns known as the \"Queen of the Land.\" Terrestrial predators, they overpower prey with their venomous tails and powerful legs",
   "hunting_tips": "Guard against their poison tail and fire breath attacks—watch for an opening to sever the tail or boost your fire resistance to gain the upper hand in the hunt.",
   "element_weakness_stars": {
-   "water": 2,
    "fire": 1,
-   "ice": 2,
+   "water": 1,
    "thunder": 2,
+   "ice": 1,
    "dragon": 3
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 50.2,
    "fire": 46.0,
@@ -2808,6 +2865,13 @@
    "dragon": 61.5
   },
   "best_element": "dragon",
+  "ailment_weakness_stars": {
+   "poison": 1,
+   "sleep": 2,
+   "paralysis": 2,
+   "blast": 1,
+   "stun": 3
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -3148,12 +3212,13 @@
   "ecology": "These odd monsters blind both prey and enemies with special pulsing organs near their heads. They then use their strong legs to deliver finishing blows",
   "hunting_tips": "Since the intense flash is emitted forward from the head, circling behind them the moment their Flash Fins begin to open is an effective counter. Destroying the Flash Fins also reduces the range of the blinding light.",
   "element_weakness_stars": {
-   "water": 2,
    "fire": 2,
-   "ice": 3,
+   "water": 2,
    "thunder": 3,
+   "ice": 3,
    "dragon": 2
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 60.8,
    "fire": 60.8,
@@ -3161,7 +3226,14 @@
    "thunder": 70.8,
    "dragon": 60.8
   },
-  "best_element": "ice",
+  "best_element": "ice/thunder",
+  "ailment_weakness_stars": {
+   "poison": 2,
+   "sleep": 2,
+   "paralysis": 2,
+   "blast": 2,
+   "stun": 2
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -3406,12 +3478,13 @@
   "ecology": "Flying Wyverns that are able to float through the air using unique sacs in their bodies, and attack with their extremely hard tails",
   "hunting_tips": "Without air to expel, their movement becomes restricted, leaving openings in their actions. Aim for the parts where they store air, or deliberately provoke actions that consume it. The key to the hunt is never letting them get the chance to build up air in their bodies.",
   "element_weakness_stars": {
-   "water": 1,
    "fire": 3,
-   "ice": 2,
+   "water": 1,
    "thunder": 2,
-   "dragon": 2
+   "ice": 1,
+   "dragon": 1
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 42.8,
    "fire": 57.0,
@@ -3420,6 +3493,13 @@
    "dragon": 46.4
   },
   "best_element": "fire",
+  "ailment_weakness_stars": {
+   "poison": 2,
+   "sleep": 2,
+   "paralysis": 2,
+   "blast": 3,
+   "stun": 3
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -3715,12 +3795,13 @@
   "ecology": "Wyverns with exceptional flying ability whose diet primarily consists of Raphinos. They emit a chilling wind from their bodies, which dulls their prey's ability to escape.",
   "hunting_tips": "They can control their posture through the membranes on various parts of their bodies, allowing for agile, sweeping turns. Destroying these membranes to gain the upper hand. Poison attacks have also been confirmed effective.",
   "element_weakness_stars": {
-   "water": 2,
    "fire": 2,
-   "ice": 1,
+   "water": 1,
    "thunder": 3,
-   "dragon": 2
+   "ice": 1,
+   "dragon": 1
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 43.2,
    "fire": 43.2,
@@ -3729,6 +3810,13 @@
    "dragon": 42.6
   },
   "best_element": "thunder",
+  "ailment_weakness_stars": {
+   "poison": 3,
+   "sleep": 2,
+   "paralysis": 2,
+   "blast": 2,
+   "stun": 2
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -4024,12 +4112,13 @@
   "ecology": "The apex monster of the forests, also known as the \"King of the Skies.\" Terrible wyverns that descend upon invaders, attacking with poison claws and fiery breath",
   "hunting_tips": "Since they circle overhead unleashing various attacks, it's best to use Flash Pods to blind them and force them back to the ground. Destroying their wings seems to create an opening when they attempt to take flight.",
   "element_weakness_stars": {
-   "water": 2,
    "fire": 1,
-   "ice": 2,
+   "water": 1,
    "thunder": 2,
+   "ice": 1,
    "dragon": 3
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 44.9,
    "fire": 40.8,
@@ -4038,6 +4127,13 @@
    "dragon": 55.3
   },
   "best_element": "dragon",
+  "ailment_weakness_stars": {
+   "poison": 1,
+   "sleep": 2,
+   "paralysis": 2,
+   "blast": 1,
+   "stun": 2
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -4378,12 +4474,13 @@
   "ecology": "Apex monsters of desert regions with intense territorial instincts and tyrannical aggression. They drag any prey that makes loud noises on the surface of their territory underground",
   "hunting_tips": "Once they burrow, they become difficult to deal with, so luring them out with loud noises is an effective tactic. Their horn charge attacks carry astonishing destructive force, but if baited into ramming a sand pillar, that same force can be turned against them to create an opening.",
   "element_weakness_stars": {
-   "water": 2,
    "fire": 1,
+   "water": 2,
+   "thunder": 1,
    "ice": 3,
-   "thunder": 2,
    "dragon": 2
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 46.8,
    "fire": 40.5,
@@ -4392,6 +4489,13 @@
    "dragon": 46.0
   },
   "best_element": "ice",
+  "ailment_weakness_stars": {
+   "poison": 2,
+   "sleep": 2,
+   "paralysis": 3,
+   "blast": 2,
+   "stun": 1
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -4722,12 +4826,13 @@
   "ecology": "Monsters that drag Girros around while searching for carrion left behind by other monsters. Their large fangs contain paralyzing venom used to finish off prey",
   "hunting_tips": "They are known to hunt in packs alongside Girros, so when hunting them, focus on slaying or staggering the Girros first to remove the threat while dealing with the main target. Breaking their fangs will also weaken the effects of their paralytic venom.",
   "element_weakness_stars": {
-   "water": 3,
    "fire": 2,
-   "ice": 2,
+   "water": 3,
    "thunder": 1,
+   "ice": 2,
    "dragon": 1
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 62.9,
    "fire": 51.1,
@@ -4736,6 +4841,13 @@
    "dragon": 50.0
   },
   "best_element": "water",
+  "ailment_weakness_stars": {
+   "poison": 2,
+   "sleep": 3,
+   "paralysis": 1,
+   "blast": 2,
+   "stun": 2
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -5094,12 +5206,13 @@
   "ecology": "Terrible Elder Dragons that appear when other elders are in the vicinity. Their penchant for destruction is well-documented",
   "hunting_tips": "They seem to possess a special ability that allows their wounds to regenerate instantly. It has been confirmed that regenerated parts significantly increase in hardness over time, so breaking them as early as possible is key to gaining the upper hand.",
   "element_weakness_stars": {
-   "water": 2,
-   "fire": 2,
-   "ice": 2,
+   "fire": 1,
+   "water": 1,
    "thunder": 3,
+   "ice": 1,
    "dragon": 2
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 40.4,
    "fire": 43.2,
@@ -5108,6 +5221,13 @@
    "dragon": 41.8
   },
   "best_element": "thunder",
+  "ailment_weakness_stars": {
+   "poison": 2,
+   "sleep": 2,
+   "paralysis": 2,
+   "blast": 2,
+   "stun": 2
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -5474,12 +5594,13 @@
   "ecology": "Brute Wyverns that use bones as armor. They roll into balls as a form of attack and transportation",
   "hunting_tips": "Taking damage during their rolling attack throws off their balance, and a well-timed follow-up attack can topple them. When hunting them, focus on destroying the bone armor covering their bodies to gain the advantage.",
   "element_weakness_stars": {
-   "water": 2,
    "fire": 2,
-   "ice": 2,
+   "water": 2,
    "thunder": 2,
+   "ice": 2,
    "dragon": 3
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 42.1,
    "fire": 42.1,
@@ -5488,6 +5609,13 @@
    "dragon": 47.7
   },
   "best_element": "dragon",
+  "ailment_weakness_stars": {
+   "poison": 2,
+   "sleep": 1,
+   "paralysis": 2,
+   "blast": 3,
+   "stun": 2
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -5783,12 +5911,13 @@
   "ecology": "Terrifying monsters that scour for carrion. Their highly aggressive nature means that anything, be it monster or man, is a potential meal",
   "hunting_tips": "Beware the bleeding status inflicted by their razor-sharp claws. Provoking them into a rampaging state will eventually exhaust them, creating an opening to strike.",
   "element_weakness_stars": {
-   "water": 2,
-   "fire": 2,
-   "ice": 3,
+   "fire": 1,
+   "water": 1,
    "thunder": 2,
+   "ice": 3,
    "dragon": 1
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 50.3,
    "fire": 48.4,
@@ -5797,6 +5926,13 @@
    "dragon": 44.7
   },
   "best_element": "ice",
+  "ailment_weakness_stars": {
+   "poison": 1,
+   "sleep": 2,
+   "paralysis": 3,
+   "blast": 2,
+   "stun": 2
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -6068,12 +6204,13 @@
   "ecology": "These black-shelled Diablos are actually female Diablos in heat. The color signals their aggressiveness and heightened hostility to other creatures in their habitat",
   "hunting_tips": "They are even more hostile toward territorial intruders than normal Diablos, charging with their massive horns even at distant threats—so don't let your guard down, even from afar.",
   "element_weakness_stars": {
-   "water": 2,
    "fire": 1,
+   "water": 2,
+   "thunder": 1,
    "ice": 3,
-   "thunder": 2,
    "dragon": 1
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 42.3,
    "fire": 38.2,
@@ -6082,6 +6219,13 @@
    "dragon": 38.2
   },
   "best_element": "ice",
+  "ailment_weakness_stars": {
+   "poison": 2,
+   "sleep": 2,
+   "paralysis": 3,
+   "blast": 2,
+   "stun": 1
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -6324,12 +6468,13 @@
   "ecology": "Elder Dragons that shield themselves with fierce winds, preventing anyone from approaching them. Their skin consists of hard, metallic scales",
   "hunting_tips": "When faced with intruders, the winds encircling their bodies gradually intensify, rendering bowgun and bow attacks ineffective. When hunting them, focus on inflicting stagger through sustained attacks while suppressing the flow of wind.",
   "element_weakness_stars": {
-   "water": 1,
    "fire": 1,
-   "ice": 1,
+   "water": 1,
    "thunder": 3,
-   "dragon": 1
+   "ice": 1,
+   "dragon": 2
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 38.6,
    "fire": 39.4,
@@ -6338,6 +6483,13 @@
    "dragon": 39.4
   },
   "best_element": "thunder",
+  "ailment_weakness_stars": {
+   "poison": 3,
+   "sleep": 1,
+   "paralysis": 1,
+   "blast": 3,
+   "stun": 2
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -6429,12 +6581,13 @@
   "ecology": "A subspecies with vibrant pink scales. Pink Rathian wield their toxic tails more deftly than normal Rathian, weakening prey with poison before moving in for the kill",
   "hunting_tips": "Their tough spots differ from normal Rathian, with the carapace near the base of the tail being especially hard. To sever the tail, aim for the softer tip instead.",
   "element_weakness_stars": {
-   "water": 1,
    "fire": 1,
-   "ice": 1,
+   "water": 1,
    "thunder": 2,
+   "ice": 1,
    "dragon": 3
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 40.8,
    "fire": 37.6,
@@ -6443,6 +6596,13 @@
    "dragon": 51.5
   },
   "best_element": "dragon",
+  "ailment_weakness_stars": {
+   "poison": 1,
+   "sleep": 2,
+   "paralysis": 2,
+   "blast": 1,
+   "stun": 3
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -6717,12 +6877,13 @@
   "ecology": "Radiantite-corrupted Fanged Wyverns unique to Aesoland. Their greatly increased appetites allow them to swiftly swallow and digest larger prey than the common species, replenishing their energy",
   "hunting_tips": "Driven by an insatiable hunger, they devour everything in sight until nothing remains. Once their stomachs swell, they become especially troublesome to deal with. Preventing them from eating can make the hunt considerably easier.",
   "element_weakness_stars": {
-   "water": 0,
    "fire": 3,
-   "ice": 0,
-   "thunder": 0,
-   "dragon": 0
+   "water": 1,
+   "thunder": 1,
+   "ice": 1,
+   "dragon": 1
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 116.6,
    "fire": 196.1,
@@ -6731,6 +6892,13 @@
    "dragon": 116.6
   },
   "best_element": "fire",
+  "ailment_weakness_stars": {
+   "poison": 3,
+   "sleep": 3,
+   "paralysis": 3,
+   "blast": 3,
+   "stun": 3
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -7079,12 +7247,13 @@
   "ecology": "Radiantite-corrupted Bird Wyverns unique to Aesoland. They can spew venom over a wide area, and their tails can store a large amount of venom for deadly spray attacks",
   "hunting_tips": "Their radiant particle-enhanced heads and tails can unleash venom spray more frequently. Once frenzied, the venom orbs they spit leave behind toxic pools on the ground that inflict poison upon contact. Stocking up on antidotes beforehand can make the hunt considerably easier.",
   "element_weakness_stars": {
-   "water": 0,
-   "fire": 0,
-   "ice": 0,
+   "fire": 1,
+   "water": 1,
    "thunder": 3,
-   "dragon": 0
+   "ice": 1,
+   "dragon": 1
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 107.4,
    "fire": 107.4,
@@ -7093,6 +7262,13 @@
    "dragon": 107.4
   },
   "best_element": "thunder",
+  "ailment_weakness_stars": {
+   "poison": 1,
+   "sleep": 3,
+   "paralysis": 3,
+   "blast": 2,
+   "stun": 2
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -7430,12 +7606,13 @@
   "ecology": "Radiantite-corrupted Brute Wyverns unique to Aesoland. Their intense body heat thickens the mud coating their bodies, and they can chain charge after charge, making them far more dangerous",
   "hunting_tips": "They charge relentlessly in their fury, and once frenzied, fling hardened mud along their path to hinder adventurers. Stripping away the mud on their bodies makes them easier to deal with, while using blunt weapons to break their head carapace can also lessen the threat of their charges.",
   "element_weakness_stars": {
-   "water": 0,
    "fire": 3,
-   "ice": 0,
-   "thunder": 0,
-   "dragon": 0
+   "water": 1,
+   "thunder": 1,
+   "ice": 1,
+   "dragon": 1
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 84.6,
    "fire": 184.6,
@@ -7444,6 +7621,13 @@
    "dragon": 78.6
   },
   "best_element": "fire",
+  "ailment_weakness_stars": {
+   "poison": 3,
+   "sleep": 2,
+   "paralysis": 3,
+   "blast": 3,
+   "stun": 1
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -7819,12 +8003,13 @@
   "ecology": "Radiantite-corrupted Piscine Wyverns unique to Aesoland. They can spread mud over wider areas and lurk within the mud before launching consecutive jumping attacks",
   "hunting_tips": "While swimming, they generate large muddy pools to hinder adventurers' movement. However, stripping away the mud clinging to their bodies makes them easy to handle, even during their Radiant Rage.",
   "element_weakness_stars": {
-   "water": 0,
-   "fire": 0,
+   "fire": 1,
+   "water": 1,
+   "thunder": 1,
    "ice": 3,
-   "thunder": 0,
-   "dragon": 0
+   "dragon": 1
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 75.5,
    "fire": 69.8,
@@ -7833,6 +8018,13 @@
    "dragon": 69.8
   },
   "best_element": "ice",
+  "ailment_weakness_stars": {
+   "poison": 2,
+   "sleep": 1,
+   "paralysis": 2,
+   "blast": 1,
+   "stun": 3
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -8220,12 +8412,13 @@
   "ecology": "Radiantite-corrupted Brute Wyverns unique to Aesoland. Their volatile temperament drives them to attack with fire more frequently, and they can use Radiantite from the ground for ranged attacks",
   "hunting_tips": "Their radiant particle-enhanced heads can unleash even more searing breath attacks, and they use their jaws to gouge Radiantite from the ground to strike foes. Staggering them can quell their aggression, with staggers to the head being especially effective.",
   "element_weakness_stars": {
+   "fire": 1,
    "water": 3,
-   "fire": 0,
-   "ice": 0,
-   "thunder": 0,
-   "dragon": 0
+   "thunder": 1,
+   "ice": 1,
+   "dragon": 1
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 200.5,
    "fire": 98.2,
@@ -8234,6 +8427,13 @@
    "dragon": 98.2
   },
   "best_element": "water",
+  "ailment_weakness_stars": {
+   "poison": 2,
+   "sleep": 2,
+   "paralysis": 2,
+   "blast": 1,
+   "stun": 2
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -8583,9 +8783,29 @@
   "description": "Radiantite-corrupted Flying Wyverns unique to Aesoland. Their venom glands have developed even further, letting them launch volatile, poison-laden crystals with a flick of their tails.\nThe venom crystals fired from their tails create poison pools on the ground, which explode when struck by fire attacks. Severing their tails quickly, or staying clear of the crystals' blast radius, makes them much easier to deal with.",
   "ecology": "Radiantite-corrupted Flying Wyverns unique to Aesoland. Their venom glands have developed even further, letting them launch volatile, poison-laden crystals with a flick of their tails",
   "hunting_tips": "The venom crystals fired from their tails create poison pools on the ground, which explode when struck by fire attacks. Severing their tails quickly, or staying clear of the crystals' blast radius, makes them much easier to deal with.",
-  "element_weakness_stars": {},
-  "element_hitzone_average": {},
-  "best_element": "",
+  "element_weakness_stars": {
+   "fire": 1,
+   "water": 1,
+   "thunder": 3,
+   "ice": 1,
+   "dragon": 1
+  },
+  "weakness_source": "game",
+  "element_hitzone_average": {
+   "water": 92.5,
+   "fire": 92.5,
+   "ice": 92.5,
+   "thunder": 188.6,
+   "dragon": 92.5
+  },
+  "best_element": "thunder",
+  "ailment_weakness_stars": {
+   "poison": 1,
+   "sleep": 2,
+   "paralysis": 2,
+   "blast": 1,
+   "stun": 3
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -8603,7 +8823,248 @@
    "Body: Breakable",
    "Radiant Parts"
   ],
-  "hitzones": [],
+  "hitzones": [
+   {
+    "part": "Head",
+    "cut": 70,
+    "impact": 75,
+    "shot": 65,
+    "water": 143,
+    "fire": 143,
+    "ice": 143,
+    "thunder": 169,
+    "dragon": 143,
+    "weak_point_stars": 3
+   },
+   {
+    "part": "Neck",
+    "cut": 40,
+    "impact": 45,
+    "shot": 35,
+    "water": 78,
+    "fire": 78,
+    "ice": 78,
+    "thunder": 210,
+    "dragon": 78,
+    "weak_point_stars": 0
+   },
+   {
+    "part": "Body",
+    "cut": 35,
+    "impact": 30,
+    "shot": 25,
+    "water": 71,
+    "fire": 71,
+    "ice": 71,
+    "thunder": 185,
+    "dragon": 71,
+    "weak_point_stars": 0
+   },
+   {
+    "part": "Back",
+    "cut": 35,
+    "impact": 30,
+    "shot": 25,
+    "water": 71,
+    "fire": 71,
+    "ice": 71,
+    "thunder": 185,
+    "dragon": 71,
+    "weak_point_stars": 0
+   },
+   {
+    "part": "Left Wing",
+    "cut": 55,
+    "impact": 50,
+    "shot": 45,
+    "water": 108,
+    "fire": 108,
+    "ice": 108,
+    "thunder": 177,
+    "dragon": 108,
+    "weak_point_stars": 0
+   },
+   {
+    "part": "Right Wing",
+    "cut": 55,
+    "impact": 50,
+    "shot": 45,
+    "water": 111,
+    "fire": 111,
+    "ice": 111,
+    "thunder": 192,
+    "dragon": 111,
+    "weak_point_stars": 0
+   },
+   {
+    "part": "Left Leg",
+    "cut": 40,
+    "impact": 40,
+    "shot": 35,
+    "water": 78,
+    "fire": 78,
+    "ice": 78,
+    "thunder": 210,
+    "dragon": 78,
+    "weak_point_stars": 0
+   },
+   {
+    "part": "Right Leg",
+    "cut": 40,
+    "impact": 40,
+    "shot": 35,
+    "water": 81,
+    "fire": 81,
+    "ice": 81,
+    "thunder": 220,
+    "dragon": 81,
+    "weak_point_stars": 0
+   },
+   {
+    "part": "Tail",
+    "cut": 70,
+    "impact": 75,
+    "shot": 65,
+    "water": 92,
+    "fire": 92,
+    "ice": 92,
+    "thunder": 169,
+    "dragon": 92,
+    "weak_point_stars": 3
+   },
+   {
+    "part": "TailTip",
+    "cut": 70,
+    "impact": 75,
+    "shot": 65,
+    "water": 92,
+    "fire": 92,
+    "ice": 92,
+    "thunder": 169,
+    "dragon": 92,
+    "weak_point_stars": 0
+   },
+   {
+    "part": "Head",
+    "cut": 70,
+    "impact": 75,
+    "shot": 65,
+    "water": 143,
+    "fire": 143,
+    "ice": 143,
+    "thunder": 169,
+    "dragon": 143,
+    "weak_point_stars": 3
+   },
+   {
+    "part": "Neck_PJ",
+    "cut": 40,
+    "impact": 45,
+    "shot": 35,
+    "water": 78,
+    "fire": 78,
+    "ice": 78,
+    "thunder": 210,
+    "dragon": 78,
+    "weak_point_stars": 0
+   },
+   {
+    "part": "Body_PJ",
+    "cut": 35,
+    "impact": 30,
+    "shot": 25,
+    "water": 71,
+    "fire": 71,
+    "ice": 71,
+    "thunder": 185,
+    "dragon": 71,
+    "weak_point_stars": 0
+   },
+   {
+    "part": "Back_PJ",
+    "cut": 35,
+    "impact": 30,
+    "shot": 25,
+    "water": 71,
+    "fire": 71,
+    "ice": 71,
+    "thunder": 185,
+    "dragon": 71,
+    "weak_point_stars": 0
+   },
+   {
+    "part": "LeftWing_PJ",
+    "cut": 55,
+    "impact": 50,
+    "shot": 45,
+    "water": 108,
+    "fire": 108,
+    "ice": 108,
+    "thunder": 177,
+    "dragon": 108,
+    "weak_point_stars": 0
+   },
+   {
+    "part": "RightWing_PJ",
+    "cut": 55,
+    "impact": 50,
+    "shot": 45,
+    "water": 111,
+    "fire": 111,
+    "ice": 111,
+    "thunder": 192,
+    "dragon": 111,
+    "weak_point_stars": 0
+   },
+   {
+    "part": "LeftLeg_PJ",
+    "cut": 40,
+    "impact": 40,
+    "shot": 35,
+    "water": 78,
+    "fire": 78,
+    "ice": 78,
+    "thunder": 210,
+    "dragon": 78,
+    "weak_point_stars": 0
+   },
+   {
+    "part": "RightLeg_PJ",
+    "cut": 40,
+    "impact": 40,
+    "shot": 35,
+    "water": 81,
+    "fire": 81,
+    "ice": 81,
+    "thunder": 220,
+    "dragon": 81,
+    "weak_point_stars": 0
+   },
+   {
+    "part": "Tail",
+    "cut": 70,
+    "impact": 75,
+    "shot": 65,
+    "water": 92,
+    "fire": 92,
+    "ice": 92,
+    "thunder": 169,
+    "dragon": 92,
+    "weak_point_stars": 3
+   },
+   {
+    "part": "TailTip_PJ",
+    "cut": 70,
+    "impact": 75,
+    "shot": 65,
+    "water": 92,
+    "fire": 92,
+    "ice": 92,
+    "thunder": 169,
+    "dragon": 92,
+    "weak_point_stars": 0
+   }
+  ],
   "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathian_LightingStone.png",
   "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRathian/Sketch_RGZRathian_C1.png",
   "species": "Flying Wyvern",
@@ -8849,12 +9310,13 @@
   "ecology": "Radiantite-corrupted Flying Wyverns unique to Aesoland. They expel a substance that solidifies upon contact with air, then detonate it with fireballs, mercilessly punishing any intruders that enter their territory",
   "hunting_tips": "When frenzied, they unleash a barrage of powerful flame breath attacks, leaving solidified deposits on the ground that explode when struck by fire. Interrupting their powerful breath attacks as quickly as possible to prevent more deposits from forming is key to a successful hunt.",
   "element_weakness_stars": {
-   "water": 0,
-   "fire": 0,
-   "ice": 0,
+   "fire": 1,
+   "water": 1,
    "thunder": 3,
-   "dragon": 0
+   "ice": 1,
+   "dragon": 1
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 83.1,
    "fire": 83.1,
@@ -8863,6 +9325,13 @@
    "dragon": 83.1
   },
   "best_element": "thunder",
+  "ailment_weakness_stars": {
+   "poison": 1,
+   "sleep": 2,
+   "paralysis": 2,
+   "blast": 1,
+   "stun": 2
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -9104,12 +9573,13 @@
   "ecology": "Radiantite-corrupted Flying Wyverns unique to Aesoland. Their horns have become far more robust, capable of easily shattering surrounding rock. This allows them to move freely beneath the ground",
   "hunting_tips": "They only burrow underground once frenzied, bringing up large amounts of Radiantite when they emerge. They unleash continuous body attacks, and even if these miss, they follow up with a horn strike. Using Disruptor Ultimates can make the hunt considerably easier.",
   "element_weakness_stars": {
-   "water": 0,
-   "fire": 0,
+   "fire": 1,
+   "water": 1,
+   "thunder": 1,
    "ice": 3,
-   "thunder": 0,
-   "dragon": 0
+   "dragon": 1
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 82.9,
    "fire": 82.9,
@@ -9118,6 +9588,13 @@
    "dragon": 82.9
   },
   "best_element": "ice",
+  "ailment_weakness_stars": {
+   "poison": 2,
+   "sleep": 2,
+   "paralysis": 3,
+   "blast": 2,
+   "stun": 1
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -9382,12 +9859,13 @@
   "ecology": "Radiantite-corrupted Bird Wyverns unique to Aesoland. With significantly enhanced foreclaw strength, they can keenly detect Radiantite buried underground and excavate it for use as weapons",
   "hunting_tips": "They dig up Radiantite and smash it against foes, triggering explosions on impact. They also channel energy into the Radiantite in their claws, making it even more volatile. Promptly destroying the Radiantite held in their foreclaws is key to dealing with them effectively.",
   "element_weakness_stars": {
+   "fire": 1,
    "water": 3,
-   "fire": 0,
-   "ice": 0,
-   "thunder": 0,
-   "dragon": 0
+   "thunder": 1,
+   "ice": 1,
+   "dragon": 1
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 97.1,
    "fire": 57.0,
@@ -9396,6 +9874,13 @@
    "dragon": 57.0
   },
   "best_element": "water",
+  "ailment_weakness_stars": {
+   "poison": 2,
+   "sleep": 2,
+   "paralysis": 2,
+   "blast": 2,
+   "stun": 2
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -9734,12 +10219,13 @@
   "ecology": "Radiantite-corrupted Flying Wyverns unique to Aesoland. Their ability to store greater amounts of air in their neck pouches enhances their flight, making their flight paths unpredictable and allowing them to toy with prey before unleashing deadly attacks",
   "hunting_tips": "When frenzied, they continuously build up air, and have been confirmed to unleash powerful wind pressure breath attacks. Using Flash Pods or focusing attacks on their neck pouches to interrupt this buildup is key to a successful hunt.",
   "element_weakness_stars": {
-   "water": 0,
    "fire": 3,
-   "ice": 0,
-   "thunder": 0,
-   "dragon": 0
+   "water": 1,
+   "thunder": 1,
+   "ice": 1,
+   "dragon": 1
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 85.6,
    "fire": 185.4,
@@ -9748,6 +10234,13 @@
    "dragon": 85.6
   },
   "best_element": "fire",
+  "ailment_weakness_stars": {
+   "poison": 2,
+   "sleep": 2,
+   "paralysis": 2,
+   "blast": 3,
+   "stun": 3
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -10010,12 +10503,13 @@
   "ecology": "Radiantite-corrupted Flying Wyverns unique to Aesoland. Their frost sacs have mutated, allowing them to generate more ice crystals. Their aerial attacks have also grown more powerful, letting them swiftly hunt ground-based prey",
   "hunting_tips": "They excel at consecutive aerial dashes, launching ferocious assaults on their prey. They release cold air to freeze themselves and their surroundings—shattering the ice beforehand can deal massive damage and suppress their ability to gather cold energy.",
   "element_weakness_stars": {
-   "water": 0,
    "fire": 3,
-   "ice": 0,
-   "thunder": 0,
-   "dragon": 0
+   "water": 1,
+   "thunder": 1,
+   "ice": 1,
+   "dragon": 1
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 80.0,
    "fire": 153.0,
@@ -10024,6 +10518,13 @@
    "dragon": 80.0
   },
   "best_element": "fire",
+  "ailment_weakness_stars": {
+   "poison": 3,
+   "sleep": 2,
+   "paralysis": 2,
+   "blast": 2,
+   "stun": 2
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -10253,12 +10754,13 @@
   "ecology": "Radiantite-corrupted Fanged Wyverns unique to Aesoland. They act in synergy with Radiant Girros. Additionally, as the pack forms, the Radiant Great Girros become riled up and more aggressive",
   "hunting_tips": "Their radiant particle-enhanced vocal organs can call out to Radiant Girros packs from a distance, stirring up their ferocity. The key to a successful hunt lies in destroying the vocal organs on their heads, and promptly slaying the monsters they summon.",
   "element_weakness_stars": {
-   "water": 0,
-   "fire": 0,
-   "ice": 0,
-   "thunder": 0,
+   "fire": 1,
+   "water": 1,
+   "thunder": 1,
+   "ice": 1,
    "dragon": 3
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 94.3,
    "fire": 94.3,
@@ -10267,6 +10769,13 @@
    "dragon": 176.9
   },
   "best_element": "dragon",
+  "ailment_weakness_stars": {
+   "poison": 2,
+   "sleep": 3,
+   "paralysis": 1,
+   "blast": 2,
+   "stun": 2
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -10537,12 +11046,13 @@
   "ecology": "Radiantite-corrupted Fanged Wyverns unique to Aesoland. Their tails, especially affected by the mutation, have become far more dangerous—capable of channeling the static electricity stored in their fur into the ground, unleashing multiple powerful high-output electrostatic attacks",
   "hunting_tips": "They can remain in an Electric Charge state for extended periods, using the electrodes within their fur to continuously discharge and strike foes. When hunting them, focus on destroying their tails—doing so will greatly weaken their discharge capabilities.",
   "element_weakness_stars": {
+   "fire": 1,
    "water": 3,
-   "fire": 0,
-   "ice": 0,
-   "thunder": 0,
-   "dragon": 0
+   "thunder": 1,
+   "ice": 1,
+   "dragon": 1
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 185.9,
    "fire": 100.0,
@@ -10551,6 +11061,13 @@
    "dragon": 100.0
   },
   "best_element": "water",
+  "ailment_weakness_stars": {
+   "poison": 3,
+   "sleep": 2,
+   "paralysis": 2,
+   "blast": 2,
+   "stun": 2
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -10822,12 +11339,13 @@
   "ecology": "Radiantite-corrupted Brute Wyverns unique to Aesoland. The bone plates covering their bodies have also mutated into dangerous weapons—bone shards scattered during their attacks now carry increased destructive power",
   "hunting_tips": "While rolling, they scatter bone spikes that remain on the ground as traps. Though these can be destroyed with direct attacks, luring them into contact with their own spikes during a roll or spin attack can topple them, creating a valuable opening.",
   "element_weakness_stars": {
-   "water": 0,
-   "fire": 0,
-   "ice": 0,
-   "thunder": 0,
+   "fire": 1,
+   "water": 1,
+   "thunder": 1,
+   "ice": 1,
    "dragon": 3
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 71.7,
    "fire": 71.7,
@@ -10836,6 +11354,13 @@
    "dragon": 174.7
   },
   "best_element": "dragon",
+  "ailment_weakness_stars": {
+   "poison": 2,
+   "sleep": 1,
+   "paralysis": 2,
+   "blast": 3,
+   "stun": 2
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -11054,12 +11579,13 @@
   "ecology": "Radiantite-corrupted Flying Wyverns unique to Aesoland. Their tails, especially affected by the mutation, carry far more potent venom than those of standard variants. They combine fire and poison to unleash relentless, storm-like assaults upon their prey",
   "hunting_tips": "Venom seeps continuously from their tails. After a short wind-up, they snare prey with a tail strike, then follow with a powerful breath attack. Sustained attacks on the tail can briefly stem the flow of venom.",
   "element_weakness_stars": {
-   "water": 0,
-   "fire": 0,
-   "ice": 0,
-   "thunder": 0,
+   "fire": 1,
+   "water": 1,
+   "thunder": 1,
+   "ice": 1,
    "dragon": 3
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 77.4,
    "fire": 77.4,
@@ -11068,6 +11594,13 @@
    "dragon": 163.0
   },
   "best_element": "dragon",
+  "ailment_weakness_stars": {
+   "poison": 1,
+   "sleep": 2,
+   "paralysis": 2,
+   "blast": 1,
+   "stun": 3
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -11298,12 +11831,13 @@
   "ecology": "Radiantite-corrupted Bird Wyverns unique to Aesoland. Their cranial Flash Fins, affected by the mutation, have grown remarkably strong and developed, capable of releasing devastating flashes—augmented further by powerful legs that let them relentlessly pursue their prey",
   "hunting_tips": "Their Flash Fins are saturated with radiant particles, allowing their high-energy flashes to inflict fireblight. When frenzied, they unleash continuous flashes and follow up with multiple powerful leg strikes—destroying their Flash Fins can effectively reduce the power of their flashes.",
   "element_weakness_stars": {
-   "water": 0,
-   "fire": 0,
-   "ice": 0,
-   "thunder": 0,
+   "fire": 1,
+   "water": 1,
+   "thunder": 1,
+   "ice": 1,
    "dragon": 3
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 106.4,
    "fire": 106.4,
@@ -11312,6 +11846,13 @@
    "dragon": 201.6
   },
   "best_element": "dragon",
+  "ailment_weakness_stars": {
+   "poison": 2,
+   "sleep": 2,
+   "paralysis": 2,
+   "blast": 2,
+   "stun": 2
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -11512,12 +12053,13 @@
   "ecology": "Radiantite-corrupted Flying Wyverns unique to Aesoland. Their heads and twin horns have been notably affected by the mutation, making them far more volatile. They unleash ferocious dash attacks and also strike using bursts of Radiantite",
   "hunting_tips": "As they burrow, they sweep up Radiantite and hurl it, then charge with their massive horns more ferociously than ever, sometimes overcommitting and leaving themselves vulnerable. Focusing on part breaks can weaken their momentum.",
   "element_weakness_stars": {
-   "water": 0,
-   "fire": 0,
+   "fire": 1,
+   "water": 1,
+   "thunder": 1,
    "ice": 3,
-   "thunder": 0,
-   "dragon": 0
+   "dragon": 1
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 77.4,
    "fire": 77.4,
@@ -11526,6 +12068,13 @@
    "dragon": 77.4
   },
   "best_element": "ice",
+  "ailment_weakness_stars": {
+   "poison": 2,
+   "sleep": 2,
+   "paralysis": 3,
+   "blast": 2,
+   "stun": 1
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -11768,12 +12317,13 @@
   "ecology": "Radiantite-corrupted Fanged Wyverns unique to Aesoland. The mutation has accelerated the growth of their claws' keratin, dramatically extending their attack range and enabling them to inflict bleeding in a far greater variety of ways",
   "hunting_tips": "Once frenzied, they draw on the radiant particles within their bodies to accelerate their metabolism, causing their claws to overgrow and greatly extend their attack range. These overgrown claws eventually fracture on their own—destroying them first can weaken their momentum.",
   "element_weakness_stars": {
-   "water": 0,
-   "fire": 0,
+   "fire": 1,
+   "water": 1,
+   "thunder": 1,
    "ice": 3,
-   "thunder": 0,
-   "dragon": 0
+   "dragon": 1
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 91.0,
    "fire": 91.0,
@@ -11782,6 +12332,13 @@
    "dragon": 91.0
   },
   "best_element": "ice",
+  "ailment_weakness_stars": {
+   "poison": 1,
+   "sleep": 2,
+   "paralysis": 3,
+   "blast": 2,
+   "stun": 2
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -12009,12 +12566,13 @@
   "ecology": "A newly discovered Elder Dragon species on Aesoland. They harden the radiant particles clinging to their bodies into armor-like plating, using them for both offense and defense; they can also absorb ambient radiant particles to unleash devastating attacks",
   "hunting_tips": "They attack using spikes and Radiantite clusters formed from radiant particles, but these are unstable right after forming. Well-timed consecutive blows can shatter the crystals and stagger them.",
   "element_weakness_stars": {
-   "water": 1,
    "fire": 3,
+   "water": 1,
+   "thunder": 1,
    "ice": 3,
-   "thunder": 3,
-   "dragon": 1
+   "dragon": 2
   },
+  "weakness_source": "game",
   "element_hitzone_average": {
    "water": 41.1,
    "fire": 49.9,
@@ -12022,7 +12580,14 @@
    "thunder": 52.2,
    "dragon": 37.0
   },
-  "best_element": "thunder",
+  "best_element": "fire/ice",
+  "ailment_weakness_stars": {
+   "poison": 1,
+   "sleep": 1,
+   "paralysis": 1,
+   "blast": 3,
+   "stun": 2
+  },
   "item_effectiveness": [
    {
     "state": "Normal",
@@ -12600,277 +13165,6 @@
   "levels": []
  },
  {
-  "id": 100110,
-  "name": "Rathian",
-  "large": false,
-  "description": "",
-  "ecology": "",
-  "hunting_tips": "",
-  "element_weakness_stars": {
-   "water": 0,
-   "fire": 0,
-   "ice": 0,
-   "thunder": 3,
-   "dragon": 0
-  },
-  "element_hitzone_average": {
-   "water": 92.5,
-   "fire": 92.5,
-   "ice": 92.5,
-   "thunder": 188.6,
-   "dragon": 92.5
-  },
-  "best_element": "thunder",
-  "item_effectiveness": [],
-  "breakable_parts": [],
-  "hitzones": [
-   {
-    "part": "Head",
-    "cut": 70,
-    "impact": 75,
-    "shot": 65,
-    "water": 143,
-    "fire": 143,
-    "ice": 143,
-    "thunder": 169,
-    "dragon": 143,
-    "weak_point_stars": 3
-   },
-   {
-    "part": "Neck",
-    "cut": 40,
-    "impact": 45,
-    "shot": 35,
-    "water": 78,
-    "fire": 78,
-    "ice": 78,
-    "thunder": 210,
-    "dragon": 78,
-    "weak_point_stars": 0
-   },
-   {
-    "part": "Body",
-    "cut": 35,
-    "impact": 30,
-    "shot": 25,
-    "water": 71,
-    "fire": 71,
-    "ice": 71,
-    "thunder": 185,
-    "dragon": 71,
-    "weak_point_stars": 0
-   },
-   {
-    "part": "Back",
-    "cut": 35,
-    "impact": 30,
-    "shot": 25,
-    "water": 71,
-    "fire": 71,
-    "ice": 71,
-    "thunder": 185,
-    "dragon": 71,
-    "weak_point_stars": 0
-   },
-   {
-    "part": "Left Wing",
-    "cut": 55,
-    "impact": 50,
-    "shot": 45,
-    "water": 108,
-    "fire": 108,
-    "ice": 108,
-    "thunder": 177,
-    "dragon": 108,
-    "weak_point_stars": 0
-   },
-   {
-    "part": "Right Wing",
-    "cut": 55,
-    "impact": 50,
-    "shot": 45,
-    "water": 111,
-    "fire": 111,
-    "ice": 111,
-    "thunder": 192,
-    "dragon": 111,
-    "weak_point_stars": 0
-   },
-   {
-    "part": "Left Leg",
-    "cut": 40,
-    "impact": 40,
-    "shot": 35,
-    "water": 78,
-    "fire": 78,
-    "ice": 78,
-    "thunder": 210,
-    "dragon": 78,
-    "weak_point_stars": 0
-   },
-   {
-    "part": "Right Leg",
-    "cut": 40,
-    "impact": 40,
-    "shot": 35,
-    "water": 81,
-    "fire": 81,
-    "ice": 81,
-    "thunder": 220,
-    "dragon": 81,
-    "weak_point_stars": 0
-   },
-   {
-    "part": "Tail",
-    "cut": 70,
-    "impact": 75,
-    "shot": 65,
-    "water": 92,
-    "fire": 92,
-    "ice": 92,
-    "thunder": 169,
-    "dragon": 92,
-    "weak_point_stars": 3
-   },
-   {
-    "part": "TailTip",
-    "cut": 70,
-    "impact": 75,
-    "shot": 65,
-    "water": 92,
-    "fire": 92,
-    "ice": 92,
-    "thunder": 169,
-    "dragon": 92,
-    "weak_point_stars": 0
-   },
-   {
-    "part": "Head",
-    "cut": 70,
-    "impact": 75,
-    "shot": 65,
-    "water": 143,
-    "fire": 143,
-    "ice": 143,
-    "thunder": 169,
-    "dragon": 143,
-    "weak_point_stars": 3
-   },
-   {
-    "part": "Neck_PJ",
-    "cut": 40,
-    "impact": 45,
-    "shot": 35,
-    "water": 78,
-    "fire": 78,
-    "ice": 78,
-    "thunder": 210,
-    "dragon": 78,
-    "weak_point_stars": 0
-   },
-   {
-    "part": "Body_PJ",
-    "cut": 35,
-    "impact": 30,
-    "shot": 25,
-    "water": 71,
-    "fire": 71,
-    "ice": 71,
-    "thunder": 185,
-    "dragon": 71,
-    "weak_point_stars": 0
-   },
-   {
-    "part": "Back_PJ",
-    "cut": 35,
-    "impact": 30,
-    "shot": 25,
-    "water": 71,
-    "fire": 71,
-    "ice": 71,
-    "thunder": 185,
-    "dragon": 71,
-    "weak_point_stars": 0
-   },
-   {
-    "part": "LeftWing_PJ",
-    "cut": 55,
-    "impact": 50,
-    "shot": 45,
-    "water": 108,
-    "fire": 108,
-    "ice": 108,
-    "thunder": 177,
-    "dragon": 108,
-    "weak_point_stars": 0
-   },
-   {
-    "part": "RightWing_PJ",
-    "cut": 55,
-    "impact": 50,
-    "shot": 45,
-    "water": 111,
-    "fire": 111,
-    "ice": 111,
-    "thunder": 192,
-    "dragon": 111,
-    "weak_point_stars": 0
-   },
-   {
-    "part": "LeftLeg_PJ",
-    "cut": 40,
-    "impact": 40,
-    "shot": 35,
-    "water": 78,
-    "fire": 78,
-    "ice": 78,
-    "thunder": 210,
-    "dragon": 78,
-    "weak_point_stars": 0
-   },
-   {
-    "part": "RightLeg_PJ",
-    "cut": 40,
-    "impact": 40,
-    "shot": 35,
-    "water": 81,
-    "fire": 81,
-    "ice": 81,
-    "thunder": 220,
-    "dragon": 81,
-    "weak_point_stars": 0
-   },
-   {
-    "part": "Tail",
-    "cut": 70,
-    "impact": 75,
-    "shot": 65,
-    "water": 92,
-    "fire": 92,
-    "ice": 92,
-    "thunder": 169,
-    "dragon": 92,
-    "weak_point_stars": 3
-   },
-   {
-    "part": "TailTip_PJ",
-    "cut": 70,
-    "impact": 75,
-    "shot": 65,
-    "water": 92,
-    "fire": 92,
-    "ice": 92,
-    "thunder": 169,
-    "dragon": 92,
-    "weak_point_stars": 0
-   }
-  ],
-  "icon": "MHMobile/Content/UI/Dynamic/MonsterIcon/MonsterIcon_Rathian_LightingStone.png",
-  "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/Rathian/Sketch_Rathian_D1_Coloured.png",
-  "species": "Flying Wyvern",
-  "levels": []
- },
- {
   "id": 200101,
   "name": "Aptonoth",
   "large": false,
@@ -12884,6 +13178,7 @@
    "thunder": 3,
    "dragon": 0
   },
+  "weakness_source": "hitzones",
   "element_hitzone_average": {
    "water": 75.0,
    "fire": 97.5,
@@ -12891,7 +13186,8 @@
    "thunder": 97.5,
    "dragon": 52.5
   },
-  "best_element": "fire",
+  "best_element": "fire/thunder",
+  "ailment_weakness_stars": {},
   "item_effectiveness": [],
   "breakable_parts": [],
   "hitzones": [
@@ -12939,6 +13235,7 @@
    "thunder": 3,
    "dragon": 0
   },
+  "weakness_source": "hitzones",
   "element_hitzone_average": {
    "water": 60.0,
    "fire": 78.0,
@@ -12946,7 +13243,8 @@
    "thunder": 78.0,
    "dragon": 42.0
   },
-  "best_element": "fire",
+  "best_element": "fire/thunder",
+  "ailment_weakness_stars": {},
   "item_effectiveness": [],
   "breakable_parts": [],
   "hitzones": [
@@ -12994,6 +13292,7 @@
    "thunder": 3,
    "dragon": 0
   },
+  "weakness_source": "hitzones",
   "element_hitzone_average": {
    "water": 111.0,
    "fire": 111.0,
@@ -13001,7 +13300,8 @@
    "thunder": 111.0,
    "dragon": 60.0
   },
-  "best_element": "water",
+  "best_element": "fire/water/thunder/ice",
+  "ailment_weakness_stars": {},
   "item_effectiveness": [],
   "breakable_parts": [],
   "hitzones": [
@@ -13049,6 +13349,7 @@
    "thunder": 3,
    "dragon": 0
   },
+  "weakness_source": "hitzones",
   "element_hitzone_average": {
    "water": 111.0,
    "fire": 111.0,
@@ -13056,7 +13357,8 @@
    "thunder": 111.0,
    "dragon": 60.0
   },
-  "best_element": "water",
+  "best_element": "fire/water/thunder/ice",
+  "ailment_weakness_stars": {},
   "item_effectiveness": [],
   "breakable_parts": [],
   "hitzones": [
@@ -13104,6 +13406,7 @@
    "thunder": 1,
    "dragon": 0
   },
+  "weakness_source": "hitzones",
   "element_hitzone_average": {
    "water": 80.0,
    "fire": 104.0,
@@ -13111,7 +13414,8 @@
    "thunder": 80.0,
    "dragon": 56.0
   },
-  "best_element": "fire",
+  "best_element": "fire/ice",
+  "ailment_weakness_stars": {},
   "item_effectiveness": [],
   "breakable_parts": [],
   "hitzones": [
@@ -13147,6 +13451,7 @@
    "thunder": 1,
    "dragon": 0
   },
+  "weakness_source": "hitzones",
   "element_hitzone_average": {
    "water": 80.0,
    "fire": 104.0,
@@ -13154,7 +13459,8 @@
    "thunder": 80.0,
    "dragon": 56.0
   },
-  "best_element": "fire",
+  "best_element": "fire/ice",
+  "ailment_weakness_stars": {},
   "item_effectiveness": [],
   "breakable_parts": [],
   "hitzones": [
@@ -13190,6 +13496,7 @@
    "thunder": 1,
    "dragon": 0
   },
+  "weakness_source": "hitzones",
   "element_hitzone_average": {
    "water": 85.0,
    "fire": 111.0,
@@ -13198,6 +13505,7 @@
    "dragon": 60.0
   },
   "best_element": "fire",
+  "ailment_weakness_stars": {},
   "item_effectiveness": [],
   "breakable_parts": [],
   "hitzones": [
@@ -13233,6 +13541,7 @@
    "thunder": 3,
    "dragon": 0
   },
+  "weakness_source": "hitzones",
   "element_hitzone_average": {
    "water": 75.0,
    "fire": 97.5,
@@ -13240,7 +13549,8 @@
    "thunder": 97.5,
    "dragon": 52.5
   },
-  "best_element": "fire",
+  "best_element": "fire/thunder",
+  "ailment_weakness_stars": {},
   "item_effectiveness": [],
   "breakable_parts": [],
   "hitzones": [
@@ -13288,6 +13598,7 @@
    "thunder": 3,
    "dragon": 0
   },
+  "weakness_source": "hitzones",
   "element_hitzone_average": {
    "water": 75.0,
    "fire": 97.5,
@@ -13295,7 +13606,8 @@
    "thunder": 97.5,
    "dragon": 52.5
   },
-  "best_element": "fire",
+  "best_element": "fire/thunder",
+  "ailment_weakness_stars": {},
   "item_effectiveness": [],
   "breakable_parts": [],
   "hitzones": [
@@ -13343,6 +13655,7 @@
    "thunder": 3,
    "dragon": 1
   },
+  "weakness_source": "hitzones",
   "element_hitzone_average": {
    "water": 59.5,
    "fire": 110.5,
@@ -13350,7 +13663,8 @@
    "thunder": 110.5,
    "dragon": 85.0
   },
-  "best_element": "fire",
+  "best_element": "fire/thunder",
+  "ailment_weakness_stars": {},
   "item_effectiveness": [],
   "breakable_parts": [],
   "hitzones": [
@@ -13398,6 +13712,7 @@
    "thunder": 3,
    "dragon": 1
   },
+  "weakness_source": "hitzones",
   "element_hitzone_average": {
    "water": 59.5,
    "fire": 110.5,
@@ -13405,7 +13720,8 @@
    "thunder": 110.5,
    "dragon": 85.0
   },
-  "best_element": "fire",
+  "best_element": "fire/thunder",
+  "ailment_weakness_stars": {},
   "item_effectiveness": [],
   "breakable_parts": [],
   "hitzones": [
@@ -13453,6 +13769,7 @@
    "thunder": 3,
    "dragon": 1
   },
+  "weakness_source": "hitzones",
   "element_hitzone_average": {
    "water": 117.0,
    "fire": 117.0,
@@ -13460,7 +13777,8 @@
    "thunder": 117.0,
    "dragon": 90.0
   },
-  "best_element": "water",
+  "best_element": "fire/water/thunder/ice",
+  "ailment_weakness_stars": {},
   "item_effectiveness": [],
   "breakable_parts": [],
   "hitzones": [
@@ -13508,6 +13826,7 @@
    "thunder": 3,
    "dragon": 1
   },
+  "weakness_source": "hitzones",
   "element_hitzone_average": {
    "water": 117.0,
    "fire": 117.0,
@@ -13515,7 +13834,8 @@
    "thunder": 117.0,
    "dragon": 90.0
   },
-  "best_element": "water",
+  "best_element": "fire/water/thunder/ice",
+  "ailment_weakness_stars": {},
   "item_effectiveness": [],
   "breakable_parts": [],
   "hitzones": [
@@ -13563,6 +13883,7 @@
    "thunder": 1,
    "dragon": 0
   },
+  "weakness_source": "hitzones",
   "element_hitzone_average": {
    "water": 75.0,
    "fire": 57.5,
@@ -13570,7 +13891,8 @@
    "thunder": 57.5,
    "dragon": 40.5
   },
-  "best_element": "water",
+  "best_element": "water/ice",
+  "ailment_weakness_stars": {},
   "item_effectiveness": [],
   "breakable_parts": [],
   "hitzones": [
@@ -13618,6 +13940,7 @@
    "thunder": 1,
    "dragon": 0
   },
+  "weakness_source": "hitzones",
   "element_hitzone_average": {
    "water": 84.5,
    "fire": 65.0,
@@ -13625,7 +13948,8 @@
    "thunder": 65.0,
    "dragon": 45.5
   },
-  "best_element": "water",
+  "best_element": "water/ice",
+  "ailment_weakness_stars": {},
   "item_effectiveness": [],
   "breakable_parts": [],
   "hitzones": [
@@ -13673,6 +13997,7 @@
    "thunder": 1,
    "dragon": 0
   },
+  "weakness_source": "hitzones",
   "element_hitzone_average": {
    "water": 75.0,
    "fire": 57.5,
@@ -13680,7 +14005,8 @@
    "thunder": 57.5,
    "dragon": 40.5
   },
-  "best_element": "water",
+  "best_element": "water/ice",
+  "ailment_weakness_stars": {},
   "item_effectiveness": [],
   "breakable_parts": [],
   "hitzones": [
@@ -13728,6 +14054,7 @@
    "thunder": 1,
    "dragon": 0
   },
+  "weakness_source": "hitzones",
   "element_hitzone_average": {
    "water": 84.5,
    "fire": 65.0,
@@ -13735,7 +14062,8 @@
    "thunder": 65.0,
    "dragon": 45.5
   },
-  "best_element": "water",
+  "best_element": "water/ice",
+  "ailment_weakness_stars": {},
   "item_effectiveness": [],
   "breakable_parts": [],
   "hitzones": [
@@ -13783,6 +14111,7 @@
    "thunder": 3,
    "dragon": 0
   },
+  "weakness_source": "hitzones",
   "element_hitzone_average": {
    "water": 90.0,
    "fire": 90.0,
@@ -13791,6 +14120,7 @@
    "dragon": 63.0
   },
   "best_element": "thunder",
+  "ailment_weakness_stars": {},
   "item_effectiveness": [],
   "breakable_parts": [],
   "hitzones": [
@@ -13838,6 +14168,7 @@
    "thunder": 3,
    "dragon": 0
   },
+  "weakness_source": "hitzones",
   "element_hitzone_average": {
    "water": 90.0,
    "fire": 90.0,
@@ -13846,6 +14177,7 @@
    "dragon": 63.0
   },
   "best_element": "thunder",
+  "ailment_weakness_stars": {},
   "item_effectiveness": [],
   "breakable_parts": [],
   "hitzones": [
@@ -13893,6 +14225,7 @@
    "thunder": 3,
    "dragon": 0
   },
+  "weakness_source": "hitzones",
   "element_hitzone_average": {
    "water": 75.0,
    "fire": 97.5,
@@ -13900,7 +14233,8 @@
    "thunder": 97.5,
    "dragon": 52.5
   },
-  "best_element": "fire",
+  "best_element": "fire/thunder",
+  "ailment_weakness_stars": {},
   "item_effectiveness": [],
   "breakable_parts": [],
   "hitzones": [
@@ -13948,6 +14282,7 @@
    "thunder": 3,
    "dragon": 0
   },
+  "weakness_source": "hitzones",
   "element_hitzone_average": {
    "water": 75.0,
    "fire": 97.5,
@@ -13955,7 +14290,8 @@
    "thunder": 97.5,
    "dragon": 52.5
   },
-  "best_element": "fire",
+  "best_element": "fire/thunder",
+  "ailment_weakness_stars": {},
   "item_effectiveness": [],
   "breakable_parts": [],
   "hitzones": [
@@ -14003,6 +14339,7 @@
    "thunder": 1,
    "dragon": 3
   },
+  "weakness_source": "hitzones",
   "element_hitzone_average": {
    "water": 32.0,
    "fire": 45.0,
@@ -14011,6 +14348,7 @@
    "dragon": 59.0
   },
   "best_element": "dragon",
+  "ailment_weakness_stars": {},
   "item_effectiveness": [],
   "breakable_parts": [],
   "hitzones": [
@@ -14058,6 +14396,7 @@
    "thunder": 3,
    "dragon": 1
   },
+  "weakness_source": "hitzones",
   "element_hitzone_average": {
    "water": 59.5,
    "fire": 110.5,
@@ -14065,7 +14404,8 @@
    "thunder": 110.5,
    "dragon": 85.0
   },
-  "best_element": "fire",
+  "best_element": "fire/thunder",
+  "ailment_weakness_stars": {},
   "item_effectiveness": [],
   "breakable_parts": [],
   "hitzones": [
@@ -14113,6 +14453,7 @@
    "thunder": 3,
    "dragon": 1
   },
+  "weakness_source": "hitzones",
   "element_hitzone_average": {
    "water": 59.5,
    "fire": 110.5,
@@ -14120,7 +14461,8 @@
    "thunder": 110.5,
    "dragon": 85.0
   },
-  "best_element": "fire",
+  "best_element": "fire/thunder",
+  "ailment_weakness_stars": {},
   "item_effectiveness": [],
   "breakable_parts": [],
   "hitzones": [
@@ -14168,6 +14510,7 @@
    "thunder": 3,
    "dragon": 0
   },
+  "weakness_source": "hitzones",
   "element_hitzone_average": {
    "water": 50.0,
    "fire": 35.5,
@@ -14176,6 +14519,7 @@
    "dragon": 35.5
   },
   "best_element": "thunder",
+  "ailment_weakness_stars": {},
   "item_effectiveness": [],
   "breakable_parts": [],
   "hitzones": [
@@ -14223,6 +14567,7 @@
    "thunder": 3,
    "dragon": 1
   },
+  "weakness_source": "hitzones",
   "element_hitzone_average": {
    "water": 117.0,
    "fire": 90.0,
@@ -14230,7 +14575,8 @@
    "thunder": 117.0,
    "dragon": 90.0
   },
-  "best_element": "water",
+  "best_element": "water/thunder/ice",
+  "ailment_weakness_stars": {},
   "item_effectiveness": [],
   "breakable_parts": [],
   "hitzones": [
@@ -14278,6 +14624,7 @@
    "thunder": 3,
    "dragon": 0
   },
+  "weakness_source": "hitzones",
   "element_hitzone_average": {
    "water": 62.5,
    "fire": 62.5,
@@ -14285,7 +14632,8 @@
    "thunder": 81.5,
    "dragon": 44.0
   },
-  "best_element": "ice",
+  "best_element": "thunder/ice",
+  "ailment_weakness_stars": {},
   "item_effectiveness": [],
   "breakable_parts": [],
   "hitzones": [

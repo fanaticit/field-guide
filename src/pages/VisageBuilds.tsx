@@ -4,7 +4,7 @@
 // can assemble the loadout with their owned card collection.
 // ─────────────────────────────────────────────────────────────
 import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import {
   Search,
   Plus,

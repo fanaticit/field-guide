@@ -34,7 +34,7 @@ import MonsterModal from './MonsterModal';
 import MonsterGridCard from './MonsterGridCard';
 import ElementIcon from '../../components/ElementIcon';
 import { cn } from '../../lib/utils';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 
 type ViewMode = 'table' | 'grid';
 type SortOrder = 'name-asc' | 'tier-desc' | 'default';

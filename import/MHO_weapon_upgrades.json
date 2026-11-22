@@ -56394,19 +56394,52 @@
   "type": "Long Sword",
   "series": "Stealer",
   "legendary": false,
-  "starting_rarity": 9,
+  "starting_rarity": 8,
   "max_rarity": 14,
   "upgradable": true,
   "upgrade_path": [
    {
+    "rarity": 8,
+    "name": "Glacial Shotel III",
+    "icon": "MHMobile/Content/UI/Dynamic/WeaponIcon/LongSword/WeaponIcon_LongSword_Legiana_1.png",
+    "stats": {
+     "Attack": 346,
+     "Ice": 173
+    },
+    "sharpness": "Green"
+   },
+   {
     "rarity": 9,
-    "name": "Stealer IV",
-    "icon": "MHMobile/Content/UI/Dynamic/WeaponIcon/LongSword/WeaponIcon_LongSword_Legiana_2.png",
+    "name": "Glacial Shotel III",
+    "icon": "MHMobile/Content/UI/Dynamic/WeaponIcon/LongSword/WeaponIcon_LongSword_Legiana_1.png",
     "stats": {
      "Attack": 429,
      "Ice": 215
     },
-    "sharpness": "Green"
+    "sharpness": "Green",
+    "gains": {
+     "Attack": 83,
+     "Ice": 42
+    },
+    "materials": [
+     {
+      "item_id": 71004,
+      "item": "Hunter's Jade IV",
+      "count": 2
+     },
+     {
+      "item_id": 630133,
+      "item": "Legiana Hide III",
+      "count": 3
+     },
+     {
+      "item_id": 630132,
+      "item": "Legiana Claw III",
+      "count": 3
+     }
+    ],
+    "money": 0,
+    "required_level": 38
    },
    {
     "rarity": 10,
@@ -56416,7 +56449,7 @@
      "Attack": 521,
      "Ice": 261
     },
-    "sharpness": "Green",
+    "sharpness": "Blue",
     "gains": {
      "Attack": 92,
      "Ice": 46
@@ -56596,19 +56629,52 @@
   "type": "Bow",
   "series": "Snowfletcher",
   "legendary": false,
-  "starting_rarity": 9,
+  "starting_rarity": 8,
   "max_rarity": 14,
   "upgradable": true,
   "upgrade_path": [
    {
+    "rarity": 8,
+    "name": "Glacial Arrow III",
+    "icon": "MHMobile/Content/UI/Dynamic/WeaponIcon/Bow/WeaponIcon_Bow_Legiana_1.png",
+    "stats": {
+     "Attack": 339,
+     "Ice": 170
+    },
+    "sharpness": ""
+   },
+   {
     "rarity": 9,
-    "name": "Snowfletcher IV",
-    "icon": "MHMobile/Content/UI/Dynamic/WeaponIcon/Bow/WeaponIcon_Bow_Legiana_2.png",
+    "name": "Glacial Arrow III",
+    "icon": "MHMobile/Content/UI/Dynamic/WeaponIcon/Bow/WeaponIcon_Bow_Legiana_1.png",
     "stats": {
      "Attack": 420,
      "Ice": 210
     },
-    "sharpness": ""
+    "sharpness": "",
+    "gains": {
+     "Attack": 81,
+     "Ice": 40
+    },
+    "materials": [
+     {
+      "item_id": 71004,
+      "item": "Hunter's Jade IV",
+      "count": 2
+     },
+     {
+      "item_id": 630133,
+      "item": "Legiana Hide III",
+      "count": 3
+     },
+     {
+      "item_id": 630132,
+      "item": "Legiana Claw III",
+      "count": 3
+     }
+    ],
+    "money": 0,
+    "required_level": 38
    },
    {
     "rarity": 10,
@@ -56798,19 +56864,52 @@
   "type": "Great Sword",
   "series": "Frost Blaze",
   "legendary": false,
-  "starting_rarity": 9,
+  "starting_rarity": 8,
   "max_rarity": 14,
   "upgradable": true,
   "upgrade_path": [
    {
+    "rarity": 8,
+    "name": "Freeze Blade III",
+    "icon": "MHMobile/Content/UI/Dynamic/WeaponIcon/GreatSword/WeaponIcon_GreatSword_IceElement_1.png",
+    "stats": {
+     "Attack": 346,
+     "Ice": 173
+    },
+    "sharpness": "Green"
+   },
+   {
     "rarity": 9,
-    "name": "Frost Blaze IV",
-    "icon": "MHMobile/Content/UI/Dynamic/WeaponIcon/GreatSword/WeaponIcon_GreatSword_IceElement_2.png",
+    "name": "Freeze Blade III",
+    "icon": "MHMobile/Content/UI/Dynamic/WeaponIcon/GreatSword/WeaponIcon_GreatSword_IceElement_1.png",
     "stats": {
      "Attack": 429,
      "Ice": 215
     },
-    "sharpness": "Green"
+    "sharpness": "Green",
+    "gains": {
+     "Attack": 83,
+     "Ice": 42
+    },
+    "materials": [
+     {
+      "item_id": 71004,
+      "item": "Hunter's Jade IV",
+      "count": 2
+     },
+     {
+      "item_id": 630133,
+      "item": "Legiana Hide III",
+      "count": 3
+     },
+     {
+      "item_id": 630132,
+      "item": "Legiana Claw III",
+      "count": 3
+     }
+    ],
+    "money": 0,
+    "required_level": 38
    },
    {
     "rarity": 10,
@@ -56820,7 +56919,7 @@
      "Attack": 521,
      "Ice": 261
     },
-    "sharpness": "Green",
+    "sharpness": "Blue",
     "gains": {
      "Attack": 92,
      "Ice": 46
@@ -57000,19 +57099,52 @@
   "type": "Dual Blades",
   "series": "Freeze Chain",
   "legendary": false,
-  "starting_rarity": 9,
+  "starting_rarity": 8,
   "max_rarity": 14,
   "upgradable": true,
   "upgrade_path": [
    {
+    "rarity": 8,
+    "name": "Freeze Daggers III",
+    "icon": "MHMobile/Content/UI/Dynamic/WeaponIcon/DualBlades/WeaponIcon_DualBlades_IceElement_1.png",
+    "stats": {
+     "Attack": 339,
+     "Ice": 170
+    },
+    "sharpness": "Green"
+   },
+   {
     "rarity": 9,
-    "name": "Freeze Chain IV",
-    "icon": "MHMobile/Content/UI/Dynamic/WeaponIcon/DualBlades/WeaponIcon_DualBlades_IceElement_2.png",
+    "name": "Freeze Daggers III",
+    "icon": "MHMobile/Content/UI/Dynamic/WeaponIcon/DualBlades/WeaponIcon_DualBlades_IceElement_1.png",
     "stats": {
      "Attack": 420,
      "Ice": 210
     },
-    "sharpness": "Green"
+    "sharpness": "Green",
+    "gains": {
+     "Attack": 81,
+     "Ice": 40
+    },
+    "materials": [
+     {
+      "item_id": 71004,
+      "item": "Hunter's Jade IV",
+      "count": 2
+     },
+     {
+      "item_id": 630133,
+      "item": "Legiana Hide III",
+      "count": 3
+     },
+     {
+      "item_id": 630132,
+      "item": "Legiana Claw III",
+      "count": 3
+     }
+    ],
+    "money": 0,
+    "required_level": 38
    },
    {
     "rarity": 10,
@@ -57022,7 +57154,7 @@
      "Attack": 510,
      "Ice": 255
     },
-    "sharpness": "Green",
+    "sharpness": "Blue",
     "gains": {
      "Attack": 90,
      "Ice": 45
@@ -57202,19 +57334,52 @@
   "type": "Heavy Bowgun",
   "series": "Shattercryst+",
   "legendary": false,
-  "starting_rarity": 9,
+  "starting_rarity": 8,
   "max_rarity": 14,
   "upgradable": true,
   "upgrade_path": [
    {
+    "rarity": 8,
+    "name": "Shattercryst III",
+    "icon": "MHMobile/Content/UI/Dynamic/WeaponIcon/HeavyBowgun/WeaponIcon_HeavyBowgun_Legiana_1.png",
+    "stats": {
+     "Attack": 346,
+     "Ice": 173
+    },
+    "sharpness": ""
+   },
+   {
     "rarity": 9,
-    "name": "Shattercryst+ IV",
+    "name": "Shattercryst III",
     "icon": "MHMobile/Content/UI/Dynamic/WeaponIcon/HeavyBowgun/WeaponIcon_HeavyBowgun_Legiana_1.png",
     "stats": {
      "Attack": 429,
      "Ice": 215
     },
-    "sharpness": ""
+    "sharpness": "",
+    "gains": {
+     "Attack": 83,
+     "Ice": 42
+    },
+    "materials": [
+     {
+      "item_id": 71004,
+      "item": "Hunter's Jade IV",
+      "count": 2
+     },
+     {
+      "item_id": 630133,
+      "item": "Legiana Hide III",
+      "count": 3
+     },
+     {
+      "item_id": 630132,
+      "item": "Legiana Claw III",
+      "count": 3
+     }
+    ],
+    "money": 0,
+    "required_level": 38
    },
    {
     "rarity": 10,
@@ -57404,19 +57569,52 @@
   "type": "Lance",
   "series": "Legiana Halberd",
   "legendary": false,
-  "starting_rarity": 9,
+  "starting_rarity": 8,
   "max_rarity": 14,
   "upgradable": true,
   "upgrade_path": [
    {
+    "rarity": 8,
+    "name": "Glacial Lance III",
+    "icon": "MHMobile/Content/UI/Dynamic/WeaponIcon/Lance/WeaponIcon_Lance_Legiana_1.png",
+    "stats": {
+     "Attack": 346,
+     "Ice": 173
+    },
+    "sharpness": "Green"
+   },
+   {
     "rarity": 9,
-    "name": "Legiana Halberd IV",
+    "name": "Glacial Lance III",
     "icon": "MHMobile/Content/UI/Dynamic/WeaponIcon/Lance/WeaponIcon_Lance_Legiana_1.png",
     "stats": {
      "Attack": 429,
      "Ice": 215
     },
-    "sharpness": "Green"
+    "sharpness": "Green",
+    "gains": {
+     "Attack": 83,
+     "Ice": 42
+    },
+    "materials": [
+     {
+      "item_id": 71004,
+      "item": "Hunter's Jade IV",
+      "count": 2
+     },
+     {
+      "item_id": 630133,
+      "item": "Legiana Hide III",
+      "count": 3
+     },
+     {
+      "item_id": 630132,
+      "item": "Legiana Claw III",
+      "count": 3
+     }
+    ],
+    "money": 0,
+    "required_level": 38
    },
    {
     "rarity": 10,
@@ -57426,7 +57624,7 @@
      "Attack": 521,
      "Ice": 261
     },
-    "sharpness": "Green",
+    "sharpness": "Blue",
     "gains": {
      "Attack": 92,
      "Ice": 46
@@ -70851,19 +71049,52 @@
   "type": "Charge Blade",
   "series": "Gigafrost",
   "legendary": false,
-  "starting_rarity": 9,
+  "starting_rarity": 8,
   "max_rarity": 14,
   "upgradable": true,
   "upgrade_path": [
    {
+    "rarity": 8,
+    "name": "Everfrost Blade III",
+    "icon": "MHMobile/Content/UI/Dynamic/WeaponIcon/ChargeBlade/WeaponIcon_ChargeBlade_IceElement_1.png",
+    "stats": {
+     "Attack": 339,
+     "Ice": 170
+    },
+    "sharpness": "Green"
+   },
+   {
     "rarity": 9,
-    "name": "Gigafrost IV",
-    "icon": "MHMobile/Content/UI/Dynamic/WeaponIcon/ChargeBlade/WeaponIcon_ChargeBlade_IceElement_2.png",
+    "name": "Everfrost Blade III",
+    "icon": "MHMobile/Content/UI/Dynamic/WeaponIcon/ChargeBlade/WeaponIcon_ChargeBlade_IceElement_1.png",
     "stats": {
      "Attack": 420,
      "Ice": 210
     },
-    "sharpness": "Green"
+    "sharpness": "Green",
+    "gains": {
+     "Attack": 81,
+     "Ice": 40
+    },
+    "materials": [
+     {
+      "item_id": 71004,
+      "item": "Hunter's Jade IV",
+      "count": 2
+     },
+     {
+      "item_id": 630133,
+      "item": "Legiana Hide III",
+      "count": 3
+     },
+     {
+      "item_id": 630132,
+      "item": "Legiana Claw III",
+      "count": 3
+     }
+    ],
+    "money": 0,
+    "required_level": 38
    },
    {
     "rarity": 10,
@@ -70873,7 +71104,7 @@
      "Attack": 510,
      "Ice": 255
     },
-    "sharpness": "Green",
+    "sharpness": "Blue",
     "gains": {
      "Attack": 90,
      "Ice": 45

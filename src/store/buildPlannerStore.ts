@@ -9,6 +9,7 @@ export interface Adventurer {
   allowed_weapon_types: string[];
   image?: string;
   background_image?: string | null;
+  bond_image?: string | null;
   role?: string | null;
 }
 

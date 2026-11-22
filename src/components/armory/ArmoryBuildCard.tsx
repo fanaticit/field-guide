@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import { useMemo } from 'react';
+import { Link } from 'react-router';
 import { getInkConfig } from '../../data/schemas/visage';
 import { InkIconComponent } from '../../pages/investigation-notes/VisageCard';
 import { Sparkles, Sword, Video } from 'lucide-react';
@@ -9,6 +10,8 @@ import {
   type MonsterLookup,
 } from '../../types/armory';
 import { getWeaponMaxName, type DBWeapon } from '../../data/schemas/weapon';
+import { useAuthStore } from '../../store/authStore';
+import { resolveAdventurerMedia } from '../../data/schemas/adventurer';
 
 interface ArmoryBuildCardProps {
   build: ArmoryBuild;
@@ -16,6 +19,11 @@ interface ArmoryBuildCardProps {
 }
 
 export function ArmoryBuildCard({ build, monsterMap }: ArmoryBuildCardProps) {
+  const gender = useAuthStore((s) => s.profile?.equipment_gender ?? 'male');
+  const adventurer = useMemo(
+    () => (build.adventurer ? resolveAdventurerMedia(build.adventurer, gender) ?? build.adventurer : null),
+    [build.adventurer, gender]
+  );
   let desc = build.description || '';
   let role = 'main';
   if (/<!-- role:support -->/.test(desc)) {
@@ -115,13 +123,13 @@ export function ArmoryBuildCard({ build, monsterMap }: ArmoryBuildCardProps) {
         <div className="flex items-center gap-1 shrink-0">
           {/* Adventurer Icon */}
           <div
-            title={`Adventurer: ${build.adventurer?.name || 'Default'}`}
+            title={`Adventurer: ${adventurer?.name || 'Default'}`}
             className="w-11 h-11 sm:w-12 sm:h-12 rounded-lg bg-mh-slate-800 border border-mh-slate-700/80 overflow-hidden flex items-center justify-center shrink-0 shadow-sm group-hover:border-rarity-5/60 transition-colors"
           >
-            {build.adventurer?.image ? (
+            {adventurer?.image ? (
               <img
-                src={build.adventurer.image}
-                alt={build.adventurer?.name || 'Adventurer'}
+                src={adventurer.image}
+                alt={adventurer?.name || 'Adventurer'}
                 className="w-full h-full object-cover"
               />
             ) : (

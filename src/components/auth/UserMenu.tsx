@@ -7,7 +7,7 @@
 import { useState } from 'react';
 import { LogIn, LogOut, User, ChevronUp, ShieldCheck, Settings } from 'lucide-react';
 import { useAuthStore, selectIsAdmin, selectCanModerate } from '../../store/authStore';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import LoginModal from './LoginModal';
 import { cn } from '../../lib/utils';
 

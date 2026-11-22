@@ -2,7 +2,7 @@
 // AdventurerModal — Detailed Inspection Dialog for MHO Adventurers
 // ─────────────────────────────────────────────────────────────
 import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router';
 import { useAdminWeaponTypes } from '../../hooks/useAdminWeapons';
 import {
   X,
@@ -13,6 +13,8 @@ import {
   CheckCircle2,
   Plus,
   Target,
+  ExternalLink,
+  LayoutGrid,
 } from 'lucide-react';
 import {
   type DBAdventurer,
@@ -20,15 +22,20 @@ import {
   ADVENTURER_ROLE_CONFIG,
   adventurerRarityBorder,
   ELEMENT_OPTIONS,
+  resolveAdventurerMedia,
 } from '../../data/schemas/adventurer';
 import { WEAPON_TYPES } from '../../data/core/weapon-types';
 import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
-import { useAdventurerSkills } from '../../hooks/useAdminAdventurers';
+import { useAdventurerGifts, useAdventurerSkills, type FavouriteGift } from '../../hooks/useAdminAdventurers';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
 import AdventurerRarityBadge from './AdventurerRarityBadge';
 import { ChallengeGoalMenu, InsightPill, InsightRow } from './AdventurerInsight';
 import { ROLE_ICONS } from '../../components/RoleIcon';
+import { getYouTubeEmbedUrl } from '../../lib/youtube';
+import YouTubeIcon from '../../components/YouTubeIcon';
+import FeedbackModal from '../../components/feedback/FeedbackModal';
+import AdventurerGifts, { FavouriteGiftIcons } from './AdventurerGifts';
 
 interface AdventurerModalProps {
   adventurer: DBAdventurer | null;
@@ -45,7 +52,7 @@ interface AdventurerModalProps {
 }
 
 export default function AdventurerModal({
-  adventurer,
+  adventurer: rawAdventurer,
   open,
   onClose,
   isRecruited = false,
@@ -58,9 +65,20 @@ export default function AdventurerModal({
 }: AdventurerModalProps) {
   const navigate = useNavigate();
   const isAdmin = useAuthStore(selectIsAdmin);
+  const gender = useAuthStore((s) => s.profile?.equipment_gender ?? 'male');
+  const adventurer = useMemo(
+    () => (rawAdventurer ? resolveAdventurerMedia(rawAdventurer, gender) ?? rawAdventurer : null),
+    [rawAdventurer, gender],
+  );
   const [imageError, setImageError] = useState(false);
   const [backgroundError, setBackgroundError] = useState(false);
+  const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
   const { data: skills = [] } = useAdventurerSkills(open ? adventurer?.id : null);
+  // Same request the Bond Gifts table uses (shared cache), filtered to favourites for the quick reference.
+  const { data: gifts = [] } = useAdventurerGifts(open ? adventurer?.id : null);
+  const favouriteGifts: FavouriteGift[] = gifts
+    .filter((g) => g.preference === 'favourite')
+    .map(({ gift_id, name, icon, bond_gained, multiplier }) => ({ gift_id, name, icon, bond_gained, multiplier }));
   const { data: allWeaponTypes = [] } = useAdminWeaponTypes({ isActive: true });
 
   const availableWeaponTypes = useMemo(() => {
@@ -68,6 +86,11 @@ export default function AdventurerModal({
     if (list.length > 0) return list;
     return WEAPON_TYPES;
   }, [allWeaponTypes]);
+
+  const embedUrl = useMemo(
+    () => (adventurer?.youtube_url ? getYouTubeEmbedUrl(adventurer.youtube_url) : null),
+    [adventurer?.youtube_url],
+  );
 
   if (!open || !adventurer) return null;
 
@@ -80,7 +103,15 @@ export default function AdventurerModal({
   const hasOpenChallenge = Boolean(
     challenge && challenge.status !== 'abandoned' && challenge.status !== 'completed',
   );
-  const showBackground = Boolean(adventurer.background_image) && !backgroundError;
+  const bondImage = adventurer.bond_image || (adventurer.id ? `/images/adventurers/${adventurer.id}_bond.png` : null);
+  const hasInsight = isRecruited && currentInsight >= 1;
+  const activeBgImage = (hasInsight && bondImage) ? bondImage : (adventurer.background_image ?? null);
+  const showBackground = Boolean(activeBgImage) && !backgroundError;
+
+  const insightProgress = Math.max(0, Math.min(1, (currentInsight - 1) / (ADVENTURER_MAX_INSIGHT - 1)));
+  // Lv 1: 0.35 brightness, 0.35 opacity -> Lv 7 (Max): 1.0 brightness, 0.75 opacity
+  const bondBrightness = hasInsight ? (0.35 + 0.65 * insightProgress) : 0.4;
+  const bondOpacity = hasInsight ? (0.35 + 0.40 * insightProgress) : 0.25;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -103,14 +134,18 @@ export default function AdventurerModal({
         )}
         style={adventurerRarityBorder(adventurer.rarity)}
       >
-        {/* Panel background art, dimmed so text stays readable */}
+        {/* Panel background art, dimmed so text stays readable, brightness scales with insight when recruited */}
         {showBackground && (
-          <div className="pointer-events-none absolute inset-0">
+          <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
             <img
-              src={adventurer.background_image!}
+              src={activeBgImage!}
               alt=""
               onError={() => setBackgroundError(true)}
-              className={cn('h-full w-full object-cover', isRecruited ? 'opacity-50' : 'opacity-30 grayscale')}
+              style={hasInsight ? {
+                filter: `brightness(${bondBrightness}) contrast(1.05)`,
+                opacity: bondOpacity,
+              } : undefined}
+              className={cn('h-full w-full object-cover transition-all duration-300', !hasInsight && 'opacity-25 grayscale')}
             />
             <div className="absolute inset-0 bg-gradient-to-b from-[#0f121a]/60 via-[#0f121a]/80 to-[#0f121a]/95" />
           </div>
@@ -160,6 +195,31 @@ export default function AdventurerModal({
               >
                 <span>Coming</span>
               </span>
+            )}
+
+            <Link
+              to={`/armory?adventurer=${encodeURIComponent(adventurer.id)}`}
+              onClick={onClose}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-blue-500/40 bg-blue-500/20 px-2.5 py-1 text-xs font-bold text-blue-300 hover:bg-blue-500/30 transition-all shadow-sm cursor-pointer"
+              title={`View community builds featuring ${adventurer.name}`}
+            >
+              <LayoutGrid size={13} className="text-blue-400" />
+              <span>Community Builds</span>
+            </Link>
+
+            {Boolean(embedUrl) && (
+              <a
+                href="#adventurer-video-guide"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('adventurer-video-guide')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-red-500/40 bg-red-500/20 px-2.5 py-1 text-xs font-bold text-red-300 hover:bg-red-500/30 transition-all shadow-sm cursor-pointer"
+                title="Watch character video guide"
+              >
+                <YouTubeIcon size={14} className="text-red-500 fill-red-500" />
+                <span>Video Guide</span>
+              </a>
             )}
           </div>
 
@@ -215,6 +275,17 @@ export default function AdventurerModal({
                     .filter(Boolean)
                     .join(' • ')}
                 </p>
+              )}
+
+              {/* Favourite gifts — highlighted on the character sheet for quick reference */}
+              {favouriteGifts.length > 0 && (
+                <div className="mt-2.5">
+                  <div className="mb-1 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-mh-gold-300">
+                    <img src="/img/ui/Common_Icon_Recommend1.png" alt="" className="h-4 w-4 object-contain" />
+                    <span>Favourite Gifts</span>
+                  </div>
+                  <FavouriteGiftIcons gifts={favouriteGifts} size="md" />
+                </div>
               )}
 
               {(adventurer.status === 'not_in_game' || adventurer.is_spoiler) && (
@@ -329,6 +400,31 @@ export default function AdventurerModal({
                 <InsightRow level={currentInsight} onChange={(lvl) => onSetInsight?.(lvl)} />
               </div>
             )}
+          </div>
+
+          {/* Community Builds Section Link */}
+          <div className="flex items-center justify-between gap-3 rounded-xl border border-blue-500/30 bg-blue-500/10 p-3.5 shadow-sm">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-500/20 text-blue-400 border border-blue-500/30">
+                <LayoutGrid size={18} />
+              </div>
+              <div className="min-w-0">
+                <p className="text-xs font-bold text-white truncate">
+                  Community Builds for {adventurer.name}
+                </p>
+                <p className="text-[11px] text-mh-slate-400">
+                  Discover weapons, armour, and visage loadouts created for this adventurer
+                </p>
+              </div>
+            </div>
+            <Link
+              to={`/armory?adventurer=${encodeURIComponent(adventurer.id)}`}
+              onClick={onClose}
+              className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold px-3 py-1.5 text-xs transition-colors shrink-0 shadow-sm whitespace-nowrap"
+            >
+              <span>View Builds</span>
+              <ExternalLink size={12} />
+            </Link>
           </div>
 
           {/* Tactical Role Analysis */}
@@ -478,6 +574,68 @@ export default function AdventurerModal({
             </div>
           )}
 
+          {/* YouTube Video Guide Panel */}
+          {embedUrl && (
+            <div id="adventurer-video-guide" className="rounded-xl border border-red-500/30 bg-mh-slate-900/80 p-4 space-y-3 shadow-lg">
+              <div className="flex items-center justify-between gap-2 flex-wrap">
+                <div className="flex items-center gap-2.5">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-500/20 text-red-400 border border-red-500/30 shrink-0">
+                    <YouTubeIcon size={18} className="text-red-500 fill-red-500" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-white flex items-center gap-1.5">
+                      <span>Character Video Guide</span>
+                      <span className="rounded-full bg-red-500/20 px-2 py-0.2 text-[9px] font-bold uppercase tracking-wider text-red-300 border border-red-500/30">
+                        YouTube
+                      </span>
+                    </h4>
+                    <p className="text-[11px] text-mh-slate-400 mt-0.5">
+                      Overview and guide on how to play {adventurer.name}.
+                    </p>
+                  </div>
+                </div>
+
+                {adventurer.youtube_url && (
+                  <a
+                    href={adventurer.youtube_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-2.5 py-1 text-xs font-semibold text-mh-slate-300 hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-300 transition-all shrink-0 shadow-sm"
+                  >
+                    <span>Watch on YouTube</span>
+                    <ExternalLink size={12} />
+                  </a>
+                )}
+              </div>
+
+              {/* Responsive 16:9 Video Embed Player */}
+              <div className="relative w-full aspect-video overflow-hidden rounded-xl border border-mh-slate-800 bg-black shadow-inner">
+                <iframe
+                  src={embedUrl}
+                  title={`${adventurer.name} Guide`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  className="absolute inset-0 h-full w-full border-0"
+                />
+              </div>
+
+              {/* Callout below video */}
+              <div className="pt-1 text-center">
+                <p className="text-xs text-mh-slate-400">
+                  If you want your video here, submit a{' '}
+                  <button
+                    type="button"
+                    onClick={() => setFeedbackModalOpen(true)}
+                    className="font-bold text-mh-gold-400 hover:text-mh-gold-300 underline underline-offset-2 transition-colors inline-block cursor-pointer"
+                  >
+                    &ldquo;General&rdquo; feedback
+                  </button>{' '}
+                  to the site.
+                </p>
+              </div>
+            </div>
+          )}
+
           {/* Notes */}
           {adventurer.notes && (
             <div className="rounded-xl border border-mh-slate-800 bg-mh-slate-950/50 p-4 space-y-1">
@@ -490,6 +648,9 @@ export default function AdventurerModal({
               </p>
             </div>
           )}
+
+          {/* Bond gifts */}
+          <AdventurerGifts adventurerId={adventurer.id} open={open} />
         </div>
 
         {/* Footer */}
@@ -503,6 +664,13 @@ export default function AdventurerModal({
           </button>
         </div>
       </div>
+
+      {/* Feedback Modal for video submissions */}
+      <FeedbackModal
+        open={feedbackModalOpen}
+        onClose={() => setFeedbackModalOpen(false)}
+        defaultType="general"
+      />
     </div>
   );
 }

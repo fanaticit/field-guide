@@ -4,6 +4,8 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '../lib/supabase';
 import type { DBAdventurer, AdventurerUpsert, AdventurerRole, AdventurerSkill, AdventurerStatus } from '../data/schemas/adventurer';
+import { resolveAdventurerMedia } from '../data/schemas/adventurer';
+import { useAuthStore } from '../store/authStore';
 
 export interface AdventurerFilters {
   search?: string;
@@ -62,6 +64,7 @@ export function useAdminAdventurers(filters: AdventurerFilters = {}) {
         status: (row.status || 'in_game') as AdventurerStatus,
         status_reason: (row.status_reason as string | null) ?? null,
         allowed_weapon_types: Array.isArray(row.allowed_weapon_types) ? row.allowed_weapon_types : [],
+        bond_image: (row.bond_image as string | null) || (row.is_default ? null : `/images/adventurers/${row.id}_bond.png`),
       })) as DBAdventurer[];
     },
     staleTime: 1000 * 30,
@@ -86,9 +89,97 @@ export function useAdventurerSkills(adventurerId: string | null | undefined) {
   });
 }
 
-export function usePublicAdventurers(options?: { showSpoilers?: boolean }) {
+/** One gift as it applies to one adventurer (adventurer_gift_preferences + adventurer_gift_items) */
+export interface AdventurerGiftRow {
+  gift_id: string;
+  preference: 'favourite' | 'neutral' | 'disliked';
+  /** percent, e.g. 150 */
+  multiplier: number;
+  bond_gained: number;
+  name: string;
+  category: string | null;
+  description: string | null;
+  icon: string | null;
+  base_bond: number;
+}
+
+export function useAdventurerGifts(adventurerId: string | null | undefined) {
   return useQuery({
-    queryKey: [PUBLIC_ADVENTURERS_KEY, options?.showSpoilers],
+    queryKey: ['adventurer-gifts', adventurerId],
+    enabled: Boolean(adventurerId),
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('adventurer_gift_preferences')
+        .select('gift_id, preference, multiplier, bond_gained, gift:adventurer_gift_items(name, category, description, icon, base_bond, sort_order)')
+        .eq('adventurer_id', adventurerId!);
+      if (error) throw error;
+      type Row = {
+        gift_id: string; preference: AdventurerGiftRow['preference']; multiplier: number; bond_gained: number;
+        gift: { name: string; category: string | null; description: string | null; icon: string | null; base_bond: number; sort_order: number } | null;
+      };
+      return ((data ?? []) as unknown as Row[])
+        .filter((r) => r.gift)
+        .map((r) => ({
+          gift_id: r.gift_id, preference: r.preference, multiplier: r.multiplier, bond_gained: r.bond_gained,
+          name: r.gift!.name, category: r.gift!.category, description: r.gift!.description,
+          icon: r.gift!.icon, base_bond: r.gift!.base_bond, sort_order: r.gift!.sort_order,
+        }))
+        .sort((a, b) => b.bond_gained - a.bond_gained || a.sort_order - b.sort_order)
+        .map(({ sort_order: _s, ...rest }) => rest as AdventurerGiftRow);
+    },
+    staleTime: 1000 * 60 * 10,
+  });
+}
+
+/** A favourite gift, for the quick-reference icons */
+export interface FavouriteGift {
+  gift_id: string;
+  name: string;
+  icon: string | null;
+  bond_gained: number;
+  multiplier: number;
+}
+
+/** Every adventurer's favourite gifts in one request, keyed by adventurer id (best bond first). */
+export function useAllFavouriteGifts() {
+  return useQuery({
+    queryKey: ['adventurer-favourite-gifts'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('adventurer_gift_preferences')
+        .select('adventurer_id, gift_id, multiplier, bond_gained, gift:adventurer_gift_items(name, icon, sort_order)')
+        .eq('preference', 'favourite');
+      if (error) throw error;
+      type Row = {
+        adventurer_id: string; gift_id: string; multiplier: number; bond_gained: number;
+        gift: { name: string; icon: string | null; sort_order: number } | null;
+      };
+      const byAdventurer = new Map<string, (FavouriteGift & { sort_order: number })[]>();
+      for (const r of (data ?? []) as unknown as Row[]) {
+        if (!r.gift) continue;
+        const list = byAdventurer.get(r.adventurer_id) ?? [];
+        list.push({
+          gift_id: r.gift_id, name: r.gift.name, icon: r.gift.icon,
+          bond_gained: r.bond_gained, multiplier: r.multiplier, sort_order: r.gift.sort_order,
+        });
+        byAdventurer.set(r.adventurer_id, list);
+      }
+      const result = new Map<string, FavouriteGift[]>();
+      for (const [id, list] of byAdventurer) {
+        list.sort((a, b) => b.bond_gained - a.bond_gained || a.sort_order - b.sort_order);
+        result.set(id, list.map(({ sort_order: _s, ...g }) => g));
+      }
+      return result;
+    },
+    staleTime: 1000 * 60 * 10,
+  });
+}
+
+export function usePublicAdventurers(options?: { showSpoilers?: boolean }) {
+  const gender = useAuthStore((s) => s.profile?.equipment_gender ?? 'male');
+
+  return useQuery({
+    queryKey: [PUBLIC_ADVENTURERS_KEY, options?.showSpoilers, gender],
     queryFn: async () => {
       let q = supabase
         .from('adventurers')
@@ -105,18 +196,22 @@ export function usePublicAdventurers(options?: { showSpoilers?: boolean }) {
       const { data, error } = await q;
       if (error) throw error;
 
-      return (data ?? []).map((row: Record<string, unknown>) => ({
-        ...row,
-        role: (row.role || 'Assault') as AdventurerRole,
-        is_default: Boolean(row.is_default),
-        is_active: Boolean(row.is_active),
-        is_spoiler: Boolean(row.is_spoiler),
-        is_debug: Boolean(row.is_debug),
-        status: (row.status || 'in_game') as AdventurerStatus,
-        status_reason: (row.status_reason as string | null) ?? null,
-        allowed_weapon_types: Array.isArray(row.allowed_weapon_types) ? row.allowed_weapon_types : [],
-        traits: Array.isArray(row.traits) ? row.traits : [],
-      })) as DBAdventurer[];
+      return (data ?? []).map((row: Record<string, unknown>) => {
+        const adv: DBAdventurer = {
+          ...row,
+          role: (row.role || 'Assault') as AdventurerRole,
+          is_default: Boolean(row.is_default),
+          is_active: Boolean(row.is_active),
+          is_spoiler: Boolean(row.is_spoiler),
+          is_debug: Boolean(row.is_debug),
+          status: (row.status || 'in_game') as AdventurerStatus,
+          status_reason: (row.status_reason as string | null) ?? null,
+          allowed_weapon_types: Array.isArray(row.allowed_weapon_types) ? row.allowed_weapon_types : [],
+          traits: Array.isArray(row.traits) ? row.traits : [],
+          bond_image: (row.bond_image as string | null) || (row.is_default ? null : `/images/adventurers/${row.id}_bond.png`),
+        } as DBAdventurer;
+        return resolveAdventurerMedia(adv, gender)!;
+      });
     },
     staleTime: 1000 * 60 * 5,
   });

@@ -28,6 +28,7 @@ import { WEAPON_TYPES } from '../../../data/core/weapon-types';
 import { useUpsertAdventurer, useDeleteAdventurer } from '../../../hooks/useAdminAdventurers';
 import { supabase } from '../../../lib/supabase';
 import { cn } from '../../../lib/utils';
+import YouTubeIcon from '../../../components/YouTubeIcon';
 
 function toSlug(s: string) {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
@@ -47,7 +48,7 @@ function ImageUploadField({
   value: string | null;
   onChange: (url: string | null) => void;
   slug: string;
-  kind?: 'portrait' | 'background';
+  kind?: 'portrait' | 'background' | 'bond';
 }) {
   const [uploading, setUploading] = useState(false);
   const [showUrlInput, setShowUrlInput] = useState(false);
@@ -259,6 +260,7 @@ export default function AdventurerEditModal({
   const [weaponType, setWeaponType] = useState(adventurer?.weapon_type ?? 'great_sword');
   const [image, setImage] = useState<string | null>(adventurer?.image ?? null);
   const [backgroundImage, setBackgroundImage] = useState<string | null>(adventurer?.background_image ?? null);
+  const [bondImage, setBondImage] = useState<string | null>(adventurer?.bond_image ?? null);
   const [description, setDescription] = useState(adventurer?.description ?? '');
   const [notes, setNotes] = useState(adventurer?.notes ?? '');
   const [sortOrder, setSortOrder] = useState(adventurer?.sort_order ?? nextSortOrder);
@@ -266,6 +268,7 @@ export default function AdventurerEditModal({
   const [isSpoiler, setIsSpoiler] = useState(adventurer?.is_spoiler ?? false);
   const [status, setStatus] = useState<AdventurerStatus>(adventurer?.status ?? 'in_game');
   const [statusReason, setStatusReason] = useState(adventurer?.status_reason ?? '');
+  const [youtubeUrl, setYoutubeUrl] = useState(adventurer?.youtube_url ?? '');
 
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -286,6 +289,7 @@ export default function AdventurerEditModal({
       setWeaponType(adventurer.weapon_type ?? 'great_sword');
       setImage(adventurer.image ?? null);
       setBackgroundImage(adventurer.background_image ?? null);
+      setBondImage(adventurer.bond_image ?? null);
       setDescription(adventurer.description ?? '');
       setNotes(adventurer.notes ?? '');
       setSortOrder(adventurer.sort_order);
@@ -293,6 +297,7 @@ export default function AdventurerEditModal({
       setIsSpoiler(adventurer.is_spoiler ?? false);
       setStatus(adventurer.status ?? 'in_game');
       setStatusReason(adventurer.status_reason ?? '');
+      setYoutubeUrl(adventurer.youtube_url ?? '');
     } else {
       setId('');
       setIdManual(false);
@@ -305,6 +310,7 @@ export default function AdventurerEditModal({
       setWeaponType('great_sword');
       setImage(null);
       setBackgroundImage(null);
+      setBondImage(null);
       setDescription('');
       setNotes('');
       setSortOrder(nextSortOrder);
@@ -312,6 +318,7 @@ export default function AdventurerEditModal({
       setIsSpoiler(false);
       setStatus('in_game');
       setStatusReason('');
+      setYoutubeUrl('');
     }
     setConfirmDelete(false);
     setErrorMsg(null);
@@ -365,6 +372,10 @@ export default function AdventurerEditModal({
       ...(rarity !== (adventurer?.rarity ?? null) ? { rarity } : {}),
       // Same for the background image (column added in 20261101000001)
       ...(backgroundImage !== (adventurer?.background_image ?? null) ? { background_image: backgroundImage } : {}),
+      // RoleBond illustrated background image
+      ...(bondImage !== (adventurer?.bond_image ?? null) ? { bond_image: bondImage } : {}),
+      // YouTube guide video URL
+      ...(youtubeUrl.trim() !== (adventurer?.youtube_url ?? '') ? { youtube_url: youtubeUrl.trim() || null } : {}),
     };
 
     try {
@@ -660,6 +671,16 @@ export default function AdventurerEditModal({
             kind="background"
           />
 
+          {/* RoleBond Background Image */}
+          <ImageUploadField
+            label="RoleBond Artwork"
+            subLabel="Bond illustration displayed on cards and modal when the adventurer has insight levels"
+            value={bondImage}
+            onChange={setBondImage}
+            slug={id || name}
+            kind="bond"
+          />
+
           {/* Description */}
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-mh-slate-300">
@@ -744,6 +765,26 @@ export default function AdventurerEditModal({
                 />
               </div>
             )}
+          </div>
+
+          {/* YouTube Guide Video */}
+          <div className="space-y-2 rounded-xl border border-mh-slate-750 bg-mh-slate-900/60 p-3">
+            <div className="flex items-center gap-2">
+              <YouTubeIcon size={16} className="text-red-500 fill-red-500 shrink-0" />
+              <div>
+                <p className="text-xs font-bold text-mh-slate-300">YouTube Guide Video</p>
+                <p className="text-[11px] text-mh-slate-500">
+                  Optional video guide explaining how to play this adventurer (supports timestamps, e.g. ?t=1m30s)
+                </p>
+              </div>
+            </div>
+            <input
+              type="text"
+              value={youtubeUrl}
+              onChange={(e) => setYoutubeUrl(e.target.value)}
+              placeholder="https://www.youtube.com/watch?v=... or https://youtu.be/... (supports ?t=...)"
+              className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-1.5 text-xs text-mh-slate-200 placeholder:text-mh-slate-500 focus:border-red-500/50 focus:outline-none"
+            />
           </div>
 
           {/* Actions */}
