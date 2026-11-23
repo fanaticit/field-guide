@@ -45,6 +45,7 @@ import { resolvePairings, type ResolvedPairing } from './BuddyPairings';
 import { BuddyTierPicker } from './BuddyTierLevel';
 import PageTitlePanel from '../../components/layout/PageTitlePanel';
 import LoginModal from '../../components/auth/LoginModal';
+import GuestSaveNotice from '../../components/auth/GuestSaveNotice';
 import { ROLE_ICONS } from '../../components/RoleIcon';
 import { cn } from '../../lib/utils';
 
@@ -333,6 +334,8 @@ export default function BuddyGuide() {
           })}
         </div>
       </PageTitlePanel>
+
+      <GuestSaveNotice collection="buddy" count={Object.keys(collectionMap).length} noun="buddies" />
 
       {/* ── Filter & Search Toolbar ── */}
       <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">

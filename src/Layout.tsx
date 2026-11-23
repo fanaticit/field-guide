@@ -6,6 +6,7 @@
 import { Outlet, Link, useLocation } from 'react-router';
 import { useUIStore } from './store/uiStore';
 import MainNav from './components/layout/MainNav';
+import GuestCollectionSync from './components/auth/GuestCollectionSync';
 import { cn } from './lib/utils';
 
 // Plain links to every tool page. The side navigation opens sub-menus on
@@ -49,6 +50,9 @@ export default function Layout() {
 
       {/* Main navigation — left rail on desktop/landscape, bottom bar on mobile portrait */}
       <MainNav />
+
+      {/* Copies collections saved in this browser into the account after login */}
+      <GuestCollectionSync />
 
       {/* Main area — offset by the nav rail & themed by active section */}
       <div

@@ -1,9 +1,10 @@
 // ─────────────────────────────────────────────────────────────
 // useUserBuddyCollection — Hook for managing hunter's owned Buddies & tier levels (0, 1, 2)
 // ─────────────────────────────────────────────────────────────
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '../lib/supabase';
+import { GUEST_COLLECTIONS_CHANGED_EVENT, readGuestJson, forgetGuestItem } from '../lib/guestCollections';
 import { useAuthStore } from '../store/authStore';
 import {
   type BuddyCollectionEntry,
@@ -33,6 +34,14 @@ export function useUserBuddyCollection() {
     }
     return {};
   });
+
+  // Reload the browser copy on login/logout and whenever the import changes it
+  useEffect(() => {
+    const reload = () => setLocalMap(readGuestJson<Record<string, BuddyCollectionEntry>>(STORAGE_KEY) ?? {});
+    reload();
+    window.addEventListener(GUEST_COLLECTIONS_CHANGED_EVENT, reload);
+    return () => window.removeEventListener(GUEST_COLLECTIONS_CHANGED_EVENT, reload);
+  }, [user?.id]);
 
   const saveLocal = (next: Record<string, BuddyCollectionEntry>) => {
     setLocalMap(next);
@@ -75,13 +84,21 @@ export function useUserBuddyCollection() {
 
   // Combined collection map keyed by `buddyId`
   const collectionMap = useMemo<Record<string, BuddyCollectionEntry>>(() => {
-    if (user && dbCollection.length > 0) {
+    // Signed in: the account is the source of truth (browser copies are merged in on login)
+    if (user) {
       const map: Record<string, BuddyCollectionEntry> = {};
       for (const item of dbCollection) {
         map[item.buddy_id] = {
           tier_level: clampBuddyTierLevel(item.tier_level ?? 0),
           quantity: item.quantity ?? 1,
         };
+      }
+      // Buddies saved in this browser that haven't reached the account yet (import pending
+      // or failed) are still shown, so nothing ever looks lost.
+      for (const [buddyId, entry] of Object.entries(localMap)) {
+        if (!buddyId || !entry) continue;
+        const tier = clampBuddyTierLevel(Number(entry.tier_level) || 0);
+        if (!map[buddyId] || map[buddyId].tier_level < tier) map[buddyId] = { tier_level: tier, quantity: 1 };
       }
       return map;
     }
@@ -130,6 +147,7 @@ export function useUserBuddyCollection() {
         );
         if (fallbackError) throw fallbackError;
       }
+      forgetGuestItem('buddy', buddyId); // the account now has this buddy; drop any pending browser copy
     },
     onMutate: async ({ buddyId, tierLevel }) => {
       if (!user) return;
@@ -182,6 +200,7 @@ export function useUserBuddyCollection() {
         .eq('buddy_id', buddyId);
 
       if (error) throw error;
+      forgetGuestItem('buddy', buddyId);
     },
     onMutate: async (buddyId) => {
       if (!user) return;

@@ -49,6 +49,7 @@ import AdventurerRarityBadge from './AdventurerRarityBadge';
 import { InsightPicker } from './AdventurerInsight';
 import PageTitlePanel from '../../components/layout/PageTitlePanel';
 import LoginModal from '../../components/auth/LoginModal';
+import GuestSaveNotice from '../../components/auth/GuestSaveNotice';
 import RoleIcon, { ROLE_ICONS } from '../../components/RoleIcon';
 import { cn } from '../../lib/utils';
 
@@ -102,7 +103,7 @@ export default function AdventurerGuide() {
     [pageGuide?.youtube_url],
   );
   const updateWeaponMutation = useUpdateAdventurerWeapon();
-  const { isRecruited, toggleRecruited, getInsightLevel, setInsightLevel } = useUserAdventurerCollection();
+  const { collectionSet, isRecruited, toggleRecruited, getInsightLevel, setInsightLevel } = useUserAdventurerCollection();
 
   const { data: challenges = [] } = useHunterChallenges(user?.id);
   const addAdventurerChallenge = useAddAdventurerChallenge();
@@ -307,6 +308,8 @@ export default function AdventurerGuide() {
           })}
         </div>
       </PageTitlePanel>
+
+      <GuestSaveNotice collection="adventurer" count={collectionSet.size} noun="adventurers" />
 
       {/* ── Adventurers Roster ── */}
       <div className="space-y-4">

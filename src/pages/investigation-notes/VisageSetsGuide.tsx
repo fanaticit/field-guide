@@ -24,6 +24,7 @@ import {
 import VisageCard, { InkIconComponent } from './VisageCard';
 import VisageModal from './VisageModal';
 import LoginModal from '../../components/auth/LoginModal';
+import GuestSaveNotice from '../../components/auth/GuestSaveNotice';
 import { useVisageBuilderStore } from '../../store/visageBuilderStore';
 import { cn } from '../../lib/utils';
 import { useUIStore } from '../../store/uiStore';
@@ -47,6 +48,7 @@ export default function VisageSetsGuide() {
     sets,
     dbVisages = [],
     isLoading,
+    collectionMap,
     getCardCollection,
     setCardRarity,
     setCardQuantity,
@@ -781,6 +783,8 @@ export default function VisageSetsGuide() {
               </div>
             ) : activeSet ? (
               <div className={cn('mx-auto space-y-4 sm:space-y-6', viewMode === 'monster' ? 'max-w-7xl' : 'max-w-6xl')}>
+                <GuestSaveNotice collection="visage" count={Object.keys(collectionMap).length} noun="cards" />
+
                 {/* Header Bar */}
                 <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3 border-b border-white/10 pb-2 sm:pb-3">
                   <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap">

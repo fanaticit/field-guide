@@ -2,9 +2,10 @@
 // useVisageSets — Pure Supabase-driven hook for MHO Visage Sets
 // Manages grouping by sets and user collection tracking (rarity & quantity)
 // ─────────────────────────────────────────────────────────────
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '../lib/supabase';
+import { GUEST_COLLECTIONS_CHANGED_EVENT, readGuestJson, isBetterVisage, forgetGuestItem } from '../lib/guestCollections';
 import { useAuthStore } from '../store/authStore';
 import { useAdminVisages } from './useAdminVisages';
 import { useAdminSkills, type SetBonusTier, type DBSkill } from './useAdminSkills';
@@ -57,6 +58,14 @@ export function useUserVisageCollection() {
     return {};
   });
 
+  // Reload the browser copy on login/logout and whenever the import changes it
+  useEffect(() => {
+    const reload = () => setLocalMap(readGuestJson<Record<string, CardCollectionEntry>>(STORAGE_KEY) ?? {});
+    reload();
+    window.addEventListener(GUEST_COLLECTIONS_CHANGED_EVENT, reload);
+    return () => window.removeEventListener(GUEST_COLLECTIONS_CHANGED_EVENT, reload);
+  }, [user?.id]);
+
   // Sync to local storage
   const saveLocal = (next: Record<string, CardCollectionEntry>) => {
     setLocalMap(next);
@@ -93,7 +102,8 @@ export function useUserVisageCollection() {
 
   // Combined collection map keyed by `${visageId}:${inkType}`
   const collectionMap = useMemo<Record<string, CardCollectionEntry>>(() => {
-    if (user && dbCollection.length > 0) {
+    // Signed in: the account is the source of truth (browser copies are imported on login)
+    if (user) {
       const map: Record<string, CardCollectionEntry> = {};
       for (const item of dbCollection) {
         const ink = item.ink_type || 'flames';
@@ -102,6 +112,13 @@ export function useUserVisageCollection() {
           rarity: item.rarity,
           quantity: Math.min(5, Math.max(1, item.quantity || 1)),
         };
+      }
+      // Cards saved in this browser that haven't reached the account yet (import pending or
+      // failed) are still shown, so nothing ever looks lost.
+      for (const [key, entry] of Object.entries(localMap)) {
+        if (!entry || !['fine', 'rare', 'epic', 'superior'].includes(entry.rarity)) continue;
+        const pending = { rarity: entry.rarity, quantity: Math.min(5, Math.max(1, Number(entry.quantity) || 1)) };
+        if (isBetterVisage(pending, map[key])) map[key] = pending;
       }
       return map;
     }
@@ -145,6 +162,7 @@ export function useUserVisageCollection() {
         { onConflict: 'user_id,visage_id,ink_type' },
       );
       if (error) throw error;
+      forgetGuestItem('visage', key); // the account now has this card; drop any pending browser copy
     },
     onMutate: async ({ visageId, inkType, rarity, quantity }) => {
       if (!user) return;
@@ -200,6 +218,7 @@ export function useUserVisageCollection() {
         .eq('visage_id', visageId)
         .eq('ink_type', normInk);
       if (error) throw error;
+      forgetGuestItem('visage', key);
     },
     onMutate: async ({ visageId, inkType }) => {
       if (!user) return;

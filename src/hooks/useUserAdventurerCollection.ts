@@ -1,9 +1,10 @@
 // ─────────────────────────────────────────────────────────────
 // useUserAdventurerCollection — Hook for managing hunter's recruited Adventurers
 // ─────────────────────────────────────────────────────────────
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '../lib/supabase';
+import { GUEST_COLLECTIONS_CHANGED_EVENT, readGuestJson, forgetGuestItem } from '../lib/guestCollections';
 import { useAuthStore } from '../store/authStore';
 import { clampInsightLevel, type DBAdventurer } from '../data/schemas/adventurer';
 
@@ -61,6 +62,18 @@ export function useUserAdventurerCollection() {
     }
   };
 
+  // Reload the browser copies on login/logout and whenever the import changes them
+  useEffect(() => {
+    const reload = () => {
+      const ids = readGuestJson<string[]>(STORAGE_KEY);
+      setLocalSet(new Set(Array.isArray(ids) ? ids : []));
+      setLocalInsight(readGuestJson<Record<string, number>>(INSIGHT_STORAGE_KEY) ?? {});
+    };
+    reload();
+    window.addEventListener(GUEST_COLLECTIONS_CHANGED_EVENT, reload);
+    return () => window.removeEventListener(GUEST_COLLECTIONS_CHANGED_EVENT, reload);
+  }, [user?.id]);
+
   // 1. Live Supabase Query (when signed in)
   const { data: dbCollection = [], isLoading: isLoadingCollection } = useQuery({
     queryKey,
@@ -97,14 +110,24 @@ export function useUserAdventurerCollection() {
   const useDb = Boolean(user);
 
   // Combined collection set
+  // Signed in: account data, plus anything saved in this browser that hasn't reached the
+  // account yet (import pending or failed), so nothing ever looks lost.
   const collectionSet = useMemo<Set<string>>(() => {
-    if (useDb) return new Set(dbCollection.map((r) => r.adventurer_id));
-    return localSet;
-  }, [useDb, dbCollection, localSet]);
+    if (!useDb) return localSet;
+    const set = new Set(dbCollection.map((r) => r.adventurer_id));
+    localSet.forEach((id) => set.add(id));
+    Object.keys(localInsight).forEach((id) => set.add(id));
+    return set;
+  }, [useDb, dbCollection, localSet, localInsight]);
 
   const insightMap = useMemo<Map<string, number>>(() => {
-    if (useDb) return new Map(dbCollection.map((r) => [r.adventurer_id, r.insight_level]));
-    return new Map(Object.entries(localInsight).map(([id, lvl]) => [id, clampInsightLevel(lvl)]));
+    const local = new Map(Object.entries(localInsight).map(([id, lvl]) => [id, clampInsightLevel(lvl)]));
+    if (!useDb) return local;
+    const map = new Map(dbCollection.map((r) => [r.adventurer_id, r.insight_level]));
+    local.forEach((lvl, id) => {
+      if ((map.get(id) ?? 0) < lvl) map.set(id, lvl);
+    });
+    return map;
   }, [useDb, dbCollection, localInsight]);
 
   // 2. Add Mutation
@@ -127,6 +150,7 @@ export function useUserAdventurerCollection() {
         { onConflict: 'user_id,adventurer_id' },
       );
       if (error) throw error;
+      forgetGuestItem('adventurer', adventurerId); // the account now has it; drop any pending browser copy
     },
     onMutate: async (adventurerId) => {
       if (!user) {
@@ -175,6 +199,7 @@ export function useUserAdventurerCollection() {
         .eq('adventurer_id', adventurerId);
 
       if (error) throw error;
+      forgetGuestItem('adventurer', adventurerId);
     },
     onMutate: async (adventurerId) => {
       if (!user) {
@@ -223,6 +248,7 @@ export function useUserAdventurerCollection() {
         { onConflict: 'user_id,adventurer_id' },
       );
       if (error) throw error;
+      forgetGuestItem('adventurer', adventurerId);
     },
     onMutate: async ({ adventurerId, level }) => {
       if (!user) return;
