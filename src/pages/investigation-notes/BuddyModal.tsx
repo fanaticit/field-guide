@@ -18,6 +18,7 @@ import { usePublicAdventurers } from '../../hooks/useAdminAdventurers';
 import { useAuthStore } from '../../store/authStore';
 import { ROLE_ICONS } from '../../components/RoleIcon';
 import { BuddyTierRow, BuddyTierLevelPill, BuddyChallengeGoalMenu } from './BuddyTierLevel';
+import BuddyPairings from './BuddyPairings';
 
 const ROLE_DESCRIPTIONS: Record<BuddyRole, string> = {
   Assault: 'Direct damage specialist focused on dealing burst and sustained offensive damage to monsters.',
@@ -320,6 +321,9 @@ export default function BuddyModal({
               </p>
             </div>
           </div>
+
+          {/* Adventurer Pairings */}
+          <BuddyPairings buddyId={buddy.id} open={open} />
 
           {/* Description */}
           {buddy.description && (

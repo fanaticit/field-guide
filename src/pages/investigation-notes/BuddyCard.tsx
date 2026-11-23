@@ -14,6 +14,7 @@ import { cn } from '../../lib/utils';
 import ArtBackdrop from '../../components/ArtBackdrop';
 import { ROLE_ICONS } from '../../components/RoleIcon';
 import { BuddyTierPicker, BuddyChallengeGoalMenu } from './BuddyTierLevel';
+import { BestPairingIcons, type ResolvedPairing } from './BuddyPairings';
 
 interface BuddyCardProps {
   buddy: DBBuddy;
@@ -23,6 +24,8 @@ interface BuddyCardProps {
   onSetTierLevel: (tierLevel: number) => void;
   onAddChallenge?: (buddy: DBBuddy, targetGoal?: number) => void;
   onClick: () => void;
+  /** Best adventurer pairings (resolved), shown as small portraits */
+  bestPairings?: ResolvedPairing[];
 }
 
 export default function BuddyCard({
@@ -33,6 +36,7 @@ export default function BuddyCard({
   onSetTierLevel,
   onAddChallenge,
   onClick,
+  bestPairings,
 }: BuddyCardProps) {
   const navigate = useNavigate();
   const [imageError, setImageError] = useState(false);
@@ -244,6 +248,7 @@ export default function BuddyCard({
             )}
           </p>
         </div>
+        {bestPairings && bestPairings.length > 0 && <BestPairingIcons pairings={bestPairings} className="mt-2 px-0.5" />}
       </div>
     </div>
   );

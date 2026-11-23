@@ -26,7 +26,8 @@ import {
   BUDDY_MAX_TIER_LEVEL,
 } from '../../data/schemas/buddy';
 import { ADVENTURER_RARITY_CONFIG } from '../../data/schemas/adventurer';
-import { usePublicBuddies, useAllBuddySkills } from '../../hooks/useAdminBuddies';
+import { usePublicBuddies, useAllBuddySkills, useAllBestBuddyPairings } from '../../hooks/useAdminBuddies';
+import { usePublicAdventurers } from '../../hooks/useAdminAdventurers';
 import { useUserBuddyCollection } from '../../hooks/useUserBuddyCollection';
 import {
   useHunterChallenges,
@@ -39,6 +40,7 @@ import { useUIStore } from '../../store/uiStore';
 import { DEFAULT_SECTION_THEMES } from '../../config/themes';
 import BuddyCard from './BuddyCard';
 import BuddyModal from './BuddyModal';
+import { resolvePairings, type ResolvedPairing } from './BuddyPairings';
 import { BuddyTierPicker } from './BuddyTierLevel';
 import PageTitlePanel from '../../components/layout/PageTitlePanel';
 import LoginModal from '../../components/auth/LoginModal';
@@ -79,6 +81,18 @@ export default function BuddyGuide() {
     showSpoilers: Boolean(profile?.show_spoilers),
   });
   const { data: allSkills = [] } = useAllBuddySkills();
+  const { data: bestPairingsByBuddy } = useAllBestBuddyPairings();
+  const { data: pairingAdventurers = [] } = usePublicAdventurers({ showSpoilers: Boolean(profile?.show_spoilers) });
+  const resolvedBestPairings = useMemo(() => {
+    const map = new Map<string, ResolvedPairing[]>();
+    if (!bestPairingsByBuddy) return map;
+    for (const [buddyId, list] of bestPairingsByBuddy) {
+      // Named adventurers first, then Fated Adventurer styles
+      const resolved = resolvePairings(list, pairingAdventurers).sort((a, b) => Number(a.kind === 'fated') - Number(b.kind === 'fated'));
+      if (resolved.length) map.set(buddyId, resolved);
+    }
+    return map;
+  }, [bestPairingsByBuddy, pairingAdventurers]);
 
   // Open buddy detail modal if specified in URL (?buddy=... or ?id=...)
   useEffect(() => {
@@ -485,6 +499,7 @@ export default function BuddyGuide() {
               onSetTierLevel={(lvl) => handleSetTier(buddy, lvl)}
               onAddChallenge={handleAddChallenge}
               onClick={() => setInspectedBuddy(buddy)}
+              bestPairings={resolvedBestPairings.get(buddy.id)}
             />
           ))}
         </div>

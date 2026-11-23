@@ -31,7 +31,7 @@ export const DEFAULT_DESCRIPTION =
   'Free Monster Hunter Outlanders tools: build planner, Visage Card checker and collection tracker, plus monster weaknesses, hitzones, weapons and adventurers.';
 export const DEFAULT_OG_IMAGE = '/images/ui/banner_small.jpeg';
 
-export const YOUTUBE_CHANNEL_URL: string | null = null;
+export const YOUTUBE_CHANNEL_URL: string | null = 'https://www.youtube.com/channel/UCHkRG0atSAJOiZ4sunHTsEA';
 
 /**
  * Pre-rendered pages are written as folder/index.html, which Cloudflare

@@ -110,10 +110,13 @@ export const PAGES = {
   },
   visageCheck: {
     path: '/gallery/check',
-    title: 'Visage Card Checker – Rate Your Rolls in Monster Hunter Outlanders',
+    title: 'Visage Card Checker – Should You Upgrade or Resketch? | Monster Hunter Outlanders',
     heading: 'Visage Card Checker',
     description:
-      'Check a Monster Hunter Outlanders Visage Card: compare its rolls and resketch stats against the possible ranges to decide whether to keep upgrading it.',
+      'Is your Monster Hunter Outlanders Visage Card good? Rate its base tiers and resketch rolls, see every option and value range, and know when to upgrade.',
+    intro: [
+      'Enter your card’s base effects and resketch slots to see the tier of each roll and the chance a resketch would beat your current set. The guide below explains base effect tiers, resketch roll quality odds, value ranges and costs.',
+    ],
     related: [REFERENCE_LINKS.visages],
     section: 'Gallery',
   },

@@ -10,6 +10,8 @@ import type {
   MonsterPage,
   VisagePage,
   WeaponPage,
+  AdventurerGift,
+  BuddyPairingRef,
 } from '../../seo/publicData';
 import { labelOf, weaponTypeName } from '../../seo/publicData';
 import { REFERENCE } from '../../seo/pages';
@@ -21,6 +23,81 @@ import {
   weaponSummary,
 } from '../../seo/summaries';
 import ReferenceShell, { DataTable, FactList, LinkChips, Section } from './ReferenceShell';
+
+const GIFT_PREFERENCE_LABEL: Record<AdventurerGift['preference'], string> = {
+  favourite: 'Favourite',
+  neutral: 'Neutral',
+  disliked: 'Disliked',
+};
+
+/** Plain-text summary of an adventurer's gift preferences (the part search engines and assistants quote). */
+function AdventurerGiftSummary({ name, gifts }: { name: string; gifts: AdventurerGift[] }) {
+  const names = (pref: AdventurerGift['preference']) => gifts.filter((g) => g.preference === pref).map((g) => g.name);
+  const favourites = names('favourite');
+  const disliked = names('disliked');
+  const best = gifts[0];
+  const fav = gifts.find((g) => g.preference === 'favourite');
+  const dis = gifts.find((g) => g.preference === 'disliked');
+  const neutral = gifts.find((g) => g.preference === 'neutral');
+  return (
+    <div className="mb-3 space-y-1.5 text-sm leading-relaxed text-mh-slate-200">
+      {favourites.length > 0 && (
+        <p>
+          <strong className="text-white">{name}&rsquo;s favourite gifts</strong>
+          {fav ? ` (${fav.multiplier}% bond)` : ''}: {favourites.join(', ')}.
+        </p>
+      )}
+      {disliked.length > 0 && (
+        <p>
+          <strong className="text-white">Gifts {name} dislikes</strong>
+          {dis ? ` (${dis.multiplier}% bond)` : ''}: {disliked.join(', ')}.
+        </p>
+      )}
+      {best && (
+        <p>
+          The most bond comes from {gifts.filter((g) => g.bond_gained === best.bond_gained).map((g) => g.name).join(' or ')} at
+          +{best.bond_gained.toLocaleString('en-GB')} bond per gift.
+          {neutral ? ` Neutral gifts give the normal ${neutral.multiplier}% bond.` : ''}
+        </p>
+      )}
+    </div>
+  );
+}
+
+const PAIRING_RATING_LABEL: Record<BuddyPairingRef['rating'], string> = {
+  best: 'Best',
+  good: 'Good',
+  general: 'General (squad-wide)',
+  trigger_only: 'Trigger only (element wasted)',
+};
+
+/** Plain-text summary of which adventurers suit a buddy (the part search engines and assistants quote). */
+function BuddyPairingSummary({ name, pairings }: { name: string; pairings: BuddyPairingRef[] }) {
+  const names = (rating: BuddyPairingRef['rating']) =>
+    pairings.filter((p) => p.rating === rating).map((p) => p.name);
+  const best = names('best');
+  const good = names('good');
+  const wasted = names('trigger_only');
+  return (
+    <div className="mb-3 space-y-1.5 text-sm leading-relaxed text-mh-slate-200">
+      {best.length > 0 && (
+        <p>
+          <strong className="text-white">Best adventurers for {name}</strong>: {best.join(', ')}.
+        </p>
+      )}
+      {good.length > 0 && (
+        <p>
+          <strong className="text-white">Good adventurers for {name}</strong>: {good.join(', ')}.
+        </p>
+      )}
+      {wasted.length > 0 && (
+        <p>
+          {wasted.join(', ')} trigger {name}&rsquo;s Core Passive but deal a different element, so the boost is wasted.
+        </p>
+      )}
+    </div>
+  );
+}
 
 const VISAGE_LEVEL_LABELS = ['Fine', 'Rare', 'Epic', 'Superior', 'Superior+'];
 
@@ -251,6 +328,23 @@ export function AdventurerDetail({ page }: { page: AdventurerPage }) {
         </Section>
       )}
 
+      {page.gifts.length > 0 && (
+        <Section title={`Best gifts for ${a.name}`}>
+          <AdventurerGiftSummary name={a.name} gifts={page.gifts} />
+          <DataTable
+            caption={`${a.name} bond gifts and bond gained per gift`}
+            headers={['Gift', 'Category', 'Preference', 'Bond multiplier', 'Bond gained']}
+            rows={page.gifts.map((g) => [
+              g.name,
+              g.category,
+              GIFT_PREFERENCE_LABEL[g.preference],
+              `${g.multiplier}%`,
+              `+${g.bond_gained.toLocaleString('en-GB')}`,
+            ])}
+          />
+        </Section>
+      )}
+
       {a.traits.length > 0 && (
         <Section title="Traits">
           <dl className="space-y-3">
@@ -299,6 +393,23 @@ export function BuddyDetail({ page }: { page: BuddyPage }) {
           ]}
         />
       </Section>
+
+      {page.pairings.length > 0 && (
+        <Section title={`Best adventurers for ${b.name}`}>
+          <BuddyPairingSummary name={b.name} pairings={page.pairings} />
+          <DataTable
+            caption={`Adventurers that suit ${b.name} and why`}
+            headers={['Adventurer', 'Weapon', 'Rating', 'Trigger', 'Why']}
+            rows={page.pairings.map((p) => [
+              p.name,
+              weaponTypeName(p.weapon_type),
+              PAIRING_RATING_LABEL[p.rating],
+              p.trigger,
+              p.reason,
+            ])}
+          />
+        </Section>
+      )}
 
       {page.skills.length > 0 && (
         <Section title={`${b.name} skills`}>

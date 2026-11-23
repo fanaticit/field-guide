@@ -140,6 +140,19 @@ export interface AdventurerPage {
   };
   skills: { name: string; skill_type: string | null; description: string | null }[];
   defaultBuddy: LinkRef | null;
+  /** Bond gifts, highest bond first */
+  gifts: AdventurerGift[];
+}
+
+export interface AdventurerGift {
+  name: string;
+  category: string | null;
+  description: string | null;
+  icon: string | null;
+  preference: 'favourite' | 'neutral' | 'disliked';
+  /** percent, e.g. 150 */
+  multiplier: number;
+  bond_gained: number;
 }
 
 export interface BuddyPage {
@@ -161,6 +174,22 @@ export interface BuddyPage {
   };
   skills: { kind: string; name: string; description: string | null }[];
   defaultOf: LinkRef | null;
+  /** Adventurers (and Fated Adventurer weapon styles) that suit this buddy, best first */
+  pairings: BuddyPairingRef[];
+}
+
+export interface BuddyPairingRef {
+  /** Adventurer name or e.g. 'Fated Adventurer (Bow)' */
+  name: string;
+  /** Adventurer page slug (null for Fated styles) */
+  slug: string | null;
+  kind: 'adventurer' | 'fated';
+  weapon_type: string | null;
+  element: string | null;
+  rating: 'best' | 'good' | 'general' | 'trigger_only';
+  trigger: string | null;
+  trigger_skills: string[];
+  reason: string | null;
 }
 
 export interface VisagePage {
@@ -608,9 +637,10 @@ export class PublicDataSource {
     const a = await this.findBySlug('adventurers', slug);
     if (!a) return null;
     const id = String(a.id);
-    const [skills, buddies] = await Promise.all([
+    const [skills, buddies, gifts] = await Promise.all([
       this.rows('adventurer_skills', { eq: [['adventurer_id', id]] }),
       this.listed('buddies'),
+      this.adventurerGifts(id),
     ]);
     const buddyRow = buddies.rows.find((b) => String(b.default_of_adventurer_id ?? '') === id)
       ?? buddies.rows.find((b) => str(a.default_buddy) && String(b.name).toLowerCase() === String(a.default_buddy).toLowerCase());
@@ -641,7 +671,38 @@ export class PublicDataSource {
         .sort((x, y) => (num(x.sort_order) ?? 0) - (num(y.sort_order) ?? 0))
         .map((s) => ({ name: String(s.name ?? ''), skill_type: str(s.skill_type), description: str(s.description) })),
       defaultBuddy: buddyRow ? { name: String(buddyRow.name), slug: buddies.slugs.get(String(buddyRow.id))! } : null,
+      gifts,
     };
+  }
+
+  /** Bond gifts for one adventurer. Empty (not an error) if the gift tables are not in the database yet. */
+  private async adventurerGifts(adventurerId: string): Promise<AdventurerGift[]> {
+    try {
+      const rows = await this.rows('adventurer_gift_preferences', {
+        select: 'adventurer_id,gift_id,preference,multiplier,bond_gained,gift:adventurer_gift_items(name,category,description,icon,sort_order)',
+        eq: [['adventurer_id', adventurerId]],
+      });
+      return rows
+        .map((r) => ({ r, g: (r.gift ?? null) as Row | null }))
+        .filter(({ g }) => g && g.name)
+        .map(({ r, g }) => ({
+          gift: {
+            name: String(g!.name),
+            category: str(g!.category),
+            description: str(g!.description),
+            icon: str(g!.icon),
+            preference: (str(r.preference) ?? 'neutral') as AdventurerGift['preference'],
+            multiplier: num(r.multiplier) ?? 100,
+            bond_gained: num(r.bond_gained) ?? 0,
+          },
+          order: num(g!.sort_order) ?? 0,
+        }))
+        .sort((a, b) => b.gift.bond_gained - a.gift.bond_gained || a.order - b.order)
+        .map(({ gift }) => gift);
+    } catch (err) {
+      console.warn(`[publicData] adventurer gifts unavailable: ${(err as Error).message}`);
+      return [];
+    }
   }
 
   async buddyPage(slug: string): Promise<BuddyPage | null> {
@@ -671,7 +732,42 @@ export class PublicDataSource {
         .sort((x, y) => (num(x.sort_order) ?? 0) - (num(y.sort_order) ?? 0))
         .map((s) => ({ kind: String(s.kind ?? 'skill'), name: String(s.name ?? ''), description: str(s.description) })),
       defaultOf: await this.ref('adventurers', str(b.default_of_adventurer_id)),
+      pairings: await this.buddyPairings(id),
     };
+  }
+
+  /** Adventurer pairings for one buddy. Empty (not an error) if the pairing table is not in the database yet. */
+  private async buddyPairings(buddyId: string): Promise<BuddyPairingRef[]> {
+    try {
+      const [rows, adventurers] = await Promise.all([
+        this.rows('buddy_pairings', { eq: [['buddy_id', buddyId]] }),
+        this.listed('adventurers'),
+      ]);
+      const names = new Map(adventurers.rows.map((r) => [String(r.id), String(r.name)]));
+      return rows
+        .slice()
+        .sort((x, y) => (num(x.sort_order) ?? 0) - (num(y.sort_order) ?? 0))
+        .flatMap((r): BuddyPairingRef[] => {
+          const kind = str(r.kind) === 'fated' ? 'fated' : 'adventurer';
+          const advId = str(r.adventurer_id);
+          // Named adventurers that are not public (spoilers) are left out
+          if (kind === 'adventurer' && (!advId || !names.has(advId))) return [];
+          return [{
+            name: kind === 'adventurer' ? names.get(advId!)! : String(r.style_name ?? 'Fated Adventurer'),
+            slug: kind === 'adventurer' ? adventurers.slugs.get(advId!) ?? null : null,
+            kind,
+            weapon_type: str(r.weapon_type),
+            element: str(r.adventurer_element),
+            rating: (str(r.rating) ?? 'general') as BuddyPairingRef['rating'],
+            trigger: str(r.trigger_type),
+            trigger_skills: arr<string>(r.trigger_skills),
+            reason: str(r.reason),
+          }];
+        });
+    } catch (err) {
+      console.warn(`[publicData] buddy pairings unavailable: ${(err as Error).message}`);
+      return [];
+    }
   }
 
   async visagePage(slug: string): Promise<VisagePage | null> {

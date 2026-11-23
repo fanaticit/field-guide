@@ -76,7 +76,7 @@ function describe(page: DetailPage): { name: string; title: string; summary: str
     case 'adventurer':
       return {
         name: page.adventurer.name,
-        title: `${page.adventurer.name} – Skills, Role & Weapon | ${GAME_NAME}`,
+        title: `${page.adventurer.name} – Skills, Gifts, Role & Weapon | ${GAME_NAME}`,
         summary: adventurerSummary(page),
         image: page.adventurer.image,
       };

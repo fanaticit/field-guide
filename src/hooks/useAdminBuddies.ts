@@ -414,3 +414,70 @@ export function useSaveBuddySkills() {
     },
   });
 }
+
+// ── Adventurer pairings ───────────────────────────────────────
+
+export type BuddyPairingRating = 'best' | 'good' | 'general' | 'trigger_only';
+
+/** One adventurer (or Fated Adventurer weapon style) that suits a buddy, and why (buddy_pairings). */
+export interface BuddyPairing {
+  buddy_id: string;
+  /** Adventurer id, or the export's Fated style id (e.g. '1-14') */
+  style_id: string;
+  /** Null for Fated Adventurer styles */
+  adventurer_id: string | null;
+  kind: 'adventurer' | 'fated';
+  /** Adventurer name or e.g. 'Fated Adventurer (Bow)' */
+  style_name: string;
+  weapon_type: string | null;
+  adventurer_element: string | null;
+  buddy_element: string | null;
+  rating: BuddyPairingRating;
+  trigger_type: string | null;
+  trigger_skills: string[];
+  bonus_links: string[];
+  element_match: boolean | null;
+  reason: string | null;
+  sort_order: number;
+}
+
+/** Adventurers that suit one buddy, best first. Empty if the pairing table is not in the database yet. */
+export function useBuddyPairings(buddyId: string | null | undefined) {
+  return useQuery({
+    queryKey: ['buddy-pairings', buddyId],
+    enabled: Boolean(buddyId),
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('buddy_pairings')
+        .select('*')
+        .eq('buddy_id', buddyId!)
+        .order('sort_order', { ascending: true });
+      if (error) throw error;
+      return (data ?? []) as BuddyPairing[];
+    },
+    staleTime: 1000 * 60 * 10,
+  });
+}
+
+/** Every buddy's "best" pairings in one request, keyed by buddy id (for the quick-reference icons on cards). */
+export function useAllBestBuddyPairings() {
+  return useQuery({
+    queryKey: ['buddy-pairings-best'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('buddy_pairings')
+        .select('*')
+        .eq('rating', 'best')
+        .order('sort_order', { ascending: true });
+      if (error) throw error;
+      const byBuddy = new Map<string, BuddyPairing[]>();
+      for (const p of (data ?? []) as BuddyPairing[]) {
+        const list = byBuddy.get(p.buddy_id) ?? [];
+        list.push(p);
+        byBuddy.set(p.buddy_id, list);
+      }
+      return byBuddy;
+    },
+    staleTime: 1000 * 60 * 10,
+  });
+}

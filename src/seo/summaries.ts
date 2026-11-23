@@ -55,6 +55,8 @@ export function adventurerSummary(p: AdventurerPage): string {
   ];
   if (a.weapon_type) parts.push(`${a.name} uses the ${weaponTypeName(a.weapon_type)}${a.element_specialization ? ` and specialises in ${labelOf(a.element_specialization)}` : ''}.`);
   if (p.skills.length) parts.push(`Skills: ${list(p.skills.map((s) => s.name))}.`);
+  const favourites = p.gifts.filter((g) => g.preference === 'favourite').map((g) => g.name);
+  if (favourites.length) parts.push(`Favourite gifts: ${list(favourites)}.`);
   if (a.status === 'not_in_game' && a.status_reason) parts.push(a.status_reason);
   return parts.join(' ');
 }
@@ -66,6 +68,8 @@ export function buddySummary(p: BuddyPage): string {
   ];
   if (b.core_passive) parts.push(`Core passive: ${b.core_passive}`);
   if (p.defaultOf) parts.push(`${p.defaultOf.name} starts with ${b.name}.`);
+  const best = p.pairings.filter((x) => x.rating === 'best' && x.kind === 'adventurer').map((x) => x.name);
+  if (best.length) parts.push(`Best adventurers for ${b.name}: ${list(best)}.`);
   return parts.join(' ');
 }
 
