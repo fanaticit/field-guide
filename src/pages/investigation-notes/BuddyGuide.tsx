@@ -26,8 +26,9 @@ import {
   BUDDY_MAX_TIER_LEVEL,
 } from '../../data/schemas/buddy';
 import { ADVENTURER_RARITY_CONFIG } from '../../data/schemas/adventurer';
-import { usePublicBuddies, useAllBuddySkills, useAllBestBuddyPairings } from '../../hooks/useAdminBuddies';
+import { usePublicBuddies, useAllBuddySkills, useAllTopBuddyPairings } from '../../hooks/useAdminBuddies';
 import { usePublicAdventurers } from '../../hooks/useAdminAdventurers';
+import type { BuddySkill } from '../../data/schemas/buddy';
 import { useUserBuddyCollection } from '../../hooks/useUserBuddyCollection';
 import {
   useHunterChallenges,
@@ -81,18 +82,34 @@ export default function BuddyGuide() {
     showSpoilers: Boolean(profile?.show_spoilers),
   });
   const { data: allSkills = [] } = useAllBuddySkills();
-  const { data: bestPairingsByBuddy } = useAllBestBuddyPairings();
+  const { data: topPairingsByBuddy } = useAllTopBuddyPairings();
   const { data: pairingAdventurers = [] } = usePublicAdventurers({ showSpoilers: Boolean(profile?.show_spoilers) });
-  const resolvedBestPairings = useMemo(() => {
-    const map = new Map<string, ResolvedPairing[]>();
-    if (!bestPairingsByBuddy) return map;
-    for (const [buddyId, list] of bestPairingsByBuddy) {
-      // Named adventurers first, then Fated Adventurer styles
+  /** Per buddy: its "best" pairings, or its "good" ones when it has no best (named adventurers before Fated styles). */
+  const cardPairings = useMemo(() => {
+    const map = new Map<string, { rating: 'best' | 'good'; pairings: ResolvedPairing[] }>();
+    if (!topPairingsByBuddy) return map;
+    for (const [buddyId, list] of topPairingsByBuddy) {
       const resolved = resolvePairings(list, pairingAdventurers).sort((a, b) => Number(a.kind === 'fated') - Number(b.kind === 'fated'));
-      if (resolved.length) map.set(buddyId, resolved);
+      for (const rating of ['best', 'good'] as const) {
+        const subset = resolved.filter((p) => p.rating === rating);
+        if (subset.length) {
+          map.set(buddyId, { rating, pairings: subset });
+          break;
+        }
+      }
     }
     return map;
-  }, [bestPairingsByBuddy, pairingAdventurers]);
+  }, [topPairingsByBuddy, pairingAdventurers]);
+  /** Unique skills per buddy, shown on cards that have no best/good adventurer match. */
+  const uniqueSkillsByBuddy = useMemo(() => {
+    const map = new Map<string, BuddySkill[]>();
+    for (const sk of allSkills) {
+      if (sk.kind !== 'other') continue;
+      map.set(sk.buddy_id, [...(map.get(sk.buddy_id) ?? []), sk]);
+    }
+    for (const list of map.values()) list.sort((a, b) => a.sort_order - b.sort_order);
+    return map;
+  }, [allSkills]);
 
   // Open buddy detail modal if specified in URL (?buddy=... or ?id=...)
   useEffect(() => {
@@ -499,7 +516,8 @@ export default function BuddyGuide() {
               onSetTierLevel={(lvl) => handleSetTier(buddy, lvl)}
               onAddChallenge={handleAddChallenge}
               onClick={() => setInspectedBuddy(buddy)}
-              bestPairings={resolvedBestPairings.get(buddy.id)}
+              topPairings={cardPairings.get(buddy.id)}
+              uniqueSkills={cardPairings.has(buddy.id) ? undefined : uniqueSkillsByBuddy.get(buddy.id)}
             />
           ))}
         </div>

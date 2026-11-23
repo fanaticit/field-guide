@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Cat, Sparkles, Plus, Check } from 'lucide-react';
+import { Cat, Sparkles, Plus, Check, Zap } from 'lucide-react';
 import {
   type DBBuddy,
   type BuddyCollectionEntry,
+  type BuddySkill,
   TIER_CONFIG,
   ROLE_CONFIG,
   buddyTierBorder,
@@ -24,8 +25,10 @@ interface BuddyCardProps {
   onSetTierLevel: (tierLevel: number) => void;
   onAddChallenge?: (buddy: DBBuddy, targetGoal?: number) => void;
   onClick: () => void;
-  /** Best adventurer pairings (resolved), shown as small portraits */
-  bestPairings?: ResolvedPairing[];
+  /** Best (or, failing that, good) adventurer pairings, shown as small icons */
+  topPairings?: { rating: 'best' | 'good'; pairings: ResolvedPairing[] };
+  /** Unique skills, shown when the buddy has no best/good adventurer match */
+  uniqueSkills?: BuddySkill[];
 }
 
 export default function BuddyCard({
@@ -36,7 +39,8 @@ export default function BuddyCard({
   onSetTierLevel,
   onAddChallenge,
   onClick,
-  bestPairings,
+  topPairings,
+  uniqueSkills,
 }: BuddyCardProps) {
   const navigate = useNavigate();
   const [imageError, setImageError] = useState(false);
@@ -248,7 +252,26 @@ export default function BuddyCard({
             )}
           </p>
         </div>
-        {bestPairings && bestPairings.length > 0 && <BestPairingIcons pairings={bestPairings} className="mt-2 px-0.5" />}
+        {topPairings && topPairings.pairings.length > 0 ? (
+          <BestPairingIcons pairings={topPairings.pairings} rating={topPairings.rating} className="mt-2 px-0.5" />
+        ) : (
+          uniqueSkills && uniqueSkills.length > 0 && (
+            <div className="mt-2 rounded-xl bg-mh-slate-950/70 p-2.5 border border-mh-slate-800/70 space-y-1 w-full min-w-0 overflow-hidden">
+              <div className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-mh-slate-400">
+                <Zap size={11} className="text-mh-gold-400 shrink-0" />
+                <span>{uniqueSkills.length > 1 ? 'Unique Skills' : 'Unique Skill'}</span>
+              </div>
+              <p className="text-xs text-mh-slate-200 font-semibold truncate" title={uniqueSkills.map((s) => s.name).join(' · ')}>
+                {uniqueSkills.map((s) => s.name).join(' · ')}
+              </p>
+              {uniqueSkills[0].description && (
+                <p className="text-xs text-mh-slate-400 line-clamp-2 leading-relaxed break-words" title={uniqueSkills[0].description}>
+                  {uniqueSkills[0].description}
+                </p>
+              )}
+            </div>
+          )
+        )}
       </div>
     </div>
   );

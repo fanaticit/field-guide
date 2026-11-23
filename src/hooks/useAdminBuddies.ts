@@ -459,15 +459,15 @@ export function useBuddyPairings(buddyId: string | null | undefined) {
   });
 }
 
-/** Every buddy's "best" pairings in one request, keyed by buddy id (for the quick-reference icons on cards). */
-export function useAllBestBuddyPairings() {
+/** Every buddy's "best" and "good" pairings in one request, keyed by buddy id (for the quick-reference icons on cards). */
+export function useAllTopBuddyPairings() {
   return useQuery({
-    queryKey: ['buddy-pairings-best'],
+    queryKey: ['buddy-pairings-top'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('buddy_pairings')
         .select('*')
-        .eq('rating', 'best')
+        .in('rating', ['best', 'good'])
         .order('sort_order', { ascending: true });
       if (error) throw error;
       const byBuddy = new Map<string, BuddyPairing[]>();

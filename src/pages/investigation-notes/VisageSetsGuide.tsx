@@ -56,7 +56,7 @@ export default function VisageSetsGuide() {
   const navigate = useNavigate();
   const builder = useVisageBuilderStore();
 
-  const [viewMode, setViewMode] = useState<'set' | 'monster'>('set');
+  const [viewMode, setViewMode] = useState<'set' | 'monster'>('monster'); // By Monster is the default view
   const [selectedSetId, setSelectedSetId] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
   const [filterMode, setFilterMode] = useState<'all' | 'complete' | 'incomplete'>('all');

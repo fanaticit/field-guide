@@ -212,17 +212,49 @@ export default function BuddyPairings({ buddyId, open }: { buddyId: string; open
   );
 }
 
-/** A row of "best with" portraits for cards. Pass pairings already resolved with resolvePairings(). */
-export function BestPairingIcons({ pairings, max = 6, className }: { pairings: ResolvedPairing[]; max?: number; className?: string }) {
+/** Small weapon-icon badge used on cards for a Fated Adventurer style. */
+function FatedWeaponBadge({ pairing }: { pairing: ResolvedPairing }) {
+  const icon = pairing.weapon_type ? WEAPON_ICON_MAP[pairing.weapon_type] : null;
+  return (
+    <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-[var(--border-rarity-current)] bg-[var(--bg-rarity-current)] p-0.5">
+      {icon ? (
+        <img src={icon} alt={pairing.style_name} draggable={false} className="h-full w-full object-contain" />
+      ) : (
+        <User size={12} className="text-[var(--rarity-current)]" />
+      )}
+    </span>
+  );
+}
+
+/**
+ * A row of top-pairing icons for cards: adventurer portraits, and the weapon icon for
+ * Fated Adventurer styles. Pass pairings already resolved with resolvePairings().
+ */
+export function BestPairingIcons({
+  pairings,
+  rating = 'best',
+  max = 6,
+  className,
+}: {
+  pairings: ResolvedPairing[];
+  rating?: 'best' | 'good';
+  max?: number;
+  className?: string;
+}) {
   if (!pairings.length) return null;
   const extra = pairings.length - max;
   return (
-    <div className={cn('rarity-theme-superior flex items-center gap-1.5 min-w-0', className)} aria-label="Best adventurer pairings">
-      <span className="text-[10px] font-bold uppercase tracking-wider text-mh-slate-500 shrink-0">Best with</span>
+    <div
+      className={cn(rating === 'best' ? 'rarity-theme-superior' : 'rarity-theme-epic', 'flex items-center gap-1.5 min-w-0', className)}
+      aria-label={`${rating === 'best' ? 'Best' : 'Good'} adventurer pairings`}
+    >
+      <span className="text-[10px] font-bold uppercase tracking-wider text-mh-slate-500 shrink-0">
+        {rating === 'best' ? 'Best with' : 'Good with'}
+      </span>
       <span className="flex flex-wrap items-center gap-1">
         {pairings.slice(0, max).map((p) => (
           <span key={p.style_id} title={p.kind === 'fated' ? p.style_name : p.name}>
-            <PairingAvatar pairing={p} size="sm" />
+            {p.kind === 'fated' ? <FatedWeaponBadge pairing={p} /> : <PairingAvatar pairing={p} size="sm" />}
           </span>
         ))}
         {extra > 0 && <span className="text-[10px] font-bold text-mh-slate-400">+{extra}</span>}
