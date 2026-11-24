@@ -29,6 +29,14 @@
 /armory/planner/:buildId  /__spa-fallback   200
 /gallery/set/:buildId     /__spa-fallback   200
 /reset-password           /__spa-fallback   200
+/armory/armour_old        /__spa-fallback   200
+/armory/armour_old/       /__spa-fallback   200
+/armory/armour_v2         /__spa-fallback   200
+/armory/armour_v2/        /__spa-fallback   200
+/armory/armour_v3         /__spa-fallback   200
+/armory/armour_v3/        /__spa-fallback   200
+/armory/armour_v4         /__spa-fallback   200
+/armory/armour_v4/        /__spa-fallback   200
 
 # Any other unknown URL gets 404.html (a copy of the app shell, made at the
 # end of the build), so it shows the in-app "Page not found" page with a real

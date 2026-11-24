@@ -614,7 +614,7 @@ export function EquipmentSelector() {
         <div className="flex items-center gap-2 flex-wrap">
           <button
             type="button"
-            onClick={() => navigate('/armory/armour')}
+            onClick={() => navigate('/armory/armour', { state: { fromPlanner: true } })}
             className="btn-mho-panel !px-3 !py-1.5 !text-xs !border-[var(--theme-accent)] !text-[var(--theme-accent)] !bg-[color-mix(in_srgb,var(--theme-accent)_15%,transparent)] hover:!text-white cursor-pointer"
             title="Browse armour sets and send one back to this build"
           >
@@ -769,7 +769,7 @@ export function EquipmentSelector() {
             or{' '}
             <button
               type="button"
-              onClick={() => navigate('/armory/armour')}
+              onClick={() => navigate('/armory/armour', { state: { fromPlanner: true } })}
               className="text-[var(--theme-accent)] hover:underline font-medium cursor-pointer"
             >
               Make an Armour Set

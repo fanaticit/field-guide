@@ -24,6 +24,13 @@ export default [
     route('armory/planner', 'routes/planner.tsx', { id: 'planner' }),
     route('armory/planner/:buildId', 'routes/planner.tsx', { id: 'planner-build' }),
     route('armory/armour', 'routes/armour.tsx'),
+    // The previous armour page, kept for hunters who prefer it (browser-only)
+    route('armory/armour_old', 'routes/armour-old.tsx'),
+    // Old preview link of the new armour page → /armory/armour
+    route('armory/armour_v2', 'routes/armour-v2.tsx'),
+    // Other armour layouts explored during the redesign (browser-only, not in the sitemap)
+    route('armory/armour_v3', 'routes/armour-v3.tsx'),
+    route('armory/armour_v4', 'routes/armour-v4.tsx'),
 
     // ── 2. Gallery ──
     route('gallery', 'routes/gallery.tsx'),

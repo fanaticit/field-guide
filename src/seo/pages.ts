@@ -74,9 +74,9 @@ export const PAGES = {
     title: 'Armour Sets & Skills – Monster Hunter Outlanders',
     heading: 'Armour',
     description:
-      'Every Monster Hunter Outlanders armour set by monster, with each piece’s defence, skills and set bonuses at any rank. Filter by skill to plan combinations.',
+      'Every Monster Hunter Outlanders armour set by monster, with each piece’s skills, the rarity each skill level unlocks, and set bonuses. Filter by skill to plan combinations.',
     intro: [
-      'Search for a monster or skill, filter by the skills you want, and pin pieces into an example build to see how the skills add up.',
+      'Set the rarity your armour is at, pick the skills you want, and see which pieces have them. Build an example set to see how the skills add up, what is capped, and what the next upgrade adds.',
     ],
     related: [REFERENCE_LINKS.monsters],
     section: 'Armory',

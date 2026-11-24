@@ -1,8 +1,9 @@
-// Route module for an interactive tool page.
+// Route module for the armour page (/armory/armour).
 // The tool itself needs the visitor's own data, so it only renders in the
 // browser. At build time the page's summary (ToolFallback) is pre-rendered
 // instead, so search engines and AI crawlers can read what the page is.
-import ArmourGuide from '../pages/investigation-notes/ArmourGuide';
+// The previous version of this page lives at /armory/armour_old.
+import ArmourExplorer from '../features/armour-lab/ArmourV2';
 import ToolFallback from '../components/seo/ToolFallback';
 import { PAGES } from '../seo/pages';
 import { buildMeta } from '../seo/meta';
@@ -24,5 +25,5 @@ export function HydrateFallback() {
 }
 
 export default function Route() {
-  return <div className="px-1 sm:px-6 pb-6 pt-2 sm:pt-3 lg:px-8 lg:pb-8 lg:pt-4 min-h-full"><ArmourGuide /></div>;
+  return <ArmourExplorer />;
 }
