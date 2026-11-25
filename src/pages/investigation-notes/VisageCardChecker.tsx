@@ -5,6 +5,7 @@
 
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { Link } from 'react-router';
+import PollPrompt from '../../components/polls/PollPrompt';
 import {
   ArrowLeft,
   Sparkles,
@@ -908,7 +909,7 @@ export default function VisageCardChecker() {
         className={cn(
           'sticky top-2 sm:top-3 z-30 transition-all duration-300 border border-white/10 shadow-2xl backdrop-blur-md',
           isScrolled
-            ? 'rounded-xl sm:rounded-2xl px-3 py-1.5 sm:py-2 bg-mh-slate-900/50 flex items-center justify-between gap-2 sm:gap-3'
+            ? 'rounded-xl sm:rounded-2xl px-3 py-1.5 sm:py-2 bg-mh-slate-900/50 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 sm:gap-3'
             : 'mho-panel mho-card-rarity rounded-2xl p-3 sm:p-4 flex flex-wrap items-center justify-between gap-3 bg-mh-slate-900/95',
         )}
       >
@@ -941,6 +942,12 @@ export default function VisageCardChecker() {
               </span>
             </div>
           </div>
+        )}
+
+        {/* Quick poll: in line with the floating header's buttons once the visitor scrolls.
+            Phones are too narrow for everything on one line, so there it sits in a slim row underneath. */}
+        {isScrolled && (
+          <PollPrompt pollId="visage-card-save" className="order-last basis-full sm:order-none sm:basis-auto min-w-0 sm:flex-1" />
         )}
 
         {/* Live Card Score Rating Badge & Clear Button */}

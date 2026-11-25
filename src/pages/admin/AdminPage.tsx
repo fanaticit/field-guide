@@ -3,7 +3,7 @@
 // Only renders for admins. Shows a sub-navigation and the
 // active admin section.
 // ─────────────────────────────────────────────────────────────
-import { Shield, Bug, Sparkles, Layers, Users, FileText, SquareLibrary, Cat, UserCheck, Sword, SlidersHorizontal, MessageSquare } from 'lucide-react';
+import { Shield, Bug, Sparkles, Layers, Users, FileText, SquareLibrary, Cat, UserCheck, Sword, SlidersHorizontal, MessageSquare, Vote } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
 import { type AdminSubPage } from '../../store/uiStore';
@@ -20,6 +20,7 @@ import VisageManager from './visages/VisageManager';
 import BuddyManager from './buddies/BuddyManager';
 import AdventurerManager from './adventurers/AdventurerManager';
 import UserManager from './users/UserManager';
+import PollManager from './polls/PollManager';
 
 interface AdminTab {
   id: AdminSubPage;
@@ -39,6 +40,7 @@ const TABS: AdminTab[] = [
   { id: 'buddies', label: 'Buddies (MHO)', icon: Cat, description: 'Manage Outlanders Companion Buddies' },
   { id: 'content', label: 'Content', icon: FileText, description: 'Moderate community content' },
   { id: 'users', label: 'Users', icon: Users, description: 'User list, total count and last login' },
+  { id: 'polls', label: 'Polls', icon: Vote, description: 'Results of the polls running on the site' },
   { id: 'other', label: 'Other', icon: SlidersHorizontal, description: 'Manage weapon types game availability & settings' },
 ];
 
@@ -117,6 +119,7 @@ export default function AdminPage() {
         {adminSubPage === 'buddies' && <BuddyManager />}
         {adminSubPage === 'content' && <ComingSoon label="Content Moderation" />}
         {adminSubPage === 'users' && <UserManager />}
+        {adminSubPage === 'polls' && <PollManager />}
         {adminSubPage === 'other' && <OtherManager />}
       </div>
     </div>
