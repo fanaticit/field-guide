@@ -64,17 +64,19 @@ export interface TargetTone {
   cell: string;
   /** Solid bar colour */
   bar: string;
+  /** The same colour as a hex value (for the exported image) */
+  hex: string;
 }
 
 const TARGET_TONES: TargetTone[] = [
-  { dot: 'bg-orange-400', chip: 'border-orange-400/70 bg-orange-500/15', pill: 'bg-orange-500/25 text-orange-100', cell: 'bg-orange-500/[0.07]', bar: 'bg-orange-400' },
-  { dot: 'bg-cyan-400', chip: 'border-cyan-400/70 bg-cyan-500/15', pill: 'bg-cyan-500/25 text-cyan-100', cell: 'bg-cyan-500/[0.07]', bar: 'bg-cyan-400' },
-  { dot: 'bg-lime-400', chip: 'border-lime-400/70 bg-lime-500/15', pill: 'bg-lime-500/25 text-lime-100', cell: 'bg-lime-500/[0.07]', bar: 'bg-lime-400' },
-  { dot: 'bg-fuchsia-400', chip: 'border-fuchsia-400/70 bg-fuchsia-500/15', pill: 'bg-fuchsia-500/25 text-fuchsia-100', cell: 'bg-fuchsia-500/[0.07]', bar: 'bg-fuchsia-400' },
-  { dot: 'bg-yellow-300', chip: 'border-yellow-300/70 bg-yellow-400/15', pill: 'bg-yellow-400/25 text-yellow-100', cell: 'bg-yellow-400/[0.07]', bar: 'bg-yellow-300' },
-  { dot: 'bg-rose-400', chip: 'border-rose-400/70 bg-rose-500/15', pill: 'bg-rose-500/25 text-rose-100', cell: 'bg-rose-500/[0.07]', bar: 'bg-rose-400' },
-  { dot: 'bg-sky-400', chip: 'border-sky-400/70 bg-sky-500/15', pill: 'bg-sky-500/25 text-sky-100', cell: 'bg-sky-500/[0.07]', bar: 'bg-sky-400' },
-  { dot: 'bg-emerald-400', chip: 'border-emerald-400/70 bg-emerald-500/15', pill: 'bg-emerald-500/25 text-emerald-100', cell: 'bg-emerald-500/[0.07]', bar: 'bg-emerald-400' },
+  { dot: 'bg-orange-400', chip: 'border-orange-400/70 bg-orange-500/15', pill: 'bg-orange-500/25 text-orange-100', cell: 'bg-orange-500/[0.07]', bar: 'bg-orange-400', hex: '#fb923c' },
+  { dot: 'bg-cyan-400', chip: 'border-cyan-400/70 bg-cyan-500/15', pill: 'bg-cyan-500/25 text-cyan-100', cell: 'bg-cyan-500/[0.07]', bar: 'bg-cyan-400', hex: '#22d3ee' },
+  { dot: 'bg-lime-400', chip: 'border-lime-400/70 bg-lime-500/15', pill: 'bg-lime-500/25 text-lime-100', cell: 'bg-lime-500/[0.07]', bar: 'bg-lime-400', hex: '#a3e635' },
+  { dot: 'bg-fuchsia-400', chip: 'border-fuchsia-400/70 bg-fuchsia-500/15', pill: 'bg-fuchsia-500/25 text-fuchsia-100', cell: 'bg-fuchsia-500/[0.07]', bar: 'bg-fuchsia-400', hex: '#e879f9' },
+  { dot: 'bg-yellow-300', chip: 'border-yellow-300/70 bg-yellow-400/15', pill: 'bg-yellow-400/25 text-yellow-100', cell: 'bg-yellow-400/[0.07]', bar: 'bg-yellow-300', hex: '#fde047' },
+  { dot: 'bg-rose-400', chip: 'border-rose-400/70 bg-rose-500/15', pill: 'bg-rose-500/25 text-rose-100', cell: 'bg-rose-500/[0.07]', bar: 'bg-rose-400', hex: '#fb7185' },
+  { dot: 'bg-sky-400', chip: 'border-sky-400/70 bg-sky-500/15', pill: 'bg-sky-500/25 text-sky-100', cell: 'bg-sky-500/[0.07]', bar: 'bg-sky-400', hex: '#38bdf8' },
+  { dot: 'bg-emerald-400', chip: 'border-emerald-400/70 bg-emerald-500/15', pill: 'bg-emerald-500/25 text-emerald-100', cell: 'bg-emerald-500/[0.07]', bar: 'bg-emerald-400', hex: '#34d399' },
 ];
 
 export function targetTones(targets: LabTarget[]): Map<string, TargetTone> {

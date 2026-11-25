@@ -18,6 +18,8 @@
 /investigation-notes/*              /challenges                301
 /community-hub                      /armory                    301
 /home/spoilers                      /spoilers                  301
+/armour                             /armory/armour/            301
+/armour/                            /armory/armour/            301
 /admin                              /admin/feedback            302
 
 # ── Browser-only pages (not pre-rendered) load the app shell ──

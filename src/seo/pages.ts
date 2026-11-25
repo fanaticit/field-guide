@@ -71,7 +71,7 @@ export const PAGES = {
   },
   armour: {
     path: '/armory/armour',
-    title: 'Armour Sets & Skills – Monster Hunter Outlanders',
+    title: 'Armour Sets & Skill Builder | Monster Hunter Outlanders',
     heading: 'Armour',
     description:
       'Every Monster Hunter Outlanders armour set by monster, with each piece’s skills, the rarity each skill level unlocks, and set bonuses. Filter by skill to plan combinations.',

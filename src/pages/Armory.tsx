@@ -55,7 +55,8 @@ export default function Armory() {
   const [searchQuery, setSearchQuery] = useState('');
   const [roleFilter, setRoleFilter] = useState<'all' | 'main' | 'support'>('all');
   const [selectedClass, setSelectedClass] = useState<string>('all');
-  const [selectedWeaponType, setSelectedWeaponType] = useState<string>('all');
+  // ?weapon=long_sword preselects the weapon type (used by links from the Armour guide)
+  const [selectedWeaponType, setSelectedWeaponType] = useState<string>(() => searchParams.get('weapon') || 'all');
   const [selectedInk, setSelectedInk] = useState<string>('all');
   const [selectedAdventurer, setSelectedAdventurer] = useState<string>(() => urlAdventurer || 'all');
   const [sortBy, setSortBy] = useState<'upvotes' | 'newest' | 'oldest' | 'title'>('upvotes');

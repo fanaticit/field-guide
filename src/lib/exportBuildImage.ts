@@ -49,7 +49,7 @@ export interface ExportBuildData {
 }
 
 // ── Palette ──────────────────────────────────────────────
-const C = {
+export const C = {
   bgTop: '#161a28',
   bgBottom: '#0b0d14',
   panel: 'rgba(255,255,255,0.035)',
@@ -64,13 +64,13 @@ const C = {
 };
 
 const W = 1200;
-const PAD = 44;
-const SCALE = 2;
-const DISPLAY = "'Cinzel', serif";
-const SANS = "'Inter', system-ui, sans-serif";
+export const PAD = 44;
+export const SCALE = 2;
+export const DISPLAY = "'Cinzel', serif";
+export const SANS = "'Inter', system-ui, sans-serif";
 
 // ── Helpers ──────────────────────────────────────────────
-function loadImage(src?: string | null): Promise<HTMLImageElement | null> {
+export function loadImage(src?: string | null): Promise<HTMLImageElement | null> {
   if (!src) return Promise.resolve(null);
   return new Promise((resolve) => {
     const img = new Image();
@@ -84,12 +84,12 @@ function loadImage(src?: string | null): Promise<HTMLImageElement | null> {
   });
 }
 
-function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+export function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
   ctx.beginPath();
   ctx.roundRect(x, y, w, h, r);
 }
 
-function panel(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, opts: { fill?: string; stroke?: string; r?: number } = {}) {
+export function panel(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, opts: { fill?: string; stroke?: string; r?: number } = {}) {
   roundRect(ctx, x, y, w, h, opts.r ?? 12);
   ctx.fillStyle = opts.fill ?? C.panel;
   ctx.fill();
@@ -99,7 +99,7 @@ function panel(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h
 }
 
 /** Draws an image inside a box, keeping its aspect ratio (contain) or filling the box (cover) */
-function drawImage(ctx: CanvasRenderingContext2D, img: HTMLImageElement | null, x: number, y: number, w: number, h: number, mode: 'contain' | 'cover' = 'contain', radius = 0) {
+export function drawImage(ctx: CanvasRenderingContext2D, img: HTMLImageElement | null, x: number, y: number, w: number, h: number, mode: 'contain' | 'cover' = 'contain', radius = 0) {
   if (!img) return false;
   const ir = img.naturalWidth / img.naturalHeight;
   const br = w / h;
@@ -117,7 +117,7 @@ function drawImage(ctx: CanvasRenderingContext2D, img: HTMLImageElement | null, 
   return true;
 }
 
-function wrapText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] {
+export function wrapText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] {
   const lines: string[] = [];
   for (const para of text.split(/\r?\n/)) {
     const words = para.split(/\s+/).filter(Boolean);
@@ -133,18 +133,18 @@ function wrapText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number)
   return lines;
 }
 
-function ellipsize(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string {
+export function ellipsize(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string {
   if (ctx.measureText(text).width <= maxWidth) return text;
   let t = text;
   while (t.length > 1 && ctx.measureText(t + '…').width > maxWidth) t = t.slice(0, -1);
   return t.trimEnd() + '…';
 }
 
-function font(weight: number, size: number, family = SANS) {
+export function font(weight: number, size: number, family = SANS) {
   return `${weight} ${size}px ${family}`;
 }
 
-function sectionHeading(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, width: number) {
+export function sectionHeading(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, width: number) {
   ctx.font = font(700, 15, DISPLAY);
   ctx.fillStyle = C.gold;
   ctx.textBaseline = 'alphabetic';
@@ -160,7 +160,7 @@ function sectionHeading(ctx: CanvasRenderingContext2D, text: string, x: number, 
   return y + 30;
 }
 
-function emptyTile(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number) {
+export function emptyTile(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number) {
   ctx.save();
   roundRect(ctx, x, y, w, h, 10);
   ctx.setLineDash([4, 4]);
@@ -203,9 +203,11 @@ function solid(rgba: string) {
 }
 export { solid as solidInkColor };
 
-// ── Renderer ─────────────────────────────────────────────
-export async function renderBuildImage(data: ExportBuildData): Promise<HTMLCanvasElement> {
-  // Make sure the site fonts are ready, or the canvas falls back to defaults
+// ── Shared by every exported image (build planner, armour) ──
+export const SITE_ICON = '/images/ui/field-guide-icon-removebg-preview.png';
+
+/** Make sure the site fonts are ready, or the canvas falls back to defaults */
+export async function loadSiteFonts() {
   try {
     await Promise.all([
       document.fonts.load(font(700, 40, DISPLAY)),
@@ -214,6 +216,80 @@ export async function renderBuildImage(data: ExportBuildData): Promise<HTMLCanva
       document.fonts.load(font(700, 16)),
     ]);
   } catch { /* ignore */ }
+}
+
+/**
+ * The site footer: logo, "MHFG.Quest", the date and an optional link.
+ * Draws from `top` and returns the full image height to crop to.
+ */
+export function drawSiteFooter(
+  ctx: CanvasRenderingContext2D,
+  top: number,
+  opts: { width: number; siteIcon: HTMLImageElement | null; generatedOn: Date; url?: string | null },
+): number {
+  const width = opts.width;
+  ctx.strokeStyle = 'rgba(255,215,0,0.25)';
+  ctx.beginPath();
+  ctx.moveTo(PAD, top);
+  ctx.lineTo(width - PAD, top);
+  ctx.stroke();
+
+  const fy = top + 22;
+  const iconSize = 44;
+  drawImage(ctx, opts.siteIcon, PAD, fy, iconSize, iconSize);
+  ctx.font = font(700, 24, DISPLAY);
+  ctx.fillStyle = C.gold;
+  ctx.fillText('MHFG.Quest', PAD + iconSize + 14, fy + 26);
+  ctx.font = font(500, 12);
+  ctx.fillStyle = C.textDim;
+  ctx.fillText('Monster Hunter Field Guide', PAD + iconSize + 14, fy + 43);
+
+  const dateStr = opts.generatedOn.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  ctx.textAlign = 'right';
+  ctx.font = font(500, 13);
+  ctx.fillStyle = C.textDim;
+  ctx.fillText(`Generated on MHFG.Quest · ${dateStr}`, width - PAD, fy + 24);
+  if (opts.url) {
+    ctx.font = font(600, 12);
+    ctx.fillStyle = C.goldSoft;
+    ctx.fillText(opts.url, width - PAD, fy + 43);
+  }
+  ctx.textAlign = 'left';
+
+  return fy + iconSize + PAD - 6;
+}
+
+/** Crops the tall scratch canvas to `height` and paints the background and gold frame behind it */
+export function finishImage(scratch: HTMLCanvasElement, width: number, height: number): HTMLCanvasElement {
+  const out = document.createElement('canvas');
+  out.width = width * SCALE;
+  out.height = height * SCALE;
+  const o = out.getContext('2d')!;
+  o.drawImage(scratch, 0, 0);
+  o.scale(SCALE, SCALE);
+  o.globalCompositeOperation = 'destination-over';
+  // Gold glow at the top
+  const glow = o.createRadialGradient(width * 0.25, 0, 0, width * 0.25, 0, 700);
+  glow.addColorStop(0, 'rgba(255,215,0,0.10)');
+  glow.addColorStop(1, 'rgba(255,215,0,0)');
+  o.fillStyle = glow;
+  o.fillRect(0, 0, width, height);
+  const bg = o.createLinearGradient(0, 0, 0, height);
+  bg.addColorStop(0, C.bgTop);
+  bg.addColorStop(1, C.bgBottom);
+  o.fillStyle = bg;
+  o.fillRect(0, 0, width, height);
+  // Thin gold frame
+  o.globalCompositeOperation = 'source-over';
+  o.strokeStyle = 'rgba(255,215,0,0.35)';
+  o.lineWidth = 2;
+  o.strokeRect(1, 1, width - 2, height - 2);
+  return out;
+}
+
+// ── Renderer ─────────────────────────────────────────────
+export async function renderBuildImage(data: ExportBuildData): Promise<HTMLCanvasElement> {
+  await loadSiteFonts();
 
   const [
     advImg, roleImg, wtImg, buddyImg, weaponImg, coreImg, coreInkImg, siteIcon, ...rest
@@ -225,7 +301,7 @@ export async function renderBuildImage(data: ExportBuildData): Promise<HTMLCanva
     loadImage(data.weapon?.image),
     loadImage(data.coreVisage?.icon),
     loadImage(data.coreVisage?.ink?.icon),
-    loadImage('/images/ui/field-guide-icon-removebg-preview.png'),
+    loadImage(SITE_ICON),
     ...data.armour.map((a) => loadImage(a.icon)),
     ...data.supportVisages.map((v) => loadImage(v?.ink?.icon)),
     ...data.inkSets.map((s) => loadImage(s.ink.icon)),
@@ -529,61 +605,13 @@ export async function renderBuildImage(data: ExportBuildData): Promise<HTMLCanva
   });
 
   // ── Footer ────────────────────────────────────────────
-  const footerTop = Math.max(ly, ry) + 32;
-  ctx.strokeStyle = 'rgba(255,215,0,0.25)';
-  ctx.beginPath();
-  ctx.moveTo(PAD, footerTop);
-  ctx.lineTo(W - PAD, footerTop);
-  ctx.stroke();
+  const H = drawSiteFooter(ctx, Math.max(ly, ry) + 32, {
+    width: W,
+    siteIcon,
+    generatedOn: data.generatedOn,
+    url: data.buildUrl,
+  });
 
-  const fy = footerTop + 22;
-  const iconSize = 44;
-  drawImage(ctx, siteIcon, PAD, fy, iconSize, iconSize);
-  ctx.font = font(700, 24, DISPLAY);
-  ctx.fillStyle = C.gold;
-  ctx.fillText('MHFG.Quest', PAD + iconSize + 14, fy + 26);
-  ctx.font = font(500, 12);
-  ctx.fillStyle = C.textDim;
-  ctx.fillText('Monster Hunter Field Guide', PAD + iconSize + 14, fy + 43);
-
-  const dateStr = data.generatedOn.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-  ctx.textAlign = 'right';
-  ctx.font = font(500, 13);
-  ctx.fillStyle = C.textDim;
-  ctx.fillText(`Generated on MHFG.Quest · ${dateStr}`, W - PAD, fy + 24);
-  if (data.buildUrl) {
-    ctx.font = font(600, 12);
-    ctx.fillStyle = C.goldSoft;
-    ctx.fillText(data.buildUrl, W - PAD, fy + 43);
-  }
-  ctx.textAlign = 'left';
-
-  const H = fy + iconSize + PAD - 6;
-
-  // ── Crop and paint the background behind everything ──
-  const out = document.createElement('canvas');
-  out.width = W * SCALE;
-  out.height = H * SCALE;
-  const o = out.getContext('2d')!;
-  o.drawImage(scratch, 0, 0);
-  o.scale(SCALE, SCALE);
-  o.globalCompositeOperation = 'destination-over';
-  // Gold glow at the top
-  const glow = o.createRadialGradient(W * 0.25, 0, 0, W * 0.25, 0, 700);
-  glow.addColorStop(0, 'rgba(255,215,0,0.10)');
-  glow.addColorStop(1, 'rgba(255,215,0,0)');
-  o.fillStyle = glow;
-  o.fillRect(0, 0, W, H);
-  const bg = o.createLinearGradient(0, 0, 0, H);
-  bg.addColorStop(0, C.bgTop);
-  bg.addColorStop(1, C.bgBottom);
-  o.fillStyle = bg;
-  o.fillRect(0, 0, W, H);
-  // Thin gold frame
-  o.globalCompositeOperation = 'source-over';
-  o.strokeStyle = 'rgba(255,215,0,0.35)';
-  o.lineWidth = 2;
-  o.strokeRect(1, 1, W - 2, H - 2);
-
+  const out = finishImage(scratch, W, H);
   return out;
 }

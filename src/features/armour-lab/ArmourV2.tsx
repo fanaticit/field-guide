@@ -29,6 +29,7 @@ import {
 } from './logic';
 import { BuildActions, BuildSkillsList, LockedWarning, RarityOutlook, SetBonusList, WantedProgress } from './build-ui';
 import { LabLoading, LabNotices, LabOverlays, useLabPage, type LabPage } from './page-kit';
+import { ExportArmourImage } from './export';
 import {
   BuildRow,
   FLOATING_BAR_CLASS,
@@ -80,7 +81,7 @@ export default function ArmourV2() {
   );
 
   return (
-    <div data-rarity-theme={lab.theme} className="section-theme w-full space-y-3 px-3 pb-24 pt-2 sm:px-4 lg:px-6 lg:pb-8">
+    <div data-rarity-theme={lab.theme} className="section-theme w-full space-y-3 px-3 pb-24 pt-2 sm:px-4 lg:px-6 xl:pb-8">
       <LabHeader
         title="Armour"
         current={PATH}
@@ -103,7 +104,7 @@ export default function ArmourV2() {
         }
       />
 
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_380px] xl:grid-cols-[minmax(0,1fr)_420px]">
+      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_380px] 2xl:grid-cols-[minmax(0,1fr)_420px]">
         <div className="min-w-0 space-y-3">
           {/* Skills you want */}
           <section className="mho-panel space-y-2.5 p-3 sm:p-4">
@@ -166,7 +167,7 @@ export default function ArmourV2() {
           />
         </div>
 
-        <aside className="hidden lg:block">
+        <aside className="hidden xl:block">
           <div className="sticky top-3 max-h-[calc(100vh-1.5rem)] overflow-y-auto rounded-2xl">{buildCard}</div>
         </aside>
       </div>
@@ -175,7 +176,7 @@ export default function ArmourV2() {
       <button
         type="button"
         onClick={() => setMobileBuildOpen(true)}
-        className={cn(FLOATING_BAR_CLASS, 'z-40 flex items-center gap-3 rounded-2xl border border-mh-gold-400/60 bg-mh-slate-900/95 px-4 py-3 text-left shadow-2xl backdrop-blur lg:hidden')}
+        className={cn(FLOATING_BAR_CLASS, 'z-40 flex items-center gap-3 rounded-2xl border border-mh-gold-400/60 bg-mh-slate-900/95 px-4 py-3 text-left shadow-2xl backdrop-blur xl:hidden')}
       >
         <Shield size={18} className="text-mh-gold-400" />
         <span className="flex-1 text-sm">
@@ -265,7 +266,14 @@ function BuildCard({ lab, allMet, focusSlot, onSlot, onFocusFree }: {
           <RarityOutlook data={data} build={store.build} result={result} myRarity={myRarity} wanted={wanted} onRarity={store.setMyRarity} />
         </>
       )}
-      <BuildActions empty={empty} onShare={lab.actions.share} onSendToPlanner={lab.actions.sendToPlanner} onImport={lab.actions.importFromPlanner} onClear={lab.actions.clear} />
+      <BuildActions
+        empty={empty}
+        onShare={lab.actions.share}
+        onSendToPlanner={lab.actions.sendToPlanner}
+        onImport={lab.actions.importFromPlanner}
+        onClear={lab.actions.clear}
+        exportButton={(className) => <ExportArmourImage lab={lab} className={className} />}
+      />
     </div>
   );
 }
@@ -277,7 +285,8 @@ function wantedLevels(own: Record<string, number>, targets: LabTarget[]) {
   return targets.reduce((n, t) => n + Math.min(own[t.key] ?? 0, t.level), 0);
 }
 
-const ROW_GRID = 'grid grid-cols-[136px_repeat(5,minmax(0,1fr))] sm:grid-cols-[190px_repeat(5,minmax(0,1fr))]';
+const ROW_GRID =
+  'grid grid-cols-[136px_repeat(5,minmax(0,1fr))] sm:grid-cols-[190px_repeat(5,minmax(0,1fr))] xl:grid-cols-[150px_repeat(5,minmax(0,1fr))] 2xl:grid-cols-[190px_repeat(5,minmax(0,1fr))]';
 
 function SetList({ data, lab, onlyMine, focusSlot, allMet, search, limit, onMore, onFocus }: {
   data: LabData;
@@ -342,7 +351,7 @@ function SetList({ data, lab, onlyMine, focusSlot, allMet, search, limit, onMore
     <div className="space-y-2">
       <div className="mho-panel p-0">
         <div className="overflow-x-auto lg:overflow-visible">
-          <div className="min-w-[760px] sm:min-w-[860px]">
+          <div className="min-w-[760px] sm:min-w-[860px] lg:min-w-0">
             {/* Slot names once, at the top */}
             <div className={cn(ROW_GRID, 'z-20 rounded-t-[0.875rem] border-b border-mh-slate-700 bg-mh-slate-900/95 backdrop-blur lg:sticky lg:top-0')}>
               <div className="px-3 py-2 text-[11px] font-bold uppercase tracking-wider text-mh-slate-400">{sets.length} sets</div>

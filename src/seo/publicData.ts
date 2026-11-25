@@ -211,6 +211,13 @@ export interface VisagePage {
   monster: (LinkRef & { icon: string | null }) | null;
 }
 
+export interface ArmourGuideData {
+  fetchedAt: string;
+  pieceCount: number;
+  sets: { name: string; variant: string | null; monster: LinkRef | null; pieces: number; rarity: number | null; maxRarity: number | null }[];
+  weaponTypes: { id: string; name: string; count: number }[];
+}
+
 export type DetailPage = MonsterPage | WeaponPage | AdventurerPage | BuddyPage | VisagePage;
 
 // ── Helpers ───────────────────────────────────────────────────
@@ -792,6 +799,51 @@ export class PublicDataSource {
         status_reason: str(v.status_reason),
       },
       monster: monsterRef ? { ...monsterRef, icon: str(joined?.icon) } : null,
+    };
+  }
+
+  /** Every public armour set (grouped from armour_pieces) and weapon type, for the Armour page guide. */
+  async armourGuide(): Promise<ArmourGuideData> {
+    const [pieces, monsters, weapons] = await Promise.all([
+      this.rows('armour_pieces', { select: 'id,monster_id,slot,set_name,set_variant,rarity,max_rarity,is_active,is_spoiler' }),
+      this.listed('monsters'),
+      this.listed('weapons'),
+    ]);
+    const sets = new Map<string, ArmourGuideData['sets'][number]>();
+    for (const p of pieces) {
+      const name = str(p.set_name) ?? 'Armour';
+      const variant = str(p.set_variant);
+      const key = `${name}|${variant ?? ''}`;
+      const monsterId = str(p.monster_id);
+      const monsterRow = monsters.rows.find((m) => String(m.id) === monsterId);
+      const set = sets.get(key) ?? {
+        name,
+        variant,
+        monster: monsterRow ? { name: String(monsterRow.name), slug: monsters.slugs.get(String(monsterRow.id))! } : null,
+        pieces: 0,
+        rarity: num(p.rarity),
+        maxRarity: num(p.max_rarity),
+      };
+      set.pieces += 1;
+      const r = num(p.rarity);
+      if (r != null && (set.rarity == null || r < set.rarity)) set.rarity = r;
+      const mr = num(p.max_rarity);
+      if (mr != null && (set.maxRarity == null || mr > set.maxRarity)) set.maxRarity = mr;
+      sets.set(key, set);
+    }
+    const weaponTypes = new Map<string, { id: string; name: string; count: number }>();
+    for (const w of weapons.rows) {
+      const id = String(w.weapon_type_id ?? '');
+      if (!id) continue;
+      const t = weaponTypes.get(id) ?? { id, name: weaponTypeName(id), count: 0 };
+      t.count += 1;
+      weaponTypes.set(id, t);
+    }
+    return {
+      fetchedAt: new Date().toISOString(),
+      pieceCount: pieces.length,
+      sets: [...sets.values()].sort((a, b) => (a.rarity ?? 0) - (b.rarity ?? 0) || a.name.localeCompare(b.name)),
+      weaponTypes: [...weaponTypes.values()].sort((a, b) => a.name.localeCompare(b.name)),
     };
   }
 

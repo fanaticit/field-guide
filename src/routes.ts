@@ -80,6 +80,7 @@ export default [
       'investigation-notes/:subPage',
       'community-hub',
       'home/spoilers',
+      'armour',
       'reset-password',
     ].map((path) => route(path, 'routes/redirect.tsx', { id: `legacy:${path}` })),
 

@@ -3,7 +3,7 @@
 // wanted-skill progress, skill totals, set bonuses, what the next
 // rarity adds, and the share / planner buttons.
 // ─────────────────────────────────────────────────────────────
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { ArrowUpRight, CheckCircle2, ChevronDown, Copy, Eraser, Flame, Import, TrendingUp } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import {
@@ -50,7 +50,6 @@ export function BuildSkillsList({ data, result, wanted, changedKeys }: { data: L
         const tone = toneFor(l.category);
         const wasted = l.raw - l.level;
         const isOpen = open === l.key;
-        const desc = data.skills.get(l.key)?.descByLevel[l.level];
         return (
           <div key={l.key} className={cn('rounded-lg transition-colors', changedKeys?.has(l.key) && 'bg-sky-500/15 ring-1 ring-sky-400/50')}>
             <button type="button" onClick={() => setOpen(isOpen ? null : l.key)} className="flex w-full items-center gap-2 px-1.5 py-1 text-left text-xs">
@@ -65,8 +64,36 @@ export function BuildSkillsList({ data, result, wanted, changedKeys }: { data: L
               <span className="w-8 text-right font-mono text-mh-slate-300">Lv{l.level}</span>
             </button>
             {isOpen && (
-              <div className="space-y-1 px-5 pb-2 text-[11px] text-mh-slate-400">
-                {desc && <p className="text-mh-slate-300">{desc}</p>}
+              <div className="space-y-1.5 px-5 pb-2 text-[11px] text-mh-slate-400">
+                {/* Every level, so hunters can judge whether more levels are worth it */}
+                <ol className="space-y-0.5">
+                  {Array.from({ length: l.max }, (_, i) => i + 1).map((lv) => {
+                    const current = lv === l.level;
+                    const reached = lv <= l.level;
+                    const text = data.skills.get(l.key)?.descByLevel[lv];
+                    return (
+                      <li
+                        key={lv}
+                        aria-current={current ? 'true' : undefined}
+                        className={cn(
+                          'grid grid-cols-[2.4rem_1fr] gap-1.5 rounded-md px-1.5 py-1 leading-snug',
+                          current ? cn('bg-sky-500/15 font-bold text-white ring-1 ring-sky-400/50') : reached ? 'text-mh-slate-300' : 'text-mh-slate-500',
+                        )}
+                      >
+                        <span className={cn('font-mono', current ? 'text-sky-200' : reached ? 'text-mh-slate-300' : 'text-mh-slate-600')}>
+                          Lv{lv}
+                          {current && ' ◀'}
+                        </span>
+                        <span>{text ?? '—'}</span>
+                      </li>
+                    );
+                  })}
+                </ol>
+                {wasted > 0 && (
+                  <p className="text-rose-300">
+                    Your gear gives Lv{l.raw}, but {l.name} stops at Lv{l.max} — {wasted} level{wasted === 1 ? ' is' : 's are'} wasted.
+                  </p>
+                )}
                 <p>
                   From:{' '}
                   {l.sources.map((s, i) => (
@@ -243,26 +270,31 @@ function RarityTable({ data, build, myRarity, wanted, onRarity }: { data: LabDat
   );
 }
 
-export function BuildActions({ empty, onShare, onSendToPlanner, onImport, onClear }: {
+export function BuildActions({ empty, onShare, onSendToPlanner, onImport, onClear, exportButton }: {
   empty: boolean;
   onShare: () => void;
   onSendToPlanner: () => void;
   onImport: () => void;
   onClear: () => void;
+  /** Optional "Export image" button, shown first in the top row */
+  exportButton?: (className: string) => ReactNode;
 }) {
-  const base = 'flex items-center justify-center gap-1.5 rounded-xl border py-2 px-2.5 text-xs font-bold disabled:opacity-40';
+  const base = 'flex items-center justify-center gap-1.5 rounded-xl border py-2 px-2 text-xs font-bold disabled:opacity-40';
+  // Top row: the sharing buttons; bottom row: the lesser ones
+  const top = exportButton ? 'col-span-2' : 'col-span-3';
   return (
-    <div className="grid grid-cols-2 gap-1.5 sm:flex sm:flex-wrap">
-      <button type="button" disabled={empty} onClick={onShare} className={cn(base, 'border-mh-slate-700 text-mh-slate-200 hover:border-mh-gold-400')}>
+    <div className="grid grid-cols-6 gap-1.5">
+      {exportButton?.(cn(base, top))}
+      <button type="button" disabled={empty} onClick={onShare} className={cn(base, top, 'border-mh-slate-700 text-mh-slate-200 hover:border-mh-gold-400')}>
         <Copy size={13} /> Share link
       </button>
-      <button type="button" disabled={empty} onClick={onSendToPlanner} className={cn(base, 'border-mh-gold-400/70 bg-mh-gold-500/15 text-mh-gold-200 hover:bg-mh-gold-500 hover:text-black')}>
+      <button type="button" disabled={empty} onClick={onSendToPlanner} className={cn(base, top, 'border-mh-gold-400/70 bg-mh-gold-500/15 text-mh-gold-200 hover:bg-mh-gold-500 hover:text-black')}>
         <ArrowUpRight size={13} /> Build Planner
       </button>
-      <button type="button" onClick={onImport} className={cn(base, 'border-mh-slate-700 font-semibold text-mh-slate-400 hover:text-white')}>
+      <button type="button" onClick={onImport} className={cn(base, 'col-span-3 border-mh-slate-700 font-semibold text-mh-slate-400 hover:text-white')}>
         <Import size={13} /> From planner
       </button>
-      <button type="button" disabled={empty} onClick={onClear} className={cn(base, 'border-mh-slate-700 font-semibold text-mh-slate-400 hover:text-rose-300')}>
+      <button type="button" disabled={empty} onClick={onClear} className={cn(base, 'col-span-3 border-mh-slate-700 font-semibold text-mh-slate-400 hover:text-rose-300')}>
         <Eraser size={13} /> Clear
       </button>
     </div>
