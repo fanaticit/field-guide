@@ -87,7 +87,7 @@ export const SITE_SECTIONS: SectionDefinition[] = [
 export const DEFAULT_SECTION_THEMES: Record<string, RarityTheme> = {
   '/': 'standard',
   '/armory': 'epic',
-  '/gallery': 'fine',
+  '/gallery': 'rare',
   '/challenges': 'rare',
   '/admin': 'standard',
   '/settings': 'standard',

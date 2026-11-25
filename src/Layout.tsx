@@ -31,7 +31,7 @@ export default function Layout() {
   const activeTheme = getThemeForPath(pathname);
 
   return (
-    <div id="app-root" className="relative min-h-screen bg-texture overflow-x-hidden">
+    <div id="app-root" className="relative min-h-screen bg-texture overflow-x-clip" style={{ overflowX: 'clip' }}>
       {/* Cinematic Outlanders Ambient Lighting & Vignette */}
       <div
         aria-hidden="true"

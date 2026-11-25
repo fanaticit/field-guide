@@ -3,7 +3,7 @@
 // Evaluates base effects drop tiers and calculates resketch roll odds.
 // ─────────────────────────────────────────────────────────────
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { Link } from 'react-router';
 import {
   ArrowLeft,
@@ -18,7 +18,12 @@ import {
   HelpCircle,
   Plus,
   X,
+  User,
+  UserX,
+  Check,
 } from 'lucide-react';
+import { useUIStore } from '../../store/uiStore';
+import { DEFAULT_SECTION_THEMES, type RarityTheme } from '../../config/themes';
 import { useAdminVisages } from '../../hooks/useAdminVisages';
 import { useVisageCalculatorEngine } from '../../hooks/useVisageCalculatorData';
 import {
@@ -31,6 +36,20 @@ import VisageIcon from '../../components/visage/VisageIcon';
 import { InkIconComponent } from './VisageCard';
 import { cn } from '../../lib/utils';
 import { pct, baseTierRarity, type RollRarity } from '../../lib/visageCalc';
+import {
+  visagePower,
+  visagePowerByElement,
+  toPowerElement,
+  LEVEL_POINTS,
+  EFFECT_POINTS,
+  POWER_ELEMENTS,
+  type ElementName,
+  type WearerElement,
+} from '../../lib/visagePower';
+import { usePublicAdventurers } from '../../hooks/useAdminAdventurers';
+import { useUserAdventurerCollection } from '../../hooks/useUserAdventurerCollection';
+import { useAuthStore } from '../../store/authStore';
+import { type DBAdventurer } from '../../data/schemas/adventurer';
 
 type QualityOption = 'Superior' | 'Epic' | 'Rare';
 type SelectionMode = 'monster' | 'ink';
@@ -59,6 +78,19 @@ const RARITY_ORDER: Record<RollRarity, number> = { Rare: 0, Epic: 1, Superior: 2
 
 /** Some visages store the flames ink as 'fire'. */
 const normInk = (raw: string) => (raw === 'fire' ? 'flames' : raw);
+
+/** Weights used when an adventurer is picked: their element's Attack 85%, Damage / Defense / Physical 5% each. */
+const elementPresetId = (el: ElementName) => `element:${el}`;
+const elementFromPresetId = (id: string): ElementName | null =>
+  id.startsWith('element:') ? toPowerElement(id.slice('element:'.length)) : null;
+const elementWeights = (el: ElementName): Record<string, number> => ({
+  [`${el} Attack`]: 85,
+  Damage: 5,
+  Defense: 5,
+  'Physical Attack': 5,
+});
+
+const ADVENTURER_RARITY_SORT: Record<string, number> = { superior: 0, epic: 1, rare: 2 };
 
 interface WeightPreset {
   id: string;
@@ -156,6 +188,8 @@ interface SavedCheckerState {
   s?: SlotRollInput[]; // resketchSlots
   p?: string; // preset
   w?: Record<string, number>; // customWeights
+  a?: string; // wearer adventurer id ('' = none, base power)
+  he?: ElementName | 'None'; // Hunter (Fated Adventurer) weapon element
 }
 
 function readCheckerCookie(): SavedCheckerState | null {
@@ -243,6 +277,47 @@ export function getRarityTheme(rarity: RollRarity | null | undefined) {
   }
 }
 
+export function getSectionThemeStyles(theme: RarityTheme | string | undefined) {
+  switch (theme) {
+    case 'epic':
+      return {
+        badgeBorder: 'border-purple-500/50',
+        badgeBg: 'bg-purple-500/15',
+        labelColor: 'text-purple-300',
+        glow: 'shadow-[0_0_12px_rgba(168,85,247,0.25)]',
+      };
+    case 'superior':
+      return {
+        badgeBorder: 'border-amber-400/50',
+        badgeBg: 'bg-amber-400/15',
+        labelColor: 'text-amber-300',
+        glow: 'shadow-[0_0_12px_rgba(251,191,36,0.25)]',
+      };
+    case 'fine':
+      return {
+        badgeBorder: 'border-emerald-500/50',
+        badgeBg: 'bg-emerald-500/15',
+        labelColor: 'text-emerald-300',
+        glow: 'shadow-[0_0_12px_rgba(16,185,129,0.25)]',
+      };
+    case 'standard':
+      return {
+        badgeBorder: 'border-yellow-400/50',
+        badgeBg: 'bg-yellow-400/15',
+        labelColor: 'text-yellow-300',
+        glow: 'shadow-[0_0_12px_rgba(250,204,21,0.25)]',
+      };
+    case 'rare':
+    default:
+      return {
+        badgeBorder: 'border-sky-400/50',
+        badgeBg: 'bg-sky-400/15',
+        labelColor: 'text-sky-300',
+        glow: 'shadow-[0_0_12px_rgba(56,189,248,0.25)]',
+      };
+  }
+}
+
 export default function VisageCardChecker() {
   const { data: dbVisages = [], isLoading: isLoadingVisages } = useAdminVisages({
     isActive: true,
@@ -276,6 +351,59 @@ export default function VisageCardChecker() {
   );
   const [showWeightSliders, setShowWeightSliders] = useState<boolean>(false);
 
+  // Who wears the card (for Power): '' = nobody picked, so Power is the base score with no element match
+  const [wearerId, setWearerId] = useState<string>(initialCookie?.a || '');
+  const [hunterElement, setHunterElement] = useState<ElementName | 'None'>(initialCookie?.he || 'None');
+
+  // UI & Theme states
+  const galleryTheme = useUIStore(
+    (s) => s.sectionThemes['/gallery'] ?? DEFAULT_SECTION_THEMES['/gallery'] ?? 'rare',
+  );
+  const galleryThemeStyle = useMemo(() => getSectionThemeStyles(galleryTheme), [galleryTheme]);
+  const [showBasePoolOverride, setShowBasePoolOverride] = useState<boolean | null>(null);
+  const [showAdventurerPicker, setShowAdventurerPicker] = useState<boolean>(false);
+  const adventurerPickerRef = useRef<HTMLDivElement>(null);
+
+  // Close adventurer picker on outside click / escape
+  useEffect(() => {
+    if (!showAdventurerPicker) return;
+    const handleDown = (e: MouseEvent | TouchEvent) => {
+      if (adventurerPickerRef.current && !adventurerPickerRef.current.contains(e.target as Node)) {
+        setShowAdventurerPicker(false);
+      }
+    };
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setShowAdventurerPicker(false);
+    };
+    window.addEventListener('mousedown', handleDown);
+    window.addEventListener('touchstart', handleDown);
+    window.addEventListener('keydown', handleKey);
+    return () => {
+      window.removeEventListener('mousedown', handleDown);
+      window.removeEventListener('touchstart', handleDown);
+      window.removeEventListener('keydown', handleKey);
+    };
+  }, [showAdventurerPicker]);
+
+  // Ensure #app-root, body, and html use overflow-x: clip so position: sticky floats properly on scroll
+  useEffect(() => {
+    const root = document.getElementById('app-root');
+    if (root) root.style.overflowX = 'clip';
+    document.body.style.overflowX = 'clip';
+    document.documentElement.style.overflowX = 'clip';
+  }, []);
+
+  // Floating header minimized state when scrolled
+  const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 40);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   // Persist state changes to cookie
   useEffect(() => {
     if (!selectedMonsterId) return;
@@ -290,8 +418,71 @@ export default function VisageCardChecker() {
       s: resketchSlots,
       p: activePreset,
       w: customWeights,
+      a: wearerId,
+      he: hunterElement,
     });
-  }, [selectionMode, selectedMonsterId, selectedInk, cardQuality, cardLevel, baseRolls, resketchSlots, activePreset, customWeights]);
+  }, [
+    selectionMode,
+    selectedMonsterId,
+    selectedInk,
+    cardQuality,
+    cardLevel,
+    baseRolls,
+    resketchSlots,
+    activePreset,
+    customWeights,
+    wearerId,
+    hunterElement,
+  ]);
+
+  // ── Adventurers (who wears the card) ──
+  const showSpoilers = useAuthStore((st) => Boolean(st.profile?.show_spoilers));
+  const { data: adventurers = [] } = usePublicAdventurers({ showSpoilers });
+  const { isRecruited } = useUserAdventurerCollection();
+
+  /** Owned first, then not owned; within each: Fated Adventurer, SSR, SR, Rare, then A–Z. */
+  const adventurerGroups = useMemo(() => {
+    const list = adventurers.filter((a) => a.status !== 'not_in_game');
+    const sortFn = (a: DBAdventurer, b: DBAdventurer) =>
+      Number(b.is_default) - Number(a.is_default) ||
+      (ADVENTURER_RARITY_SORT[a.rarity ?? ''] ?? 3) - (ADVENTURER_RARITY_SORT[b.rarity ?? ''] ?? 3) ||
+      a.name.localeCompare(b.name);
+    return {
+      owned: list.filter((a) => isRecruited(a)).sort(sortFn),
+      notOwned: list.filter((a) => !isRecruited(a)).sort(sortFn),
+    };
+  }, [adventurers, isRecruited]);
+
+  const wearer = useMemo(() => adventurers.find((a) => a.id === wearerId) ?? null, [adventurers, wearerId]);
+  const wearerIsHunter = Boolean(wearer?.is_default);
+  /** Element used for Power: null = base score (no adventurer picked, or no element). */
+  const wearerElement: WearerElement = !wearer
+    ? null
+    : wearerIsHunter
+      ? null
+      : toPowerElement(wearer.element_specialization);
+  const wearerLabel = !wearer
+    ? 'No adventurer: base power'
+    : wearerIsHunter
+      ? 'Fated Adventurer (your Hunter)'
+      : `${wearer.name}${wearerElement ? ` · ${wearerElement}` : ''}`;
+
+  const handleWearerChange = (id: string) => {
+    setWearerId(id);
+    const adv = adventurers.find((a) => a.id === id);
+    if (!adv) return; // back to base power; weights stay as they are
+    if (adv.is_default) {
+      // The player's own Hunter: element and stats depend on their weapon, so let them set the weights
+      setShowWeightSliders(true);
+      return;
+    }
+    const el = toPowerElement(adv.element_specialization);
+    if (el) {
+      setActivePreset(elementPresetId(el));
+      setCustomWeights(elementWeights(el));
+    }
+  };
+
 
   // Pick a default card when nothing is selected, or when a saved card no longer exists
   useEffect(() => {
@@ -465,6 +656,56 @@ export default function VisageCardChecker() {
     [evaluatedBase],
   );
 
+  const areBaseSlotsLoaded = filledBase.length >= maxBaseSlots;
+  const isBasePoolVisible = showBasePoolOverride !== null ? showBasePoolOverride : !areBaseSlotsLoaded;
+
+  const baseVerdict = useMemo(() => {
+    if (filledBase.length === 0) return null;
+    const brush = BRUSH_CONFIG[cardQuality].name;
+    const fixed = filledBase.every((b) => b.maxTier <= 1);
+    const allHigh = filledBase.every((b) => b.tier >= b.maxTier - 1);
+    const anyLow = filledBase.some((b) => b.tier === 1);
+    const kind = fixed ? 'fixed' : allHigh ? 'high' : anyLow ? 'low' : 'mid';
+
+    const style = {
+      fixed: 'bg-amber-500/10 border-amber-500/40 text-amber-100',
+      high: 'bg-emerald-500/15 border-emerald-500/40 text-emerald-200',
+      low: 'bg-amber-500/15 border-amber-500/40 text-amber-200',
+      mid: 'bg-blue-500/15 border-blue-500/40 text-blue-200',
+    }[kind];
+
+    const badgeStyle = {
+      fixed: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+      high: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+      low: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+      mid: 'bg-blue-500/20 text-blue-300 border-blue-500/40',
+    }[kind];
+
+    const shortLabel = {
+      fixed: 'Fixed Elder Base',
+      high: 'High-Tier Base',
+      low: 'Weak Base Roll',
+      mid: 'Decent Base',
+    }[kind];
+
+    const title = {
+      fixed: 'Fixed Elder Base Effects',
+      high: 'High-Tier Base (Worth Upgrading & Sketching)',
+      low: 'Weak Base Roll',
+      mid: 'Decent Base',
+    }[kind];
+
+    const body = {
+      fixed:
+        "Elder visages always roll the same base values, so there's nothing better to farm for. This card's quality comes down to its resketch slots.",
+      high: `Your base effects rolled in the top tiers for this pool. This copy is a good home for your ${brush}es.`,
+      low: `At least one base effect is Tier 1 — 40% of drops roll this low. Base effects can't be resketched, so if another copy is likely to drop, consider waiting before spending ${brush}es on this one.`,
+      mid: `Middle-tier base rolls. Usable, but a higher-tier copy would be a better long-term home for your ${brush}es.`,
+    }[kind];
+
+    return { kind, style, badgeStyle, shortLabel, title, body };
+  }, [filledBase, cardQuality]);
+
   // Filled resketch slots (only the unlocked ones count)
   const filledSlotCount = useMemo(
     () => resketchSlots.slice(0, unlockedResketchCount).filter((s) => s.effect && s.value !== '').length,
@@ -501,7 +742,10 @@ export default function VisageCardChecker() {
   }, [customWeights, statMax, unlockedResketchCount]);
 
   const isCustomWeights = activePreset === 'custom';
-  const activePresetLabel = WEIGHT_PRESETS.find((p) => p.id === activePreset)?.label;
+  const activePresetElement = elementFromPresetId(activePreset);
+  const activePresetLabel = activePresetElement
+    ? `${activePresetElement} adventurer`
+    : WEIGHT_PRESETS.find((p) => p.id === activePreset)?.label;
 
   // Resketch analysis calculation
   const resketchAnalysis = useMemo(() => {
@@ -622,6 +866,27 @@ export default function VisageCardChecker() {
     if (found) {
       setCustomWeights(found.weights);
     }
+    setWearerId('');
+    setHunterElement('None');
+  };
+
+  // ── Card Power (resketch effects only; base effects never add power) ──
+  const powerCard = useMemo(
+    () => ({
+      quality: cardQuality,
+      level: cardLevel,
+      randomEffects: resketchSlots
+        .slice(0, unlockedResketchCount)
+        .filter((sl) => sl.effect && sl.value !== '')
+        .map((sl) => ({ effect: sl.effect, value: sl.value as number })),
+    }),
+    [cardQuality, cardLevel, resketchSlots, unlockedResketchCount],
+  );
+  const powerResult = useMemo(() => visagePower(powerCard, wearerElement), [powerCard, wearerElement]);
+  const powerByElement = useMemo(() => visagePowerByElement(powerCard), [powerCard]);
+
+  const scrollToPowerHelp = () => {
+    document.getElementById('power-explained')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   const inkConfig = getInkConfig(selectedInk);
@@ -637,72 +902,168 @@ export default function VisageCardChecker() {
   }
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto pb-12">
-      {/* ── Top Header Bar ── */}
-      <div className="mho-panel rounded-2xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4 border border-white/10 shadow-xl">
-        <div className="flex flex-wrap items-center gap-3">
+    <div data-rarity-theme={galleryTheme} className="section-theme space-y-6 max-w-7xl mx-auto pb-12 text-white">
+      {/* ── Top Header Bar (Sticky floating on scroll) ── */}
+      <div
+        className={cn(
+          'sticky top-2 sm:top-3 z-30 transition-all duration-300 border border-white/10 shadow-2xl backdrop-blur-md',
+          isScrolled
+            ? 'rounded-xl sm:rounded-2xl px-3 py-1.5 sm:py-2 bg-mh-slate-900/50 flex items-center justify-between gap-2 sm:gap-3'
+            : 'mho-panel mho-card-rarity rounded-2xl p-3 sm:p-4 flex flex-wrap items-center justify-between gap-3 bg-mh-slate-900/95',
+        )}
+      >
+        {isScrolled ? (
           <Link
             to="/gallery"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-mh-slate-300 hover:text-white transition-colors"
+            title="Back to Gallery"
+            aria-label="Back to Gallery"
+            className="flex items-center justify-center p-1.5 sm:p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-mh-slate-300 hover:text-white transition-colors"
           >
-            <ArrowLeft size={14} />
-            Back to Gallery
+            <ArrowLeft size={16} />
           </Link>
-          <div className="h-4 w-px bg-white/10 hidden sm:block" />
-          <div className="flex items-center gap-2">
-            <span className="text-[#FFD700] text-lg">❖</span>
-            <h1 className="font-display text-lg sm:text-xl font-bold tracking-wide uppercase text-white">
-              Check My Card
-            </h1>
-            <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-amber-500/15 border border-amber-500/30 text-amber-400 font-bold">
-              Calculator
-            </span>
-          </div>
-        </div>
-
-        {/* Live Card Score Rating Badge & Clear Button */}
-        <div className="flex items-center gap-3 ml-auto sm:ml-0 flex-wrap">
-          <div
-            className={cn(
-              'flex items-center gap-2.5 px-3.5 py-1.5 rounded-xl border transition-all duration-300',
-              cardRating.theme.bg,
-              cardRating.theme.border,
-              cardRating.theme.glow,
-            )}
-          >
-            <div className="flex flex-col">
-              <span className="text-[9px] uppercase font-bold text-mh-slate-400 tracking-wider">
-                Card Roll Rating
+        ) : (
+          <div className="flex flex-wrap items-center gap-3">
+            <Link
+              to="/gallery"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-mh-slate-300 hover:text-white transition-colors"
+            >
+              <ArrowLeft size={14} />
+              Back to Gallery
+            </Link>
+            <div className="h-4 w-px bg-white/10 hidden sm:block" />
+            <div className="flex items-center gap-2">
+              <span className="text-[#FFD700] text-lg">❖</span>
+              <h1 className="font-display text-lg sm:text-xl font-bold tracking-wide uppercase text-white">
+                Check My Card
+              </h1>
+              <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-amber-500/15 border border-amber-500/30 text-amber-400 font-bold">
+                Calculator
               </span>
-              <div className="flex items-center gap-2">
-                <span className={cn('text-xs sm:text-sm font-display font-black tracking-wide uppercase', cardRating.theme.text)}>
-                  {cardRating.rank}
-                </span>
-                {cardRating.scoreDisplay !== '—' && (
-                  <span className="text-xs font-mono font-bold text-white">
-                    {cardRating.scoreDisplay}
-                  </span>
-                )}
-                {cardRating.subText && (
-                  <span className="text-[10px] font-mono text-mh-slate-300 hidden md:inline">
-                    ({cardRating.subText})
-                  </span>
-                )}
-              </div>
             </div>
           </div>
+        )}
 
-          {/* Clear Button */}
-          <button
-            type="button"
-            onClick={handleClearAll}
-            title="Clear all inputs and reset to default"
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 hover:border-red-500/50 text-xs font-semibold text-red-300 hover:text-red-200 transition-colors"
-          >
-            <RotateCcw size={13} />
-            <span>Clear</span>
-          </button>
-        </div>
+        {/* Live Card Score Rating Badge & Clear Button */}
+        {isScrolled ? (
+          <div className="flex items-center gap-2 sm:gap-3 ml-auto">
+            {/* Minimized Card Roll Rating Word Badge */}
+            <div
+              className={cn(
+                'flex items-center gap-1.5 px-2.5 py-1 rounded-lg border font-bold text-xs uppercase transition-all duration-300 shadow-sm',
+                cardRating.theme.bg,
+                cardRating.theme.border,
+                cardRating.theme.glow,
+              )}
+              title={`Card Roll Rating: ${cardRating.rank}${cardRating.scoreDisplay !== '—' ? ` (${cardRating.scoreDisplay})` : ''}`}
+            >
+              <span className={cn('font-display tracking-wide', cardRating.theme.text)}>
+                {cardRating.rank}
+              </span>
+              {cardRating.scoreDisplay !== '—' && (
+                <span className="text-[11px] font-mono text-white/90">({cardRating.scoreDisplay})</span>
+              )}
+            </div>
+
+            {/* Minimized Card Power */}
+            <div
+              className={cn(
+                'flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-mono transition-all duration-300',
+                galleryThemeStyle.badgeBorder,
+                galleryThemeStyle.badgeBg,
+                galleryThemeStyle.glow,
+              )}
+              title={`Card Power: ${powerResult.power}${wearerLabel ? ` (${wearerLabel})` : ''}`}
+            >
+              <span className={cn('text-[10px] uppercase font-bold tracking-wider', galleryThemeStyle.labelColor)}>
+                Power
+              </span>
+              <span className="font-black text-white text-sm">{powerResult.power}</span>
+            </div>
+
+            {/* Clear Button */}
+            <button
+              type="button"
+              onClick={handleClearAll}
+              title="Clear all inputs and reset to default"
+              className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 hover:border-red-500/50 text-xs font-semibold text-red-300 hover:text-red-200 transition-colors"
+            >
+              <RotateCcw size={12} />
+              <span className="text-[11px]">Clear</span>
+            </button>
+          </div>
+        ) : (
+          <div className="flex items-center gap-3 ml-auto sm:ml-0 flex-wrap">
+            <div
+              className={cn(
+                'flex items-center gap-2.5 px-3.5 py-1.5 rounded-xl border transition-all duration-300',
+                cardRating.theme.bg,
+                cardRating.theme.border,
+                cardRating.theme.glow,
+              )}
+            >
+              <div className="flex flex-col">
+                <span className="text-[9px] uppercase font-bold text-mh-slate-400 tracking-wider">
+                  Card Roll Rating
+                </span>
+                <div className="flex items-center gap-2">
+                  <span className={cn('text-xs sm:text-sm font-display font-black tracking-wide uppercase', cardRating.theme.text)}>
+                    {cardRating.rank}
+                  </span>
+                  {cardRating.scoreDisplay !== '—' && (
+                    <span className="text-xs font-mono font-bold text-white">
+                      {cardRating.scoreDisplay}
+                    </span>
+                  )}
+                  {cardRating.subText && (
+                    <span className="text-[10px] font-mono text-mh-slate-300 hidden md:inline">
+                      ({cardRating.subText})
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Card Power */}
+            <div
+              className={cn(
+                'flex items-center gap-3 px-3.5 py-1.5 rounded-xl border transition-all duration-300',
+                galleryThemeStyle.badgeBorder,
+                galleryThemeStyle.badgeBg,
+              )}
+            >
+              <div className="flex flex-col">
+                <span className={cn('text-[9px] uppercase font-bold tracking-wider', galleryThemeStyle.labelColor)}>
+                  Card Power
+                </span>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-sm sm:text-base font-mono font-black text-white">{powerResult.power}</span>
+                  <span className="text-[10px] text-mh-slate-400 truncate max-w-[180px]" title={wearerLabel}>
+                    {wearerLabel}
+                  </span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={scrollToPowerHelp}
+                className="flex items-center gap-1 text-[11px] font-semibold text-amber-400 hover:text-amber-300 transition-colors whitespace-nowrap"
+              >
+                <HelpCircle size={13} />
+                How is this calculated?
+              </button>
+            </div>
+
+            {/* Clear Button */}
+            <button
+              type="button"
+              onClick={handleClearAll}
+              title="Clear all inputs and reset to default"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 hover:border-red-500/50 text-xs font-semibold text-red-300 hover:text-red-200 transition-colors"
+            >
+              <RotateCcw size={13} />
+              <span>Clear</span>
+            </button>
+          </div>
+        )}
       </div>
 
       {/* ── Main Layout Grid ── */}
@@ -935,8 +1296,8 @@ export default function VisageCardChecker() {
               SECTION 1: BASE EFFECTS EVALUATOR
              ══════════════════════════════════════════════════════ */}
           <div className="mho-panel rounded-2xl p-4 sm:p-5 border border-white/10 space-y-4 shadow-xl">
-            <div className="flex items-center justify-between border-b border-white/10 pb-2">
-              <div className="flex items-center gap-2">
+            <div className="flex items-center justify-between border-b border-white/10 pb-2 flex-wrap gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-amber-400 text-sm">✦</span>
                 <h2 className="font-display text-sm font-bold tracking-wide uppercase text-white">
                   Base Effects Assessment
@@ -944,14 +1305,37 @@ export default function VisageCardChecker() {
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-mh-slate-300">
                   {maxBaseSlots} Slot{maxBaseSlots > 1 ? 's' : ''} (Pool #{effectiveBasePoolId})
                 </span>
+                {areBaseSlotsLoaded && baseVerdict && (
+                  <span
+                    className={cn(
+                      'text-[10px] font-bold px-2 py-0.5 rounded uppercase font-mono tracking-wider border',
+                      baseVerdict.badgeStyle,
+                    )}
+                  >
+                    {baseVerdict.shortLabel}
+                  </span>
+                )}
               </div>
-              <span className="text-[11px] text-mh-slate-400 hidden sm:inline">
-                Evaluates if your initial drop tier is worth upgrading
-              </span>
+              <div className="flex items-center gap-2">
+                {areBaseSlotsLoaded && (
+                  <button
+                    type="button"
+                    onClick={() => setShowBasePoolOverride((prev) => (prev === null ? true : !prev))}
+                    className="text-[10px] font-semibold text-amber-300 hover:text-amber-200 transition-colors flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 cursor-pointer"
+                  >
+                    <span>{isBasePoolVisible ? 'Hide Possible Effects' : 'Show Possible Effects'}</span>
+                    <ChevronDown size={11} className={cn('transition-transform duration-200', isBasePoolVisible && 'rotate-180')} />
+                  </button>
+                )}
+                <span className="text-[11px] text-mh-slate-400 hidden sm:inline">
+                  Evaluates if your initial drop tier is worth upgrading
+                </span>
+              </div>
             </div>
 
             {/* Possible Drop Pool Overview */}
-            {currentBasePool &&
+            {isBasePoolVisible &&
+              currentBasePool &&
               (() => {
                 const effectNames = Array.from(new Set(currentBasePool.effects.map((e) => e.effect)));
                 const tiers = Array.from(new Set(currentBasePool.effects.map((e) => e.tier))).sort((a, b) => a - b);
@@ -1193,48 +1577,21 @@ export default function VisageCardChecker() {
               </div>
 
               {/* Base Verdict Banner */}
-              {filledBase.length > 0 &&
-                (() => {
-                  const brush = BRUSH_CONFIG[cardQuality].name;
-                  const fixed = filledBase.every((b) => b.maxTier <= 1);
-                  const allHigh = filledBase.every((b) => b.tier >= b.maxTier - 1);
-                  const anyLow = filledBase.some((b) => b.tier === 1);
-                  const kind = fixed ? 'fixed' : allHigh ? 'high' : anyLow ? 'low' : 'mid';
-                  const style = {
-                    fixed: 'bg-amber-500/10 border-amber-500/40 text-amber-100',
-                    high: 'bg-emerald-500/15 border-emerald-500/40 text-emerald-200',
-                    low: 'bg-amber-500/15 border-amber-500/40 text-amber-200',
-                    mid: 'bg-blue-500/15 border-blue-500/40 text-blue-200',
-                  }[kind];
-                  const title = {
-                    fixed: 'Fixed Elder Base Effects',
-                    high: 'High-Tier Base (Worth Upgrading & Sketching)',
-                    low: 'Weak Base Roll',
-                    mid: 'Decent Base',
-                  }[kind];
-                  const body = {
-                    fixed:
-                      "Elder visages always roll the same base values, so there's nothing better to farm for. This card's quality comes down to its resketch slots.",
-                    high: `Your base effects rolled in the top tiers for this pool. This copy is a good home for your ${brush}es.`,
-                    low: `At least one base effect is Tier 1 — 40% of drops roll this low. Base effects can't be resketched, so if another copy is likely to drop, consider waiting before spending ${brush}es on this one.`,
-                    mid: `Middle-tier base rolls. Usable, but a higher-tier copy would be a better long-term home for your ${brush}es.`,
-                  }[kind];
-                  return (
-                    <div className={cn('p-3 rounded-xl border flex items-start gap-3 transition-colors', style)}>
-                      {kind === 'high' || kind === 'fixed' ? (
-                        <CheckCircle2 size={18} className="text-emerald-400 shrink-0 mt-0.5" />
-                      ) : kind === 'low' ? (
-                        <AlertTriangle size={18} className="text-amber-400 shrink-0 mt-0.5" />
-                      ) : (
-                        <Info size={18} className="text-blue-400 shrink-0 mt-0.5" />
-                      )}
-                      <div className="text-xs space-y-0.5">
-                        <p className="font-bold">{title}</p>
-                        <p className="text-[11px] opacity-90 leading-relaxed">{body}</p>
-                      </div>
-                    </div>
-                  );
-                })()}
+              {baseVerdict && (
+                <div className={cn('p-3 rounded-xl border flex items-start gap-3 transition-colors', baseVerdict.style)}>
+                  {baseVerdict.kind === 'high' || baseVerdict.kind === 'fixed' ? (
+                    <CheckCircle2 size={18} className="text-emerald-400 shrink-0 mt-0.5" />
+                  ) : baseVerdict.kind === 'low' ? (
+                    <AlertTriangle size={18} className="text-amber-400 shrink-0 mt-0.5" />
+                  ) : (
+                    <Info size={18} className="text-blue-400 shrink-0 mt-0.5" />
+                  )}
+                  <div className="text-xs space-y-0.5">
+                    <p className="font-bold">{baseVerdict.title}</p>
+                    <p className="text-[11px] opacity-90 leading-relaxed">{baseVerdict.body}</p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -1289,7 +1646,7 @@ export default function VisageCardChecker() {
                 </button>
               </div>
 
-              <div className="flex flex-wrap gap-1.5">
+              <div className="flex flex-wrap items-center gap-1.5">
                 {WEIGHT_PRESETS.map((preset) => (
                   <button
                     key={preset.id}
@@ -1305,7 +1662,229 @@ export default function VisageCardChecker() {
                     {preset.label}
                   </button>
                 ))}
+
+                {/* Who will wear the card: sets Power's element and, for adventurers, the weights */}
+                <div ref={adventurerPickerRef} className="relative flex items-center gap-1.5 sm:ml-auto">
+                  <span className="text-[11px] font-semibold text-mh-slate-400">For</span>
+                  <button
+                    type="button"
+                    onClick={() => setShowAdventurerPicker((prev) => !prev)}
+                    className={cn(
+                      'flex items-center gap-2 bg-mh-slate-900 border rounded-xl px-2 py-1 text-xs transition-all cursor-pointer focus:outline-none',
+                      showAdventurerPicker
+                        ? 'border-amber-400/80 ring-2 ring-amber-400/20 bg-mh-slate-800'
+                        : wearerId
+                          ? 'border-amber-500/60 text-amber-200 hover:border-amber-400'
+                          : 'border-white/15 text-mh-slate-300 hover:border-white/30',
+                    )}
+                    title={
+                      wearer
+                        ? wearer.is_default
+                          ? 'Fated Adventurer (your Hunter)'
+                          : `${wearer.name} · ${wearer.element_specialization || 'Neutral'}`
+                        : 'No adventurer (base power)'
+                    }
+                  >
+                    {wearer ? (
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-6 h-6 rounded-md overflow-hidden bg-mh-slate-950 border border-amber-500/40 flex items-center justify-center shrink-0">
+                          {wearer.image ? (
+                            <img src={wearer.image} alt={wearer.name} className="w-full h-full object-cover" />
+                          ) : (
+                            <User size={13} className="text-amber-400" />
+                          )}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-6 h-6 rounded-md border border-white/20 bg-white/5 flex items-center justify-center text-mh-slate-400 shrink-0">
+                          <UserX size={13} />
+                        </div>
+                        <span className="text-[11px] text-mh-slate-400">None</span>
+                      </div>
+                    )}
+                    <ChevronDown
+                      size={11}
+                      className={cn(
+                        'text-mh-slate-400 transition-transform duration-200',
+                        showAdventurerPicker && 'rotate-180',
+                      )}
+                    />
+                  </button>
+
+                  {/* Adventurer Icon Popover */}
+                  {showAdventurerPicker && (
+                    <div className="absolute right-0 top-full mt-1.5 z-50 w-72 sm:w-80 bg-mh-slate-900/95 border border-white/15 rounded-2xl shadow-2xl p-3 backdrop-blur-xl animate-in fade-in zoom-in-95 duration-150 space-y-2.5">
+                      <div className="flex items-center justify-between border-b border-white/10 pb-2 text-xs font-bold text-mh-slate-300">
+                        <span>Select Adventurer</span>
+                        {wearerId && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              handleWearerChange('');
+                              setShowAdventurerPicker(false);
+                            }}
+                            className="text-[10px] text-red-300 hover:text-red-200 transition-colors flex items-center gap-1 px-1.5 py-0.5 rounded hover:bg-red-500/10 cursor-pointer"
+                          >
+                            <UserX size={11} />
+                            <span>Clear</span>
+                          </button>
+                        )}
+                      </div>
+
+                      {/* Grid of character icons */}
+                      <div className="max-h-64 overflow-y-auto space-y-2.5 pr-1">
+                        {/* None button */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            handleWearerChange('');
+                            setShowAdventurerPicker(false);
+                          }}
+                          className={cn(
+                            'w-full flex items-center gap-2.5 p-1.5 rounded-xl border transition-all text-left cursor-pointer',
+                            !wearerId
+                              ? 'border-amber-400/80 bg-amber-500/15 ring-1 ring-amber-400/40 text-amber-200'
+                              : 'border-white/10 bg-white/5 hover:bg-white/10 text-mh-slate-300 hover:text-white',
+                          )}
+                        >
+                          <div className="w-8 h-8 rounded-lg border border-white/20 bg-black/40 flex items-center justify-center shrink-0">
+                            <UserX size={16} className="text-mh-slate-400" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="text-xs font-bold">No Adventurer</div>
+                            <div className="text-[10px] text-mh-slate-400">Evaluate base universal power</div>
+                          </div>
+                          {!wearerId && <Check size={14} className="text-amber-400 shrink-0" />}
+                        </button>
+
+                        {/* Owned Adventurers Icon Grid */}
+                        {adventurerGroups.owned.length > 0 && (
+                          <div className="space-y-1">
+                            <span className="text-[10px] font-bold text-mh-slate-400 uppercase tracking-wider block px-1">
+                              Owned Characters
+                            </span>
+                            <div className="grid grid-cols-5 gap-1.5">
+                              {adventurerGroups.owned.map((adv) => {
+                                const isSelected = wearerId === adv.id;
+                                const el = toPowerElement(adv.element_specialization);
+                                return (
+                                  <button
+                                    key={adv.id}
+                                    type="button"
+                                    onClick={() => {
+                                      handleWearerChange(adv.id);
+                                      setShowAdventurerPicker(false);
+                                    }}
+                                    title={
+                                      adv.is_default
+                                        ? 'Fated Adventurer (your Hunter)'
+                                        : `${adv.name}${el ? ` · ${el}` : ''}${adv.rarity ? ` (${adv.rarity})` : ''}`
+                                    }
+                                    className={cn(
+                                      'relative group/icon p-1 rounded-xl border transition-all flex flex-col items-center cursor-pointer',
+                                      isSelected
+                                        ? 'border-amber-400 bg-amber-500/20 ring-2 ring-amber-400/40'
+                                        : 'border-white/10 bg-black/40 hover:bg-white/10 hover:border-white/20',
+                                    )}
+                                  >
+                                    <div className="w-10 h-10 rounded-lg overflow-hidden bg-mh-slate-950 border border-white/10 flex items-center justify-center">
+                                      {adv.image ? (
+                                        <img
+                                          src={adv.image}
+                                          alt={adv.name}
+                                          className="w-full h-full object-cover group-hover/icon:scale-105 transition-transform"
+                                        />
+                                      ) : (
+                                        <span className="text-[10px] font-bold text-mh-slate-400">
+                                          {adv.name.slice(0, 3)}
+                                        </span>
+                                      )}
+                                    </div>
+                                    {adv.is_default && (
+                                      <span className="absolute -top-1 -right-1 bg-amber-500 text-black text-[8px] font-extrabold px-1 rounded-full shadow">
+                                        YOU
+                                      </span>
+                                    )}
+                                    {isSelected && !adv.is_default && (
+                                      <span className="absolute -top-1 -right-1 bg-amber-400 text-black rounded-full p-0.5 shadow">
+                                        <Check size={8} strokeWidth={3} />
+                                      </span>
+                                    )}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Not Owned Adventurers Icon Grid */}
+                        {adventurerGroups.notOwned.length > 0 && (
+                          <div className="space-y-1 pt-1 border-t border-white/10">
+                            <span className="text-[10px] font-bold text-mh-slate-500 uppercase tracking-wider block px-1">
+                              Other Characters
+                            </span>
+                            <div className="grid grid-cols-5 gap-1.5">
+                              {adventurerGroups.notOwned.map((adv) => {
+                                const isSelected = wearerId === adv.id;
+                                const el = toPowerElement(adv.element_specialization);
+                                return (
+                                  <button
+                                    key={adv.id}
+                                    type="button"
+                                    onClick={() => {
+                                      handleWearerChange(adv.id);
+                                      setShowAdventurerPicker(false);
+                                    }}
+                                    title={`${adv.name}${el ? ` · ${el}` : ''}${adv.rarity ? ` (${adv.rarity})` : ''} (Not owned)`}
+                                    className={cn(
+                                      'relative group/icon p-1 rounded-xl border transition-all flex flex-col items-center opacity-70 hover:opacity-100 cursor-pointer',
+                                      isSelected
+                                        ? 'border-amber-400 bg-amber-500/20 ring-2 ring-amber-400/40 opacity-100'
+                                        : 'border-white/10 bg-black/40 hover:bg-white/10 hover:border-white/20',
+                                    )}
+                                  >
+                                    <div className="w-10 h-10 rounded-lg overflow-hidden bg-mh-slate-950 border border-white/10 flex items-center justify-center">
+                                      {adv.image ? (
+                                        <img
+                                          src={adv.image}
+                                          alt={adv.name}
+                                          className="w-full h-full object-cover group-hover/icon:scale-105 transition-transform"
+                                        />
+                                      ) : (
+                                        <span className="text-[10px] font-bold text-mh-slate-400">
+                                          {adv.name.slice(0, 3)}
+                                        </span>
+                                      )}
+                                    </div>
+                                    {isSelected && (
+                                      <span className="absolute -top-1 -right-1 bg-amber-400 text-black rounded-full p-0.5 shadow">
+                                        <Check size={8} strokeWidth={3} />
+                                      </span>
+                                    )}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
+
+              {activePresetElement && (
+                <p className="text-[11px] text-amber-200/90 leading-relaxed">
+                  Weights set for a {activePresetElement} adventurer: {activePresetElement} Attack 85%, Damage, Defense
+                  and Physical Attack 5% each. Other elemental attacks are Inactive on them and don't count.
+                </p>
+              )}
+              {wearerIsHunter && (
+                <p className="text-[11px] text-sky-200/90 leading-relaxed">
+                  Your Hunter's useful stats depend on your weapon, so set the weights to match it below.
+                </p>
+              )}
 
               <p className="text-[10px] text-mh-slate-500 leading-relaxed">
                 Weights split 100% across the stats you want. Each roll is scored against the best possible roll of that
@@ -1576,7 +2155,7 @@ export default function VisageCardChecker() {
                       .map((s) => s.effect),
                   ),
                 );
-                const presetLabel = WEIGHT_PRESETS.find((p) => p.id === activePreset)?.label;
+                const presetLabel = activePresetLabel;
                 return (
                   <div className="space-y-2">
                     {ignored.length > 0 && (
@@ -1762,6 +2341,275 @@ export default function VisageCardChecker() {
           </div>
         </div>
       </div>
+
+      {/* ══════════════════════════════════════════════════════
+          CARD POWER: HOW IT'S CALCULATED
+         ══════════════════════════════════════════════════════ */}
+      <section
+        id="power-explained"
+        className="mho-panel rounded-2xl p-4 sm:p-5 border border-white/10 space-y-5 shadow-xl scroll-mt-24"
+      >
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-2">
+          <div className="flex items-center gap-2">
+            <span className="text-[#FFD700] text-sm">❖</span>
+            <h2 className="font-display text-sm font-bold tracking-wide uppercase text-white">
+              Card Power: how it's calculated
+            </h2>
+          </div>
+          <span className="text-[10px] text-mh-slate-500 font-mono">
+            Game data 1.0.9.4 · checked against 12 cards read in game
+          </span>
+        </div>
+
+        <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-100 leading-relaxed">
+          <span className="font-bold">Power = level points + points from each resketch effect</span>, added up and then
+          rounded down. The two base effects at the top of the card never add power. The same rules apply to every
+          visage, so only the card and the element of whoever wears it matter.
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {/* What changes power */}
+          <div className="space-y-2">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-mh-gold-400">What changes a card's power</h3>
+            <div className="rounded-xl border border-white/10 overflow-hidden text-xs">
+              {(
+                [
+                  {
+                    what: 'Card rarity & level',
+                    how: '+45 to +300',
+                    tone: 'gold',
+                    note: 'The biggest part. Every level adds more, and Superior cards start highest.',
+                  },
+                  { what: 'Physical Attack +N', how: 'N × 1', tone: 'slate', note: 'Always counts, whoever wears the card.' },
+                  {
+                    what: 'Fire / Water / Ice / Thunder / Dragon Attack +N',
+                    how: 'N × 2 or 0',
+                    tone: 'green',
+                    note: "Doubled if it matches the wearer's element. Otherwise it's Inactive and adds nothing.",
+                  },
+                  { what: 'Damage %', how: 'points × 1.5', tone: 'amber', note: 'Points from the value table below.' },
+                  {
+                    what: 'Elemental Critical Damage %',
+                    how: 'points × 1.5',
+                    tone: 'amber',
+                    note: 'Only × 1 on a Hunter with a non-elemental weapon (shown as Inactive but still counts).',
+                  },
+                  { what: 'Defense', how: 'points × 1', tone: 'slate', note: 'Points from the value table below.' },
+                  { what: 'Base effects (top two)', how: '0', tone: 'red', note: 'Never add power.' },
+                ] as const
+              ).map((row, i) => (
+                <div
+                  key={row.what}
+                  className={cn('grid grid-cols-[1fr_auto] gap-x-3 gap-y-0.5 px-3 py-2', i > 0 && 'border-t border-white/5')}
+                >
+                  <span className="font-semibold text-white">{row.what}</span>
+                  <span
+                    className={cn(
+                      'row-span-2 self-center font-mono font-bold text-[11px] px-2 py-0.5 rounded-md border whitespace-nowrap',
+                      row.tone === 'gold' && 'bg-amber-500/15 border-amber-500/40 text-amber-300',
+                      row.tone === 'green' && 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300',
+                      row.tone === 'amber' && 'bg-orange-500/15 border-orange-500/40 text-orange-300',
+                      row.tone === 'slate' && 'bg-white/5 border-white/15 text-mh-slate-200',
+                      row.tone === 'red' && 'bg-red-500/10 border-red-500/30 text-red-300',
+                    )}
+                  >
+                    {row.how}
+                  </span>
+                  <span className="text-[11px] text-mh-slate-400 leading-snug">{row.note}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Live breakdown */}
+          <div className="space-y-2">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-mh-gold-400 flex flex-wrap items-baseline gap-x-2">
+              <span>Your card right now</span>
+              <span className="text-[10px] normal-case tracking-normal font-normal text-mh-slate-400">{wearerLabel}</span>
+            </h3>
+            <div className="rounded-xl border border-white/10 overflow-hidden text-xs">
+              {powerResult.breakdown.map((row, i) => {
+                const inactive = row.note === 'Inactive' || row.note === 'unknown value';
+                const chip =
+                  i === 0
+                    ? 'level points'
+                    : row.note === 'always'
+                      ? '× 1'
+                      : row.note === 'matches element ×2'
+                        ? '× 2 matches element'
+                        : row.note === '×1.5'
+                          ? `${Math.round(row.points / 1.5)} × 1.5`
+                          : row.note === 'Inactive (non-elemental weapon) ×1'
+                            ? '× 1 non-elemental weapon'
+                            : row.note === 'Inactive'
+                              ? 'Inactive: element not matched'
+                              : row.note === 'unknown value'
+                                ? 'value not in table'
+                                : '× 1';
+                return (
+                  <div
+                    key={`${row.part}-${i}`}
+                    className={cn('flex items-center gap-2 px-3 py-1.5', i > 0 && 'border-t border-white/5', inactive && 'opacity-60')}
+                  >
+                    <span className="flex-1 text-mh-slate-200 truncate">{row.part}</span>
+                    <span
+                      className={cn(
+                        'text-[10px] font-mono px-1.5 py-0.5 rounded',
+                        row.note === 'matches element ×2'
+                          ? 'bg-emerald-500/15 text-emerald-300'
+                          : inactive
+                            ? 'bg-red-500/10 text-red-300'
+                            : 'bg-white/5 text-mh-slate-400',
+                      )}
+                    >
+                      {chip}
+                    </span>
+                    <span className="w-12 text-right font-mono font-bold text-white">
+                      {Number.isInteger(row.points) ? row.points : row.points.toFixed(1)}
+                    </span>
+                  </div>
+                );
+              })}
+              <div className="flex items-center gap-2 px-3 py-2 border-t border-amber-500/30 bg-amber-500/10">
+                <span className="flex-1 font-bold text-amber-200">Power (rounded down)</span>
+                <span className="font-mono font-black text-amber-300 text-sm">{powerResult.power}</span>
+              </div>
+            </div>
+            {powerCard.randomEffects.length === 0 && (
+              <p className="text-[11px] text-mh-slate-500">
+                Enter your resketch slots above to see what each one adds.
+              </p>
+            )}
+
+            {/* Same card on each element */}
+            <div className="space-y-1.5 pt-1">
+              <span className="text-[11px] font-semibold text-mh-slate-300">The same card worn by each element</span>
+              <div className="flex flex-wrap gap-1.5">
+                {(
+                  [
+                    { key: 'base', label: 'No match', el: null },
+                    ...POWER_ELEMENTS.map((el) => ({ key: el, label: el, el: el as WearerElement })),
+                    { key: 'None', label: 'Hunter, non-elemental', el: 'None' as WearerElement },
+                  ] as Array<{ key: keyof typeof powerByElement; label: string; el: WearerElement }>
+                ).map((opt) => {
+                  const value = powerByElement[opt.key];
+                  const best = Math.max(...POWER_ELEMENTS.map((el) => powerByElement[el]));
+                  const isCurrent = opt.el === wearerElement;
+                  const isBest = opt.el !== null && opt.el !== 'None' && value === best && best > powerByElement.base;
+                  return (
+                    <span
+                      key={opt.key}
+                      className={cn(
+                        'px-2 py-1 rounded-lg border text-[11px] font-mono',
+                        isCurrent
+                          ? 'bg-amber-500/20 border-amber-500/60 text-amber-200'
+                          : isBest
+                            ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-200'
+                            : 'bg-white/5 border-white/10 text-mh-slate-300',
+                      )}
+                      title={isCurrent ? 'Current wearer' : isBest ? 'Highest power for this card' : undefined}
+                    >
+                      {opt.label} <span className="font-bold text-white">{value}</span>
+                      {isBest && ' ★'}
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Level points */}
+        <div className="space-y-2">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-mh-gold-400">Level points by rarity</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full text-[11px] font-mono border-separate border-spacing-0.5">
+              <thead>
+                <tr className="text-mh-slate-500">
+                  <th className="text-left font-semibold px-1.5">Rarity</th>
+                  {Array.from({ length: 10 }, (_, i) => (
+                    <th key={i} className={cn('font-semibold px-1', i + 1 === cardLevel && 'text-amber-300')}>
+                      Lv {i + 1}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {(['Superior', 'Epic', 'Rare'] as const).map((q) => {
+                  const theme = getRarityTheme(q);
+                  return (
+                    <tr key={q}>
+                      <td className={cn('px-1.5 font-sans font-bold', theme.text)}>{q}</td>
+                      {LEVEL_POINTS[q].map((pts, i) => {
+                        const current = q === cardQuality && i + 1 === cardLevel;
+                        return (
+                          <td
+                            key={i}
+                            className={cn(
+                              'text-center rounded px-1 py-1',
+                              current ? 'bg-amber-500/25 text-amber-200 font-black ring-1 ring-amber-400/70' : 'bg-white/5 text-mh-slate-300',
+                            )}
+                          >
+                            {pts}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Value → points table for the current rarity */}
+        <details className="group rounded-xl border border-white/10 bg-black/20">
+          <summary className="cursor-pointer list-none px-3 py-2 text-xs font-semibold text-mh-slate-200 flex items-center justify-between">
+            <span>Points for Damage, Elemental Critical Damage and Defense on a {cardQuality} card</span>
+            <ChevronDown size={14} className="text-mh-slate-400 transition-transform group-open:rotate-180" />
+          </summary>
+          <div className="px-3 pb-3 space-y-2">
+            {Object.entries(EFFECT_POINTS[cardQuality]).map(([effect, table]) => (
+              <div key={effect} className="space-y-1">
+                <div className="text-[11px] font-bold text-white">
+                  {effect}{' '}
+                  <span className="font-normal text-mh-slate-400">
+                    {effect === 'Defense' ? '(× 1)' : '(× 1.5 on the card, these are the points before it)'}
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-1">
+                  {Object.entries(table).map(([value, pts]) => {
+                    const onCard = powerCard.randomEffects.some((fx) => fx.effect === effect && String(fx.value) === value);
+                    return (
+                      <span
+                        key={value}
+                        className={cn(
+                          'text-[10px] font-mono px-1.5 py-0.5 rounded border',
+                          onCard ? 'bg-amber-500/20 border-amber-500/60 text-amber-200' : 'bg-white/5 border-white/10 text-mh-slate-300',
+                        )}
+                      >
+                        {effect === 'Defense' ? value : `${value}%`} → {pts}
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+            <p className="text-[10px] text-mh-slate-500">
+              Physical and elemental Attack need no table: their points are the value shown on the card.
+            </p>
+          </div>
+        </details>
+
+        <ul className="text-[11px] text-mh-slate-400 leading-relaxed list-disc pl-4 space-y-0.5">
+          <li>
+            Picking an adventurer above uses their element. For your own Hunter, use your weapon's element, or
+            non-elemental.
+          </li>
+          <li>The core slot bonus from Proof of Mastery isn't part of the number shown on the card.</li>
+          <li>New monsters and adventurers don't change these rules; only a game rebalance would.</li>
+        </ul>
+      </section>
     </div>
   );
 }
