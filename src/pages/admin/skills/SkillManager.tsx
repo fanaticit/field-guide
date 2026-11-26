@@ -71,6 +71,7 @@ export default function SkillManager() {
   const [filterCategory, setFilterCategory] = useState('');
   const [filterType, setFilterType] = useState<'' | 'skill' | 'set'>('');
   const [filterActive, setFilterActive] = useState<'' | 'active' | 'inactive'>('');
+  const [filterActiveMode, setFilterActiveMode] = useState<'' | 'Always' | 'Conditional'>('');
   const [filterGameStatus, setFilterGameStatus] = useState<'' | 'in_game' | 'debug'>('');
   const [sortKey, setSortKey] = useState<SortKey>('name');
   const [sortDir, setSortDir] = useState<SortDir>('asc');
@@ -90,7 +91,13 @@ export default function SkillManager() {
           s.id.toLowerCase().includes(q) ||
           (s.skill_type_id ? String(s.skill_type_id).includes(q) : false) ||
           (s.game_status ?? '').toLowerCase().includes(q) ||
-          (s.name_ja ?? '').toLowerCase().includes(q),
+          (s.name_ja ?? '').toLowerCase().includes(q) ||
+          (s.active ?? '').toLowerCase().includes(q) ||
+          (s.trigger ?? '').toLowerCase().includes(q) ||
+          (s.conditions ?? '').toLowerCase().includes(q) ||
+          (s.skill_description ?? '').toLowerCase().includes(q) ||
+          (s.trigger_note ?? '').toLowerCase().includes(q) ||
+          (s.description ?? '').toLowerCase().includes(q),
       );
     }
     if (filterCategory) list = list.filter((s) => s.category === filterCategory);
@@ -98,6 +105,7 @@ export default function SkillManager() {
     if (filterType === 'set') list = list.filter((s) => s.is_set_bonus);
     if (filterActive === 'active') list = list.filter((s) => s.is_active);
     if (filterActive === 'inactive') list = list.filter((s) => !s.is_active);
+    if (filterActiveMode) list = list.filter((s) => s.active === filterActiveMode);
     if (filterGameStatus === 'in_game') list = list.filter((s) => !s.is_debug && s.game_status === 'In game');
     if (filterGameStatus === 'debug') list = list.filter((s) => s.is_debug || s.game_status !== 'In game');
 
@@ -122,7 +130,7 @@ export default function SkillManager() {
     });
 
     return list;
-  }, [skills, search, filterCategory, filterType, filterActive, sortKey, sortDir]);
+  }, [skills, search, filterCategory, filterType, filterActive, filterActiveMode, filterGameStatus, sortKey, sortDir]);
 
   const activeCount = skills.filter((s) => s.is_active).length;
   const inactiveCount = skills.length - activeCount;
@@ -230,6 +238,16 @@ export default function SkillManager() {
             <option value="">All active</option>
             <option value="active">Active only</option>
             <option value="inactive">Inactive only</option>
+          </select>
+
+          <select
+            value={filterActiveMode}
+            onChange={(e) => setFilterActiveMode(e.target.value as '' | 'Always' | 'Conditional')}
+            className="rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-300 outline-none"
+          >
+            <option value="">All trigger modes</option>
+            <option value="Always">Always</option>
+            <option value="Conditional">Conditional</option>
           </select>
 
           <select
@@ -383,6 +401,59 @@ export default function SkillManager() {
                                 );
                               })}
                             </div>
+                          )}
+
+                          {/* Skill Description & Level Effect */}
+                          {skill.skill_description && (
+                            <p className="text-[11px] text-mh-slate-400 mt-1 max-w-xl">
+                              {skill.skill_description}
+                            </p>
+                          )}
+                          {skill.description && (
+                            <p className="text-xs text-mh-slate-200 mt-0.5 max-w-xl">
+                              <span className="text-mh-slate-500 font-normal">Lv.{skill.level}: </span>
+                              {skill.description}
+                            </p>
+                          )}
+
+                          {/* Trigger, Condition, Active, Duration tags */}
+                          {(skill.active || skill.trigger || skill.conditions || skill.duration_s != null) && (
+                            <div className="flex flex-wrap items-center gap-1.5 mt-1 text-[10px]">
+                              {skill.active && (
+                                <span
+                                  className={cn(
+                                    'rounded px-1.5 py-0.2 font-semibold border',
+                                    skill.active === 'Always'
+                                      ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25'
+                                      : 'bg-amber-500/10 text-amber-400 border-amber-500/25',
+                                  )}
+                                >
+                                  {skill.active}
+                                </span>
+                              )}
+                              {skill.duration_s != null && (
+                                <span className="rounded bg-blue-500/10 px-1.5 py-0.2 font-mono text-blue-300 border border-blue-500/25">
+                                  ⏱️ {skill.duration_s}s
+                                </span>
+                              )}
+                              {skill.trigger && (
+                                <span className="inline-flex items-center gap-1 rounded bg-purple-500/10 px-1.5 py-0.5 text-purple-300 border border-purple-500/25">
+                                  <img src="/img/ui/trigger.png" alt="" className="h-3.5 w-3.5 object-contain shrink-0" />
+                                  <span>{skill.trigger}</span>
+                                </span>
+                              )}
+                              {skill.conditions && (
+                                <span className="inline-flex items-center gap-1 rounded bg-cyan-500/10 px-1.5 py-0.5 text-cyan-300 border border-cyan-500/25">
+                                  <img src="/images/comsume/ItemIcon_TalismanInfusion_Green.png" alt="" className="h-3.5 w-3.5 object-contain shrink-0" />
+                                  <span>{skill.conditions}</span>
+                                </span>
+                              )}
+                            </div>
+                          )}
+                          {skill.trigger_note && (
+                            <p className="text-[10px] text-mh-slate-500 italic mt-0.5 max-w-xl">
+                              {skill.trigger_note}
+                            </p>
                           )}
                         </div>
                       </div>

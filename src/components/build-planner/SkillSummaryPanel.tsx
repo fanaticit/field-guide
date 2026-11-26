@@ -231,11 +231,58 @@ export function SkillSummaryPanel() {
               >
                 {/* Tooltip */}
                 {hoveredSkillId === skill.id && (
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 p-3 bg-mh-slate-900 border border-mh-slate-700 rounded-lg shadow-xl z-50 pointer-events-none flex flex-col gap-1">
-                    
-                    <span className="text-xs text-mh-slate-200 leading-snug">
-                      {levelDescription || 'No description available for this skill.'}
-                    </span>
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-72 p-3 bg-mh-slate-900 border border-mh-slate-700 rounded-lg shadow-xl z-50 pointer-events-none flex flex-col gap-2">
+                    {skillDef?.skill_description && (
+                      <p className="text-[11px] text-mh-slate-400 leading-tight">
+                        {skillDef.skill_description}
+                      </p>
+                    )}
+
+                    <div className="bg-black/30 rounded p-2 border border-mh-slate-800">
+                      <div className="text-[10px] font-bold uppercase tracking-wider text-mh-slate-400 mb-0.5">
+                        Level {level} Effect
+                      </div>
+                      <span className="text-xs text-mh-slate-200 leading-snug">
+                        {levelDescription || 'No description available for this skill.'}
+                      </span>
+                    </div>
+
+                    {(skillDef?.active || skillDef?.trigger || skillDef?.conditions || skillDef?.duration_s != null) && (
+                      <div className="flex flex-wrap gap-1.5 pt-1 border-t border-mh-slate-800 text-[10px]">
+                        {skillDef?.active && (
+                          <span className={`px-1.5 py-0.5 rounded font-semibold border ${
+                            skillDef.active === 'Always'
+                              ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                              : 'bg-amber-500/10 text-amber-400 border-amber-500/20'
+                          }`}>
+                            {skillDef.active}
+                          </span>
+                        )}
+                        {skillDef?.duration_s != null && (
+                          <span className="px-1.5 py-0.5 rounded font-medium bg-blue-500/10 text-blue-300 border border-blue-500/20">
+                            ⏱️ {skillDef.duration_s}s
+                          </span>
+                        )}
+                        {skillDef?.trigger && (
+                          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-300 border border-purple-500/20" title={skillDef.trigger}>
+                            <img src="/img/ui/trigger.png" alt="" className="h-3 w-3 object-contain shrink-0" />
+                            <span>{skillDef.trigger}</span>
+                          </span>
+                        )}
+                        {skillDef?.conditions && (
+                          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/20" title={skillDef.conditions}>
+                            <img src="/images/comsume/ItemIcon_TalismanInfusion_Green.png" alt="" className="h-3 w-3 object-contain shrink-0" />
+                            <span>{skillDef.conditions}</span>
+                          </span>
+                        )}
+                      </div>
+                    )}
+
+                    {skillDef?.trigger_note && (
+                      <p className="text-[10px] text-mh-slate-500 italic">
+                        {skillDef.trigger_note}
+                      </p>
+                    )}
                   </div>
                 )}
                 <div className="flex items-center gap-3">

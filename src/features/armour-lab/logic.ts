@@ -38,6 +38,12 @@ export interface LabSkill {
   icon: string | null;
   /** Description of each level (1-based) */
   descByLevel: Record<number, string | null>;
+  skill_description?: string | null;
+  active?: string | null;
+  trigger?: string | null;
+  trigger_note?: string | null;
+  conditions?: string | null;
+  duration_s?: number | null;
 }
 
 /** One upgrade step of a piece */
@@ -121,6 +127,12 @@ export interface RawSkillRow {
   skill_type_id: number | null;
   description: string | null;
   icon: string | null;
+  skill_description?: string | null;
+  active?: string | null;
+  trigger?: string | null;
+  trigger_note?: string | null;
+  conditions?: string | null;
+  duration_s?: number | null;
 }
 
 export interface RawPieceRow {
@@ -195,9 +207,21 @@ export function buildLabData(input: BuildLabDataInput): LabData {
         maxLevel: Math.max(1, base.max_levels),
         icon: base.icon,
         descByLevel: {},
+        skill_description: base.skill_description ?? null,
+        active: base.active ?? null,
+        trigger: base.trigger ?? null,
+        trigger_note: base.trigger_note ?? null,
+        conditions: base.conditions ?? null,
+        duration_s: base.duration_s ?? null,
       };
       skills.set(base.id, skill);
     }
+    if (!skill.skill_description && s.skill_description) skill.skill_description = s.skill_description;
+    if (!skill.active && s.active) skill.active = s.active;
+    if (!skill.trigger && s.trigger) skill.trigger = s.trigger;
+    if (!skill.trigger_note && s.trigger_note) skill.trigger_note = s.trigger_note;
+    if (!skill.conditions && s.conditions) skill.conditions = s.conditions;
+    if (skill.duration_s == null && s.duration_s != null) skill.duration_s = s.duration_s;
     skill.descByLevel[s.level] = cleanGameText(s.description);
     skill.maxLevel = Math.max(skill.maxLevel, s.level);
     rowToSkill.set(s.id, { key: base.id, level: s.level });

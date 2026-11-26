@@ -59,6 +59,18 @@ export interface DBSkill {
   game_status: string;
   /** Flag for debug/test/unused skills */
   is_debug: boolean;
+  /** General skill description (from game skill types) */
+  skill_description: string | null;
+  /** Activation type: "Always", "Conditional", etc. */
+  active: string | null;
+  /** Event trigger (e.g. "on hit", "after taking damage") */
+  trigger: string | null;
+  /** Trigger mechanical notes */
+  trigger_note: string | null;
+  /** Specific activation requirements (e.g. "health condition", "vs Radiant monsters") */
+  conditions: string | null;
+  /** Buff duration in seconds */
+  duration_s: number | null;
   created_at: string;
   updated_at: string;
 }
@@ -72,6 +84,7 @@ export interface SkillFilters {
   isActive?: boolean | null;
   isDebug?: boolean | null;
   gameStatus?: string;
+  activeMode?: string | null;
 }
 
 export const SKILLS_KEY = 'admin-skills';
@@ -80,7 +93,7 @@ export const SKILLS_KEY = 'admin-skills';
 
 export function useAdminSkills(filters: SkillFilters = {}) {
   return useQuery({
-    queryKey: [SKILLS_KEY, filters.category, filters.search, filters.isSetBonus, filters.isActive, filters.isDebug, filters.gameStatus],
+    queryKey: [SKILLS_KEY, filters.category, filters.search, filters.isSetBonus, filters.isActive, filters.isDebug, filters.gameStatus, filters.activeMode],
     queryFn: async () => {
       let q = supabase
         .from('skills')
@@ -106,6 +119,9 @@ export function useAdminSkills(filters: SkillFilters = {}) {
       if (filters.gameStatus) {
         q = q.eq('game_status', filters.gameStatus);
       }
+      if (filters.activeMode) {
+        q = q.eq('active', filters.activeMode);
+      }
 
       const { data, error } = await q;
       if (error) throw error;
@@ -119,6 +135,12 @@ export function useAdminSkills(filters: SkillFilters = {}) {
         skill_type_id: s.skill_type_id !== null && s.skill_type_id !== undefined ? Number(s.skill_type_id) : null,
         game_status: typeof s.game_status === 'string' ? s.game_status : 'In game',
         is_debug: Boolean(s.is_debug),
+        skill_description: typeof s.skill_description === 'string' ? s.skill_description : null,
+        active: typeof s.active === 'string' ? s.active : null,
+        trigger: typeof s.trigger === 'string' ? s.trigger : null,
+        trigger_note: typeof s.trigger_note === 'string' ? s.trigger_note : null,
+        conditions: typeof s.conditions === 'string' ? s.conditions : null,
+        duration_s: s.duration_s !== null && s.duration_s !== undefined && s.duration_s !== '' ? Number(s.duration_s) : null,
       })) as DBSkill[];
     },
     staleTime: 1000 * 60 * 2,

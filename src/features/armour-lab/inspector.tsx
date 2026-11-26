@@ -112,7 +112,56 @@ export function PieceInspector({ data, pieceId, myRarity, targets, onClose, acti
                   <SkillPips level={lv} max={pieceMax} preview={pieceMax - lv} tone={tone} size="sm" />
                 </span>
               </header>
-              <ol className="mt-2 space-y-1">
+
+              {/* Skill Type Description on top */}
+              {s?.skill_description && (
+                <p className="mt-2 text-xs leading-relaxed text-mh-slate-300">
+                  {s.skill_description}
+                </p>
+              )}
+
+              {/* Trigger & Durations */}
+              {(s?.trigger || s?.duration_s != null || s?.active || s?.conditions) && (
+                <div className="mt-2 flex flex-wrap items-center gap-1.5 text-[11px]">
+                  {s.active && (
+                    <span
+                      className={cn(
+                        'rounded px-1.5 py-0.5 font-semibold border',
+                        s.active === 'Always'
+                          ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                          : 'bg-amber-500/10 text-amber-400 border-amber-500/20',
+                      )}
+                    >
+                      {s.active}
+                    </span>
+                  )}
+                  {s.trigger && (
+                    <span className="inline-flex items-center gap-1 rounded bg-purple-500/10 px-2 py-0.5 font-medium text-purple-300 border border-purple-500/20">
+                      <img src="/img/ui/trigger.png" alt="" className="h-3.5 w-3.5 object-contain shrink-0" />
+                      <span>Trigger: {s.trigger}</span>
+                    </span>
+                  )}
+                  {s.duration_s != null && (
+                    <span className="inline-flex items-center gap-1 rounded bg-blue-500/10 px-2 py-0.5 font-mono text-blue-300 border border-blue-500/20">
+                      <span>⏱️</span>
+                      <span>Duration: {s.duration_s}s</span>
+                    </span>
+                  )}
+                  {s.conditions && (
+                    <span className="inline-flex items-center gap-1 rounded bg-emerald-500/10 px-2 py-0.5 text-emerald-300 border border-emerald-500/20">
+                      <img src="/images/comsume/ItemIcon_TalismanInfusion_Green.png" alt="" className="h-3.5 w-3.5 object-contain shrink-0" />
+                      <span>Condition: {s.conditions}</span>
+                    </span>
+                  )}
+                </div>
+              )}
+              {s?.trigger_note && (
+                <p className="mt-1 text-[10px] text-mh-slate-500 italic">
+                  {s.trigger_note}
+                </p>
+              )}
+
+              <ol className="mt-2.5 space-y-1">
                 {timeline.map((t) => {
                   const reached = t.rarity <= r;
                   const current = reached && t.level === lv;
@@ -147,7 +196,28 @@ export function PieceInspector({ data, pieceId, myRarity, targets, onClose, acti
             <p className="mt-1 text-mh-slate-200">
               +{bonus.level} {bonusSkill?.name ?? bonus.skillKey}
             </p>
-            {bonusSkill?.descByLevel[bonus.level] && <p className="mt-0.5 text-mh-slate-400">{bonusSkill.descByLevel[bonus.level]}</p>}
+            {bonusSkill?.skill_description && (
+              <p className="mt-1.5 text-xs text-mh-slate-300 leading-relaxed">
+                {bonusSkill.skill_description}
+              </p>
+            )}
+            {(bonusSkill?.trigger || bonusSkill?.duration_s != null) && (
+              <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[11px]">
+                {bonusSkill.trigger && (
+                  <span className="inline-flex items-center gap-1 rounded bg-purple-500/10 px-2 py-0.5 text-purple-300 border border-purple-500/20">
+                    <img src="/img/ui/trigger.png" alt="" className="h-3.5 w-3.5 object-contain shrink-0" />
+                    <span>Trigger: {bonusSkill.trigger}</span>
+                  </span>
+                )}
+                {bonusSkill.duration_s != null && (
+                  <span className="inline-flex items-center gap-1 rounded bg-blue-500/10 px-2 py-0.5 font-mono text-blue-300 border border-blue-500/20">
+                    <span>⏱️</span>
+                    <span>Duration: {bonusSkill.duration_s}s</span>
+                  </span>
+                )}
+              </div>
+            )}
+            {bonusSkill?.descByLevel[bonus.level] && <p className="mt-1 text-mh-slate-400">{bonusSkill.descByLevel[bonus.level]}</p>}
           </section>
         )}
 

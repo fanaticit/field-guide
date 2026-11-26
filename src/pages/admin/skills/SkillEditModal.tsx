@@ -73,6 +73,12 @@ function emptyForm(): SkillUpsert {
     skill_type_id: null,
     game_status: 'In game',
     is_debug: false,
+    skill_description: null,
+    active: 'Always',
+    trigger: null,
+    trigger_note: null,
+    conditions: null,
+    duration_s: null,
   };
 }
 
@@ -119,6 +125,12 @@ export default function SkillEditModal({ skill, open, onClose }: Props) {
           skill_type_id: skill.skill_type_id ?? null,
           game_status: skill.game_status ?? 'In game',
           is_debug: skill.is_debug ?? false,
+          skill_description: skill.skill_description ?? null,
+          active: skill.active ?? null,
+          trigger: skill.trigger ?? null,
+          trigger_note: skill.trigger_note ?? null,
+          conditions: skill.conditions ?? null,
+          duration_s: skill.duration_s ?? null,
         });
         setIdTouched(true);
       } else {
@@ -608,16 +620,105 @@ export default function SkillEditModal({ skill, open, onClose }: Props) {
             </div>
           </div>
 
-          {/* Description and Notes */}
+          {/* Skill Descriptions */}
           <div>
             <label className="block text-xs font-medium text-mh-slate-400 mb-1.5">
-              Description (optional)
+              General Skill Description (optional)
+            </label>
+            <textarea
+              rows={2}
+              value={form.skill_description ?? ''}
+              onChange={(e) => setForm((p) => ({ ...p, skill_description: e.target.value || null }))}
+              placeholder="Overarching description of what this skill does across all levels..."
+              className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-100 placeholder-mh-slate-600 outline-none focus:border-mh-gold-500/50"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-mh-slate-400 mb-1.5">
+              Level {form.level} Description (optional)
             </label>
             <textarea
               rows={2}
               value={form.description ?? ''}
               onChange={(e) => setForm((p) => ({ ...p, description: e.target.value || null }))}
-              placeholder="What this skill does in game..."
+              placeholder="Specific stat effect for this level (e.g. Health +10.)..."
+              className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-100 placeholder-mh-slate-600 outline-none focus:border-mh-gold-500/50"
+            />
+          </div>
+
+          {/* Trigger & Mechanics */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label className="block text-xs font-medium text-mh-slate-400 mb-1.5">
+                Activation Mode
+              </label>
+              <select
+                value={form.active ?? ''}
+                onChange={(e) => setForm((p) => ({ ...p, active: e.target.value || null }))}
+                className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-100 outline-none focus:border-mh-gold-500/50"
+              >
+                <option value="">None / Not set</option>
+                <option value="Always">Always</option>
+                <option value="Conditional">Conditional</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-mh-slate-400 mb-1.5">
+                Duration (seconds)
+              </label>
+              <input
+                type="number"
+                step="any"
+                value={form.duration_s ?? ''}
+                onChange={(e) =>
+                  setForm((p) => ({
+                    ...p,
+                    duration_s: e.target.value ? parseFloat(e.target.value) : null,
+                  }))
+                }
+                placeholder="e.g. 180"
+                className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-100 placeholder-mh-slate-600 outline-none focus:border-mh-gold-500/50"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label className="block text-xs font-medium text-mh-slate-400 mb-1.5">
+                Trigger
+              </label>
+              <input
+                type="text"
+                value={form.trigger ?? ''}
+                onChange={(e) => setForm((p) => ({ ...p, trigger: e.target.value || null }))}
+                placeholder="e.g. on hit"
+                className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-100 placeholder-mh-slate-600 outline-none focus:border-mh-gold-500/50"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-mh-slate-400 mb-1.5">
+                Conditions
+              </label>
+              <input
+                type="text"
+                value={form.conditions ?? ''}
+                onChange={(e) => setForm((p) => ({ ...p, conditions: e.target.value || null }))}
+                placeholder="e.g. health condition"
+                className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-100 placeholder-mh-slate-600 outline-none focus:border-mh-gold-500/50"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-mh-slate-400 mb-1.5">
+              Trigger Note (optional)
+            </label>
+            <input
+              type="text"
+              value={form.trigger_note ?? ''}
+              onChange={(e) => setForm((p) => ({ ...p, trigger_note: e.target.value || null }))}
+              placeholder="e.g. condition only in the description..."
               className="w-full rounded-lg border border-mh-slate-700 bg-mh-slate-800 px-3 py-2 text-sm text-mh-slate-100 placeholder-mh-slate-600 outline-none focus:border-mh-gold-500/50"
             />
           </div>

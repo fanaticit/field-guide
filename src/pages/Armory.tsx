@@ -62,9 +62,7 @@ export default function Armory() {
   const [sortBy, setSortBy] = useState<'upvotes' | 'newest' | 'oldest' | 'title'>('upvotes');
 
   useEffect(() => {
-    if (urlAdventurer) {
-      setSelectedAdventurer(urlAdventurer);
-    }
+    setSelectedAdventurer(urlAdventurer || 'all');
   }, [urlAdventurer]);
   const [viewMode, setViewModeState] = useState<'panel' | 'list'>(() => {
     const saved = getCookie('armory_view_mode');
@@ -94,6 +92,7 @@ export default function Armory() {
           downvotes,
           created_at,
           author_id,
+          tactical_role,
           author:profiles(username),
           adventurer:adventurers(id, name, image, role),
           buddy:buddies(id, name, image),
@@ -288,7 +287,7 @@ export default function Armory() {
       }
       return 0;
     });
-  }, [builds, roleFilter, selectedClass, selectedWeaponType, selectedInk, searchQuery, sortBy]);
+  }, [builds, selectedAdventurer, roleFilter, selectedClass, selectedWeaponType, selectedInk, searchQuery, sortBy]);
 
   const isLoading = isBuildsLoading || isMonstersLoading;
 

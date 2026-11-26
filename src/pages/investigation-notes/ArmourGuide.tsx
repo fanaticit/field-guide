@@ -723,7 +723,15 @@ export default function ArmourGuide() {
     let list = [...byName.values()].filter((s) => !selectedSkillNames.has(s.name));
     if (skillSearchQuery.trim()) {
       const q = skillSearchQuery.toLowerCase().trim();
-      list = list.filter((s) => s.name.toLowerCase().includes(q) || s.id.toLowerCase().includes(q));
+      list = list.filter(
+        (s) =>
+          s.name.toLowerCase().includes(q) ||
+          s.id.toLowerCase().includes(q) ||
+          (s.active ?? '').toLowerCase().includes(q) ||
+          (s.trigger ?? '').toLowerCase().includes(q) ||
+          (s.conditions ?? '').toLowerCase().includes(q) ||
+          (s.skill_description ?? '').toLowerCase().includes(q),
+      );
     }
     return list.sort((a, b) => a.name.localeCompare(b.name));
   }, [dbSkills, selectedSkillNames, skillSearchQuery]);
@@ -1828,9 +1836,54 @@ export default function ArmourGuide() {
                           })()}
                         </div>
 
-                        {levelDescription(skillId, totalLevel) && (
+                        {meta?.skill_description && (
                           <p className="text-xs text-mh-slate-400 leading-relaxed">
+                            {meta.skill_description}
+                          </p>
+                        )}
+
+                        {levelDescription(skillId, totalLevel) && (
+                          <p className="text-xs text-mh-slate-200 leading-relaxed font-medium">
+                            <span className="text-mh-slate-400 font-normal">Level {totalLevel}: </span>
                             {levelDescription(skillId, totalLevel)}
+                          </p>
+                        )}
+
+                        {(meta?.active || meta?.trigger || meta?.conditions || meta?.duration_s != null) && (
+                          <div className="flex items-center gap-1.5 flex-wrap pt-1 text-[11px]">
+                            {meta.active && (
+                              <span className={cn(
+                                'rounded px-1.5 py-0.5 font-semibold border',
+                                meta.active === 'Always'
+                                  ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                                  : 'bg-amber-500/10 text-amber-400 border-amber-500/20',
+                              )}>
+                                {meta.active}
+                              </span>
+                            )}
+                            {meta.duration_s != null && (
+                              <span className="rounded px-1.5 py-0.5 bg-blue-500/10 text-blue-300 border border-blue-500/20 font-mono">
+                                ⏱️ {meta.duration_s}s
+                              </span>
+                            )}
+                            {meta.trigger && (
+                              <span className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 bg-purple-500/10 text-purple-300 border border-purple-500/20">
+                                <img src="/img/ui/trigger.png" alt="" className="h-3.5 w-3.5 object-contain shrink-0" />
+                                <span>{meta.trigger}</span>
+                              </span>
+                            )}
+                            {meta.conditions && (
+                              <span className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">
+                                <img src="/images/comsume/ItemIcon_TalismanInfusion_Green.png" alt="" className="h-3.5 w-3.5 object-contain shrink-0" />
+                                <span>{meta.conditions}</span>
+                              </span>
+                            )}
+                          </div>
+                        )}
+
+                        {meta?.trigger_note && (
+                          <p className="text-[10px] text-mh-slate-500 italic">
+                            {meta.trigger_note}
                           </p>
                         )}
                       </div>

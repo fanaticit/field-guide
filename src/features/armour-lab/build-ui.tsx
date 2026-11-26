@@ -65,6 +65,40 @@ export function BuildSkillsList({ data, result, wanted, changedKeys }: { data: L
             </button>
             {isOpen && (
               <div className="space-y-1.5 px-5 pb-2 text-[11px] text-mh-slate-400">
+                {(() => {
+                  const sk = data.skills.get(l.key);
+                  return (
+                    <>
+                      {sk?.skill_description && (
+                        <p className="text-mh-slate-300 leading-snug pt-0.5">
+                          {sk.skill_description}
+                        </p>
+                      )}
+                      {(sk?.trigger || sk?.duration_s != null || sk?.conditions) && (
+                        <div className="flex flex-wrap items-center gap-1.5 text-[10px] pb-0.5">
+                          {sk.trigger && (
+                            <span className="inline-flex items-center gap-1 rounded bg-purple-500/10 px-1.5 py-0.2 text-purple-300 border border-purple-500/20">
+                              <img src="/img/ui/trigger.png" alt="" className="h-3 w-3 object-contain shrink-0" />
+                              <span>{sk.trigger}</span>
+                            </span>
+                          )}
+                          {sk.duration_s != null && (
+                            <span className="inline-flex items-center gap-1 rounded bg-blue-500/10 px-1.5 py-0.2 font-mono text-blue-300 border border-blue-500/20">
+                              <span>⏱️</span>
+                              <span>{sk.duration_s}s</span>
+                            </span>
+                          )}
+                          {sk.conditions && (
+                            <span className="inline-flex items-center gap-1 rounded bg-emerald-500/10 px-1.5 py-0.2 text-emerald-300 border border-emerald-500/20">
+                              <img src="/images/comsume/ItemIcon_TalismanInfusion_Green.png" alt="" className="h-3 w-3 object-contain shrink-0" />
+                              <span>{sk.conditions}</span>
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </>
+                  );
+                })()}
                 {/* Every level, so hunters can judge whether more levels are worth it */}
                 <ol className="space-y-0.5">
                   {Array.from({ length: l.max }, (_, i) => i + 1).map((lv) => {
