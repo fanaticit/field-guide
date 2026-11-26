@@ -106,7 +106,8 @@ function useNavCapacity(navRef: React.RefObject<HTMLElement | null>): number {
 
       if (isPortrait) {
         const w = navRef.current?.clientWidth || window.innerWidth;
-        if (w >= 920) setCapacity(9);
+        if (w >= 980) setCapacity(10);
+        else if (w >= 920) setCapacity(9);
         else if (w >= 860) setCapacity(8);
         else if (w >= 800) setCapacity(7);
         else if (w >= 740) setCapacity(6);
@@ -118,7 +119,8 @@ function useNavCapacity(navRef: React.RefObject<HTMLElement | null>): number {
         else setCapacity(0);
       } else {
         const h = navRef.current?.clientHeight || window.innerHeight;
-        if (h >= 940) setCapacity(9);
+        if (h >= 1000) setCapacity(10);
+        else if (h >= 940) setCapacity(9);
         else if (h >= 880) setCapacity(8);
         else if (h >= 820) setCapacity(7);
         else if (h >= 760) setCapacity(6);
@@ -174,6 +176,7 @@ export default function MainNav() {
   const { pathname } = useLocation();
   const { user, profile, signOut } = useAuthStore();
   const isAdmin = useAuthStore(selectIsAdmin);
+  const homeTheme = useUIStore((s) => s.sectionThemes['/'] ?? DEFAULT_SECTION_THEMES['/']);
   const challengesTheme = useUIStore((s) => s.sectionThemes['/challenges'] ?? DEFAULT_SECTION_THEMES['/challenges']);
   const armoryTheme = useUIStore((s) => s.sectionThemes['/armory'] ?? DEFAULT_SECTION_THEMES['/armory']);
   const galleryTheme = useUIStore((s) => s.sectionThemes['/gallery'] ?? DEFAULT_SECTION_THEMES['/gallery']);
@@ -248,29 +251,32 @@ export default function MainNav() {
   const visageSetPath = visageSetBuildId ? `/gallery/set?build=${visageSetBuildId}` : '/gallery/set';
 
   // Priority order for spill-out items:
-  // 1 - Weapons (/challenges/weapons) — spills out first, returns last.
-  // 2 - Monsters (/challenges/monsters) — pops out after Weapons and before Visage Collection
-  // 3 - Visage Collection (/gallery/collection)
-  // 4 - Armour (/armory/armour)
-  // 5 - Buddies (/challenges/buddies)
-  // 6 - Build Set (/gallery/set)
-  // 7 - Build Planner (/armory/planner)
-  // 8 - Adventurer (/challenges/adventurers)
-  // 9 - Game Updates (/updates) — spills out last, returns first.
-  const isWeaponsSpilled = capacity >= 1;
-  const isMonstersSpilled = capacity >= 2;
-  const isVisageSpilled = capacity >= 3;
-  const isArmourSpilled = capacity >= 4;
-  const isBuddiesSpilled = capacity >= 5;
-  const isBuildSetSpilled = capacity >= 6;
-  const isBuildPlannerSpilled = capacity >= 7;
-  const isAdventurerSpilled = capacity >= 8;
-  const isUpdatesSpilled = capacity >= 9;
+  // 1 - Armour (/armory/armour) — spills out first, returns last.
+  // 2 - Check my Card (/gallery/check)
+  // 3 - Weapons (/challenges/weapons)
+  // 4 - Monsters (/challenges/monsters)
+  // 5 - Visage Collection (/gallery/collection)
+  // 6 - Buddies (/challenges/buddies)
+  // 7 - Build Set (/gallery/set)
+  // 8 - Build Planner (/armory/planner)
+  // 9 - Adventurer (/challenges/adventurers)
+  // 10 - Game Updates (/updates) — spills out last, returns first.
+  const isArmourSpilled = capacity >= 1;
+  const isCardCheckSpilled = capacity >= 2;
+  const isWeaponsSpilled = capacity >= 3;
+  const isMonstersSpilled = capacity >= 4;
+  const isVisageSpilled = capacity >= 5;
+  const isBuddiesSpilled = capacity >= 6;
+  const isBuildSetSpilled = capacity >= 7;
+  const isBuildPlannerSpilled = capacity >= 8;
+  const isAdventurerSpilled = capacity >= 9;
+  const isUpdatesSpilled = capacity >= 10;
 
+  const isArmourActive = pathname.startsWith('/armory/armour');
+  const isCardCheckActive = pathname.startsWith('/gallery/check');
   const isWeaponsActive = pathname.startsWith('/challenges/weapons');
   const isMonstersActive = pathname.startsWith('/challenges/monsters');
   const isVisageActive = pathname.startsWith('/gallery/collection');
-  const isArmourActive = pathname.startsWith('/armory/armour');
   const isBuddiesActive = pathname.startsWith('/challenges/buddies');
   const isBuildSetActive = pathname.startsWith('/gallery/set');
   const isBuildPlannerActive = pathname.startsWith('/armory/planner') || pathname.startsWith('/build-planner');
@@ -284,6 +290,7 @@ export default function MainNav() {
     (isAdventurerSpilled && isAdventurerActive);
 
   const isGalleryChildSpilledAndActive =
+    (isCardCheckSpilled && isCardCheckActive) ||
     (isVisageSpilled && isVisageActive) ||
     (isBuildSetSpilled && isBuildSetActive);
 
@@ -303,7 +310,7 @@ export default function MainNav() {
     description: isLoggedIn ? displayName : 'Welcome to Field Guide',
     iconSrc: '/img/ui/Home%20Icon.png',
     iconZoom: 1,
-    accent: 'superior',
+    accent: themeToNavAccent(homeTheme),
     active: homeActive,
     subItems: [
       ...(!isUpdatesSpilled
@@ -332,6 +339,9 @@ export default function MainNav() {
     active: armoryActive,
     subItems: [
       { id: 'armory-builds', label: 'Community Builds', icon: LayoutGrid, iconSrc: '/img/ui/community_builds.png', iconZoom: 1.275, active: pathname === '/armory' || pathname === '/armory/builds', to: '/armory' },
+      ...(!isArmourSpilled
+        ? [{ id: 'armory-armour', label: 'Armour', icon: Shield, iconSrc: '/img/ui/Equipment%20Icon.png', iconZoom: 0.75, active: isArmourActive, to: '/armory/armour' }]
+        : []),
       ...(!isBuildPlannerSpilled
         ? [{
             id: 'armory-planner',
@@ -341,9 +351,6 @@ export default function MainNav() {
             active: isBuildPlannerActive,
             to: plannerPath,
           }]
-        : []),
-      ...(!isArmourSpilled
-        ? [{ id: 'armory-armour', label: 'Armour', icon: Shield, iconSrc: '/img/ui/Equipment%20Icon.png', iconZoom: 0.75, active: isArmourActive, to: '/armory/armour' }]
         : []),
     ],
   };
@@ -359,6 +366,16 @@ export default function MainNav() {
     active: galleryActive,
     subItems: [
       { id: 'gallery-sets', label: 'Visage Sets', icon: Sparkles, iconSrc: '/img/ui/visage_sets.png', active: pathname === '/gallery' || pathname === '/gallery/sets', to: '/gallery' },
+      ...(!isCardCheckSpilled
+        ? [{
+            id: 'gallery-check',
+            label: 'Check my Card',
+            icon: ScanSearch,
+            iconSrc: '/img/ui/study.png',
+            active: isCardCheckActive,
+            to: '/gallery/check',
+          }]
+        : []),
       ...(!isBuildSetSpilled
         ? [{
             id: 'gallery-builder',
@@ -372,14 +389,6 @@ export default function MainNav() {
       ...(!isVisageSpilled
         ? [{ id: 'gallery-collection', label: 'Visage Collection', icon: BookMarked, iconSrc: '/img/ui/visage_collection.png', iconZoom: 1.275, active: isVisageActive, to: '/gallery/collection' }]
         : []),
-      {
-        id: 'gallery-check',
-        label: 'Check my Card',
-        icon: ScanSearch,
-        iconSrc: '/img/ui/study.png',
-        active: pathname === '/gallery/check',
-        to: '/gallery/check',
-      },
     ],
   };
 
@@ -417,7 +426,7 @@ export default function MainNav() {
       label: 'Home',
       iconSrc: '/img/ui/Home%20Icon.png',
       iconZoom: 1,
-      accent: 'superior',
+      accent: themeToNavAccent(homeTheme),
       active: homeActive,
       section: homeSection,
     },
@@ -428,7 +437,7 @@ export default function MainNav() {
             label: 'Game Updates',
             iconSrc: '/img/ui/game_updates.png',
             iconZoom: 0.85,
-            accent: 'superior' as const,
+            accent: themeToNavAccent(homeTheme),
             active: isUpdatesActive,
             to: '/updates',
           },
@@ -443,19 +452,6 @@ export default function MainNav() {
       active: armoryActive,
       section: armorySection,
     },
-    ...(isBuildPlannerSpilled
-      ? [
-          {
-            id: 'armory-planner-spill',
-            label: 'Build Planner',
-            iconSrc: '/img/ui/build_planner.png',
-            iconZoom: 0.85,
-            accent: themeToNavAccent(armoryTheme),
-            active: isBuildPlannerActive,
-            to: plannerPath,
-          },
-        ]
-      : []),
     ...(isArmourSpilled
       ? [
           {
@@ -469,6 +465,19 @@ export default function MainNav() {
           },
         ]
       : []),
+    ...(isBuildPlannerSpilled
+      ? [
+          {
+            id: 'armory-planner-spill',
+            label: 'Build Planner',
+            iconSrc: '/img/ui/build_planner.png',
+            iconZoom: 0.85,
+            accent: themeToNavAccent(armoryTheme),
+            active: isBuildPlannerActive,
+            to: plannerPath,
+          },
+        ]
+      : []),
     {
       id: 'gallery',
       label: 'Gallery',
@@ -478,6 +487,19 @@ export default function MainNav() {
       active: galleryActive,
       section: gallerySection,
     },
+    ...(isCardCheckSpilled
+      ? [
+          {
+            id: 'gallery-check-spill',
+            label: 'Check my Card',
+            iconSrc: '/img/ui/study.png',
+            iconZoom: 0.85,
+            accent: themeToNavAccent(galleryTheme),
+            active: isCardCheckActive,
+            to: '/gallery/check',
+          },
+        ]
+      : []),
     ...(isBuildSetSpilled
       ? [
           {
