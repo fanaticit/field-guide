@@ -7,6 +7,12 @@
 // The active item is lifted out of the bar in a notched bubble.
 // Click any item to open its sub-menu.
 //
+// Every icon wears its group's colour (Home, Armory, Gallery, Challenges),
+// so a page that sits on the bar by itself still shows which group it is
+// in; its group icon is marked too. Group pop-ups always list every page
+// of the group. On desktop, hovering the book (home) icon opens a map of
+// every page.
+//
 // Every item that leads to a page is a real link (<a href>), so search
 // engines and AI crawlers can follow the navigation. Section icons link to
 // their main page; a plain click opens the sub-menu instead, while
@@ -61,6 +67,8 @@ interface SubNavItem {
   /** Action for items that are not links (login, logout…) */
   onSelect?: () => void;
   badge?: number;
+  /** This page also has its own icon on the bar */
+  onRail?: boolean;
 }
 
 interface NavSection {
@@ -192,6 +200,10 @@ export default function MainNav() {
   const buttonRefs = useRef<Record<string, HTMLElement | null>>({});
   const navRef = useRef<HTMLElement | null>(null);
   const capacity = useNavCapacity(navRef);
+  const [mapOpen, setMapOpen] = useState(false);
+  const openIdRef = useRef<string | null>(null);
+  openIdRef.current = openId;
+  const mapTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   // Track page views on unique route changes; show feedback popover on 10th page (or next target if 'Later' chosen)
   useEffect(() => {
@@ -313,9 +325,7 @@ export default function MainNav() {
     accent: themeToNavAccent(homeTheme),
     active: homeActive,
     subItems: [
-      ...(!isUpdatesSpilled
-        ? [{ id: 'home-updates', label: 'Game Updates', icon: ScrollText, iconSrc: '/img/ui/game_updates.png', active: isUpdatesActive, to: '/updates' }]
-        : []),
+      ...[{ onRail: isUpdatesSpilled, id: 'home-updates', label: 'Game Updates', icon: ScrollText, iconSrc: '/img/ui/game_updates.png', active: isUpdatesActive, to: '/updates' }],
       ...(isLoggedIn
         ? [{ id: 'home-settings', label: 'Profile & Settings', icon: Settings, iconSrc: '/img/ui/profile_and_settings.png', active: pathname === '/settings', to: '/settings' }]
         : [{ id: 'home-login', label: 'Login', icon: LogIn, iconSrc: '/img/ui/logout.png', active: false, onSelect: () => setLoginModalOpen(true) }]),
@@ -339,19 +349,15 @@ export default function MainNav() {
     active: armoryActive,
     subItems: [
       { id: 'armory-builds', label: 'Community Builds', icon: LayoutGrid, iconSrc: '/img/ui/community_builds.png', iconZoom: 1.275, active: pathname === '/armory' || pathname === '/armory/builds', to: '/armory' },
-      ...(!isArmourSpilled
-        ? [{ id: 'armory-armour', label: 'Armour', icon: Shield, iconSrc: '/img/ui/Equipment%20Icon.png', iconZoom: 0.75, active: isArmourActive, to: '/armory/armour' }]
-        : []),
-      ...(!isBuildPlannerSpilled
-        ? [{
+      ...[{ onRail: isArmourSpilled, id: 'armory-armour', label: 'Armour', icon: Shield, iconSrc: '/img/ui/Equipment%20Icon.png', iconZoom: 0.75, active: isArmourActive, to: '/armory/armour' }],
+      ...[{ onRail: isBuildPlannerSpilled,
             id: 'armory-planner',
             label: 'Build Planner',
             icon: Sword,
             iconSrc: '/img/ui/build_planner.png',
             active: isBuildPlannerActive,
             to: plannerPath,
-          }]
-        : []),
+          }],
     ],
   };
 
@@ -366,29 +372,23 @@ export default function MainNav() {
     active: galleryActive,
     subItems: [
       { id: 'gallery-sets', label: 'Visage Sets', icon: Sparkles, iconSrc: '/img/ui/visage_sets.png', active: pathname === '/gallery' || pathname === '/gallery/sets', to: '/gallery' },
-      ...(!isCardCheckSpilled
-        ? [{
+      ...[{ onRail: isCardCheckSpilled,
             id: 'gallery-check',
             label: 'Check my Card',
             icon: ScanSearch,
             iconSrc: '/img/ui/study.png',
             active: isCardCheckActive,
             to: '/gallery/check',
-          }]
-        : []),
-      ...(!isBuildSetSpilled
-        ? [{
+          }],
+      ...[{ onRail: isBuildSetSpilled,
             id: 'gallery-builder',
             label: 'Build Set',
             icon: Layers,
             iconSrc: '/img/ui/build_set.png',
             active: isBuildSetActive,
             to: visageSetPath,
-          }]
-        : []),
-      ...(!isVisageSpilled
-        ? [{ id: 'gallery-collection', label: 'Visage Collection', icon: BookMarked, iconSrc: '/img/ui/visage_collection.png', iconZoom: 1.275, active: isVisageActive, to: '/gallery/collection' }]
-        : []),
+          }],
+      ...[{ onRail: isVisageSpilled, id: 'gallery-collection', label: 'Visage Collection', icon: BookMarked, iconSrc: '/img/ui/visage_collection.png', iconZoom: 1.275, active: isVisageActive, to: '/gallery/collection' }],
     ],
   };
 
@@ -403,18 +403,10 @@ export default function MainNav() {
     active: challengesActive,
     subItems: [
       { id: 'challenges-my', label: 'My Challenges', icon: Target, iconSrc: '/img/ui/my_challenges.png', active: pathname === '/challenges', to: '/challenges' },
-      ...(!isAdventurerSpilled
-        ? [{ id: 'challenges-adventurers', label: 'Adventurer', icon: UserCheck, iconSrc: '/img/ui/Adventurer%20Icon.png', active: isAdventurerActive, to: '/challenges/adventurers' }]
-        : []),
-      ...(!isBuddiesSpilled
-        ? [{ id: 'challenges-buddies', label: 'Buddies', icon: Cat, iconSrc: '/img/ui/Buddy%20Icon.png', iconZoom: 0.75, active: isBuddiesActive, to: '/challenges/buddies' }]
-        : []),
-      ...(!isMonstersSpilled
-        ? [{ id: 'challenges-monsters', label: 'Monsters', icon: Footprints, iconSrc: '/img/ui/monster.png', iconZoom: 0.85, active: isMonstersActive, to: '/challenges/monsters' }]
-        : []),
-      ...(!isWeaponsSpilled
-        ? [{ id: 'challenges-weapons', label: 'Weapons', icon: Sword, iconSrc: '/img/ui/Weapons%20Icon.png', iconZoom: 0.75, active: isWeaponsActive, to: '/challenges/weapons' }]
-        : []),
+      ...[{ onRail: isAdventurerSpilled, id: 'challenges-adventurers', label: 'Adventurer', icon: UserCheck, iconSrc: '/img/ui/Adventurer%20Icon.png', active: isAdventurerActive, to: '/challenges/adventurers' }],
+      ...[{ onRail: isBuddiesSpilled, id: 'challenges-buddies', label: 'Buddies', icon: Cat, iconSrc: '/img/ui/Buddy%20Icon.png', iconZoom: 0.75, active: isBuddiesActive, to: '/challenges/buddies' }],
+      ...[{ onRail: isMonstersSpilled, id: 'challenges-monsters', label: 'Monsters', icon: Footprints, iconSrc: '/img/ui/monster.png', iconZoom: 0.85, active: isMonstersActive, to: '/challenges/monsters' }],
+      ...[{ onRail: isWeaponsSpilled, id: 'challenges-weapons', label: 'Weapons', icon: Sword, iconSrc: '/img/ui/Weapons%20Icon.png', iconZoom: 0.75, active: isWeaponsActive, to: '/challenges/weapons' }],
     ],
   };
 
@@ -589,11 +581,30 @@ export default function MainNav() {
       : []),
   ];
 
+  // The bar's items, grouped by section (Home, Armory, Gallery, Challenges)
+  const groupPathActive: Record<string, boolean> = {
+    home: pathname === '/' || pathname === '/updates' || pathname === '/settings' || pathname === '/spoilers',
+    armory: pathname.startsWith('/armory') || pathname.startsWith('/build-planner'),
+    gallery: pathname.startsWith('/gallery'),
+    challenges: pathname.startsWith('/challenges'),
+  };
+  const navGroups = sections
+    .map((s) => ({
+      id: s.id,
+      label: s.label,
+      accent: s.accent,
+      items: barItems.filter((b) => b.id.split('-')[0] === s.id),
+      // You are on one of this group's pages that sits on the bar by itself
+      childActive: Boolean(groupPathActive[s.id] && !s.active),
+    }))
+    .filter((g) => g.items.length > 0);
+
   const openSection = sections.find((s) => s.id === openId) ?? null;
 
   // Close the sub-menu whenever the route changes (including browser back/forward)
   useEffect(() => {
     setOpenId(null);
+    setMapOpen(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -605,6 +616,23 @@ export default function MainNav() {
     return () => window.removeEventListener('keydown', onKey);
   }, [openId]);
 
+  // Hovering the book (home) icon on desktop shows every page by name
+  const canHoverMap = () =>
+    window.matchMedia('(hover: hover)').matches &&
+    !window.matchMedia('(max-width: 1023px) and (orientation: portrait)').matches;
+  const mapEnter = () => {
+    // A group pop-up the hunter opened by clicking wins over the map
+    if (!canHoverMap() || openIdRef.current) return;
+    clearTimeout(mapTimer.current);
+    mapTimer.current = setTimeout(() => {
+      if (!openIdRef.current) setMapOpen(true);
+    }, 180);
+  };
+  const mapLeave = () => {
+    clearTimeout(mapTimer.current);
+    mapTimer.current = setTimeout(() => setMapOpen(false), 260);
+  };
+
   const openMenu = (section: NavSection) => {
     const rect = buttonRefs.current[section.id]?.getBoundingClientRect();
     if (rect) setAnchorY(rect.top + rect.height / 2);
@@ -612,6 +640,8 @@ export default function MainNav() {
   };
 
   const handleSectionClick = (section: NavSection) => {
+    clearTimeout(mapTimer.current);
+    setMapOpen(false);
     if (openId === section.id) {
       setOpenId(null);
       return;
@@ -623,7 +653,12 @@ export default function MainNav() {
     <>
       {openSection && <div className="main-nav-scrim" onClick={() => setOpenId(null)} aria-hidden="true" />}
 
-      <nav ref={navRef} className="main-nav" aria-label="Main navigation">
+      <nav
+        ref={navRef}
+        className="main-nav"
+        aria-label="Main navigation"
+        data-map-open={mapOpen}
+      >
         <span className="main-nav__surface" aria-hidden="true" />
 
         <Link
@@ -631,7 +666,12 @@ export default function MainNav() {
           state={{ fromNav: true }}
           className="main-nav__brand"
           aria-label="Field Guide home"
-          onClick={() => setOpenId(null)}
+          onClick={() => {
+            setOpenId(null);
+            setMapOpen(false);
+          }}
+          onMouseEnter={mapEnter}
+          onMouseLeave={mapLeave}
         >
           <img
             src="/images/ui/field-guide-icon-removebg-preview.png"
@@ -641,7 +681,16 @@ export default function MainNav() {
         </Link>
 
         <ul className="main-nav__items">
-          {barItems.map((item) => {
+          {navGroups.map((g) => (
+          <li
+            key={g.id}
+            className="main-nav__group"
+            data-group={g.id}
+            data-accent={g.accent}
+            style={{ '--count': g.items.length } as React.CSSProperties}
+          >
+          <ul className="main-nav__group-items">
+          {g.items.map((item) => {
             const hasSubmenu = Boolean(item.section && item.section.subItems.length > 1);
             const single = item.section && item.section.subItems.length === 1 ? item.section.subItems[0] : null;
             const href = hasSubmenu ? item.section!.path : single ? single.to : item.to;
@@ -666,7 +715,7 @@ export default function MainNav() {
                   )}
                 </span>
                 <span className="main-nav__tip" role="tooltip">
-                  {item.label}
+                  {!item.section ? `${g.label} › ${item.label}` : item.label}
                 </span>
               </>
             );
@@ -674,13 +723,15 @@ export default function MainNav() {
               id: `nav-${item.id}`,
               className: 'main-nav__btn',
               'data-active': item.active,
+              'data-section': item.section ? true : undefined,
+              'data-child-active': item.section ? g.childActive : undefined,
               'data-accent': item.accent,
               'aria-label': item.label,
               'aria-current': item.active ? ('page' as const) : undefined,
               onContextMenu: (e: ReactMouseEvent) => e.preventDefault(),
             };
             return (
-              <li key={item.id}>
+              <li key={item.id} className="main-nav__item">
                 {href ? (
                   <Link
                     {...common}
@@ -716,6 +767,9 @@ export default function MainNav() {
               </li>
             );
           })}
+          </ul>
+          </li>
+          ))}
         </ul>
 
         {/* Footer / Utility action: Bottom on desktop rail, far right on mobile bottom bar */}
@@ -884,6 +938,14 @@ export default function MainNav() {
                     )}
                   </div>
                   <span className="truncate">{sub.label}</span>
+                  {sub.onRail && (
+                    <span
+                      className="ml-auto shrink-0 rounded-full border border-[var(--nav-accent)]/50 px-1.5 py-px text-[9px] font-bold uppercase tracking-wide text-[var(--nav-accent)]"
+                      title="This page also has its own icon on the menu bar"
+                    >
+                      On the bar
+                    </span>
+                  )}
                   {sub.badge !== undefined && sub.badge > 0 && (
                     <span className="ml-auto rounded-full bg-red-500/20 px-1.5 py-0.5 text-[10px] font-bold text-red-400 ring-1 ring-red-500/40">
                       {sub.badge > 99 ? '99+' : sub.badge}
@@ -918,6 +980,52 @@ export default function MainNav() {
               );
             })}
           </div>
+        </div>
+      )}
+
+      {/* Every page by name, grouped and coloured (opens on hovering the book icon) */}
+      {mapOpen && (
+        <div
+          className="main-nav-map"
+          role="navigation"
+          aria-label="All pages"
+          onMouseEnter={() => clearTimeout(mapTimer.current)}
+          onMouseLeave={mapLeave}
+        >
+          {sections.map((section) => (
+            <section key={section.id} className="main-nav-map__group" data-accent={section.accent}>
+              <header className="flex items-center gap-2 px-1.5 pb-1">
+                <img src={section.iconSrc} alt="" className="h-7 w-7 object-contain" style={{ transform: `scale(${section.iconZoom})` }} />
+                <div className="min-w-0">
+                  <p className="font-display text-sm font-bold leading-none text-[var(--nav-accent)]">{section.label}</p>
+                  <p className="mt-0.5 truncate text-[9px] uppercase tracking-widest text-[#A3A3A3]">{section.description}</p>
+                </div>
+              </header>
+              {section.subItems.map((sub) => {
+                const cls = cn(
+                  'flex w-full items-center gap-2 rounded-lg px-1.5 py-1 text-left text-[13px] transition-colors',
+                  sub.active ? 'bg-[var(--nav-accent)]/15 font-bold text-[var(--nav-accent)]' : 'text-[#C8CAD3] hover:bg-white/5 hover:text-white',
+                );
+                const inner = (
+                  <>
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center">
+                      <img src={sub.iconSrc} alt="" className="h-full w-full object-contain" style={sub.iconZoom ? { transform: `scale(${sub.iconZoom})` } : undefined} />
+                    </span>
+                    <span className="truncate">{sub.label}</span>
+                  </>
+                );
+                return sub.to ? (
+                  <Link key={sub.id} to={linkPath(sub.to)} className={cls} aria-current={sub.active ? 'page' : undefined} onClick={() => setMapOpen(false)}>
+                    {inner}
+                  </Link>
+                ) : (
+                  <button key={sub.id} type="button" className={cls} onClick={() => { setMapOpen(false); sub.onSelect?.(); }}>
+                    {inner}
+                  </button>
+                );
+              })}
+            </section>
+          ))}
         </div>
       )}
 

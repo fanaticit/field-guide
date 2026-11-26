@@ -297,22 +297,30 @@ body {
 }
 
 .main-nav__btn[data-accent="superior"],
-.main-nav-submenu[data-accent="superior"] {
+.main-nav-submenu[data-accent="superior"],
+.main-nav__group[data-accent="superior"],
+.main-nav-map__group[data-accent="superior"] {
   --nav-accent: var(--accent-gold);
   --nav-glow: rgba(255, 215, 0, 0.4);
 }
 .main-nav__btn[data-accent="epic"],
-.main-nav-submenu[data-accent="epic"] {
+.main-nav-submenu[data-accent="epic"],
+.main-nav__group[data-accent="epic"],
+.main-nav-map__group[data-accent="epic"] {
   --nav-accent: var(--rarity-epic);
   --nav-glow: rgba(156, 98, 214, 0.5);
 }
 .main-nav__btn[data-accent="fine"],
-.main-nav-submenu[data-accent="fine"] {
+.main-nav-submenu[data-accent="fine"],
+.main-nav__group[data-accent="fine"],
+.main-nav-map__group[data-accent="fine"] {
   --nav-accent: var(--rarity-fine);
   --nav-glow: rgba(117, 182, 112, 0.45);
 }
 .main-nav__btn[data-accent="rare"],
-.main-nav-submenu[data-accent="rare"] {
+.main-nav-submenu[data-accent="rare"],
+.main-nav__group[data-accent="rare"],
+.main-nav-map__group[data-accent="rare"] {
   --nav-accent: var(--rarity-rare);
   --nav-glow: rgba(98, 169, 209, 0.5);
 }
@@ -488,6 +496,88 @@ body {
   }
 }
 
+/* Groups (Home, Armory, Gallery, Challenges): invisible wrappers that
+   carry each group's colour */
+.main-nav__group,
+.main-nav__group-items {
+  display: contents;
+}
+.main-nav__group-items {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Every icon wears its group colour */
+.main-nav .main-nav__btn:not([data-active="true"]) .main-nav__bubble {
+  border-color: color-mix(in srgb, var(--nav-accent) 40%, transparent);
+  background-color: color-mix(in srgb, var(--nav-accent) 8%, transparent);
+}
+.main-nav .main-nav__icon img {
+  opacity: 0.85;
+  filter: none;
+}
+/* The page you are on keeps its pop-out, with a thicker ring in its group colour */
+.main-nav .main-nav__btn[data-active="true"] .main-nav__bubble {
+  border-width: 2.5px;
+}
+/* The group's own icon has a solid ring */
+.main-nav .main-nav__btn[data-section="true"]:not([data-active="true"]) .main-nav__bubble {
+  border-color: color-mix(in srgb, var(--nav-accent) 75%, transparent);
+}
+/* On a page that sits on the bar by itself: its group icon lights up too, with a marker */
+.main-nav .main-nav__btn[data-child-active="true"] .main-nav__bubble {
+  border-color: var(--nav-accent);
+  box-shadow: 0 0 12px var(--nav-glow);
+}
+.main-nav .main-nav__btn[data-child-active="true"] .main-nav__bubble::after {
+  content: '';
+  position: absolute;
+  right: -9px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  margin-top: -3px;
+  border-radius: 50%;
+  background: var(--nav-accent);
+  box-shadow: 0 0 6px var(--nav-glow);
+}
+
+/* Hovering the book (home) icon on desktop shows every page by name; the
+   single-icon labels step aside while it is open */
+.main-nav[data-map-open="true"] .main-nav__tip {
+  display: none;
+}
+.main-nav-map {
+  position: fixed;
+  z-index: 41;
+  left: calc(var(--nav-left) + var(--nav-rail-w) + 10px);
+  top: var(--nav-margin);
+  max-height: calc(100dvh - var(--nav-margin) * 2);
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(2, 240px);
+  gap: 8px;
+  padding: 8px;
+  border-radius: 1rem;
+  background: var(--bg-panel-secondary);
+  border: 1px solid var(--border-subtle);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6);
+  animation: main-nav-pop-side-map 0.16s ease-out;
+}
+.main-nav-map__group {
+  padding: 6px;
+  border-radius: 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--nav-accent) 45%, transparent);
+  background: color-mix(in srgb, var(--nav-accent) 7%, transparent);
+}
+@keyframes main-nav-pop-side-map {
+  from { opacity: 0; transform: translateX(-6px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
 /* Footer / bottom action (e.g. Feedback) */
 .main-nav__footer {
   position: relative;
@@ -622,7 +712,7 @@ body {
     align-items: center;
     gap: 0;
   }
-  .main-nav__items > li {
+  .main-nav__item {
     flex: 1;
     display: flex;
     justify-content: center;
@@ -653,6 +743,13 @@ body {
   .main-nav__btn[data-active="true"] .main-nav__bubble,
   .main-nav__btn[data-active="true"]:hover .main-nav__bubble {
     transform: translateY(-24px) scale(1.12);
+  }
+  .main-nav .main-nav__btn[data-child-active="true"] .main-nav__bubble::after {
+    right: auto;
+    left: 50%;
+    top: auto;
+    bottom: -9px;
+    margin: 0 0 0 -3px;
   }
   .main-nav__more {
     transform: none;
@@ -692,7 +789,8 @@ body {
   .main-nav__bubble,
   .main-nav__icon img,
   .main-nav__more,
-  .main-nav-submenu {
+  .main-nav-submenu,
+  .main-nav-map {
     transition: none;
     animation: none;
   }
