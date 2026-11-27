@@ -12,6 +12,7 @@ import { EquipmentSelector } from '../components/build-planner/EquipmentSelector
 import { VisageSelector } from '../components/build-planner/VisageSelector';
 import { SkillSummaryPanel } from '../components/build-planner/SkillSummaryPanel';
 import { ExportBuildImageButton } from '../components/build-planner/ExportBuildImageButton';
+import { AddBuildToChallengesButton } from '../components/build-planner/AddBuildToChallengesButton';
 import { clearBuildDraft } from '../store/buildDraftCookie';
 import { supabase } from '../lib/supabase';
 import { useSkillCatalogLoader } from '../hooks/useSkillCatalog';
@@ -560,6 +561,9 @@ export default function BuildPlanner() {
               <span className="hidden @3xl:inline">Clone</span>
             </button>
           )}
+
+          {/* Put the whole build into the hunter's challenges as a project */}
+          <AddBuildToChallengesButton />
 
           {/* Export the build as a shareable image */}
           <ExportBuildImageButton />

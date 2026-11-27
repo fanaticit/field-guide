@@ -3,7 +3,7 @@
 // Desktop: two-column layout — Hunting Targets (left) + Challenge list (right).
 // Mobile:  single-column compact list with monster strip at top.
 // ─────────────────────────────────────────────────────────────
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, type ReactNode } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import {
   Target,
@@ -16,7 +16,6 @@ import {
   LogIn,
   Crosshair,
   AlertCircle,
-  Plus,
   Edit2,
   Save,
   X,
@@ -30,7 +29,7 @@ import { useUIStore } from '../store/uiStore';
 import { DEFAULT_SECTION_THEMES } from '../config/themes';
 import {
   useHunterChallenges,
-  useIncrementChallenge,
+  useSetChallengeLevel,
   useUpdateChallengeMaterial,
   useDeleteChallenge,
   groupChallengesByMonster,
@@ -59,6 +58,40 @@ import {
   getChallengeRequiredMaterials,
   type GearMaterialRequirement,
 } from '../data/core/gear-materials';
+import {
+  useChallengeProjects,
+  useSetProjectItemTarget,
+  useRenameProject,
+  useCloseProject,
+  useCreateProject,
+  useAddChallengesToProject,
+  useRemoveChallengesFromProject,
+  projectErrorMessage,
+  useWeaponUpgradeSteps,
+  useMonsterHuntLevels,
+  projectChallenges,
+  projectProgress,
+  materialsToTarget,
+  groupMaterialsByMonster,
+  challengesRemovedOnClose,
+  type ChallengeProject,
+  type ChallengeProjectItem,
+  type HuntItemPlan,
+  type UpgradeStep,
+} from '../hooks/useChallengeProjects';
+import { LevelStepper } from '../components/challenges/LevelStepper';
+import {
+  ProjectSwitcher,
+  ProjectOverview,
+  ProjectHuntList,
+  CloseProjectDialog,
+  RemoveChallengeDialog,
+  ProjectMenuButton,
+  AddToProjectDialog,
+  type PickableChallenge,
+  type ProjectOverviewItem,
+  type TargetOption,
+} from '../components/challenges/ProjectPanels';
 
 // ── Slot display helpers ──────────────────────────────────────
 
@@ -196,8 +229,23 @@ const matchesCategory = (c: HunterChallenge, category: CategoryFilter) =>
 const INTRO_HIDDEN_KEY = 'challenges-intro-hidden';
 
 type Selection =
-  | { kind: 'monster' | 'activity' | 'material' | 'recruit'; value: string }
+  // 'ids' = a comma-separated list of challenge ids (a monster in a project's hunt list)
+  | { kind: 'monster' | 'activity' | 'material' | 'recruit' | 'ids'; value: string }
   | null;
+
+const VISAGE_TARGET_LABELS = ['Fine', 'Rare', 'Epic', 'Superior'];
+const BUDDY_TARGET_LABELS = ['Recruit', 'Tier 1', 'Tier Max'];
+
+/** Where an item is now, in words (for the project item list). */
+function projectLevelLabel(c: HunterChallenge): string {
+  const cur = c.current_rarity ?? 0;
+  switch (getCategory(c)) {
+    case 'visage':     return cur > 0 ? `Have ${VISAGE_TARGET_LABELS[Math.min(4, cur) - 1]}` : 'Not found yet';
+    case 'adventurer': return cur > 0 ? `Insight ${adventurerInsightLabel(cur)}` : 'Not recruited';
+    case 'buddy':      return cur > 0 ? `Tier ${Math.max(0, cur - 1)}` : 'Not recruited';
+    default:           return cur > 0 ? `Rarity ${cur}` : 'Not crafted';
+  }
+}
 
 function getSlotLabel(c: HunterChallenge): string {
   switch (getCategory(c)) {
@@ -260,7 +308,9 @@ function MonsterSketchBackground({ src, fill = false }: { src?: string | null; f
 
 interface ChallengeCardProps {
   challenge: HunterChallenge;
-  onIncrement: (challenge: HunterChallenge) => void;
+  /** Move the challenge to a level (up or down) */
+  onSetLevel: (challenge: HunterChallenge, level: number) => void;
+  levelBusy?: boolean;
   onUpdateMaterial: (id: string, material: string | null, activity: string | null) => void;
   onDelete: (id: string) => void;
   /** Adventurer panel art, when the challenge is for an adventurer that has one. */
@@ -271,6 +321,8 @@ interface ChallengeCardProps {
   weaponsMap?: Map<string, DBWeapon>;
   monstersMap?: Map<string, DBMonster>;
   armourUpgradesMap?: Map<string, Map<number, GearMaterialRequirement[]>>;
+  /** "Add to project" control shown next to the remove button */
+  projectMenu?: ReactNode;
 }
 
 /** The rarity of the visage card being searched for: Fine -> Rare -> Epic -> Superior. */
@@ -291,7 +343,8 @@ function visageArt(c: HunterChallenge, className: string) {
 
 function ChallengeCard({
   challenge: c,
-  onIncrement,
+  onSetLevel,
+  levelBusy = false,
   onUpdateMaterial,
   onDelete,
   backgroundImage,
@@ -300,6 +353,7 @@ function ChallengeCard({
   weaponsMap,
   monstersMap,
   armourUpgradesMap,
+  projectMenu,
 }: ChallengeCardProps) {
   const [isEditingMaterial, setIsEditingMaterial] = useState(false);
   const [editMaterial, setEditMaterial] = useState(c.missing_material ?? '');
@@ -322,7 +376,6 @@ function ChallengeCard({
   const slotLabel = getSlotLabel(c);
   const slotIcon  = SLOT_ICONS[c.armour_slot ?? ''] ?? null;
   const pieceImg  = c.piece_image ?? slotIcon;
-  const isActive  = c.status === 'crafting' || c.status === 'upgrading';
   const isDone    = c.status === 'completed' || c.status === 'abandoned';
   // Art stays greyed out until the item is collected / recruited
   const isCollected = c.status === 'completed';
@@ -340,28 +393,6 @@ function ChallengeCard({
   const maxR = challengeMaxRarity(c);
   const insightGoal = isAdventurer && maxR > 1;
   const buddyTierGoal = isBuddy && maxR > 1;
-  const progressPct = maxR > 0
-    ? Math.round((c.current_rarity / maxR) * 100)
-    : 0;
-
-  const currentRarityName = isMonster
-    ? c.status === 'completed' ? 'Research Complete' : 'In Progress'
-    : isVisage
-    ? c.current_rarity === 0 ? 'Unowned' : c.current_rarity === 1 ? 'Fine (Green)' : c.current_rarity === 2 ? 'Rare (Blue)' : c.current_rarity === 3 ? 'Epic (Purple)' : 'Superior (Gold)'
-    : isAdventurer
-    ? c.current_rarity === 0 ? 'Not Recruited' : insightGoal ? `Insight ${adventurerInsightLabel(c.current_rarity)}` : 'Recruited'
-    : isBuddy
-    ? c.current_rarity === 0 ? 'Not Recruited' : buddyTierGoal ? (c.current_rarity === 1 ? 'Tier 0' : c.current_rarity === 2 ? 'Tier 1' : 'Tier Max (2)') : 'Recruited'
-    : `R${c.current_rarity} crafted`;
-  const targetRarityName = isMonster
-    ? 'Complete Study Goal'
-    : isVisage
-    ? 'Superior (Gold)'
-    : isAdventurer
-    ? insightGoal ? `Target: Insight ${adventurerInsightLabel(maxR)}` : 'Recruit to Roster'
-    : isBuddy
-    ? buddyTierGoal ? (maxR === 2 ? 'Target: Tier 1' : 'Target: Tier Max (2)') : 'Recruit Companion'
-    : `Target: R${c.max_rarity}`;
   const style = statusStyle(c.status);
   const label = challengeStatusLabel(c);
   const detailUrl = getChallengeDetailUrl(c);
@@ -458,19 +489,9 @@ function ChallengeCard({
               <span className="truncate">{c.missing_material}</span>
             </p>
           )}
+          <LevelStepper challenge={c} onSetLevel={(l) => onSetLevel(c, l)} busy={levelBusy} compact />
         </div>
 
-        {/* Action */}
-        {isActive && (
-          <button
-            type="button"
-            onClick={() => onIncrement(c)}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-yellow-500/15 border border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/25 transition-colors"
-            title="Mark progress"
-          >
-            <Plus size={15} />
-          </button>
-        )}
       </div>
     );
   }
@@ -551,35 +572,21 @@ function ChallengeCard({
               <span className={cn('rounded px-2 py-0.5 text-[10px] font-bold border', style.badge)}>
                 {label}
               </span>
+              {projectMenu}
               <button
                 type="button"
                 onClick={() => onDelete(c.id)}
                 className="flex h-6 w-6 items-center justify-center rounded-lg text-sky-600 hover:text-red-400 hover:bg-red-500/10 transition-colors"
-                title="Remove challenge"
+                title="Remove this challenge (the item stays in your account)"
               >
                 <Trash2 size={12} />
               </button>
             </div>
           </div>
 
-          {/* Rarity progress bar */}
-          <div className="mt-2 space-y-1">
-            <div className="flex items-center justify-between text-[10px] text-sky-500 font-medium">
-              <span>{currentRarityName}</span>
-              <span>{targetRarityName}</span>
-            </div>
-            <div className="h-1.5 w-full rounded-full bg-sky-800 overflow-hidden">
-              <div
-                className={cn(
-                  'h-full rounded-full transition-all',
-                  c.status === 'crafting'  ? 'bg-yellow-500' :
-                  c.status === 'upgrading' ? 'bg-blue-400' :
-                  c.status === 'completed' ? 'bg-emerald-400' :
-                  'bg-sky-600',
-                )}
-                style={{ width: `${progressPct}%` }}
-              />
-            </div>
+          {/* Level: where it is now, step up, or go back */}
+          <div className="mt-3">
+            <LevelStepper challenge={c} onSetLevel={(l) => onSetLevel(c, l)} busy={levelBusy} />
           </div>
         </div>
       </div>
@@ -702,40 +709,6 @@ function ChallengeCard({
             </div>
           )}
         </div>
-      )}
-
-      {/* Action button */}
-      {isActive && (
-        <button
-          type="button"
-          onClick={() => onIncrement(c)}
-          className="w-full flex items-center justify-center gap-2 rounded-xl border border-[var(--border-active)] bg-[var(--bg-superior)] py-2 text-xs font-bold text-[var(--theme-accent)] hover:shadow-[0_0_12px_var(--accent-gold-glow)] transition-all"
-        >
-          <Plus size={13} />
-          {isVisage
-            ? c.current_rarity === 0
-              ? 'Mark Found (Fine)'
-              : c.current_rarity === 1
-              ? 'Found Rare (Blue)'
-              : c.current_rarity === 2
-              ? 'Found Epic (Purple)'
-              : 'Found Superior (Gold)'
-            : isAdventurer
-            ? c.current_rarity === 0
-              ? 'Mark as Recruited'
-              : `Raise Insight to ${adventurerInsightLabel(c.current_rarity + 1)}`
-            : isBuddy
-            ? c.current_rarity === 0
-              ? 'Mark as Recruited'
-              : c.current_rarity === 1
-              ? 'Raise to Tier 1'
-              : 'Raise to Tier Max (2)'
-            : isMonster
-            ? 'Complete Study Task'
-            : c.status === 'crafting'
-            ? 'Mark as Crafted (R1)'
-            : `Upgrade to R${(c.current_rarity || 0) + 1}`}
-        </button>
       )}
 
       {/* Completion date */}
@@ -1164,10 +1137,10 @@ function RecruitmentPanel({ recruits, selection, onSelect, backgrounds }: Recrui
 export default function HunterChallenges() {
   const navigate = useNavigate();
   const { user } = useAuthStore();
-  const { data: challenges = [], isLoading } = useHunterChallenges(user?.id);
+  const { data: allChallenges = [], isLoading } = useHunterChallenges(user?.id);
   const armourPieceIds = useMemo(
-    () => Array.from(new Set(challenges.map((c) => c.armour_piece_id).filter(Boolean) as string[])),
-    [challenges],
+    () => Array.from(new Set(allChallenges.map((c) => c.armour_piece_id).filter(Boolean) as string[])),
+    [allChallenges],
   );
   const { data: armourUpgrades = [] } = useArmourSetUpgrades(armourPieceIds);
   const armourUpgradesMap = useMemo(() => {
@@ -1203,6 +1176,111 @@ export default function HunterChallenges() {
   const deleteChallenge = useDeleteChallenge();
   const updateMaterial = useUpdateChallengeMaterial();
 
+  // ── Projects ────────────────────────────────────────────────
+  // ?project=<id> shows only that project's items, judged against the project's targets
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { data: projects = [] } = useChallengeProjects(user?.id);
+  const challengesById = useMemo(() => new Map(allChallenges.map((c) => [c.id, c])), [allChallenges]);
+  const activeProjectId = searchParams.get('project');
+  const activeProject = projects.find((p) => p.id === activeProjectId) ?? null;
+  const projectProgressById = useMemo(
+    () => new Map(projects.map((p) => [p.id, projectProgress(p, challengesById)])),
+    [projects, challengesById],
+  );
+  const challenges = useMemo(
+    () => (activeProject ? projectChallenges(activeProject, challengesById) : allChallenges),
+    [activeProject, challengesById, allChallenges],
+  );
+  const setProjectTarget = useSetProjectItemTarget();
+  const renameProject = useRenameProject();
+  const closeProject = useCloseProject();
+  const [closingProject, setClosingProject] = useState(false);
+
+  // Materials each project weapon / armour piece still needs to reach its target
+  const projectWeaponIds = useMemo(
+    () => (activeProject ? challenges.map((c) => c.weapon_id).filter(Boolean) as string[] : []),
+    [activeProject, challenges],
+  );
+  const { data: weaponSteps } = useWeaponUpgradeSteps(projectWeaponIds);
+  const armourSteps = useMemo(() => {
+    const map = new Map<string, Map<number, UpgradeStep>>();
+    for (const u of armourUpgrades) {
+      if (!map.has(u.armour_piece_id)) map.set(u.armour_piece_id, new Map());
+      map.get(u.armour_piece_id)!.set(u.rarity, { rarity: u.rarity, materials: u.materials || [], required_level: u.required_level });
+    }
+    return map;
+  }, [armourUpgrades]);
+  const projectPlans = useMemo(() => {
+    const plans = new Map<string, HuntItemPlan>();
+    if (!activeProject) return plans;
+    for (const c of challenges) {
+      const steps = c.weapon_id ? weaponSteps?.get(c.weapon_id) : c.armour_piece_id ? armourSteps.get(c.armour_piece_id) : undefined;
+      const plan = materialsToTarget(c, c.max_rarity, steps);
+      if (plan) plans.set(c.id, plan);
+    }
+    return plans;
+  }, [activeProject, challenges, weaponSteps, armourSteps]);
+  const huntMonsters = useMemo(
+    () => groupMaterialsByMonster([...projectPlans.values()], monsters),
+    [projectPlans, monsters],
+  );
+  const { data: huntLevels } = useMonsterHuntLevels(
+    huntMonsters.map((m) => m.monsterId).filter((id) => id !== '__general__'),
+  );
+
+  const targetOptionsFor = (c: HunterChallenge): TargetOption[] => {
+    const craft = Math.max(1, c.craft_rarity || 1);
+    switch (getCategory(c)) {
+      case 'weapon': {
+        const max = (c.weapon_id && weaponsMap.get(c.weapon_id)?.max_rarity) || 16;
+        return Array.from({ length: Math.max(1, max - craft + 1) }, (_, i) => ({ value: craft + i, label: `R${craft + i}` }));
+      }
+      case 'armour': {
+        const steps = c.armour_piece_id ? armourSteps.get(c.armour_piece_id) : undefined;
+        const max = steps?.size ? Math.max(...steps.keys()) : 16;
+        return Array.from({ length: Math.max(1, max - craft + 1) }, (_, i) => ({ value: craft + i, label: `R${craft + i}` }));
+      }
+      case 'visage':
+        return VISAGE_TARGET_LABELS.map((label, i) => ({ value: i + 1, label }));
+      case 'adventurer':
+        return Array.from({ length: 7 }, (_, i) => ({ value: i + 1, label: i === 0 ? 'Recruit' : `Insight ${adventurerInsightLabel(i + 1)}` }));
+      case 'buddy':
+        return BUDDY_TARGET_LABELS.map((label, i) => ({ value: i + 1, label }));
+      default:
+        return [{ value: 1, label: 'Done' }];
+    }
+  };
+
+  const overviewItems: ProjectOverviewItem[] = useMemo(() => {
+    if (!activeProject) return [];
+    const itemsById = new Map(activeProject.items.map((i) => [i.challenge_id, i]));
+    return challenges.flatMap((c) => {
+      const item = itemsById.get(c.id);
+      if (!item) return [];
+      return [{
+        item,
+        challenge: c,
+        name: getChallengeDisplayName(c, weaponsMap),
+        image: c.piece_image ?? c.set_icon ?? null,
+        levelLabel: projectLevelLabel(c),
+        targetOptions: targetOptionsFor(c),
+        plan: projectPlans.get(c.id) ?? null,
+      }];
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeProject, challenges, weaponsMap, armourSteps, projectPlans]);
+
+  const handleSetTarget = (item: ChallengeProjectItem, target: number) => {
+    const raw = challengesById.get(item.challenge_id);
+    if (!raw) return;
+    setProjectTarget.mutate({ item, challenge: raw, target, allProjects: projects });
+  };
+
+  const removableOnClose = useMemo(
+    () => (activeProject ? challengesRemovedOnClose(activeProject, projects, challengesById) : []),
+    [activeProject, projects, challengesById],
+  );
+
   const [category, setCategory]       = useState<CategoryFilter>('all');
   const [showCollected, setShowCollected] = useState(false);
   const theme = useUIStore((s) => s.sectionThemes['/challenges'] ?? DEFAULT_SECTION_THEMES['/challenges']);
@@ -1216,8 +1294,85 @@ export default function HunterChallenges() {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [selection, setSelection]     = useState<Selection>(null);
 
+  const selectProject = (id: string | null) => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      if (id) next.set('project', id);
+      else next.delete('project');
+      return next;
+    });
+    setSelection(null);
+    setCategory('all');
+    // A project shows its finished items too, so its progress is visible
+    setShowCollected(Boolean(id));
+  };
+
+  // Opening /challenges?project=<id> (e.g. from the planner) shows finished items as well
+  useEffect(() => {
+    if (activeProjectId) setShowCollected(true);
+  }, [activeProjectId]);
+
+  // ── Manual projects: create, add / remove challenges ────────
+  const createProject = useCreateProject();
+  const addToProject = useAddChallengesToProject();
+  const removeFromProject = useRemoveChallengesFromProject();
+  const [pickingForProject, setPickingForProject] = useState(false);
+  const [pickError, setPickError] = useState<string | null>(null);
+
+  const makeProject = async (name: string, withChallenge?: HunterChallenge) => {
+    if (!user) throw new Error('Log in to make projects.');
+    try {
+      const project = await createProject.mutateAsync({ userId: user.id, name, sortOrder: projects.length });
+      if (withChallenge) {
+        await addToProject.mutateAsync({ project, challenges: [challengesById.get(withChallenge.id) ?? withChallenge] });
+      }
+      return project;
+    } catch (err) {
+      throw new Error(projectErrorMessage(err));
+    }
+  };
+
+  const toggleInProject = async (project: ChallengeProject, c: HunterChallenge, add: boolean) => {
+    try {
+      if (add) await addToProject.mutateAsync({ project, challenges: [challengesById.get(c.id) ?? c] });
+      else await removeFromProject.mutateAsync({ projectId: project.id, challengeIds: [c.id] });
+    } catch (err) {
+      throw new Error(projectErrorMessage(err));
+    }
+  };
+
+  const projectMenuFor = (c: HunterChallenge) => (user ? (
+    <ProjectMenuButton
+      challengeId={c.id}
+      projects={projects}
+      onToggle={(p, add) => toggleInProject(p, c, add)}
+      onCreateWith={(name) => makeProject(name, c)}
+    />
+  ) : null);
+
+  // Challenges that can still go into the open project, for the picker
+  const pickable: PickableChallenge[] = useMemo(() => {
+    if (!activeProject) return [];
+    const inProject = new Set(activeProject.items.map((i) => i.challenge_id));
+    const order: ItemCategory[] = ['weapon', 'armour', 'monster', 'visage', 'adventurer', 'buddy'];
+    return allChallenges
+      .filter((c) => !inProject.has(c.id) && c.status !== 'abandoned')
+      .map((c) => {
+        const cat = order.find((k) => matchesCategory(c, k));
+        return {
+          challenge: c,
+          name: getChallengeDisplayName(c, weaponsMap),
+          image: c.piece_image ?? c.set_icon ?? null,
+          group: cat ? CATEGORY_TABS.find((t) => t.id === cat)?.label ?? CATEGORY_SINGULAR[cat] : 'Other',
+          detail: projectLevelLabel(c),
+          rank: cat ? order.indexOf(cat) : 99,
+        };
+      })
+      .sort((a, b) => a.rank - b.rank || a.name.localeCompare(b.name))
+      .map(({ rank: _rank, ...o }) => o);
+  }, [activeProject, allChallenges, weaponsMap]);
+
   // Deep link from the guides: /challenges?challenge=<id> selects that item's monster (or recruit)
-  const [searchParams, setSearchParams] = useSearchParams();
   const focusId = searchParams.get('challenge');
   useEffect(() => {
     if (!focusId || isLoading) return;
@@ -1232,7 +1387,11 @@ export default function HunterChallenges() {
           : { kind: 'monster', value: monsterName },
       );
     }
-    setSearchParams({}, { replace: true });
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.delete('challenge');
+      return next;
+    }, { replace: true });
   }, [focusId, isLoading, challenges, setSearchParams, weaponsMap, monstersMap]);
 
   // ── Derived data ────────────────────────────────────────────
@@ -1247,6 +1406,7 @@ export default function HunterChallenges() {
           case 'activity': return c.missing_material_activity?.trim() === selection.value;
           case 'material': return c.missing_material?.trim() === selection.value;
           case 'recruit':  return c.id === selection.value;
+          case 'ids':      return selection.value.split(',').includes(c.id);
         }
       });
     }
@@ -1287,11 +1447,17 @@ export default function HunterChallenges() {
     setSelection(null);
   };
 
-  const incrementChallenge = useIncrementChallenge();
+  const setChallengeLevel = useSetChallengeLevel();
 
 
-  const handleDelete = async (id: string) => {
-    await deleteChallenge.mutateAsync(id);
+  // Removing asks first: it only removes the challenge, never the item from the hunter's account
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
+  const handleDelete = (id: string) => setPendingDeleteId(id);
+  const pendingDelete = pendingDeleteId ? challengesById.get(pendingDeleteId) ?? null : null;
+  const confirmDelete = async () => {
+    if (!pendingDeleteId) return;
+    await deleteChallenge.mutateAsync(pendingDeleteId);
+    setPendingDeleteId(null);
   };
 
   // ── Guest wall ──────────────────────────────────────────────
@@ -1369,6 +1535,15 @@ export default function HunterChallenges() {
         </label>
       </PageTitlePanel>
 
+      {/* Projects — e.g. a build added from the planner */}
+      <ProjectSwitcher
+        projects={projects}
+        progress={projectProgressById}
+        activeId={activeProject?.id ?? null}
+        onSelect={selectProject}
+        onCreate={user ? async (name) => { const p = await makeProject(name); selectProject(p.id); } : undefined}
+      />
+
       {/* Category tabs — counts are items still to collect */}
       <div className="flex flex-wrap items-center gap-1.5">
           {CATEGORY_TABS.map((tab) => (
@@ -1415,9 +1590,21 @@ export default function HunterChallenges() {
 
       {!isLoading && (
         <div className="flex flex-col lg:flex-row gap-5 items-start">
-          {/* ── LEFT: Monsters to hunt + Recruitment list ── */}
+          {/* ── LEFT: Monsters to hunt + Recruitment list, then the project's items ── */}
           <div className="w-full lg:w-[280px] xl:w-[320px] shrink-0 space-y-4">
-            {showHuntSection && (
+            {activeProject && showHuntSection && (
+              <ProjectHuntList
+                monsters={huntMonsters}
+                huntLevels={huntLevels ?? new Map()}
+                selectedIds={selection?.kind === 'ids' ? selection.value : null}
+                onSelect={(m) => setSelection(m ? { kind: 'ids', value: m.challengeIds.join(',') } : null)}
+                nameOf={(id) => {
+                  const c = challenges.find((x) => x.id === id);
+                  return c ? getChallengeDisplayName(c, weaponsMap) : 'Item';
+                }}
+              />
+            )}
+            {!activeProject && showHuntSection && (
               <div className="mho-panel-deep space-y-3 p-3">
                 <div className="mb-1 pb-2 border-b border-white/10">
                   <div className="flex items-center gap-2">
@@ -1463,6 +1650,23 @@ export default function HunterChallenges() {
                   backgrounds={adventurerBackgrounds}
                 />
               </div>
+            )}
+
+            {/* Project items & targets — below the hunt and recruitment lists */}
+            {activeProject && (
+              <ProjectOverview
+                key={activeProject.id}
+                project={activeProject}
+                progress={projectProgressById.get(activeProject.id) ?? { percent: 0, done: 0, total: 0 }}
+                items={overviewItems}
+                onSetTarget={handleSetTarget}
+                onRename={(name) => renameProject.mutateAsync({ projectId: activeProject.id, name })}
+                onClose={() => setClosingProject(true)}
+                savingTarget={setProjectTarget.isPending ? setProjectTarget.variables?.item.challenge_id ?? null : null}
+                onAddItems={() => { setPickError(null); setPickingForProject(true); }}
+                onRemoveItem={(item) => removeFromProject.mutate({ projectId: item.project_id, challengeIds: [item.challenge_id] })}
+                removingId={removeFromProject.isPending ? removeFromProject.variables?.challengeIds[0] ?? null : null}
+              />
             )}
           </div>
 
@@ -1522,7 +1726,8 @@ export default function HunterChallenges() {
                         <ChallengeCard
                           key={c.id}
                           challenge={c}
-                          onIncrement={(c) => incrementChallenge.mutateAsync(c)}
+                          onSetLevel={(c, level) => setChallengeLevel.mutate({ challenge: challengesById.get(c.id) ?? c, level })}
+                          levelBusy={setChallengeLevel.isPending && setChallengeLevel.variables?.challenge.id === c.id}
                           onUpdateMaterial={(id, material, activity) => updateMaterial.mutateAsync({ id, material, activity })}
                           onDelete={handleDelete}
                           backgroundImage={c.adventurer_id ? adventurerBackgrounds.get(c.adventurer_id) : null}
@@ -1530,6 +1735,7 @@ export default function HunterChallenges() {
                           weaponsMap={weaponsMap}
                           monstersMap={monstersMap}
                           armourUpgradesMap={armourUpgradesMap}
+                          projectMenu={projectMenuFor(c)}
                         />
                       );
                     })}
@@ -1543,7 +1749,8 @@ export default function HunterChallenges() {
                         <ChallengeCard
                           key={c.id}
                           challenge={c}
-                          onIncrement={(c) => incrementChallenge.mutateAsync(c)}
+                          onSetLevel={(c, level) => setChallengeLevel.mutate({ challenge: challengesById.get(c.id) ?? c, level })}
+                          levelBusy={setChallengeLevel.isPending && setChallengeLevel.variables?.challenge.id === c.id}
                           onUpdateMaterial={(id, material, activity) => updateMaterial.mutateAsync({ id, material, activity })}
                           onDelete={handleDelete}
                           backgroundImage={c.adventurer_id ? adventurerBackgrounds.get(c.adventurer_id) : null}
@@ -1551,6 +1758,7 @@ export default function HunterChallenges() {
                           weaponsMap={weaponsMap}
                           monstersMap={monstersMap}
                           armourUpgradesMap={armourUpgradesMap}
+                          projectMenu={projectMenuFor(c)}
                           compact
                         />
                       );
@@ -1558,7 +1766,7 @@ export default function HunterChallenges() {
                   </div>
 
                   {/* Error state */}
-                  {(deleteChallenge.isError || incrementChallenge.isError) && (
+                  {(deleteChallenge.isError || setChallengeLevel.isError) && (
                     <div className="flex items-center gap-2 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-xs text-red-400">
                       <AlertCircle size={14} />
                       <span>Something went wrong. Please try again.</span>
@@ -1570,6 +1778,49 @@ export default function HunterChallenges() {
           </div>
       )}
 
+      {pendingDelete && (
+        <RemoveChallengeDialog
+          name={getChallengeDisplayName(pendingDelete, weaponsMap)}
+          projectNames={projects.filter((p) => p.items.some((i) => i.challenge_id === pendingDelete.id)).map((p) => p.name)}
+          busy={deleteChallenge.isPending}
+          onCancel={() => setPendingDeleteId(null)}
+          onConfirm={confirmDelete}
+        />
+      )}
+
+      {pickingForProject && activeProject && (
+        <AddToProjectDialog
+          project={activeProject}
+          options={pickable}
+          busy={addToProject.isPending}
+          error={pickError}
+          onCancel={() => setPickingForProject(false)}
+          onConfirm={async (list) => {
+            setPickError(null);
+            try {
+              await addToProject.mutateAsync({ project: activeProject, challenges: list });
+              setPickingForProject(false);
+            } catch (err) {
+              setPickError(projectErrorMessage(err));
+            }
+          }}
+        />
+      )}
+
+      {closingProject && activeProject && (
+        <CloseProjectDialog
+          project={activeProject}
+          keptCount={activeProject.items.length - removableOnClose.length}
+          removableCount={removableOnClose.length}
+          busy={closeProject.isPending}
+          onCancel={() => setClosingProject(false)}
+          onConfirm={async (removeUnstarted) => {
+            await closeProject.mutateAsync({ project: activeProject, allProjects: projects, challengesById, removeUnstarted });
+            setClosingProject(false);
+            selectProject(null);
+          }}
+        />
+      )}
     </div>
   );
 }

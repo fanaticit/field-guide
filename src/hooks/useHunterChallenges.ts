@@ -547,7 +547,7 @@ export function useAddMonsterChallenge() {
   });
 }
 
-/** Highest rarity / level a challenge can reach: adventurer insight goal, 1-3 for buddy tier goals, 1 for monsters, 4 for visages. */
+/** Highest rarity / level a challenge can reach: adventurer insight goal, 1-3 for buddy tier goals, 1 for monsters, 1-4 for visages. */
 export function challengeMaxRarity(c: HunterChallenge): number {
   if (c.challenge_type === 'adventurer' || c.adventurer_id) {
     return Math.min(ADVENTURER_MAX_INSIGHT, Math.max(1, c.max_rarity || 1));
@@ -556,115 +556,101 @@ export function challengeMaxRarity(c: HunterChallenge): number {
     return Math.min(3, Math.max(1, c.max_rarity || 1));
   }
   if (c.challenge_type === 'monster') return 1;
-  if (c.challenge_type === 'visage_set' || c.visage_id) return 4;
+  // Visage goals are 1-4 (Fine → Superior); older rows without a goal aim for Superior
+  if (c.challenge_type === 'visage_set' || c.visage_id) return Math.min(4, Math.max(1, c.max_rarity || 4));
   return c.max_rarity || 16;
 }
 
-// ── useIncrementChallenge ─────────────────────────────────────
-// Increments rarity and automatically syncs collection details for Visages, Adventurers & Buddies.
+// ── Challenge levels ──────────────────────────────────────────
+// A challenge's level is current_rarity: 0 = not crafted / found / recruited yet, then the
+// rarity (gear), card rarity (visage 1-4), insight (adventurer) or tier (buddy 1-3).
 
-export function useIncrementChallenge() {
+/** Every level the challenge can be set to, in order (gear starts at its craft rarity). */
+export function challengeLevels(c: HunterChallenge): number[] {
+  const maxR = challengeMaxRarity(c);
+  const isGear = c.challenge_type === 'weapon' || c.challenge_type === 'armour_piece' || Boolean(c.weapon_id) || Boolean(c.armour_piece_id);
+  const first = isGear ? Math.min(maxR, Math.max(1, c.craft_rarity || 1)) : 1;
+  const levels = [0];
+  for (let l = first; l <= maxR; l += 1) levels.push(l);
+  // Keep a level the hunter already reached even if it is outside the goal
+  const cur = c.current_rarity ?? 0;
+  if (!levels.includes(cur)) levels.push(cur);
+  return levels.sort((a, b) => a - b);
+}
+
+/** The level one step up / down from where the challenge is now (null at either end). */
+export function stepChallengeLevel(c: HunterChallenge, dir: 1 | -1): number | null {
+  const levels = challengeLevels(c);
+  const i = levels.indexOf(c.current_rarity ?? 0);
+  const next = levels[i + dir];
+  return next === undefined ? null : next;
+}
+
+function levelUpdates(c: HunterChallenge, level: number) {
+  const maxR = challengeMaxRarity(c);
+  const status: ChallengeStatus = level >= maxR ? 'completed' : level > 0 ? 'upgrading' : 'crafting';
+  return {
+    current_rarity: level,
+    status,
+    completed_at: status === 'completed' ? c.completed_at ?? new Date().toISOString() : null,
+  };
+}
+
+/** Keep the visage / adventurer / buddy collections in step with the challenge. */
+async function syncChallengeCollections(challenge: HunterChallenge, level: number) {
+  // Going back to "not owned" leaves the collection alone: the hunter may have owned it before
+  if (level <= 0) return;
+  const now = new Date().toISOString();
+  if ((challenge.challenge_type === 'visage_set' || challenge.visage_id) && challenge.visage_id) {
+    const rarityKey = VISAGE_RARITIES_BY_INDEX[level];
+    if (rarityKey) {
+      await supabase.from('user_visage_collection').upsert(
+        { user_id: challenge.user_id, visage_id: challenge.visage_id, ink_type: (challenge.ink_type || 'flames').toLowerCase(), rarity: rarityKey, quantity: 1, updated_at: now },
+        { onConflict: 'user_id,visage_id,ink_type' },
+      );
+    }
+  }
+  if ((challenge.challenge_type === 'adventurer' || challenge.adventurer_id) && challenge.adventurer_id) {
+    await supabase.from('user_adventurer_collection').upsert(
+      { user_id: challenge.user_id, adventurer_id: challenge.adventurer_id, insight_level: level, updated_at: now },
+      { onConflict: 'user_id,adventurer_id' },
+    );
+  }
+  if ((challenge.challenge_type === 'buddy' || challenge.buddy_id) && challenge.buddy_id) {
+    await supabase.from('user_buddy_collection').upsert(
+      { user_id: challenge.user_id, buddy_id: challenge.buddy_id, tier_level: Math.max(0, Math.min(2, level - 1)), quantity: 1, updated_at: now },
+      { onConflict: 'user_id,buddy_id' },
+    );
+  }
+}
+
+// ── useSetChallengeLevel ──────────────────────────────────────
+// Moves a challenge to any level, up or down (e.g. undo an upgrade tapped by mistake).
+
+export function useSetChallengeLevel() {
   const qc = useQueryClient();
 
   return useMutation({
-    mutationFn: async (challenge: HunterChallenge) => {
-      const isVisage = challenge.challenge_type === 'visage_set' || Boolean(challenge.visage_id);
-      const isAdventurer = challenge.challenge_type === 'adventurer' || Boolean(challenge.adventurer_id);
-      const isBuddy = challenge.challenge_type === 'buddy' || Boolean(challenge.buddy_id);
-
-      const cur = challenge.current_rarity ?? 0;
-      const maxR = challengeMaxRarity(challenge);
-      const craft = challenge.craft_rarity || 1;
-      const newRarity = cur === 0 ? craft : Math.min(maxR, cur + 1);
-      const isComplete = newRarity >= maxR;
-      const newStatus: ChallengeStatus = isComplete ? 'completed' : 'upgrading';
-
-      const updates: Record<string, unknown> = {
-        current_rarity: newRarity,
-        status:         newStatus,
-      };
-      if (isComplete) updates.completed_at = new Date().toISOString();
-
+    mutationFn: async ({ challenge, level }: { challenge: HunterChallenge; level: number }) => {
       const { data, error } = await supabase
         .from('hunter_challenges')
-        .update(updates)
+        .update(levelUpdates(challenge, level))
         .eq('id', challenge.id)
         .select()
         .single();
-
       if (error) throw error;
-
-      // When stepping a visage challenge, automatically sync user_visage_collection
-      if (isVisage && challenge.visage_id) {
-        const rarityKey = VISAGE_RARITIES_BY_INDEX[newRarity];
-        if (rarityKey) {
-          await supabase.from('user_visage_collection').upsert(
-            {
-              user_id:    challenge.user_id,
-              visage_id:  challenge.visage_id,
-              ink_type:   (challenge.ink_type || 'flames').toLowerCase(),
-              rarity:     rarityKey,
-              quantity:   1,
-              updated_at: new Date().toISOString(),
-            },
-            { onConflict: 'user_id,visage_id,ink_type' },
-          );
-        }
-      }
-
-      // When stepping an adventurer challenge, automatically sync user_adventurer_collection
-      if (isAdventurer && challenge.adventurer_id) {
-        await supabase.from('user_adventurer_collection').upsert(
-          {
-            user_id:       challenge.user_id,
-            adventurer_id: challenge.adventurer_id,
-            insight_level: newRarity,
-            updated_at:    new Date().toISOString(),
-          },
-          { onConflict: 'user_id,adventurer_id' },
-        );
-      }
-
-      // When stepping a buddy challenge, automatically sync user_buddy_collection
-      if (isBuddy && challenge.buddy_id) {
-        const newTier = Math.max(0, Math.min(2, newRarity - 1));
-        await supabase.from('user_buddy_collection').upsert(
-          {
-            user_id:    challenge.user_id,
-            buddy_id:   challenge.buddy_id,
-            tier_level: newTier,
-            quantity:   1,
-            updated_at: new Date().toISOString(),
-          },
-          { onConflict: 'user_id,buddy_id' },
-        );
-      }
-
+      await syncChallengeCollections(challenge, level);
       return data as HunterChallenge;
     },
 
-    onMutate: async (challenge) => {
+    onMutate: async ({ challenge, level }) => {
       await qc.cancelQueries({ queryKey: [HUNTER_CHALLENGES_KEY] });
-      const cur = challenge.current_rarity ?? 0;
-      const maxR = challengeMaxRarity(challenge);
-      const craft = challenge.craft_rarity || 1;
-      const newRarity = cur === 0 ? craft : Math.min(maxR, cur + 1);
-      const isComplete = newRarity >= maxR;
-
+      const updates = levelUpdates(challenge, level);
       qc.setQueriesData(
         { queryKey: [HUNTER_CHALLENGES_KEY], exact: false },
         (old: unknown) => {
           if (!Array.isArray(old)) return old;
-          return (old as HunterChallenge[]).map((c) =>
-            c.id === challenge.id
-              ? {
-                  ...c,
-                  current_rarity: newRarity,
-                  status:         isComplete ? 'completed' : 'upgrading',
-                  completed_at:   isComplete ? new Date().toISOString() : c.completed_at,
-                }
-              : c,
-          );
+          return (old as HunterChallenge[]).map((c) => (c.id === challenge.id ? { ...c, ...updates } : c));
         },
       );
     },
@@ -676,6 +662,24 @@ export function useIncrementChallenge() {
       qc.invalidateQueries({ queryKey: ['user-buddy-collection'] });
     },
   });
+}
+
+// ── useIncrementChallenge ─────────────────────────────────────
+// One step up (craft, upgrade, find the next card, raise insight / tier).
+
+export function useIncrementChallenge() {
+  const setLevel = useSetChallengeLevel();
+  return {
+    ...setLevel,
+    mutate: (challenge: HunterChallenge) => {
+      const next = stepChallengeLevel(challenge, 1);
+      if (next !== null) setLevel.mutate({ challenge, level: next });
+    },
+    mutateAsync: async (challenge: HunterChallenge) => {
+      const next = stepChallengeLevel(challenge, 1);
+      return next === null ? challenge : setLevel.mutateAsync({ challenge, level: next });
+    },
+  };
 }
 
 // ── useUpdateChallengeStatus ──────────────────────────────────
@@ -1082,7 +1086,10 @@ export function challengeStatusLabel(c: HunterChallenge): string {
       const nextR = c.current_rarity === 1 ? 'Rare' : c.current_rarity === 2 ? 'Epic' : 'Superior';
       return `Find → ${nextR}`;
     }
-    if (c.status === 'completed') return 'Found (Superior)';
+    if (c.status === 'completed') {
+      const reached = ['Fine', 'Rare', 'Epic', 'Superior'][Math.min(4, Math.max(1, c.current_rarity || 4)) - 1];
+      return `Found (${reached})`;
+    }
     return 'Abandoned';
   }
 
