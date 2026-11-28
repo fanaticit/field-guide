@@ -13,7 +13,6 @@ import {
   Flame,
   Swords,
   CheckCircle2,
-  LogIn,
   Plus,
   Trash2,
   X,
@@ -44,15 +43,16 @@ import { supabase } from '../../lib/supabase';
 import { useAuthStore } from '../../store/authStore';
 import { useUIStore } from '../../store/uiStore';
 import { DEFAULT_SECTION_THEMES } from '../../config/themes';
-import ChallengeIcon from '../../components/ChallengeIcon';
 import PageTitlePanel from '../../components/layout/PageTitlePanel';
 import { useBuildPlannerStore } from '../../store/buildPlannerStore';
 import {
   useHunterChallenges,
   useAddArmourChallenge,
   getArmourPieceChallenge,
+  useDeleteChallenge,
   isArmourPieceTracked,
 } from '../../hooks/useHunterChallenges';
+import { SendToChallengesButton } from '../../components/challenges/SendToChallengesButton';
 import LoginModal from '../../components/auth/LoginModal';
 
 const INTRO_HIDDEN_KEY = 'armour-intro-hidden';
@@ -384,10 +384,10 @@ export default function ArmourGuide() {
   const { data: dbSkills = [] } = useAdminSkills({ isActive: true });
   const { data: challenges = [] } = useHunterChallenges(user?.id);
   const addChallenge = useAddArmourChallenge();
+  const deleteChallenge = useDeleteChallenge();
   const navigate = useNavigate();
 
   const [loginModalOpen, setLoginModalOpen] = useState(false);
-  const [addedPieceId, setAddedPieceId] = useState<string | null>(null);
   const [challengeError, setChallengeError] = useState<string | null>(null);
 
   const monstersMap = useMemo(() => new Map(monsters.map((m) => [m.id, m])), [monsters]);
@@ -498,7 +498,7 @@ export default function ArmourGuide() {
   const handleAddChallenge = useCallback(async (piece: DBArmourPiece, set: GroupedArmourSet) => {
     if (!user) {
       setLoginModalOpen(true);
-      return;
+      return null;
     }
 
     setChallengeError(null);
@@ -521,17 +521,10 @@ export default function ArmourGuide() {
         maxRarity:     set.maxRarity,
       });
 
-      if (!result.wasAlreadyTracked) {
-        setAddedPieceId(piece.id);
-        setTimeout(() => setAddedPieceId(null), 2500);
-      }
+      return result.challenge;
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Failed to add challenge. Please try again.';
-      const friendlyMsg = msg.includes('does not exist') || msg.includes('relation')
-        ? 'Database table not set up yet. Please apply the migration in the Supabase dashboard.'
-        : msg;
-      setChallengeError(friendlyMsg);
-      setTimeout(() => setChallengeError(null), 6000);
+      // The Send to Challenges pop-up shows the message
+      throw new Error(err instanceof Error ? err.message : 'Failed to add challenge. Please try again.');
     }
   }, [user, game, monstersMap, addChallenge]);
 
@@ -1331,7 +1324,6 @@ export default function ArmourGuide() {
         {/* ── Piece Action Row (Add to Challenges + Add to Example Build) ── */}
         {selectedSlot !== null && currentPiece && (() => {
           const challenge = getArmourPieceChallenge(challenges, currentPiece.id);
-          const justAdded = addedPieceId === currentPiece.id;
           const slotLabel = SLOTS_ORDER.find((s) => s.id === selectedSlot)?.label ?? selectedSlot;
           const isEquippedInBuild = exampleBuild[currentPiece.slot]?.piece.id === currentPiece.id;
           const isJustAddedToBuild = buildAddedSlot === currentPiece.slot;
@@ -1339,50 +1331,18 @@ export default function ArmourGuide() {
           return (
             <div className="space-y-2">
               <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
-                {/* Challenge Button / Sign In Prompt */}
-                {!user ? (
-                  <div className="flex flex-1 items-center justify-between gap-2 rounded-xl border border-sky-700/50 bg-sky-900/40 px-3 py-2">
-                    <span className="text-xs text-sky-300">Sign in to track challenge</span>
-                    <button
-                      type="button"
-                      onClick={() => setLoginModalOpen(true)}
-                      className="flex items-center gap-1.5 rounded-lg bg-yellow-500 px-2.5 py-1 text-xs font-bold text-slate-950 hover:bg-yellow-400 transition-colors shrink-0"
-                    >
-                      <LogIn size={12} />
-                      Sign In
-                    </button>
-                  </div>
-                ) : challenge ? (
-                  <button
-                    type="button"
-                    onClick={() => navigate('/challenges')}
-                    className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-emerald-500/50 bg-emerald-500/15 px-3 py-2.5 text-xs font-bold text-emerald-300 hover:bg-emerald-500/25 transition-all min-w-[170px]"
-                  >
-                    <CheckCircle2 size={14} />
-                    Go to Challenge ➔
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => handleAddChallenge(currentPiece, currentSet)}
-                    disabled={addChallenge.isPending}
-                    className={cn(
-                      'flex flex-1 items-center justify-center gap-2 rounded-xl border px-3 py-2.5 text-xs font-bold transition-all min-w-[170px] shadow-sm',
-                      justAdded
-                        ? 'border-emerald-500/50 bg-emerald-500/15 text-emerald-300'
-                        : 'border-sky-600/50 bg-transparent text-sky-400 hover:bg-sky-900 hover:border-sky-500 hover:text-sky-200',
-                      addChallenge.isPending && 'opacity-60 cursor-wait',
-                    )}
-                  >
-                    {addChallenge.isPending ? (
-                      <><span className="h-3.5 w-3.5 animate-spin rounded-full border border-current border-t-transparent" /> Adding…</>
-                    ) : justAdded ? (
-                      <><CheckCircle2 size={14} /> Added to challenges!</>
-                    ) : (
-                      <><ChallengeIcon size={18} /> Add {slotLabel} to Challenges</>
-                    )}
-                  </button>
-                )}
+                {/* Send to Challenges (standard pop-up: projects, remove) */}
+                <SendToChallengesButton
+                  userId={user?.id}
+                  challenge={challenge ?? null}
+                  itemName={`${currentSet.displayName} ${slotLabel}`}
+                  onAdd={() => handleAddChallenge(currentPiece, currentSet)}
+                  onRemove={challenge ? () => deleteChallenge.mutateAsync(challenge.id) : undefined}
+                  onRequireLogin={() => setLoginModalOpen(true)}
+                  label={`Add ${slotLabel} to Challenges`}
+                  trackedLabel={`${slotLabel} in Challenges`}
+                  className="min-w-[170px] flex-1 justify-center rounded-xl px-3 py-2.5 text-xs"
+                />
 
                 {/* Add to Example Build Button */}
                 <button

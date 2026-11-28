@@ -35,6 +35,7 @@ import {
   useDeleteChallenge,
 } from '../../hooks/useHunterChallenges';
 import { useAuthStore } from '../../store/authStore';
+import { SendToChallengesButton } from '../../components/challenges/SendToChallengesButton';
 import { cn } from '../../lib/utils';
 import ChallengeIcon from '../../components/ChallengeIcon';
 import ElementIcon from '../../components/ElementIcon';
@@ -114,7 +115,6 @@ export default function WeaponModal({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [open, onClose]);
-  const [feedbackMsg, setFeedbackMsg] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   if (!open || !weapon) return null;
@@ -154,7 +154,7 @@ export default function WeaponModal({
     }
 
     try {
-      await addChallenge.mutateAsync({
+      const res = await addChallenge.mutateAsync({
         userId: user.id,
         game: 'mho',
         weaponId: weapon.id,
@@ -169,12 +169,10 @@ export default function WeaponModal({
         craftRarity: selectedCraftRarity,
         maxRarity: selectedMaxRarity,
       });
-      setFeedbackMsg('Added to Hunter Challenges!');
-      setTimeout(() => setFeedbackMsg(null), 3000);
+      return res.challenge;
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Failed to add challenge';
-      setErrorMsg(msg);
-      setTimeout(() => setErrorMsg(null), 5000);
+      // The Send to Challenges pop-up shows the message
+      throw new Error(err instanceof Error ? err.message : 'Failed to add challenge');
     }
   };
 
@@ -530,12 +528,6 @@ export default function WeaponModal({
               </div>
 
               {/* Feedback / Error Alerts */}
-              {feedbackMsg && (
-                <div className="rounded-xl bg-emerald-500/20 border border-emerald-500/40 p-2.5 text-xs text-emerald-300 font-bold flex items-center gap-2">
-                  <CheckCircle2 size={15} />
-                  <span>{feedbackMsg}</span>
-                </div>
-              )}
               {errorMsg && (
                 <div className="rounded-xl bg-red-500/20 border border-red-500/40 p-2.5 text-xs text-red-300 font-medium">
                   {errorMsg}
@@ -620,15 +612,15 @@ export default function WeaponModal({
                     <div className="text-xs text-mh-slate-400">
                       Goal: <span className="font-bold text-yellow-300">R{selectedCraftRarity} &rarr; R{selectedMaxRarity}</span>
                     </div>
-                    <button
-                      type="button"
-                      onClick={handleAddChallenge}
-                      disabled={addChallenge.isPending}
-                      className="flex items-center gap-2 rounded-xl border border-sky-600/50 bg-transparent text-sky-400 hover:bg-sky-900 hover:border-sky-500 hover:text-sky-200 px-4 py-2 text-xs font-bold transition-all shadow-md disabled:opacity-50"
-                    >
-                      <ChallengeIcon size={20} />
-                      <span>+ Add to Hunter Challenges</span>
-                    </button>
+                    <SendToChallengesButton
+                      userId={user.id}
+                      challenge={null}
+                      itemName={`${weapon.name} · R${selectedCraftRarity} → R${selectedMaxRarity}`}
+                      onAdd={handleAddChallenge}
+                      onRequireLogin={onOpenLogin}
+                      label="Add to Hunter Challenges"
+                      className="rounded-xl px-4 py-2 text-xs"
+                    />
                   </div>
                 </div>
               ) : (
@@ -636,6 +628,20 @@ export default function WeaponModal({
                 <div className="space-y-4 rounded-xl bg-mh-slate-950/70 border border-mh-slate-750 p-4">
                   {/* Rarity Step Progress Slider / Badges */}
                   <div>
+                    <div className="mb-3 flex items-center justify-between gap-2 border-b border-mh-slate-800 pb-3">
+                      <span className="text-[11px] text-mh-slate-400">Projects, or remove it from your challenges:</span>
+                      {challenge && (
+                        <SendToChallengesButton
+                          userId={user.id}
+                          challenge={challenge}
+                          itemName={weapon.name}
+                          onAdd={async () => challenge}
+                          onRemove={() => deleteChallenge.mutateAsync(challenge.id)}
+                          onRequireLogin={onOpenLogin}
+                          className="rounded-xl px-3 py-1.5 text-xs"
+                        />
+                      )}
+                    </div>
                     <div className="flex items-center justify-between text-xs font-bold mb-2">
                       <span className="text-mh-slate-300">Progression Tier</span>
                       <span className="text-yellow-300 font-mono">

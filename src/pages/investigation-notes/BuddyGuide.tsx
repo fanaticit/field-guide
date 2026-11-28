@@ -34,7 +34,10 @@ import {
   useHunterChallenges,
   useAddBuddyChallenge,
   useUpdateChallengeStatus,
+  useDeleteChallenge,
   getBuddyChallenge,
+  challengeGoalUpdate,
+  type HunterChallenge,
 } from '../../hooks/useHunterChallenges';
 import { useAuthStore } from '../../store/authStore';
 import { useUIStore } from '../../store/uiStore';
@@ -44,6 +47,7 @@ import BuddyModal from './BuddyModal';
 import { resolvePairings, type ResolvedPairing } from './BuddyPairings';
 import { BuddyTierPicker } from './BuddyTierLevel';
 import PageTitlePanel from '../../components/layout/PageTitlePanel';
+import type { BuddyChallengeActions } from './BuddyChallengeButton';
 import LoginModal from '../../components/auth/LoginModal';
 import GuestSaveNotice from '../../components/auth/GuestSaveNotice';
 import { ROLE_ICONS } from '../../components/RoleIcon';
@@ -149,6 +153,7 @@ export default function BuddyGuide() {
   const { data: challenges = [] } = useHunterChallenges(user?.id);
   const addBuddyChallenge = useAddBuddyChallenge();
   const updateChallenge = useUpdateChallengeStatus();
+  const deleteChallenge = useDeleteChallenge();
 
   // Keep an open buddy challenge in sync when tier level or collection changes
   // tierLevel: -1 = unowned, 0 = Tier 0, 1 = Tier 1, 2 = Tier 2 (Max)
@@ -178,22 +183,27 @@ export default function BuddyGuide() {
     syncChallenge(buddy, level);
   };
 
-  const handleAddChallenge = async (buddy: DBBuddy, targetGoal = 1) => {
-    if (!user) {
-      setLoginModalOpen(true);
-      return;
-    }
-    const currentTier = collectionMap[buddy.id] ? getTierLevel(buddy.id) : -1;
-    await addBuddyChallenge.mutateAsync({
-      userId: user.id,
-      buddyId: buddy.id,
-      buddyName: buddy.name,
-      pieceImage: buddy.image,
-      tier: buddy.tier,
-      role: buddy.role,
-      currentTierLevel: currentTier,
-      targetTierLevel: targetGoal,
-    });
+  // Send to Challenges pop-up (goal: 1 = recruit, 2 = Tier 1, 3 = Tier 2 Max)
+  const challengeActions: BuddyChallengeActions = {
+    userId: user?.id,
+    onRequireLogin: () => setLoginModalOpen(true),
+    onAdd: async (buddy, targetGoal) => {
+      if (!user) return null;
+      const currentTier = collectionMap[buddy.id] ? getTierLevel(buddy.id) : -1;
+      const res = await addBuddyChallenge.mutateAsync({
+        userId: user.id,
+        buddyId: buddy.id,
+        buddyName: buddy.name,
+        pieceImage: buddy.image,
+        tier: buddy.tier,
+        role: buddy.role,
+        currentTierLevel: currentTier,
+        targetTierLevel: targetGoal,
+      });
+      return res.challenge;
+    },
+    onRemove: (challenge) => deleteChallenge.mutateAsync(challenge.id),
+    onChangeGoal: (challenge: HunterChallenge, goal: number) => updateChallenge.mutateAsync(challengeGoalUpdate(challenge, goal)),
   };
 
   // Filter and sort buddies
@@ -517,7 +527,7 @@ export default function BuddyGuide() {
               challenge={getBuddyChallenge(challenges, buddy.id)}
               onToggleOwned={() => handleToggleCollected(buddy)}
               onSetTierLevel={(lvl) => handleSetTier(buddy, lvl)}
-              onAddChallenge={handleAddChallenge}
+              challengeActions={challengeActions}
               onClick={() => setInspectedBuddy(buddy)}
               topPairings={cardPairings.get(buddy.id)}
               uniqueSkills={cardPairings.has(buddy.id) ? undefined : uniqueSkillsByBuddy.get(buddy.id)}
@@ -678,7 +688,7 @@ export default function BuddyGuide() {
           removeBuddyFromCollection(inspectedBuddy.id);
           syncChallenge(inspectedBuddy, -1);
         }}
-        onAddChallenge={handleAddChallenge}
+        challengeActions={challengeActions}
         onClose={() => setInspectedBuddy(null)}
       />
 

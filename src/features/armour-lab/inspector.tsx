@@ -4,10 +4,9 @@
 // The rest of its set sits in a row (Helm → Greaves) to jump between.
 // ─────────────────────────────────────────────────────────────
 import { useState, type ReactNode } from 'react';
-import { Link } from 'react-router';
-import { Check, CheckCircle2, Flame, Lock, Plus, X } from 'lucide-react';
+import { Check, Flame, Lock, Plus, X } from 'lucide-react';
 import { cn } from '../../lib/utils';
-import ChallengeIcon from '../../components/ChallengeIcon';
+import { SendToChallengesButton } from '../../components/challenges/SendToChallengesButton';
 import {
   LAB_SLOTS,
   clampRarity,
@@ -262,7 +261,6 @@ export function PieceActions({ piece, data, myRarity, tracker }: {
   const { build, equip, unequip, setSlotRarity } = useArmourLabStore();
   const entry = build[piece.slot];
   const equipped = entry?.pieceId === piece.id;
-  const tracked = tracker.isTracked(piece.id);
   return (
     <>
       <button
@@ -293,20 +291,17 @@ export function PieceActions({ piece, data, myRarity, tracker }: {
           </select>
         </label>
       )}
-      {tracked ? (
-        <Link to="/challenges" className="flex items-center justify-center gap-1.5 rounded-xl border border-emerald-500/50 px-3 py-2 text-xs font-bold text-emerald-300">
-          <CheckCircle2 size={14} /> Tracked
-        </Link>
-      ) : (
-        <button
-          type="button"
-          onClick={() => tracker.track(piece, data.setsByKey.get(piece.setKey)?.maxRarity ?? piece.maxRarity)}
-          disabled={tracker.pending}
-          className="flex items-center justify-center gap-1.5 rounded-xl border border-sky-600/50 px-3 py-2 text-xs font-bold text-sky-300 hover:bg-sky-900/50 disabled:opacity-50"
-        >
-          <ChallengeIcon size={16} /> {tracker.justAdded === piece.id ? 'Added!' : 'Track to craft'}
-        </button>
-      )}
+      <SendToChallengesButton
+        userId={tracker.userId}
+        challenge={tracker.challengeFor(piece.id)}
+        itemName={`${piece.setName} · ${piece.slot}`}
+        onAdd={() => tracker.track(piece, data.setsByKey.get(piece.setKey)?.maxRarity ?? piece.maxRarity)}
+        onRemove={() => { const c = tracker.challengeFor(piece.id); return c ? tracker.remove(c) : Promise.resolve(); }}
+        onRequireLogin={tracker.requireLogin}
+        label="Track to craft"
+        trackedLabel="Tracked"
+        className="justify-center rounded-xl px-3 py-2 text-xs"
+      />
       {tracker.error && <p className="w-full text-[11px] text-rose-400">{tracker.error}</p>}
     </>
   );

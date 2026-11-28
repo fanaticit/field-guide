@@ -2,7 +2,9 @@
 // MissingCardsChallengeModal — after saving a set that uses cards the
 // hunter doesn't own, offers to add them to their Personal Hunter's Challenge.
 // ─────────────────────────────────────────────────────────────
-import { Loader2, X } from 'lucide-react';
+import { useState } from 'react';
+import { FolderKanban, Loader2, X } from 'lucide-react';
+import type { ChallengeProject } from '../../hooks/useChallengeProjects';
 import { getInkConfig } from '../../data/schemas/visage';
 import type { MissingCard } from '../../lib/visageBuild';
 import { InkIconComponent } from '../../pages/investigation-notes/VisageCard';
@@ -13,11 +15,17 @@ interface Props {
   missing: MissingCard[];
   adding: boolean;
   error: string | null;
-  onConfirm: () => void;
+  /** The hunter's projects, so the cards can go straight into one */
+  projects?: ChallengeProject[];
+  onConfirm: (target: { projectId: string | null; newProjectName: string | null }) => void;
   onDecline: () => void;
 }
 
-export default function MissingCardsChallengeModal({ open, missing, adding, error, onConfirm, onDecline }: Props) {
+const NEW_PROJECT = '__new__';
+
+export default function MissingCardsChallengeModal({ open, missing, adding, error, projects = [], onConfirm, onDecline }: Props) {
+  const [projectChoice, setProjectChoice] = useState('');
+  const [newName, setNewName] = useState('');
   if (!open || missing.length === 0) return null;
 
   return (
@@ -79,6 +87,34 @@ export default function MissingCardsChallengeModal({ open, missing, adding, erro
           })}
         </ul>
 
+        {/* Optional: put the cards in a project too */}
+        <div className="space-y-1.5">
+          <label className="flex items-center gap-2 text-xs font-semibold text-[var(--text-secondary)]">
+            <FolderKanban size={13} className="shrink-0 text-sky-400" />
+            <span className="shrink-0">Project</span>
+            <select
+              value={projectChoice}
+              onChange={(e) => setProjectChoice(e.target.value)}
+              disabled={adding}
+              className="min-w-0 flex-1 rounded-lg border border-white/15 bg-black/50 px-2 py-1 text-xs text-white"
+            >
+              <option value="">No project — just Challenges</option>
+              {projects.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
+              <option value={NEW_PROJECT}>+ New project…</option>
+            </select>
+          </label>
+          {projectChoice === NEW_PROJECT && (
+            <input
+              autoFocus
+              value={newName}
+              maxLength={60}
+              onChange={(e) => setNewName(e.target.value)}
+              placeholder="New project name"
+              className="w-full rounded-lg border border-white/15 bg-black/50 px-2 py-1 text-xs text-white placeholder:text-sky-700"
+            />
+          )}
+        </div>
+
         {error && <p className="text-xs text-red-400">{error}</p>}
 
         <div className="flex justify-end gap-2 pt-1">
@@ -92,7 +128,10 @@ export default function MissingCardsChallengeModal({ open, missing, adding, erro
           </button>
           <button
             type="button"
-            onClick={onConfirm}
+            onClick={() => onConfirm({
+              projectId: projectChoice && projectChoice !== NEW_PROJECT ? projectChoice : null,
+              newProjectName: projectChoice === NEW_PROJECT ? newName.trim() || 'New project' : null,
+            })}
             disabled={adding}
             className="btn-mho-gold !px-4 !py-1.5 disabled:opacity-50"
           >

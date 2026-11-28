@@ -37,7 +37,9 @@ import {
   useHunterChallenges,
   useAddAdventurerChallenge,
   useUpdateChallengeStatus,
+  useDeleteChallenge,
   getAdventurerChallenge,
+  challengeGoalUpdate,
 } from '../../hooks/useHunterChallenges';
 import { useAuthStore } from '../../store/authStore';
 import { useUIStore } from '../../store/uiStore';
@@ -49,6 +51,7 @@ import AdventurerRarityBadge from './AdventurerRarityBadge';
 import { InsightPicker } from './AdventurerInsight';
 import PageTitlePanel from '../../components/layout/PageTitlePanel';
 import LoginModal from '../../components/auth/LoginModal';
+import type { AdventurerChallengeActions } from './AdventurerChallengeButton';
 import GuestSaveNotice from '../../components/auth/GuestSaveNotice';
 import RoleIcon, { ROLE_ICONS } from '../../components/RoleIcon';
 import { cn } from '../../lib/utils';
@@ -108,6 +111,7 @@ export default function AdventurerGuide() {
   const { data: challenges = [] } = useHunterChallenges(user?.id);
   const addAdventurerChallenge = useAddAdventurerChallenge();
   const updateChallenge = useUpdateChallengeStatus();
+  const deleteChallenge = useDeleteChallenge();
 
   // Keep an open recruit / insight challenge in step with the roster
   const syncChallenge = (adv: DBAdventurer, level: number) => {
@@ -133,21 +137,26 @@ export default function AdventurerGuide() {
     syncChallenge(adv, level);
   };
 
-  const handleAddChallenge = async (adv: DBAdventurer, targetInsight = 1) => {
-    if (!user) {
-      setLoginModalOpen(true);
-      return;
-    }
-    await addAdventurerChallenge.mutateAsync({
-      userId: user.id,
-      adventurerId: adv.id,
-      adventurerName: adv.name,
-      pieceImage: adv.image,
-      role: adv.role,
-      element: adv.element_specialization,
-      currentInsight: getInsightLevel(adv),
-      targetInsight,
-    });
+  // Send to Challenges pop-up (goal = insight level; 1 = recruit)
+  const challengeActions: AdventurerChallengeActions = {
+    userId: user?.id,
+    onRequireLogin: () => setLoginModalOpen(true),
+    onAdd: async (adv, targetInsight) => {
+      if (!user) return null;
+      const res = await addAdventurerChallenge.mutateAsync({
+        userId: user.id,
+        adventurerId: adv.id,
+        adventurerName: adv.name,
+        pieceImage: adv.image,
+        role: adv.role,
+        element: adv.element_specialization,
+        currentInsight: getInsightLevel(adv),
+        targetInsight,
+      });
+      return res.challenge;
+    },
+    onRemove: (challenge) => deleteChallenge.mutateAsync(challenge.id),
+    onChangeGoal: (challenge, goal) => updateChallenge.mutateAsync(challengeGoalUpdate(challenge, goal)),
   };
 
   const defaultAdventurer = useMemo(
@@ -492,7 +501,7 @@ export default function AdventurerGuide() {
                 challenge={getAdventurerChallenge(challenges, adv.id)}
                 onToggleRecruit={() => handleToggleRecruit(adv)}
                 onSetInsight={(level) => handleSetInsight(adv, level)}
-                onAddChallenge={handleAddChallenge}
+                challengeActions={challengeActions}
                 onClick={() => setInspectedAdventurer(adv)}
                 favouriteGifts={favouriteGiftsByAdventurer?.get(adv.id)}
               />
@@ -757,7 +766,7 @@ export default function AdventurerGuide() {
           challenge={getAdventurerChallenge(challenges, inspectedAdventurer.id)}
           onToggleRecruit={() => handleToggleRecruit(inspectedAdventurer)}
           onSetInsight={(level) => handleSetInsight(inspectedAdventurer, level)}
-          onAddChallenge={handleAddChallenge}
+          challengeActions={challengeActions}
           onSelectWeapon={handleWeaponSwitch}
         />
       )}

@@ -12,10 +12,8 @@ import {
   Shield,
   Bookmark,
   Eye,
-  CheckCircle2,
   ChevronDown,
   Check,
-  LogIn,
   Hammer,
   Plus,
   ArrowLeftRight,
@@ -36,17 +34,18 @@ import {
   useHunterChallenges,
   useAddWeaponChallenge,
   getWeaponChallenge,
+  useDeleteChallenge,
 } from '../../hooks/useHunterChallenges';
 import { useAuthStore } from '../../store/authStore';
 import { useUIStore } from '../../store/uiStore';
 import { DEFAULT_SECTION_THEMES } from '../../config/themes';
-import ChallengeIcon from '../../components/ChallengeIcon';
 import PageTitlePanel from '../../components/layout/PageTitlePanel';
 import { useNavigate, useSearchParams } from 'react-router';
 import WeaponCard from './WeaponCard';
 import WeaponModal from './WeaponModal';
 import WeaponCompareModal from './WeaponCompareModal';
 import LoginModal from '../../components/auth/LoginModal';
+import { SendToChallengesButton, type ItemChallengeActions } from '../../components/challenges/SendToChallengesButton';
 import { cn } from '../../lib/utils';
 import ElementIcon from '../../components/ElementIcon';
 
@@ -131,6 +130,7 @@ export default function WeaponGuide() {
   } = useUserWeaponCollection();
 
   const addChallenge = useAddWeaponChallenge();
+  const deleteChallenge = useDeleteChallenge();
   const navigate = useNavigate();
 
   // Sync if type query param changes
@@ -233,7 +233,7 @@ export default function WeaponGuide() {
         }
       }
 
-      await addChallenge.mutateAsync({
+      const res = await addChallenge.mutateAsync({
         userId: user.id,
         game: 'mho',
         weaponId: weapon.id,
@@ -248,9 +248,18 @@ export default function WeaponGuide() {
         craftRarity: weapon.rarity || 1,
         maxRarity: weapon.max_rarity,
       });
+      return res.challenge;
     },
     [user, monstersMap, addChallenge],
   );
+
+  // Standard Send to Challenges pop-up (projects, remove)
+  const challengeActions: ItemChallengeActions<DBWeapon> = {
+    userId: user?.id,
+    onRequireLogin: () => setLoginModalOpen(true),
+    onAdd: (weapon) => handleAddChallenge(weapon),
+    onRemove: (c) => deleteChallenge.mutateAsync(c.id),
+  };
 
   // Filtered Weapons
   const filteredWeapons = useMemo(() => {
@@ -775,11 +784,8 @@ export default function WeaponGuide() {
                 key={weapon.id}
                 weapon={weapon}
                 challenge={challenge}
-                isLoggedIn={Boolean(user)}
-                onAddChallenge={handleAddChallenge}
-                onOpenLogin={() => setLoginModalOpen(true)}
+                challengeActions={challengeActions}
                 onInspect={() => setSelectedWeapon(weapon)}
-                isAddingChallenge={addChallenge.isPending}
                 isSelectedForCompare={selectedForCompare?.id === weapon.id}
                 onToggleCompare={handleToggleCompare}
                 isCrafted={isCrafted(weapon.id)}
@@ -927,46 +933,19 @@ export default function WeaponGuide() {
 
                     {/* 7. Hunter Challenge Action / Status */}
                     <td className="hidden md:table-cell px-2 sm:px-3 py-2.5 sm:py-3.5 text-center whitespace-nowrap">
-                      {!user ? (
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setLoginModalOpen(true);
-                          }}
-                          className="inline-flex items-center gap-1 rounded-full px-2 lg:px-2.5 py-0.5 text-[10px] font-bold border bg-mh-slate-800 border-mh-slate-750 text-mh-slate-400 hover:text-white transition-all"
-                          title="Sign in to track"
-                        >
-                          <LogIn size={11} />
-                          <span className="hidden lg:inline">Track</span>
-                        </button>
-                      ) : isTracked && challenge ? (
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            navigate('/challenges');
-                          }}
-                          className="inline-flex items-center gap-1 rounded-full px-2 lg:px-2.5 py-0.5 text-[10px] font-bold border border-emerald-500/50 bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25 transition-all shadow-sm"
-                          title="View in Hunter Challenges"
-                        >
-                          <CheckCircle2 size={11} />
-                          <span className="hidden lg:inline">Go to Challenge ➔</span>
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleAddChallenge(weapon);
-                          }}
-                          className="inline-flex items-center gap-1 rounded-full px-2 lg:px-2.5 py-0.5 text-[10px] font-bold border border-sky-600/50 bg-transparent text-sky-400 hover:bg-sky-900 hover:border-sky-500 hover:text-sky-200 transition-all shadow-sm"
-                          title="Add to Hunter Challenges"
-                        >
-                          <ChallengeIcon size={14} />
-                          <span className="hidden lg:inline">+ Challenge</span>
-                        </button>
-                      )}
+                      <span className="inline-flex" onClick={(e) => e.stopPropagation()}>
+                        <SendToChallengesButton
+                          userId={user?.id}
+                          challenge={isTracked ? challenge : null}
+                          itemName={displayName}
+                          onAdd={() => handleAddChallenge(weapon)}
+                          onRemove={challenge ? () => deleteChallenge.mutateAsync(challenge.id) : undefined}
+                          onRequireLogin={() => setLoginModalOpen(true)}
+                          label="Challenge"
+                          trackedLabel="In Challenges"
+                          className="rounded-full"
+                        />
+                      </span>
                     </td>
 
                     {/* Extra: Crafted Status & Quick Level Selector */}

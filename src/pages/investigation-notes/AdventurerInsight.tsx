@@ -1,13 +1,11 @@
 // ─────────────────────────────────────────────────────────────
 // Adventurer insight controls: level pill + picker, modal level row and the
-// "+ Challenge" goal menu (recruit / reach an insight level).
 // ─────────────────────────────────────────────────────────────
-import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { Check, ChevronDown, Star, Target } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { Check, ChevronDown, Star } from 'lucide-react';
 import {
   ADVENTURER_INSIGHT_LEVELS,
   ADVENTURER_MAX_INSIGHT,
-  adventurerInsightLabel,
 } from '../../data/schemas/adventurer';
 import { cn } from '../../lib/utils';
 
@@ -141,98 +139,6 @@ export function InsightRow({ level, onChange }: PickerProps) {
           </button>
         );
       })}
-    </div>
-  );
-}
-
-interface GoalMenuProps {
-  /** 0 when not recruited yet. */
-  currentLevel: number;
-  onSelect: (targetInsight: number) => void;
-  className?: string;
-  children?: ReactNode;
-  align?: 'left' | 'right';
-  placement?: 'top' | 'bottom';
-  onOpenChange?: (open: boolean) => void;
-}
-
-/** "+ Challenge" button that lets the hunter pick the goal: recruit, or reach an insight level. */
-export function ChallengeGoalMenu({
-  currentLevel,
-  onSelect,
-  className,
-  children,
-  align = 'left',
-  placement = 'top',
-  onOpenChange,
-}: GoalMenuProps) {
-  const [open, setOpen] = useState(false);
-  const ref = useDismissable(open, () => {
-    setOpen(false);
-    onOpenChange?.(false);
-  });
-
-  const goals = ADVENTURER_INSIGHT_LEVELS.filter((lvl) => lvl > Math.max(1, currentLevel) || (lvl === 1 && currentLevel === 0));
-
-  if (goals.length === 0) return null;
-
-  const handleToggle = () => {
-    setOpen((v) => {
-      const next = !v;
-      onOpenChange?.(next);
-      return next;
-    });
-  };
-
-  return (
-    <div ref={ref} className="relative" onClick={(e) => e.stopPropagation()}>
-      <button
-        type="button"
-        onClick={handleToggle}
-        title="Set a recruitment / insight challenge"
-        className={cn(
-          'flex items-center gap-1 border border-sky-600/50 bg-transparent text-sky-400 font-bold shadow-xs transition-all hover:bg-sky-900 hover:border-sky-500 hover:text-sky-200',
-          className,
-        )}
-      >
-        {children ?? (
-          <>
-            <Target size={11} />
-            <span>+ Challenge</span>
-          </>
-        )}
-      </button>
-
-      {open && (
-        <div
-          className={cn(
-            'absolute z-50 w-52 overflow-hidden rounded-xl border border-sky-700 bg-mh-slate-950 p-1 shadow-2xl animate-in fade-in zoom-in-95 duration-100',
-            placement === 'top' ? 'bottom-full mb-2' : 'top-full mt-2',
-            align === 'right' ? 'right-0' : 'left-0',
-          )}
-        >
-          <p className="px-2 pb-1 pt-1 text-[10px] font-bold uppercase tracking-wider text-sky-400 border-b border-mh-slate-800">
-            Challenge goal
-          </p>
-          <div className="py-0.5 space-y-0.5">
-            {goals.map((lvl) => (
-              <button
-                key={lvl}
-                type="button"
-                onClick={() => {
-                  onSelect(lvl);
-                  setOpen(false);
-                  onOpenChange?.(false);
-                }}
-                className="flex w-full items-center justify-between rounded-lg px-2 py-1.5 text-left text-xs font-semibold text-mh-slate-200 transition-colors hover:bg-sky-900 hover:text-white"
-              >
-                <span>{lvl === 1 ? 'Recruit only' : `Reach Insight ${adventurerInsightLabel(lvl)}`}</span>
-                <span className="text-[10px] font-bold text-sky-400">Lv {lvl}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 }

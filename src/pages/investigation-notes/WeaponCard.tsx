@@ -4,13 +4,10 @@
 // Supports User Weapon Crafting & Rarity Level tracking (Visage Card style).
 // ─────────────────────────────────────────────────────────────
 import { useState, useRef, useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router';
 import {
   Sword,
   Sparkles,
-  CheckCircle2,
   ArrowLeftRight,
-  LogIn,
   Hammer,
   Plus,
   Trash2,
@@ -28,6 +25,7 @@ import {
 import { WEAPON_TYPES } from '../../data/core/weapon-types';
 import { useAdminMonsters } from '../../hooks/useAdminMonsters';
 import type { HunterChallenge } from '../../hooks/useHunterChallenges';
+import { SendToChallengesButton, type ItemChallengeActions } from '../../components/challenges/SendToChallengesButton';
 import { cn } from '../../lib/utils';
 import ChallengeIcon from '../../components/ChallengeIcon';
 import ElementIcon from '../../components/ElementIcon';
@@ -49,11 +47,9 @@ const ELEMENT_GLOWS: Record<WeaponElementType, string> = {
 interface Props {
   weapon: DBWeapon;
   challenge?: HunterChallenge;
-  isLoggedIn: boolean;
-  onAddChallenge: (weapon: DBWeapon) => void;
-  onOpenLogin: () => void;
+  /** Standard Send to Challenges pop-up (projects, remove) */
+  challengeActions: ItemChallengeActions<DBWeapon>;
   onInspect: () => void;
-  isAddingChallenge?: boolean;
   isSelectedForCompare?: boolean;
   onToggleCompare?: (weapon: DBWeapon) => void;
   // User Weapon Crafting & Level Tracking Props
@@ -66,11 +62,8 @@ interface Props {
 export default function WeaponCard({
   weapon,
   challenge,
-  isLoggedIn,
-  onAddChallenge,
-  onOpenLogin,
+  challengeActions,
   onInspect,
-  isAddingChallenge = false,
   isSelectedForCompare = false,
   onToggleCompare,
   isCrafted: isCraftedProp,
@@ -78,7 +71,6 @@ export default function WeaponCard({
   onSetCraftedRarity,
   onRemoveCrafted,
 }: Props) {
-  const navigate = useNavigate();
   const { data: monsters = [] } = useAdminMonsters({ isActive: true });
   const [showRarityMenu, setShowRarityMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -434,45 +426,18 @@ export default function WeaponCard({
                 <span>{isUserCrafted && activeCraftedRarity ? `R${activeCraftedRarity} Crafted` : '+ Craft'}</span>
               </button>
 
-              {/* Challenge Button */}
-              {!isLoggedIn ? (
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onOpenLogin();
-                  }}
-                  className="inline-flex items-center gap-1.5 rounded-xl bg-mh-slate-800 hover:bg-mh-slate-750 px-2 py-1 text-xs font-bold text-mh-slate-300 transition-all"
-                >
-                  <LogIn size={12} />
-                  <span>Sign In</span>
-                </button>
-              ) : isTracked && challenge ? (
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate('/challenges');
-                  }}
-                  className="inline-flex items-center gap-1 rounded-xl border border-emerald-500/50 bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25 px-2 py-1 text-xs font-bold transition-all shadow-sm"
-                >
-                  <CheckCircle2 size={12} />
-                  <span>Challenge ➔</span>
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onAddChallenge(weapon);
-                  }}
-                  disabled={isAddingChallenge}
-                  className="inline-flex items-center gap-1 rounded-xl border border-sky-600/50 bg-transparent text-sky-400 hover:bg-sky-900 hover:border-sky-500 hover:text-sky-200 px-2 py-1 text-xs font-bold transition-all shadow-sm"
-                >
-                  <ChallengeIcon size={14} />
-                  <span>+ Goal</span>
-                </button>
-              )}
+              {/* Challenge Button (standard pop-up: projects, remove) */}
+              <SendToChallengesButton
+                userId={challengeActions.userId}
+                challenge={isTracked ? challenge : null}
+                itemName={weapon.name}
+                onAdd={() => challengeActions.onAdd(weapon)}
+                onRemove={challenge ? () => challengeActions.onRemove(challenge) : undefined}
+                onRequireLogin={challengeActions.onRequireLogin}
+                label="Challenge"
+                trackedLabel="In Challenges"
+                className="rounded-xl px-2 py-1 text-xs"
+              />
             </div>
 
             <span className="text-[11px] text-mh-slate-500 font-medium group-hover:text-mh-slate-300 shrink-0">

@@ -3,7 +3,6 @@
 // Displays icon, name, rarity, role, with element & weapon as compact icons
 // ─────────────────────────────────────────────────────────────
 import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router';
 import {
   User,
   Swords,
@@ -23,7 +22,8 @@ import { WEAPON_TYPES } from '../../data/core/weapon-types';
 import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
 import AdventurerRarityBadge from './AdventurerRarityBadge';
-import { ChallengeGoalMenu, InsightPicker } from './AdventurerInsight';
+import { InsightPicker } from './AdventurerInsight';
+import { AdventurerChallengeButton, type AdventurerChallengeActions } from './AdventurerChallengeButton';
 import { ROLE_ICONS } from '../../components/RoleIcon';
 import ElementIcon from '../../components/ElementIcon';
 import YouTubeIcon from '../../components/YouTubeIcon';
@@ -55,7 +55,8 @@ interface AdventurerCardProps {
   challenge?: HunterChallenge;
   onToggleRecruit?: () => void;
   onSetInsight?: (level: number) => void;
-  onAddChallenge?: (adventurer: DBAdventurer, targetInsight: number) => void;
+  /** Send to Challenges pop-up (goal choice, projects) */
+  challengeActions?: AdventurerChallengeActions;
   onClick?: () => void;
   onSelectWeapon?: (weaponType: string) => void;
   /** Favourite gifts shown as small icons for quick reference */
@@ -69,7 +70,7 @@ export default function AdventurerCard({
   challenge,
   onToggleRecruit,
   onSetInsight,
-  onAddChallenge,
+  challengeActions,
   onClick,
   favouriteGifts = [],
 }: AdventurerCardProps) {
@@ -82,7 +83,6 @@ export default function AdventurerCard({
   const [menuOpen, setMenuOpen] = useState(false);
 
   const isPlayerCharacter = adventurer.is_default;
-  const navigate = useNavigate();
 
   const activeRecruited = isPlayerCharacter || isRecruited;
   const isTracked = Boolean(challenge && challenge.status !== 'abandoned');
@@ -269,30 +269,15 @@ export default function AdventurerCard({
             >
               Default
             </span>
-          ) : isTracked && !isChallengeDone ? (
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                navigate('/challenges');
-              }}
-              className="flex h-6 items-center gap-1 rounded-full border border-emerald-500/50 bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25 px-2 text-[10px] font-bold shadow-xs transition-all shrink-0 whitespace-nowrap"
-            >
-              <Check size={11} className="text-emerald-400" />
-              <span>Challenge ➔</span>
-            </button>
-          ) : (
-            currentInsight < ADVENTURER_MAX_INSIGHT && (
-              <ChallengeGoalMenu
-                currentLevel={currentInsight}
-                onSelect={(target) => onAddChallenge?.(adventurer, target)}
-                placement="top"
-                align="left"
-                onOpenChange={setMenuOpen}
-                className="h-6 rounded-full px-2 text-[10px] hover:scale-105 shrink-0"
-              />
-            )
-          )}
+          ) : challengeActions ? (
+            <AdventurerChallengeButton
+              adventurer={adventurer}
+              currentLevel={currentInsight}
+              challenge={challenge}
+              actions={challengeActions}
+              className="h-6 shrink-0 whitespace-nowrap rounded-full px-2"
+            />
+          ) : null}
         </div>
 
         {/* Right: Insight Picker & Recruit Button */}
