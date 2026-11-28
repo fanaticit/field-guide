@@ -87,8 +87,8 @@ const parsedReleases: ReleaseItem[] = Array.isArray((rawMetadata as Record<strin
   ? ((rawMetadata as Record<string, unknown>).releases as Record<string, unknown>[]).map(parseRelease)
   : [
       {
-        version: rawMetadata.version || '1.2.0',
-        update: rawMetadata.update || rawMetadata.version || '1.2.0',
+        version: rawMetadata.version || '1.3.0',
+        update: rawMetadata.update || rawMetadata.version || '1.3.0',
         date: rawMetadata.date,
         title: rawMetadata.title || rawMetadata.description || 'Latest Updates',
         description: rawMetadata.description,
@@ -100,8 +100,8 @@ const parsedReleases: ReleaseItem[] = Array.isArray((rawMetadata as Record<strin
 
 export const siteMetadata: SiteMetadata = {
   name: rawMetadata.name || 'monster_hunter_field_guide',
-  version: rawMetadata.version || '1.2.0',
-  update: rawMetadata.update || rawMetadata.version || '1.2.0',
+  version: rawMetadata.version || '1.3.0',
+  update: rawMetadata.update || rawMetadata.version || '1.3.0',
   date: rawMetadata.date,
   title: rawMetadata.title || rawMetadata.description || 'Latest Updates',
   description: rawMetadata.description,

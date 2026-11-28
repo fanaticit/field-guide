@@ -1,6 +1,7 @@
 import { Link } from 'react-router';
-import { ArrowRight, Crosshair } from 'lucide-react';
+import { ArrowRight, Crosshair, ExternalLink, Play } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { getYouTubeEmbedUrl } from '../../lib/youtube';
 
 type Accent = 'epic' | 'fine' | 'rare';
 
@@ -10,6 +11,8 @@ interface Feature {
   /** Screenshot in /public/img/home. Omit for features that only show for signed-in hunters. */
   image?: string;
   imageAlt?: string;
+  youtubeUrl?: string;
+  videoAspect?: 'shorts' | 'standard';
   to: string;
   linkLabel: string;
 }
@@ -30,6 +33,15 @@ const SECTIONS: Section[] = [
     tagline: 'Find, plan and share the gear builds that power your hunts.',
     features: [
       {
+        title: 'Browse every armour piece',
+        description:
+          "Explore all the armour sets with each piece's defence, resistances, skills and set bonuses. Use it to come up with an armour build for each of your main and support characters.",
+        youtubeUrl: 'https://youtube.com/shorts/8YuKjDmewgo?feature=share',
+        videoAspect: 'shorts',
+        to: '/armory/armour',
+        linkLabel: 'Browse armour',
+      },
+      {
         title: 'Browse community builds',
         description:
           'See what other hunters are running. Search by title, author, hunter or weapon, then upvote the builds you like so the best ones rise to the top of the list.',
@@ -47,15 +59,6 @@ const SECTIONS: Section[] = [
         to: '/armory/planner',
         linkLabel: 'Open the Build Planner',
       },
-      {
-        title: 'Browse every armour piece',
-        description:
-          "Explore all the armour sets with each piece's defence, resistances, skills and set bonuses. Use it to come up with an armour build for each of your main and support characters.",
-        image: 'armour-guide',
-        imageAlt: 'Armour guide with an example build and combined skills',
-        to: '/armory/armour',
-        linkLabel: 'Browse armour',
-      },
     ],
   },
   {
@@ -64,6 +67,15 @@ const SECTIONS: Section[] = [
     title: 'Gallery',
     tagline: 'Visage Cards: manage your collection and build sets worth sharing.',
     features: [
+      {
+        title: 'Check My Card',
+        description:
+          "Evaluate your Visage Cards and see their calculated Power level. Review a clear breakdown of how each stat and roll is scored so you know which cards are worth keeping and upgrading.",
+        youtubeUrl: 'https://youtube.com/shorts/X1612hrbDn8?feature=share',
+        videoAspect: 'shorts',
+        to: '/gallery/check',
+        linkLabel: 'Check my Card',
+      },
       {
         title: 'Manage your card collection',
         description:
@@ -151,6 +163,75 @@ const ACCENT: Record<Accent, { text: string; border: string; bg: string; glow: s
 
 function FeatureVisual({ feature, accent }: { feature: Feature; accent: Accent }) {
   const a = ACCENT[accent];
+
+  if (feature.youtubeUrl) {
+    const embedUrl = getYouTubeEmbedUrl(feature.youtubeUrl);
+    const isShorts = feature.videoAspect === 'shorts';
+
+    if (embedUrl) {
+      if (isShorts) {
+        return (
+          <div className="flex flex-col items-center justify-center w-full">
+            <div
+              className={cn(
+                'w-full max-w-[280px] aspect-[9/16] rounded-2xl overflow-hidden border-2 bg-black/90 shadow-2xl relative ring-1 ring-white/10',
+                a.border,
+                a.glow,
+              )}
+            >
+              <iframe
+                src={embedUrl}
+                title={`${feature.title} - Video Shorts`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                className="absolute inset-0 h-full w-full border-0"
+              />
+            </div>
+            <a
+              href={feature.youtubeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn('mt-2.5 inline-flex items-center gap-1.5 text-xs font-semibold hover:underline', a.text)}
+            >
+              <Play size={11} fill="currentColor" />
+              <span>Watch Shorts on YouTube</span>
+              <ExternalLink size={11} />
+            </a>
+          </div>
+        );
+      }
+
+      return (
+        <div className="w-full">
+          <div
+            className={cn(
+              'w-full aspect-video rounded-xl overflow-hidden border shadow-xl relative',
+              a.border,
+              a.glow,
+            )}
+          >
+            <iframe
+              src={embedUrl}
+              title={`${feature.title} - Video`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              className="absolute inset-0 h-full w-full border-0"
+            />
+          </div>
+          <a
+            href={feature.youtubeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn('mt-2.5 inline-flex items-center gap-1.5 text-xs font-semibold hover:underline', a.text)}
+          >
+            <Play size={11} fill="currentColor" />
+            <span>Watch on YouTube</span>
+            <ExternalLink size={11} />
+          </a>
+        </div>
+      );
+    }
+  }
 
   if (!feature.image) {
     return (
