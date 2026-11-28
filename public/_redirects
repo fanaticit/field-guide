@@ -20,6 +20,8 @@
 /home/spoilers                      /spoilers                  301
 /armour                             /armory/armour/            301
 /armour/                            /armory/armour/            301
+/investigation_journey               /investigation-journey/    301
+/investigation_journey/              /investigation-journey/    301
 /admin                              /admin/feedback            302
 
 # ── Browser-only pages (not pre-rendered) load the app shell ──

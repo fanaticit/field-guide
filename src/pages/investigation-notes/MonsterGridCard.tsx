@@ -14,6 +14,27 @@ import type {
   StandardStudyKey,
 } from '../../hooks/useUserMonsterStudy';
 import { cn } from '../../lib/utils';
+import type { JourneyNodeState, JourneyStep } from '../../hooks/useInvestigationJourney';
+import { HowToUnlockButton, FreeHuntCounter } from '../../components/monsters/JourneyUnlockInfo';
+
+/** Investigation Journey details for one card (all optional) */
+export interface MonsterCardJourney {
+  /** The journey step that unlocks this monster */
+  unlockStep?: JourneyStep;
+  /** Steps that need studies of this monster (shows the Free Hunt Study counter) */
+  studyNeeds: JourneyStep[];
+  /** Studies logged for this monster */
+  studies: number;
+  /** Studies logged for the unlock step's required monster */
+  requiredStudies: number;
+  requiredIcon?: string | null;
+  /** Highlight while "Investigation Journey" is on; null = not on the journey */
+  state?: JourneyNodeState | null;
+  /** Journey view is on and this monster is not part of it */
+  dimmed?: boolean;
+  /** The hunter shows spoilers (name the monsters still to unlock) */
+  spoilers?: boolean;
+}
 
 interface MonsterGridCardProps {
   monster: DBMonster;
@@ -21,7 +42,17 @@ interface MonsterGridCardProps {
   onSelect: () => void;
   onToggleStandardTask: (monsterId: string, taskKey: StandardStudyKey, isElder?: boolean) => void;
   onToggleCustomTask?: (monsterId: string, taskId: string) => void;
+  journey?: MonsterCardJourney;
+  onSetFreeHunt?: (monsterId: string, count: number) => void;
+  onOpenMonster?: (monsterId: string) => void;
 }
+
+const JOURNEY_STATE_CLASS: Record<JourneyNodeState, string> = {
+  unlocked: 'ring-2 ring-amber-400 bg-amber-500/10 shadow-[0_0_18px_rgba(251,191,36,0.55)]',
+  current: 'ring-2 ring-amber-400/45 bg-amber-500/5 shadow-[0_0_10px_rgba(251,191,36,0.25)]',
+  next: 'outline-dashed outline-2 outline-offset-1 outline-sky-400/80',
+  locked: 'outline-dashed outline-1 outline-offset-1 outline-mh-slate-500/60 opacity-60',
+};
 
 export default function MonsterGridCard({
   monster,
@@ -29,6 +60,9 @@ export default function MonsterGridCard({
   onSelect,
   onToggleStandardTask,
   onToggleCustomTask,
+  journey,
+  onSetFreeHunt,
+  onOpenMonster,
 }: MonsterGridCardProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuPosition, setMenuPosition] = useState<{
@@ -183,6 +217,7 @@ export default function MonsterGridCard({
       role="button"
       tabIndex={0}
       onClick={onSelect}
+      data-monster-id={monster.id}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
@@ -195,6 +230,9 @@ export default function MonsterGridCard({
           ? 'bg-mh-slate-800/90 border-mh-gold-500/50 shadow-lg'
           : 'border-transparent hover:border-mh-gold-500/30 hover:bg-mh-slate-800/70',
         'focus:outline-none focus:ring-1 focus:ring-mh-gold-500/50',
+        journey?.state && JOURNEY_STATE_CLASS[journey.state],
+        journey?.state === 'current' && 'animate-[pulse_3s_ease-in-out_infinite]',
+        journey?.dimmed && 'opacity-30 hover:opacity-80',
       )}
     >
       {/* ── Monster Icon Artwork ── */}
@@ -306,12 +344,20 @@ export default function MonsterGridCard({
 
                 {/* Study Tasks List */}
                 <div className="space-y-0.5 max-h-60 overflow-y-auto pr-0.5">
-                  {/* 1. Unlocked */}
+                  {/* 1. Unlocked (+ how the Investigation Journey unlocks it) */}
                   <TaskRow
                     label="Unlocked"
                     icon="/img/ui/lock.png"
                     completed={study.unlocked}
                     onClick={() => onToggleStandardTask(monster.id, 'unlocked', isElder)}
+                    trailing={journey?.unlockStep && (
+                      <HowToUnlockButton
+                        step={journey.unlockStep}
+                        monsterStudies={journey.requiredStudies}
+                        monsterIcon={journey.requiredIcon}
+                        onOpenMonster={onOpenMonster}
+                      />
+                    )}
                   />
 
                   {/* Standard large monsters tasks (hidden for Elders) */}
@@ -363,6 +409,18 @@ export default function MonsterGridCard({
                         onClick={() => onToggleStandardTask(monster.id, 'giant_crown')}
                       />
                     </>
+                  )}
+
+                  {/* Free Hunt Study count for monsters the Investigation Journey needs */}
+                  {journey && journey.studyNeeds.length > 0 && onSetFreeHunt && (
+                    <FreeHuntCounter
+                      compact
+                      count={study.free_hunt_studies ?? 0}
+                      logged={journey.studies}
+                      needs={journey.studyNeeds}
+                      revealNames={journey.spoilers ?? false}
+                      onChange={(n) => onSetFreeHunt(monster.id, n)}
+                    />
                   )}
 
                   {/* Custom Tasks if any */}
@@ -434,6 +492,7 @@ function TaskRow({
   completed,
   highlight = false,
   onClick,
+  trailing,
 }: {
   label: string;
   icon?: string;
@@ -441,7 +500,19 @@ function TaskRow({
   completed: boolean;
   highlight?: boolean;
   onClick: () => void;
+  /** Shown at the end of the row, outside the toggle (e.g. a "How to unlock" link) */
+  trailing?: React.ReactNode;
 }) {
+  if (trailing) {
+    return (
+      <div className="flex items-center gap-1">
+        <div className="min-w-0 flex-1">
+          <TaskRow label={label} icon={icon} lucideIcon={lucideIcon} completed={completed} highlight={highlight} onClick={onClick} />
+        </div>
+        {trailing}
+      </div>
+    );
+  }
   return (
     <button
       type="button"

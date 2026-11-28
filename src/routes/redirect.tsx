@@ -28,6 +28,7 @@ const LEGACY_REDIRECTS: [RegExp, string][] = [
   [/^\/community-hub\/?$/, '/armory'],
   [/^\/home\/spoilers\/?$/, '/spoilers'],
   [/^\/armour\/?$/, '/armory/armour'],
+  [/^\/investigation_journey\/?$/, '/investigation-journey'],
   // Password-reset emails link here; Supabase reads the token from the URL as the app starts.
   [/^\/reset-password\/?$/, '/'],
 ];

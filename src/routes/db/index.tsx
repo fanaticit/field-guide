@@ -113,6 +113,13 @@ export default function ReferenceIndex() {
       tool={{ label: ref.toolLabel, path: ref.toolPath }}
       updatedAt={initial.fetchedAt}
     >
+      {kind === 'monsters' && (
+        <p className="px-1 text-xs text-mh-slate-400">
+          Some monsters are hidden until you progress the{' '}
+          <Link to="/investigation-journey/" className="text-sky-300 underline hover:text-white">Investigation Journey</Link> — see how to
+          unlock each one.
+        </p>
+      )}
       {[...groups.entries()].map(([group, items]) => (
         <Section key={group} title={`${group} (${items.length})`}>
           <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">

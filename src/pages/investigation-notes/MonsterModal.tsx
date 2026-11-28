@@ -50,11 +50,21 @@ import { useVisageChallengeActions } from './useVisageChallengeActions';
 import { cn } from '../../lib/utils';
 import SendToChallengesButton from '../../components/challenges/SendToChallengesButton';
 import LoginModal from '../../components/auth/LoginModal';
+import { HowToUnlockButton, FreeHuntCounter, UnlockProgressInline } from '../../components/monsters/JourneyUnlockInfo';
+import {
+  monsterStudyCount,
+  stepUnlocking,
+  stepsNeedingStudiesOf,
+} from '../../hooks/useInvestigationJourney';
 
 interface Props {
   monster: DBMonster | null;
   open: boolean;
   onClose: () => void;
+  /** Open another monster (e.g. the one whose studies unlock this one) */
+  onOpenMonster?: (monsterId: string) => void;
+  /** Monster id → icon, for the "How to unlock" pop-up */
+  monsterIcons?: Map<string, string | null>;
 }
 
 const TIER_CONFIG: Record<string, { label: string; cls: string }> = {
@@ -109,7 +119,7 @@ const ELEMENT_LABELS: Record<string, string> = {
   stun: 'Stun',
 };
 
-export default function MonsterModal({ monster, open, onClose }: Props) {
+export default function MonsterModal({ monster, open, onClose, onOpenMonster, monsterIcons }: Props) {
   const navigate = useNavigate();
   const { user, profile } = useAuthStore();
   const [loginModalOpen, setLoginModalOpen] = useState(false);
@@ -122,6 +132,9 @@ export default function MonsterModal({ monster, open, onClose }: Props) {
     addCustomTask,
     toggleCustomTask,
     deleteCustomTask,
+    setFreeHuntStudies,
+    studyMap,
+    journey,
   } = useUserMonsterStudy();
 
   const { data: challenges = [] } = useHunterChallenges(user?.id);
@@ -232,6 +245,11 @@ export default function MonsterModal({ monster, open, onClose }: Props) {
   if (!open || !monster) return null;
 
   const study = getMonsterStudy(monster.id);
+  // Investigation Journey: how this monster is unlocked, and which steps need its studies
+  const unlockStep = stepUnlocking(journey, monster.id);
+  const studyNeeds = stepsNeedingStudiesOf(journey, monster.id);
+  const requiredStudies = unlockStep?.studies_monster_id ? monsterStudyCount(studyMap[unlockStep.studies_monster_id]) : 0;
+  const requiredIcon = unlockStep?.studies_monster_id ? monsterIcons?.get(unlockStep.studies_monster_id) : null;
   const tierCfg = TIER_CONFIG[monster.tier] ?? { label: monster.tier, cls: 'rarity-1' };
   const speciesLabel = (monster.species && SPECIES_LABELS[monster.species]) || monster.species || 'Unknown Species';
 
@@ -811,6 +829,23 @@ export default function MonsterModal({ monster, open, onClose }: Props) {
 
                       {/* Right action: Send to / Track in Challenges (pop-up with projects) */}
                       <div className="flex items-center gap-1.5 shrink-0">
+                        {task.key === 'unlocked' && unlockStep && (
+                          <>
+                            {/* The monster studies this unlock needs, when the window has room */}
+                            <UnlockProgressInline
+                              step={unlockStep}
+                              monsterStudies={requiredStudies}
+                              monsterIcon={requiredIcon}
+                              className="hidden md:flex"
+                            />
+                            <HowToUnlockButton
+                              step={unlockStep}
+                              monsterStudies={requiredStudies}
+                              monsterIcon={requiredIcon}
+                              onOpenMonster={onOpenMonster}
+                            />
+                          </>
+                        )}
                         <SendToChallengesButton
                           userId={user?.id}
                           challenge={linkedChallenge ?? null}
@@ -823,6 +858,17 @@ export default function MonsterModal({ monster, open, onClose }: Props) {
                     </div>
                   );
                 })}
+
+                {/* Free Hunt Study count — this monster's studies unlock the next one on the journey */}
+                {studyNeeds.length > 0 && (
+                  <FreeHuntCounter
+                    count={study.free_hunt_studies ?? 0}
+                    logged={monsterStudyCount(study)}
+                    needs={studyNeeds}
+                    revealNames={Boolean(profile?.show_spoilers)}
+                    onChange={(n) => setFreeHuntStudies(monster.id, n)}
+                  />
+                )}
 
                 {/* Custom User Tasks */}
                 {study.custom_tasks.map((ct) => {

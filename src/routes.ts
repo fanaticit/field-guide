@@ -57,6 +57,7 @@ export default [
     route('buddies/:slug', 'routes/db/detail.tsx', { id: 'ref-buddy' }),
     route('visages', 'routes/db/index.tsx', { id: 'ref-visages' }),
     route('visages/:slug', 'routes/db/detail.tsx', { id: 'ref-visage' }),
+    route('investigation-journey', 'routes/investigation-journey.tsx'),
 
     // ── User & Admin (browser only) ──
     route('settings', 'routes/settings.tsx'),
@@ -81,6 +82,7 @@ export default [
       'community-hub',
       'home/spoilers',
       'armour',
+      'investigation_journey',
       'reset-password',
     ].map((path) => route(path, 'routes/redirect.tsx', { id: `legacy:${path}` })),
 

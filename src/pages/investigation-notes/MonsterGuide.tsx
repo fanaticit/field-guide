@@ -31,7 +31,15 @@ import { useUIStore } from '../../store/uiStore';
 import { DEFAULT_SECTION_THEMES } from '../../config/themes';
 import PageTitlePanel from '../../components/layout/PageTitlePanel';
 import MonsterModal from './MonsterModal';
-import MonsterGridCard from './MonsterGridCard';
+import MonsterGridCard, { type MonsterCardJourney } from './MonsterGridCard';
+import { JourneyBar, JourneyLines } from '../../components/monsters/JourneyOverlay';
+import {
+  buildJourneyPath,
+  monsterStudyCount,
+  stepUnlocking,
+  stepsNeedingStudiesOf,
+  type JourneyNode,
+} from '../../hooks/useInvestigationJourney';
 import ElementIcon from '../../components/ElementIcon';
 import { cn } from '../../lib/utils';
 import { useSearchParams } from 'react-router';
@@ -107,7 +115,7 @@ const AVAILABLE_ELEMENTS = [
 ];
 
 export default function MonsterGuide() {
-  const { user } = useAuthStore();
+  const { user, profile } = useAuthStore();
   const theme = useUIStore((s) => s.sectionThemes['/challenges'] ?? DEFAULT_SECTION_THEMES['/challenges']);
 
   const [introHidden, setIntroHidden] = useState(() => {
@@ -181,10 +189,72 @@ export default function MonsterGuide() {
   }, [initialMonsterParam, monsters]);
   const {
     studyMap,
+    isLoading: studyLoading,
     getMonsterStudy,
     toggleStandardTask,
     toggleCustomTask,
+    setFreeHuntStudies,
+    syncJourneyUnlocks,
+    journey,
   } = useUserMonsterStudy();
+
+  // ── Investigation Journey ──
+  const showSpoilers = Boolean(profile?.show_spoilers);
+  // /challenges/monsters?journey=1 (e.g. from the Investigation Journey guide) opens with it on
+  const [journeyOn, setJourneyOn] = useState(() => searchParams.get('journey') === '1');
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  // Studies already logged before the journey existed can unlock monsters too (once per visit)
+  const journeySynced = useRef(false);
+  useEffect(() => {
+    if (journeySynced.current || studyLoading || journey.length === 0) return;
+    journeySynced.current = true;
+    syncJourneyUnlocks().catch((err) => console.warn('Investigation Journey sync failed', err));
+  }, [studyLoading, journey, syncJourneyUnlocks]);
+
+  const journeyPath = useMemo(() => buildJourneyPath(journey, (id) => studyMap[id]), [journey, studyMap]);
+  /** Without spoilers only the monsters already unlocked are shown on the journey */
+  const visibleJourney = useMemo<JourneyNode[]>(
+    () => journeyPath.filter((n) => showSpoilers || n.state === 'unlocked' || n.state === 'current'),
+    [journeyPath, showSpoilers],
+  );
+  const journeyStateById = useMemo(
+    () => new Map(visibleJourney.map((n) => [n.monsterId, n.state])),
+    [visibleJourney],
+  );
+  const monsterIcons = useMemo(() => new Map(monsters.map((m) => [m.id, m.icon])), [monsters]);
+
+  /** e.g. "2/5 studies of Radiant Paolumu" for the next unlock */
+  const nextNeed = useMemo(() => {
+    const next = journeyPath.find((n) => n.state === 'next');
+    const step = next?.step;
+    if (!step?.studies_monster_id || !step.monster_studies) return null;
+    const have = monsterStudyCount(studyMap[step.studies_monster_id]);
+    return `${Math.min(have, step.monster_studies)}/${step.monster_studies} studies of ${step.studies_monster_name}`;
+  }, [journeyPath, studyMap]);
+
+  const journeyFor = (monsterId: string): MonsterCardJourney | undefined => {
+    if (!journey.length) return undefined;
+    const unlockStep = stepUnlocking(journey, monsterId);
+    const studyNeeds = stepsNeedingStudiesOf(journey, monsterId);
+    const state = journeyOn ? journeyStateById.get(monsterId) ?? null : null;
+    if (!unlockStep && !studyNeeds.length && !journeyOn) return undefined;
+    return {
+      unlockStep,
+      studyNeeds,
+      studies: monsterStudyCount(studyMap[monsterId]),
+      requiredStudies: unlockStep?.studies_monster_id ? monsterStudyCount(studyMap[unlockStep.studies_monster_id]) : 0,
+      requiredIcon: unlockStep?.studies_monster_id ? monsterIcons.get(unlockStep.studies_monster_id) : null,
+      state,
+      dimmed: journeyOn && !state,
+      spoilers: showSpoilers,
+    };
+  };
+
+  const openMonsterById = (id: string) => {
+    const m = monsters.find((x) => x.id === id);
+    if (m) setSelectedMonster(m);
+  };
   const { data: challenges = [] } = useHunterChallenges(user?.id);
 
   // Available Species list with monster count
@@ -355,6 +425,26 @@ export default function MonsterGuide() {
     return list;
   }, [monsters, search, filterSpecies, filterTier, filterWeakness, filterStudy, sortOrder, studyMap]);
 
+  const journeyHiddenByFilters = useMemo(() => {
+    if (!journeyOn) return 0;
+    const shown = new Set(filteredMonsters.map((m) => m.id));
+    return visibleJourney.filter((n) => !shown.has(n.monsterId)).length;
+  }, [journeyOn, filteredMonsters, visibleJourney]);
+
+  const clearFilters = () => {
+    setSearch('');
+    setFilterSpecies('all');
+    setFilterTier('all');
+    setFilterWeakness('all');
+    setFilterStudy('all');
+  };
+
+  const toggleJourney = () => {
+    setJourneyOn((on) => !on);
+    // The journey is drawn on the grid
+    setViewMode('grid');
+  };
+
   return (
     <div data-rarity-theme={theme} className="challenges-theme px-1 sm:px-4 lg:px-8 pb-6 pt-2 space-y-4 sm:space-y-6 max-w-7xl mx-auto text-white">
       {/* ── Page Title & Metrics Panel ── */}
@@ -414,14 +504,28 @@ export default function MonsterGuide() {
 
       {/* ── Toolbar: Search & Species-First Filters ── */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-mh-slate-800 pb-3">
-        <div className="flex items-center gap-2">
-          <Footprints size={16} className="text-mh-gold-400" />
-          <h3 className="font-display text-sm font-bold uppercase tracking-wider text-mh-slate-200">
-            Monsters Roster
-          </h3>
-          <span className="rounded-full bg-mh-slate-800 border border-mh-slate-750 px-2 py-0.5 text-xs text-mh-slate-400 font-semibold">
-            {filteredMonsters.length} of {monsters.length}
-          </span>
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-2 min-w-0">
+          <div className="flex items-center gap-2">
+            <Footprints size={16} className="text-mh-gold-400" />
+            <h3 className="font-display text-sm font-bold uppercase tracking-wider text-mh-slate-200">
+              Monsters Roster
+            </h3>
+            <span className="rounded-full bg-mh-slate-800 border border-mh-slate-750 px-2 py-0.5 text-xs text-mh-slate-400 font-semibold">
+              {filteredMonsters.length} of {monsters.length}
+            </span>
+          </div>
+
+          {/* Investigation Journey toggle & spoilers status (wraps under the label when narrow) */}
+          <JourneyBar
+            active={journeyOn}
+            onToggle={toggleJourney}
+            spoilers={showSpoilers}
+            signedIn={Boolean(user)}
+            path={journeyPath}
+            nextNeed={nextNeed}
+            hiddenByFilters={journeyHiddenByFilters}
+            onClearFilters={clearFilters}
+          />
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
@@ -882,21 +986,27 @@ export default function MonsterGuide() {
         </div>
       ) : (
         /* ── Grid View (Default) ── */
-        <div className="grid grid-cols-3 min-[380px]:grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 xl:grid-cols-12 2xl:grid-cols-14 gap-1 sm:gap-1.5">
-          {filteredMonsters.map((monster) => {
-            const study = getMonsterStudy(monster.id);
+        <div ref={gridRef} className="relative">
+          {journeyOn && <JourneyLines containerRef={gridRef} nodes={visibleJourney} watch={filteredMonsters} />}
+          <div className="grid grid-cols-3 min-[380px]:grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 xl:grid-cols-12 2xl:grid-cols-14 gap-1 sm:gap-1.5">
+            {filteredMonsters.map((monster) => {
+              const study = getMonsterStudy(monster.id);
 
-            return (
-              <MonsterGridCard
-                key={monster.id}
-                monster={monster}
-                study={study}
-                onSelect={() => setSelectedMonster(monster)}
-                onToggleStandardTask={toggleStandardTask}
-                onToggleCustomTask={toggleCustomTask}
-              />
-            );
-          })}
+              return (
+                <MonsterGridCard
+                  key={monster.id}
+                  monster={monster}
+                  study={study}
+                  onSelect={() => setSelectedMonster(monster)}
+                  onToggleStandardTask={toggleStandardTask}
+                  onToggleCustomTask={toggleCustomTask}
+                  journey={journeyFor(monster.id)}
+                  onSetFreeHunt={setFreeHuntStudies}
+                  onOpenMonster={openMonsterById}
+                />
+              );
+            })}
+          </div>
         </div>
       )}
 
@@ -905,6 +1015,8 @@ export default function MonsterGuide() {
         monster={selectedMonster}
         open={Boolean(selectedMonster)}
         onClose={() => setSelectedMonster(null)}
+        onOpenMonster={openMonsterById}
+        monsterIcons={monsterIcons}
       />
     </div>
   );

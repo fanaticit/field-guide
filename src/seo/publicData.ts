@@ -218,6 +218,38 @@ export interface ArmourGuideData {
   weaponTypes: { id: string; name: string; count: number }[];
 }
 
+/** One monster on the Investigation Journey page */
+export interface JourneyMonsterRef {
+  id: string | null;
+  name: string;
+  slug: string | null;
+  icon: string | null;
+}
+
+export interface JourneyPageStep {
+  id: string;
+  journey: number;
+  step: number;
+  isGrandPrize: boolean;
+  unlocks: JourneyMonsterRef;
+  serverDay: number | null;
+  totalStudies: number | null;
+  monsterStudies: number | null;
+  studiesOf: JourneyMonsterRef | null;
+  requirements: string[];
+  whatUnlockingDoes: string | null;
+  /** e.g. 6, from "requires reaching Ecological Rank 6" */
+  ecologicalRank: number | null;
+  /** e.g. "IV", from "requires unlocking lair Difficulty IV first" */
+  lairDifficulty: string | null;
+  rewards: { item: string; count: number }[];
+}
+
+export interface JourneyPage {
+  fetchedAt: string;
+  steps: JourneyPageStep[];
+}
+
 export type DetailPage = MonsterPage | WeaponPage | AdventurerPage | BuddyPage | VisagePage;
 
 // ── Helpers ───────────────────────────────────────────────────
@@ -848,6 +880,54 @@ export class PublicDataSource {
   }
 
   /** Every pre-renderable reference path, for the prerender list and sitemap. */
+  /** The Investigation Journey, in order, with links to each monster's page. Empty if not imported yet. */
+  async investigationJourney(): Promise<JourneyPage> {
+    let rows: Row[] = [];
+    try {
+      rows = await this.rows('investigation_journey_steps');
+    } catch (err) {
+      console.warn(`[publicData] investigation journey unavailable: ${(err as Error).message}`);
+    }
+    const monsters = await this.listed('monsters');
+    const byId = new Map(monsters.rows.map((m) => [String(m.id), m]));
+    const ref = (id: string | null, name: string | null): JourneyMonsterRef | null => {
+      if (!id && !name) return null;
+      const m = id ? byId.get(id) : undefined;
+      return {
+        id: m ? String(m.id) : id,
+        name: m ? String(m.name) : name ?? '',
+        slug: m ? monsters.slugs.get(String(m.id)) ?? null : null,
+        icon: m ? str(m.icon) : null,
+      };
+    };
+    const steps = rows
+      .map((r): JourneyPageStep => {
+        const text = str(r.what_unlocking_does);
+        return {
+          id: String(r.id),
+          journey: num(r.journey) ?? 1,
+          step: num(r.step) ?? 1,
+          isGrandPrize: Boolean(r.is_grand_prize),
+          unlocks: r.is_grand_prize
+            ? { id: null, name: String(r.unlocks_name ?? 'Investigation Grand Prize'), slug: null, icon: null }
+            : ref(str(r.unlocks_monster_id), str(r.unlocks_name))!,
+          serverDay: num(r.server_day),
+          totalStudies: num(r.total_studies),
+          monsterStudies: num(r.monster_studies),
+          studiesOf: ref(str(r.studies_monster_id), str(r.studies_monster_name)),
+          requirements: arr<{ text?: string }>(r.requirements).map((q) => q.text ?? '').filter(Boolean),
+          whatUnlockingDoes: text,
+          ecologicalRank: num(text?.match(/Ecological Rank (\d+)/i)?.[1] ?? null),
+          lairDifficulty: text?.match(/Difficulty ([IVX]+)/i)?.[1] ?? null,
+          rewards: arr<{ item?: string; count?: number }>(r.rewards)
+            .filter((x) => x.item)
+            .map((x) => ({ item: String(x.item), count: num(x.count) ?? 1 })),
+        };
+      })
+      .sort((a, b) => a.journey - b.journey || a.step - b.step);
+    return { fetchedAt: new Date().toISOString(), steps };
+  }
+
   async allPaths(): Promise<string[]> {
     const kinds: DataKind[] = ['monsters', 'weapons', 'adventurers', 'buddies', 'visages'];
     const paths: string[] = [];

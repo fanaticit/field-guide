@@ -5,8 +5,31 @@ import { useState, useMemo, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
+import { useInvestigationJourney, monstersToAutoUnlock } from './useInvestigationJourney';
 
 const STORAGE_KEY = 'field-guide-user-monster-study-v1';
+/** Monsters the Investigation Journey has already ticked "Unlocked" on (so a manual untick sticks) */
+const AUTO_UNLOCKED_KEY = 'field-guide-journey-auto-unlocked-v1';
+
+function readAutoUnlocked(): Set<string> {
+  if (typeof window === 'undefined') return new Set();
+  try {
+    return new Set(JSON.parse(localStorage.getItem(AUTO_UNLOCKED_KEY) || '[]') as string[]);
+  } catch {
+    return new Set();
+  }
+}
+
+function rememberAutoUnlocked(ids: string[]) {
+  if (typeof window === 'undefined' || !ids.length) return;
+  try {
+    const set = readAutoUnlocked();
+    ids.forEach((id) => set.add(id));
+    localStorage.setItem(AUTO_UNLOCKED_KEY, JSON.stringify([...set]));
+  } catch {
+    /* storage full or blocked */
+  }
+}
 export const USER_MONSTER_STUDY_QUERY_KEY = 'user-monster-study';
 
 export interface CustomStudyTask {
@@ -25,6 +48,8 @@ export interface MonsterStudyRecord {
   giant_crown: boolean;
   finished: boolean;
   custom_tasks: CustomStudyTask[];
+  /** Investigation Notes studies finished on this monster (mostly from free hunts) */
+  free_hunt_studies: number;
 }
 
 export type StandardStudyKey =
@@ -46,6 +71,7 @@ const DEFAULT_RECORD = (monsterId: string): MonsterStudyRecord => ({
   giant_crown: false,
   finished: false,
   custom_tasks: [],
+  free_hunt_studies: 0,
 });
 
 export function useUserMonsterStudy() {
@@ -109,6 +135,7 @@ export function useUserMonsterStudy() {
           giant_crown: Boolean(row.giant_crown),
           finished: Boolean(row.finished),
           custom_tasks: Array.isArray(row.custom_tasks) ? row.custom_tasks : [],
+          free_hunt_studies: Math.max(0, Number(row.free_hunt_studies) || 0),
         };
       }
     }
@@ -119,10 +146,9 @@ export function useUserMonsterStudy() {
   const saveMutation = useMutation({
     mutationFn: async (record: MonsterStudyRecord) => {
       if (!user) return;
-      const { error } = await supabase
-        .from('user_monster_study')
-        .upsert(
-          {
+      const upsert = (row: Record<string, unknown>) =>
+        supabase.from('user_monster_study').upsert(row, { onConflict: 'user_id,monster_id' });
+      const row: Record<string, unknown> = {
             user_id: user.id,
             monster_id: record.monster_id,
             unlocked: record.unlocked,
@@ -133,10 +159,15 @@ export function useUserMonsterStudy() {
             giant_crown: record.giant_crown,
             finished: record.finished,
             custom_tasks: record.custom_tasks,
+            free_hunt_studies: record.free_hunt_studies ?? 0,
             updated_at: new Date().toISOString(),
-          },
-          { onConflict: 'user_id,monster_id' },
-        );
+      };
+      let { error } = await upsert(row);
+      // Before the free_hunt_studies migration is applied, save without it
+      if (error && (error.code === 'PGRST204' || error.code === '42703' || /free_hunt_studies/.test(error.message ?? ''))) {
+        const { free_hunt_studies: _f, ...rest } = row;
+        ({ error } = await upsert(rest));
+      }
       if (error) throw error;
     },
     onSuccess: () => {
@@ -151,6 +182,57 @@ export function useUserMonsterStudy() {
       return studyMap[monsterId] || DEFAULT_RECORD(monsterId);
     },
     [studyMap],
+  );
+
+  const { data: journey = [] } = useInvestigationJourney();
+
+  /**
+   * Save a record. When it gives the Investigation Journey's required monster enough
+   * studies, the monster that step unlocks gets "Unlocked" ticked as well.
+   * Returns the monsters that were unlocked this way.
+   */
+  const commit = useCallback(
+    async (updated: MonsterStudyRecord): Promise<string[]> => {
+      const nextMap = { ...studyMap, [updated.monster_id]: updated };
+      const already = readAutoUnlocked();
+      const toUnlock = monstersToAutoUnlock(journey, (id) => nextMap[id])
+        .filter((id) => id !== updated.monster_id && !already.has(id));
+      const extra = toUnlock.map((id) => ({ ...(nextMap[id] ?? DEFAULT_RECORD(id)), unlocked: true }));
+      for (const r of extra) nextMap[r.monster_id] = r;
+      saveLocal(nextMap);
+      rememberAutoUnlocked(toUnlock);
+      if (user) {
+        await saveMutation.mutateAsync(updated);
+        for (const r of extra) await saveMutation.mutateAsync(r);
+      }
+      return toUnlock;
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [studyMap, journey, user, saveMutation],
+  );
+
+  /** Tick "Unlocked" on journey monsters whose required studies are already logged (e.g. older data). */
+  const syncJourneyUnlocks = useCallback(async (): Promise<string[]> => {
+    const already = readAutoUnlocked();
+    const toUnlock = monstersToAutoUnlock(journey, (id) => studyMap[id]).filter((id) => !already.has(id));
+    if (!toUnlock.length) return [];
+    const nextMap = { ...studyMap };
+    const extra = toUnlock.map((id) => ({ ...(nextMap[id] ?? DEFAULT_RECORD(id)), unlocked: true }));
+    for (const r of extra) nextMap[r.monster_id] = r;
+    saveLocal(nextMap);
+    rememberAutoUnlocked(toUnlock);
+    if (user) for (const r of extra) await saveMutation.mutateAsync(r);
+    return toUnlock;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [studyMap, journey, user, saveMutation]);
+
+  /** Set how many Free Hunt (Investigation Notes) studies are finished on a monster. */
+  const setFreeHuntStudies = useCallback(
+    async (monsterId: string, count: number) => {
+      const current = getMonsterStudy(monsterId);
+      return commit({ ...current, free_hunt_studies: Math.max(0, Math.round(count)) });
+    },
+    [getMonsterStudy, commit],
   );
 
   const toggleStandardTask = useCallback(
@@ -214,13 +296,9 @@ export function useUserMonsterStudy() {
         }
       }
 
-      const nextMap = { ...studyMap, [monsterId]: updated };
-      saveLocal(nextMap);
-      if (user) {
-        await saveMutation.mutateAsync(updated);
-      }
+      await commit(updated);
     },
-    [getMonsterStudy, studyMap, user, saveMutation],
+    [getMonsterStudy, commit],
   );
 
   const setFinished = useCallback(
@@ -246,13 +324,9 @@ export function useUserMonsterStudy() {
           ...(isElder ? { unlocked: false } : {}),
         };
       }
-      const nextMap = { ...studyMap, [monsterId]: updated };
-      saveLocal(nextMap);
-      if (user) {
-        await saveMutation.mutateAsync(updated);
-      }
+      await commit(updated);
     },
-    [getMonsterStudy, studyMap, user, saveMutation],
+    [getMonsterStudy, commit],
   );
 
   const addCustomTask = useCallback(
@@ -271,13 +345,9 @@ export function useUserMonsterStudy() {
         // New uncompleted task means monster is no longer finished
         finished: false,
       };
-      const nextMap = { ...studyMap, [monsterId]: updated };
-      saveLocal(nextMap);
-      if (user) {
-        await saveMutation.mutateAsync(updated);
-      }
+      await commit(updated);
     },
-    [getMonsterStudy, studyMap, user, saveMutation],
+    [getMonsterStudy, commit],
   );
 
   const toggleCustomTask = useCallback(
@@ -301,13 +371,9 @@ export function useUserMonsterStudy() {
         custom_tasks: updatedTasks,
         finished: allStandard && allCustom ? true : isUnchecking && current.finished ? false : current.finished,
       };
-      const nextMap = { ...studyMap, [monsterId]: updated };
-      saveLocal(nextMap);
-      if (user) {
-        await saveMutation.mutateAsync(updated);
-      }
+      await commit(updated);
     },
-    [getMonsterStudy, studyMap, user, saveMutation],
+    [getMonsterStudy, commit],
   );
 
   const deleteCustomTask = useCallback(
@@ -317,13 +383,9 @@ export function useUserMonsterStudy() {
         ...current,
         custom_tasks: current.custom_tasks.filter((t) => t.id !== taskId),
       };
-      const nextMap = { ...studyMap, [monsterId]: updated };
-      saveLocal(nextMap);
-      if (user) {
-        await saveMutation.mutateAsync(updated);
-      }
+      await commit(updated);
     },
-    [getMonsterStudy, studyMap, user, saveMutation],
+    [getMonsterStudy, commit],
   );
 
   return {
@@ -335,5 +397,8 @@ export function useUserMonsterStudy() {
     addCustomTask,
     toggleCustomTask,
     deleteCustomTask,
+    setFreeHuntStudies,
+    syncJourneyUnlocks,
+    journey,
   };
 }

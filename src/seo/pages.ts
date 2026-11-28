@@ -20,6 +20,9 @@ export interface PageInfo {
   section: 'Home' | 'Armory' | 'Gallery' | 'Challenges' | 'Reference' | 'About';
 }
 
+/** YouTube video for the Investigation Journey guide — paste the link here when it is live. */
+export const INVESTIGATION_JOURNEY_VIDEO_URL: string | null = null;
+
 const REFERENCE_LINKS = {
   monsters: { label: 'Monster list', path: '/monsters/' },
   weapons: { label: 'Weapon list', path: '/weapons/' },
@@ -164,6 +167,15 @@ export const PAGES = {
       'Every Monster Hunter Outlanders weapon with attack, element, sharpness and upgrade materials. Compare weapons and track the ones you are crafting.',
     related: [REFERENCE_LINKS.weapons],
     section: 'Challenges',
+  },
+  investigationJourney: {
+    path: '/investigation-journey',
+    title: 'Investigation Journey – How to Unlock the 10 Hidden Monsters | Monster Hunter Outlanders',
+    heading: 'Investigation Journey',
+    description:
+      'How to unlock Radiant Paolumu, Radiant Rathalos, Black Diablos and the other hidden monsters in Monster Hunter Outlanders: the journey path, requirements and rewards.',
+    related: [REFERENCE_LINKS.monsters],
+    section: 'Reference',
   },
   privacy: {
     path: '/privacy',
