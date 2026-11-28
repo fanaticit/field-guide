@@ -1,51 +1,85 @@
 {
   "name": "monster_hunter_field_guide",
-  "version": "1.2.0",
-  "update": "1.2.0",
-  "date": "2026-11-19",
-  "title": "Monster Study, Card Checker & In-App Feedback Updates",
-  "description": "Monster Study & Hitzone Stats, Visage Card Checker, Build Image Export, and In-App Feedback Notifications",
-  "youtube_url": "https://youtu.be/ibcOroqMjdc",
+  "version": "1.3.0",
+  "update": "1.3.0",
+  "date": "2026-11-27",
+  "title": "Card Power Levels, Armour Redesign & Companion Enhancements",
+  "description": "Check My Card Power Levels & Calculation, Redesigned Armour with Detailed Skills & Build Export, Buddy Preferred Heroes & Tier Challenges, Adventurer Gift Guide, and Navigation/Account Import Upgrades",
+  "youtube_url": "https://youtu.be/mMDbL9L3cCs",
   "video_aspect": "shorts",
   "changes": [
     {
-      "title": "Visage Card Checker & Stat Verification",
-      "description": "Evaluate and compare your Visage Cards with refined percentage calculations, roll analysis, and stat benchmarks to fine-tune your loadouts.",
+      "title": "Check My Card: Power Level & Calculations",
+      "description": "View each Visage Card's calculated Power level with a clear, detailed breakdown explaining how its stats and rolls are evaluated.",
       "page_url": "/gallery/check",
-      "page_label": "Card Checker"
+      "page_label": "Check My Card"
     },
     {
-      "title": "Targeted Monster Hunts & In-Game Roster View",
-      "description": "Quickly identify which monsters to hunt to upgrade your Visage collection. Includes an in-game roster layout and search that scans through all card skills.",
-      "page_url": "/gallery/collection",
-      "page_label": "Visage Collection"
+      "title": "Redesigned Armour, Piece Skills & Build Export",
+      "description": "Enjoy a fresh look for the Armour Guide with granular skill breakdowns on every piece, plus an image export option for custom builds.",
+      "page_url": "/armory/armour",
+      "page_label": "Armour Guide"
     },
     {
-      "title": "Monster Study Tracker, Hitboxes & Stats",
-      "description": "Track your Monster Study completion directly in the Field Guide, with detailed hitboxes, element effectiveness, and monster combat stats.",
-      "page_url": "/challenges/monsters",
-      "page_label": "Monster Field Guide"
+      "title": "Buddy Preferred Heroes & Tier Challenges",
+      "description": "See preferred hero synergies directly on companion cards and test your setups with tier-based buddy challenges.",
+      "page_url": "/challenges/buddies",
+      "page_label": "Buddy Guide"
     },
     {
-      "title": "Target Visage Cards on Monsters",
-      "description": "See the exact Visage cards you are hunting for directly on each monster's profile to streamline your hunt planning.",
-      "page_url": "/challenges/monsters",
-      "page_label": "Monster Field Guide"
+      "title": "Adventurer Gifts & Bond Progression",
+      "description": "Discover the most effective gifts for each adventurer to strengthen bonds and boost companionship levels faster.",
+      "page_url": "/challenges/adventurers",
+      "page_label": "Adventurer Guide"
     },
     {
-      "title": "Build Planner: Export to Image",
-      "description": "Generate clean, high-resolution graphic cards of your custom builds, complete with equipped armour, weapon stats, and active visage synergy to share with other hunters.",
-      "page_url": "/armory/planner",
-      "page_label": "Build Planner"
-    },
-    {
-      "title": "In-App Feedback & Bug Resolution Messages",
-      "description": "Receive direct in-app messages and status updates from the team when your bug report or feedback is resolved. Check the new My Reports tab to see replies.",
+      "title": "Menu Grouping, SEO & Collection Import",
+      "description": "Organized navigation with rarity color themes, SEO enhancements, official YouTube channel links, and automatic collection import when creating an account.",
       "page_url": "/settings",
-      "page_label": "Feedback & Support"
+      "page_label": "Settings & Profile"
     }
   ],
   "releases": [
+    {
+      "version": "1.3.0",
+      "date": "2026-11-27",
+      "title": "Card Power Levels, Armour Redesign & Companion Enhancements",
+      "description": "Check My Card Power Levels & Calculation, Redesigned Armour with Detailed Skills & Build Export, Buddy Preferred Heroes & Tier Challenges, Adventurer Gift Guide, and Navigation/Account Import Upgrades",
+      "youtube_url": "https://youtu.be/mMDbL9L3cCs",
+      "video_aspect": "shorts",
+      "changes": [
+        {
+          "title": "Check My Card: Power Level & Calculations",
+          "description": "View each Visage Card's calculated Power level with a clear, detailed breakdown explaining how its stats and rolls are evaluated.",
+          "page_url": "/gallery/check",
+          "page_label": "Check My Card"
+        },
+        {
+          "title": "Redesigned Armour, Piece Skills & Build Export",
+          "description": "Enjoy a fresh look for the Armour Guide with granular skill breakdowns on every piece, plus an image export option for custom builds.",
+          "page_url": "/armory/armour",
+          "page_label": "Armour Guide"
+        },
+        {
+          "title": "Buddy Preferred Heroes & Tier Challenges",
+          "description": "See preferred hero synergies directly on companion cards and test your setups with tier-based buddy challenges.",
+          "page_url": "/challenges/buddies",
+          "page_label": "Buddy Guide"
+        },
+        {
+          "title": "Adventurer Gifts & Bond Progression",
+          "description": "Discover the most effective gifts for each adventurer to strengthen bonds and boost companionship levels faster.",
+          "page_url": "/challenges/adventurers",
+          "page_label": "Adventurer Guide"
+        },
+        {
+          "title": "Menu Grouping, SEO & Collection Import",
+          "description": "Organized navigation with rarity color themes, SEO enhancements, official YouTube channel links, and automatic collection import when creating an account.",
+          "page_url": "/settings",
+          "page_label": "Settings & Profile"
+        }
+      ]
+    },
     {
       "version": "1.2.0",
       "date": "2026-11-19",
