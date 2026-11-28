@@ -2,7 +2,7 @@
 // AdventurerModal — Detailed Inspection Dialog for MHO Adventurers
 // ─────────────────────────────────────────────────────────────
 import { useState, useMemo } from 'react';
-import { useNavigate, Link } from 'react-router';
+import { Link } from 'react-router';
 import { useAdminWeaponTypes } from '../../hooks/useAdminWeapons';
 import {
   X,
@@ -12,7 +12,6 @@ import {
   Info,
   CheckCircle2,
   Plus,
-  Target,
   ExternalLink,
   LayoutGrid,
 } from 'lucide-react';
@@ -30,7 +29,8 @@ import { cn } from '../../lib/utils';
 import { useAdventurerGifts, useAdventurerSkills, type FavouriteGift } from '../../hooks/useAdminAdventurers';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
 import AdventurerRarityBadge from './AdventurerRarityBadge';
-import { ChallengeGoalMenu, InsightPill, InsightRow } from './AdventurerInsight';
+import { InsightPill, InsightRow } from './AdventurerInsight';
+import { AdventurerChallengeButton, type AdventurerChallengeActions } from './AdventurerChallengeButton';
 import { ROLE_ICONS } from '../../components/RoleIcon';
 import { getYouTubeEmbedUrl } from '../../lib/youtube';
 import YouTubeIcon from '../../components/YouTubeIcon';
@@ -47,7 +47,8 @@ interface AdventurerModalProps {
   challenge?: HunterChallenge;
   onToggleRecruit?: () => void;
   onSetInsight?: (level: number) => void;
-  onAddChallenge?: (adventurer: DBAdventurer, targetInsight: number) => void;
+  /** Send to Challenges pop-up (goal choice, projects) */
+  challengeActions?: AdventurerChallengeActions;
   onSelectWeapon?: (weapon: string) => void;
 }
 
@@ -60,10 +61,9 @@ export default function AdventurerModal({
   challenge,
   onToggleRecruit,
   onSetInsight,
-  onAddChallenge,
+  challengeActions,
   onSelectWeapon,
 }: AdventurerModalProps) {
-  const navigate = useNavigate();
   const isAdmin = useAuthStore(selectIsAdmin);
   const gender = useAuthStore((s) => s.profile?.equipment_gender ?? 'male');
   const adventurer = useMemo(
@@ -100,9 +100,6 @@ export default function AdventurerModal({
   const elemCfg = ELEMENT_OPTIONS[adventurer.element_specialization || 'raw'] || ELEMENT_OPTIONS.raw;
   const activeWeaponObj = WEAPON_TYPES.find((w) => w.id === adventurer.weapon_type);
   const currentInsight = isRecruited ? Math.max(1, insightLevel) : 0;
-  const hasOpenChallenge = Boolean(
-    challenge && challenge.status !== 'abandoned' && challenge.status !== 'completed',
-  );
   const bondImage = adventurer.bond_image || (adventurer.id ? `/images/adventurers/${adventurer.id}_bond.png` : null);
   const hasInsight = isRecruited && currentInsight >= 1;
   const activeBgImage = (hasInsight && bondImage) ? bondImage : (adventurer.background_image ?? null);
@@ -339,28 +336,14 @@ export default function AdventurerModal({
                 </p>
 
                 <div className="flex items-center gap-2 shrink-0">
-                  {hasOpenChallenge ? (
-                    <button
-                      type="button"
-                      onClick={() => navigate('/challenges')}
-                      className="flex items-center gap-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25 px-3 py-1.5 text-xs font-bold transition-all shadow-sm"
-                    >
-                      <CheckCircle2 size={13} className="text-emerald-400" />
-                      <span>Go to Challenge ➔</span>
-                    </button>
-                  ) : (
-                    currentInsight < ADVENTURER_MAX_INSIGHT && (
-                      <ChallengeGoalMenu
-                        currentLevel={currentInsight}
-                        onSelect={(target) => onAddChallenge?.(adventurer, target)}
-                        placement="top"
-                        align="right"
-                        className="rounded-lg px-3 py-1.5 text-xs"
-                      >
-                        <Target size={13} />
-                        <span>+ Challenge</span>
-                      </ChallengeGoalMenu>
-                    )
+                  {challengeActions && (
+                    <AdventurerChallengeButton
+                      adventurer={adventurer}
+                      currentLevel={currentInsight}
+                      challenge={challenge}
+                      actions={challengeActions}
+                      className="!rounded-lg !px-3 !py-1.5 !text-xs"
+                    />
                   )}
 
                   <button

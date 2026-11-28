@@ -682,6 +682,23 @@ export function useIncrementChallenge() {
   };
 }
 
+/** The update that moves a challenge to a new goal (max_rarity), keeping its progress. */
+export function challengeGoalUpdate(challenge: HunterChallenge, goal: number) {
+  const cur = challenge.current_rarity ?? 0;
+  const done = cur >= goal;
+  return {
+    challengeId: challenge.id,
+    maxRarity: goal,
+    status: (done ? 'completed' : cur > 0 ? 'upgrading' : 'crafting') as ChallengeStatus,
+    completedAt: done ? challenge.completed_at ?? new Date().toISOString() : null,
+  };
+}
+
+/** True while a challenge is still being worked on (not finished or dropped). */
+export function isChallengeOpen(c: HunterChallenge | null | undefined): c is HunterChallenge {
+  return Boolean(c && (c.status === 'crafting' || c.status === 'upgrading'));
+}
+
 // ── useUpdateChallengeStatus ──────────────────────────────────
 
 export function useUpdateChallengeStatus() {

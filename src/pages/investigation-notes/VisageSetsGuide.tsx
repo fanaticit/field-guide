@@ -12,20 +12,19 @@ import {
   X,
 } from 'lucide-react';
 import { useVisageSetsData } from '../../hooks/useVisageSets';
-import { type DBVisage, type VisageRarity, getInkConfig } from '../../data/schemas/visage';
+import { type DBVisage, getInkConfig } from '../../data/schemas/visage';
 import { useNavigate, useSearchParams, Link, Navigate } from 'react-router';
 import { useAuthStore, selectIsAdmin } from '../../store/authStore';
 import {
   useHunterChallenges,
-  useAddVisageChallenge,
   getVisageChallenge,
-  VISAGE_RARITY_INDEX,
 } from '../../hooks/useHunterChallenges';
 import VisageCard, { InkIconComponent } from './VisageCard';
 import VisageModal from './VisageModal';
 import LoginModal from '../../components/auth/LoginModal';
 import GuestSaveNotice from '../../components/auth/GuestSaveNotice';
 import { useVisageBuilderStore } from '../../store/visageBuilderStore';
+import { useVisageChallengeActions } from './useVisageChallengeActions';
 import { cn } from '../../lib/utils';
 import { useUIStore } from '../../store/uiStore';
 import { DEFAULT_SECTION_THEMES } from '../../config/themes';
@@ -87,38 +86,8 @@ export default function VisageSetsGuide() {
   }, [showCollectedModal]);
 
   const { data: challenges = [] } = useHunterChallenges(user?.id);
-  const addVisageChallenge = useAddVisageChallenge();
-
-  const handleAddVisageChallenge = async (
-    card: DBVisage,
-    inkType: string,
-    currentRarity?: VisageRarity | null,
-  ) => {
-    if (!user) {
-      setLoginModalOpen(true);
-      return;
-    }
-
-    const rarityIdx = currentRarity ? VISAGE_RARITY_INDEX[currentRarity] ?? 0 : 0;
-    try {
-      await addVisageChallenge.mutateAsync({
-        userId: user.id,
-        game: 'mho',
-        visageId: card.id,
-        visageName: card.name,
-        inkType: (inkType || 'flames').toLowerCase(),
-        monsterId: card.monster_id ?? null,
-        monsterName: card.name,
-        pieceImage: card.monster_icon ?? null,
-        setIcon: card.monster_icon ?? null,
-        currentRarity: rarityIdx,
-        craftRarity: 1, // Fine
-        maxRarity: 4, // Superior
-      });
-    } catch (err) {
-      console.error('Failed to add visage challenge', err);
-    }
-  };
+  // Standard Send to Challenges pop-up for visage cards (goal, projects, remove)
+  const visageChallengeActions = useVisageChallengeActions(useCallback(() => setLoginModalOpen(true), []));
 
   // Helper to test if a card matches the search query (card name or core effect)
   const cardMatchesSearch = (c: DBVisage, q: string) => {
@@ -899,7 +868,7 @@ export default function VisageSetsGuide() {
                                   onSetRarity={(rarity, qty) => setCardRarity(card.id, activeSet.id, rarity, qty)}
                                   onSetQuantity={(qty) => setCardQuantity(card.id, activeSet.id, qty)}
                                   onRemoveFromCollection={() => removeCardFromCollection(card.id, activeSet.id)}
-                                  onAddChallenge={handleAddVisageChallenge}
+                                  challengeActions={visageChallengeActions}
                                   onClick={() => handleOpenInspect(card, activeSet.id)}
                                   buildMode={false}
                                   onInspect={() => handleOpenInspect(card, activeSet.id)}
@@ -1151,7 +1120,7 @@ export default function VisageSetsGuide() {
                                           onSetRarity={(rarity, qty) => setCardRarity(monster.id, ink1, rarity, qty)}
                                           onSetQuantity={(qty) => setCardQuantity(monster.id, ink1, qty)}
                                           onRemoveFromCollection={() => removeCardFromCollection(monster.id, ink1)}
-                                          onAddChallenge={handleAddVisageChallenge}
+                                          challengeActions={visageChallengeActions}
                                           onClick={() => handleOpenInspect(monster, ink1)}
                                           buildMode={false}
                                           onInspect={() => handleOpenInspect(monster, ink1)}
@@ -1173,7 +1142,7 @@ export default function VisageSetsGuide() {
                                             onSetRarity={(rarity, qty) => setCardRarity(monster.id, ink2, rarity, qty)}
                                             onSetQuantity={(qty) => setCardQuantity(monster.id, ink2, qty)}
                                             onRemoveFromCollection={() => removeCardFromCollection(monster.id, ink2)}
-                                            onAddChallenge={handleAddVisageChallenge}
+                                            challengeActions={visageChallengeActions}
                                             onClick={() => handleOpenInspect(monster, ink2)}
                                             buildMode={false}
                                             onInspect={() => handleOpenInspect(monster, ink2)}
@@ -1272,7 +1241,7 @@ export default function VisageSetsGuide() {
                                           onSetRarity={(rarity, qty) => setCardRarity(monster.id, ink1, rarity, qty)}
                                           onSetQuantity={(qty) => setCardQuantity(monster.id, ink1, qty)}
                                           onRemoveFromCollection={() => removeCardFromCollection(monster.id, ink1)}
-                                          onAddChallenge={handleAddVisageChallenge}
+                                          challengeActions={visageChallengeActions}
                                           onClick={() => handleOpenInspect(monster, ink1)}
                                           buildMode={false}
                                           onInspect={() => handleOpenInspect(monster, ink1)}
@@ -1294,7 +1263,7 @@ export default function VisageSetsGuide() {
                                             onSetRarity={(rarity, qty) => setCardRarity(monster.id, ink2, rarity, qty)}
                                             onSetQuantity={(qty) => setCardQuantity(monster.id, ink2, qty)}
                                             onRemoveFromCollection={() => removeCardFromCollection(monster.id, ink2)}
-                                            onAddChallenge={handleAddVisageChallenge}
+                                            challengeActions={visageChallengeActions}
                                             onClick={() => handleOpenInspect(monster, ink2)}
                                             buildMode={false}
                                             onInspect={() => handleOpenInspect(monster, ink2)}
@@ -1393,7 +1362,7 @@ export default function VisageSetsGuide() {
             removeCardFromCollection(inspectedCard.id, ink);
           }
         }}
-        onAddChallenge={handleAddVisageChallenge}
+        challengeActions={visageChallengeActions}
         onClose={() => {
           setInspectedCard(null);
           setInspectedInk(null);

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
 import { Cat, Sparkles, Plus, Check, Zap } from 'lucide-react';
 import {
   type DBBuddy,
@@ -8,13 +7,13 @@ import {
   TIER_CONFIG,
   ROLE_CONFIG,
   buddyTierBorder,
-  BUDDY_MAX_TIER_LEVEL,
 } from '../../data/schemas/buddy';
 import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
 import ArtBackdrop from '../../components/ArtBackdrop';
 import { ROLE_ICONS } from '../../components/RoleIcon';
-import { BuddyTierPicker, BuddyChallengeGoalMenu } from './BuddyTierLevel';
+import { BuddyTierPicker } from './BuddyTierLevel';
+import { BuddyChallengeButton, type BuddyChallengeActions } from './BuddyChallengeButton';
 import { BestPairingIcons, type ResolvedPairing } from './BuddyPairings';
 
 interface BuddyCardProps {
@@ -23,7 +22,8 @@ interface BuddyCardProps {
   challenge?: HunterChallenge;
   onToggleOwned: () => void;
   onSetTierLevel: (tierLevel: number) => void;
-  onAddChallenge?: (buddy: DBBuddy, targetGoal?: number) => void;
+  /** Send to Challenges pop-up (goal choice, projects) */
+  challengeActions?: BuddyChallengeActions;
   onClick: () => void;
   /** Best (or, failing that, good) adventurer pairings, shown as small icons */
   topPairings?: { rating: 'best' | 'good'; pairings: ResolvedPairing[] };
@@ -37,14 +37,12 @@ export default function BuddyCard({
   challenge,
   onToggleOwned,
   onSetTierLevel,
-  onAddChallenge,
+  challengeActions,
   onClick,
   topPairings,
   uniqueSkills,
 }: BuddyCardProps) {
-  const navigate = useNavigate();
   const [imageError, setImageError] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
 
   const isOwned = Boolean(collectionEntry);
   const currentTierLevel = collectionEntry?.tier_level ?? 0;
@@ -68,7 +66,6 @@ export default function BuddyCard({
       style={buddyTierBorder(buddy.tier, isOwned)}
       className={cn(
         'group relative isolate overflow-hidden flex flex-col justify-between rounded-2xl border cursor-pointer select-none transition-all duration-200',
-        menuOpen && 'z-40',
         'p-3.5 sm:p-4 shadow-md hover:scale-[1.01] hover:shadow-xl hover:z-10 w-full min-w-0 max-w-full box-border',
         isOwned
           ? isSSR
@@ -174,30 +171,15 @@ export default function BuddyCard({
             className="relative z-20 flex items-center gap-1.5 flex-wrap pt-0.5 min-w-0"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Challenge Button / Menu */}
-            {isTracked && !isChallengeDone ? (
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate('/challenges');
-                }}
-                className="flex h-6 items-center gap-1 rounded-full border border-emerald-500/50 bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25 px-2 text-[10px] font-bold shadow-xs transition-all shrink-0 whitespace-nowrap"
-              >
-                <Check size={11} className="text-emerald-400" />
-                <span>Challenge ➔</span>
-              </button>
-            ) : (
-              currentTier < BUDDY_MAX_TIER_LEVEL && (
-                <BuddyChallengeGoalMenu
-                  currentLevel={currentTier}
-                  onSelect={(targetGoal) => onAddChallenge?.(buddy, targetGoal)}
-                  placement="top"
-                  align="left"
-                  onOpenChange={setMenuOpen}
-                  className="h-6 rounded-full px-2 text-[10px] hover:scale-105 shrink-0"
-                />
-              )
+            {/* Send to Challenges (pop-up: goal, projects) */}
+            {challengeActions && (
+              <BuddyChallengeButton
+                buddy={buddy}
+                currentLevel={currentTier}
+                challenge={challenge}
+                actions={challengeActions}
+                className="h-6 shrink-0 whitespace-nowrap rounded-full px-2"
+              />
             )}
 
             {/* Tier Level Picker (When Owned) */}

@@ -10,7 +10,7 @@ import { createPortal } from 'react-dom';
 import { Link } from 'react-router';
 import {
   FolderKanban, CheckCircle2, ChevronDown, ChevronRight, X, Edit2, Save, Loader2, ExternalLink, Crosshair, Package,
-  FolderPlus, Plus, Check, Search,
+  FolderPlus, Plus, Check, Search, Star,
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import type { HunterChallenge } from '../../hooks/useHunterChallenges';
@@ -41,7 +41,7 @@ function ProgressBar({ percent, className }: { percent: number; className?: stri
 // ── Switcher ─────────────────────────────────────────────────
 
 /** Small inline "name + save" field used to make a new project. */
-function NewProjectField({ onCreate, onDone, placeholder = 'Project name' }: {
+export function NewProjectField({ onCreate, onDone, placeholder = 'Project name' }: {
   onCreate: (name: string) => Promise<unknown>;
   onDone: () => void;
   placeholder?: string;
@@ -126,7 +126,7 @@ export function ProjectSwitcher({
             key={p.id}
             type="button"
             onClick={() => onSelect(active ? null : p.id)}
-            title={`${pr.done} of ${pr.total} items done`}
+            title={`${p.is_focus ? 'Focus project · ' : ''}${pr.done} of ${pr.total} items done`}
             className={cn(
               'flex min-w-[8rem] max-w-[16rem] flex-col gap-1 rounded-lg border px-3 py-1.5 text-left text-xs font-bold transition-all',
               active
@@ -135,6 +135,7 @@ export function ProjectSwitcher({
             )}
           >
             <span className="flex items-center gap-2">
+              {p.is_focus && <Star size={11} className="-mr-1 shrink-0 fill-yellow-400 text-yellow-400" aria-label="Focus project" />}
               <span className="truncate">{p.name}</span>
               <span className={cn('ml-auto shrink-0 font-mono text-[10px]', pr.percent >= 100 ? 'text-emerald-300' : 'text-sky-300')}>
                 {pr.percent}%
@@ -191,6 +192,8 @@ export function ProjectOverview({
   onAddItems,
   onRemoveItem,
   removingId,
+  onToggleFocus,
+  focusBusy = false,
 }: {
   project: ChallengeProject;
   progress: ProjectProgress;
@@ -204,6 +207,9 @@ export function ProjectOverview({
   /** Takes an item out of the project (the challenge stays) */
   onRemoveItem?: (item: ChallengeProjectItem) => void;
   removingId?: string | null;
+  /** Make this the focus project (or stop it being the focus) */
+  onToggleFocus?: () => void;
+  focusBusy?: boolean;
 }) {
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState(project.name);
@@ -234,6 +240,24 @@ export function ProjectOverview({
           ) : (
             <>
               <h2 className="min-w-0 flex-1 truncate font-display text-xs font-bold uppercase tracking-wider text-white">{project.name}</h2>
+              {onToggleFocus && (
+                <button
+                  type="button"
+                  onClick={onToggleFocus}
+                  disabled={focusBusy}
+                  aria-pressed={Boolean(project.is_focus)}
+                  title={project.is_focus ? 'Your focus project — listed first and opened by default. Tap to stop focusing.' : 'Make this your focus: listed first and opened by default'}
+                  className={cn(
+                    'flex shrink-0 items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-bold transition-colors disabled:opacity-50',
+                    project.is_focus
+                      ? 'border-yellow-400/60 bg-yellow-400/15 text-yellow-300 hover:bg-yellow-400/25'
+                      : 'border-white/15 text-sky-400 hover:border-yellow-400/50 hover:text-yellow-300',
+                  )}
+                >
+                  {focusBusy ? <Loader2 size={10} className="animate-spin" /> : <Star size={10} className={project.is_focus ? 'fill-yellow-400' : ''} />}
+                  {project.is_focus ? 'Focus' : 'Set focus'}
+                </button>
+              )}
               <button type="button" onClick={() => { setName(project.name); setEditing(true); }} className="text-sky-500 hover:text-white" title="Rename project">
                 <Edit2 size={12} />
               </button>
@@ -679,7 +703,7 @@ export function ProjectMenuButton({
           ref={menuRef}
           role="menu"
           style={{ top: pos.top, left: pos.left, width: 240 }}
-          className="mho-panel fixed z-[90] space-y-1 p-2 text-white shadow-2xl"
+          className="mho-panel fixed z-[90] space-y-1 p-2 !bg-[#1d1d22] text-white shadow-2xl shadow-black/60"
         >
           <p className="px-1 pb-1 text-[10px] font-bold uppercase tracking-wider text-sky-400">Projects</p>
           {projects.length === 0 && !creating && (
@@ -708,6 +732,7 @@ export function ProjectMenuButton({
                       {busyId === p.id ? <Loader2 size={10} className="animate-spin text-white" /> : inIt && <Check size={11} strokeWidth={3} />}
                     </span>
                     <span className="truncate">{p.name}</span>
+                    {p.is_focus && <Star size={10} className="ml-auto shrink-0 fill-yellow-400 text-yellow-400" aria-label="Focus project" />}
                   </button>
                 </li>
               );

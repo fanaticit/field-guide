@@ -2,7 +2,6 @@
 // VisageCard — MHO Visage card with full top-flush artwork and Hunter's Challenge tracking
 // ─────────────────────────────────────────────────────────────
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router';
 import {
   Flame,
   Droplets,
@@ -31,6 +30,9 @@ import {
 import type { CardCollectionEntry } from '../../hooks/useVisageSets';
 import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
+import { isInChallengePopup } from '../../components/challenges/challengePopup';
+import { VisageChallengeButton } from './VisageChallengeButton';
+import type { VisageChallengeActions } from './useVisageChallengeActions';
 import VisageIcon from '../../components/visage/VisageIcon';
 
 interface VisageCardProps {
@@ -41,7 +43,8 @@ interface VisageCardProps {
   onSetRarity?: (rarity: VisageRarity, quantity?: number) => void;
   onSetQuantity?: (quantity: number) => void;
   onRemoveFromCollection?: () => void;
-  onAddChallenge?: (card: DBVisage, inkType: string, currentRarity?: VisageRarity | null) => void;
+  /** Standard Send to Challenges pop-up (goal, projects, remove) */
+  challengeActions?: VisageChallengeActions;
   onClick?: () => void;
   /** Visage Builder mode: clicking the card adds/removes it from the build */
   buildMode?: boolean;
@@ -118,7 +121,7 @@ export default function VisageCard({
   onSetRarity,
   onSetQuantity,
   onRemoveFromCollection,
-  onAddChallenge,
+  challengeActions,
   onClick,
   buildMode = false,
   isCoreCard = false,
@@ -133,7 +136,6 @@ export default function VisageCard({
   const qtyMenuRef = useRef<HTMLDivElement>(null);
 
   const inkCfg = getInkConfig(currentInk);
-  const navigate = useNavigate();
 
   const isOwned = Boolean(collectionEntry);
   const currentRarity = collectionEntry?.rarity;
@@ -157,6 +159,8 @@ export default function VisageCard({
   useEffect(() => {
     if (!showRarityMenu && !showQtyMenu) return;
     function handleOutside(e: MouseEvent) {
+      // Clicks in the Send to Challenges pop-up (a portal) don't close the menu holding its button
+      if (isInChallengePopup(e.target)) return;
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
         setShowRarityMenu(false);
       }
@@ -437,33 +441,17 @@ export default function VisageCard({
                     <CheckCircle2 size={12} className="text-emerald-400 shrink-0" />
                     <span className="truncate">Found (Superior)</span>
                   </div>
-                ) : isTracked && challenge ? (
-                  <button
-                    type="button"
-                    onClick={() => navigate(`/challenges?challenge=${challenge.id}`)}
-                    className="w-full flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-[10px] font-bold bg-emerald-500/15 border border-emerald-500/35 text-emerald-300 hover:bg-emerald-500/25 transition-colors shadow-sm"
-                  >
-                    <CheckCircle2 size={12} className="text-emerald-400 shrink-0" />
-                    <span className="truncate">Go to Challenge ➔</span>
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      onAddChallenge?.(card, currentInk || 'flames', currentRarity);
-                      setShowRarityMenu(false);
-                    }}
-                    className="w-full flex items-center justify-between rounded-lg px-2 py-1.5 text-[10px] font-bold border border-sky-600/50 bg-transparent text-sky-400 hover:bg-sky-900 hover:border-sky-500 hover:text-sky-200 transition-colors shadow-sm"
-                  >
-                    <div className="flex items-center gap-1.5 truncate">
-                      <Target size={12} className="shrink-0" />
-                      <span>+ Search Challenge</span>
-                    </div>
-                    <span className="text-[9px] font-mono shrink-0 ml-1 opacity-80">
-                      &rarr; {nextRarityName.split(' ')[0]}
-                    </span>
-                  </button>
-                )}
+                ) : challengeActions ? (
+                  <VisageChallengeButton
+                    card={card}
+                    ink={currentInk || 'flames'}
+                    currentRarity={currentRarity}
+                    challenge={challenge}
+                    actions={challengeActions}
+                    label={`Search: ${nextRarityName.split(' ')[0]}`}
+                    className="w-full justify-center rounded-lg px-2 py-1.5"
+                  />
+                ) : null}
               </div>
 
               {/* Unown / Remove Button */}

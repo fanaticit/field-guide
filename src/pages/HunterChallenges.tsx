@@ -3,7 +3,7 @@
 // Desktop: two-column layout — Hunting Targets (left) + Challenge list (right).
 // Mobile:  single-column compact list with monster strip at top.
 // ─────────────────────────────────────────────────────────────
-import { useState, useMemo, useEffect, type ReactNode } from 'react';
+import { useState, useMemo, useEffect, useRef, type ReactNode } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import {
   Target,
@@ -66,6 +66,7 @@ import {
   useCreateProject,
   useAddChallengesToProject,
   useRemoveChallengesFromProject,
+  useSetFocusProject,
   projectErrorMessage,
   useWeaponUpgradeSteps,
   useMonsterHuntLevels,
@@ -73,10 +74,12 @@ import {
   projectProgress,
   materialsToTarget,
   groupMaterialsByMonster,
+  tierNumber,
   challengesRemovedOnClose,
   type ChallengeProject,
   type ChallengeProjectItem,
   type HuntItemPlan,
+  type HuntLevel,
   type UpgradeStep,
 } from '../hooks/useChallengeProjects';
 import { LevelStepper } from '../components/challenges/LevelStepper';
@@ -321,6 +324,12 @@ interface ChallengeCardProps {
   weaponsMap?: Map<string, DBWeapon>;
   monstersMap?: Map<string, DBMonster>;
   armourUpgradesMap?: Map<string, Map<number, GearMaterialRequirement[]>>;
+  /** Weapon upgrade materials: weapon id → rarity reached → materials */
+  weaponUpgradesMap?: Map<string, Map<number, GearMaterialRequirement[]>>;
+  /** Hunt levels by monster id → hunt difficulty (1-6, lines up with part tiers I-VI) */
+  huntLevels?: Map<string, Map<number, HuntLevel>>;
+  /** Hunter level the next upgrade asks for */
+  nextStepLevel?: number | null;
   /** "Add to project" control shown next to the remove button */
   projectMenu?: ReactNode;
 }
@@ -353,6 +362,9 @@ function ChallengeCard({
   weaponsMap,
   monstersMap,
   armourUpgradesMap,
+  weaponUpgradesMap,
+  huntLevels,
+  nextStepLevel,
   projectMenu,
 }: ChallengeCardProps) {
   const [isEditingMaterial, setIsEditingMaterial] = useState(false);
@@ -381,13 +393,25 @@ function ChallengeCard({
   const isCollected = c.status === 'completed';
 
   const requiredMaterials = useMemo(
-    () => getChallengeRequiredMaterials(c, armourUpgradesMap),
-    [c, armourUpgradesMap],
+    () => getChallengeRequiredMaterials(c, armourUpgradesMap, weaponUpgradesMap),
+    [c, armourUpgradesMap, weaponUpgradesMap],
   );
   const monsterRanks = useMemo(
     () => getMonsterRanksFromMaterials(requiredMaterials),
     [requiredMaterials],
   );
+  // The next step's parts grouped by the monster that drops them, with where to hunt each tier
+  const partsByMonster = useMemo(() => {
+    if (!requiredMaterials.length || !(c.weapon_id || c.armour_piece_id)) return [];
+    return groupMaterialsByMonster(
+      [{ challengeId: c.id, from: 0, to: 0, requiredLevel: null, materials: requiredMaterials }],
+      monstersMap ? [...monstersMap.values()] : [],
+    );
+  }, [requiredMaterials, c.id, c.weapon_id, c.armour_piece_id, monstersMap]);
+  const huntAt = (monsterId: string, tier: string | null) => {
+    const n = tierNumber(tier);
+    return n ? huntLevels?.get(monsterId)?.get(n) : undefined;
+  };
 
   // Rarity progress
   const maxR = challengeMaxRarity(c);
@@ -466,6 +490,15 @@ function ChallengeCard({
                   : buddyTierGoal
                   ? (maxR === 2 ? 'Tier 1 reached' : 'Tier Max (2) reached')
                   : 'Recruited to Collection'}
+              </p>
+            ) : partsByMonster.some((g) => g.monsterId !== '__general__') && !isDone ? (
+              <p className="text-[10px] text-sky-400 truncate">
+                Hunt{' '}
+                {partsByMonster.filter((g) => g.monsterId !== '__general__').map((g) => {
+                  const lvl = huntAt(g.monsterId, g.tiers[g.tiers.length - 1] ?? null);
+                  return `${g.monsterName}${lvl ? ` ★${lvl.hunt_difficulty}${lvl.monster_level ? ` Lv ${lvl.monster_level}` : ''}` : g.tiers.length ? ` (Rank ${g.tiers.join(', ')})` : ''}`;
+                }).join(', ')}
+                {nextStepLevel ? ` · needs Lv ${nextStepLevel}` : ''}
               </p>
             ) : challengeMonsterName && !isDone ? (
               <p className="text-[10px] text-sky-400 truncate">
@@ -591,41 +624,80 @@ function ChallengeCard({
         </div>
       </div>
 
-      {/* Required Monster Materials for this step */}
+      {/* Parts for the next step, grouped by the monster that drops them */}
       {!isDone && requiredMaterials.length > 0 && (
-        <div className="pt-2 border-t border-sky-800/60 space-y-1.5">
-          <div className="flex items-center justify-between text-[10px]">
+        <div className="pt-2 border-t border-sky-800/60 space-y-2">
+          <div className="flex items-center justify-between gap-2 text-[10px]">
             <span className="font-bold uppercase tracking-wider text-sky-400 flex items-center gap-1.5">
               <Package size={12} className="text-yellow-400 shrink-0" />
-              {c.status === 'crafting' ? 'Required Materials' : `Upgrade to R${(c.current_rarity || 0) + 1} Materials`}
+              {(c.current_rarity ?? 0) === 0 ? 'Parts to craft' : `Parts for R${(c.current_rarity || 0) + 1}`}
             </span>
-            {monsterRanks.length > 0 && (
+            {nextStepLevel ? (
+              <span className="rounded bg-sky-500/15 border border-sky-500/30 px-1.5 py-0.5 text-[9px] font-bold text-sky-300" title="Hunter level this step needs">
+                Needs Lv {nextStepLevel}
+              </span>
+            ) : monsterRanks.length > 0 && (
               <span className="rounded bg-yellow-500/15 border border-yellow-500/30 px-1.5 py-0.2 text-[9px] font-bold text-yellow-300">
                 Rank {monsterRanks.join(', ')} Monster
               </span>
             )}
           </div>
-          <div className="flex flex-wrap gap-1.5">
-            {requiredMaterials.map((m, idx) => {
-              const isMonsterPiece = getMonsterRanksFromMaterials([m]).length > 0;
-              return (
-                <span
-                  key={idx}
-                  className={cn(
-                    'inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-medium border transition-colors',
-                    isMonsterPiece
-                      ? 'bg-yellow-500/10 text-yellow-200 border-yellow-500/30 font-semibold'
-                      : 'bg-sky-900/40 text-sky-300 border-sky-700/50',
-                  )}
-                >
+          {partsByMonster.length > 0 ? (
+            <div className="space-y-1.5">
+              {partsByMonster.map((g) => {
+                const general = g.monsterId === '__general__';
+                return (
+                  <div key={g.monsterId} className={cn('rounded-lg border px-2 py-1.5', general ? 'border-sky-800/60 bg-sky-950/30' : 'border-yellow-500/25 bg-yellow-500/5')}>
+                    <div className="flex items-center gap-1.5">
+                      {g.icon && !general && <img src={g.icon} alt="" className="h-5 w-5 shrink-0 object-contain" loading="lazy" />}
+                      <span className={cn('text-[11px] font-bold', general ? 'text-sky-300' : 'text-yellow-200')}>
+                        {general ? 'Other materials' : g.monsterName}
+                      </span>
+                      {!general && (
+                        <span className="ml-auto flex flex-wrap justify-end gap-1">
+                          {g.tiers.map((tier) => {
+                            const lvl = huntAt(g.monsterId, tier);
+                            return (
+                              <span
+                                key={tier}
+                                className="rounded bg-black/40 px-1.5 py-0.5 text-[9px] font-bold text-yellow-300"
+                                title={lvl ? `Tier ${tier} parts: hunt at ★${lvl.hunt_difficulty}${lvl.monster_level ? `, monster level ${lvl.monster_level}` : ''}${lvl.suggested_hunt_power ? `, ~${lvl.suggested_hunt_power.toLocaleString('en-GB')} hunt power` : ''}` : `Tier ${tier} parts`}
+                              >
+                                {lvl ? `★${lvl.hunt_difficulty}${lvl.monster_level ? ` · Lv ${lvl.monster_level}` : ''}` : `Rank ${tier}`}
+                              </span>
+                            );
+                          })}
+                        </span>
+                      )}
+                    </div>
+                    <div className="mt-1 flex flex-wrap gap-1">
+                      {g.materials.map((m) => (
+                        <span
+                          key={m.item}
+                          className={cn(
+                            'inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[11px] font-medium border',
+                            general ? 'bg-sky-900/40 text-sky-300 border-sky-700/50' : 'bg-yellow-500/10 text-yellow-100 border-yellow-500/25',
+                          )}
+                        >
+                          <span>{general || !m.item.toLowerCase().startsWith(g.monsterName.toLowerCase()) ? m.item : m.item.slice(g.monsterName.length).trim()}</span>
+                          <span className={cn('text-[10px] font-bold', general ? 'text-sky-400' : 'text-yellow-400')}>×{m.count}</span>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="flex flex-wrap gap-1.5">
+              {requiredMaterials.map((m, idx) => (
+                <span key={idx} className="inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-medium border bg-sky-900/40 text-sky-300 border-sky-700/50">
                   <span>{m.item}</span>
-                  <span className={cn('text-[10px]', isMonsterPiece ? 'text-yellow-400 font-bold' : 'text-sky-400')}>
-                    ×{m.count}
-                  </span>
+                  <span className="text-[10px] text-sky-400">×{m.count}</span>
                 </span>
-              );
-            })}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
@@ -736,9 +808,10 @@ interface HuntingTargetsPanelProps {
   sketches?: Map<string, string>;
   weaponsMap?: Map<string, DBWeapon>;
   armourUpgradesMap?: Map<string, Map<number, GearMaterialRequirement[]>>;
+  weaponUpgradesMap?: Map<string, Map<number, GearMaterialRequirement[]>>;
 }
 
-function HuntingTargetsPanel({ monsterGroups, selection, onSelect, sketches, weaponsMap, armourUpgradesMap }: HuntingTargetsPanelProps) {
+function HuntingTargetsPanel({ monsterGroups, selection, onSelect, sketches, weaponsMap, armourUpgradesMap, weaponUpgradesMap }: HuntingTargetsPanelProps) {
   const [expandedMonster, setExpandedMonster] = useState<string | null>(null);
   const selectedMonster = selection?.kind === 'monster' ? selection.value : null;
   const selectedActivity = selection?.kind === 'activity' ? selection.value : null;
@@ -758,9 +831,9 @@ function HuntingTargetsPanel({ monsterGroups, selection, onSelect, sketches, wea
       if (countDiff !== 0) return countDiff;
 
       // Secondary: total materials count needed desc
-      const matsA = a[1].challenges.flatMap(c => getChallengeRequiredMaterials(c, armourUpgradesMap))
+      const matsA = a[1].challenges.flatMap(c => getChallengeRequiredMaterials(c, armourUpgradesMap, weaponUpgradesMap))
         .reduce((sum, m) => sum + (m.count || 0), 0);
-      const matsB = b[1].challenges.flatMap(c => getChallengeRequiredMaterials(c, armourUpgradesMap))
+      const matsB = b[1].challenges.flatMap(c => getChallengeRequiredMaterials(c, armourUpgradesMap, weaponUpgradesMap))
         .reduce((sum, m) => sum + (m.count || 0), 0);
       const matsDiff = matsB - matsA;
       if (matsDiff !== 0) return matsDiff;
@@ -768,7 +841,7 @@ function HuntingTargetsPanel({ monsterGroups, selection, onSelect, sketches, wea
       // Tertiary: alphabetical by monster name
       return a[1].monsterName.localeCompare(b[1].monsterName);
     });
-  }, [monsterGroups, armourUpgradesMap]);
+  }, [monsterGroups, armourUpgradesMap, weaponUpgradesMap]);
 
   // Gather and sort activities
   const sortedActivities = useMemo(() => {
@@ -818,7 +891,7 @@ function HuntingTargetsPanel({ monsterGroups, selection, onSelect, sketches, wea
 
           // Ranks derived from actual required monster materials
           const allGroupMaterials = group.challenges.flatMap((c) =>
-            getChallengeRequiredMaterials(c, armourUpgradesMap),
+            getChallengeRequiredMaterials(c, armourUpgradesMap, weaponUpgradesMap),
           );
           const ranksNeeded = getMonsterRanksFromMaterials(allGroupMaterials).join(', ');
 
@@ -902,7 +975,7 @@ function HuntingTargetsPanel({ monsterGroups, selection, onSelect, sketches, wea
                     const slotLabel = getSlotLabel(c);
                     const slotIcon = SLOT_ICONS[c.armour_slot ?? ''] ?? null;
                     const isVisageItem = getCategory(c) === 'visage';
-                    const requiredMats = getChallengeRequiredMaterials(c, armourUpgradesMap);
+                    const requiredMats = getChallengeRequiredMaterials(c, armourUpgradesMap, weaponUpgradesMap);
                     const itemRanks = getMonsterRanksFromMaterials(requiredMats);
 
                     return (
@@ -1179,7 +1252,7 @@ export default function HunterChallenges() {
   // ── Projects ────────────────────────────────────────────────
   // ?project=<id> shows only that project's items, judged against the project's targets
   const [searchParams, setSearchParams] = useSearchParams();
-  const { data: projects = [] } = useChallengeProjects(user?.id);
+  const { data: projects = [], isSuccess: projectsLoaded } = useChallengeProjects(user?.id);
   const challengesById = useMemo(() => new Map(allChallenges.map((c) => [c.id, c])), [allChallenges]);
   const activeProjectId = searchParams.get('project');
   const activeProject = projects.find((p) => p.id === activeProjectId) ?? null;
@@ -1196,12 +1269,19 @@ export default function HunterChallenges() {
   const closeProject = useCloseProject();
   const [closingProject, setClosingProject] = useState(false);
 
-  // Materials each project weapon / armour piece still needs to reach its target
-  const projectWeaponIds = useMemo(
-    () => (activeProject ? challenges.map((c) => c.weapon_id).filter(Boolean) as string[] : []),
-    [activeProject, challenges],
+  // Upgrade steps (materials + hunter level) of every tracked weapon
+  const weaponIds = useMemo(
+    () => Array.from(new Set(allChallenges.map((c) => c.weapon_id).filter(Boolean) as string[])),
+    [allChallenges],
   );
-  const { data: weaponSteps } = useWeaponUpgradeSteps(projectWeaponIds);
+  const { data: weaponSteps } = useWeaponUpgradeSteps(weaponIds);
+  const weaponUpgradesMap = useMemo(() => {
+    const map = new Map<string, Map<number, GearMaterialRequirement[]>>();
+    for (const [id, steps] of weaponSteps ?? []) {
+      map.set(id, new Map([...steps].map(([r, st]) => [r, st.materials])));
+    }
+    return map;
+  }, [weaponSteps]);
   const armourSteps = useMemo(() => {
     const map = new Map<string, Map<number, UpgradeStep>>();
     for (const u of armourUpgrades) {
@@ -1224,9 +1304,24 @@ export default function HunterChallenges() {
     () => groupMaterialsByMonster([...projectPlans.values()], monsters),
     [projectPlans, monsters],
   );
-  const { data: huntLevels } = useMonsterHuntLevels(
-    huntMonsters.map((m) => m.monsterId).filter((id) => id !== '__general__'),
-  );
+  // Monsters that drop the parts each card's next step needs (so cards can show where to hunt)
+  const nextStepMonsterIds = useMemo(() => {
+    const ids = new Set<string>();
+    const plans = challenges
+      .filter((c) => c.weapon_id || c.armour_piece_id)
+      .map((c) => ({ challengeId: c.id, from: 0, to: 0, requiredLevel: null, materials: getChallengeRequiredMaterials(c, armourUpgradesMap, weaponUpgradesMap) }));
+    for (const g of groupMaterialsByMonster(plans, monsters)) if (g.monsterId !== '__general__') ids.add(g.monsterId);
+    for (const m of huntMonsters) if (m.monsterId !== '__general__') ids.add(m.monsterId);
+    return [...ids];
+  }, [challenges, armourUpgradesMap, weaponUpgradesMap, monsters, huntMonsters]);
+  const { data: huntLevels } = useMonsterHuntLevels(nextStepMonsterIds);
+
+  /** Hunter level the challenge's next upgrade asks for. */
+  const nextStepLevelFor = (c: HunterChallenge): number | null => {
+    const next = (c.current_rarity ?? 0) === 0 ? Math.max(1, c.craft_rarity || 1) : (c.current_rarity ?? 0) + 1;
+    const steps = c.weapon_id ? weaponSteps?.get(c.weapon_id) : c.armour_piece_id ? armourSteps.get(c.armour_piece_id) : undefined;
+    return steps?.get(next)?.required_level ?? null;
+  };
 
   const targetOptionsFor = (c: HunterChallenge): TargetOption[] => {
     const craft = Math.max(1, c.craft_rarity || 1);
@@ -1311,6 +1406,31 @@ export default function HunterChallenges() {
   useEffect(() => {
     if (activeProjectId) setShowCollected(true);
   }, [activeProjectId]);
+
+  // ── Focus project: opened by default when the page loads without ?project ──
+  const setFocusProject = useSetFocusProject();
+  const focusProject = projects.find((p) => p.is_focus) ?? null;
+  const focusAppliedRef = useRef(false);
+  useEffect(() => {
+    if (focusAppliedRef.current || !projectsLoaded) return;
+    focusAppliedRef.current = true; // only on arrival, so "All challenges" stays reachable
+    if (!activeProjectId && focusProject) {
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        next.set('project', focusProject.id);
+        return next;
+      }, { replace: true });
+    }
+  }, [projectsLoaded, activeProjectId, focusProject, setSearchParams]);
+
+  const toggleFocus = (projectId: string) => {
+    if (!user) return;
+    const isFocus = projects.find((p) => p.id === projectId)?.is_focus;
+    setFocusProject.mutate(
+      { userId: user.id, projectId: isFocus ? null : projectId, projects },
+      { onError: (err) => window.alert(projectErrorMessage(err)) },
+    );
+  };
 
   // ── Manual projects: create, add / remove challenges ────────
   const createProject = useCreateProject();
@@ -1625,6 +1745,7 @@ export default function HunterChallenges() {
                   sketches={monsterSketches}
                   weaponsMap={weaponsMap}
                   armourUpgradesMap={armourUpgradesMap}
+                  weaponUpgradesMap={weaponUpgradesMap}
                 />
               </div>
             )}
@@ -1666,6 +1787,8 @@ export default function HunterChallenges() {
                 onAddItems={() => { setPickError(null); setPickingForProject(true); }}
                 onRemoveItem={(item) => removeFromProject.mutate({ projectId: item.project_id, challengeIds: [item.challenge_id] })}
                 removingId={removeFromProject.isPending ? removeFromProject.variables?.challengeIds[0] ?? null : null}
+                onToggleFocus={() => toggleFocus(activeProject.id)}
+                focusBusy={setFocusProject.isPending}
               />
             )}
           </div>
@@ -1735,6 +1858,9 @@ export default function HunterChallenges() {
                           weaponsMap={weaponsMap}
                           monstersMap={monstersMap}
                           armourUpgradesMap={armourUpgradesMap}
+                          weaponUpgradesMap={weaponUpgradesMap}
+                          huntLevels={huntLevels}
+                          nextStepLevel={nextStepLevelFor(c)}
                           projectMenu={projectMenuFor(c)}
                         />
                       );
@@ -1758,6 +1884,9 @@ export default function HunterChallenges() {
                           weaponsMap={weaponsMap}
                           monstersMap={monstersMap}
                           armourUpgradesMap={armourUpgradesMap}
+                          weaponUpgradesMap={weaponUpgradesMap}
+                          huntLevels={huntLevels}
+                          nextStepLevel={nextStepLevelFor(c)}
                           projectMenu={projectMenuFor(c)}
                           compact
                         />

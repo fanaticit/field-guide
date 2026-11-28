@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
-import { X, Cat, Zap, Sparkles, Info, Check, Target, CheckCircle2, Plus } from 'lucide-react';
+import { X, Cat, Zap, Sparkles, Info, Check, Plus } from 'lucide-react';
 import {
   type DBBuddy,
   type BuddyRole,
@@ -8,7 +7,6 @@ import {
   TIER_CONFIG,
   ROLE_CONFIG,
   buddyTierBorder,
-  BUDDY_MAX_TIER_LEVEL,
 } from '../../data/schemas/buddy';
 import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { cn } from '../../lib/utils';
@@ -17,7 +15,8 @@ import { useBuddySkills } from '../../hooks/useAdminBuddies';
 import { usePublicAdventurers } from '../../hooks/useAdminAdventurers';
 import { useAuthStore } from '../../store/authStore';
 import { ROLE_ICONS } from '../../components/RoleIcon';
-import { BuddyTierRow, BuddyTierLevelPill, BuddyChallengeGoalMenu } from './BuddyTierLevel';
+import { BuddyTierRow, BuddyTierLevelPill } from './BuddyTierLevel';
+import { BuddyChallengeButton, type BuddyChallengeActions } from './BuddyChallengeButton';
 import BuddyPairings from './BuddyPairings';
 
 const ROLE_DESCRIPTIONS: Record<BuddyRole, string> = {
@@ -35,7 +34,8 @@ interface BuddyModalProps {
   onToggleOwned: () => void;
   onSetTierLevel: (tierLevel: number) => void;
   onRemoveFromCollection?: () => void;
-  onAddChallenge?: (buddy: DBBuddy, targetGoal?: number) => void;
+  /** Send to Challenges pop-up (goal choice, projects) */
+  challengeActions?: BuddyChallengeActions;
 }
 
 export default function BuddyModal({
@@ -47,10 +47,9 @@ export default function BuddyModal({
   onToggleOwned,
   onSetTierLevel,
   onRemoveFromCollection,
-  onAddChallenge,
+  challengeActions,
 }: BuddyModalProps) {
   const [imageError, setImageError] = useState(false);
-  const navigate = useNavigate();
   const profile = useAuthStore((s) => s.profile);
   const isAdmin = profile?.role === 'admin';
   const { data: skills = [] } = useBuddySkills(open ? buddy?.id : null);
@@ -235,28 +234,14 @@ export default function BuddyModal({
               </p>
 
               <div className="flex items-center gap-2">
-                {challenge && challenge.status !== 'abandoned' && challenge.status !== 'completed' ? (
-                  <button
-                    type="button"
-                    onClick={() => navigate('/challenges')}
-                    className="flex items-center gap-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25 px-3 py-1.5 text-xs font-bold transition-all shadow-sm"
-                  >
-                    <CheckCircle2 size={13} className="text-emerald-400" />
-                    <span>Go to Challenge ➔</span>
-                  </button>
-                ) : (
-                  (isOwned ? currentTierLevel : -1) < BUDDY_MAX_TIER_LEVEL && (
-                    <BuddyChallengeGoalMenu
-                      currentLevel={isOwned ? currentTierLevel : -1}
-                      onSelect={(targetGoal) => onAddChallenge?.(buddy, targetGoal)}
-                      placement="top"
-                      align="right"
-                      className="rounded-lg px-3 py-1.5 text-xs"
-                    >
-                      <Target size={13} />
-                      <span>+ Challenge</span>
-                    </BuddyChallengeGoalMenu>
-                  )
+                {challengeActions && (
+                  <BuddyChallengeButton
+                    buddy={buddy}
+                    currentLevel={isOwned ? currentTierLevel : -1}
+                    challenge={challenge}
+                    actions={challengeActions}
+                    className="!rounded-lg !px-3 !py-1.5 !text-xs"
+                  />
                 )}
 
                 <button

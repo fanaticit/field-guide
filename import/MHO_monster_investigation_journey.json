@@ -1,0 +1,508 @@
+{
+ "about": "Investigative Journey: the monsters it unlocks in order. Each step needs every requirement listed. \"Server age\" = days since your game server opened (the game compares against the server open time, so it differs per server). Studies = Investigation Notes studies (objectives) completed.",
+ "steps": [
+  {
+   "journey": 1,
+   "step": 1,
+   "row_id": 101,
+   "unlocks": "Radiant Paolumu",
+   "is_grand_prize": false,
+   "monster_id": 11011002,
+   "server_day": null,
+   "total_studies": 150,
+   "monster_studies": 5,
+   "monster_studies_of": "Pink Rathian",
+   "requirements": [
+    {
+     "kind": "Total studies",
+     "value": 150,
+     "monster": "",
+     "text": "Complete 150 Investigation Notes studies (any monster)"
+    },
+    {
+     "kind": "Monster studies",
+     "value": 5,
+     "monster": "Pink Rathian",
+     "monster_note_id": 100102,
+     "text": "Complete 5 Investigation Notes studies of Pink Rathian"
+    }
+   ],
+   "what_unlocking_does": "Once unlocked, this monster has a chance to appear in the field (requires reaching Ecological Rank 6). Its lair will also be unlocked simultaneously (requires unlocking lair Difficulty IV first).",
+   "unlocked_message": "Radiant Paolumu's lair has been unlocked (requires unlocking lair Difficulty IV first). Radiant Paolumu may now appear in the field (requires reaching Ecological Rank 6).",
+   "free_hunt_id": 11111010,
+   "rewards": [
+    {
+     "item_id": 1,
+     "item": "Zenny",
+     "count": 50000
+    }
+   ],
+   "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPaolumu/Sketch_RGZPaolumu_C1_Coloured.png",
+   "order": 1
+  },
+  {
+   "journey": 1,
+   "step": 2,
+   "row_id": 102,
+   "unlocks": "Radiant Tzitzi-Ya-Ku",
+   "is_grand_prize": false,
+   "monster_id": 11012002,
+   "server_day": 13,
+   "total_studies": 180,
+   "monster_studies": 5,
+   "monster_studies_of": "Radiant Paolumu",
+   "requirements": [
+    {
+     "kind": "Server age",
+     "value": 13,
+     "monster": "",
+     "text": "Server open for 13 days"
+    },
+    {
+     "kind": "Total studies",
+     "value": 180,
+     "monster": "",
+     "text": "Complete 180 Investigation Notes studies (any monster)"
+    },
+    {
+     "kind": "Monster studies",
+     "value": 5,
+     "monster": "Radiant Paolumu",
+     "monster_note_id": 111010,
+     "text": "Complete 5 Investigation Notes studies of Radiant Paolumu"
+    }
+   ],
+   "what_unlocking_does": "Once unlocked, this monster has a chance to appear in the field (requires reaching Ecological Rank 7). Its lair will also be unlocked simultaneously (requires unlocking lair Difficulty IV first).",
+   "unlocked_message": "Radiant Tzitzi-Ya-Ku's lair has been unlocked (requires unlocking lair Difficulty IV first). Radiant Tzitzi-Ya-Ku may now appear in the field (requires reaching Ecological Rank 7).",
+   "free_hunt_id": 11212010,
+   "rewards": [
+    {
+     "item_id": 1,
+     "item": "Zenny",
+     "count": 50000
+    }
+   ],
+   "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZTzitziYaKu/Sketch_RGZTzitziYaKu_C1_Coloured.png",
+   "order": 2
+  },
+  {
+   "journey": 1,
+   "step": 3,
+   "row_id": 103,
+   "unlocks": "Radiant Odogaron",
+   "is_grand_prize": false,
+   "monster_id": 11011302,
+   "server_day": 15,
+   "total_studies": 210,
+   "monster_studies": 5,
+   "monster_studies_of": "Radiant Tzitzi-Ya-Ku",
+   "requirements": [
+    {
+     "kind": "Server age",
+     "value": 15,
+     "monster": "",
+     "text": "Server open for 15 days"
+    },
+    {
+     "kind": "Total studies",
+     "value": 210,
+     "monster": "",
+     "text": "Complete 210 Investigation Notes studies (any monster)"
+    },
+    {
+     "kind": "Monster studies",
+     "value": 5,
+     "monster": "Radiant Tzitzi-Ya-Ku",
+     "monster_note_id": 112010,
+     "text": "Complete 5 Investigation Notes studies of Radiant Tzitzi-Ya-Ku"
+    }
+   ],
+   "what_unlocking_does": "Once unlocked, this monster has a chance to appear in the field (requires reaching Ecological Rank 7). Its lair will also be unlocked simultaneously (requires unlocking lair Difficulty IV first).",
+   "unlocked_message": "Radiant Odogaron's lair has been unlocked (requires unlocking lair Difficulty IV first). Radiant Odogaron may now appear in the field (requires reaching Ecological Rank 7).",
+   "free_hunt_id": 11211310,
+   "rewards": [
+    {
+     "item_id": 1,
+     "item": "Zenny",
+     "count": 50000
+    }
+   ],
+   "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZOdogaron/Sketch_RGZOdogaron_D1_Coloured.png",
+   "order": 3
+  },
+  {
+   "journey": 1,
+   "step": 4,
+   "row_id": 104,
+   "unlocks": "Radiant Diablos",
+   "is_grand_prize": false,
+   "monster_id": 11000702,
+   "server_day": 18,
+   "total_studies": 240,
+   "monster_studies": 5,
+   "monster_studies_of": "Radiant Odogaron",
+   "requirements": [
+    {
+     "kind": "Server age",
+     "value": 18,
+     "monster": "",
+     "text": "Server open for 18 days"
+    },
+    {
+     "kind": "Total studies",
+     "value": 240,
+     "monster": "",
+     "text": "Complete 240 Investigation Notes studies (any monster)"
+    },
+    {
+     "kind": "Monster studies",
+     "value": 5,
+     "monster": "Radiant Odogaron",
+     "monster_note_id": 111310,
+     "text": "Complete 5 Investigation Notes studies of Radiant Odogaron"
+    }
+   ],
+   "what_unlocking_does": "Once unlocked, this monster has a chance to appear in the field (requires reaching Ecological Rank 8). Its lair will also be unlocked simultaneously (requires unlocking lair Difficulty V first).",
+   "unlocked_message": "Radiant Diablos's lair has been unlocked (requires unlocking lair Difficulty V first). Radiant Diablos may now appear in the field (requires reaching Ecological Rank 8).",
+   "free_hunt_id": 11300710,
+   "rewards": [
+    {
+     "item_id": 1,
+     "item": "Zenny",
+     "count": 50000
+    }
+   ],
+   "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZDiablos/Sketch_RGZDiablos_D1_Coloured.png",
+   "order": 4
+  },
+  {
+   "journey": 1,
+   "step": 5,
+   "row_id": 105,
+   "unlocks": "Radiant Rathalos",
+   "is_grand_prize": false,
+   "monster_id": 11000202,
+   "server_day": 20,
+   "total_studies": 270,
+   "monster_studies": 5,
+   "monster_studies_of": "Radiant Diablos",
+   "requirements": [
+    {
+     "kind": "Server age",
+     "value": 20,
+     "monster": "",
+     "text": "Server open for 20 days"
+    },
+    {
+     "kind": "Total studies",
+     "value": 270,
+     "monster": "",
+     "text": "Complete 270 Investigation Notes studies (any monster)"
+    },
+    {
+     "kind": "Monster studies",
+     "value": 5,
+     "monster": "Radiant Diablos",
+     "monster_note_id": 100710,
+     "text": "Complete 5 Investigation Notes studies of Radiant Diablos"
+    }
+   ],
+   "what_unlocking_does": "Once unlocked, this monster has a chance to appear in the field (requires reaching Ecological Rank 8). Its lair will also be unlocked simultaneously (requires unlocking lair Difficulty V first).",
+   "unlocked_message": "Radiant Rathalos's lair has been unlocked (requires unlocking lair Difficulty V first). Radiant Rathalos may now appear in the field (requires reaching Ecological Rank 8).",
+   "free_hunt_id": 11300210,
+   "rewards": [
+    {
+     "item_id": 1,
+     "item": "Zenny",
+     "count": 50000
+    }
+   ],
+   "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRathalos/Sketch_RGZRathalos_C1_Coloured.png",
+   "order": 5
+  },
+  {
+   "journey": 1,
+   "step": 6,
+   "row_id": 106,
+   "unlocks": "Investigation Grand Prize",
+   "is_grand_prize": true,
+   "monster_id": null,
+   "server_day": null,
+   "total_studies": null,
+   "monster_studies": 5,
+   "monster_studies_of": "Radiant Rathalos",
+   "requirements": [
+    {
+     "kind": "Monster studies",
+     "value": 5,
+     "monster": "Radiant Rathalos",
+     "monster_note_id": 100210,
+     "text": "Complete 5 Investigation Notes studies of Radiant Rathalos"
+    }
+   ],
+   "what_unlocking_does": "Complete the Unlock Requirements to claim the Grand Investigation Reward.",
+   "unlocked_message": "",
+   "free_hunt_id": null,
+   "rewards": [
+    {
+     "item_id": 391054,
+     "item": "Humble Token",
+     "count": 1
+    }
+   ],
+   "sketch": "",
+   "order": 6
+  },
+  {
+   "journey": 2,
+   "step": 1,
+   "row_id": 201,
+   "unlocks": "Radiant Legiana",
+   "is_grand_prize": false,
+   "monster_id": 11011102,
+   "server_day": 22,
+   "total_studies": 300,
+   "monster_studies": null,
+   "monster_studies_of": "",
+   "requirements": [
+    {
+     "kind": "Server age",
+     "value": 22,
+     "monster": "",
+     "text": "Server open for 22 days"
+    },
+    {
+     "kind": "Total studies",
+     "value": 300,
+     "monster": "",
+     "text": "Complete 300 Investigation Notes studies (any monster)"
+    }
+   ],
+   "what_unlocking_does": "Once unlocked, this monster has a chance to appear in the field (requires reaching Ecological Rank 8). Its lair will also be unlocked simultaneously (requires unlocking lair Difficulty V first).",
+   "unlocked_message": "Radiant Legiana's lair has been unlocked (requires unlocking lair Difficulty V first). Radiant Legiana may now appear in the field (requires reaching Ecological Rank 8).",
+   "free_hunt_id": 11311110,
+   "rewards": [
+    {
+     "item_id": 1,
+     "item": "Zenny",
+     "count": 50000
+    }
+   ],
+   "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZLegiana/Sketch_RGZLegiana_D1_Coloured.png",
+   "order": 7
+  },
+  {
+   "journey": 2,
+   "step": 2,
+   "row_id": 202,
+   "unlocks": "Radiant Radobaan",
+   "is_grand_prize": false,
+   "monster_id": 11011402,
+   "server_day": 24,
+   "total_studies": 330,
+   "monster_studies": 5,
+   "monster_studies_of": "Radiant Legiana",
+   "requirements": [
+    {
+     "kind": "Server age",
+     "value": 24,
+     "monster": "",
+     "text": "Server open for 24 days"
+    },
+    {
+     "kind": "Total studies",
+     "value": 330,
+     "monster": "",
+     "text": "Complete 330 Investigation Notes studies (any monster)"
+    },
+    {
+     "kind": "Monster studies",
+     "value": 5,
+     "monster": "Radiant Legiana",
+     "monster_note_id": 111110,
+     "text": "Complete 5 Investigation Notes studies of Radiant Legiana"
+    }
+   ],
+   "what_unlocking_does": "Once unlocked, this monster has a chance to appear in the field (requires reaching Ecological Rank 9). Its lair will also be unlocked simultaneously (requires unlocking lair Difficulty V first).",
+   "unlocked_message": "Radiant Radobaan's lair has been unlocked (requires unlocking lair Difficulty V first). Radiant Radobaan may now appear in the field (requires reaching Ecological Rank 9).",
+   "free_hunt_id": 11411410,
+   "rewards": [
+    {
+     "item_id": 1,
+     "item": "Zenny",
+     "count": 50000
+    }
+   ],
+   "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZRadobaan/Sketch_RGZRadobaan_D1_Coloured.png",
+   "order": 8
+  },
+  {
+   "journey": 2,
+   "step": 3,
+   "row_id": 203,
+   "unlocks": "Radiant Pink Rathian",
+   "is_grand_prize": false,
+   "monster_id": 11100102,
+   "server_day": 27,
+   "total_studies": 360,
+   "monster_studies": 5,
+   "monster_studies_of": "Radiant Radobaan",
+   "requirements": [
+    {
+     "kind": "Server age",
+     "value": 27,
+     "monster": "",
+     "text": "Server open for 27 days"
+    },
+    {
+     "kind": "Total studies",
+     "value": 360,
+     "monster": "",
+     "text": "Complete 360 Investigation Notes studies (any monster)"
+    },
+    {
+     "kind": "Monster studies",
+     "value": 5,
+     "monster": "Radiant Radobaan",
+     "monster_note_id": 111410,
+     "text": "Complete 5 Investigation Notes studies of Radiant Radobaan"
+    }
+   ],
+   "what_unlocking_does": "Once unlocked, this monster has a chance to appear in the field (requires reaching Ecological Rank 9). Its lair will also be unlocked simultaneously (requires unlocking lair Difficulty V first).",
+   "unlocked_message": "Radiant Pink Rathian's lair has been unlocked (requires unlocking lair Difficulty V first). Radiant Pink Rathian may now appear in the field (requires reaching Ecological Rank 9).",
+   "free_hunt_id": 11400111,
+   "rewards": [
+    {
+     "item_id": 1,
+     "item": "Zenny",
+     "count": 50000
+    }
+   ],
+   "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZPinkRathian/Sketch_RGZPinkRathian_C1_Coloured.png",
+   "order": 9
+  },
+  {
+   "journey": 2,
+   "step": 4,
+   "row_id": 204,
+   "unlocks": "Black Diablos",
+   "is_grand_prize": false,
+   "monster_id": 10100702,
+   "server_day": 30,
+   "total_studies": 390,
+   "monster_studies": 5,
+   "monster_studies_of": "Radiant Pink Rathian",
+   "requirements": [
+    {
+     "kind": "Server age",
+     "value": 30,
+     "monster": "",
+     "text": "Server open for 30 days"
+    },
+    {
+     "kind": "Total studies",
+     "value": 390,
+     "monster": "",
+     "text": "Complete 390 Investigation Notes studies (any monster)"
+    },
+    {
+     "kind": "Monster studies",
+     "value": 5,
+     "monster": "Radiant Pink Rathian",
+     "monster_note_id": 100111,
+     "text": "Complete 5 Investigation Notes studies of Radiant Pink Rathian"
+    }
+   ],
+   "what_unlocking_does": "Once unlocked, this monster has a chance to appear in the field (requires reaching Ecological Rank 9). Its lair will also be unlocked simultaneously (requires unlocking lair Difficulty VI first).",
+   "unlocked_message": "Black Diablos's lair has been unlocked (requires unlocking lair Difficulty VI first). Black Diablos may now appear in the field (requires reaching Ecological Rank 9).",
+   "free_hunt_id": 11500702,
+   "rewards": [
+    {
+     "item_id": 1,
+     "item": "Zenny",
+     "count": 50000
+    }
+   ],
+   "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/BlackDiablos/Sketch_BlackDiablos_D1_Coloured.png",
+   "order": 10
+  },
+  {
+   "journey": 2,
+   "step": 5,
+   "row_id": 205,
+   "unlocks": "Radiant Black Diablos",
+   "is_grand_prize": false,
+   "monster_id": 11100702,
+   "server_day": 36,
+   "total_studies": 420,
+   "monster_studies": 5,
+   "monster_studies_of": "Black Diablos",
+   "requirements": [
+    {
+     "kind": "Server age",
+     "value": 36,
+     "monster": "",
+     "text": "Server open for 36 days"
+    },
+    {
+     "kind": "Total studies",
+     "value": 420,
+     "monster": "",
+     "text": "Complete 420 Investigation Notes studies (any monster)"
+    },
+    {
+     "kind": "Monster studies",
+     "value": 5,
+     "monster": "Black Diablos",
+     "monster_note_id": 100702,
+     "text": "Complete 5 Investigation Notes studies of Black Diablos"
+    }
+   ],
+   "what_unlocking_does": "Once unlocked, this monster has a chance to appear in the field (requires reaching Ecological Rank 9). Its lair will also be unlocked simultaneously (requires unlocking lair Difficulty VI first).",
+   "unlocked_message": "Radiant Black Diablos's lair has been unlocked (requires unlocking lair Difficulty VI first). Radiant Black Diablos may now appear in the field (requires reaching Ecological Rank 9).",
+   "free_hunt_id": 11600711,
+   "rewards": [
+    {
+     "item_id": 1,
+     "item": "Zenny",
+     "count": 50000
+    }
+   ],
+   "sketch": "MHMobile/Content/UI/Dynamic/Sketch/BigMonster/RGZBlackDiablos/Sketch_RGZBlackDiablos_D1_Coloured.png",
+   "order": 11
+  },
+  {
+   "journey": 2,
+   "step": 6,
+   "row_id": 206,
+   "unlocks": "Investigation Grand Prize",
+   "is_grand_prize": true,
+   "monster_id": null,
+   "server_day": null,
+   "total_studies": null,
+   "monster_studies": 5,
+   "monster_studies_of": "Radiant Black Diablos",
+   "requirements": [
+    {
+     "kind": "Monster studies",
+     "value": 5,
+     "monster": "Radiant Black Diablos",
+     "monster_note_id": 100711,
+     "text": "Complete 5 Investigation Notes studies of Radiant Black Diablos"
+    }
+   ],
+   "what_unlocking_does": "Complete the Unlock Requirements to claim the Grand Investigation Reward.",
+   "unlocked_message": "",
+   "free_hunt_id": null,
+   "rewards": [
+    {
+     "item_id": 391054,
+     "item": "Humble Token",
+     "count": 1
+    }
+   ],
+   "sketch": "",
+   "order": 12
+  }
+ ]
+}

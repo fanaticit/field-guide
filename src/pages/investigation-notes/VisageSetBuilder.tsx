@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import {
   Search,
   Layers,
@@ -13,14 +13,13 @@ import {
   Check,
 } from 'lucide-react';
 import { useVisageSetsData } from '../../hooks/useVisageSets';
-import { type DBVisage, type VisageRarity, getInkConfig, normalizeVisageRow } from '../../data/schemas/visage';
+import { type DBVisage, getInkConfig, normalizeVisageRow } from '../../data/schemas/visage';
 import { useNavigate, useParams, useSearchParams, Link } from 'react-router';
 import { useAuthStore } from '../../store/authStore';
 import {
   useHunterChallenges,
-  useAddVisageChallenge,
   getVisageChallenge,
-  VISAGE_RARITY_INDEX,
+  type HunterChallenge,
 } from '../../hooks/useHunterChallenges';
 import VisageCard, { InkIconComponent } from './VisageCard';
 import VisageModal from './VisageModal';
@@ -51,6 +50,8 @@ import {
   type MissingCard,
   type VisageBuildRow,
 } from '../../lib/visageBuild';
+import { useVisageChallengeActions } from './useVisageChallengeActions';
+import { useChallengeProjects, useCreateProject, useAddChallengesToProject, projectErrorMessage } from '../../hooks/useChallengeProjects';
 import { cn } from '../../lib/utils';
 import { useUIStore } from '../../store/uiStore';
 import { DEFAULT_SECTION_THEMES } from '../../config/themes';
@@ -362,50 +363,42 @@ export default function VisageSetBuilder() {
   };
 
   const { data: challenges = [] } = useHunterChallenges(user?.id);
-  const addVisageChallenge = useAddVisageChallenge();
+  // Standard Send to Challenges pop-up for visage cards (goal, projects, remove)
+  const visageChallengeActions = useVisageChallengeActions(useCallback(() => setLoginModalOpen(true), []));
 
-  const handleAddVisageChallenge = async (
-    card: DBVisage,
-    inkType: string,
-    currentRarity?: VisageRarity | null,
-  ) => {
-    if (!user) {
-      setLoginModalOpen(true);
-      return;
-    }
+  const { data: challengeProjects = [] } = useChallengeProjects(user?.id);
+  const createProject = useCreateProject();
+  const addToProject = useAddChallengesToProject();
+  const [addingMissing, setAddingMissing] = useState(false);
 
-    const rarityIdx = currentRarity ? VISAGE_RARITY_INDEX[currentRarity] ?? 0 : 0;
+  const handleConfirmMissingChallenges = async ({ projectId, newProjectName }: { projectId: string | null; newProjectName: string | null }) => {
+    if (!user) { setLoginModalOpen(true); return; }
+    setAddingMissing(true);
+    setMissingError(null);
     try {
-      await addVisageChallenge.mutateAsync({
-        userId: user.id,
-        game: 'mho',
-        visageId: card.id,
-        visageName: card.name,
-        inkType: (inkType || 'flames').toLowerCase(),
-        monsterId: card.monster_id ?? null,
-        monsterName: card.name,
-        pieceImage: card.monster_icon ?? null,
-        setIcon: card.monster_icon ?? null,
-        currentRarity: rarityIdx,
-        craftRarity: 1, // Fine
-        maxRarity: 4, // Superior
-      });
-    } catch (err) {
-      console.error('Failed to add visage challenge', err);
-    }
-  };
-
-  const handleConfirmMissingChallenges = async () => {
-    try {
+      const added: HunterChallenge[] = [];
       for (const m of missingPrompt) {
-        await handleAddVisageChallenge(m.visage, m.ink, collectionMap[`${m.visage.id}:${m.ink}`]?.rarity);
+        const c = await visageChallengeActions.onAdd({ card: m.visage, ink: m.ink, currentRarity: collectionMap[`${m.visage.id}:${m.ink}`]?.rarity });
+        if (c) added.push(c);
+      }
+      let projectName: string | null = null;
+      if (added.length && (projectId || newProjectName)) {
+        const project = projectId
+          ? challengeProjects.find((p) => p.id === projectId)
+          : await createProject.mutateAsync({ userId: user.id, name: newProjectName!, sortOrder: challengeProjects.length });
+        if (project) {
+          await addToProject.mutateAsync({ project, challenges: added });
+          projectName = project.name;
+        }
       }
       setNotice(
-        `Added ${missingPrompt.length} card${missingPrompt.length > 1 ? 's' : ''} to your Personal Hunter's Challenge.`,
+        `Added ${missingPrompt.length} card${missingPrompt.length > 1 ? 's' : ''} to your Personal Hunter's Challenge${projectName ? ` and “${projectName}”` : ''}.`,
       );
-    } catch {
-      setMissingError('Failed to add one or more challenges. Please try again.');
+    } catch (err) {
+      setMissingError(projectErrorMessage(err) || 'Failed to add one or more challenges. Please try again.');
       return;
+    } finally {
+      setAddingMissing(false);
     }
     setMissingPrompt([]);
   };
@@ -945,7 +938,7 @@ export default function VisageSetBuilder() {
                               onSetRarity={(rarity, qty) => setCardRarity(card.id, activeSet.id, rarity, qty)}
                               onSetQuantity={(qty) => setCardQuantity(card.id, activeSet.id, qty)}
                               onRemoveFromCollection={() => removeCardFromCollection(card.id, activeSet.id)}
-                              onAddChallenge={handleAddVisageChallenge}
+                              challengeActions={visageChallengeActions}
                               onClick={() => handleBuildCardClick(card, activeSet.id)}
                               buildMode={true}
                               isCoreCard={loadout.core.visage?.id === card.id}
@@ -1031,8 +1024,9 @@ export default function VisageSetBuilder() {
       <MissingCardsChallengeModal
         open={missingPrompt.length > 0}
         missing={missingPrompt}
-        adding={addVisageChallenge.isPending}
+        adding={addingMissing}
         error={missingError}
+        projects={challengeProjects}
         onConfirm={handleConfirmMissingChallenges}
         onDecline={() => setMissingPrompt([])}
       />
@@ -1053,7 +1047,7 @@ export default function VisageSetBuilder() {
         onRemoveFromCollection={() => {
           if (inspectedCard && activeSet) removeCardFromCollection(inspectedCard.id, activeSet.id);
         }}
-        onAddChallenge={handleAddVisageChallenge}
+        challengeActions={visageChallengeActions}
         onClose={() => setInspectedCard(null)}
       />
 

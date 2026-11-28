@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────
 // MonsterModal — Detailed Monster View & Study Progress Tracker
 // ─────────────────────────────────────────────────────────────
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import {
   X,
@@ -28,11 +28,9 @@ import {
 import {
   useHunterChallenges,
   useAddMonsterChallenge,
-  useAddVisageChallenge,
   useDeleteChallenge,
   useIncrementChallenge,
   getVisageChallenge,
-  VISAGE_RARITY_INDEX,
   type HunterChallenge,
 } from '../../hooks/useHunterChallenges';
 import { useAdminWeapons } from '../../hooks/useAdminWeapons';
@@ -43,13 +41,14 @@ import {
 import { useVisageSetsData } from '../../hooks/useVisageSets';
 import {
   type DBVisage,
-  type VisageRarity,
   getInkConfig,
 } from '../../data/schemas/visage';
 import VisageCard, { InkIconComponent } from './VisageCard';
 import VisageModal from './VisageModal';
 import ElementIcon from '../../components/ElementIcon';
+import { useVisageChallengeActions } from './useVisageChallengeActions';
 import { cn } from '../../lib/utils';
+import SendToChallengesButton from '../../components/challenges/SendToChallengesButton';
 import LoginModal from '../../components/auth/LoginModal';
 
 interface Props {
@@ -127,7 +126,8 @@ export default function MonsterModal({ monster, open, onClose }: Props) {
 
   const { data: challenges = [] } = useHunterChallenges(user?.id);
   const addMonsterChallenge = useAddMonsterChallenge();
-  const addVisageChallenge = useAddVisageChallenge();
+  // Standard Send to Challenges pop-up for visage cards (goal, projects, remove)
+  const visageChallengeActions = useVisageChallengeActions(useCallback(() => setLoginModalOpen(true), []));
   const deleteChallenge = useDeleteChallenge();
   const incrementChallenge = useIncrementChallenge();
 
@@ -145,37 +145,6 @@ export default function MonsterModal({ monster, open, onClose }: Props) {
 
   const [inspectedCard, setInspectedCard] = useState<DBVisage | null>(null);
   const [inspectedInk, setInspectedInk] = useState<string | null>(null);
-
-  const handleAddVisageChallenge = async (
-    card: DBVisage,
-    inkType: string,
-    currentRarity?: VisageRarity | null,
-  ) => {
-    if (!user) {
-      setLoginModalOpen(true);
-      return;
-    }
-
-    const rarityIdx = currentRarity ? VISAGE_RARITY_INDEX[currentRarity] ?? 0 : 0;
-    try {
-      await addVisageChallenge.mutateAsync({
-        userId: user.id,
-        game: 'mho',
-        visageId: card.id,
-        visageName: card.name,
-        inkType: (inkType || 'flames').toLowerCase(),
-        monsterId: card.monster_id ?? null,
-        monsterName: card.name,
-        pieceImage: card.monster_icon ?? null,
-        setIcon: card.monster_icon ?? null,
-        currentRarity: rarityIdx,
-        craftRarity: 1, // Fine
-        maxRarity: 4, // Superior
-      });
-    } catch (e) {
-      console.error('Failed to add visage challenge', e);
-    }
-  };
 
   // Weapons originating from this monster
   const linkedWeapons = useMemo(() => {
@@ -329,29 +298,27 @@ export default function MonsterModal({ monster, open, onClose }: Props) {
     }
   };
 
-  const handleSendToChallenges = async (taskLabel: string, isCompleted: boolean) => {
-    if (!user) {
-      setLoginModalOpen(true);
-      return;
-    }
-
+  // Used by the Send to Challenges pop-up
+  const addTaskChallenge = async (taskLabel: string, isCompleted: boolean) => {
+    if (!user) return null;
     const existing = getChallengeForTask(taskLabel);
-    if (existing) {
-      // Toggle off / remove from challenges
-      await deleteChallenge.mutateAsync(existing.id);
-    } else {
-      // Add to challenges
-      await addMonsterChallenge.mutateAsync({
-        userId: user.id,
-        game: 'mho',
-        monsterId: monster.id,
-        monsterName: monster.name,
-        pieceImage: monster.icon,
-        setIcon: monster.icon,
-        notes: taskLabel,
-        completed: isCompleted,
-      });
-    }
+    if (existing) return existing;
+    const res = await addMonsterChallenge.mutateAsync({
+      userId: user.id,
+      game: 'mho',
+      monsterId: monster.id,
+      monsterName: monster.name,
+      pieceImage: monster.icon,
+      setIcon: monster.icon,
+      notes: taskLabel,
+      completed: isCompleted,
+    });
+    return res.challenge;
+  };
+
+  const removeTaskChallenge = async (taskLabel: string) => {
+    const existing = getChallengeForTask(taskLabel);
+    if (existing) await deleteChallenge.mutateAsync(existing.id);
   };
 
   const handleCreateCustomTask = async (e: React.FormEvent) => {
@@ -760,7 +727,6 @@ export default function MonsterModal({ monster, open, onClose }: Props) {
                   const TaskIcon = task.icon;
                   const isChecked = Boolean(study[task.key]);
                   const linkedChallenge = getChallengeForTask(task.label);
-                  const isTracked = Boolean(linkedChallenge);
 
                   return (
                     <div
@@ -843,29 +809,16 @@ export default function MonsterModal({ monster, open, onClose }: Props) {
                         </div>
                       </button>
 
-                      {/* Right action: Send to / Track in Challenges */}
+                      {/* Right action: Send to / Track in Challenges (pop-up with projects) */}
                       <div className="flex items-center gap-1.5 shrink-0">
-                        {isTracked ? (
-                          <button
-                            type="button"
-                            onClick={() => handleSendToChallenges(task.label, isChecked)}
-                            title="Currently in your Challenges! Click to remove."
-                            className="flex items-center gap-1.5 rounded-lg border border-yellow-500/40 bg-yellow-500/15 px-2.5 py-1 text-[10px] font-bold text-yellow-300 hover:bg-red-500/20 hover:border-red-500/40 hover:text-red-300 transition-colors shadow-sm"
-                          >
-                            <Target size={11} className="text-yellow-400" />
-                            <span>In Challenges ✓</span>
-                          </button>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={() => handleSendToChallenges(task.label, isChecked)}
-                            title="Add this task to your personal Hunter's Challenges"
-                            className="flex items-center gap-1.5 rounded-lg border border-mh-slate-750 bg-mh-slate-800 px-2.5 py-1 text-[10px] font-semibold text-mh-slate-300 hover:border-mh-gold-500/50 hover:bg-mh-slate-750 hover:text-mh-gold-300 transition-colors shadow-sm"
-                          >
-                            <Plus size={11} className="text-mh-gold-400" />
-                            <span>Send to Challenges</span>
-                          </button>
-                        )}
+                        <SendToChallengesButton
+                          userId={user?.id}
+                          challenge={linkedChallenge ?? null}
+                          onAdd={() => addTaskChallenge(task.label, isChecked)}
+                          onRemove={() => removeTaskChallenge(task.label)}
+                          onRequireLogin={() => setLoginModalOpen(true)}
+                          itemName={`${monster.name}: ${task.label}`}
+                        />
                       </div>
                     </div>
                   );
@@ -874,7 +827,6 @@ export default function MonsterModal({ monster, open, onClose }: Props) {
                 {/* Custom User Tasks */}
                 {study.custom_tasks.map((ct) => {
                   const linkedChallenge = getChallengeForTask(ct.label);
-                  const isTracked = Boolean(linkedChallenge);
 
                   return (
                     <div
@@ -918,27 +870,14 @@ export default function MonsterModal({ monster, open, onClose }: Props) {
                       </button>
 
                       <div className="flex items-center gap-2 shrink-0">
-                        {isTracked ? (
-                          <button
-                            type="button"
-                            onClick={() => handleSendToChallenges(ct.label, ct.completed)}
-                            title="Currently in your Challenges! Click to remove."
-                            className="flex items-center gap-1.5 rounded-lg border border-yellow-500/40 bg-yellow-500/15 px-2.5 py-1 text-[10px] font-bold text-yellow-300 hover:bg-red-500/20 hover:border-red-500/40 hover:text-red-300 transition-colors shadow-sm"
-                          >
-                            <Target size={11} className="text-yellow-400" />
-                            <span>In Challenges ✓</span>
-                          </button>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={() => handleSendToChallenges(ct.label, ct.completed)}
-                            title="Add this task to your personal Hunter's Challenges"
-                            className="flex items-center gap-1.5 rounded-lg border border-mh-slate-750 bg-mh-slate-800 px-2.5 py-1 text-[10px] font-semibold text-mh-slate-300 hover:border-mh-gold-500/50 hover:bg-mh-slate-750 hover:text-mh-gold-300 transition-colors shadow-sm"
-                          >
-                            <Plus size={11} className="text-mh-gold-400" />
-                            <span>Send to Challenges</span>
-                          </button>
-                        )}
+                        <SendToChallengesButton
+                          userId={user?.id}
+                          challenge={linkedChallenge ?? null}
+                          onAdd={() => addTaskChallenge(ct.label, ct.completed)}
+                          onRemove={() => removeTaskChallenge(ct.label)}
+                          onRequireLogin={() => setLoginModalOpen(true)}
+                          itemName={`${monster.name}: ${ct.label}`}
+                        />
 
                         <button
                           type="button"
@@ -1340,7 +1279,7 @@ export default function MonsterModal({ monster, open, onClose }: Props) {
                           onSetRarity={(rarity, qty) => setCardRarity(card.id, ink, rarity, qty)}
                           onSetQuantity={(qty) => setCardQuantity(card.id, ink, qty)}
                           onRemoveFromCollection={() => removeCardFromCollection(card.id, ink)}
-                          onAddChallenge={handleAddVisageChallenge}
+                          challengeActions={visageChallengeActions}
                           onClick={() => {
                             setInspectedCard(card);
                             setInspectedInk(ink);
@@ -1396,7 +1335,7 @@ export default function MonsterModal({ monster, open, onClose }: Props) {
               removeCardFromCollection(inspectedCard.id, inspectedInk || 'flames');
             }
           }}
-          onAddChallenge={handleAddVisageChallenge}
+          challengeActions={visageChallengeActions}
         />
       )}
     </>,

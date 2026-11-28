@@ -6985,6 +6985,8 @@ export function getChallengeRequiredMaterials(
     weapon_id?: string | null;
   },
   armourUpgradesMap?: Map<string, Map<number, GearMaterialRequirement[]>>,
+  /** Weapon upgrade materials by weapon id → rarity reached by the upgrade */
+  weaponUpgradesMap?: Map<string, Map<number, GearMaterialRequirement[]>>,
 ): GearMaterialRequirement[] {
   if (challenge.status === 'completed' || challenge.status === 'abandoned') {
     return [];
@@ -7006,6 +7008,8 @@ export function getChallengeRequiredMaterials(
     if (challenge.status === 'crafting' || (challenge.current_rarity ?? 0) === 0) {
       return WEAPON_FORGE_MATERIALS[challenge.weapon_id] ?? [];
     }
+    const upgradeMats = weaponUpgradesMap?.get(challenge.weapon_id)?.get((challenge.current_rarity ?? 0) + 1);
+    if (upgradeMats && upgradeMats.length > 0) return upgradeMats;
   }
   return [];
 }

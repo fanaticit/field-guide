@@ -57,6 +57,8 @@ export interface ChallengeProject {
   weapon_target_rarity: number | null;
   armour_target_rarity: number | null;
   sort_order: number;
+  /** The hunter's focus project: listed first, and the Challenges page opens on it */
+  is_focus?: boolean;
   created_at: string;
   updated_at: string;
   items: ChallengeProjectItem[];
@@ -79,6 +81,9 @@ export function projectErrorMessage(err: unknown): string {
   const message = typeof e.message === 'string' ? e.message : '';
   if ((code === '42P01' || code === 'PGRST205') && /challenge_project/i.test(message + String(e.details ?? ''))) {
     return 'The projects tables are not in the database yet. Apply the challenge projects migration first.';
+  }
+  if (/is_focus/.test(message)) {
+    return 'Focus projects need the latest database update. Apply the focus migration (20261128000001) first.';
   }
   const parts = [message, typeof e.details === 'string' ? e.details : '', typeof e.hint === 'string' ? e.hint : '']
     .map((x) => x.trim())
@@ -159,7 +164,10 @@ export function useChallengeProjects(userId: string | null | undefined) {
         if (isMissingTable(error)) return [] as ChallengeProject[];
         throw error;
       }
-      return ((data ?? []) as ChallengeProject[]).map((p) => ({ ...p, items: p.items ?? [] }));
+      // Focus project first, then the saved order
+      return ((data ?? []) as ChallengeProject[])
+        .map((p) => ({ ...p, items: p.items ?? [] }))
+        .sort((a, b) => Number(Boolean(b.is_focus)) - Number(Boolean(a.is_focus)));
     },
     staleTime: 1000 * 60 * 2,
     refetchOnWindowFocus: false,
@@ -488,6 +496,41 @@ export function useSetProjectItemTarget() {
       }
     },
     onSettled: () => invalidateAll(qc),
+  });
+}
+
+// ── Focus ────────────────────────────────────────────────────
+
+/**
+ * Make a project the hunter's focus (or clear the focus with projectId = null).
+ * The focus project also moves to the top of the saved order, so it stays near the
+ * front after the focus moves on.
+ */
+export function useSetFocusProject() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ userId, projectId, projects }: { userId: string; projectId: string | null; projects: ChallengeProject[] }) => {
+      // Only one focus per hunter (unique index), so clear the old one first
+      const { error: clearErr } = await supabase.from('challenge_projects')
+        .update({ is_focus: false })
+        .eq('user_id', userId)
+        .eq('is_focus', true);
+      if (clearErr) throw clearErr;
+      if (!projectId) return;
+      const top = Math.min(0, ...projects.map((p) => p.sort_order ?? 0)) - 1;
+      const { error } = await supabase.from('challenge_projects')
+        .update({ is_focus: true, sort_order: top })
+        .eq('id', projectId);
+      if (error) throw error;
+    },
+    onMutate: async ({ userId, projectId }) => {
+      await qc.cancelQueries({ queryKey: [CHALLENGE_PROJECTS_KEY, userId] });
+      qc.setQueryData<ChallengeProject[]>([CHALLENGE_PROJECTS_KEY, userId], (old) =>
+        old
+          ?.map((p) => ({ ...p, is_focus: p.id === projectId }))
+          .sort((a, b) => Number(Boolean(b.is_focus)) - Number(Boolean(a.is_focus))));
+    },
+    onSettled: () => qc.invalidateQueries({ queryKey: [CHALLENGE_PROJECTS_KEY] }),
   });
 }
 

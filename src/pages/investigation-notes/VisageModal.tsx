@@ -1,8 +1,7 @@
 // ─────────────────────────────────────────────────────────────
 // VisageModal — Detailed card inspect view for MHO Visage Cards
 // ─────────────────────────────────────────────────────────────
-import { useNavigate } from 'react-router';
-import { X, Sparkles, Trash2, Target, CheckCircle2, Plus } from 'lucide-react';
+import { X, Sparkles, Trash2, CheckCircle2 } from 'lucide-react';
 import type { DBVisage, VisageRarity } from '../../data/schemas/visage';
 import {
   INK_CONFIG,
@@ -16,6 +15,8 @@ import type { CardCollectionEntry } from '../../hooks/useVisageSets';
 import type { HunterChallenge } from '../../hooks/useHunterChallenges';
 import { InkIconComponent } from './VisageCard';
 import { cn } from '../../lib/utils';
+import { VisageChallengeButton } from './VisageChallengeButton';
+import type { VisageChallengeActions } from './useVisageChallengeActions';
 import VisageIcon from '../../components/visage/VisageIcon';
 
 interface VisageModalProps {
@@ -28,7 +29,8 @@ interface VisageModalProps {
   onSetRarity?: (rarity: VisageRarity, quantity?: number) => void;
   onSetQuantity?: (quantity: number) => void;
   onRemoveFromCollection?: () => void;
-  onAddChallenge?: (card: DBVisage, inkType: string, currentRarity?: VisageRarity | null) => void;
+  /** Standard Send to Challenges pop-up (goal, projects, remove) */
+  challengeActions?: VisageChallengeActions;
 }
 
 export default function VisageModal({
@@ -41,9 +43,8 @@ export default function VisageModal({
   onSetRarity,
   onSetQuantity,
   onRemoveFromCollection,
-  onAddChallenge,
+  challengeActions,
 }: VisageModalProps) {
-  const navigate = useNavigate();
 
   if (!open || !card) return null;
 
@@ -56,7 +57,6 @@ export default function VisageModal({
   const rarityCfg = currentRarity ? VISAGE_RARITY_CONFIG[currentRarity] : null;
 
   const isTracked = Boolean(challenge && challenge.status !== 'abandoned');
-  const isChallengeDone = challenge?.status === 'completed';
   const isMaxed = currentRarity === 'superior';
 
   const nextRarityName = !currentRarity
@@ -289,26 +289,16 @@ export default function VisageModal({
                   <CheckCircle2 size={13} className="text-emerald-400" />
                   <span>Found (Superior)</span>
                 </span>
-              ) : isTracked && !isChallengeDone ? (
-                <button
-                  type="button"
-                  onClick={() => navigate(`/challenges?challenge=${challenge?.id}`)}
-                  title="Go to this search on the Challenges page"
-                  className="inline-flex items-center gap-1 rounded-lg bg-blue-500/15 border border-blue-500/30 px-3 py-1.5 text-xs font-bold text-blue-300 hover:bg-blue-500/25 transition-colors shrink-0"
-                >
-                  <Target size={13} className="text-blue-400" />
-                  <span>Searching ➔</span>
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => onAddChallenge?.(card, primaryInk, currentRarity)}
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-sky-600/50 bg-transparent text-sky-400 hover:bg-sky-900 hover:border-sky-500 hover:text-sky-200 px-3.5 py-1.5 text-xs font-bold transition-all shadow-md shrink-0"
-                >
-                  <Plus size={14} />
-                  <span>+ Search Challenge</span>
-                </button>
-              )}
+              ) : challengeActions ? (
+                <VisageChallengeButton
+                  card={card}
+                  ink={primaryInk}
+                  currentRarity={currentRarity}
+                  challenge={challenge}
+                  actions={challengeActions}
+                  className="shrink-0 rounded-lg px-3.5 py-1.5 text-xs"
+                />
+              ) : null}
             </div>
 
             {/* Quantity Selector if Owned */}

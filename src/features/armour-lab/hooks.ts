@@ -9,7 +9,7 @@ import { supabase } from '../../lib/supabase';
 import { useAuthStore } from '../../store/authStore';
 import { useBuildPlannerStore, type Adventurer } from '../../store/buildPlannerStore';
 import { useArmourPieces } from '../../hooks/useArmourPieces';
-import { useAddArmourChallenge, useHunterChallenges, getArmourPieceChallenge } from '../../hooks/useHunterChallenges';
+import { useAddArmourChallenge, useDeleteChallenge, useHunterChallenges, getArmourPieceChallenge, type HunterChallenge } from '../../hooks/useHunterChallenges';
 import { LAB_SLOTS, type LabBuild, type LabData, type LabPiece } from './logic';
 
 /** Copies the build's armour into the Build Planner and opens it */
@@ -58,17 +58,19 @@ export function useTrackPiece() {
   const user = useAuthStore((s) => s.user);
   const { data: challenges = [] } = useHunterChallenges(user?.id);
   const add = useAddArmourChallenge();
+  const del = useDeleteChallenge();
   const [needsLogin, setNeedsLogin] = useState(false);
   const [justAdded, setJustAdded] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const isTracked = useCallback((pieceId: string) => Boolean(getArmourPieceChallenge(challenges, pieceId)), [challenges]);
+  const challengeFor = useCallback((pieceId: string) => getArmourPieceChallenge(challenges, pieceId) ?? null, [challenges]);
 
   const track = useCallback(
-    async (piece: LabPiece, maxRarity: number) => {
+    async (piece: LabPiece, maxRarity: number): Promise<HunterChallenge | null> => {
       if (!user) {
         setNeedsLogin(true);
-        return;
+        return null;
       }
       setError(null);
       try {
@@ -90,12 +92,20 @@ export function useTrackPiece() {
           setJustAdded(piece.id);
           setTimeout(() => setJustAdded(null), 2500);
         }
+        return res.challenge;
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Could not add the challenge.');
+        // The Send to Challenges pop-up shows the message
+        throw new Error(err instanceof Error ? err.message : 'Could not add the challenge.');
       }
     },
     [user, add],
   );
 
-  return { track, isTracked, justAdded, error, pending: add.isPending, needsLogin, closeLogin: () => setNeedsLogin(false) };
+  const remove = useCallback((c: HunterChallenge) => del.mutateAsync(c.id), [del]);
+
+  return {
+    track, remove, isTracked, challengeFor, justAdded, error, pending: add.isPending,
+    userId: user?.id ?? null,
+    needsLogin, requireLogin: () => setNeedsLogin(true), closeLogin: () => setNeedsLogin(false),
+  };
 }
